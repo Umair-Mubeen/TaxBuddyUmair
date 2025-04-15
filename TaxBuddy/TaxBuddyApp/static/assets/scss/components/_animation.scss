@@ -1,0 +1,81 @@
+
+@keyframes animation-1 {
+    0% {
+      transform: rotate(0deg);
+    }
+
+    100% {
+      transform: rotate(1000deg);
+    }
+  }
+  
+  @keyframes animation-2 {
+    0% {
+      transform: translateY(0);
+    }
+
+    100% {
+      transform: translateY(10px);
+    }
+  }
+
+  @keyframes animation-3 {
+    0% {
+      transform: translateX(0);
+    }
+
+    100% {
+      transform: translateX(10px);
+    }
+  }
+
+  @keyframes animation-4 {
+    0% {
+      transform: translateX(0);
+    }
+
+    100% {
+      transform: translateX(20px);
+    }
+  }
+
+  .niceSelect {
+    z-index: 2;
+    position: relative;
+  }
+
+  .aniamtion-key-1 {
+    position: relative;
+    animation-name: animation-1;
+    animation-duration: 44s;
+    animation-iteration-count: infinite;
+    animation-direction: alternate;
+    animation-timing-function: cubic-bezier(0.59, 0.59, 1, 1);
+  }
+
+  .aniamtion-key-2 {
+    position: relative;
+    animation-name: animation-2;
+    animation-duration: 2s;
+    animation-iteration-count: infinite;
+    animation-direction: alternate;
+    animation-timing-function: cubic-bezier(0.59, 0.59, 1, 1);
+  }
+
+  .aniamtion-key-3 {
+    position: relative;
+    animation-name: animation-3;
+    animation-duration: 2s;
+    animation-iteration-count: infinite;
+    animation-direction: alternate;
+    animation-timing-function: cubic-bezier(0.59, 0.59, 1, 1);
+  }
+
+  .aniamtion-key-4 {
+    position: relative;
+    animation-name: animation-4;
+    animation-duration: 2s;
+    animation-iteration-count: infinite;
+    animation-direction: alternate;
+    animation-timing-function: cubic-bezier(0.59, 0.59, 1, 1);
+  }

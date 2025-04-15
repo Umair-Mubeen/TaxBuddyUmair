@@ -1,0 +1,465 @@
+.work-1 {
+  @media #{$xs} {
+    overflow-x: hidden;
+  }
+}
+
+.single-work-step {
+  padding: 20px 20px 20px 100px;
+  position: relative;
+  z-index: 2;
+  border-radius: 8px;
+  margin-bottom: 16px;
+  background: $white;
+  transform: scale(1);
+  transition: all .3s;
+  &:hover{
+    transition: all .3s;
+    transform: scale(1.05);
+  }
+  @media #{$xs} {
+    padding: 20px;
+  }
+
+  h2 {
+    font-family: 'Canela';
+    font-weight: $regular;
+    font-size: 20px;
+    line-height: 30px;
+    color: $secondary_color;
+  }
+
+  p {
+    font-family: $font3;
+    font-weight: $medium;
+    font-size: 14px;
+    line-height: 24px;
+    color: $color4;
+    opacity: 0.7;
+  }
+
+  &:last-child {
+    margin-bottom: 0;
+  }
+}
+
+.work-number {
+  display: inline-block;
+  height: 50px;
+  width: 50px;
+  background: $color22;
+  box-shadow: 0 4px 25px rgba(121, 119, 198, 0.5);
+  border-radius: 8px;
+  text-align: center;
+  position: absolute;
+  left: 20px;
+  top: 20px;
+  @media #{$xs} {
+    left: 0;
+    top: 0;
+    margin-bottom: 20px;
+    position: relative;
+  }
+
+  h3 {
+    font-family: $font3;
+    font-weight: $bold;
+    font-size: 20px;
+    line-height: 50px;
+    text-align: center;
+    color: $white;
+  }
+}
+
+.work-steps {
+  padding: 24px;
+  background: url("../img/bg/bg-10.png");
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: cover;
+  border-radius: 8px;
+  @media #{$xm} {
+    margin-top: 100px;
+  }
+}
+
+.work-1-bg-1 {
+  position: absolute;
+  top: -5%;
+  width: 130%;
+  height: 130%;
+  left: -18%;
+  z-index: -1;
+  img{
+    animation: upNdown 5s infinite linear alternate;
+  }
+}
+
+.work-1-bg-2 {
+  position: absolute;
+  width: 30px;
+  top: 20%;
+  left: -20px;
+  z-index: 3;
+}
+
+.work-1-bg-4 {
+  position: absolute;
+  width: 30px;
+  bottom: -30px;
+  left: 20px;
+  z-index: 3;
+}
+
+.work-1-bg-3 {
+  position: absolute;
+  width: 30px;
+  right: -26px;
+  top: 35%;
+  z-index: 3;
+}
+
+
+//******** home 7 works area ********
+
+.works7 {
+  background: $new-bg-color2;
+  .work7-boxs {
+    .work7-single-box {
+      background: #fff;
+      padding: 28px 20px;
+      border-radius: 5px;
+      display: flex;
+      margin-top: 30px;
+      transition: 0.4s;
+      .icon {
+        background: #FEEBEB;
+        height: 64px;
+        width: 64px;
+        line-height: 64px;
+        text-align: center;
+        border-radius: 50%;
+        transition: 0.4s;
+      }
+      .headding {
+        padding-left: 20px;
+        h4 {
+          a {
+            color: $new-title-colot1;
+            font-family: $font3;
+            font-size: 24px;
+            font-style: normal;
+            font-weight: 700;
+            line-height: 24px; /* 100% */
+            display: inline-block;
+            transition: 0.4s;
+          }
+        }
+        p {
+          color: $new-pera-colot1;
+          font-size: 16px;
+          font-style: normal;
+          font-weight: 400;
+          line-height: 26px; /* 162.5% */
+          padding-top: 5px;
+          transition: 0.4s;
+        }
+      }
+      &:hover {
+        background: $new-bg-color1;
+        transition: 0.4s;
+        transform: translateY(-10px);
+
+        .icon {
+          background: #fff;
+          transition: 0.4s;
+        }
+        .headding {
+          h4 {
+            a {
+              color: #fff;
+              transition: 0.4s;
+            }
+          }
+          p {
+            color: #fff;
+            transition: 0.4s;
+          }
+        }
+      }
+    }
+  }
+  .hadding7 {
+    padding-left: 20px;
+    @media #{$md} {
+      padding-left: 0;
+      padding-top: 30px;
+    }
+    @media #{$xs} {
+      padding-left: 0;
+      padding-top: 30px;
+    }
+  }
+}
+
+
+//******** home 7 works area ********
+
+//******** home 8 works area ********
+
+.work8 {
+  background-color: $new-bg-color6;
+  .work8-box {
+    margin-top: 30px;
+    padding: 0px 20px;
+  }
+  .work8-icon-area {
+    position: relative;
+    width: 90px;
+    height: 90px;
+    margin: 0 auto;
+    .work8-icon {
+      height: 72px;
+      width: 72px;
+      border-radius: 50%;
+      background-color: $new-bg-color5;
+      text-align: center;
+      line-height: 72px;
+    }
+    .shape {
+      position: absolute;
+      top: -9px;
+      left: -9px;
+    }
+    .had {
+      height: 24px;
+      width: 24px;
+      border-radius: 50%;
+      text-align: center;
+      line-height: 24px;
+      background-color: $new-bg-color4;
+      position: absolute;
+      top: -3px;
+      left: -2px;
+      z-index: 9;
+      p {
+        color: var(--d-white, #FFF);
+        font-size: 16px;
+        font-style: normal;
+        font-weight: 600;
+      }
+    }
+  }
+  .work-area-shape {
+    position: absolute;
+    top: 57px;
+    left: 189px;
+    @media #{$md} {
+      display: none;
+    }
+    @media #{$xs} {
+      display: none;
+    }
+  }
+}
+
+//******** home 8 works area ********
+
+//******** home 9 works area ********
+
+.work9 {
+  background-color: $new-bg-color8;
+  .work9-box {
+     background: #fff;
+     padding: 24px;
+     position: relative;
+     margin-top: 30px;
+     transition: 0.4s;
+    .headding9 {
+      a.learn {
+        color: var(--relation-text-color-r, #0F0A23);
+        font-family: $font3;
+        font-size: 16px;
+        font-style: normal;
+        font-weight: 700;
+        line-height: 16px; /* 100% */
+        display: inline-block;
+        transition: 0.4s;
+      }
+
+      .number {
+        font-family: $font8;
+        font-size: 32px;
+        font-style: normal;
+        font-weight: 400;
+        -webkit-text-fill-color: transparent;
+        -webkit-text-stroke-width: 1px;
+        -webkit-text-stroke-color: #D6CEF6;
+        position: absolute;
+        bottom: 5px;
+        right: 10px;
+        transition: 0.4s;
+      }
+    }
+
+    &:hover {
+      background-color: $new-bg-color7;
+      transition: 0.4s;
+      transform: translateY(-10px);
+
+      .headding9 {
+        h4 {
+          a {
+            color: #fff;
+          }
+        }
+        p {
+          color: #fff;
+        }
+        a.learn {
+          color: var(--relation-text-color-r, #fff);
+          font-family: $font3;
+          font-size: 16px;
+          font-style: normal;
+          font-weight: 700;
+          line-height: 16px; /* 100% */
+          display: inline-block;
+          transition: 0.4s;
+        }
+      }
+    }
+  }
+
+  .work9-main-img {
+    @media #{$md} {
+      display: none;
+    }
+    @media #{$xs} {
+      display: none;
+    }
+  }
+  
+
+}
+
+//******** home 9 works area ********
+
+//******** home 10 works area ********
+
+.progress10 {
+  .progress10-wrap {
+    margin-top: 140px;
+
+    @media #{$md} {
+      margin-top: 40px;
+    }
+    @media #{$xs} {
+      margin-top: 40px;
+    }
+  }
+  .progress-img-right {
+    position: relative;
+    margin-top: 30px;
+
+    .image {
+      img {
+        border-radius: 8px;
+      }
+    }
+
+    .shape {
+      position: absolute;
+      top: -35px;
+      left: -30px;
+      @media #{$md} {
+        left: 0;
+      }
+      @media #{$xs} {
+        left: 0;
+      }
+    }
+
+    .common-shape {
+      position: absolute;
+      bottom: -160px;
+      right: -90px;
+
+      @media #{$md} {
+        display: none;
+      }
+      @media #{$xs} {
+        display: none;
+      }
+    }
+  }
+
+  .progress-img-left {
+    position: relative;
+    margin-top: 30px;
+
+    .image {
+      img {
+        border-radius: 8px;
+      }
+    }
+
+    .shape {
+      position: absolute;
+      top: -35px;
+      right: -40px;
+
+      @media #{$md} {
+        right: 0;
+      }
+      @media #{$xs} {
+        right: 0;
+      }
+    }
+
+    .common-shape {
+      position: absolute;
+      bottom: -160px;
+      left: -90px;
+
+      @media #{$md} {
+        display: none;
+      }
+      @media #{$xs} {
+        display: none;
+      }
+    }
+  }
+
+  .headding10 {
+    margin-top: 30px;
+    padding-left: 30px;
+    position: relative;
+
+    @media #{$xs} {
+      padding-left: 0;
+    }
+    span.number {
+      color: var(--Short-bg, #CED4DA);
+      font-family: $font9;
+      font-size: 40px;
+      font-style: normal;
+      font-weight: 400;
+      line-height: 48px; /* 120% */
+      display: inline-block;
+      padding-bottom: 16px;
+      transition: all .4s;
+    }
+    p {
+      padding-top: 6px;
+    }
+
+    &:hover {
+      span.number {
+        color: $new-bg-color10;
+        transition: all .4s;
+      }
+    }
+  }
+}
+
+//******** home 10 works area ********

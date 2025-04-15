@@ -1,0 +1,178 @@
+{% load static %}
+<head>
+
+    {% include 'partials/head-css.html' %}
+</head>
+
+<body>
+{% include 'partials/topbar.html' %}
+ <!--=====Inner hero Start=======-->
+  <div class="inner-1" id="home">
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-10 m-auto">
+          <div class="inner-title text-center">
+            <p>Contact</p>
+            <h2>Don’t just take our word for it!</h2>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="space80"></div>
+  </div>
+  <!--=====Inner hero end=======-->
+
+  <!--=====Contact Boxes Start=======-->
+  <div class="contact-boxes">
+    <div class="container">
+      <div class="row align-items-center">
+        <div class="col-lg-4">
+          <div class="single-contact-box">
+            <div class="contact-box-icon">
+              <img src="{% static 'assets/img/icons/contact-1.png' %}" alt="" />
+            </div>
+            <div class="contact-box-content">
+              <p class="font-f-3">CALL US</p>
+              <a class="font-f-3" href="tel:+11 1111 11000">+92 3332482742</a>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-lg-4">
+          <div class="single-contact-box">
+            <div class="contact-box-icon">
+              <img src="{% static 'assets/img/icons/contact-2.png' %}" alt="" />
+            </div>
+            <div class="contact-box-content">
+              <p class="font-f-3">EMAIL US</p>
+              <a class="font-f-3" href="mailto:umair.mubeenir@gmail.com">umair.mubeenir@gmail.com</a>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-lg-4">
+          <div class="single-contact-box">
+            <div class="contact-box-icon">
+              <img src="{% static 'assets/img/icons/contact-3.png' %}" alt="" />
+            </div>
+            <div class="contact-box-content">
+              <p class="font-f-3">HEADQUARTERS</p>
+              <a class="font-f-3" href="#">Gulshan-e-Iqbal, Karachi, Pakistan</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!--=====Contact Boxes End=======-->
+
+  <!--=====Contact Form Start=======-->
+  <div class="main-contact-form section-padding">
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-4">
+          <div class="heading2 mr50">
+            <small class="heading-top inner-heading-top"><img src="{% static 'assets/img/icons/hands.svg' %}" alt="" />Our Success in
+              Numbers</small>
+            <h2>Let’s Work Together</h2>
+            <p>
+              Have a tax-related concern or planning your next move? Share your vision with us today. For any questions big or small we’re here to help!
+            </p>
+          </div>
+        </div>
+        <div class="col-lg-8">
+          <div class="main-form">
+            <form action="">
+              <div class="row">
+                <div class="col-lg-6">
+                  <input type="text" name="fname" placeholder="First Name" />
+                </div>
+                <div class="col-lg-6">
+                  <input type="text" name="lname" placeholder="Last Name" />
+                </div>
+                <div class="col-12">
+                  <input type="email" name="email" placeholder="Email Address" />
+                </div>
+                <div class="col-lg-6">
+                  <input type="text" name="service" placeholder="Service Interested In" />
+                </div>
+                <div class="col-lg-6">
+                  <input type="text" name="subject" placeholder="Subject" />
+                </div>
+                <div class="col-12">
+                  <textarea name="message" id="" cols="30" rows="5"
+                    placeholder="Tell Us About Your Tax Concerns"></textarea>
+                </div>
+                <div class="col-12">
+                  <button type="submit" class="full-btn theme-btn-11">
+                    Submit
+                  </button>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!--=====Contact Form End=======-->
+
+
+  <!--=====Faq start=======-->
+  <div class="faq2 section-padding">
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-8 m-auto">
+          <div class="heading2 text-center">
+            <small class="heading-top inner-heading-top"><img src="{% static 'assets/img/icons/hands.svg' %}" alt="" />FAQ</small>
+            <h2>Frequently Asked Questions</h2>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-lg-6">
+          <div class="single-faq2">
+            <h3>Are you missing out on your tax deductions?</h3>
+            <p>
+              Many taxpayers in Pakistan overlook deductions they’re legally allowed to claim, such as:
+               Zakat & Donations, Educational Expenses, Investments in Pension Funds.</p>
+          </div>
+        </div>
+        <div class="col-lg-6">
+
+          <div class="single-faq2">
+            <h3>What tax mistakes should every taxpayer avoid?</h3>
+            <p>
+             Delaying your tax filing can lead to penalties, fines, or even legal notices from FBR </p>
+          </div>
+
+         </div>
+      </div>
+      <div class="space30"></div>
+      <div class="price-notice">
+        <div class="row align-items-center">
+          <div class="col-md-6">
+            <div class="heading4 inner-heading no-margin-heading">
+              <h4 class="font-f-3 weight-700">Have more questions?</h4>
+              <p>
+                If you’re a business with a large payments volume or unique
+                business model, reach out to discuss alternive pricing
+                options.
+              </p>
+            </div>
+          </div>
+          <div class="col-md-6 text-md-right">
+            <a href="" class="theme-btn-11">Get In Touch</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!--=====Faq end=======-->
+
+  {% include 'partials/end.html' %}
+  {% include 'partials/up.html' %}
+  {% include 'partials/footer-scripts.html' %}
+
+</body>
+

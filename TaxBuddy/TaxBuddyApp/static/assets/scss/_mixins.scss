@@ -1,0 +1,27 @@
+
+@mixin transition($transition) {
+  -webkit-transition: $transition;
+  -ms-transition: $transition;
+  transition: $transition;
+}
+
+@mixin transform($value) {
+ -webkit-transform: $value;
+    -moz-transform: $value;
+   -ms-transform: $value;
+    -o-transform: $value;
+     transform: $value;
+ }
+ 
+ @mixin box-sizing($value) {
+ -webkit-box-sizing: $value;
+    -moz-box-sizing: $value;
+     box-sizing: $value;
+ }
+ 
+ @mixin box-shadow($value) {
+ -webkit-box-shadow: $value;
+    -moz-box-shadow: $value;
+     box-shadow: $value;
+ }
+

@@ -1,0 +1,80 @@
+.rtl-version{
+     .quick_contact {
+          padding-left: 0;
+          padding-right: 60px;
+     }
+
+     .quick_contact_icon.bg-27 {
+     left: auto;
+     right: 0;
+     }
+
+     .btn-group a:nth-child(2){
+          margin-left: 0;
+          margin-right: 20px;
+     }
+
+
+     .heading2 span.heilight-left:after {
+          top: -31px;
+          left: auto;
+          right: -40px;
+          transform: rotate(46deg);
+      }
+      .subscribe-from-wrap button {
+          right: auto;
+          top: 8px;
+          left: 8px;
+          img{
+               margin-left: 4px;
+          }
+      }
+
+      .heading2 span.heilight-right:after {
+          top: -29px;
+          right: auto;
+          transform: rotate(30deg);
+          left: -40px;
+          transform: rotate(-12deg);
+      }
+      .single-contact {
+          padding-left: 0;
+          padding-right: 45px;
+      }
+      
+      .contact-icon {
+          left: auto;
+          right: 0;
+      }
+      .logo{
+          margin-right: 0;
+          margin-left: 30px;
+      }
+
+      .heading2 small.heading-top img{
+          margin-right: 0;
+          margin-left: 10px;
+      }
+
+      .single-business {
+          padding-left: 0;
+          padding-right: 130px;
+      }
+
+      .single-business .business-icon {
+          left: auto;
+          top: 32px;
+          right: 32px;
+      }
+
+      span.multi-drop-icon {
+          right: auto;
+          width: 20px;
+          left: 4px;
+      }
+
+      li.dropdown-parrent ul.multi-dropdown.theme-dropdown{
+          left: auto;
+          right: 186px;
+      }
+}
