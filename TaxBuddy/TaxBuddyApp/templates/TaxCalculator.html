@@ -1,0 +1,296 @@
+{% load humanize %}
+
+{% load static %}
+
+<head>
+    {% include 'partials/head-css.html' %}
+</head>
+
+<body>
+{% include 'partials/topbar.html' %}
+<!--=====Inner hero Start=======-->
+<div class="welcome-3 bg8" id="home">
+    <!--=====Welcome start=======-->
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-6">
+                <div class="title3">
+                    <h1 data-aos="fade-right" data-aos-duration="400">At TaxBuddy Umair, we provide user-friendly, reliable, and up-to-date tax tools.
+                    </h1>
+                    <p data-aos="fade-right" data-aos-duration="600">Making a mistake on your return can be costly. From
+                        missed
+                        deductions, or worse, the dreaded IRS
+                        audit.</p>
+                    <div class="space30"></div>
+                    <div class="button-group" data-aos="fade-right" data-aos-duration="800">
+                        <a class="theme-btn-10" href="contact-1.html">Free Case Evaluation <span><i
+                                class="fa-solid fa-arrow-right"></i>
+                </span></a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="hero-2-image">
+                    <img data-aos="zoom-out" data-aos-duration="1000" src="{% static 'assets/img/bg/main-3.png' %}"
+                         alt="">
+                    <div class="hero-3-bg">
+                        <img data-aos="zoom-in" data-aos-duration="800"
+                             src="{% static 'assets/img/bg/hero-3-bg.png' %} " alt="">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!--=====Welcome end=======-->
+
+<!--=====Case study start=======-->
+<div class="case-study-2 section-padding">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 m-auto">
+                <div class="heading3 text-center">
+                    <small data-aos="fade-up" data-aos-duration="600" class="overline">Why Choose Us</small>
+                    <h2 data-aos="fade-up" data-aos-duration="800">Why Choose Us to Handle Your Case?</h2>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-duration="800">
+                <div class="single-case-study">
+                    <div class="case-study-img">
+                        <img src="{% static 'assets/img/case-study/casestudy-4-3.jpg' %}" alt="">
+                    </div>
+                    <div class="single-case-study-content">
+                        <div class="case-study-icon">
+                            <img src="{% static 'assets/img/icons/case-study-4-1.png' %}" alt="">
+                        </div>
+                        <h3>Salary Income Tax Calculator</h3>
+                        <p>Easily calculate your annual income tax based on your monthly salary, allowances, and
+                            deductions.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-duration="1000">
+                <div class="single-case-study active">
+                    <div class="case-study-img">
+                        <img src="{% static 'assets/img/case-study/casestudy-4-2.jpg' %}" alt="">
+                    </div>
+                    <div class="single-case-study-content">
+                        <div class="case-study-icon">
+                            <img src="{% static 'assets/img/icons/case-study-4-2.png' %}" alt="">
+                        </div>
+                        <h3>Property Tax Calculator</h3>
+                        <p>Buying or selling Immovable property in Pakistan? Use Property Tax Calculator to find out the
+                            exact tax you’ll pay on transactions.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-duration="1200">
+                <div class="single-case-study">
+                    <div class="case-study-img">
+                        <img src="{% static 'assets/img/case-study/casestudy-4-1.jpg' %}" alt="">
+                    </div>
+                    <div class="single-case-study-content">
+                        <div class="case-study-icon">
+                            <img src="{% static 'assets/img/icons/case-study-4-3.png' %}" alt="">
+                        </div>
+                        <h3>Capital Gain Tax Calculator</h3>
+                        <p>Calculate Capital Gain Tax on the sale of Immovable Property. This tool considers your
+                            holding period, purchase and sale price.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!--=====Case study end=======-->
+
+<!--=====Tax Calculator Start=======-->
+<div class="main-contact-form section-padding">
+    <div class="container">
+        <div class="row">
+            <form name="tax_slab" method="post">
+
+                {% csrf_token %}
+                <div class="row">
+                    <input type="hidden" name="hd_income_type" value="{{income_type}}" id="hd_income_type">
+                    <input type="hidden" name="hd_taxpayer_type" value="{{taxpayer_type}}" id="hd_taxpayer_type">
+
+
+                    <!-- Radio buttons to choose income type -->
+                    <div class="col-lg-2">
+                        <select class="js-example-basic-single form-control" name="income_type" id="income_type">
+                            <option value="" selected disabled> Select Income Type</option>
+                            <option value="Monthly"> Monthly Income</option>
+                            <option value="Yearly"> Yearly Income</option>
+
+                        </select>
+                    </div>
+
+                    <div class="col-lg-2">
+                        <select class="js-example-basic-single form-control" name="taxpayer_type"
+                                id="taxpayer_type">
+                            <option value="" selected disabled> Select TaxPayer Type</option>
+                            <option value="salaried"> Salaried Person</option>
+                            <option value="business"> Business</option>
+
+                        </select>
+                    </div>
+
+                    <!-- Input field for yearly or monthly income -->
+                    <div class="col-lg-2">
+                        <input type="number" name="income_amount" class="form-control" placeholder="Enter Income"
+                               required value="{{monthly_income}}"/>
+                    </div>
+
+
+                    <div class="col-lg-3">
+                        <input type="submit" name="submit" class="form-control btn btn-primary" value="Calculate"/>
+                    </div>
+                </div>
+            </form>
+
+            <div class="col-lg-12">
+                <br/>
+                <div class="card">
+
+                    <h5 class="text-center">Tax Calculation Comparison: {{tax_2023_year}} vs. {{tax_2024_year}}</h5>
+
+                    <div class="row">
+                        <!-- Tax calculation for 2023 -->
+                        <div class="col-md-6">
+                            <h5 class="text-center">Tax Calculation for {{tax_2023_year}}</h5>
+                            <table class="table table-bordered table-hover">
+                                <tr>
+                                    <th>Yearly Income</th>
+                                    <td>Rs. {{ tax_2023.income|intcomma }}</td>
+                                </tr>
+                                <tr>
+                                    <th>Applicable Tax Bracket</th>
+                                    <td>Rs. {{ tax_2023.lower|intcomma }} to Rs. {{ tax_2023.upper|intcomma }}</td>
+                                </tr>
+                                <tr class="">
+                                    <th>Base Tax</th>
+                                    <td>Rs. {{ tax_2023.base_tax|intcomma }}</td>
+                                </tr>
+                                <tr>
+                                    <th>Amount Exceeding Bracket</th>
+                                    <td>Rs. {{ tax_2023.amount_exceeding|intcomma }}</td>
+                                </tr>
+                                <tr>
+                                    <th>Rate Applied</th>
+                                    <td class="{% if tax_2023.rate != 0 %}{% else %}{% endif %}">{{ tax_2023.rate }}%
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th>Tax on Amount Exceeding Bracket</th>
+                                    <td>Rs. {{ tax_2023.tax_on_exceeding|intcomma }}</td>
+                                </tr>
+                                {% if tax_2024.surcharge %}
+                                <tr>
+                                    <th>Surcharge</th>
+                                    <td>Rs. {{ tax_2023.surcharge|intcomma }}</td>
+                                </tr>
+                                <tr>
+                                    <th>Total Tax with Surcharge</th>
+                                    <td>Rs. {{ tax_2023.total_tax_with_surcharge|intcomma }}</td>
+                                </tr>
+                                {% endif %}
+                                <tr>
+                                    <th>Total Tax Chargeable During Year</th>
+                                    <td>Rs. {{ tax_2023.total_tax|intcomma }}</td>
+                                </tr>
+                                <tr>
+                                    <th>Monthly Tax</th>
+                                    <td>Rs. {{ tax_2023.per_month|intcomma }}</td>
+                                </tr>
+
+                            </table>
+                        </div>
+
+                        <!-- Tax calculation for 2024 -->
+                        <div class="col-md-6">
+                            <h5 class="text-center">Tax Calculation for {{tax_2024_year}}</h5>
+                            <table class="table table-bordered table-hover">
+                                <tr>
+                                    <th>Yearly Income</th>
+                                    <td>Rs. {{ tax_2024.income|intcomma }}</td>
+                                </tr>
+                                <tr>
+                                    <th>Applicable Tax Bracket</th>
+                                    <td>Rs. {{ tax_2024.lower|intcomma }} to Rs. {{ tax_2024.upper|intcomma }}</td>
+                                </tr>
+                                <tr class="">
+                                    <th>Base Tax</th>
+                                    <td>Rs. {{ tax_2024.base_tax|intcomma }}</td>
+                                </tr>
+                                <tr>
+                                    <th>Amount Exceeding Bracket</th>
+                                    <td>Rs. {{ tax_2024.amount_exceeding|intcomma }}</td>
+                                </tr>
+                                <tr>
+                                    <th>Rate Applied</th>
+                                    <td class="{% if tax_2024.rate != 0 %}{% else %}{% endif %}">{{ tax_2024.rate }}%
+                                    </td>
+                                </tr>
+                                <tr class="">
+                                    <th>Tax on Amount Exceeding Bracket</th>
+                                    <td class="">Rs. {{ tax_2024.tax_on_exceeding|intcomma }}</td>
+                                </tr>
+                                {% if tax_2024.surcharge %}
+                                <tr class="">
+                                    <th>Surcharge (Tax on Exceeding Bracket + Base Tax)</th>
+                                    <td>Rs. {{ tax_2024.surcharge|intcomma }}</td>
+                                </tr>
+                                <tr class="">
+                                    <th>Total Tax with Surcharge</th>
+                                    <td>Rs. {{ tax_2024.total_tax_with_surcharge|intcomma }}</td>
+                                </tr>
+                                {% endif %}
+                                <tr>
+                                    <th>Total Tax Chargeable During Year</th>
+                                    <td>Rs. {{ tax_2024.total_tax|intcomma }}</td>
+                                </tr>
+                                <tr>
+                                    <th>Monthly Tax</th>
+                                    <td>Rs. {{ tax_2024.per_month|intcomma }}</td>
+                                </tr>
+
+                            </table>
+                        </div>
+
+                        <!-- Growth percentage (if available) -->
+                        {% if growth_percentage %}
+                        <div class="col-md-12">
+                            <table class="table table-bordered table-hover">
+                                <tr>
+                                    <th class="col-md-6">Growth : (Current - Last Year) / Last Year * 100</th>
+                                    <td class="">
+                                        <div class="progress-bar" role="progressbar"
+                                             style="width:{{growth_percentage}}%" aria-valuenow="12"
+                                             aria-valuemin="0"
+                                             aria-valuemax="100"></div>
+                                        Growth Percentage {{ growth_percentage }} %
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                        {% endif %}
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <!--=====Tax Calculator Form End=======-->
+
+
+</div>
+
+{% include 'partials/end.html' %}
+{% include 'partials/up.html' %}
+{% include 'partials/footer-scripts.html' %}
+
+</body>
+
