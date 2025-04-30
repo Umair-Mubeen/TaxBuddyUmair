@@ -1,436 +1,963 @@
 {% load static %}
 <head>
     {% include 'partials/head-css.html' %}
+    <style>
+        p{
+          text-align: justify;
+}
+    </style>
 </head>
 
 <body>
-{% include 'partials/topbar.html' %}
+
+<!--=====Header start=======-->
+<header id="header" class="header header-6 header-absolute d-none d-lg-block">
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <div class="header-elements">
+                    <div class="header_menu_area">
+                        <div class="logo">
+                            <a href=""><img src="{% static 'assets/img/logo/home6-header-logo.svg' %}" alt=""></a>
+                        </div>
+                        <div class="main-menu main-menu6">
+                            <div class="menu-wrap">
+
+                                <ul class="menu_list" id="list-example" class="list-group">
+                                    <li><a class="list-group-item list-group-item-action" href="#about">About</a></li>
+                                    <li><a class="list-group-item list-group-item-action" href="#work">How It Work</a>
+                                    </li>
+                                    <li><a class="list-group-item list-group-item-action" href="#service">services</a>
+                                    </li>
+                                    <li><a class="list-group-item list-group-item-action" href="#customer">customers</a>
+                                    </li>
+                                    <li><a class="list-group-item list-group-item-action" href="#contact">Contact Us</a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="desktop-info">
+                        <div class="button6">
+                            <a href="#contact">Contact Us</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+<!--=====Header end=======-->
+
+<!--=====Mobile header start=======-->
+<div class="mobile-header mobile-header-4 d-lg-none">
+    <div class="container-fluid">
+        <div class="col-12">
+            <div class="mobile-header-elements">
+                <div class="mobile-logo">
+                    <a href=""><img src="{% static 'assets/img/logo/home4-header-logo.svg' %}" alt=""></a>
+                </div>
+                <div class="mobile-nav-icon">
+                    <i class="fa-solid fa-bars"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="mobile-sidebar">
+    <div class="menu-close">
+        <i class="fa-solid fa-xmark"></i>
+    </div>
+    <div class="mobile-nav">
+
+        <ul class="mobile-nav-list">
+            <li><a class="list-group-item list-group-item-action" href="#about">About</a></li>
+            <li><a class="list-group-item list-group-item-action" href="#work">How It Work</a></li>
+            <li><a class="list-group-item list-group-item-action" href="#service">services</a></li>
+            <li><a class="list-group-item list-group-item-action" href="#customer">customers</a></li>
+            <li><a class="list-group-item list-group-item-action" href="#contact">Contact Us</a></li>
+
+
+        </ul>
+
+        <div class="mobile-contact">
+            <div class="single-footer">
+                <h3>Get in touch</h3>
+
+                <div class="footer-contact">
+                    <div class="single-contact">
+                        <div class="contact-icon">
+                            <img src="{% static 'assets/img/icons/contact-phone4.svg' %} " alt="">
+                        </div>
+                        <a href="#">USA: +91 02 2585 0556</a>
+                        <a href="#">UK: +61 02 2585 0556</a>
+                    </div>
+                </div>
+                <div class="footer-contact">
+                    <div class="single-contact">
+                        <div class="contact-icon">
+                            <img src="assets/img/icons/contact-email4.svg" alt="">
+                        </div>
+                        <a href="#">Contacthelp@Demoui.co</a>
+                        <a href="#">Info@consultia.co</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!--=====Mobile header end=======-->
+
+<!-- <div id="list-example" class="list-group">
+  <a class="list-group-item list-group-item-action" href="#list-item-1">Item 1</a>
+  <a class="list-group-item list-group-item-action" href="#list-item-2">Item 2</a>
+  <a class="list-group-item list-group-item-action" href="#list-item-3">Item 3</a>
+  <a class="list-group-item list-group-item-action" href="#list-item-4">Item 4</a>
+</div> -->
+<!-- <div data-bs-spy="scroll" data-bs-target="#list-example" data-bs-offset="0" class="scrollspy-example" tabindex="0">
+  <h4 style="height: 100vh;" id="list-item-1">Item 1</h4>
+  <p>...</p>
+  <h4 style="height: 100vh;" id="list-item-2">Item 2</h4>
+  <p>...</p>
+  <h4 style="height: 100vh;" id="list-item-3">Item 3</h4>
+  <p>...</p>
+  <h4 style="height: 100vh;" id="list-item-4">Item 4</h4>
+  <p>...</p>
+</div> -->
 
 <!--=====Welcome start=======-->
-
-<div class="welcome-area welcome-2 bg5 position-relative" id="home">
-    <div class="container">
-        <div class="row align-items-center">
-            <div class="col-lg-6">
-                <div class="title title2">
-                    <small class="heading-top2" data-aos="fade-right" data-aos-duration="600">
-                        <img alt="" src="{% static 'assets/img/icons/money.png' %}">Simplifying Tax Laws for Every Pakistani
-
-                    </small>
-                    <h1 data-aos="fade-right" data-aos-duration="800">TaxBuddy Umair.</h1>
-                    <p data-aos="fade-right" data-aos-duration="1000">
-                        a platform that simplifies tax-related queries and provides information on tax laws.
-                    </p>
-                    <div class="space30"></div>
-                    <div class="btn-group" data-aos="fade-right" data-aos-duration="1200">
-                        <a class="theme-btn-2" href="">Get An Estimated Quote
-                            <span><i class="fa-solid fa-arrow-right"></i></span>
-                        </a>
-                        <a class="theme-btn-3" href="">Schedule A Call
-                            <span><i class="fa-solid fa-arrow-right"></i></span>
-                        </a>
-                    </div>
-                    <div class="space80"></div>
-                    <div class="logo-area2" data-aos="fade-right" data-aos-duration="1400">
-                        <p>Trusted by more than 200+ Clients</p>
-                        <div class="logos logos2 owl-carousel">
-                            <div class="single-logo">
-                                <img alt="" src="{% static 'assets/img/testimonial/author1.jpg' %}">
+<div class="home6-full-header bg-cover" style="background-image: url({%static 'assets/img/bg/hero6-bg.png' %} );">
+    <div class="welcome-4 home4-bg position-relative" id="home">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-6">
+                    <div class="titel6-main">
+                        <h1 class="font-f-3" data-aos="fade-right" data-aos-duration="800">Tax preparation to business
+                            services & <span class="after6">legal documents.</span></h1>
+                        <div class="space10"></div>
+                        <p class="font-f-7" data-aos="fade-right" data-aos-duration="1100">Servicios Arellano works with
+                            businesses of all sizes to get the most deduction possible on their tax returns.
+                        </p>
+                        <div class="space30"></div>
+                        <div class="home6-header-buttons" data-aos="fade-right" data-aos-duration="1500">
+                            <div class="button6">
+                                <a href="">Schedule your appointment <span><i
+                                        class="fa-solid fa-arrow-right"></i></span> </a>
                             </div>
-                            <div class="single-logo">
-                                <img alt="" src="{% static 'assets/img/testimonial/author2.jpg' %}">
-                            </div>
-                            <div class="single-logo">
-                                <img alt="" src="{% static 'assets/img/testimonial/author3.jpg' %}">
-                            </div>
-                            <div class="single-logo">
-                                <img alt="" src="{% static 'assets/img/testimonial/author4.jpg' %}">
-                            </div>
-                            <div class="single-logo">
-                                <img alt="" src="{% static 'assets/img/testimonial/author5.jpg' %}">
+                            <div class="header6-button">
+                                <a href="">Schdule A Call <span><i class="fa-solid fa-arrow-right"></i></span></a>
                             </div>
                         </div>
+
                     </div>
                 </div>
-            </div>
-
-            <div class="col-lg-6 d-none d-lg-block">
-                <div class="hero-img-elements" data-aos="zoom-out" data-aos-duration="800">
-                    <div class="hero-main-img position-relative top-right-polygon-1">
-                        <img alt="" class="border-radius" src="{% static 'assets/img/bg/main2.jpg' %}">
-                        <div class="corner-shape2 position-absolute">
-                            <img alt="" src="{% static 'assets/img/shapes/tax-shape1.png' %}">
+                <div class="col-lg-6">
+                    <div class="home6-header-images">
+                        <div class="home6-header-img1 aniamtion-key-5">
+                            <img src="{% static 'assets/img/shapes/header6-main-shpe.svg' %}" alt="">
                         </div>
-                        <div class="corner-right-bottom-shape2 position-absolute">
-                            <img alt="" src="{% static 'assets/img/shapes/shape-right-bottom2.png' %}">
+                        <div class="home6-header-img2" data-aos="zoom-out" data-aos-duration="800">
+                            <img src="{% static 'assets/img/image/home6-main-header.png' %}" alt="">
+                        </div>
+                        <div class="home6-header-img3 aniamtion-key-1" data-aos="zoom-out" data-aos-duration="1200">
+                            <img src="{% static 'assets/img/shapes/header6-shape1.svg' %}" alt="">
+                        </div>
+                        <div class="home6-header-img4 aniamtion-key-1" data-aos="zoom-out" data-aos-duration="1200">
+                            <img src="{% static 'assets/img/shapes/header6-shape2.svg' %}" alt="">
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
 
-    <div class="down-arrow2" data-aos="fade-down" data-aos-duration="400">
-        <a href="#about">
-            <img alt="" src="{% static 'assets/img/icons/down-arrow-black.svg' %}">
-        </a>
     </div>
 </div>
-
 <!--=====Welcome end=======-->
 
-<!--=====Tax business start=======-->
-<div class="tax-business section-padding2 bg6" id="about">
+<!--=====brand start=======-->
+<div class="brand-area6">
     <div class="container">
         <div class="row">
-            <div class="col-md-4 m-auto">
-                <div class="heading2 white-heading text-center">
-                    <small class="heading-top" data-aos="fade-up" data-aos-duration="600">
-                        <img alt="" src="{% static 'assets/img/icons/hands.svg' %}">TaxBuddy Umair Here For Your Tax Relief.
-                    </small>
-                    <h2 data-aos="fade-up" data-aos-duration="800">
-                        <span class="heilight-left">TaxBuddy</span> Umair is built for small business.
-                    </h2>
-                </div>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-md-6" data-aos="fade-up" data-aos-duration="600">
-                <div class="single-business trans-1">
-                    <div class="business-icon">
-                        <img alt="" src="{% static 'assets/img/icons/tax-business1.png' %}">
-                    </div>
-                    <h3>IRS Tax Problems</h3>
-                    <p>Making a mistake on your return can be costly. From missed deductions, or worse, the dreaded IRS
-                        audit.</p>
-                    <a class="theme-btn-7" href="">Learn More <span><i
-                            class="fa-solid fa-arrow-right"></i></span></a>
-                </div>
-            </div>
-
-            <div class="col-md-6" data-aos="fade-up" data-aos-duration="800">
-                <div class="single-business trans-1">
-                    <div class="business-icon">
-                        <img alt="" src="{% static 'assets/img/icons/tax-business2.png' %}"/>
-                    </div>
-                    <h3>Tax Preparation and Planning</h3>
-                    <p>Getting the most out of your income and finances is what sets us apart. Whether you need tax
-                        preparation services.</p>
-                    <a class="theme-btn-7" href="">Learn More <span><i
-                            class="fa-solid fa-arrow-right"></i></span></a>
-                </div>
-            </div>
-
-            <div class="col-md-6" data-aos="fade-up" data-aos-duration="1000">
-                <div class="single-business trans-1">
-                    <div class="business-icon">
-                        <img alt="" src="{% static 'assets/img/icons/tax-business3.png' %}"/>
-                    </div>
-                    <h3>Payroll Services</h3>
-                    <p>Managing payroll may not seem like a critical task until something goes wrong. We have experts
-                        and technology to help you.</p>
-                    <a class="theme-btn-7" href="">Learn More <span><i
-                            class="fa-solid fa-arrow-right"></i></span></a>
-                </div>
-            </div>
-
-            <div class="col-md-6" data-aos="fade-up" data-aos-duration="1200">
-                <div class="single-business trans-1">
-                    <div class="business-icon">
-                        <img alt="" src="{% static 'assets/img/icons/tax-business4.png' %}"/>
-                    </div>
-                    <h3>Income Tax Filing and Refunds</h3>
-                    <p>We know that competent, consistent bookkeeping is the key to a business's success. Success starts
-                        when you take charge of books.</p>
-                    <a class="theme-btn-7" href="">Learn More <span><i
-                            class="fa-solid fa-arrow-right"></i></span></a>
-                </div>
-            </div>
-
-            <div class="space20"></div>
-
-            <div class="col-12 text-center" data-aos="fade-up" data-aos-duration="1400">
-                <a class="theme-btn-3" href="">Explore More Services <span><i
-                        class="fa-solid fa-arrow-right"></i></span></a>
-            </div>
-        </div>
-    </div>
-</div>
-<!--=====Tax business end=======-->
-
-<!--=====About start=======-->
-<div class="about-area section-padding bg5-left">
-    <div class="container">
-        <div class="row align-items-center">
-            <div class="col-lg-6">
-                <div class="about-bg-21 mr50" data-aos="zoom-out" data-aos-duration="800">
-                    <div class="about-bg-main-img position-relative top-left-polygon-1">
-                        <img alt="About Us" src="{% static 'assets/img/team/team8.jpg' %}"/>
-                        <div class="corner-right-bottom-shape2 position-absolute">
-                            <img alt="Shape" src="{% static 'assets/img/shapes/shape-right-bottom2.png' %}"/>
+            <div class="col-lg-3">
+                <div class="brand6-box" data-aos="zoom-out" data-aos-duration="1600">
+                    <div class="">
+                        <div class="brand-img">
+                            <img src="{% static 'assets/img/icons/brand6-1.png' %}" alt="">
                         </div>
-                        <div class="corner-shape2-left position-absolute">
-                            <img alt="Tax Shape" src="{% static 'assets/img/shapes/tax-shape2.png' %}"/>
+                    </div>
+                    <div class="">
+                        <div class="brand-hadding">
+                            <h4 class="font-f-7">The maximum possible deduction.</h4>
                         </div>
                     </div>
                 </div>
             </div>
-            <div class="col-lg-6">
-                <div class="heading2 no-margin-heading ml50">
-                    <small class="heading-top" data-aos="fade-left" data-aos-duration="600">
-                        <img alt="Hands Icon" src="{% static 'assets/img/icons/hands.svg' %}"> We Are Here For Your Tax
-                        Relief.
-                    </small>
-                    <h2 data-aos="fade-left" data-aos-duration="800">We Handle The Most Tedious Bookkeeping Tasks of
-                        Your Business Operations.</h2>
-                    <p data-aos="fade-left" data-aos-duration="1000" style="text-align:justify">Experienced, knowledgeable professionals in Property Tax Consulting. Our team is committed to saving you money by securing the lowest possible assessed tax value in accordance with <strong> Federal Board of Revenue </strong> rates for your commercial or residential properties..</p>
-                    <p data-aos="fade-left" data-aos-duration="1000">Let <strong>TaxBuddy Umair </strong>  be your trusted partner in navigating Pakistan’s complex tax system with confidence and ease.</p>
-                    <div class="space50"></div>
-                    <div class="button-group" data-aos="fade-left" data-aos-duration="1200">
-                        <a class="theme-btn-2" href="about-1.php">More About Us <span><i
-                                class="fa-solid fa-arrow-right"></i></span></a>
+
+            <div class="col-lg-3">
+                <div class="brand6-box" data-aos="zoom-out" data-aos-duration="900">
+                    <div class="">
+                        <div class="brand-img">
+                            <img src="{% static 'assets/img/icons/brand6-2.png' %}" alt="">
+                        </div>
+                    </div>
+                    <div class="">
+                        <div class="brand-hadding">
+                            <h4 class="font-f-7">The maximum possible deduction.</h4>
+                        </div>
                     </div>
                 </div>
             </div>
+
+            <div class="col-lg-3">
+                <div class="brand6-box" data-aos="zoom-out" data-aos-duration="1100">
+                    <div class="">
+                        <div class="brand-img">
+                            <img src="{% static 'assets/img/icons/brand6-3.png' %} " alt="">
+                        </div>
+                    </div>
+                    <div class="">
+                        <div class="brand-hadding">
+                            <h4 class="font-f-7">The maximum possible deduction.</h4>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-3">
+                <div class="brand6-box" data-aos="zoom-out" data-aos-duration="900">
+                    <div class="">
+                        <div class="brand-img">
+                            <img src="{% static 'assets/img/icons/brand6-4.png' %} " alt="">
+                        </div>
+                    </div>
+                    <div class="">
+                        <div class="brand-hadding">
+                            <h4 class="font-f-7">The maximum possible deduction.</h4>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
         </div>
     </div>
 </div>
-<!--=====About end=======-->
 
-<!--=====About start=======-->
-<div class="about-area section-padding bg5">
-    <div class="container">
-        <div class="row align-items-center">
-            <div class="col-lg-6 d-none d-lg-block">
-                <div class="mr50">
-                    <div class="heading2 no-margin-heading">
-                        <small class="heading-top" data-aos="fade-right" data-aos-duration="600">
-                            <img alt="Hands Icon" src="{% static 'assets/img/icons/hands.svg' %}"> TaxBuddy Umair Here For Your Tax Relief.
-                        </small>
-                        <h2 data-aos="fade-right" data-aos-duration="800">We Handle The Most Tedious Bookkeeping Tasks
-                            of Your Business Operations.</h2>
-                        <p data-aos="fade-right" data-aos-duration="1000">Experienced, knowledgeable professionals in
-                            Property Tax Consulting. Our team is committed to saving you money by obtaining the lowest
-                            possible assessed value for your commercial or residential properties.</p>
-                        <div class="space50"></div>
-                        <div class="button-group" data-aos="fade-right" data-aos-duration="1200">
-                            <a class="theme-btn-2" href="">More About Us <span><i
+<!--=====brand end=======-->
+
+<div data-bs-spy="scroll" data-bs-target="#list-example" data-bs-offset="0" class="scrollspy-example" tabindex="0">
+
+    <!--=====about start=======-->
+    <div class="about6 sp2" id="about">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-6">
+                    <div class="about6-images">
+                        <div class="about6-img1" data-aos="zoom-out" data-aos-duration="1100">
+                            <img src="{% static 'assets/img/image/about6-img.png' %}" alt="">
+                        </div>
+                        <div class="about6-img2" data-aos="flip-right" data-aos-duration="900">
+                            <img src="{% static 'assets/img/image/about6-img1.png' %}" alt="">
+                        </div>
+                    </div>
+                </div>
+                 <div class="col-lg-6">
+                    <div class=" experience-hadding">
+                        <div class="hadding6">
+                            <h1 class="font-f-7" data-aos="fade-left" data-aos-duration="900">Prepare your Taxes with Trust.</h1>
+                            <div class="space20"></div>
+                            <h4><a href="" class="font-f-7" data-aos="fade-left" data-aos-duration="1000">Years of
+                                experience</a></h4>
+                            <p class="font-f-7" data-aos="fade-left" data-aos-duration="800">With years of experience, TaxBuddy Umair helps individuals and businesses navigate tax complexities with confidence. We specialize in the Income Tax Ordinance, 2001 and Sales Tax Act, 1990, ensuring accurate and timely compliance.</p>
+
+
+                            <div class="space10"></div>
+                            <h4><a href="" class="font-f-7" data-aos="fade-left" data-aos-duration="1100">Taxes on Immovable Property</a></h4>
+                            <p class="font-f-7" data-aos="fade-left" data-aos-duration="900">In Pakistan, taxes on property include CGT, Stamp Duty, and Withholding Tax. Sales Tax and Withholding Tax apply to transactions. CGT rates depend on holding periods.</p>
+
+                            <div class="space10"></div>
+                            <h4><a href="" class="font-f-7" data-aos="fade-left" data-aos-duration="1100">Salaried Individuals and Business Individuals</a></h4>
+                            <p class="font-f-7" data-aos="fade-left" data-aos-duration="900">In Pakistan, salary income is taxed progressively, with deductions and credits available. Business income is taxed at a flat rate for companies, while sole proprietors and partnerships follow individual income tax slabs. Both are subject to Withholding Tax and Sales Tax on certain transactions. </p>
+                        </div>
+                        <div class="space40"></div>
+                        <div class="button6" data-aos="fade-left" data-aos-duration="1000">
+                            <a href="">Schedule your appointment <span><i class="fa-solid fa-arrow-right"></i></span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <!--=====about end=======-->
+
+    <!--=====how it work start=======-->
+    <div class="works-6 sp2" id="work">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-6 m-auto text-center">
+                    <div class="hadding6-w">
+                        <h1 class="font-f-7" data-aos="fade-up" data-aos-duration="900">TaxBuddy Umair services
+                            specializes <br>
+                            <span class="after6">
+                  in Tax Preparation.
+                </span></h1>
+                        <div class="space10"></div>
+                        <p class="font-f-7" data-aos="fade-up" data-aos-duration="1100">Prepare your taxes in 3 simple
+                            steps!</p>
+                    </div>
+                </div>
+            </div>
+            <div class="space30"></div>
+            <div class="row">
+                <div class="col-lg-4 text-center">
+                    <div class="work6-box" data-aos="fade-up" data-aos-duration="1200">
+                        <div class="work6-icon">
+                            <img src="{% static 'assets/img/icons/work6-icon1.png' %}" alt="">
+                        </div>
+                        <div class="work6-hadding">
+                            <h4 class="font-f-7"><a href="#">Schedule your Appointment</a></h4>
+                            <p class="font-f-7">Book a date with us, and we'll handle the rest—your taxes are in expert
+                                hands.</p>
+                        </div>
+
+                        <div class="work6-shape">
+                            <img src="{% static 'assets/img/shapes/work5-shape1.png' %}" alt="">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-4 text-center">
+                    <div class="work6-box" data-aos="fade-up" data-aos-duration="900">
+                        <div class="work6-icon">
+                            <img src="{% static 'assets/img/icons/work6-icon2.png' %}" alt="">
+                        </div>
+                        <div class="work6-hadding">
+                            <h4 class="font-f-7"><a href="#">File your return</a></h4>
+                            <p class="font-f-7">We prepare and review your tax return so you can file accurately and on
+                                time.</p>
+                        </div>
+
+                        <div class="work6-shape">
+                            <img src="{% static 'assets/img/shapes/work5-shape2.png' %}" alt="">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-4 text-center">
+                    <div class="work6-box" data-aos="fade-up" data-aos-duration="700">
+                        <div class="work6-icon">
+                            <img src="{% static 'assets/img/icons/work6-icon3.png' %}" alt="">
+                        </div>
+                        <div class="work6-hadding">
+                            <h4 class="font-f-7"><a href="">Enjoy your refund</a></h4>
+                            <p class="font-f-7">Sit back and relax while we ensure your refund is processed without
+                                delays.</p>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!--=====how it work end=======-->
+
+    <!--=====resive start=======-->
+    <div class="resive6 sp2">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-6">
+                    <div class="hadding6 tesive6-hadding">
+                        <h1 class="font-f-3" data-aos="fade-right" data-aos-duration="700">Receive all the <br>
+                            compensation your <br> <span class="after6">hard work deserves.</span></h1>
+                        <div class="space10"></div>
+                        <p class="font-f-7" data-aos="fade-right" data-aos-duration="900">Experienced, knowledgeable
+                            professionals in Property Tax Consulting. Our team of Property Tax Consultants is committed
+                            to saving you money by obtaining the lowest possible assessed value for your commercial or
+                            residential properties.</p>
+                        <div class="space30"></div>
+                        <div class="button6" data-aos="fade-right" data-aos-duration="700">
+                            <a href="">Schedule your appointment <span><i class="fa-solid fa-arrow-right"></i></span>
+                            </a>
+                        </div>
+                        <div class="resive-button" data-aos="fade-right" data-aos-duration="800">
+                            <a href="" class="font-f-7">More information about Tax Services <span><i
                                     class="fa-solid fa-arrow-right"></i></span></a>
                         </div>
                     </div>
                 </div>
+                <div class="col-lg-6">
+                    <div class="about6-images">
+                        <div class="about6-img1" data-aos="zoom-out" data-aos-duration="1100">
+                            <img src="{% static 'assets/img/image/resive-img.png' %}" alt="">
+                        </div>
+                        <div class="about6-img2" data-aos="flip-right" data-aos-duration="900">
+                            <img src="{% static 'assets/img/image/about6-img1.png' %}" alt="">
+                        </div>
+                    </div>
+                </div>
             </div>
-            <div class="col-lg-6">
-                <div class="counter2 ml50 position-relative">
+        </div>
+    </div>
+    <!--=====resive end=======-->
+
+    <!--=====service start=======-->
+    <div class="service6 sp2" id="service">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-7 m-auto text-center">
+                    <div class="hadding6" data-aos="fade-up" data-aos-duration="700">
+                        <h1 class="font-f-7">TaxBuddy Umair offers multiple services <br><span class="after6">throughout the year.</span>
+                        </h1>
+                    </div>
+                </div>
+            </div>
+            <div class="space30"></div>
+            <div class="row">
+                <div class="col-lg-6" data-aos="fade-up" data-aos-duration="700">
+                    <div class="service6-box">
+                        <div class="">
+                            <div class="service-box-icon">
+                                <img src="{% static 'assets/img/icons/service6-icon1.png' %}" alt="">
+                            </div>
+                        </div>
+                        <div class="hadding6">
+                            <h4><a href="single-service-" class="font-f-7">Federal Taxes</a></h4>
+                            <p class="font-f-7">We help you navigate federal income tax filing, deductions, and
+                                compliance. Stay stress-free during tax season with expert-backed support.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-6" data-aos="fade-up" data-aos-duration="800">
+                    <div class="service6-box">
+                        <div class="">
+                            <div class="service-box-icon">
+                                <img src="{% static 'assets/img/icons/service6-icon2.png' %}" alt="">
+                            </div>
+                        </div>
+                        <div class="hadding6">
+                            <h4><a href="single-service-" class="font-f-7">Business Procedures</a></h4>
+                            <p class="font-f-7">From registration to record-keeping, we streamline your business
+                                processes and ensure you're compliant with tax and legal obligations year-round.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-6" data-aos="fade-up" data-aos-duration="1200">
+                    <div class="service6-box">
+                        <div class="">
+                            <div class="service-box-icon">
+                                <img src="{% static 'assets/img/icons/service6-icon3.png' %}" alt="">
+                            </div>
+                        </div>
+                        <div class="hadding6">
+                            <h4><a href="single-service-" class="font-f-7">Income Tax Services</a></h4>
+                            <p class="font-f-7">Whether salaried or self-employed, we offer personalized tax filing,
+                                audit assistance, and ongoing tax planning strategies to minimize your liability.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="col-lg-6" data-aos="fade-up" data-aos-duration="700">
+                    <div class="service6-box">
+                        <div class="">
+                            <div class="service-box-icon">
+                                <img src="{% static 'assets/img/icons/service6-icon5.png' %}" alt="">
+                            </div>
+                        </div>
+                        <div class="hadding6">
+                            <h4><a href="single-service-" class="font-f-7">PayRoll Services</a></h4>
+                            <p class="font-f-7">Managing payroll may not seem like a critical task untill something goes
+                                wrong. We have experts and technology to help you.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-6" data-aos="fade-up" data-aos-duration="900">
+                    <div class="service6-box">
+                        <div class="">
+                            <div class="service-box-icon">
+                                <img src="{% static 'assets/img/icons/service6-icon4.png' %}" alt="">
+                            </div>
+                        </div>
+                        <div class="hadding6">
+                            <h4><a href="single-service-" class="font-f-7">Sales Tax Services</a></h4>
+                            <p class="font-f-7">Stay compliant with evolving sales tax regulations. We assist with
+                                registration, return filing, invoicing, and reconciliation—so you can focus on growing
+                                your business while we handle the tax complexities.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-6" data-aos="fade-up" data-aos-duration="1200">
+                    <div class="service6-box">
+                        <div class="">
+                            <div class="service-box-icon">
+                                <img src="{% static 'assets/img/icons/service6-icon6.png' %}" alt="">
+                            </div>
+                        </div>
+                        <div class="hadding6">
+                            <h4><a href="single-service-" class="font-f-7">Tax Calculator</a></h4>
+                            <p class="font-f-7">Quickly estimate your Income, Salary, Business, Property, Capital Gains,
+                                and CVT taxes using our all-in-one calculator—updated with the latest rules to help you
+                                plan and stay compliant.</p>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <!--=====service end=======-->
+
+    <!--=====experience satart=======-->
+    <div class="experience6 sp2">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-6">
+                    <div class="about6-images">
+                        <div class="about6-img1" data-aos="zoom-out" data-aos-duration="1100">
+                            <img src="{% static 'assets/img/image/experience-img.png' %}" alt="">
+                        </div>
+                        <div class="about6-img2" data-aos="flip-right" data-aos-duration="900">
+                            <img src="{% static 'assets/img/image/about6-img1.png' %}" alt="">
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class=" experience-hadding">
+                        <div class="hadding6">
+                            <h1 class="font-f-7" data-aos="fade-left" data-aos-duration="900">TaxBuddy Umair has a
+                                decade of experience helping the community.</h1>
+                            <div class="space20"></div>
+                            <h4><a href="" class="font-f-7" data-aos="fade-left" data-aos-duration="1000">Years of
+                                experience</a></h4>
+                            <p class="font-f-7" data-aos="fade-left" data-aos-duration="800">Community building is a
+                                field of practices directed toward the creation or enhancement of community among
+                                individuals.</p>
+
+                            <div class="space10"></div>
+                            <h4><a href="" class="font-f-7" data-aos="fade-left" data-aos-duration="900">Trusted by
+                                Business</a></h4>
+                            <p class="font-f-7" data-aos="fade-left" data-aos-duration="1100">Many of the entrepreneurs
+                                trust Servicios Arellano to help their businesses.</p>
+
+                            <div class="space10"></div>
+                            <h4><a href="" class="font-f-7" data-aos="fade-left" data-aos-duration="1100">Satisfied
+                                customers</a></h4>
+                            <p class="font-f-7" data-aos="fade-left" data-aos-duration="900">Our clients are highly
+                                satisfied with our services</p>
+                        </div>
+                        <div class="space40"></div>
+                        <div class="button6" data-aos="fade-left" data-aos-duration="1000">
+                            <a href="">Schedule your appointment <span><i class="fa-solid fa-arrow-right"></i></span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!--=====experience end=======-->
+
+    <!--=====customers start=======-->
+    <div class="customers sp2" id="customer">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-7 m-auto text-center">
+                    <div class="hadding6">
+                        <h1 class="font-f-7" data-aos="fade-up" data-aos-duration="700">TaxBuddy Umair is trusted by
+                            many <br> <span class="after6">satisfied customers.</span></h1>
+                    </div>
+                </div>
+            </div>
+            <div class="space30"></div>
+            <div class="row">
+                <div class="col-lg-4" data-aos="fade-up" data-aos-duration="700">
+                    <div class="customers6-box">
+                        <div class="customers6-img-box-all">
+                            <div class="customers-box-img">
+                                <img src="{%  static 'assets/img/image/customers-img1.png' %}" alt="">
+                            </div>
+                            <div class="customers6-hadding">
+                                <h4><a href="#" class="font-f-7">Michelle c.</a></h4>
+                                <ul>
+                                    <li><i class="fa-solid fa-star"></i></li>
+                                    <li><i class="fa-solid fa-star"></i></li>
+                                    <li><i class="fa-solid fa-star"></i></li>
+                                    <li><i class="fa-solid fa-star"></i></li>
+                                    <li><i class="fa-solid fa-star"></i></li>
+                                    <li class="font-f-3 star-review">(5)</li>
+                                </ul>
+                            </div>
+                        </div>
+                        <p class="font-f-7">“ I recommend them if they want honest treatment and high quality. All my
+                            questions were answered. ”</p>
+                    </div>
+                </div>
+
+                <div class="col-lg-4" data-aos="fade-up" data-aos-duration="900">
+                    <div class="customers6-box">
+                        <div class="customers6-img-box-all">
+                            <div class="customers-box-img">
+                                <img src="{%  static 'assets/img/image/customers-img2.png' %}" alt="">
+                            </div>
+                            <div class="customers6-hadding">
+                                <h4><a href="#" class="font-f-7">Michelle c.</a></h4>
+                                <ul>
+                                    <li><i class="fa-solid fa-star"></i></li>
+                                    <li><i class="fa-solid fa-star"></i></li>
+                                    <li><i class="fa-solid fa-star"></i></li>
+                                    <li><i class="fa-solid fa-star"></i></li>
+                                    <li><i class="fa-solid fa-star"></i></li>
+                                    <li class="font-f-3 star-review">(5)</li>
+                                </ul>
+                            </div>
+                        </div>
+                        <p class="font-f-7">“ I recommend them if they want honest treatment and high quality. All my
+                            questions were answered. ”</p>
+                    </div>
+                </div>
+
+                <div class="col-lg-4" data-aos="fade-up" data-aos-duration="1100">
+                    <div class="customers6-box">
+                        <div class="customers6-img-box-all">
+                            <div class="customers-box-img">
+                                <img src="{%  static 'assets/img/image/customers-img3.png' %}" alt="">
+                            </div>
+                            <div class="customers6-hadding">
+                                <h4><a href="#" class="font-f-7">Michelle c.</a></h4>
+                                <ul>
+                                    <li><i class="fa-solid fa-star"></i></li>
+                                    <li><i class="fa-solid fa-star"></i></li>
+                                    <li><i class="fa-solid fa-star"></i></li>
+                                    <li><i class="fa-solid fa-star"></i></li>
+                                    <li><i class="fa-solid fa-star"></i></li>
+                                    <li class="font-f-3 star-review">(5)</li>
+                                </ul>
+                            </div>
+                        </div>
+                        <p class="font-f-7">“ I recommend them if they want honest treatment and high quality. All my
+                            questions were answered. ”</p>
+                    </div>
+                </div>
+
+                <div class="col-lg-4" data-aos="fade-up" data-aos-duration="900">
+                    <div class="customers6-box">
+                        <div class="customers6-img-box-all">
+                            <div class="customers-box-img">
+                                <img src="{%  static 'assets/img/image/customers-img4.png' %}" alt="">
+                            </div>
+                            <div class="customers6-hadding">
+                                <h4><a href="#" class="font-f-7">Michelle c.</a></h4>
+                                <ul>
+                                    <li><i class="fa-solid fa-star"></i></li>
+                                    <li><i class="fa-solid fa-star"></i></li>
+                                    <li><i class="fa-solid fa-star"></i></li>
+                                    <li><i class="fa-solid fa-star"></i></li>
+                                    <li><i class="fa-solid fa-star"></i></li>
+                                    <li class="font-f-3 star-review">(5)</li>
+                                </ul>
+                            </div>
+                        </div>
+                        <p class="font-f-7">“ I recommend them if they want honest treatment and high quality. All my
+                            questions were answered. ”</p>
+                    </div>
+                </div>
+
+                <div class="col-lg-4" data-aos="fade-up" data-aos-duration="1000">
+                    <div class="customers6-box">
+                        <div class="customers6-img-box-all">
+                            <div class="customers-box-img">
+                                <img src="{%  static 'assets/img/image/customers-img5.png' %}" alt="">
+                            </div>
+                            <div class="customers6-hadding">
+                                <h4><a href="#" class="font-f-7">Michelle c.</a></h4>
+                                <ul>
+                                    <li><i class="fa-solid fa-star"></i></li>
+                                    <li><i class="fa-solid fa-star"></i></li>
+                                    <li><i class="fa-solid fa-star"></i></li>
+                                    <li><i class="fa-solid fa-star"></i></li>
+                                    <li><i class="fa-solid fa-star"></i></li>
+                                    <li class="font-f-3 star-review">(5)</li>
+                                </ul>
+                            </div>
+                        </div>
+                        <p class="font-f-7">“ I recommend them if they want honest treatment and high quality. All my
+                            questions were answered. ”</p>
+                    </div>
+                </div>
+
+                <div class="col-lg-4" data-aos="fade-up" data-aos-duration="700">
+                    <div class="customers6-box">
+                        <div class="customers6-img-box-all">
+                            <div class="customers-box-img">
+                                <img src="{% static 'assets/img/image/customers-img6.png' %}" alt="">
+                            </div>
+                            <div class="customers6-hadding">
+                                <h4><a href="#" class="font-f-7">Michelle c.</a></h4>
+                                <ul>
+                                    <li><i class="fa-solid fa-star"></i></li>
+                                    <li><i class="fa-solid fa-star"></i></li>
+                                    <li><i class="fa-solid fa-star"></i></li>
+                                    <li><i class="fa-solid fa-star"></i></li>
+                                    <li><i class="fa-solid fa-star"></i></li>
+                                    <li class="font-f-3 star-review">(5)</li>
+                                </ul>
+                            </div>
+                        </div>
+                        <p class="font-f-7">“ I recommend them if they want honest treatment and high quality. All my
+                            questions were answered. ”</p>
+                    </div>
+                </div>
+
+
+            </div>
+        </div>
+    </div>
+
+    <!--=====customers end=======-->
+
+    <!--=====contact start=======-->
+
+    <div class="contct6 sp2" id="contact">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-6">
+                    <div class="contact-all-hadding">
+                        <div class="hadding6">
+                            <h2 class="font-f-7" data-aos="fade-right" data-aos-duration="700"> Do you need help with
+                                your taxes?</h2>
+                        </div>
+                        <div class="space20"></div>
+                        <div class="contact6-list" data-aos="fade-right" data-aos-duration="900">
+                            <ul>
+                                <li class="font-f-7"><span><i class="fa-solid fa-check"></i></span>We offer a wide
+                                    variety of services throughout the year.
+                                </li>
+                                <li class="font-f-7"><span><i class="fa-solid fa-check"></i></span>All the services you
+                                    need in one place.
+                                </li>
+                                <li class="font-f-7"><span><i class="fa-solid fa-check"></i></span>We know how to
+                                    identify what is most important.
+                                </li>
+                                <li class="font-f-7"><span><i class="fa-solid fa-check"></i></span>The maximum possible
+                                    deduction.
+                                </li>
+                                <li class="font-f-7"><span><i class="fa-solid fa-check"></i></span>Accurately
+                                    calculated.
+                                </li>
+                                <li class="font-f-7"><span><i class="fa-solid fa-check"></i></span>Experience with tax
+                                    declaration.
+                                </li>
+
+                            </ul>
+                        </div>
+                        <div class="space30"></div>
+                        <div class="hadding6" data-aos="fade-right" data-aos-duration="1100">
+                            <h2 class="font-f-7">Contact us directly:</h2>
+                        </div>
+                    </div>
                     <div class="row">
-                        <div class="col-md-6">
-                            <div class="single-counter" data-aos="zoom-out" data-aos-duration="600">
-                                <div class="conter-icon">
-                                    <img alt="Counter Icon" src="{% static 'assets/img/icons/counter21.png' %}">
+                        <div class="col-lg-6" data-aos="fade-right" data-aos-duration="700">
+                            <div class="contact6-icon-box">
+                                <div class="contact6-icon">
+                                    <img src="{% static 'assets/img/icons/contact6-icon1.png' %}" alt="">
                                 </div>
-                                <h2><span class="up-counter">645</span>+</h2>
-                                <p>Successful Business Meetings</p>
-                            </div>
-                            <div class="single-counter" data-aos="zoom-out" data-aos-duration="800">
-                                <div class="conter-icon">
-                                    <img alt="Counter Icon" src="{% static 'assets/img/icons/counter22.png' %}">
+                                <div class="contact6-hadding hadding6">
+                                    <h4><a href="#" class="font-f-7">Visit us</a></h4>
+                                    <a href="#">Gulshan-e-Iqbal, Karachi</a>
                                 </div>
-                                <h2><span class="up-counter">34</span>+</h2>
-                                <p>Tax Relief Consultations</p>
                             </div>
                         </div>
-                        <div class="col-md-6">
-                            <div class="single-counter mt-5" data-aos="zoom-out" data-aos-duration="1000">
-                                <div class="conter-icon">
-                                    <img alt="Counter Icon" src="{% static 'assets/img/icons/counter23.png' %}">
+                        <div class="col-lg-6" data-aos="fade-right" data-aos-duration="1000">
+                            <div class="contact6-icon-box">
+                                <div class="contact6-icon">
+                                    <img src="{% static 'assets/img/icons/contact6-icon2.png' %}" alt="">
                                 </div>
-                                <h2><span class="up-counter">562</span>+</h2>
-                                <p>Successful Tax Filings</p>
-                            </div>
-                            <div class="single-counter" data-aos="zoom-out" data-aos-duration="1200">
-                                <div class="conter-icon">
-                                    <img alt="Counter Icon" src="{% static 'assets/img/icons/counter24.png' %}">
+                                <div class="contact6-hadding hadding6">
+                                    <h4><a href="#" class="font-f-7">Call Us</a></h4>
+                                    <a href="tel:333-2482742">+92333-2482742</a>
                                 </div>
-                                <h2><span class="up-counter">90</span>%</h2>
-                                <p>Client Satisfaction Rate</p>
                             </div>
                         </div>
-                    </div>
-                    <div class="corner-right-bottom-shape2 position-absolute">
-                        <img alt="Shape" src="{% static 'assets/img/shapes/shape-right-bottom2.png' %}">
-                    </div>
-                    <div class="corner-shape2-left position-absolute">
-                        <img alt="Tax Shape" src="{% static 'assets/img/shapes/tax-shape2.png' %}">
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-6 d-lg-none">
-                <div class="mr50">
-                    <div class="heading2 no-margin-heading">
-                        <small class="heading-top"><img alt="Hands Icon"
-                                                        src="{% static 'assets/img/icons/hands.svg' %}"> TaxBuddy Umair Here For Your Tax Relief.</small>
-                        <h2>We Handle The Most Tedious Bookkeeping Tasks of Your Business Operations.</h2>
-                        <p>Experienced, knowledgeable professionals in Property Tax Consulting. Our team is committed to
-                            saving you money by obtaining the lowest possible assessed value for your commercial or
-                            residential properties.</p>
-                        <div class="space50"></div>
-                        <a class="theme-btn-2" href="">More About Us <span><i
-                                class="fa-solid fa-arrow-right"></i></span></a>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-<!--=====About end=======-->
 
-<!--=====Case study start=======-->
-<!--<div class="case-study-1 section-padding bg6">-->
-<!--    <div class="container">-->
-<!--        <div class="row">-->
-<!--            <div class="col-md-4 m-auto">-->
-<!--                <div class="heading2 white-heading text-center">-->
-<!--                    <small class="heading-top" data-aos="fade-up" data-aos-duration="600">-->
-<!--                        <img alt="" src="{% static 'assets/img/icons/hands.svg' %}">We Are Here For Your Tax Relief.-->
-<!--                    </small>-->
-<!--                    <h2 data-aos="fade-up" data-aos-duration="800">-->
-<!--                        <span class="heilight-left">TaxBuddy Umair</span> is built for small business.-->
-<!--                    </h2>-->
-<!--                </div>-->
-<!--            </div>-->
-<!--        </div>-->
-<!--        <div class="row">-->
-<!--            <div class="col-12">-->
-<!--                <div class="case-studes owl-carousel" data-aos="fade-up" data-aos-duration="1200">-->
-<!--                    <div class="single-case-study">-->
-<!--                        <div class="case-study-img">-->
-<!--                            <img alt="" src="{% static 'assets/img/case-study/casestudy3.jpg' %}">-->
-<!--                        </div>-->
-<!--                        <div class="case-study-content">-->
-<!--                            <h4>Analytics Strategy</h4>-->
-<!--                            <p>Making a mistake on your return can be costly. From missed deductions.</p>-->
-<!--                            <a class="theme-btn-7" href="single-case-study-1.php">Check out Check Study <span><i-->
-<!--                                    class="fa-solid fa-arrow-right"></i></span></a>-->
-<!--                        </div>-->
-<!--                    </div>-->
-<!--                </div>-->
-<!--            </div>-->
-<!--        </div>-->
-<!--    </div>-->
-<!--</div>-->
-<!--=====Case study end=======-->
+                        <div class="col-lg-6" data-aos="fade-right" data-aos-duration="700">
+                            <div class="contact6-icon-box">
+                                <div class="contact6-icon">
+                                    <img src="{% static 'assets/img/icons/contact6-icon3.png' %}" alt="">
+                                </div>
+                                <div class="contact6-hadding hadding6">
+                                    <h4><a href="#" class="font-f-7">Email Us</a></h4>
+                                    <a href="malto:umair.mubeenir@gmail.com">umair.mubeenir@gmail.com</a>
+                                </div>
+                            </div>
+                        </div>
 
+                        <div class="col-lg-6" data-aos="fade-right" data-aos-duration="900">
+                            <div class="contact6-icon-box">
+                                <div class="contact6-icon">
+                                    <img src="{% static 'assets/img/icons/contact6-icon4.png' %}" alt="">
+                                </div>
+                                <div class="contact6-hadding hadding6">
+                                    <h4><a href="#" class="font-f-7">WhatsApp</a></h4>
+                                    <a href="tel:333-2482742">+92333-2482742</a>
+                                </div>
+                            </div>
+                        </div>
 
-<!--=====Blog start=======-->
-<div class="blog-area blog2 section-padding2">
-    <div class="container">
-        <div class="row">
-            <div class="col-md-5 m-auto">
-                <div class="heading2 text-center">
-                    <small class="heading-top" data-aos="fade-up" data-aos-duration="600">
-                        <img alt="" src="{% static 'assets/img/icons/hands.svg' %}">TaxBuddy Umair Here For Your Tax Relief.
-                    </small>
-                    <h2 data-aos="fade-up" data-aos-duration="800">
-                        <span class="heilight-left">Take</span> a look at the latest articles from TaxBuddy Umair.
-                    </h2>
-                </div>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-lg-4" data-aos="fade-up" data-aos-duration="600">
-                <div class="single-blog blog-md ">
-                    <div class="blog-img">
-                        <img alt="" src="{% static 'assets/img/blog/blog4.png' %}">
-                    </div>
-                    <div class="blog-contents">
-                        <ul class="blog-tags">
-                            <li><a href="blog-1.php"> <img alt="" src="{% static 'assets/img/icons/hands.svg' %}">Stories</a>
-                            </li>
-                        </ul>
-                        <h3><a href="single.php">How To Write Your Consulting Firm Mission Statement (& Why It’s
-                            Important).</a></h3>
-                        <a class="theme-btn-4" href="single-1.php">Read More <span><i
-                                class="fa-solid fa-arrow-right"></i></a>
                     </div>
                 </div>
-            </div>
-            <div class="col-lg-4" data-aos="fade-up" data-aos-duration="800">
-                <div class="single-blog blog-md">
-                    <div class="blog-img">
-                        <img alt="" src="{% static 'assets/img/blog/blog1.png' %}">
-                    </div>
-                    <div class="blog-contents">
-                        <ul class="blog-tags">
-                            <li><a href="blog-1.php"> <img alt="" src="{% static 'assets/img/icons/hands.svg' %}">Product</a>
-                            </li>
-                        </ul>
-                        <h3><a href="single.php">Personal Branding For Consultants: Be Authentic To Get More
-                            Clients.</a></h3>
-                        <a class="theme-btn-4" href="single-1.php">Read More <span><i
-                                class="fa-solid fa-arrow-right"></i></a>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-4" data-aos="fade-up" data-aos-duration="1000">
-                <div class="single-blog blog-md">
-                    <div class="blog-img">
-                        <img alt="" src="{% static 'assets/img/blog/blog2.png' %}">
-                    </div>
-                    <div class="blog-contents">
-                        <ul class="blog-tags">
-                            <li><a href="blog-2.php"> <img alt="" src="{% static 'assets/img/icons/hands.svg' %}">Business</a>
-                            </li>
-                        </ul>
-                        <h3><a href="single.php">What Is An Entrepreneurial Consultant? (Examples & Stories).</a></h3>
-                        <a class="theme-btn-4" href="single-1.php">Read More <span><i
-                                class="fa-solid fa-arrow-right"></i></a>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-<!--=====Blog end=======-->
 
-
-<!--=====Subscribe start=======-->
-<div class="subscribe2 bg7 section-padding">
-    <div class="container">
-        <div class="row align-items-center">
-            <div class="col-lg-6">
-                <div class="heading2 white-heading no-margin-heading">
-                    <small class="heading-top">
-                        <img alt="" src="{% static 'assets/img/icons/hands.svg' %}">TaxBuddy Umair Here For Your Tax Relief.
-                    </small>
-                    <h2>Join Us today and let us help <span class="heilight-right">you</span> <br> to grow your
-                        business.</h2>
-                </div>
-            </div>
-            <div class="col-lg-5 col-md-6 offset-lg-1">
-                <div class="sunscribe-form">
-                    <div class="subscribe-from-wrap">
+                <div class="col-lg-6">
+                    <div class="contact3-form-all" data-aos="zoom-out" data-aos-duration="900">
+                        <div class="hadding6 text-center">
+                            <h1 class="font-30 font-f-7 font-lg-40 weight-500  line-height-lg-48 line-height-38">Contact
+                                Us</h1>
+                            <div class="space10"></div>
+                            <p>Schedule your appointment with us.</p>
+                        </div>
                         <form action="#">
-                            <input placeholder="Email Address" type="email">
-                            <button name="button" type="submit">
-                                Subscribe Now <img alt=""
-                                                   src="{% static 'assets/img/icons/arrow-up-right-black.svg' %}">
-                            </button>
+
+                            <div class="form-input-all">
+                                <div class="form-input-box">
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="input-single6">
+                                                <div class="">
+                                                    <label for="">First Name</label>
+                                                    <input type="text" placeholder="First Name">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="input-single6">
+                                                <div class="">
+                                                    <label for="">Last Name</label>
+                                                    <input type="text" placeholder="Last Name">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+
+                                <div class="form-input-box">
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="input-single6">
+                                                <div class="">
+                                                    <label for="">Phone Number</label>
+                                                    <input type="number" placeholder="Phone">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="input-single6">
+                                                <div class="">
+                                                    <label for="">Email Address</label>
+                                                    <input type="email" placeholder="Email Address">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="form-input-box">
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <div class="input-single6">
+                                                <div class="">
+                                                    <label for="">Subject</label>
+                                                    <input type="text" placeholder="Subject">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="contact6-from-input">
+                                    <label for="">Massage</label>
+                                    <textarea cols="30" rows="3" placeholder="Additional Details"></textarea>
+                                </div>
+                                <div class="space20"></div>
+                                <div class="button6">
+                                    <button>Schedule your appointment <span><i
+                                            class="fa-solid fa-arrow-right"></i></span></button>
+                                </div>
+                            </div>
                         </form>
                     </div>
                 </div>
+
+            </div>
+        </div>
+    </div>
+    <!--=====contact end=======-->
+
+</div>
+
+<!--=====footer start=======-->
+<div class="footer6">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="footer6-bottom-menus">
+                    <div class="footer6-logo">
+                        <a href=""><img src="assets/img/logo/home6-header-logo-w.svg" alt=""></a>
+                    </div>
+                    <div class="foooter6-menu">
+                        <ul>
+                            <li><a href="" class="font-f-7">Our Services</a></li>
+                            <li><a href="" class="font-f-7">Tax Preparation </a></li>
+                            <li><a href="" class="font-f-7"> Our History </a></li>
+                            <li><a href="" class="font-f-7">Contact Us</a></li>
+                        </ul>
+                    </div>
+                    <div class="footer6-icons">
+                        <ul>
+                            <li><a href="#"><i class="fa-brands fa-twitter"></i></a></li>
+                            <li><a href="#"><i class="fa-brands fa-facebook"></i></a></li>
+                            <li><a href="#"><i class="fa-brands fa-instagram"></i></a></li>
+                        </ul>
+                    </div>
+
+                </div>
+            </div>
+            <div class="foorer6-border">
+            </div>
+            <div class="col-lg-12">
+                <div class="footer6-copyright">
+                    <div class="copyright-p">
+                        <p>© Copyright 2023, All Rights Reserved</p>
+                    </div>
+                    <div class="copyright-p copyright-p2">
+                        <div class="">
+                            <p>Privacy Policy </p>
+                        </div>
+                        <div class="">
+                            <p>Terms & Conditions</p>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
 </div>
-<!--=====Subscribe end=======-->
 
-{% include 'partials/footer.html' %}
+<!--=====footer end=======-->
 
-{# {% include 'partials/right-sidebar.html' %} #}
 
 {% include 'partials/up.html' %}
 
 {% include 'partials/footer-scripts.html' %}
+
 
 </body>
 
