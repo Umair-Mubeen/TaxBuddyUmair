@@ -2,128 +2,15 @@
 <head>
     {% include 'partials/head-css.html' %}
     <style>
-        p{
-          text-align: justify;
-}
+        p{text-align: justify;}
     </style>
 </head>
 
 <body>
 
-<!--=====Header start=======-->
-<header id="header" class="header header-6 header-absolute d-none d-lg-block">
-    <div class="container">
-        <div class="row">
-            <div class="col-12">
-                <div class="header-elements">
-                    <div class="header_menu_area">
-                        <div class="logo">
-                            <a href=""><img src="{% static 'assets/img/logo/home6-header-logo.svg' %}" alt=""></a>
-                        </div>
-                        <div class="main-menu main-menu6">
-                            <div class="menu-wrap">
-
-                                <ul class="menu_list" id="list-example" class="list-group">
-                                    <li><a class="list-group-item list-group-item-action" href="#about">About</a></li>
-                                    <li><a class="list-group-item list-group-item-action" href="#work">How It Works</a>
-                                    </li>
-                                    <li><a class="list-group-item list-group-item-action" href="#service">services</a>
-                                    </li>
-                                    <li><a class="list-group-item list-group-item-action" href="#customer">customers</a>
-                                    </li>
-                                    <li><a class="list-group-item list-group-item-action" href="#contact">Contact Us</a>
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="desktop-info">
-                        <div class="button6">
-                            <a href="#contact">Contact Us</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</header>
-<!--=====Header end=======-->
-
-<!--=====Mobile header start=======-->
-<div class="mobile-header mobile-header-4 d-lg-none">
-    <div class="container-fluid">
-        <div class="col-12">
-            <div class="mobile-header-elements">
-                <div class="mobile-logo">
-                    <a href=""><img src="{% static 'assets/img/logo/home4-header-logo.svg' %}" alt=""></a>
-                </div>
-                <div class="mobile-nav-icon">
-                    <i class="fa-solid fa-bars"></i>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-<div class="mobile-sidebar">
-    <div class="menu-close">
-        <i class="fa-solid fa-xmark"></i>
-    </div>
-    <div class="mobile-nav">
-
-        <ul class="mobile-nav-list">
-            <li><a class="list-group-item list-group-item-action" href="#about">About</a></li>
-            <li><a class="list-group-item list-group-item-action" href="#work">How It Work</a></li>
-            <li><a class="list-group-item list-group-item-action" href="#service">services</a></li>
-            <li><a class="list-group-item list-group-item-action" href="#customer">customers</a></li>
-            <li><a class="list-group-item list-group-item-action" href="#contact">Contact Us</a></li>
-
-
-        </ul>
-
-        <div class="mobile-contact">
-            <div class="single-footer">
-                <h3>Get in touch</h3>
-
-                <div class="footer-contact">
-                    <div class="single-contact">
-                        <div class="contact-icon">
-                            <img src="{% static 'assets/img/icons/contact-phone4.svg' %} " alt="">
-                        </div>
-                        <a href="#">USA: +91 02 2585 0556</a>
-                        <a href="#">UK: +61 02 2585 0556</a>
-                    </div>
-                </div>
-                <div class="footer-contact">
-                    <div class="single-contact">
-                        <div class="contact-icon">
-                            <img src="assets/img/icons/contact-email4.svg" alt="">
-                        </div>
-                        <a href="#">Contacthelp@Demoui.co</a>
-                        <a href="#">Info@consultia.co</a>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-<!--=====Mobile header end=======-->
-
-<!-- <div id="list-example" class="list-group">
-  <a class="list-group-item list-group-item-action" href="#list-item-1">Item 1</a>
-  <a class="list-group-item list-group-item-action" href="#list-item-2">Item 2</a>
-  <a class="list-group-item list-group-item-action" href="#list-item-3">Item 3</a>
-  <a class="list-group-item list-group-item-action" href="#list-item-4">Item 4</a>
-</div> -->
-<!-- <div data-bs-spy="scroll" data-bs-target="#list-example" data-bs-offset="0" class="scrollspy-example" tabindex="0">
-  <h4 style="height: 100vh;" id="list-item-1">Item 1</h4>
-  <p>...</p>
-  <h4 style="height: 100vh;" id="list-item-2">Item 2</h4>
-  <p>...</p>
-  <h4 style="height: 100vh;" id="list-item-3">Item 3</h4>
-  <p>...</p>
-  <h4 style="height: 100vh;" id="list-item-4">Item 4</h4>
-  <p>...</p>
-</div> -->
+<!--=====Navigation Bar=======-->
+{% include 'partials/topbar.html' %}
+<!--=====Navigation Bar Ends Here=======-->
 
 <!--=====Welcome start=======-->
 <div class="home6-full-header bg-cover" style="background-image: url({%static 'assets/img/bg/hero6-bg.png' %} );">
@@ -135,7 +22,7 @@
                         <h1 class="font-f-3" data-aos="fade-right" data-aos-duration="800">Tax preparation to business
                             services & <span class="after6">legal documents.</span></h1>
                         <div class="space10"></div>
-                        <p class="font-f-7" data-aos="fade-right" data-aos-duration="1100">Servicios Arellano works with
+                        <p class="font-f-7" data-aos="fade-right" data-aos-duration="1100">TaxBuddy Umair works with
                             businesses of all sizes to get the most deduction possible on their tax returns.
                         </p>
                         <div class="space30"></div>
@@ -241,7 +128,6 @@
         </div>
     </div>
 </div>
-
 <!--=====brand end=======-->
 
 <div data-bs-spy="scroll" data-bs-target="#list-example" data-bs-offset="0" class="scrollspy-example" tabindex="0">
@@ -260,23 +146,35 @@
                         </div>
                     </div>
                 </div>
-                 <div class="col-lg-6">
+                <div class="col-lg-6">
                     <div class=" experience-hadding">
                         <div class="hadding6">
-                            <h1 class="font-f-7" data-aos="fade-left" data-aos-duration="900">Prepare your Taxes with Trust.</h1>
+                            <h1 class="font-f-7" data-aos="fade-left" data-aos-duration="900">Prepare your Taxes with
+                                Trust.</h1>
                             <div class="space20"></div>
                             <h4><a href="" class="font-f-7" data-aos="fade-left" data-aos-duration="1000">Years of
                                 experience</a></h4>
-                            <p class="font-f-7" data-aos="fade-left" data-aos-duration="800">With years of experience, TaxBuddy Umair helps individuals and businesses navigate tax complexities with confidence. We specialize in the Income Tax Ordinance, 2001 and Sales Tax Act, 1990, ensuring accurate and timely compliance.</p>
+                            <p class="font-f-7" data-aos="fade-left" data-aos-duration="800">With years of experience,
+                                TaxBuddy Umair helps individuals and businesses navigate tax complexities with
+                                confidence. We specialize in the Income Tax Ordinance, 2001 and Sales Tax Act, 1990,
+                                ensuring accurate and timely compliance.</p>
 
 
                             <div class="space10"></div>
-                            <h4><a href="" class="font-f-7" data-aos="fade-left" data-aos-duration="1100">Taxes on Immovable Property</a></h4>
-                            <p class="font-f-7" data-aos="fade-left" data-aos-duration="900">In Pakistan, taxes on property include CGT, Stamp Duty, and Withholding Tax. Sales Tax and Withholding Tax apply to transactions. CGT rates depend on holding periods.</p>
+                            <h4><a href="" class="font-f-7" data-aos="fade-left" data-aos-duration="1100">Taxes on
+                                Immovable Property</a></h4>
+                            <p class="font-f-7" data-aos="fade-left" data-aos-duration="900">In Pakistan, taxes on
+                                property include CGT, Stamp Duty, and Withholding Tax. Sales Tax and Withholding Tax
+                                apply to transactions. CGT rates depend on holding periods.</p>
 
                             <div class="space10"></div>
-                            <h4><a href="" class="font-f-7" data-aos="fade-left" data-aos-duration="1100">Salaried Individuals and Business Individuals</a></h4>
-                            <p class="font-f-7" data-aos="fade-left" data-aos-duration="900">In Pakistan, salary income is taxed progressively, with deductions and credits available. Business income is taxed at a flat rate for companies, while sole proprietors and partnerships follow individual income tax slabs. Both are subject to Withholding Tax and Sales Tax on certain transactions. </p>
+                            <h4><a href="" class="font-f-7" data-aos="fade-left" data-aos-duration="1100">Salaried
+                                Individuals and Business Individuals</a></h4>
+                            <p class="font-f-7" data-aos="fade-left" data-aos-duration="900">In Pakistan, salary income
+                                is taxed progressively, with deductions and credits available. Business income is taxed
+                                at a flat rate for companies, while sole proprietors and partnerships follow individual
+                                income tax slabs. Both are subject to Withholding Tax and Sales Tax on certain
+                                transactions. </p>
                         </div>
                         <div class="space40"></div>
                         <div class="button6" data-aos="fade-left" data-aos-duration="1000">
@@ -297,8 +195,9 @@
             <div class="row">
                 <div class="col-lg-6 m-auto text-center">
                     <div class="hadding6-w">
-                        <h1 class="font-f-7" data-aos="fade-up" data-aos-duration="900">TaxBuddy Umair services specializes
-                        <span class="after6">in Tax Preparation.</span></h1>
+                        <h1 class="font-f-7" data-aos="fade-up" data-aos-duration="900">TaxBuddy Umair services
+                            specializes
+                            <span class="after6">in Tax Preparation.</span></h1>
                         <div class="space10"></div>
                         <p class="font-f-7" data-aos="fade-up" data-aos-duration="1100">Prepare your taxes in 3 simple
                             steps!</p>
@@ -404,9 +303,9 @@
     <div class="service6 sp2" id="service">
         <div class="container">
             <div class="row">
-                <div class="col-lg-7 m-auto text-center">
+                <div class="col-lg-12 m-auto text-center">
                     <div class="hadding6" data-aos="fade-up" data-aos-duration="700">
-                        <h1 class="font-f-7">TaxBuddy Umair offers multiple services <br><span class="after6">throughout the year.</span>
+                        <h1 class="font-f-7">TaxBuddy Umair offers multiple services <span class="after6">throughout the year.</span>
                         </h1>
                     </div>
                 </div>
@@ -563,396 +462,286 @@
 
     <!--=====experience end=======-->
 
-    <!--=====customers start=======-->
-    <div class="customers sp2" id="customer">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-7 m-auto text-center">
-                    <div class="hadding6">
-                        <h1 class="font-f-7" data-aos="fade-up" data-aos-duration="700">TaxBuddy Umair is trusted by
-                            many <br> <span class="after6">satisfied customers.</span></h1>
-                    </div>
-                </div>
-            </div>
-            <div class="space30"></div>
-            <div class="row">
-                <div class="col-lg-4" data-aos="fade-up" data-aos-duration="700">
-                    <div class="customers6-box">
-                        <div class="customers6-img-box-all">
-                            <div class="customers-box-img">
-                                <img src="{%  static 'assets/img/image/customers-img1.png' %}" alt="">
-                            </div>
-                            <div class="customers6-hadding">
-                                <h4><a href="#" class="font-f-7">Michelle c.</a></h4>
-                                <ul>
-                                    <li><i class="fa-solid fa-star"></i></li>
-                                    <li><i class="fa-solid fa-star"></i></li>
-                                    <li><i class="fa-solid fa-star"></i></li>
-                                    <li><i class="fa-solid fa-star"></i></li>
-                                    <li><i class="fa-solid fa-star"></i></li>
-                                    <li class="font-f-3 star-review">(5)</li>
-                                </ul>
-                            </div>
-                        </div>
-                        <p class="font-f-7">“ I recommend them if they want honest treatment and high quality. All my
-                            questions were answered. ”</p>
-                    </div>
-                </div>
+    <!--=====Blogs Start Here=======-->
+    {% include 'partials/blog.html' %}
+    <!--=====Blogs Ends Here=======-->
 
-                <div class="col-lg-4" data-aos="fade-up" data-aos-duration="900">
-                    <div class="customers6-box">
-                        <div class="customers6-img-box-all">
-                            <div class="customers-box-img">
-                                <img src="{%  static 'assets/img/image/customers-img2.png' %}" alt="">
-                            </div>
-                            <div class="customers6-hadding">
-                                <h4><a href="#" class="font-f-7">Michelle c.</a></h4>
-                                <ul>
-                                    <li><i class="fa-solid fa-star"></i></li>
-                                    <li><i class="fa-solid fa-star"></i></li>
-                                    <li><i class="fa-solid fa-star"></i></li>
-                                    <li><i class="fa-solid fa-star"></i></li>
-                                    <li><i class="fa-solid fa-star"></i></li>
-                                    <li class="font-f-3 star-review">(5)</li>
-                                </ul>
-                            </div>
-                        </div>
-                        <p class="font-f-7">“ I recommend them if they want honest treatment and high quality. All my
-                            questions were answered. ”</p>
-                    </div>
-                </div>
-
-                <div class="col-lg-4" data-aos="fade-up" data-aos-duration="1100">
-                    <div class="customers6-box">
-                        <div class="customers6-img-box-all">
-                            <div class="customers-box-img">
-                                <img src="{%  static 'assets/img/image/customers-img3.png' %}" alt="">
-                            </div>
-                            <div class="customers6-hadding">
-                                <h4><a href="#" class="font-f-7">Michelle c.</a></h4>
-                                <ul>
-                                    <li><i class="fa-solid fa-star"></i></li>
-                                    <li><i class="fa-solid fa-star"></i></li>
-                                    <li><i class="fa-solid fa-star"></i></li>
-                                    <li><i class="fa-solid fa-star"></i></li>
-                                    <li><i class="fa-solid fa-star"></i></li>
-                                    <li class="font-f-3 star-review">(5)</li>
-                                </ul>
-                            </div>
-                        </div>
-                        <p class="font-f-7">“ I recommend them if they want honest treatment and high quality. All my
-                            questions were answered. ”</p>
-                    </div>
-                </div>
-
-                <div class="col-lg-4" data-aos="fade-up" data-aos-duration="900">
-                    <div class="customers6-box">
-                        <div class="customers6-img-box-all">
-                            <div class="customers-box-img">
-                                <img src="{%  static 'assets/img/image/customers-img4.png' %}" alt="">
-                            </div>
-                            <div class="customers6-hadding">
-                                <h4><a href="#" class="font-f-7">Michelle c.</a></h4>
-                                <ul>
-                                    <li><i class="fa-solid fa-star"></i></li>
-                                    <li><i class="fa-solid fa-star"></i></li>
-                                    <li><i class="fa-solid fa-star"></i></li>
-                                    <li><i class="fa-solid fa-star"></i></li>
-                                    <li><i class="fa-solid fa-star"></i></li>
-                                    <li class="font-f-3 star-review">(5)</li>
-                                </ul>
-                            </div>
-                        </div>
-                        <p class="font-f-7">“ I recommend them if they want honest treatment and high quality. All my
-                            questions were answered. ”</p>
-                    </div>
-                </div>
-
-                <div class="col-lg-4" data-aos="fade-up" data-aos-duration="1000">
-                    <div class="customers6-box">
-                        <div class="customers6-img-box-all">
-                            <div class="customers-box-img">
-                                <img src="{%  static 'assets/img/image/customers-img5.png' %}" alt="">
-                            </div>
-                            <div class="customers6-hadding">
-                                <h4><a href="#" class="font-f-7">Michelle c.</a></h4>
-                                <ul>
-                                    <li><i class="fa-solid fa-star"></i></li>
-                                    <li><i class="fa-solid fa-star"></i></li>
-                                    <li><i class="fa-solid fa-star"></i></li>
-                                    <li><i class="fa-solid fa-star"></i></li>
-                                    <li><i class="fa-solid fa-star"></i></li>
-                                    <li class="font-f-3 star-review">(5)</li>
-                                </ul>
-                            </div>
-                        </div>
-                        <p class="font-f-7">“ I recommend them if they want honest treatment and high quality. All my
-                            questions were answered. ”</p>
-                    </div>
-                </div>
-
-                <div class="col-lg-4" data-aos="fade-up" data-aos-duration="700">
-                    <div class="customers6-box">
-                        <div class="customers6-img-box-all">
-                            <div class="customers-box-img">
-                                <img src="{% static 'assets/img/image/customers-img6.png' %}" alt="">
-                            </div>
-                            <div class="customers6-hadding">
-                                <h4><a href="#" class="font-f-7">Michelle c.</a></h4>
-                                <ul>
-                                    <li><i class="fa-solid fa-star"></i></li>
-                                    <li><i class="fa-solid fa-star"></i></li>
-                                    <li><i class="fa-solid fa-star"></i></li>
-                                    <li><i class="fa-solid fa-star"></i></li>
-                                    <li><i class="fa-solid fa-star"></i></li>
-                                    <li class="font-f-3 star-review">(5)</li>
-                                </ul>
-                            </div>
-                        </div>
-                        <p class="font-f-7">“ I recommend them if they want honest treatment and high quality. All my
-                            questions were answered. ”</p>
-                    </div>
-                </div>
-
-
-            </div>
-        </div>
-    </div>
-
-    <!--=====customers end=======-->
-
-    <!--=====contact start=======-->
-
-    <div class="contct6 sp2" id="contact">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-6">
-                    <div class="contact-all-hadding">
-                        <div class="hadding6">
-                            <h2 class="font-f-7" data-aos="fade-right" data-aos-duration="700"> Do you need help with
-                                your taxes?</h2>
-                        </div>
-                        <div class="space20"></div>
-                        <div class="contact6-list" data-aos="fade-right" data-aos-duration="900">
-                            <ul>
-                                <li class="font-f-7"><span><i class="fa-solid fa-check"></i></span>We offer a wide
-                                    variety of services throughout the year.
-                                </li>
-                                <li class="font-f-7"><span><i class="fa-solid fa-check"></i></span>All the services you
-                                    need in one place.
-                                </li>
-                                <li class="font-f-7"><span><i class="fa-solid fa-check"></i></span>We know how to
-                                    identify what is most important.
-                                </li>
-                                <li class="font-f-7"><span><i class="fa-solid fa-check"></i></span>The maximum possible
-                                    deduction.
-                                </li>
-                                <li class="font-f-7"><span><i class="fa-solid fa-check"></i></span>Accurately
-                                    calculated.
-                                </li>
-                                <li class="font-f-7"><span><i class="fa-solid fa-check"></i></span>Experience with tax
-                                    declaration.
-                                </li>
-
-                            </ul>
-                        </div>
-                        <div class="space30"></div>
-                        <div class="hadding6" data-aos="fade-right" data-aos-duration="1100">
-                            <h2 class="font-f-7">Contact us directly:</h2>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-lg-6" data-aos="fade-right" data-aos-duration="700">
-                            <div class="contact6-icon-box">
-                                <div class="contact6-icon">
-                                    <img src="{% static 'assets/img/icons/contact6-icon1.png' %}" alt="">
-                                </div>
-                                <div class="contact6-hadding hadding6">
-                                    <h4><a href="#" class="font-f-7">Visit us</a></h4>
-                                    <a href="#">Gulshan-e-Iqbal, Karachi</a>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-lg-6" data-aos="fade-right" data-aos-duration="1000">
-                            <div class="contact6-icon-box">
-                                <div class="contact6-icon">
-                                    <img src="{% static 'assets/img/icons/contact6-icon2.png' %}" alt="">
-                                </div>
-                                <div class="contact6-hadding hadding6">
-                                    <h4><a href="#" class="font-f-7">Call Us</a></h4>
-                                    <a href="tel:333-2482742">+92333-2482742</a>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="col-lg-6" data-aos="fade-right" data-aos-duration="700">
-                            <div class="contact6-icon-box">
-                                <div class="contact6-icon">
-                                    <img src="{% static 'assets/img/icons/contact6-icon3.png' %}" alt="">
-                                </div>
-                                <div class="contact6-hadding hadding6">
-                                    <h4><a href="#" class="font-f-7">Email Us</a></h4>
-                                    <a href="malto:umair.mubeenir@gmail.com">umair.mubeenir@gmail.com</a>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="col-lg-6" data-aos="fade-right" data-aos-duration="900">
-                            <div class="contact6-icon-box">
-                                <div class="contact6-icon">
-                                    <img src="{% static 'assets/img/icons/contact6-icon4.png' %}" alt="">
-                                </div>
-                                <div class="contact6-hadding hadding6">
-                                    <h4><a href="#" class="font-f-7">WhatsApp</a></h4>
-                                    <a href="tel:333-2482742">+92333-2482742</a>
-                                </div>
-                            </div>
-                        </div>
-
-                    </div>
-                </div>
-
-                <div class="col-lg-6">
-                    <div class="contact3-form-all" data-aos="zoom-out" data-aos-duration="900">
-                        <div class="hadding6 text-center">
-                            <h1 class="font-30 font-f-7 font-lg-40 weight-500  line-height-lg-48 line-height-38">Contact
-                                Us</h1>
-                            <div class="space10"></div>
-                            <p>Schedule your appointment with us.</p>
-                        </div>
-                        <form action="#">
-
-                            <div class="form-input-all">
-                                <div class="form-input-box">
-                                    <div class="row">
-                                        <div class="col-md-6">
-                                            <div class="input-single6">
-                                                <div class="">
-                                                    <label for="">First Name</label>
-                                                    <input type="text" placeholder="First Name">
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <div class="input-single6">
-                                                <div class="">
-                                                    <label for="">Last Name</label>
-                                                    <input type="text" placeholder="Last Name">
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-
-
-                                <div class="form-input-box">
-                                    <div class="row">
-                                        <div class="col-md-6">
-                                            <div class="input-single6">
-                                                <div class="">
-                                                    <label for="">Phone Number</label>
-                                                    <input type="number" placeholder="Phone">
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <div class="input-single6">
-                                                <div class="">
-                                                    <label for="">Email Address</label>
-                                                    <input type="email" placeholder="Email Address">
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="form-input-box">
-                                    <div class="row">
-                                        <div class="col-md-12">
-                                            <div class="input-single6">
-                                                <div class="">
-                                                    <label for="">Subject</label>
-                                                    <input type="text" placeholder="Subject">
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="contact6-from-input">
-                                    <label for="">Massage</label>
-                                    <textarea cols="30" rows="3" placeholder="Additional Details"></textarea>
-                                </div>
-                                <div class="space20"></div>
-                                <div class="button6">
-                                    <button>Schedule your appointment <span><i
-                                            class="fa-solid fa-arrow-right"></i></span></button>
-                                </div>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-
-            </div>
-        </div>
-    </div>
-    <!--=====contact end=======-->
 
 </div>
 
-<!--=====footer start=======-->
-<div class="footer6">
+<!--=====customers start=======-->
+<div class="customers sp2" id="customer">
     <div class="container">
         <div class="row">
-            <div class="col-lg-12">
-                <div class="footer6-bottom-menus">
-                    <div class="footer6-logo">
-                        <a href=""><img src="assets/img/logo/home6-header-logo-w.svg" alt=""></a>
-                    </div>
-                    <div class="foooter6-menu">
-                        <ul>
-                            <li><a href="" class="font-f-7">Our Services</a></li>
-                            <li><a href="" class="font-f-7">Tax Preparation </a></li>
-                            <li><a href="" class="font-f-7"> Our History </a></li>
-                            <li><a href="" class="font-f-7">Contact Us</a></li>
-                        </ul>
-                    </div>
-                    <div class="footer6-icons">
-                        <ul>
-                            <li><a href="#"><i class="fa-brands fa-twitter"></i></a></li>
-                            <li><a href="#"><i class="fa-brands fa-facebook"></i></a></li>
-                            <li><a href="#"><i class="fa-brands fa-instagram"></i></a></li>
-                        </ul>
-                    </div>
+            <div class="col-lg-12 m-auto text-center">
+                <div class="hadding6">
+                    <h1 class="font-f-7" data-aos="fade-up" data-aos-duration="700">TaxBuddy Umair is trusted by
+                        many <span class="after6">satisfied customers.</span></h1>
+                </div>
+            </div>
+        </div>
+        <div class="space30"></div>
+        <div class="row">
 
+
+            <div class="col-lg-4" data-aos="fade-up" data-aos-duration="900">
+                <div class="customers6-box">
+                    <div class="customers6-img-box-all">
+                        <div class="customers-box-img">
+                            <img src="{%  static 'assets/img/image/customers-img4.png' %}" alt="">
+                        </div>
+                        <div class="customers6-hadding">
+                            <h4><a href="#" class="font-f-7">Michelle c.</a></h4>
+                            <ul>
+                                <li><i class="fa-solid fa-star"></i></li>
+                                <li><i class="fa-solid fa-star"></i></li>
+                                <li><i class="fa-solid fa-star"></i></li>
+                                <li><i class="fa-solid fa-star"></i></li>
+                                <li><i class="fa-solid fa-star"></i></li>
+                                <li class="font-f-3 star-review">(5)</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <p class="font-f-7">“ I recommend them if they want honest treatment and high quality. All my
+                        questions were answered. ”</p>
                 </div>
             </div>
-            <div class="foorer6-border">
-            </div>
-            <div class="col-lg-12">
-                <div class="footer6-copyright">
-                    <div class="copyright-p">
-                        <p>© Copyright 2023, All Rights Reserved</p>
-                    </div>
-                    <div class="copyright-p copyright-p2">
-                        <div class="">
-                            <p>Privacy Policy </p>
+
+            <div class="col-lg-4" data-aos="fade-up" data-aos-duration="1000">
+                <div class="customers6-box">
+                    <div class="customers6-img-box-all">
+                        <div class="customers-box-img">
+                            <img src="{%  static 'assets/img/image/customers-img5.png' %}" alt="">
                         </div>
-                        <div class="">
-                            <p>Terms & Conditions</p>
+                        <div class="customers6-hadding">
+                            <h4><a href="#" class="font-f-7">Michelle c.</a></h4>
+                            <ul>
+                                <li><i class="fa-solid fa-star"></i></li>
+                                <li><i class="fa-solid fa-star"></i></li>
+                                <li><i class="fa-solid fa-star"></i></li>
+                                <li><i class="fa-solid fa-star"></i></li>
+                                <li><i class="fa-solid fa-star"></i></li>
+                                <li class="font-f-3 star-review">(5)</li>
+                            </ul>
                         </div>
                     </div>
+                    <p class="font-f-7">“ I recommend them if they want honest treatment and high quality. All my
+                        questions were answered. ”</p>
                 </div>
             </div>
+
+            <div class="col-lg-4" data-aos="fade-up" data-aos-duration="700">
+                <div class="customers6-box">
+                    <div class="customers6-img-box-all">
+                        <div class="customers-box-img">
+                            <img src="{% static 'assets/img/image/customers-img6.png' %}" alt="">
+                        </div>
+                        <div class="customers6-hadding">
+                            <h4><a href="#" class="font-f-7">Michelle c.</a></h4>
+                            <ul>
+                                <li><i class="fa-solid fa-star"></i></li>
+                                <li><i class="fa-solid fa-star"></i></li>
+                                <li><i class="fa-solid fa-star"></i></li>
+                                <li><i class="fa-solid fa-star"></i></li>
+                                <li><i class="fa-solid fa-star"></i></li>
+                                <li class="font-f-3 star-review">(5)</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <p class="font-f-7">“ I recommend them if they want honest treatment and high quality. All my
+                        questions were answered. ”</p>
+                </div>
+            </div>
+
+
         </div>
     </div>
 </div>
 
-<!--=====footer end=======-->
+<!--=====customers end=======-->
 
 
+<!--=====contact start=======-->
+
+<div class="contct6 sp2" id="contact">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-6">
+                <div class="contact-all-hadding">
+                    <div class="hadding6">
+                        <h2 class="font-f-7" data-aos="fade-right" data-aos-duration="700"> Do you need help with
+                            your taxes?</h2>
+                    </div>
+                    <div class="space20"></div>
+                    <div class="contact6-list" data-aos="fade-right" data-aos-duration="900">
+                        <ul>
+                            <li class="font-f-7"><span><i class="fa-solid fa-check"></i></span>We offer a wide
+                                variety of services throughout the year.
+                            </li>
+                            <li class="font-f-7"><span><i class="fa-solid fa-check"></i></span>All the services you
+                                need in one place.
+                            </li>
+                            <li class="font-f-7"><span><i class="fa-solid fa-check"></i></span>We know how to
+                                identify what is most important.
+                            </li>
+                            <li class="font-f-7"><span><i class="fa-solid fa-check"></i></span>The maximum possible
+                                deduction.
+                            </li>
+                            <li class="font-f-7"><span><i class="fa-solid fa-check"></i></span>Accurately
+                                calculated.
+                            </li>
+                            <li class="font-f-7"><span><i class="fa-solid fa-check"></i></span>Experience with tax
+                                declaration.
+                            </li>
+
+                        </ul>
+                    </div>
+                    <div class="space30"></div>
+                    <div class="hadding6" data-aos="fade-right" data-aos-duration="1100">
+                        <h2 class="font-f-7">Contact us directly:</h2>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-6" data-aos="fade-right" data-aos-duration="700">
+                        <div class="contact6-icon-box">
+                            <div class="contact6-icon">
+                                <img src="{% static 'assets/img/icons/contact6-icon1.png' %}" alt="">
+                            </div>
+                            <div class="contact6-hadding hadding6">
+                                <h4><a href="#" class="font-f-7">Visit us</a></h4>
+                                <a href="#">Gulshan-e-Iqbal, Karachi</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-6" data-aos="fade-right" data-aos-duration="1000">
+                        <div class="contact6-icon-box">
+                            <div class="contact6-icon">
+                                <img src="{% static 'assets/img/icons/contact6-icon2.png' %}" alt="">
+                            </div>
+                            <div class="contact6-hadding hadding6">
+                                <h4><a href="#" class="font-f-7">Call Us</a></h4>
+                                <a href="tel:333-2482742">+92333-2482742</a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-6" data-aos="fade-right" data-aos-duration="700">
+                        <div class="contact6-icon-box">
+                            <div class="contact6-icon">
+                                <img src="{% static 'assets/img/icons/contact6-icon3.png' %}" alt="">
+                            </div>
+                            <div class="contact6-hadding hadding6">
+                                <h4><a href="#" class="font-f-7">Email Us</a></h4>
+                                <a href="malto:umair.mubeenir@gmail.com">umair.mubeenir@gmail.com</a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-6" data-aos="fade-right" data-aos-duration="900">
+                        <div class="contact6-icon-box">
+                            <div class="contact6-icon">
+                                <img src="{% static 'assets/img/icons/contact6-icon4.png' %}" alt="">
+                            </div>
+                            <div class="contact6-hadding hadding6">
+                                <h4><a href="#" class="font-f-7">WhatsApp</a></h4>
+                                <a href="tel:333-2482742">+92333-2482742</a>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="col-lg-6">
+                <div class="contact3-form-all" data-aos="zoom-out" data-aos-duration="900">
+                    <div class="hadding6 text-center">
+                        <h1 class="font-30 font-f-7 font-lg-40 weight-500  line-height-lg-48 line-height-38">Contact
+                            Us</h1>
+                        <div class="space10"></div>
+                        <p>Schedule your appointment with us.</p>
+                    </div>
+                    <form action="#">
+
+                        <div class="form-input-all">
+                            <div class="form-input-box">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="input-single6">
+                                            <div class="">
+                                                <label for="">First Name</label>
+                                                <input type="text" placeholder="First Name">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="input-single6">
+                                            <div class="">
+                                                <label for="">Last Name</label>
+                                                <input type="text" placeholder="Last Name">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+
+                            <div class="form-input-box">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="input-single6">
+                                            <div class="">
+                                                <label for="">Phone Number</label>
+                                                <input type="number" placeholder="Phone">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="input-single6">
+                                            <div class="">
+                                                <label for="">Email Address</label>
+                                                <input type="email" placeholder="Email Address">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-input-box">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="input-single6">
+                                            <div class="">
+                                                <label for="">Subject</label>
+                                                <input type="text" placeholder="Subject">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="contact6-from-input">
+                                <label for="">Massage</label>
+                                <textarea cols="30" rows="3" placeholder="Additional Details"></textarea>
+                            </div>
+                            <div class="space20"></div>
+                            <div class="button6">
+                                <button>Schedule your appointment <span><i
+                                        class="fa-solid fa-arrow-right"></i></span></button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+<!--=====contact end=======-->
+
+</div>
+
+{% include 'partials/footer.html' %}
 {% include 'partials/up.html' %}
-
 {% include 'partials/footer-scripts.html' %}
 
 
