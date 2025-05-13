@@ -1,0 +1,68 @@
+
+{% load static %}
+
+<head>
+      {% include 'partials/head-css.html' %}
+
+</head>
+<!--=====Form Start=======-->
+<div class="sign-form-area bg-13">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-6 col-md-8 m-auto">
+                <div class="sign-form-wrap">
+                    <div class="sign-logo text-center">
+                        <a href=""><img src="{% static 'assets/img/logo/site-logo-6.svg' %}" alt=""/></a>
+                    </div>
+                    <div class="sign-form">
+                        <div class="form-heading">
+                            <h3>Sign In</h3>
+                            <p>
+                                Welcome back! Enter your email and password below to sign in
+                            </p>
+                        </div>
+
+                        <form action="Login" method="post">
+                             {% csrf_token %}
+
+                            <div class="form-group">
+                                <label for="username">Namee </label>
+                                <input type="text" name="username" value="" id="username"
+                                       placeholder="Enter Your username" />
+                                <span class="text-danger m-15"></span>
+                            </div>
+                            <div class="form-group">
+                                <label for="password">Password</label>
+                                <input type="password" name="password" value="" id="password"
+                                       placeholder="Enter Your Password" />
+                                <span class="text-danger m-15"></span>
+                            </div>
+
+                            <div class="theme-input-group">
+                                <div class="check-box-wrap">
+                                    <input type="checkbox" name="check-box" id="check-box" class="check-box"/>
+                                    <label for="check-box">Keep me logged in</label>
+                                </div>
+                                <a href="forgot.php">Forgot Password?</a>
+                            </div>
+                            <div class="space40"></div>
+
+                            <button type="submit" class="theme-btn-11 full-btn">
+                                Sign In
+                            </button>
+                        </form>
+                        <div class="space20"></div>
+                        <h4>Already have an account?<a href=""> Create for free</a>
+                        </h4>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!--=====Form End=======-->
+
+
+{% include 'partials/up.html' %}
+
+{% include 'partials/footer-scripts.html' %}
