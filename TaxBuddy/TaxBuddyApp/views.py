@@ -1,18 +1,49 @@
+from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse
-from django.shortcuts import render
+from django.shortcuts import render, redirect
+from django.contrib.auth import authenticate, login, logout
 
 
 def index(request):
     try:
+        if request.user.is_authenticated:
+            return redirect('Dashboard')
+
         print('TaxBuddy Umair')
-        return render(request,'index.html')
+        return render(request, 'index.html')
     except Exception as e:
+        return HttpResponse(str(e))
+
+
+def Login(request):
+    try:
+        if request.method == 'POST':
+            username = request.POST['username']
+            pwd = request.POST['password']
+            user = authenticate(request, username=username, password=pwd)
+            if user:
+                print(user)
+                login(request, user)
+                request.session['username'] = username
+                return redirect('Dashboard')
+
+        return render(request, 'Login.html')
+    except Exception as e:
+        return HttpResponse(str(e))
+
+
+@login_required(login_url='Login')  # redirect when user is not logged in
+def Dashboard(request):
+    try:
+        return render(request, 'Cpanel/Dashboard.html')
+    except Exception as e:
+        print('Exception Dashboard:', str(e))
         return HttpResponse(str(e))
 
 
 def Contact(request):
     try:
-        return render(request,'contact.html')
+        return render(request, 'contact.html')
     except Exception as e:
         return HttpResponse(str(e))
 
@@ -126,11 +157,9 @@ def TaxCalculator(request):
 
         }
 
-        return render(request,'TaxCalculator.html',context)
+        return render(request, 'TaxCalculator.html', context)
     except Exception as e:
         return HttpResponse(str(e))
-
-
 
 
 def TaxSlab(request):
@@ -248,7 +277,6 @@ def TaxSlab(request):
         return HttpResponse(str(e))
 
 
-
 def calculate_tax(income, tax_brackets, apply_surcharge):
     try:
         surcharge_threshold = 10000000
@@ -296,3 +324,8 @@ def calculate_tax(income, tax_brackets, apply_surcharge):
         return None
     except Exception as e:
         print(str(e))
+
+
+def Logout(request):
+    logout(request)
+    return redirect('/')

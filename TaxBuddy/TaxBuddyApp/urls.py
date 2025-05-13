@@ -6,6 +6,13 @@ from . import views
 
 urlpatterns = [
     path('', views.index, name='index'),  # Home Page
+
+    path('Login', views.Login, name='Login'),  # Login Page
+    path('Logout', views.Logout, name='Logout'),  # Login Page
+
+    path('Dashboard', views.Dashboard, name='Dashboard'),  # Dashboard Page
+
+
     path('contact-us', views.Contact, name='contact-us'),  # Contact Page
     path('TaxCalculator', views.TaxCalculator, name='TaxCalculator'),  # Tax Calculator Page
 
