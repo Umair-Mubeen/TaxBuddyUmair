@@ -1,0 +1,111 @@
+{% load static %}
+
+{% include 'Cpanel/reusable.html' %}
+
+<title>Create Blog </title>
+<body class="sidebar-mini layout-fixed sidebar-collapse">
+
+<div class="wrapper">
+
+    {% include 'Cpanel/navbar.html' %}
+    {% include 'Cpanel/sidebar.html' %}
+    <!-- Content Wrapper. Contains page content -->
+    <div class="content-wrapper">
+        <!-- Content Header (Page header) -->
+        <div class="content-header">
+            <div class="container-fluid">
+                <div class="row mb-2">
+                    <div class="col-sm-6">
+                        <h1 class="m-0">TaxBuddy Umair</h1>
+                    </div><!-- /.col -->
+                    <div class="col-sm-6">
+                        <ol class="breadcrumb float-sm-right">
+                            <li class="breadcrumb-item"><a href="/Dashboard" style="color:black"><i
+                                    class="fa fa-home"></i></a>
+                            </li>
+                            <li class="breadcrumb-item active">
+                                <a href="" style="color:black">
+                                    Manage Blog </a>
+                            </li>
+                            <li class="breadcrumb-item">Create</li>
+
+                        </ol>
+                    </div><!-- /.col -->
+                </div><!-- /.row -->
+            </div><!-- /.container-fluid -->
+        </div>
+        <!-- /.content-header -->
+
+        <!-- Main content -->
+        <form method="POST" action="AddEditBlog" enctype="multipart/form-data">
+            {% csrf_token %}
+            <section class="content">
+                <div class="container-fluid">
+                    <div class="col-md-12">
+                        <div class="card card-primary card-outline">
+                            <div class="card-header">
+                                <h3 class="card-title">Create New Blog</h3>
+                            </div>
+                            <!-- /.card-header -->
+                            <div class="card-body">
+                                <div class="form-group">
+                                    <select class="form-control" name="type">
+                                        <option value="Income Tax"> Income Tax</option>
+                                        <option value="Sale Tax"> Sale Tax</option>
+
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <input class="form-control" placeholder="Blog Title:" name="title">
+                                </div>
+                                <div class="form-group">
+                    <textarea id="compose-textarea"
+                              class="form-control" rows="10" cols="3" name="description">
+                       </textarea>
+                                </div>
+                                <div class="form-group">
+                                    <div class="btn btn-default btn-file">
+                                        <i class="fas fa-paperclip"></i> Attachment
+                                        <input type="file" name="attachment" class="form-control">
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- /.card-body -->
+                            <div class="card-footer">
+                                <div class="float-right">
+                                    <button type="submit" class="btn btn-primary"><i class="far fa-envelope"></i> Submit
+                                    </button>
+                                </div>
+                                <button type="reset" class="btn btn-default"><i class="fas fa-times"></i> Discard
+                                </button>
+                            </div>
+                            <!-- /.card-footer -->
+                        </div>
+                        <!-- /.card -->
+                    </div>
+
+
+                    <form action="" id="" method="POST" enctype="multipart/form-data">
+                        {% csrf_token %}
+                    </form>
+
+                </div>
+
+
+            </section>
+        </form>
+
+
+    </div>
+    <!-- /.content-wrapper -->
+
+
+</div>
+<!-- /.content-wrapper -->
+
+
+{% include 'Cpanel/footer.html' %}
+
+</div>
+
+</body>

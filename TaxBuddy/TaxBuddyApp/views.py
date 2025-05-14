@@ -1,16 +1,18 @@
+import mimetypes
+from datetime import timezone
+
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
 
+from .models import Blogs
+
 
 def index(request):
     try:
-        if request.user.is_authenticated:
-            return redirect('Dashboard')
-
-        print('TaxBuddy Umair')
-        return render(request, 'index.html')
+        result = Blogs.objects.filter(status=1)
+        return render(request, 'index.html', {'result': result})
     except Exception as e:
         return HttpResponse(str(e))
 
@@ -22,7 +24,6 @@ def Login(request):
             pwd = request.POST['password']
             user = authenticate(request, username=username, password=pwd)
             if user:
-                print(user)
                 login(request, user)
                 request.session['username'] = username
                 return redirect('Dashboard')
@@ -44,6 +45,36 @@ def Dashboard(request):
 def Contact(request):
     try:
         return render(request, 'contact.html')
+    except Exception as e:
+        return HttpResponse(str(e))
+
+
+def AddEditBlog(request):
+    try:
+        if request.method == 'POST':
+            type = request.POST['type']
+            title = request.POST['title']
+            description = request.POST['description']
+            image = request.FILES.get('attachment')
+            # Validate uploaded file
+            if not image:
+                return HttpResponse("No file uploaded.", status=400)
+
+            file_type = mimetypes.guess_type(image.name)[0]
+            if not file_type or (not file_type.startswith('image') and file_type != 'application/pdf'):
+                return HttpResponse("Uploaded file is not a valid image or PDF.", status=400)
+
+            Blogs.objects.create(title=title, type=type, description=description, image=image)
+
+        return render(request, 'Cpanel/AddEditBlog.html')
+    except Exception as e:
+        return HttpResponse(str(e))
+
+
+def ManageBlogs(request):
+    try:
+        result = Blogs.objects.filter(status=1)
+        return render(request, 'partials/blog.html', {'result' : result })
     except Exception as e:
         return HttpResponse(str(e))
 
