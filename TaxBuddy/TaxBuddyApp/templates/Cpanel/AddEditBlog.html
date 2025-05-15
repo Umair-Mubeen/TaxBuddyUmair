@@ -39,6 +39,9 @@
         <!-- Main content -->
         <form method="POST" action="AddEditBlog" enctype="multipart/form-data">
             {% csrf_token %}
+
+            <input type="text" class="form-control" name="hdrowId" value="{{result.id}}" id="hdrowId">
+
             <input type="hidden" class="form-control" value="{{result.type}}" id="hd_type">
             <section class="content">
                 <div class="container-fluid">

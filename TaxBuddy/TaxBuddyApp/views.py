@@ -61,6 +61,17 @@ def AddEditBlog(request):
             title = request.POST['title']
             description = request.POST['description']
             image = request.FILES.get('attachment')
+            hdrowId = request.POST['hdrowId']
+
+            if hdrowId is not None:
+                result = Blogs.objects.get(id=hdrowId, status=1)
+
+                result.type = type
+                result.title = title
+                result.description = description
+                result.image = image
+                result.save()
+
             # Validate uploaded file
             if not image:
                 return HttpResponse("No file uploaded.", status=400)
@@ -73,6 +84,7 @@ def AddEditBlog(request):
 
         return render(request, 'Cpanel/AddEditBlog.html',{'result' :result})
     except Exception as e:
+        print('Exception : ', str(e))
         return HttpResponse(str(e))
 
 

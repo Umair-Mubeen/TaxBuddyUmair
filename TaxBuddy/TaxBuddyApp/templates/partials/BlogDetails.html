@@ -10,116 +10,19 @@
 {% include 'partials/topbar.html' %}
 
 <!--=====Single blog start=======-->
-<div class="single-blog-area padding-top inner-font-1 inner-blog-1" id="home">
+<div class="single-blog-area padding-top inner-font-1 inner-blog-1 lightgallery" id="home">
     <div class="container">
         <div class="row">
-            <div class="col-lg-4">
-                <div class="widgets lg-mr-15">
-                    <div class="single-widget padding-less-widget">
-                        <h3>Search by keyword</h3>
-                        <div class="search-form-widget">
-                            <form action="#">
-                                <input type="search" placeholder="Type keyword here"/>
-                                <button type="submit" class="search-icon">
-                                    <i class="fa-solid fa-magnifying-glass"></i>
-                                </button>
-                            </form>
-                        </div>
-                    </div>
-
-                    <div class="single-widget about-widget">
-                        <div class="about-author">
-                            <img src="{% static 'assets/img/blog/comment.png' %}" alt=""/>
-                        </div>
-                        <h4>Winston Churchill.</h4>
-                        <p>
-                            When it comes to business, listen to Henry David Thoreau:
-                            things usually don’t happen overnight – instead, to find
-                            success takes a lot of time, effort, and courage. Opus
-                            includes everything you need to build a beautiful website.
-                        </p>
-                        <div class="social social3 text-center">
-                            <ul>
-                                <li>
-                                    <a data-bs-toggle="tooltip" title="Linked in" href="#"><i
-                                            class="fa-brands fa-linkedin-in"></i></a>
-                                </li>
-                                <li>
-                                    <a data-bs-toggle="tooltip" title="Facebook" href="#"><i
-                                            class="fa-brands fa-facebook-f"></i></a>
-                                </li>
-                                <li>
-                                    <a data-bs-toggle="tooltip" title="Instagram" href="#"><i
-                                            class="fa-brands fa-instagram"></i></a>
-                                </li>
-                                <li>
-                                    <a data-bs-toggle="tooltip" title="TikTok" href="#"><i
-                                            class="fa-brands fa-tiktok"></i></a>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-
-                    <div class="single-widget recent-posts">
-                        <h3>Recent Posts</h3>
-                        <div class="recent-post">
-                            <div class="recent-post-content">
-                                <a href="#">Leadership Burnout: What causes it and how avoid it.</a>
-                                <div class="blog-date-time">
-                                    <ul class="blog-date">
-                                        <li><a href="#">01.JUL.2022</a></li>
-                                    </ul>
-                                </div>
-                            </div>
-                            <div class="recent-img">
-                                <img src="{% static 'assets/img/blog/recent1.png' %}" alt=""/>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="single-widget categories">
-                        <h3>Categories</h3>
-                        <ul class="category-list">
-                            <li>
-                                <a class="active" href="#">Lifestyle
-                                    <span><i class="fa-solid fa-angle-right"></i></span></a>
-                            </li>
-                            <li>
-                                <a href="#">Stories
-                                    <span><i class="fa-solid fa-angle-right"></i></span></a>
-                            </li>
-                            <li>
-                                <a href="#">Updates
-                                    <span><i class="fa-solid fa-angle-right"></i></span></a>
-                            </li>
-                            <li>
-                                <a href="#">Development
-                                    <span><i class="fa-solid fa-angle-right"></i></span></a>
-                            </li>
-                            <li>
-                                <a href="#">Marketing
-                                    <span><i class="fa-solid fa-angle-right"></i></span></a>
-                            </li>
-                        </ul>
-                    </div>
-
-                    <div class="single-widget tags-widget">
-                        <h3>Tags</h3>
-                        <ul class="tags-list">
-                            <li><a href="#">Healthcare</a></li>
-                            <li><a href="#">Consult</a></li>
-                            <li><a href="#">Cahless</a></li>
-                            <li><a href="#">Cyberattacks</a></li>
-                            <li><a href="#">Meeting</a></li>
-                            <li><a href="#">Leadership</a></li>
-                            <li><a href="#">Health Insurace</a></li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-8">
+            <div class="col-lg-8 ">
                 <div class="single-blog-contents lg-ml-15">
                     <div class="single-blog-img">
-                        <img src="media/{{blog.image}}" alt=""/>
+                        <span class="spnImg" data-sub-html="{{ blog.title }}" data-src="media/{{blog.image}}">
+                                <a href="media/{{ blog.image }}" >
+                                    <img alt="{{blog.title}}" src="media/{{blog.image}}"/>
+                                    </a>
+
+                            </span>
+
                     </div>
                     <ul class="blog-tags">
                         <li><a href="#">{{blog.type}}</a></li>
@@ -129,10 +32,7 @@
                     </h2>
                     <div class="blog-date-time">
                         <ul class="blog-date">
-                            <li><a href="#">01.JUL.2022</a></li>
-                        </ul>
-                        <ul class="blog-time">
-                            <li><a href="#">3 MIN READ</a></li>
+                            <li><a href="#">{{blog.created_date|date}}</a></li>
                         </ul>
                     </div>
                     <p>
@@ -146,9 +46,8 @@
                             <div class="tags">
                                 <ul>
                                     <li>TAGS:</li>
-                                    <li><a href="#">Healthcare</a></li>
-                                    <li><a href="#">Consult</a></li>
-                                    <li><a href="#">Exclusive</a></li>
+                                    <li><a href="#">Income Tax</a></li>
+                                    <li><a href="#">Sales Tax</a></li>
                                 </ul>
                             </div>
                         </div>
@@ -157,20 +56,16 @@
                                 <ul>
                                     <li>Share:</li>
                                     <li>
-                                        <a data-bs-toggle="tooltip" title="Linked in" href="#"><i
-                                                class="fa-brands fa-linkedin-in"></i></a>
+                                        <a data-bs-toggle="tooltip" href="#" title="Linked in"><i class="fa-brands fa-linkedin-in"></i></a>
                                     </li>
                                     <li>
-                                        <a data-bs-toggle="tooltip" title="Facebook" href="#"><i
-                                                class="fa-brands fa-facebook-f"></i></a>
+                                        <a data-bs-toggle="tooltip" href="#" title="Facebook"><i class="fa-brands fa-facebook-f"></i></a>
                                     </li>
                                     <li>
-                                        <a data-bs-toggle="tooltip" title="Instagram" href="#"><i
-                                                class="fa-brands fa-instagram"></i></a>
+                                        <a data-bs-toggle="tooltip" href="#" title="Instagram"><i class="fa-brands fa-instagram"></i></a>
                                     </li>
                                     <li>
-                                        <a data-bs-toggle="tooltip" title="TikTok" href="#"><i
-                                                class="fa-brands fa-tiktok"></i></a>
+                                        <a data-bs-toggle="tooltip" href="#" title="TikTok"><i class="fa-brands fa-tiktok"></i></a>
                                     </li>
                                 </ul>
                             </div>
@@ -183,11 +78,11 @@
                     <div class="comments-list">
                         <div class="single-commencts">
                             <div class="comments-img">
-                                <img src="{% static 'assets/img/blog/comment.png' %}" alt=""/>
+                                <img alt="" src="{% static 'assets/img/blog/comment.png' %}"/>
                             </div>
                             <div class="comments-heading">
                                 <h4>Winston Churchill.</h4>
-                                <a href="#" class="reply-btn">Reply</a>
+                                <a class="reply-btn" href="#">Reply</a>
                             </div>
                             <p>
                                 From watching sunsets to seeing old photo albums, Sakshi
@@ -205,17 +100,17 @@
                         <form action="#">
                             <div class="row">
                                 <div class="col-lg-6">
-                                    <input type="text" placeholder="Name"/>
+                                    <input placeholder="Name" type="text"/>
                                 </div>
                                 <div class="col-lg-6">
-                                    <input type="email" placeholder="Email Address"/>
+                                    <input placeholder="Email Address" type="email"/>
                                 </div>
                                 <div class="col-lg-12">
-                                    <textarea name="" id="" cols="30" rows="10"
-                                              placeholder="Write a Comment"></textarea>
+                                    <textarea cols="30" id="" name="" placeholder="Write a Comment"
+                                              rows="10"></textarea>
                                 </div>
                                 <div class="col-12">
-                                    <button type="submit" class="theme-btn theme-btn-14">
+                                    <button class="theme-btn theme-btn-14" type="submit">
                                         Submit Comment
                                     </button>
                                 </div>
@@ -224,6 +119,73 @@
                     </div>
                 </div>
             </div>
+             <div class="col-lg-4">
+                <div class="widgets lg-mr-15">
+                    <div class="single-widget padding-less-widget">
+                        <h3>Search by keyword</h3>
+                        <div class="search-form-widget">
+                            <form action="#">
+                                <input placeholder="Type keyword here" type="search"/>
+                                <button class="search-icon" type="submit">
+                                    <i class="fa-solid fa-magnifying-glass"></i>
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+
+                    <div class="single-widget about-widget">
+                        <div class="about-author">
+                            <img alt="" src="{% static 'assets/img/blog/blog5.png' %}"/>
+                        </div>
+                        <h4>TaxBuddy Umair.</h4>
+                        <p>
+                            When it comes to taxes, remember: compliance doesn’t happen overnight — understanding tax
+                            laws like the Income Tax Ordinance, 2001 and Sales Tax Act, 1990 takes time, clarity, and
+                            the right guidance. TaxBuddy Umair is here to help you navigate tax matters with ease and confidence.
+
+                        </p>
+                        <div class="social social3 text-center">
+                            <ul>
+                                <li>
+                                    <a data-bs-toggle="tooltip" href="#" title="Linked in"><i
+                                            class="fa-brands fa-linkedin-in"></i></a>
+                                </li>
+                                <li>
+                                    <a data-bs-toggle="tooltip" href="#" title="Facebook"><i
+                                            class="fa-brands fa-facebook-f"></i></a>
+                                </li>
+                                <li>
+                                    <a data-bs-toggle="tooltip" href="#" title="Instagram"><i
+                                            class="fa-brands fa-instagram"></i></a>
+                                </li>
+                                <li>
+                                    <a data-bs-toggle="tooltip" href="#" title="TikTok"><i
+                                            class="fa-brands fa-tiktok"></i></a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="single-widget recent-posts">
+                        <h3>Recent Blogs</h3>
+                        <div class="recent-post">
+                            <div class="recent-post-content">
+                                <a href="#">{{blog.title}}</a>
+                                <div class="blog-date-time">
+                                    <ul class="blog-date">
+                                        <li><a href="#">{{blog.created_date|date}}</a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="recent-img">
+                                <img alt="{{blog.title}}" src="media/{{blog.image}}"/>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
         </div>
     </div>
 </div>
@@ -235,7 +197,8 @@
         <div class="row">
             <div class="col-lg-8 m-auto">
                 <div class="heading2 text-center">
-                    <small class="heading-top inner-heading-top"><img src="{% static 'assets/img/icons/hands.svg' %}" alt=""/>Our More
+                    <small class="heading-top inner-heading-top"><img alt=""
+                                                                      src="{% static 'assets/img/icons/hands.svg' %}"/>Our More
                         Blogs</small>
                     <h2>Our team of financial professionals.</h2>
                 </div>
@@ -245,7 +208,7 @@
             <div class="col-md-6 col-lg-4">
                 <div class="single-blog blog-md">
                     <div class="blog-img">
-                        <a href="single-1.php"><img src="{% static 'assets/img/blog/blog6.png' %}" alt=""/></a>
+                        <a href="single-1.php"><img alt="" src="{% static 'assets/img/blog/blog6.png' %}"/></a>
                     </div>
                     <ul class="blog-tags">
                         <li><a href="#">Lifestyle</a></li>
@@ -262,7 +225,7 @@
             <div class="col-md-6 col-lg-4">
                 <div class="single-blog blog-md">
                     <div class="blog-img">
-                        <a href="single-1.php"><img src="{% static 'assets/img/blog/blog7.png '%}" alt=""/></a>
+                        <a href="single-1.php"><img alt="" src="{% static 'assets/img/blog/blog7.png '%}"/></a>
                     </div>
                     <ul class="blog-tags">
                         <li><a href="#">Story</a></li>
@@ -279,7 +242,7 @@
             <div class="col-md-6 col-lg-4">
                 <div class="single-blog blog-md">
                     <div class="blog-img">
-                        <a href="single-1.php"><img src="{% static 'assets/img/blog/blog8.png' %}" alt=""/></a>
+                        <a href="single-1.php"><img alt="" src="{% static 'assets/img/blog/blog8.png' %}"/></a>
                     </div>
                     <ul class="blog-tags">
                         <li><a href="#">Design</a></li>
