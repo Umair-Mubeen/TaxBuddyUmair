@@ -46,6 +46,8 @@
 <script src="{% static 'plugins/select2/js/select2.full.min.js' %}"></script>
 
 
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+
 <!-- LightGallery core JavaScript -->
 <script src="https://cdn.jsdelivr.net/npm/lightgallery@1.10.0/dist/js/lightgallery-all.min.js"></script>
 
@@ -54,7 +56,7 @@
 
 <!-- LightGallery Rotate Plugin -->
 <script src="https://cdn.jsdelivr.net/npm/lg-rotate@1.0.0/dist/lg-rotate.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+
 
 <script>
   $(function () {
@@ -62,3 +64,16 @@
     $('#compose-textarea').summernote()
   })
 </script>
+
+
+<!--Light gallery -->
+<script type="text/javascript">
+    $(document).ready(function() {
+        $('.lightgallery').lightGallery({
+            selector: '.spnImg',
+            thumbnail: false
+
+        });
+    });
+</script>
+<!--Light gallery Ends Here -->

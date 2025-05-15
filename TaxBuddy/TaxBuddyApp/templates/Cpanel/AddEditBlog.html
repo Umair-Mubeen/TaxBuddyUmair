@@ -24,7 +24,7 @@
                                     class="fa fa-home"></i></a>
                             </li>
                             <li class="breadcrumb-item active">
-                                <a href="" style="color:black">
+                                <a href="/ManageBlogs" style="color:black">
                                     Manage Blog </a>
                             </li>
                             <li class="breadcrumb-item">Create</li>
@@ -39,28 +39,29 @@
         <!-- Main content -->
         <form method="POST" action="AddEditBlog" enctype="multipart/form-data">
             {% csrf_token %}
+            <input type="hidden" class="form-control" value="{{result.type}}" id="hd_type">
             <section class="content">
                 <div class="container-fluid">
                     <div class="col-md-12">
                         <div class="card card-primary card-outline">
                             <div class="card-header">
-                                <h3 class="card-title">Create New Blog</h3>
+                                <h3 class="card-title">Create New Blog </h3>
                             </div>
                             <!-- /.card-header -->
                             <div class="card-body">
                                 <div class="form-group">
-                                    <select class="form-control" name="type">
+                                    <select class="form-control" name="type" id="type">
                                         <option value="Income Tax"> Income Tax</option>
                                         <option value="Sale Tax"> Sale Tax</option>
 
                                     </select>
                                 </div>
                                 <div class="form-group">
-                                    <input class="form-control" placeholder="Blog Title:" name="title">
+                                    <input class="form-control" placeholder="Blog Title:" name="title"
+                                           value="{{result.title}}">
                                 </div>
                                 <div class="form-group">
-                    <textarea id="compose-textarea"
-                              class="form-control" rows="10" cols="3" name="description">
+                    <textarea id="compose-textarea" class="form-control" rows="10" cols="3" name="description"> {{result.description}}
                        </textarea>
                                 </div>
                                 <div class="form-group">
@@ -109,3 +110,10 @@
 </div>
 
 </body>
+
+
+<script>
+    var hd_type = document.getElementById('hd_type').value; // Get the hidden input value
+    $('#type').val(hd_type).trigger('change');
+
+</script>
