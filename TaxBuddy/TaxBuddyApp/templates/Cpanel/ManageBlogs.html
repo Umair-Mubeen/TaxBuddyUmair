@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>IRS - Blogs</title>
+    {% load static %}
+    {% include 'Cpanel/reusable.html' %}
+    <style>
+    .truncate {
+        max-height: 100px;
+        overflow: hidden;
+        position: relative;
+    }
+
+    .show-more {
+        cursor: pointer;
+        color: blue;
+        font-weight: bold;
+    }
+
+    .full-text {
+        display: none;
+    }
+</style>
+
+
+</head>
+<body class="sidebar-mini layout-fixed sidebar-collapse">
+<div class="wrapper">
+
+    <!-- Navbar Starts Here -->
+    {% include 'Cpanel/navbar.html' %}
+    <!-- /.Navbar Ends Here -->
+
+    <!-- SideBar Start Here -->
+    {% include 'Cpanel/sidebar.html' %}
+    <!-- SideBar Ends Here -->
+
+    <!-- Content Wrapper. Contains page content -->
+    <div class="content-wrapper">
+        <!-- Content Header (Page header) -->
+        <div class="content-header">
+            <div class="container-fluid">
+                <div class="row mb-2">
+                    <div class="col-sm-6">
+                        <h1 class="m-0">TaxBuddy Umair</h1>
+                    </div><!-- /.col -->
+                    <div class="col-sm-6">
+                        <ol class="breadcrumb float-sm-right">
+                            <li class="breadcrumb-item"><a href="/Dashboard" style="color:black"><i
+                                    class="fa fa-home"></i></a></li>
+                            <li class="breadcrumb-item active">Blog</li>
+                        </ol>
+                    </div><!-- /.col -->
+                </div><!-- /.row -->
+            </div><!-- /.container-fluid -->
+        </div>
+        <!-- /.content-header -->
+
+        <!-- Main content -->
+        <section class="content">
+            <div class="container-fluid">
+                <div class="card">
+                    <div class="card-header bg-primary">
+                        <div class="card-title">
+                            <h5>IRS Blogs List</h5>
+                        </div>
+                        <div class="card-tools">
+                            <form method="GET" action="">
+                                <div class="input-group input-group-sm" style="width: 150px;">
+                                    <input type="text" name="search" class="form-control float-right"
+                                           placeholder="Search" value="">
+                                    <div class="input-group-append">
+                                        <button type="submit" class="btn btn-default">
+                                            <i class="fas fa-search"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                    <!-- /.card-header -->
+                    <div class="card-body table-responsive p-0">
+                        <table class="table table-bordered table-hover lightgallery">
+                            <thead>
+                            <tr>
+                                <th>Title</th>
+                                <th>Type</th>
+                                <th>Description</th>
+                                <th>Image</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% for res in result %}
+                      <tr>
+    <td>{{ res.title }}</td>
+    <td>{{ res.type }}</td>
+    <td>
+        <div id="short-{{ res.id }}" class="truncate">{{ res.description|truncatechars_html:100|safe }}</div>
+        <div id="full-{{ res.id }}" class="full-text">{{ res.description|safe }}</div>
+        <span id="more-{{ res.id }}" class="show-more" onclick="toggleText('{{ res.id }}')">Show More</span>
+        <span id="less-{{ res.id }}" class="show-more" onclick="toggleText('{{ res.id }}')" style="display:none;">Show Less</span>
+    </td>
+    <td>
+        {% if res.image %}
+        <a href="media/{{ res.image }}" target="_blank">View</a>
+        {% else %}
+        No Image
+        {% endif %}
+    </td>
+    <td>
+        {% if res.status == 1 %}<span class="badge badge-success">Active</span>{% else %}<span class="badge badge-danger">Inactive</span>{% endif %}
+    </td>
+    <td>
+        <a href="AddEditBlog?rowId={{ res.id }}&type=edit" title="Edit" class="text-primary mr-2">
+            <i class="fa fa-edit"></i>
+        </a>
+        <a href="AddEditBlog?rowId={{ res.id }}&type=delete" title="Delete" class="text-danger">
+            <i class="fa fa-trash"></i>
+        </a>
+    </td>
+</tr>
+
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                        <br/>
+
+                        <!-- Pagination controls -->
+                    </div>
+                    <!-- /.card-body -->
+                </div>
+
+
+            </div>
+        </section>
+    </div>
+
+    {% include 'Cpanel/footer.html' %}
+</div>
+</body>
+</html>
+
+<script>
+    function toggleText(id) {
+        const moreText = document.getElementById('more-' + id);
+        const lessText = document.getElementById('less-' + id);
+        const truncated = document.getElementById('short-' + id);
+        const full = document.getElementById('full-' + id);
+
+        if (full.style.display === "none") {
+            full.style.display = "block";
+            truncated.style.display = "none";
+            moreText.style.display = "none";
+            lessText.style.display = "inline";
+        } else {
+            full.style.display = "none";
+            truncated.style.display = "block";
+            moreText.style.display = "inline";
+            lessText.style.display = "none";
+        }
+    }
+</script>

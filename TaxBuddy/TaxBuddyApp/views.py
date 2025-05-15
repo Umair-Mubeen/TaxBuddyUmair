@@ -51,6 +51,11 @@ def Contact(request):
 
 def AddEditBlog(request):
     try:
+        result = {'title': '', 'type': '', 'description': ''}
+        if request.GET.get('rowId') is not None:
+            rowId = request.GET.get('rowId')
+            result = Blogs.objects.filter(id=rowId, status=1).get()
+
         if request.method == 'POST':
             type = request.POST['type']
             title = request.POST['title']
@@ -66,7 +71,7 @@ def AddEditBlog(request):
 
             Blogs.objects.create(title=title, type=type, description=description, image=image)
 
-        return render(request, 'Cpanel/AddEditBlog.html')
+        return render(request, 'Cpanel/AddEditBlog.html',{'result' :result})
     except Exception as e:
         return HttpResponse(str(e))
 
@@ -74,9 +79,19 @@ def AddEditBlog(request):
 def ManageBlogs(request):
     try:
         result = Blogs.objects.filter(status=1)
-        return render(request, 'partials/blog.html', {'result' : result })
+        return render(request, 'Cpanel/ManageBlogs.html', {'result' : result })
     except Exception as e:
         return HttpResponse(str(e))
+
+
+def BlogDetails(request):
+    try:
+        id = request.GET.get('blogId')
+        blogList = Blogs.objects.filter(status=1,id=id).get()
+        print(blogList)
+        return render(request, 'partials/BlogDetails.html',{'blog' : blogList })
+    except Exception as e:
+        print(str(e))
 
 
 def TaxCalculator(request):

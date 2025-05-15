@@ -1,0 +1,308 @@
+{% load static %}
+
+<head>
+    {% include 'partials/head-css.html' %}
+
+</head>
+
+<body>
+
+{% include 'partials/topbar.html' %}
+
+<!--=====Single blog start=======-->
+<div class="single-blog-area padding-top inner-font-1 inner-blog-1" id="home">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-4">
+                <div class="widgets lg-mr-15">
+                    <div class="single-widget padding-less-widget">
+                        <h3>Search by keyword</h3>
+                        <div class="search-form-widget">
+                            <form action="#">
+                                <input type="search" placeholder="Type keyword here"/>
+                                <button type="submit" class="search-icon">
+                                    <i class="fa-solid fa-magnifying-glass"></i>
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+
+                    <div class="single-widget about-widget">
+                        <div class="about-author">
+                            <img src="{% static 'assets/img/blog/comment.png' %}" alt=""/>
+                        </div>
+                        <h4>Winston Churchill.</h4>
+                        <p>
+                            When it comes to business, listen to Henry David Thoreau:
+                            things usually don’t happen overnight – instead, to find
+                            success takes a lot of time, effort, and courage. Opus
+                            includes everything you need to build a beautiful website.
+                        </p>
+                        <div class="social social3 text-center">
+                            <ul>
+                                <li>
+                                    <a data-bs-toggle="tooltip" title="Linked in" href="#"><i
+                                            class="fa-brands fa-linkedin-in"></i></a>
+                                </li>
+                                <li>
+                                    <a data-bs-toggle="tooltip" title="Facebook" href="#"><i
+                                            class="fa-brands fa-facebook-f"></i></a>
+                                </li>
+                                <li>
+                                    <a data-bs-toggle="tooltip" title="Instagram" href="#"><i
+                                            class="fa-brands fa-instagram"></i></a>
+                                </li>
+                                <li>
+                                    <a data-bs-toggle="tooltip" title="TikTok" href="#"><i
+                                            class="fa-brands fa-tiktok"></i></a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="single-widget recent-posts">
+                        <h3>Recent Posts</h3>
+                        <div class="recent-post">
+                            <div class="recent-post-content">
+                                <a href="#">Leadership Burnout: What causes it and how avoid it.</a>
+                                <div class="blog-date-time">
+                                    <ul class="blog-date">
+                                        <li><a href="#">01.JUL.2022</a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="recent-img">
+                                <img src="{% static 'assets/img/blog/recent1.png' %}" alt=""/>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="single-widget categories">
+                        <h3>Categories</h3>
+                        <ul class="category-list">
+                            <li>
+                                <a class="active" href="#">Lifestyle
+                                    <span><i class="fa-solid fa-angle-right"></i></span></a>
+                            </li>
+                            <li>
+                                <a href="#">Stories
+                                    <span><i class="fa-solid fa-angle-right"></i></span></a>
+                            </li>
+                            <li>
+                                <a href="#">Updates
+                                    <span><i class="fa-solid fa-angle-right"></i></span></a>
+                            </li>
+                            <li>
+                                <a href="#">Development
+                                    <span><i class="fa-solid fa-angle-right"></i></span></a>
+                            </li>
+                            <li>
+                                <a href="#">Marketing
+                                    <span><i class="fa-solid fa-angle-right"></i></span></a>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div class="single-widget tags-widget">
+                        <h3>Tags</h3>
+                        <ul class="tags-list">
+                            <li><a href="#">Healthcare</a></li>
+                            <li><a href="#">Consult</a></li>
+                            <li><a href="#">Cahless</a></li>
+                            <li><a href="#">Cyberattacks</a></li>
+                            <li><a href="#">Meeting</a></li>
+                            <li><a href="#">Leadership</a></li>
+                            <li><a href="#">Health Insurace</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-8">
+                <div class="single-blog-contents lg-ml-15">
+                    <div class="single-blog-img">
+                        <img src="media/{{blog.image}}" alt=""/>
+                    </div>
+                    <ul class="blog-tags">
+                        <li><a href="#">{{blog.type}}</a></li>
+                    </ul>
+                    <h2>
+                        {{blog.title}}
+                    </h2>
+                    <div class="blog-date-time">
+                        <ul class="blog-date">
+                            <li><a href="#">01.JUL.2022</a></li>
+                        </ul>
+                        <ul class="blog-time">
+                            <li><a href="#">3 MIN READ</a></li>
+                        </ul>
+                    </div>
+                    <p>
+                        {{blog.description|safe}}
+                    </p>
+
+                    <div class="theme-border"></div>
+
+                    <div class="row align-items-center">
+                        <div class="col-md-6">
+                            <div class="tags">
+                                <ul>
+                                    <li>TAGS:</li>
+                                    <li><a href="#">Healthcare</a></li>
+                                    <li><a href="#">Consult</a></li>
+                                    <li><a href="#">Exclusive</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="social social3 text-right social-share">
+                                <ul>
+                                    <li>Share:</li>
+                                    <li>
+                                        <a data-bs-toggle="tooltip" title="Linked in" href="#"><i
+                                                class="fa-brands fa-linkedin-in"></i></a>
+                                    </li>
+                                    <li>
+                                        <a data-bs-toggle="tooltip" title="Facebook" href="#"><i
+                                                class="fa-brands fa-facebook-f"></i></a>
+                                    </li>
+                                    <li>
+                                        <a data-bs-toggle="tooltip" title="Instagram" href="#"><i
+                                                class="fa-brands fa-instagram"></i></a>
+                                    </li>
+                                    <li>
+                                        <a data-bs-toggle="tooltip" title="TikTok" href="#"><i
+                                                class="fa-brands fa-tiktok"></i></a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="theme-comments-list">
+                    <h3>2 Comments</h3>
+                    <div class="comments-list">
+                        <div class="single-commencts">
+                            <div class="comments-img">
+                                <img src="{% static 'assets/img/blog/comment.png' %}" alt=""/>
+                            </div>
+                            <div class="comments-heading">
+                                <h4>Winston Churchill.</h4>
+                                <a href="#" class="reply-btn">Reply</a>
+                            </div>
+                            <p>
+                                From watching sunsets to seeing old photo albums, Sakshi
+                                finds joy in little things. With a bachelor’s degree in
+                                psychology, she writes helpful, well-researched content on
+                                mental health and wellbeing.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="write-comments">
+                    <h3>Leave a Comment</h3>
+                    <div class="comment-form">
+                        <form action="#">
+                            <div class="row">
+                                <div class="col-lg-6">
+                                    <input type="text" placeholder="Name"/>
+                                </div>
+                                <div class="col-lg-6">
+                                    <input type="email" placeholder="Email Address"/>
+                                </div>
+                                <div class="col-lg-12">
+                                    <textarea name="" id="" cols="30" rows="10"
+                                              placeholder="Write a Comment"></textarea>
+                                </div>
+                                <div class="col-12">
+                                    <button type="submit" class="theme-btn theme-btn-14">
+                                        Submit Comment
+                                    </button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!--=====Single blog end=======-->
+
+<!--=====More blog  start=======-->
+<div class="section-padding2 blog-area inner-blog-1 section-padding inner-font-1">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 m-auto">
+                <div class="heading2 text-center">
+                    <small class="heading-top inner-heading-top"><img src="{% static 'assets/img/icons/hands.svg' %}" alt=""/>Our More
+                        Blogs</small>
+                    <h2>Our team of financial professionals.</h2>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6 col-lg-4">
+                <div class="single-blog blog-md">
+                    <div class="blog-img">
+                        <a href="single-1.php"><img src="{% static 'assets/img/blog/blog6.png' %}" alt=""/></a>
+                    </div>
+                    <ul class="blog-tags">
+                        <li><a href="#">Lifestyle</a></li>
+                    </ul>
+                    <h3>
+                        <a href="single-1.php">"Anyone can be a refugee": Resisting racism in Neukölln.</a>
+                    </h3>
+                    <p>
+                        In the past 90 days, the world has a serious escalation in
+                        cyberattacks.
+                    </p>
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-4">
+                <div class="single-blog blog-md">
+                    <div class="blog-img">
+                        <a href="single-1.php"><img src="{% static 'assets/img/blog/blog7.png '%}" alt=""/></a>
+                    </div>
+                    <ul class="blog-tags">
+                        <li><a href="#">Story</a></li>
+                    </ul>
+                    <h3>
+                        <a href="single-1.php">Best Practices for Employee Recognition Programs</a>
+                    </h3>
+                    <p>
+                        In the past 90 days, the world has a serious escalation in
+                        cyberattacks.
+                    </p>
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-4">
+                <div class="single-blog blog-md">
+                    <div class="blog-img">
+                        <a href="single-1.php"><img src="{% static 'assets/img/blog/blog8.png' %}" alt=""/></a>
+                    </div>
+                    <ul class="blog-tags">
+                        <li><a href="#">Design</a></li>
+                    </ul>
+                    <h3>
+                        <a href="single-1.php">Five things all HRs think when they think of diversity.</a>
+                    </h3>
+                    <p>
+                        In the past 90 days, the world has a serious escalation in
+                        cyberattacks.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!--=====More blog end=======-->
+
+
+{% include 'partials/footer.html' %}
+{% include 'partials/up.html' %}
+{% include 'partials/footer-scripts.html' %}
+
+</body>
+
+</html>
