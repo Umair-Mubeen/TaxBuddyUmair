@@ -9,6 +9,7 @@ urlpatterns = [
     path('contact-us', views.Contact, name='contact-us'),  # Contact Page
     path('TaxCalculator', views.TaxCalculator, name='TaxCalculator'),  # Tax Calculator Page
     path('BlogDetails', views.BlogDetails, name='BlogDetails'),  # BlogDetails Page
+    path('userComments', views.userComments, name='userComments'),  # Comments Page
 
     #Dashboard URL
     path('Login', views.Login, name='Login'),  # Login Page

@@ -3,10 +3,10 @@ from datetime import timezone
 
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect,get_object_or_404
 from django.contrib.auth import authenticate, login, logout
 
-from .models import Blogs
+from .models import Blogs,Comment
 
 
 def index(request):
@@ -100,10 +100,30 @@ def BlogDetails(request):
     try:
         id = request.GET.get('blogId')
         blogList = Blogs.objects.filter(status=1,id=id).get()
-        print(blogList)
-        return render(request, 'partials/BlogDetails.html',{'blog' : blogList })
+        commentList = Comment.objects.filter(status=1,blog_id=id)
+        if not commentList.exists():
+            commentList = {}
+
+        return render(request, 'partials/BlogDetails.html',{'blog' : blogList,'userComments' : commentList, 'length' : len(commentList) })
     except Exception as e:
         print(str(e))
+
+def userComments(request):
+    try:
+        if request.method == 'POST':
+            user = request.POST['user']
+            email = request.POST['email']
+            comment = request.POST['comment']
+            hdBlogId = request.POST['hdBlogId']
+            blog = get_object_or_404(Blogs, id=hdBlogId)
+            Comment.objects.create(blog=blog,name=user,email_address=email,comment=comment)
+            return redirect(f'/BlogDetails?blogId={hdBlogId}')  # or use reverse()
+
+
+
+    except Exception as e:
+        print('Exception :', str(e))
+        return HttpResponse(str(e))
 
 
 def TaxCalculator(request):
