@@ -16,3 +16,13 @@ class Blogs(models.Model):
     status = models.IntegerField(default=1)
     created_date = models.DateTimeField(auto_now_add=True)
     updated_date = models.DateTimeField(auto_now=True)
+
+
+class Comment(models.Model):
+    blog = models.ForeignKey(Blogs, on_delete=models.CASCADE, related_name='comments')
+    name = models.CharField(max_length=100)
+    email_address = models.EmailField()
+    comment = models.TextField()
+    status = models.IntegerField(default=1)
+
+
