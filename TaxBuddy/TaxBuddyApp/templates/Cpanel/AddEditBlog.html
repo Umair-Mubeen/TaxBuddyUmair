@@ -37,12 +37,13 @@
         <!-- /.content-header -->
 
         <!-- Main content -->
-        <form method="POST" action="AddEditBlog" enctype="multipart/form-data">
+        <form action="{% if result %}/AddEditBlog/{{ result.slug }}/{% else %}/AddEditBlog/{% endif %}" enctype="multipart/form-data"
+              method="POST">
             {% csrf_token %}
 
-            <input type="text" class="form-control" name="hdrowId" value="{{result.id}}" id="hdrowId">
-            <input type="hidden" class="form-control" value="{{result.type}}" id="hd_type">
-            
+            <input class="form-control" id="hdrowId" name="hdrowId" type="hidden" value="{{result.id}}">
+            <input class="form-control" id="hd_type" type="hidden" value="{{result.type}}">
+
             <section class="content">
                 <div class="container-fluid">
                     <div class="col-md-12">
@@ -53,34 +54,34 @@
                             <!-- /.card-header -->
                             <div class="card-body">
                                 <div class="form-group">
-                                    <select class="form-control" name="type" id="type">
+                                    <select class="form-control" id="type" name="type">
                                         <option value="Income Tax"> Income Tax</option>
                                         <option value="Sale Tax"> Sale Tax</option>
 
                                     </select>
                                 </div>
                                 <div class="form-group">
-                                    <input class="form-control" placeholder="Blog Title:" name="title"
+                                    <input class="form-control" name="title" placeholder="Blog Title:"
                                            value="{{result.title}}">
                                 </div>
                                 <div class="form-group">
-                    <textarea id="compose-textarea" class="form-control" rows="10" cols="3" name="description"> {{result.description}}
+                    <textarea class="form-control" cols="3" id="compose-textarea" name="description" rows="10"> {{result.description}}
                        </textarea>
                                 </div>
                                 <div class="form-group">
                                     <div class="btn btn-default btn-file">
                                         <i class="fas fa-paperclip"></i> Attachment
-                                        <input type="file" name="attachment" class="form-control">
+                                        <input class="form-control" name="attachment" type="file">
                                     </div>
                                 </div>
                             </div>
                             <!-- /.card-body -->
                             <div class="card-footer">
                                 <div class="float-right">
-                                    <button type="submit" class="btn btn-primary"><i class="far fa-envelope"></i> Submit
+                                    <button class="btn btn-primary" type="submit"><i class="far fa-envelope"></i> Submit
                                     </button>
                                 </div>
-                                <button type="reset" class="btn btn-default"><i class="fas fa-times"></i> Discard
+                                <button class="btn btn-default" type="reset"><i class="fas fa-times"></i> Discard
                                 </button>
                             </div>
                             <!-- /.card-footer -->
@@ -114,5 +115,6 @@
 <script>
     var hd_type = document.getElementById('hd_type').value; // Get the hidden input value
     $('#type').val(hd_type).trigger('change');
+
 
 </script>

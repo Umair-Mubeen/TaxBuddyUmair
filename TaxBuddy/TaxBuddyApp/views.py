@@ -5,6 +5,7 @@ from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse
 from django.shortcuts import render, redirect,get_object_or_404
 from django.contrib.auth import authenticate, login, logout
+from django.utils.text import slugify
 
 from .models import Blogs,Comment
 
@@ -49,38 +50,42 @@ def Contact(request):
         return HttpResponse(str(e))
 
 
-def AddEditBlog(request):
+def AddEditBlog(request,slug=None):
     try:
         result = {'title': '', 'type': '', 'description': ''}
-        if request.GET.get('rowId') is not None:
-            rowId = request.GET.get('rowId')
-            result = Blogs.objects.filter(id=rowId, status=1).get()
+        print(slug)
+        if slug:
+            print(slug)
+            result = get_object_or_404(Blogs, slug=slug, status=1)
 
         if request.method == 'POST':
             type = request.POST['type']
             title = request.POST['title']
             description = request.POST['description']
             image = request.FILES.get('attachment')
-            hdrowId = request.POST['hdrowId']
+            slug = slugify(title)
+            print(slug)
 
-            if hdrowId is not None:
-                result = Blogs.objects.get(id=hdrowId, status=1)
+            if slug:
+                blog = get_object_or_404(Blogs, slug=slug, status=1)
+                blog.type = type
+                blog.title = title
+                blog.slug = slug
+                blog.description = description
+                if image:
+                    blog.image = image
+                blog.save()
+            else:
+                # Validate uploaded file
+                if not image:
+                    return HttpResponse("No file uploaded.", status=400)
 
-                result.type = type
-                result.title = title
-                result.description = description
-                result.image = image
-                result.save()
+                file_type = mimetypes.guess_type(image.name)[0]
+                if not file_type or (not file_type.startswith('image') and file_type != 'application/pdf'):
+                    return HttpResponse("Uploaded file is not a valid image or PDF.", status=400)
 
-            # Validate uploaded file
-            if not image:
-                return HttpResponse("No file uploaded.", status=400)
-
-            file_type = mimetypes.guess_type(image.name)[0]
-            if not file_type or (not file_type.startswith('image') and file_type != 'application/pdf'):
-                return HttpResponse("Uploaded file is not a valid image or PDF.", status=400)
-
-            Blogs.objects.create(title=title, type=type, description=description, image=image)
+                print(slug)
+                Blogs.objects.create(title=title, type=type, description=description, image=image,slug=slug)
 
         return render(request, 'Cpanel/AddEditBlog.html',{'result' :result})
     except Exception as e:
@@ -96,10 +101,15 @@ def ManageBlogs(request):
         return HttpResponse(str(e))
 
 
-def BlogDetails(request):
+def BlogDetails(request, slug=None):
     try:
-        id = request.GET.get('blogId')
-        blogList = Blogs.objects.filter(status=1,id=id).get()
+        if slug:
+            print(slug)
+            blogList = get_object_or_404(Blogs, slug=slug, status=1)
+            print(blogList)
+
+        # id = request.GET.get('blogId')
+        # blogList = Blogs.objects.filter(status=1,id=id).get()
         commentList = Comment.objects.filter(status=1,blog_id=id)
         if not commentList.exists():
             commentList = {}
