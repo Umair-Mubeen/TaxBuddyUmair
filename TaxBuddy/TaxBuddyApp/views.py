@@ -54,7 +54,6 @@ def AddEditBlog(request, slug=None):
     try:
         result = {'title': '', 'type': '', 'description': ''}
         if slug:
-            print(slug)
             result = get_object_or_404(Blogs, slug=slug, status=1)
 
         if request.method == 'POST':
@@ -85,8 +84,8 @@ def AddEditBlog(request, slug=None):
 
         return render(request, 'Cpanel/AddEditBlog.html', {'result': result})
     except Exception as e:
-        print('Exception : ', str(e))
-        return HttpResponse(str(e))
+        print('Exception at Add Edit Details Page :', str(e))
+        return HttpResponse(str('Exception at Add Edit Details Page :' + str(e)))
 
 
 def ManageBlogs(request):
@@ -104,10 +103,10 @@ def BlogDetails(request, slug=None):
             blogComments = Comment.objects.filter(status=1, slug=blog.slug)
             if not blogComments.exists():
                 blogComments = {}
-        blogList = Blogs.objects.filter(status=1).exclude(slug=slug)
+            blogList = Blogs.objects.filter(status=1).exclude(slug=slug)
 
-        return render(request, 'partials/BlogDetails.html',
-                      {'blog': blog, 'userComments': blogComments, 'length': len(blogComments),'blogList' : blogList})
+
+        return render(request, 'partials/BlogDetails.html',{'blog':blog,'userComments':blogComments,'length':len(blogComments),'blogList' : blogList})
     except Exception as e:
         print('Exception at Blog Details Page :', str(e))
         return HttpResponse(str('Exception at Blog Details Page :' + str(e)))

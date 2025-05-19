@@ -180,10 +180,10 @@
                         <h3>Recent Blogs</h3>
                         <div class="recent-post">
                             <div class="recent-post-content">
-                                <a href="#">{{blog.title}}</a>
+                                <a href="{% url 'BlogDetails' slug=blog.slug %}">{{blog.title}}</a>
                                 <div class="blog-date-time">
                                     <ul class="blog-date">
-                                        <li><a href="#">{{blog.created_date|date}}</a></li>
+                                        <li><a href="{{blog.title}}">{{blog.created_date|date}}</a></li>
                                     </ul>
                                 </div>
                             </div>
@@ -209,62 +209,30 @@
                 <div class="heading2 text-center">
                     <small class="heading-top inner-heading-top">
                         <img alt="" src="{% static 'assets/img/icons/hands.svg' %}"/>Our More Blogs</small>
-                    <h2>Welcome to my blog, where one financial professional does all the heavy lifting — so you don’t have to.</h2>
+                    <h2>Welcome to my blog, where one financial professional does all the heavy lifting — so you don’t
+                        have to.</h2>
                 </div>
             </div>
         </div>
         <div class="row">
+            {% for other in blogList %}
             <div class="col-md-6 col-lg-4">
                 <div class="single-blog blog-md">
                     <div class="blog-img">
-                        <a href="single-1.php"><img alt="" src="{% static 'assets/img/blog/blog6.png' %}"/></a>
+                        <a href="{% url 'BlogDetails' slug=other.slug %}">
+                            <img alt="{{ other.slug }}" src="{{ other.image.url }}"/>
+                        </a>
                     </div>
                     <ul class="blog-tags">
-                        <li><a href="#">Lifestyle</a></li>
+                        <li><a href="#">{{other.type}}</a></li>
                     </ul>
-                    <h3>
-                        <a href="single-1.php">"Anyone can be a refugee": Resisting racism in Neukölln.</a>
-                    </h3>
-                    <p>
-                        In the past 90 days, the world has a serious escalation in
-                        cyberattacks.
-                    </p>
+                    <h6 style="text-align:justify">
+                        <a href="{% url 'BlogDetails' slug=other.slug %}" style="color:black">{{ other.title }}.</a>
+                    </h6>
+
                 </div>
             </div>
-            <div class="col-md-6 col-lg-4">
-                <div class="single-blog blog-md">
-                    <div class="blog-img">
-                        <a href="single-1.php"><img alt="" src="{% static 'assets/img/blog/blog7.png '%}"/></a>
-                    </div>
-                    <ul class="blog-tags">
-                        <li><a href="#">Story</a></li>
-                    </ul>
-                    <h3>
-                        <a href="single-1.php">Best Practices for Employee Recognition Programs</a>
-                    </h3>
-                    <p>
-                        In the past 90 days, the world has a serious escalation in
-                        cyberattacks.
-                    </p>
-                </div>
-            </div>
-            <div class="col-md-6 col-lg-4">
-                <div class="single-blog blog-md">
-                    <div class="blog-img">
-                        <a href="single-1.php"><img alt="" src="{% static 'assets/img/blog/blog8.png' %}"/></a>
-                    </div>
-                    <ul class="blog-tags">
-                        <li><a href="#">Design</a></li>
-                    </ul>
-                    <h3>
-                        <a href="single-1.php">Five things all HRs think when they think of diversity.</a>
-                    </h3>
-                    <p>
-                        In the past 90 days, the world has a serious escalation in
-                        cyberattacks.
-                    </p>
-                </div>
-            </div>
+            {% endfor %}
         </div>
     </div>
 </div>
