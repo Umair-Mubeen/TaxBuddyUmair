@@ -19,9 +19,9 @@
             <div class="col-lg-8 ">
                 <div class="single-blog-contents lg-ml-15">
                     <div class="single-blog-img">
-                        <span class="spnImg" data-sub-html="{{ blog.title }}" data-src="media/{{blog.image}}">
-                                <a href="media/{{ blog.image }}">
-            <img src="media/{{ blog.image }}" alt="{{ blog.title }}" style="max-width: 100%; height: auto;"/>
+                        <span class="spnImg" data-sub-html="{{ blog.title }}" data-src="{{blog.image.url}}">
+                                <a href="{{blog.image.url}}">
+            <img src="{{ blog.image.url }}" alt="{{ blog.title }}" style="max-width: 100%; height: auto;"/>
           </a>
 
                             </span>
@@ -103,11 +103,11 @@
                     <h3>Leave a Comment</h3>
                     <div class="comment-form">
 
-                        <form action="userComments" method="POST">
+                        <form action="{% url 'userComments' %}" method="POST">
                             {% csrf_token %}
 
                             <div class="row">
-                                <input type="hidden" name="hdBlogId" class="form-contorl" value="{{blog.id}}"/>
+                                <input type="hidden" name="slug" class="form-contorl" value="{{blog.slug}}"/>
                                 <div class="col-lg-6">
                                     <input placeholder="Name" type="text" name="user"/>
                                 </div>
@@ -188,7 +188,7 @@
                                 </div>
                             </div>
                             <div class="recent-img">
-                                <img alt="{{blog.title}}" src="media/{{blog.image}}"/>
+                                <img alt="{{blog.title}}" src="{{blog.image.url}}"/>
                             </div>
                         </div>
                     </div>

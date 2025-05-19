@@ -3,11 +3,11 @@ from datetime import timezone
 
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse
-from django.shortcuts import render, redirect,get_object_or_404
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import authenticate, login, logout
 from django.utils.text import slugify
 
-from .models import Blogs,Comment
+from .models import Blogs, Comment
 
 
 def index(request):
@@ -50,10 +50,9 @@ def Contact(request):
         return HttpResponse(str(e))
 
 
-def AddEditBlog(request,slug=None):
+def AddEditBlog(request, slug=None):
     try:
         result = {'title': '', 'type': '', 'description': ''}
-        print(slug)
         if slug:
             print(slug)
             result = get_object_or_404(Blogs, slug=slug, status=1)
@@ -63,14 +62,12 @@ def AddEditBlog(request,slug=None):
             title = request.POST['title']
             description = request.POST['description']
             image = request.FILES.get('attachment')
-            slug = slugify(title)
-            print(slug)
-
+            new_slug = slugify(title)
             if slug:
                 blog = get_object_or_404(Blogs, slug=slug, status=1)
                 blog.type = type
                 blog.title = title
-                blog.slug = slug
+                blog.slug =  new_slug
                 blog.description = description
                 if image:
                     blog.image = image
@@ -84,10 +81,9 @@ def AddEditBlog(request,slug=None):
                 if not file_type or (not file_type.startswith('image') and file_type != 'application/pdf'):
                     return HttpResponse("Uploaded file is not a valid image or PDF.", status=400)
 
-                print(slug)
-                Blogs.objects.create(title=title, type=type, description=description, image=image,slug=slug)
+                Blogs.objects.create(title=title, type=type, description=description, image=image, slug=new_slug)
 
-        return render(request, 'Cpanel/AddEditBlog.html',{'result' :result})
+        return render(request, 'Cpanel/AddEditBlog.html', {'result': result})
     except Exception as e:
         print('Exception : ', str(e))
         return HttpResponse(str(e))
@@ -96,7 +92,7 @@ def AddEditBlog(request,slug=None):
 def ManageBlogs(request):
     try:
         result = Blogs.objects.filter(status=1)
-        return render(request, 'Cpanel/ManageBlogs.html', {'result' : result })
+        return render(request, 'Cpanel/ManageBlogs.html', {'result': result})
     except Exception as e:
         return HttpResponse(str(e))
 
@@ -104,19 +100,18 @@ def ManageBlogs(request):
 def BlogDetails(request, slug=None):
     try:
         if slug:
-            print(slug)
-            blogList = get_object_or_404(Blogs, slug=slug, status=1)
-            print(blogList)
+            blog = get_object_or_404(Blogs, slug=slug, status=1)
+            blogComments = Comment.objects.filter(status=1, slug=blog.slug)
+            if not blogComments.exists():
+                blogComments = {}
+        blogList = Blogs.objects.filter(status=1).exclude(slug=slug)
 
-        # id = request.GET.get('blogId')
-        # blogList = Blogs.objects.filter(status=1,id=id).get()
-        commentList = Comment.objects.filter(status=1,blog_id=id)
-        if not commentList.exists():
-            commentList = {}
-
-        return render(request, 'partials/BlogDetails.html',{'blog' : blogList,'userComments' : commentList, 'length' : len(commentList) })
+        return render(request, 'partials/BlogDetails.html',
+                      {'blog': blog, 'userComments': blogComments, 'length': len(blogComments),'blogList' : blogList})
     except Exception as e:
-        print(str(e))
+        print('Exception at Blog Details Page :', str(e))
+        return HttpResponse(str('Exception at Blog Details Page :' + str(e)))
+
 
 def userComments(request):
     try:
@@ -124,12 +119,11 @@ def userComments(request):
             user = request.POST['user']
             email = request.POST['email']
             comment = request.POST['comment']
-            hdBlogId = request.POST['hdBlogId']
-            blog = get_object_or_404(Blogs, id=hdBlogId)
-            Comment.objects.create(blog=blog,name=user,email_address=email,comment=comment)
-            return redirect(f'/BlogDetails?blogId={hdBlogId}')  # or use reverse()
-
-
+            slug = request.POST['slug']
+            print(slug)
+            blog = get_object_or_404(Blogs, slug=slug)
+            Comment.objects.create(blog=blog, name=user, email_address=email, comment=comment, slug=slug)
+            return redirect(f'/BlogDetails/{slug}')  # or use reverse()
 
     except Exception as e:
         print('Exception :', str(e))

@@ -37,7 +37,7 @@
         <!-- /.content-header -->
 
         <!-- Main content -->
-        <form action="{% if result %}/AddEditBlog/{{ result.slug }}/{% else %}/AddEditBlog/{% endif %}" enctype="multipart/form-data"
+        <form action="{% if result %}/AddEditBlog/{{ result.slug }}{% else %}AddEditBlog{% endif %}" enctype="multipart/form-data"
               method="POST">
             {% csrf_token %}
 
