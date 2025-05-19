@@ -30,6 +30,7 @@ class Comment(models.Model):
     name = models.CharField(max_length=100)
     email_address = models.EmailField()
     comment = models.TextField()
+    slug = models.SlugField(max_length=255,blank=True)
     status = models.IntegerField(default=1)
 
 
