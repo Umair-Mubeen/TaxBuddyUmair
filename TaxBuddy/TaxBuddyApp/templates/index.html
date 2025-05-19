@@ -458,8 +458,72 @@
     </div>
     <!--=====experience end=======-->
 
+    <!--=====blog start=======-->
+
+    <div class="blog10 sp2" id="blog">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-6">
+                    <div class="headding10">
+                        <span class="span" data-aos="fade-up" data-aos-duration="700"><img
+                                src="{% static 'assets/img/icons/headding10-span-icon.png' %}" alt=""> Blog</span>
+                                        <h2 data-aos="fade-up" data-aos-duration="1000">IRS Matters: Our Blog for Legal Tips and Guidance</h2>
+
+                    </div>
+                </div>
+
+                <div class="col-lg-6">
+                    <div class="blog10-arrows" data-aos="fade-up" data-aos-duration="800">
+                        <div class="blog10-next-arrow">
+                            <button><i class="fa-solid fa-arrow-left"></i></button>
+                        </div>
+                        <div class="blog10-prev-arrow">
+                            <button><i class="fa-solid fa-arrow-right"></i></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="space60"></div>
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="blog10-slider-all" data-aos="fade-up" data-aos-duration="900">
+                        {% for res in result %}
+
+                        <div class="blog10-single-slider single-blog blog-md">
+                            <div class="blog-img">
+                                <a href="/BlogDetails/{{res.slug}}"><img src="media/{{res.image}}" alt="{{res.title}}"></a>
+                            </div>
+
+                            <div class="headding10">
+                                <h4><a href="/BlogDetails/{{res.slug}}">{{res.title}}</a></h4>
+                                <a href="/BlogDetails/{{res.slug}}" class="learn" style="color:black">Learn More <span>
+                                    <i class="fa-solid fa-arrow-right"></i></span></a>
+                            </div>
+                        </div>
+                        {% endfor %}
+
+
+                    </div>
+                </div>
+            </div>
+
+            <div class="space40"></div>
+            <div class="row">
+                <div class="col-lg-12 text-center">
+                    <div class="" data-aos="fade-up" data-aos-duration="800">
+                        <a href="/BlogDetails/{{res.slug}}" class="new-btn7"><span><img src="assets/img/icons/new-btn7-icon.svg"
+                                                                          alt=""></span> Explore Full Blog</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!--=====blog end=======-->
+
     <!--=====Blogs Start Here=======-->
-    <div class="blog-area inner-blog-1 section-padding inner-font-1 service6 sp2" id="blogs">
+    <div class="blog-area inner-blog-1 section-padding inner-font-1" id="blogs">
         <div class="container">
             <div class="row">
                 <div class="col-lg-12 m-auto text-center">
@@ -475,12 +539,12 @@
                 <div class="col-lg-4">
                     <div class="single-blog blog-sm">
                         <div class="blog-img">
-                            <a href=""><img src="media/{{res.image}}" alt=""></a>
+                            <a href="/BlogDetails/{{res.slug}}"><img src="media/{{res.image}}" alt=""></a>
                         </div>
                         <ul class="blog-tags">
                             <li><a href="#">{{res.type}}</a></li>
                         </ul>
-                        <h3><a href="/BlogDetails/{{res.slug}}">{{ res.title }}</a></h3>
+                        <h6><a href="/BlogDetails/{{res.slug}}" style="color:black">{{ res.title }}</a></h6>
                     </div>
                 </div>
                 {% endfor %}
