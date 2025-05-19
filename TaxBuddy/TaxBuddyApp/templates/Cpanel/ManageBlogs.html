@@ -116,11 +116,11 @@
         {% if res.status == 1 %}<span class="badge badge-success">Active</span>{% else %}<span class="badge badge-danger">Inactive</span>{% endif %}
     </td>
     <td>
-        <a href="AddEditBlog/{{ res.slug }}" title="Edit" class="text-primary mr-2">
-            <i class="fa fa-edit"></i>
+        <a href="AddEditBlog/{{ res.slug }}" title="Edit" >
+            <i class="fa fa-edit" style="color:black"></i>
         </a>
-        <a href="AddEditBlog/{{ res.slug }}" title="Delete" class="text-danger">
-            <i class="fa fa-trash"></i>
+        <a href="deleteBlog/{{ res.slug }}" title="Delete">
+            <i class="fa fa-trash" style="color:black"></i>
         </a>
     </td>
 </tr>

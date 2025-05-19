@@ -6,13 +6,12 @@ from django.http import HttpResponse
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import authenticate, login, logout
 from django.utils.text import slugify
-
 from .models import Blogs, Comment
 
 
 def index(request):
     try:
-        result = Blogs.objects.filter(status=1)
+        result = Blogs.objects.filter(status=1, is_deleted=False)
         return render(request, 'index.html', {'result': result})
     except Exception as e:
         return HttpResponse(str(e))
@@ -54,7 +53,7 @@ def AddEditBlog(request, slug=None):
     try:
         result = {'title': '', 'type': '', 'description': ''}
         if slug:
-            result = get_object_or_404(Blogs, slug=slug, status=1)
+            result = get_object_or_404(Blogs, slug=slug, status=1,is_deleted=False)
 
         if request.method == 'POST':
             type = request.POST['type']
@@ -63,7 +62,7 @@ def AddEditBlog(request, slug=None):
             image = request.FILES.get('attachment')
             new_slug = slugify(title)
             if slug:
-                blog = get_object_or_404(Blogs, slug=slug, status=1)
+                blog = get_object_or_404(Blogs, slug=slug, status=1,is_deleted=False)
                 blog.type = type
                 blog.title = title
                 blog.slug =  new_slug
@@ -88,22 +87,34 @@ def AddEditBlog(request, slug=None):
         return HttpResponse(str('Exception at Add Edit Details Page :' + str(e)))
 
 
+def deleteBlog(request, slug=None):
+    try:
+        blogs = Blogs.objects.filter(status=1, slug=slug,is_deleted=False)
+        for blog in blogs:
+            blog.delete()
+        return redirect('ManageBlogs')
+    except Exception as e:
+        print('Exception at Delete Details Page :', str(e))
+        return HttpResponse(str('Exception at Delete Details Page :' + str(e)))
+
+
 def ManageBlogs(request):
     try:
-        result = Blogs.objects.filter(status=1)
+        result = Blogs.objects.filter(status=1, is_deleted=False)
         return render(request, 'Cpanel/ManageBlogs.html', {'result': result})
     except Exception as e:
-        return HttpResponse(str(e))
+        print('Exception at Manage Blog Page :', str(e))
+        return HttpResponse(str('Exception at Manage Blog Page :' + str(e)))
 
 
 def BlogDetails(request, slug=None):
     try:
         if slug:
-            blog = get_object_or_404(Blogs, slug=slug, status=1)
+            blog = get_object_or_404(Blogs, slug=slug, status=1,is_deleted=False)
             blogComments = Comment.objects.filter(status=1, slug=blog.slug)
             if not blogComments.exists():
                 blogComments = {}
-            blogList = Blogs.objects.filter(status=1).exclude(slug=slug)
+            blogList = Blogs.objects.filter(status=1,is_deleted=False).exclude(slug=slug)
 
 
         return render(request, 'partials/BlogDetails.html',{'blog':blog,'userComments':blogComments,'length':len(blogComments),'blogList' : blogList})

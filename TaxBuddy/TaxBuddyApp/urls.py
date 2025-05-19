@@ -17,8 +17,8 @@ urlpatterns = [
     path('Logout', views.Logout, name='Logout'),  # Login Page
     path('Dashboard', views.Dashboard, name='Dashboard'),  # Dashboard Page
     path('AddEditBlog/<slug:slug>/', views.AddEditBlog, name='AddEditBlog'),
-
     path('AddEditBlog/', views.AddEditBlog, name='AddEditBlog'),  # For create without slug
+    path('deleteBlog/<slug:slug>/', views.deleteBlog, name='deleteBlog'),  # For create without slug
 
     path('ManageBlogs', views.ManageBlogs, name='ManageBlogs'),  # ManageBlogsPage
 

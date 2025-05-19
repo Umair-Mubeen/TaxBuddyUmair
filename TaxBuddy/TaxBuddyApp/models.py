@@ -1,5 +1,6 @@
 from django.db import models
 from django.utils.text import slugify
+from django.utils import timezone
 
 
 class Blogs(models.Model):
@@ -18,11 +19,19 @@ class Blogs(models.Model):
     status = models.IntegerField(default=1)
     created_date = models.DateTimeField(auto_now_add=True)
     updated_date = models.DateTimeField(auto_now=True)
+    is_deleted = models.BooleanField(default=False)  # soft delete field
+    deleted_at = models.DateTimeField(null=True, blank=True)
+
 
     def save(self, *args, **kwargs):
         if not self.slug:
             self.slug = slugify(self.title)
         super().save(*args, **kwargs)
+
+    def delete(self, using=None, keep_parents=False):
+        self.is_deleted = True
+        self.deleted_at = timezone.now()
+        self.save()
 
 
 class Comment(models.Model):
