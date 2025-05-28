@@ -26,9 +26,11 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 SECRET_KEY = 'django-insecure-u$h!81vflqq300)2vej654!izdt5$*e1u^x-kiya*as2i(97e_'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['http://taxbuddyumair.com/', '31.97.49.72']
+
 
 
 # Application definition
@@ -86,6 +88,7 @@ DATABASES = {
         'PASSWORD': '',
         'HOST': 'localhost',
         'PORT': '3306',
+
 
     }
 }
