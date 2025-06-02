@@ -21,3 +21,6 @@ DATABASES = {
 
     }
 }
+ROOT_URLCONF = 'TaxBuddy.urls'
+WSGI_APPLICATION = 'TaxBuddy.wsgi.application'
+
