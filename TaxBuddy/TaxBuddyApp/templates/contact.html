@@ -96,7 +96,8 @@
                             <div class="space10"></div>
                             <p>Schedule your appointment with us.</p>
                         </div>
-                        <form action="#">
+                        <form action="contact" method="POST">
+                            {% csrf_token %}
 
                             <div class="form-input-all">
                                 <div class="form-input-box">
@@ -104,16 +105,16 @@
                                         <div class="col-md-6">
                                             <div class="input-single6">
                                                 <div class="">
-                                                    <label for="">First Name</label>
-                                                    <input type="text" placeholder="First Name">
+                                                    <label>First Name</label>
+                                                    <input type="text" placeholder="First Name" name="first_name" required="">
                                                 </div>
                                             </div>
                                         </div>
                                         <div class="col-md-6">
                                             <div class="input-single6">
                                                 <div class="">
-                                                    <label for="">Last Name</label>
-                                                    <input type="text" placeholder="Last Name">
+                                                    <label>Last Name</label>
+                                                    <input type="text" placeholder="Last Name" name="last_name" required="">
                                                 </div>
                                             </div>
                                         </div>
@@ -126,16 +127,16 @@
                                         <div class="col-md-6">
                                             <div class="input-single6">
                                                 <div class="">
-                                                    <label for="">Phone Number</label>
-                                                    <input type="number" placeholder="Phone">
+                                                    <label>Phone Number</label>
+                                                    <input type="number" placeholder="Phone" name="phone_number" required="">
                                                 </div>
                                             </div>
                                         </div>
                                         <div class="col-md-6">
                                             <div class="input-single6">
                                                 <div class="">
-                                                    <label for="">Email Address</label>
-                                                    <input type="email" placeholder="Email Address">
+                                                    <label>Email Address</label>
+                                                    <input type="email" placeholder="Email Address" name="email_address" required="">
                                                 </div>
                                             </div>
                                         </div>
@@ -147,8 +148,8 @@
                                         <div class="col-md-12">
                                             <div class="input-single6">
                                                 <div class="">
-                                                    <label for="">Subject</label>
-                                                    <input type="text" placeholder="Subject">
+                                                    <label>Subject</label>
+                                                    <input type="text" placeholder="Subject" name="subject" required="">
                                                 </div>
                                             </div>
                                         </div>
@@ -156,8 +157,8 @@
                                 </div>
 
                                 <div class="contact6-from-input">
-                                    <label for="">Massage</label>
-                                    <textarea cols="30" rows="3" placeholder="Additional Details"></textarea>
+                                    <label>Massage</label>
+                                    <textarea cols="30" rows="3" placeholder="Additional Details" name="additional_details" required></textarea>
                                 </div>
                                 <div class="space20"></div>
                                 <div class="button6">

@@ -6,7 +6,7 @@ from django.http import HttpResponse
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import authenticate, login, logout
 from django.utils.text import slugify
-from .models import Blogs, Comment
+from .models import Blogs, Comment, Contact
 
 
 def index(request):
@@ -42,11 +42,11 @@ def Dashboard(request):
         return HttpResponse(str(e))
 
 
-def Contact(request):
-    try:
-        return render(request, 'contact.html')
-    except Exception as e:
-        return HttpResponse(str(e))
+# def ContactUs(request):
+#     try:
+#         return render(request, 'contact.html')
+#     except Exception as e:
+#         return HttpResponse(str(e))
 
 
 def AddEditBlog(request, slug=None):
@@ -138,6 +138,24 @@ def userComments(request):
     except Exception as e:
         print('Exception :', str(e))
         return HttpResponse(str(e))
+
+
+def contact(request):
+    try:
+        if request.method == 'POST':
+            first_name = request.POST['first_name']
+            last_name = request.POST['last_name']
+            phone_number = request.POST['phone_number']
+            email_address = request.POST['email_address']
+            subject = request.POST['subject']
+            additional_details = request.POST['additional_details']
+            Contact.objects.create(first_name=first_name, last_name=last_name,
+                                   phone_number=phone_number, email_address=email_address, subject=subject,
+                                   additional_details=additional_details)
+            return redirect('/')
+    except Exception as e:
+        print('Exception at Contact Page :', str(e))
+        return HttpResponse(str('Exception at Contact Page :' + str(e)))
 
 
 def TaxCalculator(request):
