@@ -6,7 +6,7 @@ from . import views
 
 urlpatterns = [
     path('', views.index, name='index'),  # Home Page
-    path('contact-us', views.Contact, name='contact-us'),  # Contact Page
+    # path('contact-us', views.Contact, name='contact-us'),  # Contact Page
     path('TaxCalculator', views.TaxCalculator, name='TaxCalculator'),  # Tax Calculator Page
 
     path('BlogDetails/<slug:slug>/', views.BlogDetails, name='BlogDetails'),  # BlogDetails Page
@@ -21,6 +21,8 @@ urlpatterns = [
     path('deleteBlog/<slug:slug>/', views.deleteBlog, name='deleteBlog'),  # For create without slug
 
     path('ManageBlogs', views.ManageBlogs, name='ManageBlogs'),  # ManageBlogsPage
+
+    path("contact", views.contact, name='contact')
 
 
 ]

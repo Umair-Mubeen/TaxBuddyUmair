@@ -43,3 +43,13 @@ class Comment(models.Model):
     status = models.IntegerField(default=1)
 
 
+class Contact(models.Model):
+    first_name = models.CharField(max_length=100)
+    last_name = models.CharField(max_length=100)
+    phone_number = models.CharField(max_length=15)
+    email_address = models.EmailField()
+    subject = models.CharField(max_length=200)
+    additional_details = models.TextField(blank=True, null=True)
+
+
+
