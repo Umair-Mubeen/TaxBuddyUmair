@@ -6,6 +6,8 @@ from django.http import HttpResponse
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import authenticate, login, logout
 from django.utils.text import slugify
+from django.contrib import messages
+
 from .models import Blogs, Comment, Contact
 
 
@@ -152,10 +154,14 @@ def contact(request):
             Contact.objects.create(first_name=first_name, last_name=last_name,
                                    phone_number=phone_number, email_address=email_address, subject=subject,
                                    additional_details=additional_details)
+            messages.success(request, "Form submitted successfully!")
+
             return redirect('/')
     except Exception as e:
         print('Exception at Contact Page :', str(e))
-        return HttpResponse(str('Exception at Contact Page :' + str(e)))
+        messages.error(request, f"Exception at Contact Page: {str(e)}")
+        return redirect('/')
+        #return HttpResponse(str('Exception at Contact Page :' + str(e)))
 
 
 def TaxCalculator(request):

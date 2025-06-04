@@ -1,6 +1,30 @@
 {% load static %}
 <head>
+
     <title>TaxBuddy Umair</title>
+    <style>
+          .interactive-text {
+    line-height: 1.6;
+    font-size: 1.1rem;
+    max-width: 600px;
+  }
+
+    .highlight {
+    color: green;
+    font-weight: 600;
+    cursor: pointer;
+    transition: color 0.3s ease, text-decoration 0.3s ease;
+  }
+
+  .highlight:hover {
+    text-decoration: underline;
+  }
+
+  .emphasis {
+    font-weight: 700;
+    font-size: 1.15rem;
+  }
+    </style>
     {% include 'partials/head-css.html' %}
     <style> p{text-align: justify;}</style>
 </head>
@@ -18,15 +42,12 @@
             <div class="row align-items-center">
                 <div class="col-lg-6">
                     <div class="titel6-main">
-                        <h1 class="font-f-3" data-aos="fade-right" data-aos-duration="800">Tax preparation to business
-                            services & <span class="after6">legal documents.</span></h1>
+                        <h1 class="font-f-3" data-aos="fade-right" data-aos-duration="800">From Tax Preparation to <span class="after6">Business Services.</span>
+                        </h1>
                         <div class="space10"></div>
 
-                        <p class="font-f-7 mt-3" data-aos="fade-right" data-aos-duration="1100">
-                            TaxBuddy Umair works with businesses of all sizes to get the most deduction possible on
-                            their tax returns.
-                        </p>
-                        <div class="space30"></div>
+                      <p class="font-f-7 mt-3 interactive-text" data-aos="fade-right" data-aos-duration="1100">TaxBuddy Umair works with <span class="highlight">businesses of all sizes</span> to get the <span class="highlight emphasis">most deductions possible</span> on their tax returns.</p>
+  <div class="space30"></div>
 
                         <div class="home6-header-buttons" data-aos="fade-right" data-aos-duration="1500">
                             <div class="button6">
@@ -519,7 +540,7 @@
             <div class="row">
                 <div class="col-lg-12 text-center">
                     <div class="" data-aos="fade-up" data-aos-duration="800">
-                        <a class="new-btn7" href="/BlogDetails/{{res.slug}}"><span><img
+                        <a class="new-btn7" href="#"><span><img
                                 alt=""
                                 src="assets/img/icons/new-btn7-icon.svg"></span> Explore Full Blog</a>
                     </div>
@@ -667,5 +688,6 @@
 
 
 </body>
+
 
 </html>
