@@ -1,6 +1,18 @@
 {% load static %}
+<style>
+.list-group-item.active {
+  background-color: #0a6847 !important;  /* Dark green background */
+  color: white !important;               /* White text */
+  font-weight: bold;
+  border: 2px solid #0a6847;             /* Matching border */
+  border-radius: 8px;                    /* Optional: Rounded like button */
+  transition: all 0.2s ease-in-out;
+}
+
+
+</style>
 <!--=====Header start=======-->
-<header class="header header-6 header-absolute d-none d-lg-block" id="header">
+<header class="header header-6 header-absolute d-none d-lg-block sticky-top shadow-sm bg-white" id="header">
     <div class="container">
         <div class="row">
             <div class="col-12">
@@ -18,13 +30,15 @@
                                     </li>
                                     <li><a class="list-group-item list-group-item-action" href="#service">services</a>
                                     </li>
-                                    <li><a class="list-group-item list-group-item-action" href="#blogs">Income Tax</a>
+                                    <li><a class="list-group-item list-group-item-action" href="#IncomeTax">
+                                        <i class="fas fa-landmark"></i> Income Tax</a>
                                     </li>
-                                    <li><a class="list-group-item list-group-item-action" href="#blogs">Sales Tax</a>
+                                    <li><a class="list-group-item list-group-item-action" href="#SalesTax">
+                                        <i class="fas fa-receipt"></i> Sales Tax</a>
                                     </li>
 
-                                    <li><a class="list-group-item list-group-item-action" href="#blogs">Tax
-                                        Calculator</a>
+                                    <li><a class="list-group-item list-group-item-action" href="#TaxCalculator">
+                                        <i class="fas fa-calculator"></i>  Tax Calculator</a>
 
                                     </li>
 
@@ -102,3 +116,16 @@
     </div>
 </div>
 <!--=====Mobile header end=======-->
+<script>
+  const menuItems = document.querySelectorAll('.menu_list .list-group-item');
+
+  menuItems.forEach(item => {
+    item.addEventListener('click', () => {
+      // Remove active from all
+      menuItems.forEach(link => link.classList.remove('active'));
+
+      // Add to clicked one
+      item.classList.add('active');
+    });
+  });
+</script>
