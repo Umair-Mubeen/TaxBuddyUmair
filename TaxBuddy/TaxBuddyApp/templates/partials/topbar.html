@@ -9,8 +9,18 @@
   transition: all 0.2s ease-in-out;
 }
 
+.mobile-sidebar {
+  transform: translateX(-100%);
+  transition: 0.3s ease;
+  position: fixed;
+  z-index: 9999;
+  width: 300px;
+  height: 100vh;
+}
 
-
+.mobile-sidebar.active {
+  transform: translateX(0);
+}
 
 
 </style>
@@ -113,6 +123,7 @@
     <div class="mobile-nav">
 
         <ul class="mobile-nav-list">
+            <li><a class="list-group-item list-group-item-action" href="/">Home</a></li>
             <li><a class="list-group-item list-group-item-action" href="#about">About</a></li>
             <li><a class="list-group-item list-group-item-action" href="#work">How It Work</a></li>
             <li><a class="list-group-item list-group-item-action" href="#service">services</a></li>
@@ -164,4 +175,31 @@
 
 
 
+</script>
+
+
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    const sidebar = document.querySelector('.mobile-sidebar');
+    const toggleIcon = document.querySelector('.mobile-nav-icon');
+    const closeIcon = document.querySelector('.menu-close');
+    const navLinks = document.querySelectorAll('.mobile-nav-list a');
+
+    // Open sidebar
+    toggleIcon.addEventListener('click', () => {
+      sidebar.classList.add('active');
+    });
+
+    // Close sidebar on close icon
+    closeIcon.addEventListener('click', () => {
+      sidebar.classList.remove('active');
+    });
+
+    // Close sidebar when any nav link is clicked
+    navLinks.forEach(link => {
+      link.addEventListener('click', () => {
+        sidebar.classList.remove('active');
+      });
+    });
+  });
 </script>
