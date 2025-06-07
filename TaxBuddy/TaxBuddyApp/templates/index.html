@@ -2,29 +2,7 @@
 <head>
 
     <title>TaxBuddy Umair</title>
-    <style>
-          .interactive-text {
-    line-height: 1.6;
-    font-size: 1.1rem;
-    max-width: 600px;
-  }
-
-    .highlight {
-    color: green;
-    font-weight: 600;
-    cursor: pointer;
-    transition: color 0.3s ease, text-decoration 0.3s ease;
-  }
-
-  .highlight:hover {
-    text-decoration: underline;
-  }
-
-  .emphasis {
-    font-weight: 700;
-    font-size: 1.15rem;
-  }
-    </style>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
     {% include 'partials/head-css.html' %}
     <style> p{text-align: justify;}</style>
 </head>
@@ -42,12 +20,15 @@
             <div class="row align-items-center">
                 <div class="col-lg-6">
                     <div class="titel6-main">
-                        <h1 class="font-f-3" data-aos="fade-right" data-aos-duration="800">From Tax Preparation to <span class="after6">Business Services.</span>
+                        <h1 class="font-f-3" data-aos="fade-right" data-aos-duration="800">From Tax Preparation to <span
+                                class="after6">Business Services.</span>
                         </h1>
                         <div class="space10"></div>
 
-                      <p class="font-f-7 mt-3 interactive-text" data-aos="fade-right" data-aos-duration="1100">TaxBuddy Umair works with <span class="highlight">businesses of all sizes</span> to get the <span class="highlight emphasis">most deductions possible</span> on their tax returns.</p>
-  <div class="space30"></div>
+                        <p class="font-f-7" data-aos="fade-right" data-aos-duration="1100">
+                            TaxBuddy Umair works with <span class="highlight">businesses of all sizes</span> to get the
+                            <span class="highlight emphasis">most deductions possible</span> on their tax returns.</p>
+                        <div class="space30"></div>
 
                         <div class="home6-header-buttons" data-aos="fade-right" data-aos-duration="1500">
                             <div class="button6">
@@ -62,20 +43,20 @@
 
                     </div>
                 </div>
-                <div class="col-lg-6 img-responsive">
+                <div class="col-lg-6 img-responsive mb-10">
                     <div class="home6-header-images">
-                        <div class="home6-header-img1 aniamtion-key-5">
-                            <img alt="" src="{% static 'assets/img/shapes/header6-main-shpe.svg' %}">
-                        </div>
+<!--                        <div class="home6-header-img1 aniamtion-key-5">-->
+<!--                            <img alt="" src="{% static 'assets/img/shapes/header6-main-shpe.svg' %}">-->
+<!--                        </div>-->
                         <div class="home6-header-img2" data-aos="zoom-out" data-aos-duration="800">
-                            <img alt="" src="{% static 'assets/img/image/home6-main-header.png' %}">
+                            <img class="img-responsive" src="{% static 'assets/img/image/home6-main-header.png' %}">
                         </div>
-                        <div class="home6-header-img3 aniamtion-key-1" data-aos="zoom-out" data-aos-duration="1200">
-                            <img alt="" src="{% static 'assets/img/shapes/header6-shape1.svg' %}">
-                        </div>
-                        <div class="home6-header-img4 aniamtion-key-1" data-aos="zoom-out" data-aos-duration="1200">
-                            <img alt="" src="{% static 'assets/img/shapes/header6-shape2.svg' %}">
-                        </div>
+<!--                        <div class="home6-header-img3 aniamtion-key-1" data-aos="zoom-out" data-aos-duration="1200">-->
+<!--                            <img alt="" src="{% static 'assets/img/shapes/header6-shape1.svg' %}">-->
+<!--                        </div>-->
+<!--                        <div class="home6-header-img4 aniamtion-key-1" data-aos="zoom-out" data-aos-duration="1200">-->
+<!--                            <img alt="" src="{% static 'assets/img/shapes/header6-shape2.svg' %}">-->
+<!--                        </div>-->
                     </div>
                 </div>
 
@@ -552,35 +533,35 @@
     <!--=====blog end=======-->
 
     <!--=====Blogs Start Here=======-->
-    <div class="blog-area inner-blog-1 section-padding inner-font-1" id="blogs">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-12 m-auto text-center">
-                    <div class="hadding6">
-                        <h1 class="font-f-7" data-aos="fade-up" data-aos-duration="200">TaxBuddy Umair aims to
-                            <strong><span class="after6">educate people regarding Taxes.</span></strong></h1>
-                    </div>
-                </div>
-            </div>
+    <!--    <div class="blog-area inner-blog-1 section-padding inner-font-1" id="blogs">-->
+    <!--        <div class="container">-->
+    <!--            <div class="row">-->
+    <!--                <div class="col-lg-12 m-auto text-center">-->
+    <!--                    <div class="hadding6">-->
+    <!--                        <h1 class="font-f-7" data-aos="fade-up" data-aos-duration="200">TaxBuddy Umair aims to-->
+    <!--                            <strong><span class="after6">educate people regarding Taxes.</span></strong></h1>-->
+    <!--                    </div>-->
+    <!--                </div>-->
+    <!--            </div>-->
 
-            <div class="row">
-                {% for res in result %}
-                <div class="col-lg-4">
-                    <div class="single-blog blog-sm">
-                        <div class="blog-img">
-                            <a href="/BlogDetails/{{res.slug}}"><img alt="" src="media/{{res.image}}"></a>
-                        </div>
-                        <ul class="blog-tags">
-                            <li><a href="#">{{res.type}}</a></li>
-                        </ul>
-                        <h6><a href="/BlogDetails/{{res.slug}}" style="color:black">{{ res.title }}</a></h6>
-                    </div>
-                </div>
-                {% endfor %}
+    <!--            <div class="row">-->
+    <!--                {% for res in result %}-->
+    <!--                <div class="col-lg-4">-->
+    <!--                    <div class="single-blog blog-sm">-->
+    <!--                        <div class="blog-img">-->
+    <!--                            <a href="/BlogDetails/{{res.slug}}"><img alt="" src="media/{{res.image}}"></a>-->
+    <!--                        </div>-->
+    <!--                        <ul class="blog-tags">-->
+    <!--                            <li><a href="#">{{res.type}}</a></li>-->
+    <!--                        </ul>-->
+    <!--                        <h6><a href="/BlogDetails/{{res.slug}}" style="color:black">{{ res.title }}</a></h6>-->
+    <!--                    </div>-->
+    <!--                </div>-->
+    <!--                {% endfor %}-->
 
-            </div>
-        </div>
-    </div>
+    <!--            </div>-->
+    <!--        </div>-->
+    <!--    </div>-->
     <!--=====Blogs Ends Here=======-->
 
 </div>
