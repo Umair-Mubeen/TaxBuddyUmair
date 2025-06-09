@@ -55,7 +55,7 @@ def AddEditBlog(request, slug=None):
     try:
         result = {'title': '', 'type': '', 'description': ''}
         if slug:
-            result = get_object_or_404(Blogs, slug=slug, status=1,is_deleted=False)
+            result = get_object_or_404(Blogs, slug=slug, status=1, is_deleted=False)
 
         if request.method == 'POST':
             type = request.POST['type']
@@ -64,10 +64,10 @@ def AddEditBlog(request, slug=None):
             image = request.FILES.get('attachment')
             new_slug = slugify(title)
             if slug:
-                blog = get_object_or_404(Blogs, slug=slug, status=1,is_deleted=False)
+                blog = get_object_or_404(Blogs, slug=slug, status=1, is_deleted=False)
                 blog.type = type
                 blog.title = title
-                blog.slug =  new_slug
+                blog.slug = new_slug
                 blog.description = description
                 if image:
                     blog.image = image
@@ -91,7 +91,7 @@ def AddEditBlog(request, slug=None):
 
 def deleteBlog(request, slug=None):
     try:
-        blogs = Blogs.objects.filter(status=1, slug=slug,is_deleted=False)
+        blogs = Blogs.objects.filter(status=1, slug=slug, is_deleted=False)
         for blog in blogs:
             blog.delete()
         return redirect('ManageBlogs')
@@ -112,14 +112,14 @@ def ManageBlogs(request):
 def BlogDetails(request, slug=None):
     try:
         if slug:
-            blog = get_object_or_404(Blogs, slug=slug, status=1,is_deleted=False)
+            blog = get_object_or_404(Blogs, slug=slug, status=1, is_deleted=False)
             blogComments = Comment.objects.filter(status=1, slug=blog.slug)
             if not blogComments.exists():
                 blogComments = {}
-            blogList = Blogs.objects.filter(status=1,is_deleted=False).exclude(slug=slug)
+            blogList = Blogs.objects.filter(status=1, is_deleted=False).exclude(slug=slug)
 
-
-        return render(request, 'partials/BlogDetails.html',{'blog':blog,'userComments':blogComments,'length':len(blogComments),'blogList' : blogList})
+        return render(request, 'partials/BlogDetails.html',
+                      {'blog': blog, 'userComments': blogComments, 'length': len(blogComments), 'blogList': blogList})
     except Exception as e:
         print('Exception at Blog Details Page :', str(e))
         return HttpResponse(str('Exception at Blog Details Page :' + str(e)))
@@ -161,7 +161,13 @@ def contact(request):
         print('Exception at Contact Page :', str(e))
         messages.error(request, f"Exception at Contact Page: {str(e)}")
         return redirect('/')
-        #return HttpResponse(str('Exception at Contact Page :' + str(e)))
+
+
+def NTNRegistration(request):
+    try:
+            return render(request, 'registration.html')
+    except Exception as e:
+            print("Exception at NTN Registration Page :", str(e))
 
 
 def TaxCalculator(request):
