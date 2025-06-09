@@ -22,8 +22,8 @@ urlpatterns = [
 
     path('ManageBlogs', views.ManageBlogs, name='ManageBlogs'),  # ManageBlogsPage
 
-    path("contact", views.contact, name='contact')
-
+    path("contact", views.contact, name='contact'),
+    path("ntn-registration", views.NTNRegistration, name='ntn-registration')
 
 ]
 if settings.DEBUG:
