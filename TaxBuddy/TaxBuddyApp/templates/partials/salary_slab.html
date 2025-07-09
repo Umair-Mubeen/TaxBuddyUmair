@@ -12,6 +12,13 @@
     {% load static %}
     {% include 'partials/head-css.html' %}
     <style> p{text-align: justify;}
+        h1,th,td{font-weight: normal;}
+       .input-single6 select,
+.input-single6 input {
+    width: 100%;
+    box-sizing: border-box;
+}
+
 
 
 
@@ -23,7 +30,7 @@
 <!--=====Navigation Bar Ends Here=======-->
 
 
-<!--=====contact start=======-->
+<!--=====Income Tax Calculator  =======-->
 <div class="contct6 sp2" id="contact">
     <div class="container">
         <div class="row">
@@ -35,52 +42,70 @@
                             Income Tax Calculator</h1>
                         <div class="space10"></div>
                     </div>
-                    <form action="contact" method="POST">
-                        {% csrf_token %}
+<form id="incomeForm" action="/Calculator" method="POST">
+    {% csrf_token %}
 
-                        <div class="form-input-all">
-                            <div class="form-input-box">
+    <div class="form-input-all">
+        <div class="form-input-box">
+            <div class="row">
+                <!-- Income Type -->
+                <!-- Income Type -->
+<div class="col-md-4">
+  <div class="input-single6">
+    <label>Select Income Type</label>
+    <select class="form-control" name="income_type" id="incomeTypeSelect" required>
+      <option disabled selected value=""> Select Income Type</option>
+      <option value="Monthly"> Monthly Income</option>
+      <option value="Yearly"> Yearly Income</option>
+    </select>
+  </div>
+</div>
 
-                                <div class="row">
+<!-- Taxpayer Type -->
+<div class="col-md-4">
+  <div class="input-single6">
+    <label>Select Taxpayer Type</label>
+    <select class="form-control" name="taxpayer_type" id="taxpayerTypeSelect" required>
+      <option disabled selected value=""> Select TaxPayer Type</option>
+      <option value="salaried"> Salaried Person</option>
+      <option value="business"> Business</option>
+    </select>
+  </div>
+</div>
 
-                                    <div class="col-md-6">
-                                        <div class="input-single6">
-                                            <div class="">
-                                                <label>Select Income Type</label>
-                                                <select class="form-control" name="income_type" required>
-                                                    <option disabled selected value=""> Select Income Type</option>
-                                                    <option value="Monthly"> Monthly Income</option>
-                                                    <option value="Yearly"> Yearly Income</option>
-
-                                                </select>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <div class="col-md-6">
-                                        <div class="input-single6">
-                                            <div class="">
-                                                <label>Select Income Type</label>
-                                                <select class="form-control" name="income_type" required>
-                                                    <option disabled selected value=""> Select TaxPayer Type</option>
-                                                    <option value="salaried"> Salaried Person</option>
-                                                    <option value="business"> Business</option>
-
-                                                </select>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+<!-- Monthly Income -->
+<div class="col-md-4">
+  <div class="input-single6">
+    <label>Monthly Income</label>
+    <input type="number" name="income_amount" id="incomeAmountInput" class="form-control w-100" required  />
+  </div>
+</div>
 
 
-                            <div class="space20"></div>
-                            <div class="col-lg-12">
+            </div>
+        </div>
+    </div>
+</form>
+
+                </div>
+            </div>
+
+        </div>
+
+
+    </div>
+</div>
+<!--=====Income Tax Calculator end=======-->
+
+<div class="contct6 sp2 pb-10">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                    <div class="contact3-form-all" data-aos="zoom-out" data-aos-duration="900">
+                        <div class="hadding6">
                                 <div class="input-single6">
                                     <div class="text-center">
-                                        <label class=""><h1> Tax Calculation Comparison: {{tax_2023_year}} vs.
-                                            {{tax_2024_year}} </h1></label>
-                                    </div>
+                                        <h1 class="font-30 font-f-7 font-lg-40 weight-500  line-height-lg-48 line-height-38">Tax Calculation Comparison: {{tax_2023_year}} vs. {{tax_2024_year}}</h1></div>
                                 </div>
                                 <div class="row">
                                     <div class="col-md-6">
@@ -93,8 +118,7 @@
                                                 </tr>
                                                 <tr>
                                                     <th scope="row">Applicable Tax Bracket</th>
-                                                    <td>Rs. {{ tax_2023.lower|intcomma }} to Rs. {{
-                                                        tax_2023.upper|intcomma }}
+                                                    <td>Rs. {{ tax_2023.lower|intcomma }}
                                                     </td>
                                                 </tr>
                                                 <tr class="bg-light">
@@ -108,7 +132,7 @@
                                                 <tr>
                                                     <th scope="row">Rate Applied</th>
                                                     <td class="{% if tax_2023.rate != 0 %}text-white{% else %}bg-light{% endif %}">
-                                                        {{ tax_2023.rate }}%
+                                                        {{ tax_2023.rate }} %
                                                     </td>
                                                 </tr>
                                                 <tr class="bg-light">
@@ -154,8 +178,7 @@
                                                 </tr>
                                                 <tr>
                                                     <th>Applicable Tax Bracket</th>
-                                                    <td>Rs. {{ tax_2024.lower|intcomma }} to Rs. {{
-                                                        tax_2024.upper|intcomma }}
+                                                    <td>Rs. {{ tax_2024.lower|intcomma }}
                                                     </td>
                                                 </tr>
                                                 <tr class="bg-light">
@@ -169,7 +192,7 @@
                                                 <tr>
                                                     <th>Rate Applied</th>
                                                     <td class="{% if tax_2024.rate != 0 %}{% else  %}bg-light{% endif %}">
-                                                        {{ tax_2024.rate }}%
+                                                        {{ tax_2024.rate }} %
                                                     </td>
                                                 </tr>
                                                 <tr class="bg-light">
@@ -215,20 +238,12 @@
 
                                 </div>
                                 </div>
-
-
-                            </div>
                         </div>
-                    </form>
-                </div>
+                    </div>
             </div>
 
         </div>
     </div>
-</div>
-
-
-<!--=====contact end=======-->
 
 
 {% include 'partials/footer.html' %}
@@ -238,3 +253,20 @@
 
 </body>
 </html>
+<script>
+    // Get references
+    const form = document.getElementById('incomeForm');
+    const incomeType = document.getElementById('incomeType');
+    const taxpayerType = document.getElementById('taxpayerType');
+
+    // Trigger form submit when both are selected
+    function maybeSubmitForm() {
+        if (incomeType.value && taxpayerType.value) {
+            form.submit(); // Submit the form
+        }
+    }
+
+    // Add event listeners
+    incomeType.addEventListener('change', maybeSubmitForm);
+    taxpayerType.addEventListener('change', maybeSubmitForm);
+</script>
