@@ -248,6 +248,7 @@ def SalarySlab(request):
                 'income_type': income_type,
                 'taxpayer_type': taxpayer_type
             }
+            print(context)
             return render(request, 'partials/salary_slab.html', context=context)
 
         context = {
