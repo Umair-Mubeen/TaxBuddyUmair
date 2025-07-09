@@ -22,7 +22,7 @@ urlpatterns = [
     path('ManageBlogs', views.ManageBlogs, name='ManageBlogs'),  # ManageBlogsPage
 
     path("contact", views.contact, name='contact'),
-    path("salary-slab", views.SalarySlab, name='salarySlab'),
+    path("Calculator", views.SalarySlab, name='Calculator'),
 
 ]
 if settings.DEBUG:

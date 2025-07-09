@@ -44,13 +44,6 @@ def Dashboard(request):
         return HttpResponse(str(e))
 
 
-# def ContactUs(request):
-#     try:
-#         return render(request, 'contact.html')
-#     except Exception as e:
-#         return HttpResponse(str(e))
-
-
 def AddEditBlog(request, slug=None):
     try:
         result = {'title': '', 'type': '', 'description': ''}
