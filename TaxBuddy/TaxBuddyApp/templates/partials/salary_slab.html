@@ -36,8 +36,16 @@
         font-size: 14px;
     }
     table.table th, table.table td {
-        white-space: nowrap;
-    }
+    white-space: normal;       /* Allow wrapping */
+    word-break: break-word;    /* Break long numbers/words if needed */
+}
+
+.container, .row {
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+}
+
+
 }
 </style>
 
