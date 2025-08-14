@@ -13,12 +13,6 @@
     {% include 'partials/head-css.html' %}
     <style>
         h1,th,td{font-weight: normal;}
-
-
-    </style>
-
-
-<style>
 /* Mobile-specific adjustments */
 @media (max-width: 576px) {
     .input-single6 label {
@@ -26,7 +20,7 @@
     }
     .form-control {
         font-size: 14px;
-        padding: 8px;
+        padding : 8px;
     }
     h1 {
         font-size: 20px !important;
@@ -98,13 +92,14 @@
                                     <div class="col-12 col-md-3">
                                         <div class="input-single6">
                                             <label>Monthly Income - Gross</label>
-                                            <input class="form-control" id="incomeAmountInput" name="income_amount"
+                                            <input class="form-control" id="incomeAmountInput" name="income_amount" style="padding: 6px"
                                                    placeholder="Monthly Income" required type="number" />
                                         </div>
                                     </div>
 
+
                                     <!-- Submit Button -->
-                                    <div class="col-12 col-md-3 d-flex align-items-end">
+                                    <div class="col-12 col-md-3 d-flex align-items-end mb-3 mb-md-0">
                                         <input class="btn btn-primary w-100" id="submit_button" name="submit" type="submit" value="Calculate"/>
                                     </div>
                                 </div>
@@ -146,7 +141,7 @@
                                         <tr><th>Surcharge 10%</th><td>Rs. {{ tax_2024_2025.surcharge|intcomma }}</td></tr>
                                         <tr><th>Total Tax U/S 4AB</th><td>Rs. {{ tax_2024_2025.total_tax_with_surcharge|intcomma }}</td></tr>
                                     {% else %}
-                                        <tr><th>Tax on Amount Exceeding</th><td>Rs. {{ tax_2024_2025.tax_on_exceeding|intcomma }}</td></tr>
+<!--                                        <tr><th>Tax on Amount Exceeding</th><td>Rs. {{ tax_2024_2025.tax_on_exceeding|intcomma }}</td></tr>-->
                                         <tr><th>Total Tax Chargeable</th><td>Rs. {{ tax_2024_2025.total_tax|intcomma }}</td></tr>
                                     {% endif %}
 
@@ -172,7 +167,7 @@
                                         <tr><th>Surcharge 9%</th><td>Rs. {{ tax_2025_2026.surcharge|intcomma }}</td></tr>
                                         <tr><th>Total Tax U/S 4AB</th><td>Rs. {{ tax_2025_2026.total_tax_with_surcharge|intcomma }}</td></tr>
                                     {% else %}
-                                        <tr><th>Tax on Amount Exceeding</th><td>Rs. {{ tax_2025_2026.tax_on_exceeding|intcomma }}</td></tr>
+<!--                                        <tr><th>Tax on Amount Exceeding</th><td>Rs. {{ tax_2025_2026.tax_on_exceeding|intcomma }}</td></tr>-->
                                         <tr><th>Total Tax Chargeable</th><td>Rs. {{ tax_2025_2026.total_tax|intcomma }}</td></tr>
                                     {% endif %}
 
