@@ -2,10 +2,11 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="TaxBuddy Umair – Expert Tax Consulting for Individuals and Businesses in Pakistan">
-    <meta name="keywords" content="TaxBuddy, FBR, Income Tax, Sales Tax, Pakistan, Property Tax">
-    <meta name="author" content="Umair Mubeen">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <meta content="TaxBuddy Umair – Expert Tax Consulting for Individuals and Businesses in Pakistan"
+          name="description">
+    <meta content="TaxBuddy, FBR, Income Tax, Sales Tax, Pakistan, Property Tax" name="keywords">
+    <meta content="Umair Mubeen" name="author">
     <title>TaxBuddy Umair</title>
     {% load static %}
     {% include 'partials/head-css.html' %}
@@ -52,8 +53,8 @@
                         <!--                            <img alt="header6-shape" src="{% static 'assets/img/shapes/header6-main-shpe.svg' %}">-->
                         <!--                        </div>-->
                         <div class="home6-header-img2" data-aos="zoom-out" data-aos-duration="800">
-<!--                            <img alt="header-image" class="img-responsive"-->
-<!--                                 src="{% static 'assets/img/image/home6-main-header.png' %}">-->
+                            <!--                            <img alt="header-image" class="img-responsive"-->
+                            <!--                                 src="{% static 'assets/img/image/home6-main-header.png' %}">-->
                         </div>
                         <!--                        <div class="home6-header-img3 aniamtion-key-1" data-aos="zoom-out" data-aos-duration="1200">-->
                         <!--                            <img alt="header6-shape1" src="{% static 'assets/img/shapes/header6-shape1.svg' %}">-->
@@ -274,7 +275,8 @@
             <div class="row align-items-center">
                 <div class="col-lg-6">
                     <div class="hadding6 tesive6-hadding">
-                        <h1 class="font-f-3" data-aos="fade-right" data-aos-duration="700">Get the Compensation Your <span class="after6">Hard Work Deserves.</span></h1>
+                        <h1 class="font-f-3" data-aos="fade-right" data-aos-duration="700">Get the Compensation Your
+                            <span class="after6">Hard Work Deserves.</span></h1>
                         <div class="space10"></div>
                         <p class="font-f-7" data-aos="fade-right" data-aos-duration="900">Experienced, knowledgeable
                             professionals in Property Tax Consulting. Our team of Property Tax Consultants is committed
@@ -282,13 +284,14 @@
                             residential properties.</p>
                         <div class="space30"></div>
                         <div class="button6" data-aos="fade-right" data-aos-duration="700">
-                            <a href="#contact">Schedule your appointment <span><i class="fa-solid fa-arrow-right"></i></span>
+                            <a href="#contact">Schedule your appointment <span><i
+                                    class="fa-solid fa-arrow-right"></i></span>
                             </a>
                         </div>
-<!--                        <div class="resive-button" data-aos="fade-right" data-aos-duration="800">-->
-<!--                            <a class="font-f-7" href="">More information about Tax Services <span><i-->
-<!--                                    class="fa-solid fa-arrow-right"></i></span></a>-->
-<!--                        </div>-->
+                        <!--                        <div class="resive-button" data-aos="fade-right" data-aos-duration="800">-->
+                        <!--                            <a class="font-f-7" href="">More information about Tax Services <span><i-->
+                        <!--                                    class="fa-solid fa-arrow-right"></i></span></a>-->
+                        <!--                        </div>-->
                     </div>
                 </div>
                 <div class="col-lg-6">
@@ -478,67 +481,95 @@
 
     <!--=====blog start=======-->
 
-    <div class="blog10 sp2" id="blog">
+    <div class="blog-area inner-blog-1 section-padding inner-font-1">
         <div class="container">
-            <div class="row align-items-center">
-                <div class="col-lg-6">
-                    <div class="headding10">
-                        <span class="span" data-aos="fade-up" data-aos-duration="700"><img
-                                alt="service6-icon1" src="{% static 'assets/img/icons/headding10-span-icon.png' %}"> Blog</span>
-                        <h2 data-aos="fade-up" data-aos-duration="1000">IRS Matters: Our Blog for Legal Tips and
-                            Guidance</h2>
 
-                    </div>
-                </div>
+            <div class="row" id="masonry-grid">
 
-                <div class="col-lg-6">
-                    <div class="blog10-arrows" data-aos="fade-up" data-aos-duration="800">
-                        <div class="blog10-next-arrow">
-                            <button><i class="fa-solid fa-arrow-left"></i></button>
+                {% for res in result %}
+
+                <div class="col-md-6 col-lg-4 mesonry-item design marketing stories lifestyle">
+                    <div class="single-blog blog-sm">
+                        <div class="blog-img">
+                            <a href="/BlogDetails/{{res.slug}}"><img alt="{{res.title}}" src="media/{{res.image}}"/>
+                            </a>
                         </div>
-                        <div class="blog10-prev-arrow">
-                            <button><i class="fa-solid fa-arrow-right"></i></button>
-                        </div>
+                        <ul class="blog-tags">
+                            <li><a href="#">{{res.type}}</a></li>
+                        </ul>
+                        <h3>
+                            <a href="/BlogDetails/{{res.slug}}" style="font-size:20px">{{res.title}}</a>
+                        </h3>
                     </div>
                 </div>
-            </div>
-
-            <div class="space60"></div>
-            <div class="row">
-                <div class="col-lg-12">
-                    <div class="blog10-slider-all" data-aos="fade-up" data-aos-duration="900">
-                        {% for res in result %}
-
-                        <div class="blog10-single-slider single-blog blog-md">
-                            <div class="blog-img">
-                                <a href="/BlogDetails/{{res.slug}}"><img alt="{{res.title}}" src="media/{{res.image}}"></a>
-                            </div>
-
-                            <div class="headding10">
-                                <h6><a href="/BlogDetails/{{res.slug}}" style="color:black">{{res.title}}</a></h6>
-                                <a class="learn" href="/BlogDetails/{{res.slug}}" style="color:black">Learn More <span>
-                                    <i class="fa-solid fa-arrow-right"></i></span></a>
-                            </div>
-                        </div>
-                        {% endfor %}
-
-
-                    </div>
-                </div>
-            </div>
-
-            <div class="space40"></div>
-            <div class="row">
-                <div class="col-lg-12 text-center">
-                    <div class="" data-aos="fade-up" data-aos-duration="800">
-                        <a class="new-btn7" href="#"><span><img
-                                alt="image"
-                                src="{% static 'assets/img/icons/new-btn7-icon.svg' %}"></span> Explore Full Blog</a>
-                    </div>
-                </div>
+                {% endfor%}
             </div>
         </div>
     </div>
+
+<!--    <div class="blog10 sp2" id="blog">-->
+<!--        <div class="container">-->
+<!--            <div class="row align-items-center">-->
+<!--                <div class="col-lg-6">-->
+<!--                    <div class="headding10">-->
+<!--                        <span class="span" data-aos="fade-up" data-aos-duration="700"><img-->
+<!--                                alt="service6-icon1" src="{% static 'assets/img/icons/headding10-span-icon.png' %}"> Blog</span>-->
+<!--                        <h2 data-aos="fade-up" data-aos-duration="1000">IRS Matters: Our Blog for Legal Tips and-->
+<!--                            Guidance</h2>-->
+
+<!--                    </div>-->
+<!--                </div>-->
+
+<!--                <div class="col-lg-6">-->
+<!--                    <div class="blog10-arrows" data-aos="fade-up" data-aos-duration="800">-->
+<!--                        <div class="blog10-next-arrow">-->
+<!--                            <button><i class="fa-solid fa-arrow-left"></i></button>-->
+<!--                        </div>-->
+<!--                        <div class="blog10-prev-arrow">-->
+<!--                            <button><i class="fa-solid fa-arrow-right"></i></button>-->
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                </div>-->
+<!--            </div>-->
+
+<!--            <div class="space60"></div>-->
+
+
+<!--            <div class="row">-->
+<!--                <div class="col-lg-12">-->
+<!--                    <div class="blog10-slider-all" data-aos="fade-up" data-aos-duration="900">-->
+<!--                        {% for res in result %}-->
+
+<!--                        <div class="blog10-single-slider single-blog blog-md">-->
+<!--                            &lt;!&ndash;                            <div class="blog-img">&ndash;&gt;-->
+<!--                            &lt;!&ndash;                                <a href="/BlogDetails/{{res.slug}}"><img alt="{{res.title}}" src="media/{{res.image}}"></a>&ndash;&gt;-->
+<!--                            &lt;!&ndash;                            </div>&ndash;&gt;-->
+
+<!--                            <div class="headding10">-->
+<!--                                <h6><a href="/BlogDetails/{{res.slug}}" style="color:black">{{res.title}}</a></h6>-->
+<!--                                <a class="learn" href="/BlogDetails/{{res.slug}}" style="color:black">Learn More <span>-->
+<!--                                    <i class="fa-solid fa-arrow-right"></i></span></a>-->
+<!--                            </div>-->
+<!--                        </div>-->
+<!--                        {% endfor %}-->
+
+
+<!--                    </div>-->
+<!--                </div>-->
+<!--            </div>-->
+
+<!--            <div class="space40"></div>-->
+<!--            <div class="row">-->
+<!--                <div class="col-lg-12 text-center">-->
+<!--                    <div class="" data-aos="fade-up" data-aos-duration="800">-->
+<!--                        <a class="new-btn7" href="#"><span><img-->
+<!--                                alt="image"-->
+<!--                                src="{% static 'assets/img/icons/new-btn7-icon.svg' %}"></span> Explore Full Blog</a>-->
+<!--                    </div>-->
+<!--                </div>-->
+<!--            </div>-->
+<!--        </div>-->
+<!--    </div>-->
 
 
 </div>

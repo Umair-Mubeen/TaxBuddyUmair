@@ -1,6 +1,8 @@
 from .base import *
 
 DEBUG = False
+MEDIA_URL = '/media/'
+MEDIA_ROOT = '/root/TaxBuddyUmair/TaxBuddy/media'
 
 ALLOWED_HOSTS = ['taxbuddyumair.com', 'www.taxbuddyumair.com', '.taxbuddyumair.com', '31.97.49.72']
 
