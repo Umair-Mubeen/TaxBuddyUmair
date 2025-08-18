@@ -23,6 +23,7 @@ urlpatterns = [
 
     path("contact", views.contact, name='contact'),
     path("Calculator", views.SalarySlab, name='Calculator'),
+    path("PropertyCalculator", views.PropertyCalculator, name='PropertyCalculator'),
 
 ]
 if settings.DEBUG:

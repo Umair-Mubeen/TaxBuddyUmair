@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+{% load humanize %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <meta content="TaxBuddy Umair – Expert Tax Consulting for Individuals and Businesses in Pakistan"
+          name="description">
+    <meta content="TaxBuddy, FBR, Income Tax, Sales Tax, Pakistan, Property Tax" name="keywords">
+    <meta content="Umair Mubeen" name="author">
+    <title>TaxBuddy Umair | Property | Income Tax Calculator</title>
+    {% load static %}
+    {% include 'partials/head-css.html' %}
+    <style>
+        /* Keep table compact and text wrapping for mobile */
+        .table td, .table th {
+            white-space: nowrap; /* Prevents breaking in large screens */
+        }
+        @media (max-width: 576px) {
+            .table td, .table th {
+                white-space: normal; /* Allow wrapping on small screens */
+                font-size: 16px; /* Slightly smaller text */
+                padding: 6px; /* Less padding for mobile */
+            }
+            .table-responsive {
+                overflow-x: auto; /* Enable horizontal scroll if needed */
+            }
+        }
+    </style>
+<body>
+
+<!--=====Navigation Bar=======-->
+{% include 'partials/topbar.html' %}
+<!--=====Navigation Bar Ends Here=======-->
+
+
+<!--=====Rental Income Deductions Form=======-->
+<div class="contct6 sp2" id="rental-calculator">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="contact3-form-all" data-aos="zoom-out" data-aos-duration="900">
+                    <div class="hadding6 text-center">
+                        <h1 class="font-30 font-f-7 font-lg-40 weight-500 line-height-lg-48 line-height-38">
+                            Rental Income – Deduction Calculator
+                        </h1>
+                    </div>
+
+                    <form id="rentalForm" action="PropertyCalculator" method="POST">
+                        {% csrf_token %}
+                        <div class="form-input-all">
+                            <div class="form-input-box">
+                                <div class="row">
+
+                                    <!-- Gross Rent -->
+                                    <div class="col-md-3">
+                                        <div class="input-single6">
+                                            <label>Gross Rent Received</label>
+                                            <input type="number" name="gross_rent" id="gross_rent" class="form-control" onchange="cal()" required/>
+
+                                        </div>
+                                    </div>
+
+                                    <!-- (a) Repairs Allowance -->
+                                    <div class="col-md-3">
+                                        <div class="input-single6">
+                                            <label>Repairs Allowance (Max 20% of Gross Rent)</label>
+                                            <input type="number" name="repairs_allowance" id="repairs_allowance" class="form-control" value=""/>
+                                        </div>
+                                    </div>
+
+                                    <!-- (b) Property Insurance Premium -->
+                                    <div class="col-md-3">
+                                        <div class="input-single6">
+                                            <label>Property Insurance Premium</label>
+                                            <input type="number" name="insurance_premium"
+                                                   class="form-control"/>
+                                        </div>
+                                    </div>
+
+                                    <!-- (c) Local Taxes/Rates/Cess -->
+                                    <div class="col-md-3">
+                                        <div class="input-single6">
+                                            <label>Local Taxes / Rates / Cess</label>
+                                            <input type="number" name="local_taxes" class="form-control"/>
+                                        </div>
+                                    </div>
+
+                                    <!-- (d) Ground Rent -->
+                                    <div class="col-md-3">
+                                        <div class="input-single6">
+                                            <label>Ground Rent</label>
+                                            <input type="number" name="ground_rent" class="form-control"/>
+                                        </div>
+                                    </div>
+
+                                    <!-- (e) Interest on Borrowed Money -->
+                                    <div class="col-md-3">
+                                        <div class="input-single6">
+                                            <label>Interest on Borrowed Money</label>
+                                            <input type="number" step="1000" name="borrowed_interest"
+                                                   class="form-control"/>
+                                        </div>
+                                    </div>
+
+                                    <!-- (f) HBFC/Bank Rent-Sharing Payments -->
+                                    <div class="col-md-3">
+                                        <div class="input-single6">
+                                            <label>HBFC/Bank Rent-Sharing Payments</label>
+                                            <input type="number" name="hbfc_payments" class="form-control"/>
+                                        </div>
+                                    </div>
+
+                                    <!-- (g) Interest on Mortgage -->
+                                    <div class="col-md-3">
+                                        <div class="input-single6">
+                                            <label>Interest on Mortgage</label>
+                                            <input type="number" name="mortgage_interest"
+                                                   class="form-control"/>
+                                        </div>
+                                    </div>
+
+                                    <!-- (h) Admin & Collection Expenses -->
+                                    <div class="col-md-3">
+                                        <div class="input-single6">
+                                            <label>Admin & Collection Expenses (Max 4% of Gross Rent)</label>
+                                            <input type="number" name="admin_expenses" id="admin_expenses"
+                                                   class="form-control"/>
+                                        </div>
+                                    </div>
+
+                                    <!-- (i) Legal Expenses -->
+                                    <div class="col-md-3">
+                                        <div class="input-single6">
+                                            <label>Legal Expenses for Ownership/Title Suits</label>
+                                            <input type="number" name="legal_expenses"
+                                                   class="form-control"/>
+                                        </div>
+                                    </div>
+
+                                    <!-- (j) Irrecoverable Rent -->
+                                    <div class="col-md-3">
+                                        <div class="input-single6">
+                                            <label>Irrecoverable Rent Allowance</label>
+                                            <input type="number" name="irrecoverable_rent"
+                                                   class="form-control"/>
+                                        </div>
+                                    </div>
+
+                                </div>
+                                <div class="space20"></div>
+
+                                <button type="submit" class="btn btn-primary">Calculate</button>
+                            </div>
+                        </div>
+                    </form>
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="space30"></div>
+
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+
+                <!-- Result Display -->
+                <div class="contact3-form-all" data-aos="zoom-out" data-aos-duration="900">
+                    <div class="hadding6">
+                        <div class="input-single6">
+                            <div class="text-center">
+                                <h1 class="font-30 font-f-7 font-lg-40 weight-500  line-height-lg-48 line-height-38">
+                                    Income
+                                    from Property Tax Calculation</h1></div>
+                        </div>
+                        <div class="table-responsive">
+                            <table class="table table-bordered align-middle text-center">
+                                <tr>
+                                    <th scope="col">Gross Rental Income</th>
+                                    <th scope="col">Total Deductions</th>
+                                    <th scope="col">Net Rental Income</th>
+                                    <th scope="col">Income Tax</th>
+
+                                </tr>
+                                <tr>
+                                    <td scope="row">{{gross_rent|intcomma}}</td>
+                                    <td scope="row">{{total_deductions|intcomma}}</td>
+                                    <td scope="row">{{net_rent|intcomma}}</td>
+                                    <td scope="row"> {{tax|intcomma}}</td>
+                                </tr>
+
+
+                            </table>
+
+
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!--=====Rental Income Deductions Form End=======-->
+
+
+{% include 'partials/footer.html' %}
+{% include 'partials/up.html' %}
+{% include 'partials/footer-scripts.html' %}
+
+
+</body>
+
+<script>
+function cal() {
+    let grossRent = parseFloat(document.getElementById("gross_rent").value) || 0;
+
+    // Calculate values
+    let repairs = (grossRent * 0.20).toFixed(0); // 20%
+    let admin = (grossRent * 0.04).toFixed(0);   // 4%
+
+    // Bind to inputs
+    document.getElementById("repairs_allowance").value = repairs;
+    document.getElementById("admin_expenses").value = admin;
+}
+</script>
+</html>
