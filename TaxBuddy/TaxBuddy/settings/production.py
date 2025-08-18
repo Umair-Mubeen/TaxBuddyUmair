@@ -2,7 +2,7 @@ from .base import *
 
 DEBUG = False
 MEDIA_URL = '/media/'
-MEDIA_ROOT = BASE_DIR / 'media'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'TaxBuddy', 'media')
 
 ALLOWED_HOSTS = ['taxbuddyumair.com', 'www.taxbuddyumair.com', '.taxbuddyumair.com', '31.97.49.72']
 
