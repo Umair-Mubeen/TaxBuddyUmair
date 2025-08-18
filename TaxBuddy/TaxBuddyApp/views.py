@@ -448,6 +448,82 @@ def calculate_tax(income, tax_brackets, surcharge_rate):
         print(str(e))
 
 
+def PropertyCalculator(request):
+    try:
+        if request.method == 'POST':
+            # Convert all numeric inputs to float
+            gross_rent = int(request.POST.get('gross_rent', 0))
+
+            # Deduction fields
+            repairs_allowance = to_int(request.POST.get('repairs_allowance'))
+            insurance_premium = to_int(request.POST.get('insurance_premium'))
+            local_taxes = to_int(request.POST.get('local_taxes'))
+            ground_rent = to_int(request.POST.get('ground_rent'))
+            borrowed_interest = to_int(request.POST.get('borrowed_interest'))
+            hbfc_payments = to_int(request.POST.get('hbfc_payments'))
+            mortgage_interest = to_int(request.POST.get('mortgage_interest'))
+            admin_expenses = to_int(request.POST.get('admin_expenses'))
+            legal_expenses = to_int(request.POST.get('legal_expenses'))
+            irrecoverable_rent = to_int(request.POST.get('irrecoverable_rent'))
+
+            print(irrecoverable_rent)
+            # Total deductions
+            total_deductions = (
+                repairs_allowance + insurance_premium + local_taxes +
+                ground_rent + borrowed_interest + hbfc_payments +
+                mortgage_interest + admin_expenses + legal_expenses + irrecoverable_rent
+            )
+            print(total_deductions)
+
+
+            # Net rental income
+            net_rental_income = gross_rent - total_deductions
+            print('net_rental_income', round(net_rental_income))
+            # Tax calculation based on slabs
+            if net_rental_income <= 300000:
+                tax = 0
+
+            elif net_rental_income > 300000 and net_rental_income <= 600000:
+                tax = 0.05 * (net_rental_income - 300000)
+                print(f'gross rent greater than {300000} :', tax)
+
+            elif net_rental_income > 600000 and net_rental_income <= 2000000:
+                tax = 15000 + 0.10 * (net_rental_income - 600000)
+                print(f'gross rent greater than {600000} :', tax)
+
+            else:
+                tax = 155000 + 0.25 * (net_rental_income - 2000000)
+                print(f'gross rent greater than {net_rental_income} :', tax)
+
+            # Pass data to template
+            context = {
+                'gross_rent': round(gross_rent),
+                'total_deductions': round(total_deductions),
+                'net_rent': round(net_rental_income),
+                'tax' : round(tax)
+            }
+            print(context)
+
+            return render(request, 'partials/property_rent.html', context)
+
+        else:
+            return render(request, 'partials/property_rent.html')
+
+    except Exception as e:
+        print(f'Error {e}')
+
+        return HttpResponse(f"Error: {str(e)}")
+
+
+
+
 def Logout(request):
     logout(request)
     return redirect('/')
+
+
+def to_int(value, default=0):
+    try:
+        return int(value)
+    except (TypeError, ValueError):
+        return default
