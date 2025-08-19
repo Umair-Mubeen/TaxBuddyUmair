@@ -17,9 +17,6 @@ DATABASES = {
         'PASSWORD': 'Kotri@786', # your MySQL user's password
         'HOST': 'localhost',
         'PORT': '3306',
-
-
-
     }
 }
 ROOT_URLCONF = 'TaxBuddy.urls'
