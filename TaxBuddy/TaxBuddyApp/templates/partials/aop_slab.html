@@ -8,7 +8,7 @@
           name="description">
     <meta content="TaxBuddy, FBR, Income Tax, Sales Tax, Pakistan, Property Tax" name="keywords">
     <meta content="Umair Mubeen" name="author">
-    <title>TaxBuddy Umair | Salary | Income Tax Calculator</title>
+    <title>TaxBuddy Umair | AOP | Income Tax Calculator</title>
     {% load static %}
     {% include 'partials/head-css.html' %}
     <style>
@@ -58,22 +58,26 @@
                 <div class="contact3-form-all" data-aos="zoom-out" data-aos-duration="900">
                     <div class="hadding6 text-center">
                         <h1 class="font-30 font-f-7 font-lg-40 weight-500 line-height-lg-48 line-height-38">
-                            Salary - Income Tax Calculator
+                            {{taxpayer_type}} - Income Tax Calculator
                         </h1>
                         <div class="space10"></div>
                     </div>
 
-                    <form action="/SalaryCalculator" id="incomeForm" method="POST">
+                    <form action="/AOPCalculator" id="incomeForm" method="POST">
                         {% csrf_token %}
                         <div class="form-input-all">
                             <div class="form-input-box">
                                 <div class="row g-3">
                                     <!-- Income Type -->
                                     <div class="col-12 col-md-3">
+                                        <input type="hidden" value="{{income_type}}" id="hd_income_type" name="hd_income_type">
                                         <div class="input-single6">
                                             <label>Select Income Type</label>
                                             <select class="form-control" id="incomeTypeSelect" name="income_type" required>
-                                                <option selected value="Monthly"> Monthly Income</option>
+                                                <option value="" disabled> Select Income Type</option>
+                                                <option value="Monthly"> Monthly Income</option>
+                                                <option value="Yearly"> Yearly</option>
+
                                             </select>
                                         </div>
                                     </div>
@@ -83,7 +87,7 @@
                                         <div class="input-single6">
                                             <label>Select Taxpayer Type</label>
                                             <select class="form-control" id="taxpayerTypeSelect" name="taxpayer_type" required>
-                                                <option selected value="salaried"> Salaried Person</option>
+                                                <option selected value="AOP"> AOP</option>
                                             </select>
                                         </div>
                                     </div>
@@ -91,7 +95,7 @@
                                     <!-- Monthly Income -->
                                     <div class="col-12 col-md-3">
                                         <div class="input-single6">
-                                            <label>Monthly Income - Gross</label>
+                                            <label>Monthly Gross Profit</label>
                                             <input class="form-control" id="incomeAmountInput" name="income_amount" style="padding: 6px"
                                                    placeholder="Monthly Income" required type="number" />
                                         </div>
@@ -119,40 +123,42 @@
                 <div class="contact3-form-all" data-aos="zoom-out" data-aos-duration="900">
                     <div class="hadding6 text-center">
                         <h1 class="font-30 font-f-7 font-lg-40 weight-500 line-height-lg-48 line-height-38">
-                            Tax Calculation Comparison: {{tax_2024_2025_year}} VS {{tax_2025_2026_year}}
+                            Tax Calculation Comparison: {{tax_2023_2024_year}} VS {{tax_2025_2026_year}}
                         </h1>
                     </div>
 
                     <div class="row g-4 mt-3">
                         <!-- Left Table -->
                         <div class="col-12 col-lg-6">
-                            <label>Tax Calculation for {{tax_2024_2025_year}}</label>
+                            <label>Tax Calculation for {{tax_2023_2024_year}} - Tax Year 2024</label>
                             <div class="table-responsive">
                                 <table class="table table-bordered align-middle mb-0">
                                     <tr><th>Monthly Income</th><td>Rs. {{ monthly_income|intcomma }}</td></tr>
-                                    <tr><th>Yearly Income</th><td>Rs. {{ tax_2024_2025.income|intcomma }}</td></tr>
-                                    <tr class="bg bg-warning"><th>Applicable Tax Bracket</th><td>Rs. {{ tax_2024_2025.lower|intcomma }} to Rs. {{ tax_2024_2025.upper|intcomma }}</td></tr>
-                                    <tr><th>Base Tax</th><td>Rs. {{ tax_2024_2025.fixed_tax|intcomma }}</td></tr>
-                                    <tr><th>Amount Exceeding Bracket</th><td>Rs. {{ tax_2024_2025.amount_exceeding|intcomma }}</td></tr>
-                                    <tr class="bg bg-warning"><th>Rate Applied</th><td>{{ tax_2024_2025.rate|floatformat:"-0" }} %</td></tr>
+                                    <tr><th>Yearly Income</th><td>Rs. {{ tax_2023_2024.income|intcomma }}</td></tr>
+                                    <tr class="bg bg-warning"><th>Applicable Tax Bracket</th><td>Rs. {{ tax_2023_2024.lower|intcomma }} to Rs. {{ tax_2023_2024.upper|intcomma }}</td></tr>
+                                    <tr><th>Base Tax</th><td>Rs. {{ tax_2023_2024.fixed_tax|intcomma }}</td></tr>
+                                    <tr><th>Amount Exceeding Bracket</th><td>Rs. {{ tax_2023_2024.amount_exceeding|intcomma }}</td></tr>
+                                    <tr class="bg bg-warning"><th>Rate Applied</th><td>{{ tax_2023_2024.rate}} %</td></tr>
 
-                                    {% if tax_2024_2025.surcharge %}
-                                        <tr><th>Tax on Amount Exceeding</th><td>Rs. {{ tax_2024_2025.tax_on_exceeding|intcomma }}</td></tr>
-                                        <tr><th>Surcharge 10%</th><td>Rs. {{ tax_2024_2025.surcharge|intcomma }}</td></tr>
-                                        <tr><th>Total Tax U/S 4AB</th><td>Rs. {{ tax_2024_2025.total_tax_with_surcharge|intcomma }}</td></tr>
+                                    {% if tax_2023_2024.surcharge%}
+                                        <tr><th>Tax on Amount Exceeding</th><td>Rs. {{ tax_2023_2024.tax_on_exceeding|intcomma }}</td></tr>
+                                        <tr><th>Surcharge</th><td> N/A </td></tr>
+                                        <tr><th>Total Tax U/S 4AB</th><td> N/A </td></tr>
+                                        <tr><th>Total Tax Chargeable</th><td>Rs. {{ tax_2023_2024.total_tax|intcomma }}</td></tr>
+
                                     {% else %}
-                                        <tr><th>Tax on Amount Exceeding</th><td>Rs. {{ tax_2024_2025.tax_on_exceeding|intcomma }}</td></tr>
-                                        <tr><th>Total Tax Chargeable</th><td>Rs. {{ tax_2024_2025.total_tax|intcomma }}</td></tr>
+                                        <tr><th>Tax on Amount Exceeding</th><td>Rs. {{ tax_2023_2024.tax_on_exceeding|intcomma }}</td></tr>
+                                        <tr><th>Total Tax Chargeable</th><td>Rs. {{ tax_2023_2024.total_tax|intcomma }}</td></tr>
                                     {% endif %}
 
-                                    <tr class="bg bg-warning"><th>Monthly Tax</th><td>Rs. {{ tax_2024_2025.per_month|intcomma }}</td></tr>
+                                    <tr class="bg bg-warning"><th>Monthly Tax</th><td>Rs. {{ tax_2023_2024.per_month|intcomma }}</td></tr>
                                 </table>
                             </div>
                         </div>
 
                         <!-- Right Table -->
                         <div class="col-12 col-lg-6">
-                            <label>Tax Calculation for {{tax_2025_2026_year}}</label>
+                            <label>Tax Calculation for {{tax_2025_2026_year}} - Tax Year 2025 (same for 2026)</label>
                             <div class="table-responsive">
                                 <table class="table table-bordered align-middle mb-0">
                                     <tr><th>Monthly Income</th><td>Rs. {{ monthly_income|intcomma }}</td></tr>
@@ -166,6 +172,8 @@
                                         <tr><th>Tax on Amount Exceeding</th><td>Rs. {{ tax_2025_2026.tax_on_exceeding|intcomma }}</td></tr>
                                         <tr><th>Surcharge 9%</th><td>Rs. {{ tax_2025_2026.surcharge|intcomma }}</td></tr>
                                         <tr><th>Total Tax U/S 4AB</th><td>Rs. {{ tax_2025_2026.total_tax_with_surcharge|intcomma }}</td></tr>
+                                       <tr><th>Total Tax Chargeable</th><td>Rs. {{ tax_2025_2026.total_tax|intcomma }}</td></tr>
+
                                     {% else %}
                                         <tr><th>Tax on Amount Exceeding</th><td>Rs. {{ tax_2025_2026.tax_on_exceeding|intcomma }}</td></tr>
                                         <tr><th>Total Tax Chargeable</th><td>Rs. {{ tax_2025_2026.total_tax|intcomma }}</td></tr>
@@ -194,3 +202,12 @@
 </body>
 </html>
 
+<script>
+    $(document).ready(function () {
+    // Get the value from the hidden input element
+    var income_type = document.getElementById('hd_income_type').value;
+    // Set the value of another input element and trigger a change event
+    $('#incomeTypeSelect').val(income_type).trigger('change');
+});
+
+</script>

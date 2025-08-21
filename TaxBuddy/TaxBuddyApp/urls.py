@@ -22,7 +22,9 @@ urlpatterns = [
     path('ManageBlogs', views.ManageBlogs, name='ManageBlogs'),  # ManageBlogsPage
 
     path("contact", views.contact, name='contact'),
-    path("Calculator", views.SalarySlab, name='Calculator'),
+    path("SalaryCalculator", views.SalaryCalculator, name='SalaryCalculator'),
+    path("BusinessCalculator", views.BusinessCalculator, name='BusinessCalculator'),
+    path("AOPCalculator", views.AOPCalculator, name='AOPCalculator'),
     path("PropertyCalculator", views.PropertyCalculator, name='PropertyCalculator'),
 
 ]
