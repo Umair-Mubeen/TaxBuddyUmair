@@ -328,7 +328,174 @@ def contact(request):
 #         print(str(e))
 
 
-def SalarySlab(request):
+def AOPCalculator(request):
+    try:
+        if request.method == 'POST':
+            # Get inputs
+            income_type = request.POST.get('income_type')  # 'Monthly' or 'Yearly'
+            income_amount = int(request.POST.get('income_amount'))
+            taxpayer_type = request.POST.get('taxpayer_type')  # 'business'
+
+            if income_type == 'Monthly':
+                yearly_income = income_amount * 12
+                print(yearly_income)
+            else:
+                yearly_income = income_amount  # Already yearly income
+                print(yearly_income)
+
+            tax_brackets_business_2023_2024 = {
+                (0, 600000): (0, 0, 0),
+                (600001, 800000): (0.075, 600000, 0),
+                (800001, 1200000): (0.15, 800000, 15000),
+                (1200001, 2400000): (0.2, 1200000, 75000),
+                (2400001, 3000000): (0.25, 2400000, 315000),
+                (3000001, 4000000): (0.3, 3000000, 465000),
+                (4000001, float('inf')): (0.35, 4000000, 765000)
+            }
+
+            tax_brackets_business_2024_2025 = {
+                (0, 600000): (0, 0, 0),
+                (600001, 1200000): (0.15, 600000, 0),
+                (1200001, 1600000): (0.20, 1200000, 90000),
+                (1600001, 3200000): (0.30, 1600000, 170000),
+                (3200001, 5600000): (0.40, 3200000, 650000),
+                (5600001, float('inf')): (0.45, 5600000, 1610000)
+            }
+
+            # Calculate tax for both years
+            tax_2023_2024 = calculate_tax(yearly_income, tax_brackets_business_2023_2024, 0)  # 0% surcharge
+            tax_2025_2026 = calculate_tax(yearly_income, tax_brackets_business_2024_2025, 0.10)  # 10% surcharge
+
+            # Tax percentages
+            tax_2023_2024_percentage = (tax_2023_2024['total_tax'] / yearly_income) * 100 if yearly_income > 0 else 0
+            tax_2025_2026_percentage = (tax_2025_2026['total_tax'] / yearly_income) * 100 if yearly_income > 0 else 0
+            growth_percentage = ((tax_2025_2026_percentage - tax_2023_2024_percentage) / tax_2023_2024_percentage * 100
+                                 if tax_2023_2024_percentage > 0 else 0)
+
+            # Template context
+            context = {
+                'taxpayer_type': taxpayer_type,
+                'tax_2023_2024_year': '2023 - 2024',
+                'tax_2025_2026_year': '2024 - 2025',
+                'tax_2023_2024': tax_2023_2024,
+                'tax_2025_2026': tax_2025_2026,
+                'monthly_income': int(income_amount) if income_type == 'Monthly' else int(yearly_income / 12),
+                'tax_2024_2025_percentage': round(tax_2023_2024_percentage, 2),
+                'tax_2025_2026_percentage': round(tax_2025_2026_percentage, 2),
+                'yearly_income': yearly_income,
+                'growth_percentage': round(growth_percentage, 2),
+                'income_type': income_type,
+            }
+            return render(request, 'partials/aop_slab.html', context)
+
+        # GET request (empty form)
+        else:
+            context = {
+                'taxpayer_type': 'AOP',
+                'tax_2023_2024_year': '2023 - 2024',
+                'tax_2025_2026_year': '2024 - 2025',
+                'tax_2023_2024': '',
+                'tax_2025_2026': '',
+                'monthly_income': '',
+                'tax_2023_2024_percentage': '',
+                'tax_2025_2026_percentage': '',
+                'yearly_income': '',
+                'growth_percentage': '',
+                'income_type': '',
+            }
+        print(context)
+        return render(request, 'partials/aop_slab.html', context)
+
+    except Exception as e:
+        print(str(e))
+        return HttpResponse(str(e))
+
+def BusinessCalculator(request):
+    try:
+        if request.method == 'POST':
+            # Get inputs
+            income_type = request.POST.get('income_type')  # 'Monthly' or 'Yearly'
+            income_amount = int(request.POST.get('income_amount'))
+            taxpayer_type = request.POST.get('taxpayer_type')  # 'business'
+
+            # Convert monthly to yearly if needed
+            if income_type == 'Monthly':
+                yearly_income = income_amount * 12
+                print(yearly_income)
+            else:
+                yearly_income = income_amount  # Already yearly income
+                print(yearly_income)
+
+            tax_brackets_business_2023_2024 = {
+                (0, 600000): (0, 0, 0),
+                (600001, 800000): (0.075, 600000, 0),
+                (800001, 1200000): (0.15, 800000, 15000),
+                (1200001, 2400000): (0.2, 1200000, 75000),
+                (2400001, 3000000): (0.25, 2400000, 315000),
+                (3000001, 4000000): (0.3, 3000000, 465000),
+                (4000001, float('inf')): (0.35, 4000000, 765000)
+            }
+
+            tax_brackets_business_2024_2025 = {
+                (0, 600000): (0, 0, 0),
+                (600001, 1200000): (0.15, 600000, 0),
+                (1200001, 1600000): (0.20, 1200000, 90000),
+                (1600001, 3200000): (0.30, 1600000, 170000),
+                (3200001, 5600000): (0.40, 3200000, 650000),
+                (5600001, float('inf')): (0.45, 5600000, 1610000)
+            }
+
+
+            # Calculate tax for both years
+            tax_2023_2024 = calculate_tax(yearly_income, tax_brackets_business_2023_2024, 0)  # 0% surcharge
+            tax_2025_2026 = calculate_tax(yearly_income, tax_brackets_business_2024_2025, 0.10)  # 10% surcharge
+
+            # Tax percentages
+            tax_2023_2024_percentage = (tax_2023_2024['total_tax'] / yearly_income) * 100 if yearly_income > 0 else 0
+            tax_2025_2026_percentage = (tax_2025_2026['total_tax'] / yearly_income) * 100 if yearly_income > 0 else 0
+            growth_percentage = ((tax_2025_2026_percentage - tax_2023_2024_percentage) / tax_2023_2024_percentage * 100
+                                 if tax_2023_2024_percentage > 0 else 0)
+
+            # Template context
+            context = {
+                'taxpayer_type' : taxpayer_type,
+                'tax_2023_2024_year': '2023 - 2024',
+                'tax_2025_2026_year': '2024 - 2025',
+                'tax_2023_2024': tax_2023_2024,
+                'tax_2025_2026': tax_2025_2026,
+                'monthly_income': int(income_amount) if income_type == 'Monthly' else int(yearly_income / 12),
+                'tax_2024_2025_percentage': round(tax_2023_2024_percentage, 2),
+                'tax_2025_2026_percentage': round(tax_2025_2026_percentage, 2),
+                'yearly_income': yearly_income,
+                'growth_percentage': round(growth_percentage, 2),
+                'income_type': income_type,
+            }
+            return render(request, 'partials/business_slab.html', context)
+
+        # GET request (empty form)
+        else:
+            context = {
+            'taxpayer_type' : 'Business Individual',
+            'tax_2023_2024_year': '2023 - 2024',
+            'tax_2025_2026_year': '2024 - 2025',
+            'tax_2023_2024': '',
+            'tax_2025_2026': '',
+            'monthly_income': '',
+            'tax_2023_2024_percentage': '',
+            'tax_2025_2026_percentage': '',
+            'yearly_income': '',
+            'growth_percentage': '',
+            'income_type': '',
+        }
+        print(context)
+        return render(request, 'partials/business_slab.html', context)
+
+    except Exception as e:
+        print(str(e))
+        return HttpResponse(str(e))
+
+
+def SalaryCalculator(request):
     try:
         if request.method == 'POST':
             # Get inputs
@@ -408,6 +575,8 @@ def SalarySlab(request):
 def calculate_tax(income, tax_brackets, surcharge_rate):
     try:
         surcharge_threshold = 10000000  # 10 million
+        print('business :', income)
+        print('tax brackets :', tax_brackets.items())
 
         for (lower, upper), (rate, base_threshold, fixed_tax) in tax_brackets.items():
             if lower <= income <= upper:
