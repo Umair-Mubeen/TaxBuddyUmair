@@ -1,0 +1,108 @@
+<html>
+{% load static %}
+{% include 'Cpanel/reusable.html' %}
+
+<title>TaxBuddy Umair</title>
+<body class="sidebar-mini layout-fixed sidebar-collapse">
+<div class="wrapper">
+
+    <!-- Navbar Starts Here -->
+    {% include 'Cpanel/navbar.html' %}
+    <!-- /.Navbar Ends Here -->
+    <!-- SideBar Start Here  -->
+    {% include 'Cpanel/sidebar.html' %}
+    <!-- SideBar Ends Here  -->
+
+    <!-- Content Wrapper. Contains page content -->
+    <div class="content-wrapper">
+        <!-- Content Header (Page header) -->
+        <div class="content-header">
+            <div class="container-fluid">
+                <div class="row mb-2">
+                    <div class="col-sm-6">
+                        <h1 class="m-0">TaxBuddy Umair</h1>
+                    </div><!-- /.col -->
+                    <div class="col-sm-6">
+                        <ol class="breadcrumb float-sm-right">
+                            <li class="breadcrumb-item"><a href="#" style="color:black"><i class="fa fa-home"></i></a>
+                            </li>
+                            <li class="breadcrumb-item active">Salary Tax Slab</li>
+                        </ol>
+                    </div><!-- /.col -->
+                </div><!-- /.row -->
+            </div><!-- /.container-fluid -->
+        </div>
+        <!-- /.content-header -->
+
+        <!-- Main content -->
+        <section class="content">
+            <div class="container-fluid">
+                <div class="card shadow-lg rounded-4 col-lg-5">
+                    <div class="card-header rounded-top-4">
+                        <h4 class="mb-0">Add Tax Bracket</h4>
+                    </div>
+                    <div class="card-body">
+                        <form method="post" action="add_salary_tax_brackets">
+                            {% csrf_token %}
+
+                            <div class="mb-3 form-group">
+                                <label class="form-label" for="year">Year</label>
+                                <select class="form-control" id="year" name="tax_year" required>
+                                    <option value="" disabled>Select the tax year</option>
+                                    <option value="2021-2022">July - 2021 to June 2022 - (2022)</option>
+                                    <option value="2022-2023">July - 2022 to June 2023 - (2023)</option>
+                                    <option value="2023-2024">July - 2023 to June 2024 - (2024)</option>
+                                    <option value="2024-2025">July - 2024 to June 2025 - (2025)</option>
+                                    <option value="2025-2026">July - 2025 to June 2026 - (2026)</option>
+
+                                </select>
+                            </div>
+
+                            <div class="mb-3 form-group">
+                                <label class="form-label" for="income_min">Minimum Income</label>
+                                <input class="form-control" id="income_min" name="income_min" required type="number">
+                            </div>
+
+                            <div class="mb-3 form-group">
+                                <label class="form-label" for="income_max">Maximum Income</label>
+                                <input class="form-control" id="income_max" name="income_max" type="number">
+                                <div class="form-text">Leave empty for infinity</div>
+                            </div>
+
+                            <div class="mb-3 form-group">
+                                <label class="form-label" for="rate">Rate (decimal)</label>
+                                <input class="form-control" id="rate" name="rate" required step="0.001" type="number">
+                                <div class="form-text">Example: 0.35 = 35%</div>
+                            </div>
+
+                            <div class="mb-3 form-group">
+                                <label class="form-label" for="base_income">Base Income</label>
+                                <input class="form-control" id="base_income" name="base_income" required type="number">
+                            </div>
+
+                            <div class="mb-3 form-group">
+                                <label class="form-label" for="base_tax">Base Tax</label>
+                                <input class="form-control" id="base_tax" name="base_tax" required type="number">
+                            </div>
+
+                            <div>
+                                <button class="btn btn-success px-4" type="submit">Save Bracket</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+
+        </section>
+
+
+    </div>
+    <!-- Content Wrapper. Contains page content  Ends Here -->
+
+</div>
+<!-- /.content-wrapper -->
+
+{% include 'Cpanel/footer.html' %}
+</body>
+</html>

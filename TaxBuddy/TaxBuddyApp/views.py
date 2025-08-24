@@ -1,14 +1,15 @@
 import mimetypes
 from datetime import timezone
+from decimal import Decimal
 
 from django.contrib.auth.decorators import login_required
-from django.http import HttpResponse
+from django.http import HttpResponse, request
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import authenticate, login, logout
 from django.utils.text import slugify
 from django.contrib import messages
 
-from .models import Blogs, Comment, Contact
+from .models import Blogs, Comment, Contact, TaxBracket
 
 
 def index(request):
@@ -410,6 +411,7 @@ def AOPCalculator(request):
         print(str(e))
         return HttpResponse(str(e))
 
+
 def BusinessCalculator(request):
     try:
         if request.method == 'POST':
@@ -445,7 +447,6 @@ def BusinessCalculator(request):
                 (5600001, float('inf')): (0.45, 5600000, 1610000)
             }
 
-
             # Calculate tax for both years
             tax_2023_2024 = calculate_tax(yearly_income, tax_brackets_business_2023_2024, 0)  # 0% surcharge
             tax_2025_2026 = calculate_tax(yearly_income, tax_brackets_business_2024_2025, 0.10)  # 10% surcharge
@@ -458,7 +459,7 @@ def BusinessCalculator(request):
 
             # Template context
             context = {
-                'taxpayer_type' : taxpayer_type,
+                'taxpayer_type': taxpayer_type,
                 'tax_2023_2024_year': '2023 - 2024',
                 'tax_2025_2026_year': '2024 - 2025',
                 'tax_2023_2024': tax_2023_2024,
@@ -475,18 +476,18 @@ def BusinessCalculator(request):
         # GET request (empty form)
         else:
             context = {
-            'taxpayer_type' : 'Business Individual',
-            'tax_2023_2024_year': '2023 - 2024',
-            'tax_2025_2026_year': '2024 - 2025',
-            'tax_2023_2024': '',
-            'tax_2025_2026': '',
-            'monthly_income': '',
-            'tax_2023_2024_percentage': '',
-            'tax_2025_2026_percentage': '',
-            'yearly_income': '',
-            'growth_percentage': '',
-            'income_type': '',
-        }
+                'taxpayer_type': 'Business Individual',
+                'tax_2023_2024_year': '2023 - 2024',
+                'tax_2025_2026_year': '2024 - 2025',
+                'tax_2023_2024': '',
+                'tax_2025_2026': '',
+                'monthly_income': '',
+                'tax_2023_2024_percentage': '',
+                'tax_2025_2026_percentage': '',
+                'yearly_income': '',
+                'growth_percentage': '',
+                'income_type': '',
+            }
         print(context)
         return render(request, 'partials/business_slab.html', context)
 
@@ -499,7 +500,8 @@ def SalaryCalculator(request):
     try:
         if request.method == 'POST':
             # Get inputs
-            income_type = request.POST.get('income_type')  # 'Monthly' or 'Yearly'
+            tax_year_1 = request.POST.get('tax_year_1')  # 'Monthly' or 'Yearly'
+            tax_year_2 = request.POST.get('tax_year_2')  # 'Monthly' or 'Yearly'
             income_amount = int(request.POST.get('income_amount'))
             taxpayer_type = request.POST.get('taxpayer_type')  # 'salaried'
 
@@ -507,27 +509,52 @@ def SalaryCalculator(request):
             yearly_income = income_amount * 12
 
             # Tax brackets format: (rate, base_threshold, fixed_tax)
-            tax_brackets_2024_2025_salaried = {
-                (0, 600000): (0.00, 0, 0),
-                (600001, 1200000): (0.05, 600000, 0),
-                (1200001, 2200000): (0.15, 1200000, 30000),
-                (2200001, 3200000): (0.25, 2200000, 180000),
-                (3200001, 4100000): (0.30, 3200000, 430000),
-                (4100001, float('inf')): (0.35, 4100000, 700000)
+            # tax_brackets_2024_2025_salaried = {
+            #     (0, 600000): (0.00, 0, 0),
+            #     (600001, 1200000): (0.05, 600000, 0),
+            #     (1200001, 2200000): (0.15, 1200000, 30000),
+            #     (2200001, 3200000): (0.25, 2200000, 180000),
+            #     (3200001, 4100000): (0.30, 3200000, 430000),
+            #     (4100001, float('inf')): (0.35, 4100000, 700000)
+            # }
+            #
+            # tax_brackets_2025_2026_salaried = {
+            #     (0, 600000): (0.00, 0, 0),
+            #     (600001, 1200000): (0.01, 600000, 0),
+            #     (1200001, 2200000): (0.11, 1200000, 6000),
+            #     (2200001, 3200000): (0.23, 2200000, 116000),
+            #     (3200001, 4100000): (0.30, 3200000, 346000),
+            #     (4100001, float('inf')): (0.35, 4100000, 616000)
+            # }
+
+            # Fetch tax slabs from DB for each selected year
+            tax_brackets_result_one = TaxBracket.objects.filter(year=tax_year_1)
+            tax_brackets_result_two = TaxBracket.objects.filter(year=tax_year_2)
+
+            # Convert DB rows to dicts
+            brackets_tax_year_1 = {
+                (float(s.income_min), float(s.income_max) if s.income_max else float('inf')):
+                    (float(s.rate), float(s.base_income), float(s.base_tax))
+                for s in tax_brackets_result_one
             }
 
-            tax_brackets_2025_2026_salaried = {
-                (0, 600000): (0.00, 0, 0),
-                (600001, 1200000): (0.01, 600000, 0),
-                (1200001, 2200000): (0.11, 1200000, 6000),
-                (2200001, 3200000): (0.23, 2200000, 116000),
-                (3200001, 4100000): (0.30, 3200000, 346000),
-                (4100001, float('inf')): (0.35, 4100000, 616000)
+            brackets_tax_year_2 = {
+                (float(s.income_min), float(s.income_max) if s.income_max else float('inf')):
+                    (float(s.rate), float(s.base_income), float(s.base_tax))
+                for s in tax_brackets_result_two
             }
 
-            # Calculate tax for both years
-            tax_2024_2025 = calculate_tax(yearly_income, tax_brackets_2024_2025_salaried, 0.10)  # 10% surcharge
-            tax_2025_2026 = calculate_tax(yearly_income, tax_brackets_2025_2026_salaried, 0.09)  # 9% surcharge
+            surcharge_rates = {
+                "2024-2025": 0.10,
+                "2025-2026": 0.09,
+            }
+
+            # Pick surcharge if year exists, otherwise 0
+            surcharge_year_1 = surcharge_rates.get(tax_year_1, 0)
+            surcharge_year_2 = surcharge_rates.get(tax_year_2, 0)
+
+            tax_2024_2025 = calculate_tax(yearly_income, brackets_tax_year_1, surcharge_year_1)  # 10% surcharge
+            tax_2025_2026 = calculate_tax(yearly_income, brackets_tax_year_2, surcharge_year_2)  # 9% surcharge
 
             # Tax percentages
             tax_2024_2025_percentage = (tax_2024_2025['total_tax'] / yearly_income) * 100 if yearly_income > 0 else 0
@@ -537,17 +564,18 @@ def SalaryCalculator(request):
 
             # Template context
             context = {
-                'tax_2024_2025_year': '2024 - 2025',
-                'tax_2025_2026_year': '2025 - 2026',
+                'tax_2024_2025_year': tax_year_1,
+                'tax_2025_2026_year': tax_year_2,
                 'tax_2024_2025': tax_2024_2025,
                 'tax_2025_2026': tax_2025_2026,
-                'monthly_income' : income_amount,
+                'monthly_income': income_amount,
                 'tax_2024_2025_percentage': round(tax_2024_2025_percentage, 2),
                 'tax_2025_2026_percentage': round(tax_2025_2026_percentage, 2),
                 'yearly_income': yearly_income,
                 'growth_percentage': round(growth_percentage, 2),
-                'income_type': income_type,
-                'taxpayer_type': taxpayer_type
+                'taxpayer_type': taxpayer_type,
+                'surcharge_year_1' : surcharge_year_1 * 100,
+                'surcharge_year_2' : surcharge_year_2 * 100
             }
             return render(request, 'partials/salary_slab.html', context)
 
@@ -562,8 +590,10 @@ def SalaryCalculator(request):
             'tax_2025_2026_percentage': '',
             'yearly_income': '',
             'growth_percentage': '',
-            'income_type': '',
-            'taxpayer_type': ''
+            'taxpayer_type': '',
+            'surcharge_year_1': '',
+            'surcharge_year_2': ''
+
         }
         return render(request, 'partials/salary_slab.html', context)
 
@@ -638,12 +668,11 @@ def PropertyCalculator(request):
             print(irrecoverable_rent)
             # Total deductions
             total_deductions = (
-                repairs_allowance + insurance_premium + local_taxes +
-                ground_rent + borrowed_interest + hbfc_payments +
-                mortgage_interest + admin_expenses + legal_expenses + irrecoverable_rent
+                    repairs_allowance + insurance_premium + local_taxes +
+                    ground_rent + borrowed_interest + hbfc_payments +
+                    mortgage_interest + admin_expenses + legal_expenses + irrecoverable_rent
             )
             print(total_deductions)
-
 
             # Net rental income
             net_rental_income = gross_rent - total_deductions
@@ -669,7 +698,7 @@ def PropertyCalculator(request):
                 'gross_rent': round(gross_rent),
                 'total_deductions': round(total_deductions),
                 'net_rent': round(net_rental_income),
-                'tax' : round(tax)
+                'tax': round(tax)
             }
             print(context)
 
@@ -684,8 +713,6 @@ def PropertyCalculator(request):
         return HttpResponse(f"Error: {str(e)}")
 
 
-
-
 def Logout(request):
     logout(request)
     return redirect('/')
@@ -696,3 +723,25 @@ def to_int(value, default=0):
         return int(value)
     except (TypeError, ValueError):
         return default
+
+
+def add_salary_tax_brackets(request):
+    try:
+        if request.method == 'POST':
+            tax_year = request.POST.get('tax_year')
+            income_min = request.POST.get('income_min')
+            income_max = request.POST.get('income_max')
+            rate = request.POST.get('rate')
+            base_income = request.POST.get('base_income')
+            base_tax = request.POST.get('base_tax')
+
+            TaxBracket.objects.create(
+                year=tax_year,income_min=income_min,income_max=None if income_max == float('inf') else income_max,
+                rate=Decimal(str(rate)), base_income=base_income,base_tax=base_tax)
+            return render(request, 'Cpanel/add_salary_tax_brackets.html')
+
+        else:
+            return render(request, 'Cpanel/add_salary_tax_brackets.html')
+    except Exception as e:
+        print(f'Error {e}')
+        return HttpResponse(f"Error: {str(e)}")
