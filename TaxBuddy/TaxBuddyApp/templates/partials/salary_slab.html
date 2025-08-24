@@ -41,7 +41,8 @@
 
 
 }
-</style>
+
+    </style>
 
 <body>
 
@@ -68,39 +69,65 @@
                         <div class="form-input-all">
                             <div class="form-input-box">
                                 <div class="row g-3">
-                                    <!-- Income Type -->
+                                    <input type="hidden" name="tax_2024_2025_year" id="tax_2024_2025_year" value="{{tax_2024_2025_year}}">
+                                    <input type="hidden" name="tax_2025_2026_year" id="tax_2025_2026_year" value="{{tax_2025_2026_year}}">
+
+                                      <!-- Taxpayer Type -->
                                     <div class="col-12 col-md-3">
                                         <div class="input-single6">
-                                            <label>Select Income Type</label>
-                                            <select class="form-control" id="incomeTypeSelect" name="income_type" required>
-                                                <option selected value="Monthly"> Monthly Income</option>
+                                            <label>Select Tax Year</label>
+                                            <select class="form-control" id="tax_year_1" name="tax_year_1" required>
+                                                <option disabled>Select the tax year</option>
+                                                <option value="2021-2022">July - 2021 to June 2022 - (2022)</option>
+                                                <option value="2022-2023">July - 2022 to June 2023 - (2023)</option>
+                                                <option value="2023-2024">July - 2023 to June 2024 - (2024)</option>
+                                                <option value="2024-2025">July - 2024 to June 2025 - (2025)</option>
+                                                <option value="2025-2026">July - 2025 to June 2026 - (2026)</option>
+
                                             </select>
                                         </div>
                                     </div>
 
-                                    <!-- Taxpayer Type -->
                                     <div class="col-12 col-md-3">
                                         <div class="input-single6">
-                                            <label>Select Taxpayer Type</label>
-                                            <select class="form-control" id="taxpayerTypeSelect" name="taxpayer_type" required>
-                                                <option selected value="salaried"> Salaried Person</option>
+                                            <label>Select Tax Year</label>
+                                            <select class="form-control" id="tax_year_2" name="tax_year_2" required>
+                                                <option disabled>Select the tax year</option>
+                                                <option value="2021-2022">July - 2021 to June 2022 - (2022)</option>
+                                                <option value="2022-2023">July - 2022 to June 2023 - (2023)</option>
+                                                <option value="2023-2024">July - 2023 to June 2024 - (2024)</option>
+                                                <option value="2024-2025">July - 2024 to June 2025 - (2025)</option>
+                                                <option value="2025-2026">July - 2025 to June 2026 - (2026)</option>
+
                                             </select>
                                         </div>
                                     </div>
+
+<!--                                    <div class="col-12 col-md-3">-->
+<!--                                        <div class="input-single6">-->
+<!--                                            <label>Select Taxpayer Type</label>-->
+<!--                                            <select class="form-control" id="taxpayerTypeSelect" name="taxpayer_type"-->
+<!--                                                    required>-->
+<!--                                                <option selected value="salaried"> Salaried Person</option>-->
+<!--                                            </select>-->
+<!--                                        </div>-->
+<!--                                    </div>-->
 
                                     <!-- Monthly Income -->
                                     <div class="col-12 col-md-3">
                                         <div class="input-single6">
                                             <label>Monthly Income - Gross</label>
-                                            <input class="form-control" id="incomeAmountInput" name="income_amount" style="padding: 6px"
-                                                   placeholder="Monthly Income" required type="number" />
+                                            <input class="form-control" id="incomeAmountInput" name="income_amount"
+                                                   placeholder="Monthly Income"
+                                                   required style="padding: 6px" type="number"/>
                                         </div>
                                     </div>
 
 
                                     <!-- Submit Button -->
                                     <div class="col-12 col-md-3 d-flex align-items-end mb-3 mb-md-0">
-                                        <input class="btn btn-primary w-100" id="submit_button" name="submit" type="submit" value="Calculate"/>
+                                        <input class="btn btn-primary w-100" id="submit_button" name="submit"
+                                               type="submit" value="Calculate"/>
                                     </div>
                                 </div>
                             </div>
@@ -129,23 +156,60 @@
                             <label>Tax Calculation for {{tax_2024_2025_year}}</label>
                             <div class="table-responsive">
                                 <table class="table table-bordered align-middle mb-0">
-                                    <tr><th>Monthly Income</th><td>Rs. {{ monthly_income|intcomma }}</td></tr>
-                                    <tr><th>Yearly Income</th><td>Rs. {{ tax_2024_2025.income|intcomma }}</td></tr>
-                                    <tr class="bg bg-warning"><th>Applicable Tax Bracket</th><td>Rs. {{ tax_2024_2025.lower|intcomma }} to Rs. {{ tax_2024_2025.upper|intcomma }}</td></tr>
-                                    <tr><th>Base Tax</th><td>Rs. {{ tax_2024_2025.fixed_tax|intcomma }}</td></tr>
-                                    <tr><th>Amount Exceeding Bracket</th><td>Rs. {{ tax_2024_2025.amount_exceeding|intcomma }}</td></tr>
-                                    <tr class="bg bg-warning"><th>Rate Applied</th><td>{{ tax_2024_2025.rate|floatformat:"-0" }} %</td></tr>
+                                    <tr>
+                                        <th>Monthly Income</th>
+                                        <td>Rs. {{ monthly_income|intcomma }}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Yearly Income</th>
+                                        <td>Rs. {{ tax_2024_2025.income|intcomma }}</td>
+                                    </tr>
+                                    <tr class="bg bg-warning">
+                                        <th>Applicable Tax Bracket</th>
+                                        <td>Rs. {{ tax_2024_2025.lower|floatformat:"-0"|intcomma}} to Rs. {{ tax_2024_2025.upper|floatformat:"-0"|intcomma}}
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th>Base Tax</th>
+                                        <td>Rs. {{ tax_2024_2025.fixed_tax|floatformat:"-0"|intcomma }}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Amount Exceeding Bracket</th>
+                                        <td>Rs. {{ tax_2024_2025.amount_exceeding|floatformat:"-0"|intcomma }}</td>
+                                    </tr>
+                                    <tr class="bg bg-warning">
+                                        <th>Rate Applied</th>
+                                        <td>{{ tax_2024_2025.rate|floatformat:"-1"}} %</td>
+                                    </tr>
 
                                     {% if tax_2024_2025.surcharge %}
-                                        <tr><th>Tax on Amount Exceeding</th><td>Rs. {{ tax_2024_2025.tax_on_exceeding|intcomma }}</td></tr>
-                                        <tr><th>Surcharge 10%</th><td>Rs. {{ tax_2024_2025.surcharge|intcomma }}</td></tr>
-                                        <tr><th>Total Tax U/S 4AB</th><td>Rs. {{ tax_2024_2025.total_tax_with_surcharge|intcomma }}</td></tr>
+                                    <tr>
+                                        <th>Tax on Amount Exceeding</th>
+                                        <td>Rs. {{ tax_2024_2025.tax_on_exceeding|intcomma }}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Surcharge {{surcharge_year_1|floatformat:0}}%</th>
+                                        <td>Rs. {{ tax_2024_2025.surcharge|intcomma }}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Total Tax U/S 4AB</th>
+                                        <td>Rs. {{ tax_2024_2025.total_tax_with_surcharge|intcomma }}</td>
+                                    </tr>
                                     {% else %}
-                                        <tr><th>Tax on Amount Exceeding</th><td>Rs. {{ tax_2024_2025.tax_on_exceeding|intcomma }}</td></tr>
-                                        <tr><th>Total Tax Chargeable</th><td>Rs. {{ tax_2024_2025.total_tax|intcomma }}</td></tr>
+                                    <tr>
+                                        <th>Tax on Amount Exceeding</th>
+                                        <td>Rs. {{ tax_2024_2025.tax_on_exceeding|intcomma }}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Total Tax Chargeable</th>
+                                        <td>Rs. {{ tax_2024_2025.total_tax|intcomma }}</td>
+                                    </tr>
                                     {% endif %}
 
-                                    <tr class="bg bg-warning"><th>Monthly Tax</th><td>Rs. {{ tax_2024_2025.per_month|intcomma }}</td></tr>
+                                    <tr class="bg bg-warning">
+                                        <th>Monthly Tax</th>
+                                        <td>Rs. {{ tax_2024_2025.per_month|intcomma }}</td>
+                                    </tr>
                                 </table>
                             </div>
                         </div>
@@ -155,23 +219,60 @@
                             <label>Tax Calculation for {{tax_2025_2026_year}}</label>
                             <div class="table-responsive">
                                 <table class="table table-bordered align-middle mb-0">
-                                    <tr><th>Monthly Income</th><td>Rs. {{ monthly_income|intcomma }}</td></tr>
-                                    <tr><th>Yearly Income</th><td>Rs. {{ tax_2025_2026.income|intcomma }}</td></tr>
-                                    <tr class="bg bg-warning"><th>Applicable Tax Bracket</th><td>Rs. {{ tax_2025_2026.lower|intcomma }} to Rs. {{ tax_2025_2026.upper|intcomma }}</td></tr>
-                                    <tr><th>Base Tax</th><td>Rs. {{ tax_2025_2026.fixed_tax|intcomma }}</td></tr>
-                                    <tr><th>Amount Exceeding Bracket</th><td>Rs. {{ tax_2025_2026.amount_exceeding|intcomma }}</td></tr>
-                                    <tr class="bg bg-warning"><th>Rate Applied</th><td>{{ tax_2025_2026.rate|floatformat:"-0" }} %</td></tr>
+                                    <tr>
+                                        <th>Monthly Income</th>
+                                        <td>Rs. {{ monthly_income|intcomma }}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Yearly Income</th>
+                                        <td>Rs. {{ tax_2025_2026.income|intcomma }}</td>
+                                    </tr>
+                                    <tr class="bg bg-warning">
+                                        <th>Applicable Tax Bracket</th>
+                                        <td>Rs. {{ tax_2025_2026.lower|floatformat:"-0"|intcomma}} to Rs. {{ tax_2025_2026.upper|floatformat:"-0"|intcomma}}
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th>Base Tax</th>
+                                        <td>Rs. {{ tax_2025_2026.fixed_tax|floatformat:"-0"|intcomma }}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Amount Exceeding Bracket</th>
+                                        <td>Rs. {{ tax_2025_2026.amount_exceeding|floatformat:"-0"|intcomma }}</td>
+                                    </tr>
+                                    <tr class="bg bg-warning">
+                                        <th>Rate Applied</th>
+                                        <td>{{ tax_2025_2026.rate|floatformat:"-1" }} %</td>
+                                    </tr>
 
                                     {% if tax_2025_2026.surcharge %}
-                                        <tr><th>Tax on Amount Exceeding</th><td>Rs. {{ tax_2025_2026.tax_on_exceeding|intcomma }}</td></tr>
-                                        <tr><th>Surcharge 9%</th><td>Rs. {{ tax_2025_2026.surcharge|intcomma }}</td></tr>
-                                        <tr><th>Total Tax U/S 4AB</th><td>Rs. {{ tax_2025_2026.total_tax_with_surcharge|intcomma }}</td></tr>
+                                    <tr>
+                                        <th>Tax on Amount Exceeding</th>
+                                        <td>Rs. {{ tax_2025_2026.tax_on_exceeding|intcomma }}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Surcharge {{surcharge_year_2|floatformat:0}}%</th>
+                                        <td>Rs. {{ tax_2025_2026.surcharge|intcomma }}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Total Tax U/S 4AB</th>
+                                        <td>Rs. {{ tax_2025_2026.total_tax_with_surcharge|intcomma }}</td>
+                                    </tr>
                                     {% else %}
-                                        <tr><th>Tax on Amount Exceeding</th><td>Rs. {{ tax_2025_2026.tax_on_exceeding|intcomma }}</td></tr>
-                                        <tr><th>Total Tax Chargeable</th><td>Rs. {{ tax_2025_2026.total_tax|intcomma }}</td></tr>
+                                    <tr>
+                                        <th>Tax on Amount Exceeding</th>
+                                        <td>Rs. {{ tax_2025_2026.tax_on_exceeding|intcomma }}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Total Tax Chargeable</th>
+                                        <td>Rs. {{ tax_2025_2026.total_tax|intcomma }}</td>
+                                    </tr>
                                     {% endif %}
 
-                                    <tr class="bg bg-warning"><th>Monthly Tax</th><td>Rs. {{ tax_2025_2026.per_month|intcomma }}</td></tr>
+                                    <tr class="bg bg-warning">
+                                        <th>Monthly Tax</th>
+                                        <td>Rs. {{ tax_2025_2026.per_month|intcomma }}</td>
+                                    </tr>
                                 </table>
                             </div>
                         </div>
@@ -190,6 +291,43 @@
 {% include 'partials/up.html' %}
 {% include 'partials/footer-scripts.html' %}
 
+
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+    const tax_2024_2025_year = document.getElementById("tax_2024_2025_year").value;
+    const tax_2025_2026_year = document.getElementById("tax_2025_2026_year").value;
+    $('#tax_year_1').val(tax_2024_2025_year).trigger('change');
+    $('#tax_year_2').val(tax_2025_2026_year).trigger('change');
+
+
+    const select1 = document.getElementById("tax_year_1");
+    const select2 = document.getElementById("tax_year_2");
+
+    function updateOptions() {
+        const selected1 = select1.value;
+        const selected2 = select2.value;
+
+        // Reset all disabled options
+        [...select1.options].forEach(opt => opt.disabled = false);
+        [...select2.options].forEach(opt => opt.disabled = false);
+
+        // Disable the one selected in the other dropdown
+        if (selected1) {
+            [...select2.options].forEach(opt => {
+                if (opt.value === selected1) opt.disabled = true;
+            });
+        }
+        if (selected2) {
+            [...select1.options].forEach(opt => {
+                if (opt.value === selected2) opt.disabled = true;
+            });
+        }
+    }
+
+    select1.addEventListener("change", updateOptions);
+    select2.addEventListener("change", updateOptions);
+});
+</script>
 
 </body>
 </html>

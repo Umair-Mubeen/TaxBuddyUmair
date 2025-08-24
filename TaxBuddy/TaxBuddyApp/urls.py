@@ -27,6 +27,9 @@ urlpatterns = [
     path("AOPCalculator", views.AOPCalculator, name='AOPCalculator'),
     path("PropertyCalculator", views.PropertyCalculator, name='PropertyCalculator'),
 
+    #tax slab brackets
+    path("add_salary_tax_brackets", views.add_salary_tax_brackets,name="add_salary_tax_brackets")
+
 ]
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
