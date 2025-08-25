@@ -47,6 +47,16 @@
 
                             <div class="mb-3 form-group">
                                 <label class="form-label" for="year">Year</label>
+                                <select class="form-control" id="taxpayer_type" name="taxpayer_type" required>
+                                    <option value="" disabled>Select the tax year</option>
+                                    <option value="salary_person">Salaried Person</option>
+                                    <option value="ind_aop_person" selected>Individual / AOP</option>
+
+
+                                </select>
+                            </div>
+                            <div class="mb-3 form-group">
+                                <label class="form-label" for="year">Year</label>
                                 <select class="form-control" id="year" name="tax_year" required>
                                     <option value="" disabled>Select the tax year</option>
                                     <option value="2021-2022">July - 2021 to June 2022 - (2022)</option>
