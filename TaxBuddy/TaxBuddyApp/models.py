@@ -68,7 +68,7 @@ class TaxBracket(models.Model):
     base_tax = models.BigIntegerField()
 
 
-class PropertyTaxBracket(models.Model):
+class Business_AOP_Slab(models.Model):
     YEAR_CHOICES = [
         ("2021-2022", "2021-2022"),
         ("2022-2023", "2022-2023"),

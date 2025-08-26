@@ -4,45 +4,12 @@
 <head>
     <meta charset="UTF-8">
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
-    <meta content="TaxBuddy Umair – Expert Tax Consulting for Individuals and Businesses in Pakistan"
-          name="description">
+    <meta content="TaxBuddy Umair – Expert Tax Consulting for Individuals and Businesses in Pakistan" name="description">
     <meta content="TaxBuddy, FBR, Income Tax, Sales Tax, Pakistan, Property Tax" name="keywords">
     <meta content="Umair Mubeen" name="author">
     <title>TaxBuddy Umair | AOP | Income Tax Calculator</title>
     {% load static %}
     {% include 'partials/head-css.html' %}
-    <style>
-        h1,th,td{font-weight: normal;}
-/* Mobile-specific adjustments */
-@media (max-width: 576px) {
-    .input-single6 label {
-        font-size: 14px;
-    }
-    .form-control {
-        font-size: 14px;
-        padding : 8px;
-    }
-    h1 {
-        font-size: 20px !important;
-        line-height: 26px !important;
-    }
-    table.table {
-        font-size: 14px;
-    }
-    table.table th, table.table td {
-    white-space: normal;       /* Allow wrapping */
-    word-break: break-word;    /* Break long numbers/words if needed */
-}
-
-.container, .row {
-    margin-left: 0 !important;
-    margin-right: 0 !important;
-}
-
-
-}
-</style>
-
 <body>
 
 <!--=====Navigation Bar=======-->
@@ -70,6 +37,9 @@
                                 <div class="row g-3">
                                     <!-- Income Type -->
                                     <div class="col-12 col-md-3">
+                                          <input type="hidden" name="tax_2024_2025_year" id="tax_2024_2025_year" value="{{tax_2024_2025_year}}">
+                                                 <input type="hidden" name="tax_2025_2026_year" id="tax_2025_2026_year" value="{{tax_2025_2026_year}}">
+
                                         <input type="hidden" value="{{income_type}}" id="hd_income_type" name="hd_income_type">
                                         <div class="input-single6">
                                             <label>Select Income Type</label>
@@ -116,7 +86,7 @@
                                         <div class="input-single6">
                                             <label>Monthly Gross Profit</label>
                                             <input class="form-control" id="incomeAmountInput" name="income_amount" style="padding: 6px"
-                                                   placeholder="Monthly Income" required type="number" />
+                                                   placeholder="Monthly Income" required type="number" value="{{monthly_income}}" />
                                         </div>
                                     </div>
 
@@ -133,82 +103,7 @@
                 </div>
             </div>
         </div>
-
-        <div class="space20"></div>
-
-        {% if monthly_income %}
-        <div class="row g-4">
-            <div class="col-12">
-                <div class="contact3-form-all" data-aos="zoom-out" data-aos-duration="900">
-
-                    <div class="hadding6 text-center">
-                        <h1 class="font-30 font-f-7 font-lg-40 weight-500 line-height-lg-48 line-height-38">
-                            Tax Calculation Comparison: {{tax_2024_2025_year}} VS {{tax_2025_2026_year}}
-                        </h1>
-                    </div>
-
-                    <div class="row g-4 mt-3">
-                        <!-- Left Table -->
-                        <div class="col-12 col-lg-6">
-                            <label>Tax Calculation for Tax Year : {{tax_2024_2025_year}}</label>
-                            <div class="table-responsive">
-                                <table class="table table-bordered align-middle mb-0">
-                                    <tr><th>Monthly Income</th><td>Rs. {{ monthly_income|intcomma }}</td></tr>
-                                    <tr><th>Yearly Income</th><td>Rs. {{ tax_2024_2025.income|intcomma }}</td></tr>
-                                    <tr class="bg bg-warning"><th>Applicable Tax Bracket</th><td>Rs. {{ tax_2024_2025.lower|floatformat:"-0"|intcomma }} to Rs. {{ tax_2024_2025.upper|floatformat:"-0"|intcomma }}</td></tr>
-                                    <tr><th>Base Tax</th><td>Rs. {{ tax_2024_2025.fixed_tax|floatformat:"-0"|intcomma }}</td></tr>
-                                    <tr><th>Amount Exceeding Bracket</th><td>Rs. {{ tax_2024_2025.amount_exceeding|floatformat:"-0"|intcomma }}</td></tr>
-                                    <tr class="bg bg-warning"><th>Rate Applied</th><td>{{ tax_2024_2025.rate|floatformat:"-0"|intcomma}} %</td></tr>
-
-                                    {% if tax_2024_2025.surcharge%}
-                                        <tr><th>Tax on Amount Exceeding</th><td>Rs. {{ tax_2024_2025.tax_on_exceeding|intcomma }}</td></tr>
-                                        <tr><th>Surcharge</th><td> N/A </td></tr>
-                                        <tr><th>Total Tax U/S 4AB</th><td> N/A </td></tr>
-                                        <tr><th>Total Tax Chargeable</th><td>Rs. {{ tax_2024_2025.total_tax|intcomma }}</td></tr>
-
-                                    {% else %}
-                                        <tr><th>Tax on Amount Exceeding</th><td>Rs. {{ tax_2024_2025.tax_on_exceeding|intcomma }}</td></tr>
-                                        <tr><th>Total Tax Chargeable</th><td>Rs. {{ tax_2024_2025.total_tax|intcomma }}</td></tr>
-                                    {% endif %}
-
-                                    <tr class="bg bg-warning"><th>Monthly Tax</th><td>Rs. {{ tax_2024_2025.per_month|intcomma }}</td></tr>
-                                </table>
-                            </div>
-                        </div>
-
-                        <!-- Right Table -->
-                        <div class="col-12 col-lg-6">
-                            <label>Tax Calculation for Tax Year : {{tax_2025_2026_year}}</label>
-                            <div class="table-responsive">
-                                <table class="table table-bordered align-middle mb-0">
-                                    <tr><th>Monthly Income</th><td>Rs. {{ monthly_income|intcomma }}</td></tr>
-                                    <tr><th>Yearly Income</th><td>Rs. {{ tax_2025_2026.income|intcomma }}</td></tr>
-                                    <tr class="bg bg-warning"><th>Applicable Tax Bracket</th><td>Rs. {{ tax_2025_2026.lower|floatformat:"-0"|intcomma }} to Rs. {{ tax_2025_2026.upper|floatformat:"-0"|intcomma }}</td></tr>
-                                    <tr><th>Base Tax</th><td>Rs. {{ tax_2025_2026.fixed_tax|floatformat:"-0"|intcomma }}</td></tr>
-                                    <tr><th>Amount Exceeding Bracket</th><td>Rs. {{ tax_2025_2026.amount_exceeding|floatformat:"-0"|intcomma }}</td></tr>
-                                    <tr class="bg bg-warning"><th>Rate Applied</th><td>{{ tax_2025_2026.rate|floatformat:"-0" }} %</td></tr>
-
-                                    {% if tax_2025_2026.surcharge %}
-                                        <tr><th>Tax on Amount Exceeding</th><td>Rs. {{ tax_2025_2026.tax_on_exceeding|intcomma }}</td></tr>
-                                        <tr><th>Surcharge 9%</th><td>Rs. {{ tax_2025_2026.surcharge|intcomma }}</td></tr>
-                                        <tr><th>Total Tax U/S 4AB</th><td>Rs. {{ tax_2025_2026.total_tax_with_surcharge|intcomma }}</td></tr>
-                                       <tr><th>Total Tax Chargeable</th><td>Rs. {{ tax_2025_2026.total_tax|intcomma }}</td></tr>
-
-                                    {% else %}
-                                        <tr><th>Tax on Amount Exceeding</th><td>Rs. {{ tax_2025_2026.tax_on_exceeding|intcomma }}</td></tr>
-                                        <tr><th>Total Tax Chargeable</th><td>Rs. {{ tax_2025_2026.total_tax|intcomma }}</td></tr>
-                                    {% endif %}
-
-                                    <tr class="bg bg-warning"><th>Monthly Tax</th><td>Rs. {{ tax_2025_2026.per_month|intcomma }}</td></tr>
-                                </table>
-                            </div>
-                        </div>
-                    </div>
-
-                </div>
-            </div>
-        </div>
-        {% endif %}
+        {% include 'partials/slab_result_content.html' with content=context %}
     </div>
 </div>
 <!--=====Income Tax Calculator end=======-->
@@ -221,13 +116,3 @@
 
 </body>
 </html>
-
-<script>
-    $(document).ready(function () {
-    // Get the value from the hidden input element
-    var income_type = document.getElementById('hd_income_type').value;
-    // Set the value of another input element and trigger a change event
-    $('#incomeTypeSelect').val(income_type).trigger('change');
-});
-
-</script>

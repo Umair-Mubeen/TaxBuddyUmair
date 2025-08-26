@@ -1,14 +1,7 @@
-<style>
-    html {
-  scroll-behavior: smooth;
-}
-
-</style>
+<style> html { scroll-behavior: smooth; } </style>
 {% load static %}
-
 <!--=====CSS=======-->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-
 <link rel="stylesheet" href="{% static 'assets/css/plugins/bootstrap.min.css' %}">
 <link rel="stylesheet" href="{% static 'assets/css/plugins/owl.carousel.min.css' %}">
 <link rel="stylesheet" href="{% static 'assets/css/plugins/aos.css' %}">
@@ -19,6 +12,49 @@
 <link rel="stylesheet" href="{% static 'assets/css/plugins/nice-select.css' %}">
 <link rel="stylesheet" href="{% static 'assets/css/plugins/fonts.css' %}">
 <link rel="stylesheet" href="{% static 'assets/css/master.css' %}">
-
 <!--===== jQuery=======-->
 <script src="{% static 'assets/js/plugins/jquery-3-6-0.min.js' %}"></script>
+
+
+
+<script>
+    $(document).ready(function () {
+    // Get the value from the hidden input element
+    var income_type = document.getElementById('hd_income_type').value;
+    // Set the value of another input element and trigger a change event
+    $('#incomeTypeSelect').val(income_type).trigger('change');
+    const tax_2024_2025_year = document.getElementById("tax_2024_2025_year").value;
+    const tax_2025_2026_year = document.getElementById("tax_2025_2026_year").value;
+    $('#tax_year_1').val(tax_2024_2025_year).trigger('change');
+    $('#tax_year_2').val(tax_2025_2026_year).trigger('change');
+
+        const select1 = document.getElementById("tax_year_1");
+    const select2 = document.getElementById("tax_year_2");
+
+    function updateOptions() {
+        const selected1 = select1.value;
+        const selected2 = select2.value;
+
+        // Reset all disabled options
+        [...select1.options].forEach(opt => opt.disabled = false);
+        [...select2.options].forEach(opt => opt.disabled = false);
+
+        // Disable the one selected in the other dropdown
+        if (selected1) {
+            [...select2.options].forEach(opt => {
+                if (opt.value === selected1) opt.disabled = true;
+            });
+        }
+        if (selected2) {
+            [...select1.options].forEach(opt => {
+                if (opt.value === selected2) opt.disabled = true;
+            });
+        }
+    }
+
+    select1.addEventListener("change", updateOptions);
+    select2.addEventListener("change", updateOptions);
+
+});
+
+</script>
