@@ -160,48 +160,9 @@
             </div>
         </div>
     </div>
-    <div class="space30"></div>
-
     <div class="container">
-        <div class="row">
-            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-
-                <!-- Result Display -->
-                <div class="contact3-form-all" data-aos="zoom-out" data-aos-duration="900">
-                    <div class="hadding6">
-                        <div class="input-single6">
-                            <div class="text-center">
-                                <h1 class="font-30 font-f-7 font-lg-40 weight-500  line-height-lg-48 line-height-38">
-                                    Income
-                                    from Property Tax Calculation</h1></div>
-                        </div>
-                        <div class="table-responsive">
-                            <table class="table table-bordered align-middle text-center">
-                                <tr>
-                                    <th scope="col">Gross Rental Income</th>
-                                    <th scope="col">Total Deductions</th>
-                                    <th scope="col">Net Rental Income</th>
-                                    <th scope="col">Income Tax</th>
-
-                                </tr>
-                                <tr>
-                                    <td scope="row">{{gross_rent|intcomma}}</td>
-                                    <td scope="row">{{total_deductions|intcomma}}</td>
-                                    <td scope="row">{{net_rent|intcomma}}</td>
-                                    <td scope="row"> {{tax|intcomma}}</td>
-                                </tr>
-
-
-                            </table>
-
-
-                        </div>
-                    </div>
-
-                </div>
-            </div>
-        </div>
-    </div>
+     {% include 'partials/slab_result_content.html' with content=context %}
+</div>
 </div>
 <!--=====Rental Income Deductions Form End=======-->
 

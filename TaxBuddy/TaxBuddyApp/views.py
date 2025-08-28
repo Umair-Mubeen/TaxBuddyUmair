@@ -9,7 +9,7 @@ from django.contrib.auth import authenticate, login, logout
 from django.utils.text import slugify
 from django.contrib import messages
 
-from .models import Blogs, Comment, Contact, TaxBracket, Business_AOP_Slab
+from .models import Blogs, Comment, Contact, TaxBracket, Business_AOP_Slab,Property_Business_AOP_Slab
 
 
 def index(request):
@@ -246,34 +246,13 @@ def PropertyCalculator(request):
                     ground_rent + borrowed_interest + hbfc_payments +
                     mortgage_interest + admin_expenses + legal_expenses + irrecoverable_rent
             )
+
             # Net rental income
             net_rental_income = gross_rent - total_deductions
-            print('net_rental_income', round(net_rental_income))
-            # Tax calculation based on slabs
-            if net_rental_income <= 300000:
-                tax = 0
-
-            elif net_rental_income > 300000 and net_rental_income <= 600000:
-                tax = 0.05 * (net_rental_income - 300000)
-                print(f'gross rent greater than {300000} :', tax)
-
-            elif net_rental_income > 600000 and net_rental_income <= 2000000:
-                tax = 15000 + 0.10 * (net_rental_income - 600000)
-                print(f'gross rent greater than {600000} :', tax)
-
-            else:
-                tax = 155000 + 0.25 * (net_rental_income - 2000000)
-                print(f'gross rent greater than {net_rental_income} :', tax)
-
-            # Pass data to template
-            context = {
-                'gross_rent': round(gross_rent),
-                'total_deductions': round(total_deductions),
-                'net_rent': round(net_rental_income),
-                'tax': round(tax)
-            }
-            print(context)
-
+            context = FetchResult('2021-2022', '2022-2023', 'Rental_Taxpayer', net_rental_income)
+            context.update({
+                'net_income_rental' : context['tax_2024_2025']['income'] - total_deductions
+            })
             return render(request, 'partials/property_rent.html', context)
 
         else:
@@ -335,7 +314,11 @@ def FetchResult(tax_year_1, tax_year_2, taxpayer_type, yearly_income):
         elif taxpayer_type == 'Business Individual' or taxpayer_type == 'AOP' :
             tax_brackets_result_one = Business_AOP_Slab.objects.filter(year=tax_year_1)
             tax_brackets_result_two = Business_AOP_Slab.objects.filter(year=tax_year_2)
-
+        else:
+            print("Rental Property ------------")
+            print('tax years', tax_year_1 , tax_year_2)
+            tax_brackets_result_one = Property_Business_AOP_Slab.objects.filter(year=tax_year_1)
+            tax_brackets_result_two = Property_Business_AOP_Slab.objects.filter(year=tax_year_2)
         # Convert DB rows to dicts
         brackets_tax_year_1 = {
             (float(s.income_min), float(s.income_max) if s.income_max else float('inf')):

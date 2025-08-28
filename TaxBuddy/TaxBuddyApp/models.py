@@ -85,3 +85,18 @@ class Business_AOP_Slab(models.Model):
     base_tax = models.BigIntegerField()
 
 
+class Property_Business_AOP_Slab(models.Model):
+    YEAR_CHOICES = [
+        ("2021-2022", "2021-2022"),
+        ("2022-2023", "2022-2023"),
+        ("2023-2024", "2023-2024"),
+        ("2024-2025", "2024-2025"),
+        ("2025-2026", "2025-2026"),
+
+    ]
+    year = models.CharField(max_length=20, choices=YEAR_CHOICES)
+    income_min = models.BigIntegerField()
+    income_max = models.BigIntegerField(null=True, blank=True)  # null = infinity
+    rate = models.DecimalField(max_digits=5, decimal_places=3)  # store 0.35 for 35%
+    base_income = models.BigIntegerField()
+    base_tax = models.BigIntegerField()
