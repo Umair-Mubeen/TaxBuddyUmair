@@ -175,7 +175,7 @@ def AOPCalculator(request):
                 'income_type': income_type
             })
             return render(request, 'partials/aop_slab.html', context)
-        return render(request, 'partials/aop_slab.html')
+        return render(request, 'partials/aop_slab.html',{'taxpayer_type' : 'AOP'})
     except Exception as e:
         print("Exception / Error at AOP Tax Calculator : " + str(e))
         return HttpResponse("Exception / Error at AOP Tax Calculator : " + str(e))
@@ -199,7 +199,7 @@ def BusinessCalculator(request):
                 'income_type' : income_type
             })
             return render(request, 'partials/business_slab.html', context)
-        return render(request, 'partials/business_slab.html')
+        return render(request, 'partials/business_slab.html', {'taxpayer_type' : 'Business Individual'})
 
     except Exception as e:
         print("Exception / Error at Business Tax Calculator : " + str(e))
@@ -212,9 +212,6 @@ def SalaryCalculator(request):
             tax_year_1 = request.POST.get('tax_year_1')  # 'Monthly' or 'Yearly'
             tax_year_2 = request.POST.get('tax_year_2')  # 'Monthly' or 'Yearly'
             income_amount = int(request.POST.get('income_amount'))
-            taxpayer_type = request.POST.get('taxpayer_type')  # 'salaried'
-
-            # Convert monthly to yearly if needed
             yearly_income = income_amount * 12
             context = FetchResult(tax_year_1, tax_year_2, 'SalaryPerson', yearly_income)
             return render(request, 'partials/salary_slab.html', context)
@@ -251,7 +248,7 @@ def PropertyCalculator(request):
             net_rental_income = gross_rent - total_deductions
             context = FetchResult('2021-2022', '2022-2023', 'Rental_Taxpayer', net_rental_income)
             context.update({
-                'net_income_rental' : context['tax_2024_2025']['income'] - total_deductions
+                'net_income_rental' : context['tax_year_1_result']['income'] - total_deductions
             })
             return render(request, 'partials/property_rent.html', context)
 
@@ -315,19 +312,15 @@ def FetchResult(tax_year_1, tax_year_2, taxpayer_type, yearly_income):
             tax_brackets_result_one = Business_AOP_Slab.objects.filter(year=tax_year_1)
             tax_brackets_result_two = Business_AOP_Slab.objects.filter(year=tax_year_2)
         else:
-            print("Rental Property ------------")
-            print('tax years', tax_year_1 , tax_year_2)
             tax_brackets_result_one = Property_Business_AOP_Slab.objects.filter(year=tax_year_1)
             tax_brackets_result_two = Property_Business_AOP_Slab.objects.filter(year=tax_year_2)
-        # Convert DB rows to dicts
-        brackets_tax_year_1 = {
-            (float(s.income_min), float(s.income_max) if s.income_max else float('inf')):
-                (float(s.rate), float(s.base_income), float(s.base_tax)) for s in tax_brackets_result_one
+
+        brackets_tax_year_1 = { (float(s.income_min), float(s.income_max) if s.income_max else float('inf')):
+                    (float(s.rate), float(s.base_income), float(s.base_tax)) for s in tax_brackets_result_one
         }
 
-        brackets_tax_year_2 = {
-            (float(s.income_min), float(s.income_max) if s.income_max else float('inf')):
-                (float(s.rate), float(s.base_income), float(s.base_tax)) for s in tax_brackets_result_two
+        brackets_tax_year_2 = { (float(s.income_min), float(s.income_max) if s.income_max else float('inf')):
+                    (float(s.rate), float(s.base_income), float(s.base_tax)) for s in tax_brackets_result_two
         }
 
         surcharge_rates = { "2024-2025": 0.10, "2025-2026": 0.09}
@@ -336,15 +329,15 @@ def FetchResult(tax_year_1, tax_year_2, taxpayer_type, yearly_income):
         surcharge_year_1 = surcharge_rates.get(tax_year_1, 0)
         surcharge_year_2 = surcharge_rates.get(tax_year_2, 0)
 
-        tax_2024_2025 = calculate_tax(yearly_income, brackets_tax_year_1, surcharge_year_1)  # 10% surcharge
-        tax_2025_2026 = calculate_tax(yearly_income, brackets_tax_year_2, surcharge_year_2)  # 9% surcharge
+        tax_year_1_result = calculate_tax(yearly_income, brackets_tax_year_1, surcharge_year_1)  # 10% surcharge
+        tax_year_2_result = calculate_tax(yearly_income, brackets_tax_year_2, surcharge_year_2)  # 9% surcharge
 
         context = {
             'taxpayer_type': taxpayer_type,
-            'tax_2024_2025_year': tax_year_1,
-            'tax_2025_2026_year': tax_year_2,
-            'tax_2024_2025': tax_2024_2025,
-            'tax_2025_2026': tax_2025_2026,
+            'tax_year_1': tax_year_1,
+            'tax_year_2': tax_year_2,
+            'tax_year_1_result': tax_year_1_result,
+            'tax_year_2_result': tax_year_2_result,
             'monthly_income': int(yearly_income / 12),
             'yearly_income': yearly_income,
             'surcharge_year_1': surcharge_year_1 * 100,

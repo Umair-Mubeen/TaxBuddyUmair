@@ -8,63 +8,64 @@
 
                     <div class="hadding6 text-center">
                         <h1 class="font-30 font-f-7 font-lg-40 weight-500 line-height-lg-48 line-height-38">
-                            Tax Calculation Comparison: {{tax_2024_2025_year}} VS {{tax_2025_2026_year}}
+                            Tax Calculation Comparison - {{taxpayer_type}}
                         </h1>
                     </div>
 
                     <div class="row g-4 mt-3">
                         <!-- Left Table -->
                         <div class="col-12 col-lg-6">
-                            <label>Tax Calculation for Tax Year : {{tax_2024_2025_year}}</label>
+                            <label>Tax Calculation for Tax Year : {{tax_year_1}}</label>
                             <div class="table-responsive">
                                 <table class="table table-bordered align-middle mb-0">
                                     <tr><th>Monthly Income</th><td>Rs. {{ monthly_income|intcomma }}</td></tr>
-                                    <tr><th>Yearly Income</th><td>Rs. {{ tax_2024_2025.income|intcomma }}</td></tr>
-                                    <tr class="bg bg-warning"><th>Applicable Tax Bracket</th><td>Rs. {{ tax_2024_2025.lower|floatformat:"-0"|intcomma }} to Rs. {{ tax_2024_2025.upper|floatformat:"-0"|intcomma }}</td></tr>
-                                    <tr><th>Base Tax</th><td>Rs. {{ tax_2024_2025.fixed_tax|floatformat:"-0"|intcomma }}</td></tr>
-                                    <tr><th>Amount Exceeding Bracket</th><td>Rs. {{ tax_2024_2025.amount_exceeding|floatformat:"-0"|intcomma }}</td></tr>
-                                    <tr class="bg bg-warning"><th>Rate Applied</th><td>{{ tax_2024_2025.rate|floatformat:"-0"|intcomma}} %</td></tr>
+                                    <tr><th>Yearly Income</th><td>Rs. {{ tax_year_1_result.income|intcomma }}</td></tr>
 
-                                    {% if tax_2024_2025.surcharge%}
-                                        <tr><th>Tax on Amount Exceeding</th><td>Rs. {{ tax_2024_2025.tax_on_exceeding|intcomma }}</td></tr>
+                                    <tr class="bg bg-warning"><th>Applicable Tax Bracket</th><td>Rs. {{ tax_year_1_result.lower|floatformat:"-0"|intcomma }} to Rs. {{ tax_year_1_result.upper|floatformat:"-0"|intcomma }}</td></tr>
+                                    <tr><th>Base Tax</th><td>Rs. {{ tax_year_1_result.fixed_tax|floatformat:"-0"|intcomma }}</td></tr>
+                                    <tr><th>Amount Exceeding Bracket</th><td>Rs. {{ tax_year_1_result.amount_exceeding|floatformat:"-0"|intcomma }}</td></tr>
+                                    <tr class="bg bg-warning"><th>Rate Applied</th><td>{{ tax_year_1_result.rate|floatformat:"-0"|intcomma}} %</td></tr>
+
+                                    {% if tax_year_1_result.surcharge%}
+                                        <tr><th>Tax on Amount Exceeding</th><td>Rs. {{ tax_year_1_result.tax_on_exceeding|intcomma }}</td></tr>
                                         <tr><th>Surcharge</th><td> N/A </td></tr>
                                         <tr><th>Total Tax U/S 4AB</th><td> N/A </td></tr>
-                                        <tr><th>Total Tax Chargeable</th><td>Rs. {{ tax_2024_2025.total_tax|intcomma }}</td></tr>
+                                        <tr><th>Total Tax Chargeable</th><td>Rs. {{ tax_year_1_result.total_tax|intcomma }}</td></tr>
 
                                     {% else %}
-                                        <tr><th>Tax on Amount Exceeding</th><td>Rs. {{ tax_2024_2025.tax_on_exceeding|intcomma }}</td></tr>
-                                        <tr><th>Total Tax Chargeable</th><td>Rs. {{ tax_2024_2025.total_tax|intcomma }}</td></tr>
+                                        <tr><th>Tax on Amount Exceeding</th><td>Rs. {{ tax_year_1_result.tax_on_exceeding|intcomma }}</td></tr>
+                                        <tr><th>Total Tax Chargeable</th><td>Rs. {{ tax_year_1_result.total_tax|intcomma }}</td></tr>
                                     {% endif %}
 
-                                    <tr class="bg bg-warning"><th>Monthly Tax</th><td>Rs. {{ tax_2024_2025.per_month|intcomma }}</td></tr>
+                                    <tr class="bg bg-warning"><th>Monthly Tax</th><td>Rs. {{ tax_year_1_result.per_month|intcomma }}</td></tr>
                                 </table>
                             </div>
                         </div>
 
                         <!-- Right Table -->
                         <div class="col-12 col-lg-6">
-                            <label>Tax Calculation for Tax Year : {{tax_2025_2026_year}}</label>
+                            <label>Tax Calculation for Tax Year : {{tax_year_2}}</label>
                             <div class="table-responsive">
                                 <table class="table table-bordered align-middle mb-0">
                                     <tr><th>Monthly Income</th><td>Rs. {{ monthly_income|intcomma }}</td></tr>
-                                    <tr><th>Yearly Income</th><td>Rs. {{ tax_2025_2026.income|intcomma }}</td></tr>
-                                    <tr class="bg bg-warning"><th>Applicable Tax Bracket</th><td>Rs. {{ tax_2025_2026.lower|floatformat:"-0"|intcomma }} to Rs. {{ tax_2025_2026.upper|floatformat:"-0"|intcomma }}</td></tr>
-                                    <tr><th>Base Tax</th><td>Rs. {{ tax_2025_2026.fixed_tax|floatformat:"-0"|intcomma }}</td></tr>
-                                    <tr><th>Amount Exceeding Bracket</th><td>Rs. {{ tax_2025_2026.amount_exceeding|floatformat:"-0"|intcomma }}</td></tr>
-                                    <tr class="bg bg-warning"><th>Rate Applied</th><td>{{ tax_2025_2026.rate|floatformat:"-0" }} %</td></tr>
+                                    <tr><th>Yearly Income</th><td>Rs. {{ tax_year_2_result.income|intcomma }}</td></tr>
+                                    <tr class="bg bg-warning"><th>Applicable Tax Bracket</th><td>Rs. {{ tax_year_2_result.lower|floatformat:"-0"|intcomma }} to Rs. {{ tax_year_2_result.upper|floatformat:"-0"|intcomma }}</td></tr>
+                                    <tr><th>Base Tax</th><td>Rs. {{ tax_year_2_result.fixed_tax|floatformat:"-0"|intcomma }}</td></tr>
+                                    <tr><th>Amount Exceeding Bracket</th><td>Rs. {{ tax_year_2_result.amount_exceeding|floatformat:"-0"|intcomma }}</td></tr>
+                                    <tr class="bg bg-warning"><th>Rate Applied</th><td>{{ tax_year_2_result.rate|floatformat:"-0" }} %</td></tr>
 
-                                    {% if tax_2025_2026.surcharge %}
-                                        <tr><th>Tax on Amount Exceeding</th><td>Rs. {{ tax_2025_2026.tax_on_exceeding|intcomma }}</td></tr>
-                                        <tr><th>Surcharge 9%</th><td>Rs. {{ tax_2025_2026.surcharge|intcomma }}</td></tr>
-                                        <tr><th>Total Tax U/S 4AB</th><td>Rs. {{ tax_2025_2026.total_tax_with_surcharge|intcomma }}</td></tr>
-                                       <tr><th>Total Tax Chargeable</th><td>Rs. {{ tax_2025_2026.total_tax|intcomma }}</td></tr>
+                                    {% if tax_year_2_result.surcharge %}
+                                        <tr><th>Tax on Amount Exceeding</th><td>Rs. {{ tax_year_2_result.tax_on_exceeding|intcomma }}</td></tr>
+                                        <tr><th>Surcharge 9%</th><td>Rs. {{ tax_year_2_result.surcharge|intcomma }}</td></tr>
+                                        <tr><th>Total Tax U/S 4AB</th><td>Rs. {{ tax_year_2_result.total_tax_with_surcharge|intcomma }}</td></tr>
+                                       <tr><th>Total Tax Chargeable</th><td>Rs. {{ tax_year_2_result.total_tax|intcomma }}</td></tr>
 
                                     {% else %}
-                                        <tr><th>Tax on Amount Exceeding</th><td>Rs. {{ tax_2025_2026.tax_on_exceeding|intcomma }}</td></tr>
-                                        <tr><th>Total Tax Chargeable</th><td>Rs. {{ tax_2025_2026.total_tax|intcomma }}</td></tr>
+                                        <tr><th>Tax on Amount Exceeding</th><td>Rs. {{ tax_year_2_result.tax_on_exceeding|intcomma }}</td></tr>
+                                        <tr><th>Total Tax Chargeable</th><td>Rs. {{ tax_year_2_result.total_tax|intcomma }}</td></tr>
                                     {% endif %}
 
-                                    <tr class="bg bg-warning"><th>Monthly Tax</th><td>Rs. {{ tax_2025_2026.per_month|intcomma }}</td></tr>
+                                    <tr class="bg bg-warning"><th>Monthly Tax</th><td>Rs. {{ tax_year_2_result.per_month|intcomma }}</td></tr>
                                 </table>
                             </div>
                         </div>

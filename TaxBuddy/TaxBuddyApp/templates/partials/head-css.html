@@ -19,16 +19,14 @@
 
 <script>
     $(document).ready(function () {
-    // Get the value from the hidden input element
     var income_type = document.getElementById('hd_income_type').value;
-    // Set the value of another input element and trigger a change event
     $('#incomeTypeSelect').val(income_type).trigger('change');
-    const tax_2024_2025_year = document.getElementById("tax_2024_2025_year").value;
-    const tax_2025_2026_year = document.getElementById("tax_2025_2026_year").value;
-    $('#tax_year_1').val(tax_2024_2025_year).trigger('change');
-    $('#tax_year_2').val(tax_2025_2026_year).trigger('change');
+    const tax_year_1_id = document.getElementById("tax_year_1_id").value;
+    const tax_year_2_id = document.getElementById("tax_year_2_id").value;
+    $('#tax_year_1').val(tax_year_1_id).trigger('change');
+    $('#tax_year_2').val(tax_year_2_id).trigger('change');
 
-        const select1 = document.getElementById("tax_year_1");
+    const select1 = document.getElementById("tax_year_1");
     const select2 = document.getElementById("tax_year_2");
 
     function updateOptions() {
