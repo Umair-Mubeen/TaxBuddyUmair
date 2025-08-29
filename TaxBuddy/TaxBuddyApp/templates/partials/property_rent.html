@@ -6,27 +6,11 @@
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
     <meta content="TaxBuddy Umair – Expert Tax Consulting for Individuals and Businesses in Pakistan"
           name="description">
-    <meta content="TaxBuddy, FBR, Income Tax, Sales Tax, Pakistan, Property Tax" name="keywords">
+    <meta content="TaxBuddy, FBR, Income Tax, Sales Tax, Pakistan, Rental Property Tax" name="keywords">
     <meta content="Umair Mubeen" name="author">
     <title>TaxBuddy Umair | Property | Income Tax Calculator</title>
     {% load static %}
     {% include 'partials/head-css.html' %}
-    <style>
-        /* Keep table compact and text wrapping for mobile */
-        .table td, .table th {
-            white-space: nowrap; /* Prevents breaking in large screens */
-        }
-        @media (max-width: 576px) {
-            .table td, .table th {
-                white-space: normal; /* Allow wrapping on small screens */
-                font-size: 16px; /* Slightly smaller text */
-                padding: 6px; /* Less padding for mobile */
-            }
-            .table-responsive {
-                overflow-x: auto; /* Enable horizontal scroll if needed */
-            }
-        }
-    </style>
 <body>
 
 <!--=====Navigation Bar=======-->
@@ -46,17 +30,63 @@
                         </h1>
                     </div>
 
-                    <form id="rentalForm" action="PropertyCalculator" method="POST">
+                    <form action="PropertyCalculator" id="rentalForm" method="POST">
                         {% csrf_token %}
                         <div class="form-input-all">
                             <div class="form-input-box">
                                 <div class="row">
+                                    <div class="col-12 col-md-4">
+                                        <div class="input-single6">
 
+                                            <label>Select Income Type</label>
+                                            <select class="form-control" id="incomeTypeSelect" name="income_type"
+                                                    required>
+                                                <option disabled value=""> Select Income Type</option>
+                                                <option value="Monthly"> Monthly Income</option>
+                                                <option value="Yearly"> Yearly</option>
+
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-12 col-md-4">
+                                        <div class="input-single6">
+                                            <label>Select Tax Year</label>
+                                            <select class="form-control" id="tax_year_1" name="tax_year_1" required>
+                                                <option disabled value="">Select the tax year</option>
+                                                <option value="2021-2022">July - 2021 to June 2022 - (2022)</option>
+                                                <option value="2022-2023">July - 2022 to June 2023 - (2023)</option>
+                                                <option value="2023-2024">July - 2023 to June 2024 - (2024)</option>
+                                                <option value="2024-2025">July - 2024 to June 2025 - (2025)</option>
+                                                <option value="2025-2026">July - 2025 to June 2026 - (2026)</option>
+
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-12 col-md-4">
+                                        <div class="input-single6">
+                                            <label>Select Tax Year</label>
+                                            <select class="form-control" id="tax_year_2" name="tax_year_2" required>
+                                                <option disabled value="">Select the tax year</option>
+                                                <option value="2021-2022">July - 2021 to June 2022 - (2022)</option>
+                                                <option value="2022-2023">July - 2022 to June 2023 - (2023)</option>
+                                                <option value="2023-2024">July - 2023 to June 2024 - (2024)</option>
+                                                <option value="2024-2025">July - 2024 to June 2025 - (2025)</option>
+                                                <option value="2025-2026">July - 2025 to June 2026 - (2026)</option>
+
+                                            </select>
+                                        </div>
+                                    </div>
+
+
+                                </div>
+                                <div class="row">
                                     <!-- Gross Rent -->
                                     <div class="col-md-3">
                                         <div class="input-single6">
                                             <label>Gross Rent Received</label>
-                                            <input type="number" name="gross_rent" id="gross_rent" class="form-control" onchange="cal()" required/>
+                                            <input class="form-control" id="gross_rent" name="gross_rent" onchange="cal()"
+                                                   required type="number"/>
 
                                         </div>
                                     </div>
@@ -65,7 +95,8 @@
                                     <div class="col-md-3">
                                         <div class="input-single6">
                                             <label>Repairs Allowance (Max 20% of Gross Rent)</label>
-                                            <input type="number" name="repairs_allowance" id="repairs_allowance" class="form-control" value=""/>
+                                            <input class="form-control" id="repairs_allowance" name="repairs_allowance"
+                                                   type="number" value=""/>
                                         </div>
                                     </div>
 
@@ -73,8 +104,8 @@
                                     <div class="col-md-3">
                                         <div class="input-single6">
                                             <label>Property Insurance Premium</label>
-                                            <input type="number" name="insurance_premium"
-                                                   class="form-control"/>
+                                            <input class="form-control" name="insurance_premium"
+                                                   type="number"/>
                                         </div>
                                     </div>
 
@@ -82,7 +113,7 @@
                                     <div class="col-md-3">
                                         <div class="input-single6">
                                             <label>Local Taxes / Rates / Cess</label>
-                                            <input type="number" name="local_taxes" class="form-control"/>
+                                            <input class="form-control" name="local_taxes" type="number"/>
                                         </div>
                                     </div>
 
@@ -90,7 +121,7 @@
                                     <div class="col-md-3">
                                         <div class="input-single6">
                                             <label>Ground Rent</label>
-                                            <input type="number" name="ground_rent" class="form-control"/>
+                                            <input class="form-control" name="ground_rent" type="number"/>
                                         </div>
                                     </div>
 
@@ -98,8 +129,8 @@
                                     <div class="col-md-3">
                                         <div class="input-single6">
                                             <label>Interest on Borrowed Money</label>
-                                            <input type="number" step="1000" name="borrowed_interest"
-                                                   class="form-control"/>
+                                            <input class="form-control" name="borrowed_interest" step="1000"
+                                                   type="number"/>
                                         </div>
                                     </div>
 
@@ -107,7 +138,7 @@
                                     <div class="col-md-3">
                                         <div class="input-single6">
                                             <label>HBFC/Bank Rent-Sharing Payments</label>
-                                            <input type="number" name="hbfc_payments" class="form-control"/>
+                                            <input class="form-control" name="hbfc_payments" type="number"/>
                                         </div>
                                     </div>
 
@@ -115,8 +146,8 @@
                                     <div class="col-md-3">
                                         <div class="input-single6">
                                             <label>Interest on Mortgage</label>
-                                            <input type="number" name="mortgage_interest"
-                                                   class="form-control"/>
+                                            <input class="form-control" name="mortgage_interest"
+                                                   type="number"/>
                                         </div>
                                     </div>
 
@@ -124,8 +155,8 @@
                                     <div class="col-md-3">
                                         <div class="input-single6">
                                             <label>Admin & Collection Expenses (Max 4% of Gross Rent)</label>
-                                            <input type="number" name="admin_expenses" id="admin_expenses"
-                                                   class="form-control"/>
+                                            <input class="form-control" id="admin_expenses" name="admin_expenses"
+                                                   type="number"/>
                                         </div>
                                     </div>
 
@@ -133,8 +164,8 @@
                                     <div class="col-md-3">
                                         <div class="input-single6">
                                             <label>Legal Expenses for Ownership/Title Suits</label>
-                                            <input type="number" name="legal_expenses"
-                                                   class="form-control"/>
+                                            <input class="form-control" name="legal_expenses"
+                                                   type="number"/>
                                         </div>
                                     </div>
 
@@ -142,15 +173,15 @@
                                     <div class="col-md-3">
                                         <div class="input-single6">
                                             <label>Irrecoverable Rent Allowance</label>
-                                            <input type="number" name="irrecoverable_rent"
-                                                   class="form-control"/>
+                                            <input class="form-control" name="irrecoverable_rent"
+                                                   type="number"/>
                                         </div>
                                     </div>
 
                                 </div>
                                 <div class="space20"></div>
 
-                                <button type="submit" class="btn btn-primary">Calculate</button>
+                                <button class="btn btn-primary" type="submit">Calculate</button>
                             </div>
                         </div>
                     </form>
@@ -161,8 +192,8 @@
         </div>
     </div>
     <div class="container">
-     {% include 'partials/slab_result_content.html' with content=context %}
-</div>
+        {% include 'partials/slab_result_content.html' with content=context %}
+    </div>
 </div>
 <!--=====Rental Income Deductions Form End=======-->
 
@@ -186,5 +217,6 @@ function cal() {
     document.getElementById("repairs_allowance").value = repairs;
     document.getElementById("admin_expenses").value = admin;
 }
+
 </script>
 </html>
