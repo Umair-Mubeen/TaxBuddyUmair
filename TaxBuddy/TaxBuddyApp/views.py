@@ -212,7 +212,12 @@ def SalaryCalculator(request):
             tax_year_1 = request.POST.get('tax_year_1')  # 'Monthly' or 'Yearly'
             tax_year_2 = request.POST.get('tax_year_2')  # 'Monthly' or 'Yearly'
             income_amount = int(request.POST.get('income_amount'))
-            yearly_income = income_amount * 12
+            income_type = request.POST.get('income_type')
+
+            if income_type == 'Monthly':
+                yearly_income = income_amount * 12
+            else:
+                yearly_income = income_amount  # Already yearly income
             context = FetchResult(tax_year_1, tax_year_2, 'SalaryPerson', yearly_income)
             return render(request, 'partials/salary_slab.html', context)
         return render(request, 'partials/salary_slab.html')
@@ -225,8 +230,11 @@ def SalaryCalculator(request):
 def PropertyCalculator(request):
     try:
         if request.method == 'POST':
-            gross_rent = int(request.POST.get('gross_rent', 0))
+            tax_year_1 = request.POST.get('tax_year_1')  #
+            tax_year_2 = request.POST.get('tax_year_2')  #
+            income_type = request.POST.get('income_type')  # 'Monthly' or 'Yearly'
 
+            gross_rent = int(request.POST.get('gross_rent', 0))
             repairs_allowance = to_int(request.POST.get('repairs_allowance'))
             insurance_premium = to_int(request.POST.get('insurance_premium'))
             local_taxes = to_int(request.POST.get('local_taxes'))
@@ -243,13 +251,21 @@ def PropertyCalculator(request):
                     ground_rent + borrowed_interest + hbfc_payments +
                     mortgage_interest + admin_expenses + legal_expenses + irrecoverable_rent
             )
+            if income_type == 'Monthly':
+                yearly_income = gross_rent * 12
+            else:
+                yearly_income = gross_rent  # Already yearly income
 
             # Net rental income
-            net_rental_income = gross_rent - total_deductions
-            context = FetchResult('2021-2022', '2022-2023', 'Rental_Taxpayer', net_rental_income)
+            net_rental_income = yearly_income - total_deductions
+            print(net_rental_income)
+            context = FetchResult(tax_year_1, tax_year_2, 'Rental_Taxpayer', net_rental_income)
             context.update({
-                'net_income_rental' : context['tax_year_1_result']['income'] - total_deductions
+                'net_income_rental' : net_rental_income,
+                'total_deductions' : total_deductions,
+                'yearly_income' : yearly_income
             })
+            #return HttpResponse(str(context))
             return render(request, 'partials/property_rent.html', context)
 
         else:
@@ -285,7 +301,7 @@ def add_salary_tax_brackets(request):
             taxpayer_type = request.POST.get('taxpayer_type')
 
             if taxpayer_type == 'ind_aop_person':
-                PropertyTaxBracket.objects.create(
+                Business_AOP_Slab.objects.create(
                     year=tax_year, income_min=income_min, income_max=None if income_max == float('inf') else income_max,
                     rate=Decimal(str(rate)), base_income=base_income, base_tax=base_tax)
             else:
@@ -328,6 +344,12 @@ def FetchResult(tax_year_1, tax_year_2, taxpayer_type, yearly_income):
         # Pick surcharge if year exists, otherwise 0
         surcharge_year_1 = surcharge_rates.get(tax_year_1, 0)
         surcharge_year_2 = surcharge_rates.get(tax_year_2, 0)
+        print(surcharge_year_1, surcharge_year_2)
+
+        surcharge_label_1 = f"Surcharge {int(surcharge_year_1 * 100)}%" if surcharge_year_1 else None
+        surcharge_label_2 = f"Surcharge {int(surcharge_year_2 * 100)}%" if surcharge_year_2 else None
+
+        print(surcharge_label_1, surcharge_label_2)
 
         tax_year_1_result = calculate_tax(yearly_income, brackets_tax_year_1, surcharge_year_1)  # 10% surcharge
         tax_year_2_result = calculate_tax(yearly_income, brackets_tax_year_2, surcharge_year_2)  # 9% surcharge
@@ -340,9 +362,10 @@ def FetchResult(tax_year_1, tax_year_2, taxpayer_type, yearly_income):
             'tax_year_2_result': tax_year_2_result,
             'monthly_income': int(yearly_income / 12),
             'yearly_income': yearly_income,
-            'surcharge_year_1': surcharge_year_1 * 100,
-            'surcharge_year_2': surcharge_year_2 * 100
+            'surcharge_label_1': surcharge_label_1,
+            'surcharge_label_2': surcharge_label_2
         }
+        print(context)
         return context
     except Exception as e:
         print(f'Error is :  {e}')
