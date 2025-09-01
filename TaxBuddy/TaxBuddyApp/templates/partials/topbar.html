@@ -22,6 +22,30 @@
   transform: translateX(0);
 }
 
+/* Mobile adjustments */
+@media (max-width: 768px) {
+  #results h1 {
+    font-size: 22px;       /* Smaller heading */
+    line-height: 30px;
+  }
+
+  #results label {
+    display: block;
+    font-weight: 600;
+    margin: 10px 0;
+    font-size: 16px;
+  }
+
+  #results table {
+    font-size: 14px;       /* Smaller table text */
+  }
+
+  #results th,
+  #results td {
+    padding: 6px 8px;      /* Compact spacing */
+    word-break: break-word; /* Prevent overflow */
+  }
+}
 
 </style>
 <!--=====Header start=======-->

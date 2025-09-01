@@ -1,6 +1,31 @@
-<style> html { scroll-behavior: smooth; } </style>
+<style> html { scroll-behavior: smooth; }
+img {
+  max-width: 100%;
+  height: auto;
+}
+
+    @media (max-width: 767px) {
+  h1, h2, h3, h4 {
+    font-size: 1.3rem !important;
+    line-height: 1.6;
+  }
+  .space40 { height: 20px; }
+  .space30 { height: 15px; }
+  .space20 { height: 10px; }
+}
+@media (max-width: 576px) {
+  .button6 a, .header6-button a {
+    width: 100%;
+    margin-bottom: 10px;
+  }
+}
+
+
+</style>
 {% load static %}
 <!--=====CSS=======-->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 <link rel="stylesheet" href="{% static 'assets/css/plugins/bootstrap.min.css' %}">
 <link rel="stylesheet" href="{% static 'assets/css/plugins/owl.carousel.min.css' %}">
