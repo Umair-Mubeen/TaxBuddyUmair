@@ -1,0 +1,101 @@
+<!--=====Income Tax Calculator  =======-->
+<div class="contct6 sp2" id="contact">
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <div class="contact3-form-all" data-aos="zoom-out" data-aos-duration="900">
+                    <div class="hadding6 text-center">
+                        <h1 class="font-30 font-f-7 font-lg-40 weight-500 line-height-lg-48 line-height-38">
+                            {{title}} - Income Tax Calculator
+                        </h1>
+                        <div class="space10"></div>
+                    </div>
+
+                    <form action="{{url}}" id="incomeForm" method="POST">
+                        {% csrf_token %}
+                        <div class="form-input-all">
+                            <div class="form-input-box">
+                                <div class="row g-3">
+                                    <div class="col-12 col-md-3">
+                                        <div class="input-single6">
+
+                                            <input type="hidden" name="tax_year_1" id="tax_year_1_id"
+                                                   value="{{tax_year_1}}">
+                                            <input type="hidden" name="tax_year_2" id="tax_year_2_id"
+                                                   value="{{tax_year_2}}">
+
+                                            <input type="hidden" value="{{income_type}}" id="hd_income_type"
+                                                   name="hd_income_type">
+
+                                            <label>Select Income Type</label>
+                                            <select class="form-control" id="incomeTypeSelect" name="income_type"
+                                                    required>
+                                                <option value="" disabled> Select Income Type</option>
+                                                <option value="Monthly"> Monthly Income</option>
+                                                <option value="Yearly"> Yearly</option>
+
+                                            </select>
+                                        </div>
+                                    </div>
+
+
+                                    <!-- Taxpayer Type -->
+                                    <div class="col-12 col-md-3">
+                                        <div class="input-single6">
+                                            <label>Select Tax Year</label>
+                                            <select class="form-control" id="tax_year_1" name="tax_year_1" required>
+                                                <option disabled value="">Select the tax year</option>
+                                                <option value="2021-2022">July - 2021 to June 2022 - (2022)</option>
+                                                <option value="2022-2023">July - 2022 to June 2023 - (2023)</option>
+                                                <option value="2023-2024">July - 2023 to June 2024 - (2024)</option>
+                                                <option value="2024-2025">July - 2024 to June 2025 - (2025)</option>
+                                                <option value="2025-2026">July - 2025 to June 2026 - (2026)</option>
+
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-12 col-md-3">
+                                        <div class="input-single6">
+                                            <label>Select Tax Year</label>
+                                            <select class="form-control" id="tax_year_2" name="tax_year_2" required>
+                                                <option disabled value="">Select the tax year</option>
+                                                <option value="2021-2022">July - 2021 to June 2022 - (2022)</option>
+                                                <option value="2022-2023">July - 2022 to June 2023 - (2023)</option>
+                                                <option value="2023-2024">July - 2023 to June 2024 - (2024)</option>
+                                                <option value="2024-2025">July - 2024 to June 2025 - (2025)</option>
+                                                <option value="2025-2026">July - 2025 to June 2026 - (2026)</option>
+
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                    <!-- Monthly Income -->
+                                    <div class="col-12 col-md-3">
+                                        <div class="input-single6">
+                                            <label>Monthly Income - Gross</label>
+                                            <input class="form-control" id="incomeAmountInput" name="income_amount"
+                                                   placeholder="Monthly Income"
+                                                   required style="padding: 6px" type="number"/>
+                                        </div>
+                                    </div>
+
+
+                                    <!-- Submit Button -->
+                                    <div class="col-12 col-md-3 d-flex align-items-end mb-3 mb-md-0">
+                                        <input class="btn btn-primary w-100" id="submit_button" name="submit"
+                                               type="submit" value="Calculate"/>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+
+                </div>
+            </div>
+        </div>
+        {% include 'partials/slab_result_content.html' with content=context %}
+
+    </div>
+</div>
+<!--=====Income Tax Calculator end=======-->

@@ -172,10 +172,12 @@ def AOPCalculator(request):
 
             context = FetchResult(tax_year_1, tax_year_2, 'AOP', yearly_income)
             context.update({
-                'income_type': income_type
+                'income_type': income_type,
+                'url': '/AOPCalculator',
+                'title': 'AOP'
             })
             return render(request, 'partials/aop_slab.html', context)
-        return render(request, 'partials/aop_slab.html',{'taxpayer_type' : 'AOP'})
+        return render(request, 'partials/aop_slab.html',{'title' : 'AOP','url': '/AOPCalculator'})
     except Exception as e:
         print("Exception / Error at AOP Tax Calculator : " + str(e))
         return HttpResponse("Exception / Error at AOP Tax Calculator : " + str(e))
@@ -196,10 +198,12 @@ def BusinessCalculator(request):
 
             context = FetchResult(tax_year_1, tax_year_2, 'Business Individual', yearly_income)
             context.update({
-                'income_type' : income_type
+                'income_type' : income_type,
+                'url': '/BusinessCalculator',
+                'title': 'Business Individual'
             })
             return render(request, 'partials/business_slab.html', context)
-        return render(request, 'partials/business_slab.html', {'taxpayer_type' : 'Business Individual'})
+        return render(request, 'partials/business_slab.html', {'title' : 'Business Individual','url' : '/BusinessCalculator'})
 
     except Exception as e:
         print("Exception / Error at Business Tax Calculator : " + str(e))
@@ -211,16 +215,30 @@ def SalaryCalculator(request):
         if request.method == 'POST':
             tax_year_1 = request.POST.get('tax_year_1')  # 'Monthly' or 'Yearly'
             tax_year_2 = request.POST.get('tax_year_2')  # 'Monthly' or 'Yearly'
+            income_type = request.POST.get('income_type')
             income_amount = int(request.POST.get('income_amount'))
+<<<<<<< HEAD
             income_type = request.POST.get('income_type')
 
+=======
+>>>>>>> c4c086d (changes further made in UI)
             if income_type == 'Monthly':
                 yearly_income = income_amount * 12
             else:
                 yearly_income = income_amount  # Already yearly income
+<<<<<<< HEAD
             context = FetchResult(tax_year_1, tax_year_2, 'SalaryPerson', yearly_income)
+=======
+
+            context = FetchResult(tax_year_1, tax_year_2, 'Salary Individual', yearly_income)
+            context.update({
+                'income_type': income_type,
+                'url': '/SalaryCalculator',
+                'title': 'Salary Individual'
+            })
+>>>>>>> c4c086d (changes further made in UI)
             return render(request, 'partials/salary_slab.html', context)
-        return render(request, 'partials/salary_slab.html')
+        return render(request, 'partials/salary_slab.html',{'title' : 'Salary Individual','url' : '/SalaryCalculator'})
 
     except Exception as e:
         print("Exception / Error at Salary Tax Calculator : " + str(e))
@@ -321,7 +339,7 @@ def add_salary_tax_brackets(request):
 def FetchResult(tax_year_1, tax_year_2, taxpayer_type, yearly_income):
     try:
 
-        if taxpayer_type == 'SalaryPerson':
+        if taxpayer_type == 'Salary Individual':
             tax_brackets_result_one = TaxBracket.objects.filter(year=tax_year_1)
             tax_brackets_result_two = TaxBracket.objects.filter(year=tax_year_2)
         elif taxpayer_type == 'Business Individual' or taxpayer_type == 'AOP' :
