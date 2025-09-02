@@ -1,6 +1,15 @@
 {% load static %}
 <style>
-.list-group-item.active {
+.tes7 .owl-nav button svg,
+.tes7 .owl-dots button.active,
+.tes7 .owl-dots button:after {
+  background-color: #198754; /* Bootstrap success green */
+  border-radius: 5px;        /* optional: make it look smoother */
+  transition: 0.3s;          /* optional: smooth hover/active effect */
+}
+
+
+    .list-group-item.active {
   background-color: #0a6847 !important;  /* Dark green background */
   color: white !important;               /* White text */
   font-weight: bold;
@@ -66,6 +75,8 @@
                                     <li><a class="list-group-item list-group-item-action" href="/#work">How It Works</a>
                                     </li>
                                     <li><a class="list-group-item list-group-item-action" href="/#service">services</a>
+                                    </li>
+                                     <li><a class="list-group-item list-group-item-action" href="/#customer">customers</a>
                                     </li>
 
 
@@ -169,6 +180,8 @@
             <li><a class="list-group-item list-group-item-action" href="#about">About</a></li>
             <li><a class="list-group-item list-group-item-action" href="#work">How It Work</a></li>
             <li><a class="list-group-item list-group-item-action" href="#service">services</a></li>
+            <li><a class="list-group-item list-group-item-action" href="#customer">customers</a></li>
+
               <li><a href="#">Tax Calculators</a>
                                           <ul class="sub-menu">
                                             <li><a href="SalaryCalculator">Salary</a></li>
@@ -255,4 +268,6 @@
       });
     });
   });
+
 </script>
+
