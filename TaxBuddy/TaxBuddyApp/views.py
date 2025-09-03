@@ -265,7 +265,7 @@ def PropertyCalculator(request):
             # Net rental income
             net_rental_income = yearly_income - total_deductions
             print(net_rental_income)
-            context = FetchResult(tax_year_1, tax_year_2, 'Rental_Taxpayer', net_rental_income)
+            context = FetchResult(tax_year_1, tax_year_2, 'Rental Income', net_rental_income)
             context.update({
                 'net_income_rental' : net_rental_income,
                 'total_deductions' : total_deductions,
