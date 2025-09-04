@@ -3,13 +3,13 @@ from datetime import timezone
 from decimal import Decimal
 
 from django.contrib.auth.decorators import login_required
-from django.http import HttpResponse, request
+from django.http import HttpResponse, request, Http404
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import authenticate, login, logout
 from django.utils.text import slugify
 from django.contrib import messages
 
-from .models import Blogs, Comment, Contact, TaxBracket, Business_AOP_Slab,Property_Business_AOP_Slab
+from .models import Blogs, Comment, Contact, TaxBracket, Business_AOP_Slab, Property_Business_AOP_Slab
 
 
 def index(request):
@@ -63,7 +63,6 @@ def AddEditBlog(request, slug=None):
                 print("IT - Income Tax Blog")
             else:
                 print("ST - Sales Tax Blog")
-
 
             if slug:
                 blog = get_object_or_404(Blogs, slug=slug, status=1, is_deleted=False)
@@ -126,20 +125,18 @@ def BlogDetails(request, slug=None):
         print('Exception at Blog Details Page :', str(e))
         return HttpResponse(str('Exception at Blog Details Page :' + str(e)))
 
+
 def viewBlogs(request, slug=None):
     try:
-        if slug:
-            blog = get_object_or_404(Blogs, slug=slug, status=1, is_deleted=False)
-            blogComments = Comment.objects.filter(status=1, slug=blog.slug)
-            if not blogComments.exists():
-                blogComments = {}
-            blogList = Blogs.objects.filter(status=1, is_deleted=False).exclude(slug=slug)
-
-        return render(request, 'partials/BlogDetails.html',
-                      {'blog': blog, 'userComments': blogComments, 'length': len(blogComments), 'blogList': blogList})
+        type_map = {"income-tax": 1,"sales-tax": 2}
+        if slug in type_map:
+            blogs = Blogs.objects.filter(type=type_map[slug], status=1, is_deleted=False)
+        else:
+            raise Http404("Invalid category")
+        return render(request,"partials/BlogDetails.html",{"blog": blogs})
     except Exception as e:
         print('Exception at Blog Details Page :', str(e))
-        return HttpResponse(str('Exception at Blog Details Page :' + str(e)))
+        return HttpResponse(str('Exception at View Blogs Details Page :' + str(e)))
 
 
 def userComments(request):
@@ -179,6 +176,7 @@ def contact(request):
         messages.error(request, f"Exception at Contact Page: {str(e)}")
         return redirect('/')
 
+
 def AOPCalculator(request):
     try:
         if request.method == 'POST':
@@ -199,7 +197,7 @@ def AOPCalculator(request):
                 'title': 'AOP'
             })
             return render(request, 'partials/aop_slab.html', context)
-        return render(request, 'partials/aop_slab.html',{'title' : 'AOP','url': '/AOPCalculator'})
+        return render(request, 'partials/aop_slab.html', {'title': 'AOP', 'url': '/AOPCalculator'})
     except Exception as e:
         print("Exception / Error at AOP Tax Calculator : " + str(e))
         return HttpResponse("Exception / Error at AOP Tax Calculator : " + str(e))
@@ -220,12 +218,13 @@ def BusinessCalculator(request):
 
             context = FetchResult(tax_year_1, tax_year_2, 'Business Individual', yearly_income)
             context.update({
-                'income_type' : income_type,
+                'income_type': income_type,
                 'url': '/BusinessCalculator',
                 'title': 'Business Individual'
             })
             return render(request, 'partials/business_slab.html', context)
-        return render(request, 'partials/business_slab.html', {'title' : 'Business Individual','url' : '/BusinessCalculator'})
+        return render(request, 'partials/business_slab.html',
+                      {'title': 'Business Individual', 'url': '/BusinessCalculator'})
 
     except Exception as e:
         print("Exception / Error at Business Tax Calculator : " + str(e))
@@ -246,9 +245,9 @@ def SalaryCalculator(request):
                 yearly_income = income_amount  # Already yearly income
 
             context = FetchResult(tax_year_1, tax_year_2, 'Salary Individual', yearly_income)
-            context.update({'income_type': income_type,'url': '/SalaryCalculator','title': 'Salary Individual'})
+            context.update({'income_type': income_type, 'url': '/SalaryCalculator', 'title': 'Salary Individual'})
             return render(request, 'partials/salary_slab.html', context)
-        return render(request, 'partials/salary_slab.html',{'title' : 'Salary Individual','url' : '/SalaryCalculator'})
+        return render(request, 'partials/salary_slab.html', {'title': 'Salary Individual', 'url': '/SalaryCalculator'})
 
     except Exception as e:
         print("Exception / Error at Salary Tax Calculator : " + str(e))
@@ -289,11 +288,11 @@ def PropertyCalculator(request):
             print(net_rental_income)
             context = FetchResult(tax_year_1, tax_year_2, 'Rental Income', net_rental_income)
             context.update({
-                'net_income_rental' : net_rental_income,
-                'total_deductions' : total_deductions,
-                'yearly_income' : yearly_income
+                'net_income_rental': net_rental_income,
+                'total_deductions': total_deductions,
+                'yearly_income': yearly_income
             })
-            #return HttpResponse(str(context))
+            # return HttpResponse(str(context))
             return render(request, 'partials/property_rent.html', context)
 
         else:
@@ -335,8 +334,8 @@ def add_salary_tax_brackets(request):
             else:
 
                 TaxBracket.objects.create(
-                    year=tax_year,income_min=income_min,income_max=None if income_max == float('inf') else income_max,
-                    rate=Decimal(str(rate)), base_income=base_income,base_tax=base_tax)
+                    year=tax_year, income_min=income_min, income_max=None if income_max == float('inf') else income_max,
+                    rate=Decimal(str(rate)), base_income=base_income, base_tax=base_tax)
             return render(request, 'Cpanel/add_salary_tax_brackets.html')
 
         else:
@@ -352,22 +351,24 @@ def FetchResult(tax_year_1, tax_year_2, taxpayer_type, yearly_income):
         if taxpayer_type == 'Salary Individual':
             tax_brackets_result_one = TaxBracket.objects.filter(year=tax_year_1)
             tax_brackets_result_two = TaxBracket.objects.filter(year=tax_year_2)
-        elif taxpayer_type == 'Business Individual' or taxpayer_type == 'AOP' :
+        elif taxpayer_type == 'Business Individual' or taxpayer_type == 'AOP':
             tax_brackets_result_one = Business_AOP_Slab.objects.filter(year=tax_year_1)
             tax_brackets_result_two = Business_AOP_Slab.objects.filter(year=tax_year_2)
         else:
             tax_brackets_result_one = Property_Business_AOP_Slab.objects.filter(year=tax_year_1)
             tax_brackets_result_two = Property_Business_AOP_Slab.objects.filter(year=tax_year_2)
 
-        brackets_tax_year_1 = { (float(s.income_min), float(s.income_max) if s.income_max else float('inf')):
-                    (float(s.rate), float(s.base_income), float(s.base_tax)) for s in tax_brackets_result_one
-        }
+        brackets_tax_year_1 = {(float(s.income_min), float(s.income_max) if s.income_max else float('inf')):
+                                   (float(s.rate), float(s.base_income), float(s.base_tax)) for s in
+                               tax_brackets_result_one
+                               }
 
-        brackets_tax_year_2 = { (float(s.income_min), float(s.income_max) if s.income_max else float('inf')):
-                    (float(s.rate), float(s.base_income), float(s.base_tax)) for s in tax_brackets_result_two
-        }
+        brackets_tax_year_2 = {(float(s.income_min), float(s.income_max) if s.income_max else float('inf')):
+                                   (float(s.rate), float(s.base_income), float(s.base_tax)) for s in
+                               tax_brackets_result_two
+                               }
 
-        surcharge_rates = { "2024-2025": 0.10, "2025-2026": 0.09}
+        surcharge_rates = {"2024-2025": 0.10, "2025-2026": 0.09}
 
         # Pick surcharge if year exists, otherwise 0
         surcharge_year_1 = surcharge_rates.get(tax_year_1, 0)
