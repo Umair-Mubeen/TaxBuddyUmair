@@ -8,7 +8,9 @@ urlpatterns = [
     path('', views.index, name='index'),  # Home Page
     # path('contact-us', views.Contact, name='contact-us'),  # Contact Page
 
-    path('BlogDetails/<slug:slug>/', views.BlogDetails, name='BlogDetails'),  # BlogDetails Page
+    path('viewBlogs', views.viewBlogs, name='viewBlogs'),  # BlogDetails Page
+
+    path('<slug:slug>/', views.BlogDetails, name='BlogDetails'),  # BlogDetails Page
     path('userComments', views.userComments, name='userComments'),  # Comments Page
 
     #Dashboard URL
