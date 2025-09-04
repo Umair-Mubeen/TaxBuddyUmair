@@ -54,10 +54,17 @@ def AddEditBlog(request, slug=None):
 
         if request.method == 'POST':
             type = request.POST['type']
+            print('type : ', type)
             title = request.POST['title']
             description = request.POST['description']
             image = request.FILES.get('attachment')
             new_slug = slugify(title)
+            if type == 1:
+                print("IT - Income Tax Blog")
+            else:
+                print("ST - Sales Tax Blog")
+
+
             if slug:
                 blog = get_object_or_404(Blogs, slug=slug, status=1, is_deleted=False)
                 blog.type = type
@@ -105,6 +112,21 @@ def ManageBlogs(request):
 
 
 def BlogDetails(request, slug=None):
+    try:
+        if slug:
+            blog = get_object_or_404(Blogs, slug=slug, status=1, is_deleted=False)
+            blogComments = Comment.objects.filter(status=1, slug=blog.slug)
+            if not blogComments.exists():
+                blogComments = {}
+            blogList = Blogs.objects.filter(status=1, is_deleted=False).exclude(slug=slug)
+
+        return render(request, 'partials/BlogDetails.html',
+                      {'blog': blog, 'userComments': blogComments, 'length': len(blogComments), 'blogList': blogList})
+    except Exception as e:
+        print('Exception at Blog Details Page :', str(e))
+        return HttpResponse(str('Exception at Blog Details Page :' + str(e)))
+
+def viewBlogs(request, slug=None):
     try:
         if slug:
             blog = get_object_or_404(Blogs, slug=slug, status=1, is_deleted=False)

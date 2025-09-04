@@ -721,14 +721,14 @@
             <div class="col-md-6 col-lg-4 mesonry-item design marketing stories lifestyle">
                 <div class="single-blog blog-sm">
                     <div class="blog-img">
-                        <a href="/BlogDetails/{{res.slug}}"><img alt="{{res.title}}" src="{{res.image.url}}">
+                        <a href="/{{res.slug}}"><img alt="{{res.title}}" src="{{res.image.url}}">
                         </a>
                     </div>
                     <ul class="blog-tags">
-                        <li><a href="#">{{res.type}}</a></li>
+                        <li><a href="#">{% if res.type == '1' %} Income Tax {% else %} Sales Tax {% endif %}</a></li>
                     </ul>
                     <h3>
-                        <a href="/BlogDetails/{{res.slug}}" style="font-size:20px">{{res.title}}</a>
+                        <a href="/{{res.slug}}" style="font-size:20px">{{res.title}}</a>
                     </h3>
                 </div>
             </div>

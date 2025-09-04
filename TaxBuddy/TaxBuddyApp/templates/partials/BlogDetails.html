@@ -222,7 +222,7 @@
                         </a>
                     </div>
                     <ul class="blog-tags">
-                        <li><a href="#">{{other.type}}</a></li>
+                        <li><a href="#">{% if other.type == '1' %} Income Tax {% else %} Sales Tax {% endif %}</a></li>
                     </ul>
                     <h6 style="text-align:justify">
                         <a href="{% url 'BlogDetails' slug=other.slug %}" style="color:black">{{ other.title }}.</a>
