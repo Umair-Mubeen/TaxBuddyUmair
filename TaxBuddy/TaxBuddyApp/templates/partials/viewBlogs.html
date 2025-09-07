@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+{% load humanize %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <meta content="TaxBuddy Umair – Expert Tax Consulting for Individuals and Businesses in Pakistan"
+          name="description">
+    <meta content="TaxBuddy, FBR, Income Tax, Sales Tax, Pakistan, Property Tax" name="keywords">
+    <meta content="Umair Mubeen" name="author">
+    <title>TaxBuddy Umair | Blogs | Income Tax</title>
+    {% load static %}
+    {% include 'partials/head-css.html' %}
+<body>
+<!--=====Navigation Bar=======-->
+{% include 'partials/topbar.html' %}
+<!--=====Navigation Bar Ends Here=======-->
+
+<!--=====Blog start=======-->
+<div class="blog-area inner-blog-1 section-padding inner-font-1">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12 col-lg-12">
+                <div class="lg-mr-15">
+                    <div class="row">
+                        {% for blog in blogs %}
+                        <div class="col-lg-6">
+                            <div class="single-blog blog-md">
+                                <div class="blog-img">
+                                    <a href="/{{blog.slug}}/"><img src="{{blog.image.url}}" /></a>
+                                </div>
+                                <ul class="blog-tags">
+                                    <li><a href="#">{% if blog.type == '1'%} Income Tax {% else %}Sales Tax{%endif%}</a>
+                                    </li>
+                                </ul>
+                                <h3>
+                                    <a href="/{{blog.slug}}/">{{blog.title}}</a>
+                                </h3>
+                            </div>
+                        </div>
+                        {% endfor %}
+
+
+                    </div>
+                </div>
+            </div>
+
+             </div>
+    </div>
+</div>
+<!--=====Blog end=======-->
+
+
+{% include 'partials/footer.html' %}
+{% include 'partials/up.html' %}
+{% include 'partials/footer-scripts.html' %}
+
+
+</body>
+</html>

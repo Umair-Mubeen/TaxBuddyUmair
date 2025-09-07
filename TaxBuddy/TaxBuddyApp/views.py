@@ -133,7 +133,7 @@ def viewBlogs(request, slug=None):
             blogs = Blogs.objects.filter(type=type_map[slug], status=1, is_deleted=False)
         else:
             raise Http404("Invalid category")
-        return render(request,"partials/BlogDetails.html",{"blog": blogs})
+        return render(request,"partials/viewBlogs.html",{"blogs": blogs})
     except Exception as e:
         print('Exception at Blog Details Page :', str(e))
         return HttpResponse(str('Exception at View Blogs Details Page :' + str(e)))
