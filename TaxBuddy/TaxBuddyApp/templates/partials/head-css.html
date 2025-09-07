@@ -41,6 +41,9 @@ img {
 <script src="{% static 'assets/js/plugins/jquery-3-6-0.min.js' %}"></script>
 
 
+    <!-- Lightgallery core CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lightgallery@1.10.0/dist/css/lightgallery.min.css">
+
 
 <script>
     $(document).ready(function () {
@@ -81,3 +84,72 @@ img {
 });
 
 </script>
+
+<script>
+  const menuItems = document.querySelectorAll('.menu_list .list-group-item');
+
+  menuItems.forEach(item => {
+    item.addEventListener('click', () => {
+      // Remove active from all
+      menuItems.forEach(link => link.classList.remove('active'));
+
+      // Add to clicked one
+      item.classList.add('active');
+    });
+  });
+
+
+
+</script>
+
+
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    const sidebar = document.querySelector('.mobile-sidebar');
+    const toggleIcon = document.querySelector('.mobile-nav-icon');
+    const closeIcon = document.querySelector('.menu-close');
+    const navLinks = document.querySelectorAll('.mobile-nav-list a');
+
+    // Open sidebar
+    toggleIcon.addEventListener('click', () => {
+      sidebar.classList.add('active');
+    });
+
+    // Close sidebar on close icon
+    closeIcon.addEventListener('click', () => {
+      sidebar.classList.remove('active');
+    });
+
+    // Close sidebar when any nav link is clicked
+    navLinks.forEach(link => {
+      link.addEventListener('click', () => {
+        sidebar.classList.remove('active');
+      });
+    });
+  });
+
+</script>
+
+
+
+<!-- LightGallery core JavaScript -->
+<script src="https://cdn.jsdelivr.net/npm/lightgallery@1.10.0/dist/js/lightgallery-all.min.js"></script>
+
+<!-- LightGallery Zoom Plugin -->
+<script src="https://cdn.jsdelivr.net/npm/lg-zoom@1.0.0/dist/lg-zoom.min.js"></script>
+
+<!-- LightGallery Rotate Plugin -->
+<script src="https://cdn.jsdelivr.net/npm/lg-rotate@1.0.0/dist/lg-rotate.min.js"></script>
+
+
+<!--Light gallery -->
+<script type="text/javascript">
+    $(document).ready(function() {
+        $('.lightgallery').lightGallery({
+            selector: '.spnImg',
+            thumbnail: false
+
+        });
+    });
+</script>
+<!--Light gallery Ends Here -->
