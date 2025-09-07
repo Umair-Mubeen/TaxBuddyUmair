@@ -1,10 +1,8 @@
-{% load static %}
+<!DOCTYPE html>
 
+{% load static %}
 <head>
     <title>TaxBuddy Umair |  {{blog.title}}  </title>
-    <!-- Lightgallery core CSS -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lightgallery@1.10.0/dist/css/lightgallery.min.css">
-
     {% include 'partials/head-css.html' %}
 
 </head>
@@ -19,16 +17,6 @@
         <div class="row">
             <div class="col-lg-8 ">
                 <div class="single-blog-contents lg-ml-15">
-<!--                    <div class="single-blog-img">-->
-<!--                        <span class="spnImg" data-sub-html="{{ blog.title }}" data-src="{{blog.image.url}}">-->
-<!--                            <a href="{{blog.image.url}}"><img src="{{ blog.image.url }}" alt="{{ blog.title }}" style="max-width: 100%; height: auto;"/></a>-->
-
-<!--                            </span>-->
-
-<!--                    </div>-->
-<!--                    <ul class="blog-tags">-->
-<!--                        <li><a href="#">{{blog.type}}</a></li>-->
-<!--                    </ul>-->
                     <h2>
                         {{blog.title}}
                     </h2>
@@ -245,26 +233,3 @@
 </body>
 
 </html>
-
-
-<!-- LightGallery core JavaScript -->
-<script src="https://cdn.jsdelivr.net/npm/lightgallery@1.10.0/dist/js/lightgallery-all.min.js"></script>
-
-<!-- LightGallery Zoom Plugin -->
-<script src="https://cdn.jsdelivr.net/npm/lg-zoom@1.0.0/dist/lg-zoom.min.js"></script>
-
-<!-- LightGallery Rotate Plugin -->
-<script src="https://cdn.jsdelivr.net/npm/lg-rotate@1.0.0/dist/lg-rotate.min.js"></script>
-
-
-<!--Light gallery -->
-<script type="text/javascript">
-    $(document).ready(function() {
-        $('.lightgallery').lightGallery({
-            selector: '.spnImg',
-            thumbnail: false
-
-        });
-    });
-</script>
-<!--Light gallery Ends Here -->
