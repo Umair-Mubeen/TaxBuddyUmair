@@ -30,7 +30,7 @@
                         <div class="col-lg-6">
                             <div class="single-blog blog-md">
                                 <div class="blog-img">
-                                    <a href="/{{blog.slug}}/"><img alt="{{blog.title}}" src="{{blog.image.url}}" /></a>
+                                    <a href="/{{blog.slug}}/"><img class="lazyload" alt="{{blog.title}}" src="{{blog.image.url}}" /></a>
                                 </div>
                                 <ul class="blog-tags">
                                     <li><a href="#">{% if blog.type == '1'%} Income Tax {% else %}Sales Tax{%endif%}</a>
