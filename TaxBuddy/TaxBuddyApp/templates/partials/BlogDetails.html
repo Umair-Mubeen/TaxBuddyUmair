@@ -195,7 +195,7 @@
             <div class="col-lg-8 m-auto">
                 <div class="heading2 text-center">
                     <small class="heading-top inner-heading-top">
-                        <img alt="Income Tax , Sales Tax Blogs in Pakistan" src="{% static 'assets/img/icons/hands.svg' %}"/>Our More Blogs</small>
+                        <img class="lazyload" alt="Income Tax , Sales Tax Blogs in Pakistan" src="{% static 'assets/img/icons/hands.svg' %}"/>Our More Blogs</small>
                     <h2>Welcome to my blog, where one financial professional does all the heavy lifting — so you don’t
                         have to.</h2>
                 </div>
@@ -207,7 +207,7 @@
                 <div class="single-blog blog-md">
                     <div class="blog-img">
                         <a href="{% url 'BlogDetails' slug=other.slug %}">
-                            <img alt="{{ other.slug }}" src="{{ other.image.url }}"/>
+                            <img class="lazyload" alt="{{ other.slug }}" src="{{ other.image.url }}"/>
                         </a>
                     </div>
                     <ul class="blog-tags">
