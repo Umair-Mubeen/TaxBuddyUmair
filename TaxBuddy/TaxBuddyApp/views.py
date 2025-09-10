@@ -48,46 +48,54 @@ def Dashboard(request):
 
 def AddEditBlog(request, slug=None):
     try:
-        result = {'title': '', 'type': '', 'description': ''}
+        blog = None  # default: no blog (create mode)
+        # Only fetch if slug exists (edit mode)
         if slug:
-            result = get_object_or_404(Blogs, slug=slug, status=1, is_deleted=False)
+            blog = get_object_or_404(Blogs, slug=slug, status=1, is_deleted=False)
 
         if request.method == 'POST':
-            type = request.POST['type']
-            print('type : ', type)
-            title = request.POST['title']
-            description = request.POST['description']
+            title = request.POST.get('title', '').strip()
+            description = request.POST.get('description', '').strip()
+            blog_type = int(request.POST.get('type', 0))
             image = request.FILES.get('attachment')
-            new_slug = slugify(title)
-            if type == 1:
-                print("IT - Income Tax Blog")
-            else:
-                print("ST - Sales Tax Blog")
 
-            if slug:
-                blog = get_object_or_404(Blogs, slug=slug, status=1, is_deleted=False)
-                blog.type = type
+            if not title or not description:
+                return HttpResponse("Title and description are required.", status=400)
+
+            # Unique slug
+            new_slug = slugify(title)
+            counter = 1
+            while Blogs.objects.filter(slug=new_slug).exclude(pk=blog.pk if blog else None).exists():
+                new_slug = f"{slugify(title)}-{counter}"
+                counter += 1
+
+            if blog:  # update mode
+                blog.type = blog_type
                 blog.title = title
                 blog.slug = new_slug
                 blog.description = description
                 if image:
+                    if image.content_type not in ["image/jpeg", "image/png", "application/pdf"]:
+                        return HttpResponse("Invalid file format.", status=400)
                     blog.image = image
                 blog.save()
-            else:
-                # Validate uploaded file
+            else:  # create mode
                 if not image:
-                    return HttpResponse("No file uploaded.", status=400)
+                    return HttpResponse("File is required for new blog.", status=400)
+                if image.content_type not in ["image/jpeg", "image/png", "application/pdf"]:
+                    return HttpResponse("Invalid file format.", status=400)
+                blog = Blogs.objects.create(
+                    title=title,
+                    type=blog_type,
+                    slug=new_slug,
+                    description=description,
+                    image=image,
+                )
 
-                file_type = mimetypes.guess_type(image.name)[0]
-                if not file_type or (not file_type.startswith('image') and file_type != 'application/pdf'):
-                    return HttpResponse("Uploaded file is not a valid image or PDF.", status=400)
-
-                Blogs.objects.create(title=title, type=type, description=description, image=image, slug=new_slug)
-
-        return render(request, 'Cpanel/AddEditBlog.html', {'result': result})
+        return render(request, 'Cpanel/AddEditBlog.html', {'blog': blog})
     except Exception as e:
-        print('Exception at Add Edit Details Page :', str(e))
-        return HttpResponse(str('Exception at Add Edit Details Page :' + str(e)))
+        print('Exception at Add Edit Blog Page :', str(e))
+        return HttpResponse("Exception: " + str(e))
 
 
 def deleteBlog(request, slug=None):
@@ -112,18 +120,31 @@ def ManageBlogs(request):
 
 def BlogDetails(request, slug=None):
     try:
+        blog = None
+        blogComments = []
+        blogList = []
+
         if slug:
             blog = get_object_or_404(Blogs, slug=slug, status=1, is_deleted=False)
+
+            # Assuming Comment model has a ForeignKey to Blog (better than slug)
             blogComments = Comment.objects.filter(status=1, slug=blog.slug)
-            if not blogComments.exists():
-                blogComments = {}
+
             blogList = Blogs.objects.filter(status=1, is_deleted=False).exclude(slug=slug)
 
-        return render(request, 'partials/BlogDetails.html',
-                      {'blog': blog, 'userComments': blogComments, 'length': len(blogComments), 'blogList': blogList})
+        return render(
+            request,
+            'partials/BlogDetails.html',
+            {
+                'blog': blog,
+                'userComments': blogComments,
+                'length': len(blogComments),
+                'blogList': blogList,
+            }
+        )
     except Exception as e:
         print('Exception at Blog Details Page :', str(e))
-        return HttpResponse(str('Exception at Blog Details Page :' + str(e)))
+        return HttpResponse(f"Exception at Blog Details Page : {str(e)}")
 
 
 def viewBlogs(request, slug=None):

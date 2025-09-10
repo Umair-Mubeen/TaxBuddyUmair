@@ -6,23 +6,22 @@ from django.views.generic import TemplateView
 from . import views
 
 urlpatterns = [
-path("sitemap.xml", TemplateView.as_view(template_name="sitemap.xml", content_type="application/xml")),
-path("robots.txt", TemplateView.as_view(template_name="robots.txt", content_type="text/plain")),
+    path("sitemap.xml", TemplateView.as_view(template_name="sitemap.xml", content_type="application/xml")),
+    path("robots.txt", TemplateView.as_view(template_name="robots.txt", content_type="text/plain")),
 
     path('', views.index, name='index'),  # Home Page
     # path('contact-us', views.Contact, name='contact-us'),  # Contact Page
-
-    path('blog/<slug:slug>/', views.viewBlogs, name='viewBlogs'),  # BlogDetails Page
-
-    path('<slug:slug>/', views.BlogDetails, name='BlogDetails'),  # BlogDetails Page
     path('userComments', views.userComments, name='userComments'),  # Comments Page
 
     #Dashboard URL
     path('Login', views.Login, name='Login'),  # Login Page
     path('Logout', views.Logout, name='Logout'),  # Login Page
     path('Dashboard', views.Dashboard, name='Dashboard'),  # Dashboard Page
-    path('AddEditBlog/<slug:slug>/', views.AddEditBlog, name='AddEditBlog'),
-    path('AddEditBlog/', views.AddEditBlog, name='AddEditBlog'),  # For create without slug
+    path('AddEditBlog/', views.AddEditBlog, name='AddBlog'),  # create
+    path('AddEditBlog/<slug:slug>/', views.AddEditBlog, name='EditBlog'),
+    path('blog/<slug:slug>/', views.viewBlogs, name='viewBlogs'),  # BlogDetails Page
+    path('<slug:slug>/', views.BlogDetails, name='BlogDetails'),  # BlogDetails Page
+
     path('deleteBlog/<slug:slug>/', views.deleteBlog, name='deleteBlog'),  # For create without slug
 
     path('ManageBlogs', views.ManageBlogs, name='ManageBlogs'),  # ManageBlogsPage
