@@ -37,12 +37,11 @@
         <!-- /.content-header -->
 
         <!-- Main content -->
-        <form action="{% if result.slug %}/AddEditBlog/{{ result.slug }}/{% else %}/AddEditBlog/{% endif %}"
+        <form action="{% if blog.slug %}/AddEditBlog/{{ blog.slug }}/{% else %}/AddEditBlog/{% endif %}"
               enctype="multipart/form-data" method="POST">
             {% csrf_token %}
-
-            <input class="form-control" id="hdrowId" name="hdrowId" type="hidden" value="{{result.id}}">
-            <input class="form-control" id="hd_type" type="hidden" value="{{result.type}}">
+            <input class="form-control" id="hdrowId" name="hdrowId" type="hidden" value="{{blog.id}}">
+            <input class="form-control" id="hd_type" type="hidden" value="{{blog.type}}">
 
             <section class="content">
                 <div class="container-fluid">
@@ -62,10 +61,10 @@
                                 </div>
                                 <div class="form-group">
                                     <input class="form-control" name="title" placeholder="Blog Title:"
-                                           value="{{result.title}}">
+                                           value="{{blog.title}}">
                                 </div>
                                 <div class="form-group">
-                    <textarea class="form-control" cols="3" id="compose-textarea" name="description" rows="10"> {{result.description}}
+                    <textarea class="form-control" cols="3" id="compose-textarea" name="description" rows="10"> {{blog.description}}
                        </textarea>
                                 </div>
                                 <div class="form-group">
