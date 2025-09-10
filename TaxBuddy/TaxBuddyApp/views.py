@@ -167,10 +167,9 @@ def userComments(request):
             email = request.POST['email']
             comment = request.POST['comment']
             slug = request.POST['slug']
-            print(slug)
             blog = get_object_or_404(Blogs, slug=slug)
             Comment.objects.create(blog=blog, name=user, email_address=email, comment=comment, slug=slug)
-            return redirect(f'/BlogDetails/{slug}')  # or use reverse()
+            return redirect(f'/{slug}')  # or use reverse()
 
     except Exception as e:
         print('Exception :', str(e))
