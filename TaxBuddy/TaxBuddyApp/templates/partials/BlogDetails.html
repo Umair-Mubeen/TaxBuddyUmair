@@ -3,22 +3,16 @@
 <head>
     <title>TaxBuddy Umair | {{blog.title}} </title>
     {% include 'partials/head-css.html' %}
-
 </head>
-
 <body>
-
 {% include 'partials/topbar.html' %}
-
 <!--=====Single blog start=======-->
 <div class="single-blog-area padding-top inner-font-1 inner-blog-1 lightgallery" id="home">
     <div class="container">
         <div class="row">
             <div class="col-lg-8 ">
                 <div class="single-blog-contents lg-ml-15">
-                    <h2>
-                        {{blog.title}}
-                    </h2>
+                    <h3>{{blog.title}}</h3>
                     <div class="blog-date-time">
                         <ul class="blog-date">
                             <li><a href="#">{{blog.created_date|date}}</a></li>
