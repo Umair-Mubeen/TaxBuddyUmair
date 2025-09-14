@@ -15,8 +15,10 @@
   object-fit: contain;  /* shows the whole image */
 }
     </style>
-    <link rel="icon" type="image/x-icon" href="{% static 'assets/img/icons/icon-logo.ico' %}?v=1">
+    <link rel="shortcut icon" type="image/x-icon" href="{% static 'assets/img/icons/fab2.png' %}">
     <title>TaxBuddy Umair | {{blog.title}} </title>
+    <meta property="og:image" content="https://taxbuddyumair.com/{{blog.image.url}}" />
+
 
     {% include 'partials/head-css.html' %}
 </head>
