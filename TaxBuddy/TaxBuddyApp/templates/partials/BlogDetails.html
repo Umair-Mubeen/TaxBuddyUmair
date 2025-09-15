@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 {% load static %}
+<html>
 <head>
     <style>
 .single-blog-img {
@@ -15,11 +16,12 @@
   object-fit: contain;  /* shows the whole image */
 }
     </style>
-        <link rel="shortcut icon" type="image/x-icon" href="{% static 'assets/img/icons/fab2.png' %}">
+    <link rel="shortcut icon" type="image/x-icon" href="{% static 'assets/img/icons/fab2.png' %}">
     <title>TaxBuddy Umair | {{blog.title}} </title>
+    <meta property="og:title" content="{{blog.title}}">
     <meta property="og:image" content="https://taxbuddyumair.com/{{blog.image.url}}" />
-
-
+    <meta property="og:description" content="{{blog.description|safe}}">
+    <meta property="og:url" content="https://www.taxbuddyumair.com/{{blog.image.url}}">
     {% include 'partials/head-css.html' %}
 </head>
 <body>
