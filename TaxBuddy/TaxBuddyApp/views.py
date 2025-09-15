@@ -75,14 +75,14 @@ def AddEditBlog(request, slug=None):
                 blog.slug = new_slug
                 blog.description = description
                 if image:
-                    if image.content_type not in ["image/jpeg", "image/png", "application/pdf"]:
+                    if image.content_type not in ["image/jpeg", "image/png", "image/webp", "application/pdf"]:
                         return HttpResponse("Invalid file format.", status=400)
                     blog.image = image
                 blog.save()
             else:  # create mode
                 if not image:
                     return HttpResponse("File is required for new blog.", status=400)
-                if image.content_type not in ["image/jpeg", "image/png", "application/pdf"]:
+                if image.content_type not in ["image/jpeg", "image/png", "image/webp", "application/pdf"]:
                     return HttpResponse("Invalid file format.", status=400)
                 blog = Blogs.objects.create(
                     title=title,
