@@ -2,25 +2,10 @@
 {% load static %}
 <html>
 <head>
-    <style>
-.single-blog-img {
-  width: 100%;
-  max-width: 700px;     /* control size */
-  margin: 0 auto;       /* center it */
-  text-align: center;   /* keeps image centered */
-}
-
-.single-blog-img img {
-  width: 100%;
-  height: auto;         /* keeps natural aspect ratio */
-  object-fit: contain;  /* shows the whole image */
-}
-    </style>
     <link rel="shortcut icon" type="image/x-icon" href="{% static 'assets/img/icons/fab2.png' %}">
     <title>TaxBuddy Umair | {{blog.title}} </title>
     <meta property="og:title" content="{{blog.title}}">
     <meta property="og:image" content="https://taxbuddyumair.com/{{blog.image.url}}" />
-    <meta property="og:description" content="{{blog.description|safe}}">
     <meta property="og:url" content="https://www.taxbuddyumair.com/{{blog.image.url}}">
     {% include 'partials/head-css.html' %}
 </head>
@@ -33,7 +18,7 @@
             <div class="col-lg-8 ">
                 <div class="single-blog-contents lg-ml-15">
                    <div class="single-blog-img lightgallery">
-              <img src="{{blog.image.url}}" alt="{{blog.title}}" class="blog-img">
+                        <img src="{{blog.image.url}}" alt="{{blog.title}}" class="blog-img">
             </div>
                     <h3>{{blog.title}}</h3>
                     <div class="blog-date-time">
