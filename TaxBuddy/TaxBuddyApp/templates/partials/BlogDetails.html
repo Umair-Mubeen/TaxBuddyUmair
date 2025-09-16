@@ -60,25 +60,25 @@
                         </div>
                     </div>
                 </div>
-                {% if userComments %}
-                <div class="theme-comments-list">
-                    <h3>{{length}} Comments</h3>
-                    <div class="comments-list">
-                        {% for user in userComments %}
-                        <div class="single-commencts">
-                            <div class="comments-img">
-<!--                                <img alt="users-comments" src="{% static 'assets/img/blog/comment.png' %}"/>-->
-                            </div>
-                            <div class="comments-heading">
-                                <h4>{{user.name}}</h4>
-<!--                                <a class="reply-btn" href="#">Reply</a>-->
-                            </div>
-                            <p>{{user.comment}}</p>
-                        </div>
-                        {% endfor %}
-                    </div>
-                </div>
-                {% endif %}
+<!--                {% if userComments %}-->
+<!--                <div class="theme-comments-list">-->
+<!--                    <h3>{{length}} Comments</h3>-->
+<!--                    <div class="comments-list">-->
+<!--                        {% for user in userComments %}-->
+<!--                        <div class="single-commencts">-->
+<!--                            <div class="comments-img">-->
+<!--&lt;!&ndash;                                <img alt="users-comments" src="{% static 'assets/img/blog/comment.png' %}"/>&ndash;&gt;-->
+<!--                            </div>-->
+<!--                            <div class="comments-heading">-->
+<!--                                <h4>{{user.name}}</h4>-->
+<!--&lt;!&ndash;                                <a class="reply-btn" href="#">Reply</a>&ndash;&gt;-->
+<!--                            </div>-->
+<!--                            <p>{{user.comment}}</p>-->
+<!--                        </div>-->
+<!--                        {% endfor %}-->
+<!--                    </div>-->
+<!--                </div>-->
+<!--                {% endif %}-->
 
                 <div class="write-comments">
                     <h3>Leave a Comment</h3>
