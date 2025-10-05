@@ -1,8 +1,127 @@
-{% load static %}
-<script src="{% static 'assets/js/plugins/bootstrap.min.js' %}"></script>
+{% load  static %}
+
+   <script src="{% static 'assets/js/plugins/bootstrap.min.js' %}"></script>
 <script src="{% static 'assets/js/plugins/owl.carousel.min.js' %}"></script>
+<script src="{% static 'assets/js/plugins/aos.js' %}"></script>
+<script src="{% static 'assets/js/plugins/fontawesome.js' %}"></script>
 <script src="{% static 'assets/js/plugins/slick-slider.js' %}"></script>
 <script src="{% static 'assets/js/plugins/mesonry.js' %}"></script>
+<script src="{% static 'assets/js/plugins/jquery.magnific-popup.js' %}"></script>
 <script src="{% static 'assets/js/plugins/metisMenu.min.js' %}"></script>
+<script src="{% static 'assets/js/plugins/jquery.nice-select.js' %}"></script>
+<script src="{% static 'assets/js/plugins/jquery.countup.min.js' %}"></script>
+<script src="{% static 'assets/js/plugins/popper.min.js' %}"></script>
+<script src="{% static 'assets/js/plugins/jquery.waypoints.min.js' %}"></script>
 <script src="{% static 'assets/js/main.js' %}"></script>
-<script src="{% static 'assets/js/plugins/fontawesome.js' %}"></script>
+
+<!-- Lightgallery core CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lightgallery@1.10.0/dist/css/lightgallery.min.css">
+
+    <!-- LightGallery core JavaScript -->
+    <script src="https://cdn.jsdelivr.net/npm/lightgallery@1.10.0/dist/js/lightgallery-all.min.js"></script>
+
+    <!-- LightGallery Zoom Plugin -->
+    <script src="https://cdn.jsdelivr.net/npm/lg-zoom@1.0.0/dist/lg-zoom.min.js"></script>
+
+    <!-- LightGallery Rotate Plugin -->
+    <script src="https://cdn.jsdelivr.net/npm/lg-rotate@1.0.0/dist/lg-rotate.min.js"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/lazysizes/5.3.2/lazysizes.min.js" async></script>
+
+<!--Light gallery -->
+<script type="text/javascript">
+    $(document).ready(function() {
+        $('.lightgallery').lightGallery({
+            selector: '.spnImg',
+            thumbnail: false
+
+        });
+    });
+</script>
+<!--Light gallery Ends Here -->
+
+
+<script>
+    $(document).ready(function () {
+    var income_type = document.getElementById('hd_income_type').value;
+    $('#incomeTypeSelect').val(income_type).trigger('change');
+    const tax_year_1_id = document.getElementById("tax_year_1_id").value;
+    const tax_year_2_id = document.getElementById("tax_year_2_id").value;
+    $('#tax_year_1').val(tax_year_1_id).trigger('change');
+    $('#tax_year_2').val(tax_year_2_id).trigger('change');
+
+    const select1 = document.getElementById("tax_year_1");
+    const select2 = document.getElementById("tax_year_2");
+
+    function updateOptions() {
+        const selected1 = select1.value;
+        const selected2 = select2.value;
+
+        // Reset all disabled options
+        [...select1.options].forEach(opt => opt.disabled = false);
+        [...select2.options].forEach(opt => opt.disabled = false);
+
+        // Disable the one selected in the other dropdown
+        if (selected1) {
+            [...select2.options].forEach(opt => {
+                if (opt.value === selected1) opt.disabled = true;
+            });
+        }
+        if (selected2) {
+            [...select1.options].forEach(opt => {
+                if (opt.value === selected2) opt.disabled = true;
+            });
+        }
+    }
+
+    select1.addEventListener("change", updateOptions);
+    select2.addEventListener("change", updateOptions);
+
+});
+
+</script>
+
+<script>
+  const menuItems = document.querySelectorAll('.menu_list .list-group-item');
+
+  menuItems.forEach(item => {
+    item.addEventListener('click', () => {
+      // Remove active from all
+      menuItems.forEach(link => link.classList.remove('active'));
+
+      // Add to clicked one
+      item.classList.add('active');
+    });
+  });
+
+
+
+</script>
+
+
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    const sidebar = document.querySelector('.mobile-sidebar');
+    const toggleIcon = document.querySelector('.mobile-nav-icon');
+    const closeIcon = document.querySelector('.menu-close');
+    const navLinks = document.querySelectorAll('.mobile-nav-list a');
+
+    // Open sidebar
+    toggleIcon.addEventListener('click', () => {
+      sidebar.classList.add('active');
+    });
+
+    // Close sidebar on close icon
+    closeIcon.addEventListener('click', () => {
+      sidebar.classList.remove('active');
+    });
+
+    // Close sidebar when any nav link is clicked
+    navLinks.forEach(link => {
+      link.addEventListener('click', () => {
+        sidebar.classList.remove('active');
+      });
+    });
+  });
+
+</script>

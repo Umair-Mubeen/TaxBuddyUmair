@@ -44,8 +44,15 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'TaxBuddyApp',
     'django.contrib.humanize',
+    'compressor',  # must be EXACTLY like this
 
 ]
+STATICFILES_FINDERS = (
+    'django.contrib.staticfiles.finders.FileSystemFinder',
+    'django.contrib.staticfiles.finders.AppDirectoriesFinder',
+    # other finders..
+    'compressor.finders.CompressorFinder',
+)
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -134,7 +141,9 @@ USE_TZ = True
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [BASE_DIR / 'TaxBuddyApp' / 'static']
 STATIC_ROOT = BASE_DIR / 'staticfiles'
-
+COMPRESS_ROOT = STATIC_ROOT
+COMPRESS_ENABLED = True
+COMPRESS_OFFLINE = True  # pre-compress at collectstatic
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
