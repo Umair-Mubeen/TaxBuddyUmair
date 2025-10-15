@@ -257,7 +257,7 @@
             </div>
             <div class="col-md-6">
                 <div class="service4-btn mt-sm-50" data-aos="fade-left" data-aos-duration="900">
-                    <a class="font-f-5 theme-btn-18" href="#">See Pricing <i class="fa-solid fa-arrow-right"></i></a>
+                    <a class="font-f-5 theme-btn-18" href="#pricing">See Pricing <i class="fa-solid fa-arrow-right"></i></a>
                 </div>
             </div>
         </div>
@@ -621,48 +621,53 @@
 </div>
 <!--=====testimonial end=======-->
 
+<section id="pricing">
+    <div class="space50"></div> {% include 'partials/pricing.html' %}
+
+</section>
 
 </div>
 
 
 <!--=====blog start here =======-->
-<div class="blog-area inner-blog-1 section-padding inner-font-1">
-<div class="container">
-    <div class="row" id="masonry-grid">
-        <h2>Tax Insights & Guides on Income Tax and Sales Tax in Pakistan</h2>
-        <p>
-            Stay updated with the latest information about <strong>income tax laws</strong>,
-            <strong>sales tax regulations</strong>, and <strong>property tax updates</strong>
-            in Pakistan. Our blog provides practical tips to help individuals and
-            businesses file their taxes with confidence.
-        </p>
+<!--<div class="blog-area inner-blog-1 section-padding inner-font-1">-->
+<!--<div class="container">-->
+<!--    <div class="row" id="masonry-grid">-->
+<!--        <h2>Tax Insights & Guides on Income Tax and Sales Tax in Pakistan</h2>-->
+<!--        <p>-->
+<!--            Stay updated with the latest information about <strong>income tax laws</strong>,-->
+<!--            <strong>sales tax regulations</strong>, and <strong>property tax updates</strong>-->
+<!--            in Pakistan. Our blog provides practical tips to help individuals and-->
+<!--            businesses file their taxes with confidence.-->
+<!--        </p>-->
 
-        {% for res in result %}
-        <div class="col-md-6 col-lg-4 mesonry-item design marketing stories lifestyle">
-            <div class="single-blog blog-sm">
-                <div class="blog-img">
-                    <a href="/{{res.slug}}">
-                        <img class="lazyload" alt="{{res.title}}" data-src="{{res.image.url}}">
-                    </a>
-                </div>
-                <ul class="blog-tags">
-                    <li>
-                        <a href="#">
-                            {% if res.type == '1' %} Income Tax {% else %} Sales Tax {% endif %}
-                        </a>
-                    </li>
-                </ul>
-                <h2 class="blog-title">
-                    <a href="/{{res.slug}}" style="font-size:20px;color:black">{{res.title}}</a>
-                </h2>
-            </div>
-        </div>
-        {% endfor %}
-    </div>
-</div>
+<!--        {% for res in result %}-->
+<!--        <div class="col-md-6 col-lg-4 mesonry-item design marketing stories lifestyle">-->
+<!--            <div class="single-blog blog-sm">-->
+<!--                <div class="blog-img">-->
+<!--                    <a href="/{{res.slug}}">-->
+<!--                        <img class="lazyload" alt="{{res.title}}" data-src="{{res.image.url}}">-->
+<!--                    </a>-->
+<!--                </div>-->
+<!--                <ul class="blog-tags">-->
+<!--                    <li>-->
+<!--                        <a href="#">-->
+<!--                            {% if res.type == '1' %} Income Tax {% else %} Sales Tax {% endif %}-->
+<!--                        </a>-->
+<!--                    </li>-->
+<!--                </ul>-->
+<!--                <h2 class="blog-title">-->
+<!--                    <a href="/{{res.slug}}" style="font-size:20px;color:black">{{res.title}}</a>-->
+<!--                </h2>-->
+<!--            </div>-->
+<!--        </div>-->
+<!--        {% endfor %}-->
+<!--    </div>-->
+<!--</div>-->
 
-</div>
+<!--</div>-->
 <!--=====blog end here =======-->
+
 
 <!--=====contact start=======-->
 {% include 'contact.html' %}
