@@ -7,7 +7,7 @@ STATIC_ROOT = BASE_DIR / 'staticfiles'
 
 
 STATICFILES_DIRS = [
-    BASE_DIR / 'static',   # 👈 Your actual static folder
+    BASE_DIR.parent / 'static',   # correct folder
 ]
 # Media files (uploads)
 MEDIA_URL = '/media/'
