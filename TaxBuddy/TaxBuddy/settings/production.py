@@ -7,7 +7,7 @@ STATIC_ROOT = BASE_DIR / 'staticfiles'
 
 
 STATICFILES_DIRS = [
-    BASE_DIR.parent / 'static',   # correct folder
+    BASE_DIR / 'TaxBuddyApp' / 'static',
 ]
 # Media files (uploads)
 MEDIA_URL = '/media/'
