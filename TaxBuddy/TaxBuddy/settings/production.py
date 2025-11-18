@@ -7,9 +7,8 @@ STATIC_ROOT = BASE_DIR / 'staticfiles'
 
 
 STATICFILES_DIRS = [
-    BASE_DIR / 'static',   # OR assets, depending on your folder
+    BASE_DIR / 'static',   # 👈 Your actual static folder
 ]
-
 # Media files (uploads)
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
