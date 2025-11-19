@@ -3,8 +3,8 @@
     <div class="space20"></div>
     <div class="row g-4" id="results">
     <div class="col-12">
-        <div class="contact3-form-all" data-aos="zoom-out" data-aos-duration="900">
-            <div class="hadding6 text-center mb-4">
+        <div class="contact3-form-all">
+            <div class="hadding6 text-center">
                 <h1 class="font-30 font-f-7 font-lg-40 weight-500 line-height-lg-48 line-height-38">
                     Tax Calculation Comparison - {{taxpayer_type}}
                 </h1>
@@ -12,12 +12,12 @@
         </div>
 
         <!-- Grid Row for Tables -->
-        <div class="row g-4" data-aos="zoom-out" data-aos-duration="900">
+        <div class="row g-4">
             <!-- Left Table Card -->
             <div class="col-12 col-lg-6">
                 <div class="card shadow-sm h-100">
-                    <div class="card-header bg-success text-white">
-                        <h5 class="mb-0">Tax Calculation for Tax Year: {{tax_year_1}}</h5>
+                    <div class="card-header bg-success">
+                        <h5 class="mb-0 text-white">Tax Calculation for Tax Year: {{tax_year_1}}</h5>
                     </div>
                     <div class="card-body">
                         <div class="table-responsive">
@@ -63,10 +63,24 @@
                                     <th>Tax on Amount Exceeding</th>
                                     <td>Rs. {{ tax_year_1_result.tax_on_exceeding|intcomma }}</td>
                                 </tr>
-                                <tr>
+
+                                 {% if tax_year_1_result.surcharge %}
+                                 <tr class="bg-success text-white">
+                                    <th>Tax on {{surcharge_label_1}}</th>
+                                    <td>Rs. {{tax_year_1_result.surcharge|intcomma }} </td>
+                                </tr>
+
+                                  <tr>
+                                    <th>Total Tax Chargeable</th>
+                                    <td>Rs. {{ tax_year_1_result.total_tax_with_surcharge|intcomma }}</td>
+                                </tr>
+                                {% else %}
+                                 <tr>
                                     <th>Total Tax Chargeable</th>
                                     <td>Rs. {{ tax_year_1_result.total_tax|intcomma }}</td>
                                 </tr>
+                                {% endif %}
+
                                 <tr class="bg-success text-white">
                                     <th class="text-white">Monthly Tax</th>
                                     <td class="text-white">Rs. {{ tax_year_1_result.per_month|intcomma }}</td>
@@ -80,8 +94,8 @@
             <!-- Right Table Card -->
             <div class="col-12 col-lg-6">
                 <div class="card shadow-sm h-100">
-                    <div class="card-header bg-success text-white">
-                        <h5 class="mb-0">Tax Calculation for Tax Year: {{tax_year_2}}</h5>
+                    <div class="card-header bg-success">
+                        <h5 class="mb-0 text-white">Tax Calculation for Tax Year: {{tax_year_2}}</h5>
                     </div>
                     <div class="card-body">
                         <div class="table-responsive">
@@ -128,10 +142,23 @@
                                     <th>Tax on Amount Exceeding</th>
                                     <td>Rs. {{ tax_year_2_result.tax_on_exceeding|intcomma }}</td>
                                 </tr>
-                                <tr>
+                                {% if tax_year_2_result.surcharge %}
+                                 <tr class="bg-success text-white">
+                                    <th>Tax on {{surcharge_label_2}}</th>
+                                    <td>Rs. {{tax_year_2_result.surcharge|intcomma }} </td>
+                                </tr>
+
+                                  <tr>
+                                    <th>Total Tax Chargeable</th>
+                                    <td>Rs. {{ tax_year_2_result.total_tax_with_surcharge|intcomma }}</td>
+                                </tr>
+                                {% else %}
+                                 <tr>
                                     <th>Total Tax Chargeable</th>
                                     <td>Rs. {{ tax_year_2_result.total_tax|intcomma }}</td>
                                 </tr>
+                                {% endif %}
+
                                 <tr class="bg-success text-white">
                                     <th class="text-white">Monthly Tax</th>
                                     <td class="text-white">Rs. {{ tax_year_2_result.per_month|intcomma }}</td>
