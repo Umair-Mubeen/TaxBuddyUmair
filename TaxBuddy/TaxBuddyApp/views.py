@@ -463,3 +463,11 @@ def calculate_tax(income, tax_brackets, surcharge_rate):
         return None
     except Exception as e:
         print(str(e))
+
+
+def tax_knowledge_quiz(request):
+    try:
+        return render(request, 'tax-knowledge-quizz.html')
+
+    except Exception as e:
+        print("Exception as e:" + str(e))

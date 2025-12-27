@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="en">
+{% load static %}
+<head>
+    <meta charset="UTF-8">
+    <title>Tax Knowledge Quiz | Pakistan Income & Sales Tax – TaxBuddy Umair</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <meta name="description"
+          content="Test your knowledge of Pakistan Income Tax, Sales Tax and Property Tax laws. Free tax awareness quiz by TaxBuddy Umair.">
+
+    <link rel="shortcut icon" href="{% static 'assets/img/icons/fab2.png' %}">
+    {% include 'partials/head-css.html' %}
+
+    <style>
+        body {
+            background: #f4f7fb;
+        }
+
+
+        .quiz-card {
+            background: #fff;
+            border-radius: 10px;
+            padding: 30px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.06);
+        }
+
+        .quiz-header {
+            text-align: center;
+        }
+
+        .quiz-header h1 {
+            color: #0d2c54;
+            font-weight: 700;
+        }
+
+        .quiz-header p {
+            color: #666;
+            font-size: 15px;
+        }
+
+
+        .question {
+            margin-bottom: 25px;
+        }
+
+        .question h3 {
+            font-size: 17px;
+            color: #222;
+            margin-bottom: 15px;
+        }
+
+        .option {
+            border: 2px solid transparent;
+            border-radius: 8px;
+            padding: 12px 15px;
+            margin-bottom: 10px;
+            cursor: pointer;
+            transition: 0.2s;
+            display: flex;
+            align-items: center;
+        }
+
+        .option:hover {
+            border-color: #0d2c54;
+            background: #eef4ff;
+        }
+
+        .option input {
+            margin-right: 12px;
+            transform: scale(1.2);
+        }
+
+        .submit-btn {
+            width: 100%;
+            background: #0d2c54;
+            color: #fff;
+            border: none;
+            padding: 14px;
+            font-size: 17px;
+            font-weight: 600;
+            border-radius: 8px;
+            cursor: pointer;
+            margin-top: 15px;
+        }
+
+        .submit-btn:hover {
+            background: #093a75;
+        }
+
+        .result-box {
+            display: none;
+            margin-top: 25px;
+            padding: 20px;
+            background: #f1f7ff;
+            border-left: 5px solid #0d2c54;
+            border-radius: 6px;
+        }
+
+        .result-box h4 {
+            color: #0d2c54;
+            margin-bottom: 10px;
+        }
+
+        .explanation {
+            font-size: 14px;
+            color: #333;
+            margin-top: 10px;
+        }
+
+        .footer-note {
+            text-align: center;
+            margin-top: 30px;
+            font-size: 13px;
+            color: #777;
+        }
+
+        @media(max-width: 576px) {
+            .quiz-card {
+                padding: 20px;
+            }
+        }
+
+        .option.correct {
+    background: #e8f9f0;
+    border: 2px solid #28a745;
+    color: #155724;
+}
+
+.option.wrong {
+    background: #fdecea;
+    border: 2px solid #dc3545;
+    color: #721c24;
+}
+
+.option.correct::after {
+    content: "✔ Correct";
+    margin-left: auto;
+    font-weight: bold;
+    color: #28a745;
+}
+
+.option.wrong::after {
+    content: "✖ Wrong";
+    margin-left: auto;
+    font-weight: bold;
+    color: #dc3545;
+}
+
+    </style>
+</head>
+
+<body>
+
+{% include 'partials/topbar.html' %}
+<div class="space100"> </div>
+<div class="quiz-wrapper container">
+    <div class="quiz-card">
+
+        <div class="quiz-header">
+            <h1>Tax Knowledge Quiz</h1>
+            <p>Test your understanding of Pakistan Income, Sales & Property Tax laws</p>
+        </div>
+
+
+        <form id="quizForm">
+
+            <!-- Question 1 -->
+            <div class="question">
+                <h3>1. Which authority administers Income Tax in Pakistan?</h3>
+               <label class="option" data-correct="false">
+    <input type="radio" name="q1"> State Bank of Pakistan
+</label>
+
+<label class="option" data-correct="true">
+    <input type="radio" name="q1"> Federal Board of Revenue (FBR)
+</label>
+
+<label class="option" data-correct="false">
+    <input type="radio" name="q1"> SECP
+</label>
+
+<label class="option" data-correct="false">
+    <input type="radio" name="q1"> NADRA
+</label>
+
+            </div>
+
+            <!-- Question 2 -->
+            <div class="question">
+                <h3>2. Sales Tax in Pakistan is governed under:</h3>
+                <label class="option">
+                    <input type="radio" name="q2" value="0"> Income Tax Ordinance, 2001
+                </label>
+                <label class="option">
+                    <input type="radio" name="q2" value="1"> Sales Tax Act, 1990
+                </label>
+                <label class="option">
+                    <input type="radio" name="q2" value="0"> Customs Act, 1969
+                </label>
+                <label class="option">
+                    <input type="radio" name="q2" value="0"> Companies Act, 2017
+                </label>
+            </div>
+
+            <!-- Question 3 -->
+            <div class="question">
+                <h3>3. Capital Gain Tax on property mainly depends on:</h3>
+                <label class="option">
+                    <input type="radio" name="q3" value="1"> Holding period
+                </label>
+                <label class="option">
+                    <input type="radio" name="q3" value="0"> Buyer age
+                </label>
+                <label class="option">
+                    <input type="radio" name="q3" value="0"> Bank name
+                </label>
+                <label class="option">
+                    <input type="radio" name="q3" value="0"> Property color
+                </label>
+            </div>
+
+            <button type="button" class="submit-btn" onclick="calculateScore()">Submit Quiz</button>
+        </form>
+
+        <div class="result-box" id="result"></div>
+
+        <div class="footer-note">
+            © TaxBuddy Umair – Tax Awareness Initiative
+        </div>
+
+    </div>
+</div>
+
+{% include 'partials/footer.html' %}
+{% include 'partials/up.html' %}
+{% include 'partials/footer-scripts.html' %}
+
+
+<script>
+
+function calculateScore() {
+    const totalQuestions = 3;
+    let score = 0;
+
+    for (let i = 1; i <= totalQuestions; i++) {
+        const selected = document.querySelector(`input[name="q${i}"]:checked`);
+        if (!selected) {
+            alert("Please answer all questions before submitting.");
+            return;
+        }
+        score += parseInt(selected.value);
+    }
+
+    const resultBox = document.getElementById("result");
+    resultBox.style.display = "block";
+    resultBox.innerHTML = `
+        <h4>Your Score: ${score} / ${totalQuestions}</h4>
+        <div class="explanation">
+            <b>Correct Answers:</b><br>
+            1. Federal Board of Revenue (FBR)<br>
+            2. Sales Tax Act, 1990<br>
+            3. Holding Period<br><br>
+            ${score === totalQuestions ?
+            "Excellent! You have strong tax knowledge." :
+            "Good attempt! Keep learning with TaxBuddy Umair."}
+        </div>
+    `;
+}
+</script>
+
+</body>
+
+<script>
+document.querySelectorAll(".option input").forEach(input => {
+    input.addEventListener("change", function () {
+        const options = this.closest(".question").querySelectorAll(".option");
+
+        // Disable all options after selection
+        options.forEach(opt => {
+            opt.classList.remove("correct", "wrong");
+            opt.querySelector("input").disabled = true;
+
+            if (opt.dataset.correct === "true") {
+                opt.classList.add("correct");
+            }
+        });
+
+        // Mark selected wrong option
+        if (this.parentElement.dataset.correct !== "true") {
+            this.parentElement.classList.add("wrong");
+        }
+    });
+});
+</script>
+
+</html>
