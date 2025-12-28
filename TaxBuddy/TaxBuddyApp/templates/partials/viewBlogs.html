@@ -1,91 +1,159 @@
 <!DOCTYPE html>
+{% load static %}
 {% load humanize %}
 <html lang="en">
 <head>
-      {% load static %}
+
+    <!-- Google Analytics -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-EEP4P5YWE6"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-EEP4P5YWE6');
+    </script>
 
-  gtag('config', 'G-EEP4P5YWE6');
-</script>
+    <title>Tax News & FBR Updates | Income & Sales Tax Blog – TaxBuddy Umair</title>
 
-    <title>Tax News & FBR Updates - Income Tax & Sales Tax Blog | TaxBuddy Umair</title>
-    <link rel="shortcut icon" type="image/x-icon" href="{% static 'assets/img/icons/fab2.png' %}">
-    <meta name="description" content="Stay updated with the latest FBR notifications, income tax laws, sales tax updates, and expert tax tips in Pakistan.">
-    <meta name="keywords" content="FBR SRO Pakistan, tax news Pakistan, income tax updates 2025, sales tax law Pakistan, how to file tax return, FBR notices explained">
-    <meta property="og:title" content="Tax News & FBR Updates | TaxBuddy Umair Blog">
-    <meta property="og:description" content="Latest tax news, FBR updates, and expert insights on income tax, sales tax, and property tax in Pakistan.">
-    <meta property="og:url" content="https://www.taxbuddyumair.com/blog/income-tax/">
-    <meta property="og:url" content="https://www.taxbuddyumair.com/blog/sales-tax/">
-    <meta property="og:image" content="https://taxbuddyumair.com/static/assets/img/icons/fab2.png" />
-    <style>
-        .blog-img img {
-      width: 100%;
-    height: 250px; /* adjust height as you like */
-    object-fit: cover; /* crop neatly instead of stretching */
-    border-radius: 8px; /* optional - smooth corners */
+    <meta name="description" content="Latest FBR updates, income tax & sales tax laws, property tax guidance and expert tax tips in Pakistan by TaxBuddy Umair.">
+    <meta name="keywords" content="FBR Pakistan, income tax blog, sales tax updates, tax laws Pakistan, tax filing guide">
+    <meta name="robots" content="index, follow">
 
-}
-@media (max-width: 768px) {
-    .blog-img img {
-        height: 180px; /* slightly smaller on mobile */
-    }
-}
+    <!-- Open Graph (SEO / Social Sharing) -->
+    <meta property="og:title" content="Tax News & FBR Updates – TaxBuddy Umair">
+    <meta property="og:description" content="Expert insights on Income Tax, Sales Tax & FBR laws in Pakistan.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="{{ request.build_absolute_uri }}">
+    <meta property="og:image" content="https://taxbuddyumair.com/static/assets/img/icons/fab2.png">
 
-
-
-
-
-    </style>
+    <link rel="shortcut icon" href="{% static 'assets/img/icons/fab2.png' %}">
     {% include 'partials/head-css.html' %}
+
+    <!-- Blog UI CSS -->
+    <style>
+        .single-blog {
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            background: #ffffff;
+            border-radius: 12px;
+            padding: 15px;
+            transition: 0.3s ease;
+        }
+
+        .single-blog:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 12px 30px rgba(0,0,0,0.08);
+        }
+
+        .blog-img {
+            width: 100%;
+            height: 240px;
+            background: #f4f6f8;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 10px;
+            overflow: hidden;
+            margin-bottom: 12px;
+        }
+
+        .blog-img img {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain; /* SHOW FULL IMAGE */
+        }
+
+        .blog-tags {
+            list-style: none;
+            padding: 0;
+            margin: 0 0 8px;
+        }
+
+        .blog-tags li a {
+            font-size: 12px;
+            font-weight: 600;
+            color: #1d4ed8;
+            background: #e0e7ff;
+            padding: 4px 10px;
+            border-radius: 20px;
+            text-decoration: none;
+        }
+
+        .blog-title {
+            font-size: 18px;
+            line-height: 1.4;
+            font-weight: 700;
+            color: #111827;
+            text-decoration: none;
+        }
+
+        .blog-title:hover {
+            color: #1d4ed8;
+        }
+
+        @media (max-width: 768px) {
+            .blog-img {
+                height: 180px;
+            }
+        }
+    </style>
+
 </head>
 <body>
-<!--=====Navigation Bar=======-->
-{% include 'partials/topbar.html' %}
-<!--=====Navigation Bar Ends Here=======-->
 
-<!--=====Blog start=======-->
-<div class="blog-area inner-blog-1 section-padding inner-font-1">
+{% include 'partials/topbar.html' %}
+
+<!-- BLOG LIST -->
+<section class="blog-area section-padding">
     <div class="container">
         <div class="row">
-            <div class="col-md-12 col-lg-12">
-                <div class="lg-mr-15">
-                    <div class="row">
-                        {% for blog in blogs %}
-                        <div class="col-lg-4">
-                            <div class="single-blog blog-md">
-                                <div class="blog-img">
-                                    <a href="/{{blog.slug}}/"><img class="lazyload" alt="{{blog.title}}" src="{{blog.image.url}}" /></a>
-                                </div>
-                                <ul class="blog-tags">
-                                    <li><a href="#">{% if blog.type == '1'%} Income Tax {% else %}Sales Tax{%endif%}</a>
-                                    </li>
-                                </ul>
-                                <h3>
-                                    <a href="/{{blog.slug}}/" class="blog-title" style="font-size:20px;line-height: 1.3;">{{blog.title}}</a>
-                                </h3>
-                            </div>
-                        </div>
-                        {% endfor %}
 
+            {% for blog in blogs %}
+            <div class="col-lg-4 col-md-6 mb-4">
 
+                <article class="single-blog" itemscope itemtype="https://schema.org/BlogPosting">
+
+                    <div class="blog-img">
+                        <a href="/{{ blog.slug }}/" itemprop="url">
+                            <img
+                                src="{{ blog.image.url }}"
+                                alt="{{ blog.title }}"
+                                loading="lazy"
+                                itemprop="image">
+                        </a>
                     </div>
-                </div>
+
+                    <ul class="blog-tags">
+                        <li>
+                            <a href="#" itemprop="about">
+                                {% if blog.type == '1' %}
+                                    Income Tax
+                                {% else %}
+                                    Sales Tax
+                                {% endif %}
+                            </a>
+                        </li>
+                    </ul>
+
+                    <h3 itemprop="headline">
+                        <a href="/{{ blog.slug }}/" class="blog-title">
+                            {{ blog.title }}
+                        </a>
+                    </h3>
+
+                </article>
+
             </div>
+            {% endfor %}
 
-             </div>
+        </div>
     </div>
-</div>
-<!--=====Blog end=======-->
-
+</section>
 
 {% include 'partials/footer.html' %}
 {% include 'partials/up.html' %}
 {% include 'partials/footer-scripts.html' %}
-
 
 </body>
 </html>
