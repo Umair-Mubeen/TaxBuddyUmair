@@ -2,60 +2,153 @@
 {% load static %}
 <html>
 <head>
+
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-EEP4P5YWE6"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-EEP4P5YWE6');
 
-  gtag('config', 'G-EEP4P5YWE6');
-</script>
 
-    <link rel="shortcut icon" type="image/x-icon" href="{% static 'assets/img/icons/fab2.png' %}">
-    <title>TaxBuddy Umair | {{blog.title}} </title>
-    <meta property="og:title" content="{{blog.title}}">
-    <meta property="og:image" content="https://taxbuddyumair.com/{{blog.image.url}}" />
-    <meta property="og:url" content="https://www.taxbuddyumair.com/{{blog.image.url}}">
-        <style>
-        .blog-img img {
-      width: 100%;
-    height: 250px; /* adjust height as you like */
-    object-fit: cover; /* crop neatly instead of stretching */
-    border-radius: 8px; /* optional - smooth corners */
+    </script>
 
+    <link href="{% static 'assets/img/icons/fab2.png' %}" rel="shortcut icon" type="image/x-icon">
+    <title>TaxBuddy Umair | {{ blog.title }}</title>
+
+    <meta content="{{ blog.title }}" property="og:title">
+    <meta content="https://taxbuddyumair.com{{ blog.image.url }}" property="og:image">
+    <meta content="https://www.taxbuddyumair.com/{{ blog.slug }}/" property="og:url">
+
+    {% include 'partials/head-css.html' %}
+
+    <style>
+
+/* ==============================
+   SINGLE BLOG CONTENT AREA
+   ============================== */
+
+.single-blog-contents {
+  font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 16px;
+  line-height: 1.75;
+  color: #1f2937; /* professional dark gray */
+}
+
+/* ==============================
+   BLOG MAIN IMAGE
+   ============================== */
+
+.blog-main-image {
+  max-width: 1200px;
+  margin: 0 auto 28px;
+}
+
+.blog-main-image img {
+  width: 100%;
+  height: auto;
+  object-fit: contain;
+  display: block;
+  border-radius: 10px;
+}
+
+/* ==============================
+   BLOG TITLE
+   ============================== */
+
+.single-blog-contents h3 {
+  font-size: 28px;
+  font-weight: 600;
+  margin: 16px 0 8px;
+  line-height: 1.3;
+}
+
+/* ==============================
+   DATE
+   ============================== */
+
+.blog-date-time {
+  margin-bottom: 16px;
+}
+
+.blog-date-time a {
+  font-size: 14px;
+  color: #6b7280; /* muted gray */
+  text-decoration: none;
+}
+
+/* ==============================
+   BLOG CONTENT
+   ============================== */
+
+.blog-content {
+  font-size: 17px;
+  line-height: 1.8;
+  margin-bottom: 24px;
+}
+
+.blog-content p {
+  margin-bottom: 16px;
+}
+
+/* Ensure images inside content behave well */
+.blog-content img {
+  max-width: 100%;
+  height: auto;
+  margin: 20px 0;
+  border-radius: 8px;
+}
+
+/* ==============================
+   DIVIDER
+   ============================== */
+
+.theme-border {
+  margin: 24px 0;
+  border-bottom: 1px solid #e5e7eb;
 }
 @media (max-width: 768px) {
-    .blog-img img {
-        height: 180px; /* slightly smaller on mobile */
-    }
+  .blog-main-image {
+    max-width: 100%;
+    margin: 0 0 20px;
+  }
+
+  .blog-main-image img {
+    width: 100%;
+    height: auto;
+  }
 }
-
-
 
 
 
     </style>
-
-    {% include 'partials/head-css.html' %}
 </head>
+
 <body>
 {% include 'partials/topbar.html' %}
-<!--=====Single blog start=======-->
-<div class="single-blog-area padding-top inner-font-1 inner-blog-1" id="home">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+<!--===== Single Blog Start =====-->
+<div class="single-blog-area padding-top inner-font-1 inner-blog-1">
     <div class="container">
         <div class="row">
-            <div class="col-lg-8 ">
+            <div class="col-lg-8">
                 <div class="single-blog-contents lg-ml-15">
-                   <div class="single-blog-img lightgallery">
-                 </div>
-                    <h3>{{blog.title}}</h3>
+
+<!--                    <div class="blog-main-image">-->
+<!--                        <img alt="{{ blog.title }}" loading="lazy" src="{{ blog.image.url }}">-->
+<!--                    </div>-->
+
+                    <h3>{{ blog.title }}</h3>
+
                     <div class="blog-date-time">
                         <ul class="blog-date">
-                            <li><a href="#">{{blog.created_date|date}}</a></li>
+                            <li><a href="#">{{ blog.created_date|date }}</a></li>
                         </ul>
                     </div>
-                    <div class="blog-content">
-                        <p>       {{blog.description|safe}}</p>
+
+                    <div class="blog-content" style="text-align:justify">
+                        {{ blog.description|safe }}
                     </div>
 
                     <div class="theme-border"></div>
@@ -70,130 +163,58 @@
                                 </ul>
                             </div>
                         </div>
+
                         <div class="col-md-6">
                             <div class="social social3 text-right social-share">
                                 <ul>
                                     <li>Share:</li>
-                                       <li>
-                                    <a data-bs-toggle="tooltip" href="https://www.facebook.com/TaxBuddyUmair" title="Facebook"><i
-                                            class="fa-brands fa-facebook-f"></i></a>
-                                </li>
-                                <li>
-                                    <a data-bs-toggle="tooltip" href="https://www.instagram.com/umair_mubeen94/" title="Instagram"><i
-                                            class="fa-brands fa-instagram"></i></a>
-                                </li>
-
-                                   </ul>
+                                    <li>
+                                        <a href="https://www.facebook.com/TaxBuddyUmair" title="Facebook">
+                                            <i class="fa-brands fa-facebook-f"></i>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="https://www.instagram.com/umair_mubeen94/" title="Instagram">
+                                            <i class="fa-brands fa-instagram"></i>
+                                        </a>
+                                    </li>
+                                </ul>
                             </div>
                         </div>
                     </div>
-                </div>
-<!--                {% if userComments %}-->
-<!--                <div class="theme-comments-list">-->
-<!--                    <h3>{{length}} Comments</h3>-->
-<!--                    <div class="comments-list">-->
-<!--                        {% for user in userComments %}-->
-<!--                        <div class="single-commencts">-->
-<!--                            <div class="comments-img">-->
-<!--&lt;!&ndash;                                <img alt="users-comments" src="{% static 'assets/img/blog/comment.png' %}"/>&ndash;&gt;-->
-<!--                            </div>-->
-<!--                            <div class="comments-heading">-->
-<!--                                <h4>{{user.name}}</h4>-->
-<!--&lt;!&ndash;                                <a class="reply-btn" href="#">Reply</a>&ndash;&gt;-->
-<!--                            </div>-->
-<!--                            <p>{{user.comment}}</p>-->
-<!--                        </div>-->
-<!--                        {% endfor %}-->
-<!--                    </div>-->
-<!--                </div>-->
-<!--                {% endif %}-->
 
-                <div class="write-comments">
-                    <h3>Leave a Comment</h3>
-                    <div class="comment-form">
-
-                        <form action="{% url 'userComments' %}" method="POST">
-                            {% csrf_token %}
-
-                            <div class="row">
-                                <input class="form-contorl" name="slug" type="hidden" value="{{blog.slug}}"/>
-                                <div class="col-lg-6">
-                                    <input name="user" placeholder="Name" type="text"/>
-                                </div>
-                                <div class="col-lg-6">
-                                    <input name="email" placeholder="Email Address" type="email"/>
-                                </div>
-                                <div class="col-lg-12">
-                                    <textarea cols="30" id="" name="comment" placeholder="Write a Comment"
-                                              rows="5"></textarea>
-                                </div>
-                                <div class="col-12">
-                                    <button class="theme-btn theme-btn-14" type="submit">
-                                        Submit Comment
-                                    </button>
-                                </div>
-                            </div>
-                        </form>
-                    </div>
                 </div>
             </div>
+
+            <!--===== Sidebar =====-->
             <div class="col-lg-4">
                 <div class="widgets lg-mr-15">
-                    <div class="single-widget padding-less-widget">
-                        <h3>Search by keyword</h3>
-                        <div class="search-form-widget">
-                            <form action="#">
-                                <input placeholder="Type keyword here" type="search"/>
-                                <button class="search-icon" type="submit">
-                                    <i class="fa-solid fa-magnifying-glass"></i>
-                                </button>
-                            </form>
-                        </div>
-                    </div>
 
                     <div class="single-widget about-widget">
                         <div class="about-author">
-                            <img alt="users comments" src="{% static 'assets/img/blog/blog5.png' %}"/>
+                            <img alt="TaxBuddy Umair" src="{% static 'assets/img/blog/blog5.png' %}">
                         </div>
                         <h4>TaxBuddy Umair.</h4>
                         <p>
-                            When it comes to taxes, remember: compliance doesn’t happen overnight — understanding tax
-                            laws like the Income Tax Ordinance, 2001 and Sales Tax Act, 1990 takes time, clarity, and
-                            the right guidance. TaxBuddy Umair is here to help you navigate tax matters with ease and
-                            confidence.
-
+                            When it comes to taxes, remember: compliance doesn’t happen overnight —
+                            understanding tax laws like the Income Tax Ordinance, 2001 and Sales Tax Act, 1990
+                            takes time, clarity, and the right guidance.
                         </p>
-                        <div class="social social3 text-center">
-                            <ul>
-<!--                                <li>-->
-<!--                                    <a data-bs-toggle="tooltip" href="#" title="Linked in"><i-->
-<!--                                            class="fa-brands fa-linkedin-in"></i></a>-->
-<!--                                </li>-->
-                                <li>
-                                    <a data-bs-toggle="tooltip" href="https://www.facebook.com/TaxBuddyUmair" title="Facebook"><i
-                                            class="fa-brands fa-facebook-f"></i></a>
-                                </li>
-                                <li>
-                                    <a data-bs-toggle="tooltip" href="https://www.instagram.com/umair_mubeen94/" title="Instagram"><i
-                                            class="fa-brands fa-instagram"></i></a>
-                                </li>
-                            </ul>
-                        </div>
                     </div>
 
                     <div class="single-widget recent-posts">
                         <h3>Recent Blogs</h3>
                         <div class="recent-post">
                             <div class="recent-post-content">
-                                <a href="{% url 'BlogDetails' slug=blog.slug %}">{{blog.title}}</a>
+                                <a href="{% url 'BlogDetails' slug=blog.slug %}">{{ blog.title }}</a>
                                 <div class="blog-date-time">
                                     <ul class="blog-date">
-                                        <li><a href="{{blog.title}}">{{blog.created_date|date}}</a></li>
+                                        <li>{{ blog.created_date|date }}</li>
                                     </ul>
                                 </div>
                             </div>
                             <div class="recent-img">
-                                <img alt="{{blog.title}}" src="{{blog.image.url}}"/>
+                                <img alt="{{ blog.title }}" src="{{ blog.image.url }}">
                             </div>
                         </div>
                     </div>
@@ -204,51 +225,32 @@
         </div>
     </div>
 </div>
-<!--=====Single blog end=======-->
+<!--===== Single Blog End =====-->
 
-<!--=====More blog  start=======-->
-<div class="section-padding2 blog-area inner-blog-1 section-padding inner-font-1">
+<!--===== More Blogs =====-->
+<div class="section-padding2 blog-area inner-blog-1">
     <div class="container">
-        <div class="row">
-            <div class="col-lg-8 m-auto">
-                <div class="heading2 text-center">
-                    <small class="heading-top inner-heading-top">
-                        <img alt="Income Tax , Sales Tax Blogs in Pakistan" class="lazyload"
-                             src="{% static 'assets/img/icons/hands.svg' %}"/>Our More Blogs</small>
-                    <h2>Welcome to my blog, where one financial professional does all the heavy lifting — so you don’t
-                        have to.</h2>
-                </div>
-            </div>
-        </div>
         <div class="row">
             {% for other in blogList %}
             <div class="col-md-6 col-lg-4">
                 <div class="single-blog blog-md">
                     <div class="blog-img">
                         <a href="{% url 'BlogDetails' slug=other.slug %}">
-                            <img alt="{{other.slug}}" class="lazyload" src="{{other.image.url}}"/>
+                            <img alt="{{ other.title }}" src="{{ other.image.url }}">
                         </a>
                     </div>
-                    <ul class="blog-tags">
-                        <li><a href="#">{% if other.type == '1' %} Income Tax {% else %} Sales Tax {% endif %}</a></li>
-                    </ul>
-                    <h3 style="text-align:justify">
-                        <a href="{% url 'BlogDetails' slug=other.slug %}" style="font-size:20px;line-height: 1.3;">{{ other.title }}.</a>
+                    <h3>
+                        <a href="{% url 'BlogDetails' slug=other.slug %}">{{ other.title }}</a>
                     </h3>
-
                 </div>
             </div>
             {% endfor %}
         </div>
     </div>
 </div>
-<!--=====More blog end=======-->
-
 
 {% include 'partials/footer.html' %}
 {% include 'partials/up.html' %}
 {% include 'partials/footer-scripts.html' %}
-
 </body>
-
 </html>
