@@ -11,140 +11,180 @@
 
     <link rel="shortcut icon" href="{% static 'assets/img/icons/fab2.png' %}">
     {% include 'partials/head-css.html' %}
-
     <style>
-        body {
-            background: #f4f7fb;
-        }
 
 
-        .quiz-card {
-            background: #fff;
-            border-radius: 10px;
-            padding: 30px;
-            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.06);
-        }
+/* Card */
+.quiz-card {
+    background: #ffffff;
+    padding: 35px;
+    border-radius: 14px;
+    box-shadow: 0 15px 40px rgba(13, 44, 84, 0.08);
+    animation: fadeIn 0.5s ease-in-out;
+}
 
-        .quiz-header {
-            text-align: center;
-        }
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(12px); }
+    to { opacity: 1; transform: translateY(0); }
+}
 
-        .quiz-header h1 {
-            color: #0d2c54;
-            font-weight: 700;
-        }
+/* Header */
+.quiz-header {
+    text-align: center;
+    margin-bottom: 35px;
+}
 
-        .quiz-header p {
-            color: #666;
-            font-size: 15px;
-        }
+.quiz-header h1 {
+    color: #0d2c54;
+    font-weight: 800;
+    letter-spacing: -0.5px;
+}
 
+.quiz-header p {
+    color: #6b7280;
+    font-size: 15px;
+}
 
-        .question {
-            margin-bottom: 25px;
-        }
+/* Question */
+.question {
+    margin-bottom: 35px;
+}
 
-        .question h3 {
-            font-size: 17px;
-            color: #222;
-            margin-bottom: 15px;
-        }
+.question h3 {
+    font-size: 18px;
+    font-weight: 600;
+    color: #111827;
+    margin-bottom: 18px;
+}
 
-        .option {
-            border: 2px solid transparent;
-            border-radius: 8px;
-            padding: 12px 15px;
-            margin-bottom: 10px;
-            cursor: pointer;
-            transition: 0.2s;
-            display: flex;
-            align-items: center;
-        }
+/* Options */
+.option {
+    border: 2px solid #e5e7eb;
+    border-radius: 12px;
+    padding: 14px 16px;
+    margin-bottom: 12px;
+    cursor: pointer;
+    transition: all 0.25s ease;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    background: #ffffff;
+}
 
-        .option:hover {
-            border-color: #0d2c54;
-            background: #eef4ff;
-        }
+.option:hover {
+    border-color: #0d2c54;
+    background: #f5f9ff;
+    transform: translateY(-1px);
+}
 
-        .option input {
-            margin-right: 12px;
-            transform: scale(1.2);
-        }
+/* Custom radio */
+.option input {
+    appearance: none;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    border: 2px solid #9ca3af;
+    position: relative;
+}
 
-        .submit-btn {
-            width: 100%;
-            background: #0d2c54;
-            color: #fff;
-            border: none;
-            padding: 14px;
-            font-size: 17px;
-            font-weight: 600;
-            border-radius: 8px;
-            cursor: pointer;
-            margin-top: 15px;
-        }
+.option input:checked {
+    border-color: #0d2c54;
+}
 
-        .submit-btn:hover {
-            background: #093a75;
-        }
+.option input:checked::after {
+    content: "";
+    width: 8px;
+    height: 8px;
+    background: #0d2c54;
+    border-radius: 50%;
+    position: absolute;
+    top: 3px;
+    left: 3px;
+}
 
-        .result-box {
-            display: none;
-            margin-top: 25px;
-            padding: 20px;
-            background: #f1f7ff;
-            border-left: 5px solid #0d2c54;
-            border-radius: 6px;
-        }
+/* Submit button */
+.submit-btn {
+    width: 100%;
+    background: linear-gradient(135deg, #0d2c54, #093a75);
+    color: #fff;
+    border: none;
+    padding: 15px;
+    font-size: 17px;
+    font-weight: 700;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: 0.3s;
+}
 
-        .result-box h4 {
-            color: #0d2c54;
-            margin-bottom: 10px;
-        }
+.submit-btn:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 10px 25px rgba(13, 44, 84, 0.25);
+}
 
-        .explanation {
-            font-size: 14px;
-            color: #333;
-            margin-top: 10px;
-        }
+/* Result box */
+.result-box {
+    display: none;
+    margin-top: 30px;
+    padding: 22px;
+    background: #f0f7ff;
+    border-left: 6px solid #0d2c54;
+    border-radius: 10px;
+    animation: fadeIn 0.4s ease;
+}
 
-        .footer-note {
-            text-align: center;
-            margin-top: 30px;
-            font-size: 13px;
-            color: #777;
-        }
+.result-box h4 {
+    color: #0d2c54;
+    font-weight: 700;
+    margin-bottom: 10px;
+}
 
-        @media(max-width: 576px) {
-            .quiz-card {
-                padding: 20px;
-            }
-        }
-
-        .option.correct {
-    background: #e8f9f0;
-    border: 2px solid #28a745;
-    color: #155724;
+/* Correct / Wrong */
+.option.correct {
+    background: #ecfdf5;
+    border-color: #22c55e;
+    color: #065f46;
 }
 
 .option.wrong {
-    background: #fdecea;
-    border: 2px solid #dc3545;
-    color: #721c24;
+    background: #fef2f2;
+    border-color: #ef4444;
+    color: #7f1d1d;
+}
+
+.option.correct::after,
+.option.wrong::after {
+    margin-left: auto;
+    font-weight: 700;
 }
 
 .option.correct::after {
     content: "✔ Correct";
-    margin-left: auto;
-    font-weight: bold;
-    color: #28a745;
+    color: #22c55e;
 }
 
 .option.wrong::after {
     content: "✖ Wrong";
-    margin-left: auto;
-    font-weight: bold;
-    color: #dc3545;
+    color: #ef4444;
+}
+
+/* Footer */
+.footer-note {
+    text-align: center;
+    margin-top: 35px;
+    font-size: 13px;
+    color: #9ca3af;
+}
+
+/* Mobile */
+@media (max-width: 576px) {
+    .quiz-card {
+        padding: 22px;
+        border-radius: 10px;
+    }
+
+    .question h3 {
+        font-size: 16px;
+    }
 }
 
     </style>
@@ -163,66 +203,24 @@
         </div>
 
 
-        <form id="quizForm">
+<form id="quizForm">
+{% for q in questions %}
+<div class="question">
+    <h3>{{ forloop.counter }}. {{ q.question_text }}</h3>
 
-            <!-- Question 1 -->
-            <div class="question">
-                <h3>1. Which authority administers Income Tax in Pakistan?</h3>
-               <label class="option" data-correct="false">
-    <input type="radio" name="q1"> State Bank of Pakistan
-</label>
+    {% for opt in q.options.all %}
+    <label class="option" data-correct="{{ opt.is_correct|yesno:'true,false' }}">
+        <input type="radio" name="q{{ q.id }}" value="{{ opt.is_correct|yesno:'1,0' }}">
+        {{ opt.option_text }}
+    </label>
+    {% endfor %}
+</div>
+{% endfor %}
 
-<label class="option" data-correct="true">
-    <input type="radio" name="q1"> Federal Board of Revenue (FBR)
-</label>
-
-<label class="option" data-correct="false">
-    <input type="radio" name="q1"> SECP
-</label>
-
-<label class="option" data-correct="false">
-    <input type="radio" name="q1"> NADRA
-</label>
-
-            </div>
-
-            <!-- Question 2 -->
-            <div class="question">
-                <h3>2. Sales Tax in Pakistan is governed under:</h3>
-                <label class="option">
-                    <input type="radio" name="q2" value="0"> Income Tax Ordinance, 2001
-                </label>
-                <label class="option">
-                    <input type="radio" name="q2" value="1"> Sales Tax Act, 1990
-                </label>
-                <label class="option">
-                    <input type="radio" name="q2" value="0"> Customs Act, 1969
-                </label>
-                <label class="option">
-                    <input type="radio" name="q2" value="0"> Companies Act, 2017
-                </label>
-            </div>
-
-            <!-- Question 3 -->
-            <div class="question">
-                <h3>3. Capital Gain Tax on property mainly depends on:</h3>
-                <label class="option">
-                    <input type="radio" name="q3" value="1"> Holding period
-                </label>
-                <label class="option">
-                    <input type="radio" name="q3" value="0"> Buyer age
-                </label>
-                <label class="option">
-                    <input type="radio" name="q3" value="0"> Bank name
-                </label>
-                <label class="option">
-                    <input type="radio" name="q3" value="0"> Property color
-                </label>
-            </div>
-
-            <button type="button" class="submit-btn" onclick="calculateScore()">Submit Quiz</button>
-        </form>
-
+<button type="button" class="submit-btn" onclick="calculateScore()">
+    Submit Quiz
+</button>
+</form>
         <div class="result-box" id="result"></div>
 
         <div class="footer-note">
@@ -270,23 +268,46 @@ function calculateScore() {
 </script>
 
 </body>
-
 <script>
+function calculateScore() {
+    let score = 0;
+    let total = document.querySelectorAll(".question").length;
+
+    document.querySelectorAll(".question").forEach(question => {
+        const selected = question.querySelector("input:checked");
+        if (!selected) {
+            alert("Please answer all questions");
+            return;
+        }
+        score += parseInt(selected.value);
+    });
+
+    document.getElementById("result").style.display = "block";
+    document.getElementById("result").innerHTML = `
+        <h4>Your Score: ${score} / ${total}</h4>
+        <div class="explanation">
+            ${score === total
+                ? "🎉 Excellent! Perfect score."
+                : "👍 Good attempt! Keep learning with TaxBuddy Umair."}
+        </div>
+    `;
+}
+
+// Highlight correct/wrong
 document.querySelectorAll(".option input").forEach(input => {
     input.addEventListener("change", function () {
-        const options = this.closest(".question").querySelectorAll(".option");
+        const question = this.closest(".question");
+        const options = question.querySelectorAll(".option");
 
-        // Disable all options after selection
         options.forEach(opt => {
-            opt.classList.remove("correct", "wrong");
             opt.querySelector("input").disabled = true;
+            opt.classList.remove("correct", "wrong");
 
             if (opt.dataset.correct === "true") {
                 opt.classList.add("correct");
             }
         });
 
-        // Mark selected wrong option
         if (this.parentElement.dataset.correct !== "true") {
             this.parentElement.classList.add("wrong");
         }
@@ -295,3 +316,4 @@ document.querySelectorAll(".option input").forEach(input => {
 </script>
 
 </html>
+

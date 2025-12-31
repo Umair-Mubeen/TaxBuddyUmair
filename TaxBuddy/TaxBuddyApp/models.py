@@ -100,3 +100,27 @@ class Property_Business_AOP_Slab(models.Model):
     rate = models.DecimalField(max_digits=5, decimal_places=3)  # store 0.35 for 35%
     base_income = models.BigIntegerField()
     base_tax = models.BigIntegerField()
+
+
+class Question(models.Model):
+    question_text = models.CharField(max_length=255)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return self.question_text
+
+
+class Option(models.Model):
+    question = models.ForeignKey(
+        Question,
+        related_name="options",
+        on_delete=models.CASCADE
+    )
+    option_text = models.CharField(max_length=255)
+    is_correct = models.BooleanField(default=False)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return f"{self.option_text} ({'Correct' if self.is_correct else 'Wrong'})"
