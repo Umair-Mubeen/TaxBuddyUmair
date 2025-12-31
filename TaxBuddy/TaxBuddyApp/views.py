@@ -110,6 +110,7 @@ def deleteBlog(request, slug=None):
         return HttpResponse(str('Exception at Delete Details Page :' + str(e)))
 
 
+@login_required(login_url='Login')  # redirect when user is not logged in
 def ManageBlogs(request):
     try:
         result = Blogs.objects.filter(status=1, is_deleted=False)
