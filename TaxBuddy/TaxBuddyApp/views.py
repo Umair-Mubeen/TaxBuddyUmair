@@ -19,7 +19,6 @@ def index(request):
     except Exception as e:
         return HttpResponse(str(e))
 
-
 def Login(request):
     try:
         if request.method == 'POST':
@@ -46,6 +45,7 @@ def Dashboard(request):
         return HttpResponse(str(e))
 
 
+@login_required(login_url='Login')  # redirect when user is not logged in
 def AddEditBlog(request, slug=None):
     try:
         blog = None  # default: no blog (create mode)
@@ -98,6 +98,7 @@ def AddEditBlog(request, slug=None):
         return HttpResponse("Exception: " + str(e))
 
 
+@login_required(login_url='Login')  # redirect when user is not logged in
 def deleteBlog(request, slug=None):
     try:
         blogs = Blogs.objects.filter(status=1, slug=slug, is_deleted=False)
@@ -190,6 +191,7 @@ def userComments(request):
     except Exception as e:
         print('Exception :', str(e))
         return HttpResponse(str(e))
+
 
 
 def contact(request):
@@ -500,7 +502,7 @@ def question_list(request):
         return HttpResponse("Exception at Blog Details Page :" +  str(e))
 
 
-
+@login_required(login_url='Login')  # redirect when user is not logged in
 def add_question(request):
     if request.method == "POST":
         question_text = request.POST.get("question_text")
@@ -520,7 +522,7 @@ def add_question(request):
 
     return render(request, 'Cpanel/question.html')
 
-
+@login_required(login_url='Login')  # redirect when user is not logged in
 def update_question(request, pk):
     question = get_object_or_404(Question, pk=pk)
 
@@ -544,6 +546,8 @@ def update_question(request, pk):
 
     return render(request, "update_question.html", {"question": question})
 
+
+@login_required(login_url='Login')  # redirect when user is not logged in
 def delete_question(request, pk):
     question = get_object_or_404(Question, pk=pk)
     question.delete()
