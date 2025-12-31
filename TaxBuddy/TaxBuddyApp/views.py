@@ -9,7 +9,7 @@ from django.contrib.auth import authenticate, login, logout
 from django.utils.text import slugify
 from django.contrib import messages
 
-from .models import Blogs, Comment, Contact, TaxBracket, Business_AOP_Slab, Property_Business_AOP_Slab
+from .models import Blogs, Comment, Contact, TaxBracket, Business_AOP_Slab, Property_Business_AOP_Slab,Question,Option
 
 
 def index(request):
@@ -124,13 +124,25 @@ def BlogDetails(request, slug=None):
         blogComments = []
         blogList = []
 
-        if slug:
-            blog = get_object_or_404(Blogs, slug=slug, status=1, is_deleted=False)
+        if not slug:
+            raise Http404("Blog slug not provided")
 
-            # Assuming Comment model has a ForeignKey to Blog (better than slug)
-            blogComments = Comment.objects.filter(status=1, slug=blog.slug)
+        blog = get_object_or_404(
+            Blogs,
+            slug=slug,
+            status=1,
+            is_deleted=False
+        )
 
-            blogList = Blogs.objects.filter(status=1, is_deleted=False).exclude(slug=slug)
+        blogComments = Comment.objects.filter(
+            status=1,
+            slug=blog.slug
+        )
+
+        blogList = Blogs.objects.filter(
+            status=1,
+            is_deleted=False
+        ).exclude(slug=slug)
 
         return render(
             request,
@@ -138,13 +150,17 @@ def BlogDetails(request, slug=None):
             {
                 'blog': blog,
                 'userComments': blogComments,
-                'length': len(blogComments),
+                'length': blogComments.count(),
                 'blogList': blogList,
             }
         )
+
+    except Http404:
+        raise  # let Django handle 404 properly
+
     except Exception as e:
         print('Exception at Blog Details Page :', str(e))
-        return HttpResponse(f"Exception at Blog Details Page : {str(e)}")
+        raise Http404("Something went wrong")
 
 
 def viewBlogs(request, slug=None):
@@ -467,7 +483,68 @@ def calculate_tax(income, tax_brackets, surcharge_rate):
 
 def tax_knowledge_quiz(request):
     try:
-        return render(request, 'tax-knowledge-quizz.html')
-
+        print('-----------')
+        questions = Question.objects.prefetch_related('options')
+        print(questions)
+        return render(request, 'tax-knowledge-quizz.html',{"questions": questions})
     except Exception as e:
         print("Exception as e:" + str(e))
+
+
+
+def question_list(request):
+    try:
+        questions = Question.objects.prefetch_related("options").order_by("-updated_at")
+        return render(request, "tax-knowledge-quizz.html", {"questions": questions})
+    except Exception as e:
+        return HttpResponse("Exception at Blog Details Page :" +  str(e))
+
+
+
+def add_question(request):
+    if request.method == "POST":
+        question_text = request.POST.get("question_text")
+        options = request.POST.getlist("option_text")
+        correct_index = request.POST.get("correct_option")
+
+        question = Question.objects.create(question_text=question_text)
+
+        for i, opt in enumerate(options):
+            Option.objects.create(
+                question=question,
+                option_text=opt,
+                is_correct=(str(i) == correct_index)
+            )
+
+        return render(request, 'Cpanel/question.html')
+
+    return render(request, 'Cpanel/question.html')
+
+
+def update_question(request, pk):
+    question = get_object_or_404(Question, pk=pk)
+
+    if request.method == "POST":
+        question.question_text = request.POST.get("question_text")
+        question.save()
+
+        question.options.all().delete()
+
+        options = request.POST.getlist("option_text")
+        correct_index = request.POST.get("correct_option")
+
+        for i, opt in enumerate(options):
+            Option.objects.create(
+                question=question,
+                option_text=opt,
+                is_correct=(str(i) == correct_index)
+            )
+
+        return redirect("question-list")
+
+    return render(request, "update_question.html", {"question": question})
+
+def delete_question(request, pk):
+    question = get_object_or_404(Question, pk=pk)
+    question.delete()
+    return redirect("question-list")

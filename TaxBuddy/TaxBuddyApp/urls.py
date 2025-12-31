@@ -21,7 +21,6 @@ urlpatterns = [
     path('AddEditBlog/<slug:slug>/', views.AddEditBlog, name='EditBlog'),
     path('blog/<slug:slug>/', views.viewBlogs, name='viewBlogs'),  # BlogDetails Page
     path('<slug:slug>/', views.BlogDetails, name='BlogDetails'),  # BlogDetails Page
-
     path('deleteBlog/<slug:slug>/', views.deleteBlog, name='deleteBlog'),  # For create without slug
 
     path('ManageBlogs', views.ManageBlogs, name='ManageBlogs'),  # ManageBlogsPage
@@ -35,7 +34,22 @@ urlpatterns = [
     #tax slab brackets
     path("add_salary_tax_brackets", views.add_salary_tax_brackets,name="add_salary_tax_brackets"),
 
-    path("tax-knowledge-quiz", views.tax_knowledge_quiz, name="tax_knowledge_quiz")
+# Add new question (card form)
+    path("questions-add", views.add_question, name="add-question"),
+
+    # Update question
+    path("questions/<int:pk>/edit/", views.update_question, name="update-question"),
+
+    # Delete question
+    path("questions/<int:pk>/delete/", views.delete_question, name="delete-question"),
+
+    path("questions-list", views.question_list, name="questions-list")
+
+
+
+
+
 ]
+
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
