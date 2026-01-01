@@ -19,6 +19,7 @@ urlpatterns = [
     path('Dashboard', views.Dashboard, name='Dashboard'),  # Dashboard Page
 # Add new question (card form)
     path("questions-add/", views.add_question, name="questions-add"),
+    path("view-questions/", views.view_questions, name="view-questions"),
 
     # Update question
     path("questions/<int:pk>/edit/", views.update_question, name="update-question"),
