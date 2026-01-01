@@ -106,7 +106,7 @@
                 </div>
 
                 <div class="card-body">
-                    <form method="POST" action="questions-add">
+                    <form method="POST" action="{% url 'questions-add' %}">
                         {% csrf_token %}
 
                         <!-- Question -->
