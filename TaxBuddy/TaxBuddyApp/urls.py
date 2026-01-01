@@ -17,6 +17,17 @@ urlpatterns = [
     path('Login', views.Login, name='Login'),  # Login Page
     path('Logout', views.Logout, name='Logout'),  # Login Page
     path('Dashboard', views.Dashboard, name='Dashboard'),  # Dashboard Page
+# Add new question (card form)
+    path("questions-add/", views.add_question, name="questions-add"),
+
+    # Update question
+    path("questions/<int:pk>/edit/", views.update_question, name="update-question"),
+
+    # Delete question
+    path("questions/<int:pk>/delete/", views.delete_question, name="delete-question"),
+
+    path("tax-mcq-quizz", views.question_list, name="tax-mcq-quizz"),
+
     path('AddEditBlog/', views.AddEditBlog, name='AddBlog'),  # create
     path('AddEditBlog/<slug:slug>/', views.AddEditBlog, name='EditBlog'),
     path('blog/<slug:slug>/', views.viewBlogs, name='viewBlogs'),  # BlogDetails Page
@@ -34,16 +45,6 @@ urlpatterns = [
     #tax slab brackets
     path("add_salary_tax_brackets", views.add_salary_tax_brackets,name="add_salary_tax_brackets"),
 
-# Add new question (card form)
-    path("questions-add", views.add_question, name="add-question"),
-
-    # Update question
-    path("questions/<int:pk>/edit/", views.update_question, name="update-question"),
-
-    # Delete question
-    path("questions/<int:pk>/delete/", views.delete_question, name="delete-question"),
-
-    path("questions-list", views.question_list, name="questions-list")
 
 
 
