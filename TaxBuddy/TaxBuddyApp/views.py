@@ -524,6 +524,11 @@ def add_question(request):
     return render(request, 'Cpanel/question.html')
 
 @login_required(login_url='Login')  # redirect when user is not logged in
+def view_questions(request):
+        return render(request, 'Cpanel/view_questions.html')
+
+
+@login_required(login_url='Login')  # redirect when user is not logged in
 def update_question(request, pk):
     question = get_object_or_404(Question, pk=pk)
 
