@@ -188,45 +188,53 @@
 
         <div class="row">
 
-            {% for blog in blogs %}
-            <div class="col-lg-3 col-md-6 mb-4 blog-item"
-                 data-type="{% if blog.type == '1' %}income{% else %}sales{% endif %}">
+{% for blog in blogs %}
+<div class="col-lg-3 col-md-6 mb-4 blog-item"
+     data-type="{% if blog.type == '1' %}income{% else %}sales{% endif %}">
 
+    <article class="single-blog" itemscope itemtype="https://schema.org/BlogPosting">
 
-                <article class="single-blog" itemscope itemtype="https://schema.org/BlogPosting">
+        <div class="blog-img">
+            <a href="/{{ blog.slug }}/" itemprop="url">
+                <img src="{{ blog.image.url }}"
+                     alt="{{ blog.title }}"
+                     loading="lazy"
+                     itemprop="image">
+            </a>
+        </div>
 
-                    <div class="blog-img">
-                        <a href="/{{ blog.slug }}/" itemprop="url">
-                            <img
-                                    alt="{{ blog.title }}"
-                                    itemprop="image"
-                                    loading="lazy"
-                                    src="{{ blog.image.url }}">
-                        </a>
-                    </div>
+        <ul class="blog-tags">
+            <li>
+                <a href="#" itemprop="about"
+                   style="background-color:#7977C6;color:#FFFFFF">
+                    {% if blog.type == '1' %}
+                        Income Tax
+                    {% else %}
+                        Sales Tax
+                    {% endif %}
+                </a>
+            </li>
+        </ul>
 
-                    <ul class="blog-tags">
-                        <li>
-                            <a href="#" itemprop="about" style="background-color:#7977C6;color:#FFFFFF">
-                                {% if blog.type == '1' %}
-                                Income Tax
-                                {% else %}
-                                Sales Tax
-                                {% endif %}
-                            </a>
-                        </li>
-                    </ul>
+        <h3 itemprop="headline">
+            <a href="/{{ blog.slug }}/"
+               class="blog-title"
+               style="font-size:20px">
+                {{ blog.title }}
+            </a>
+        </h3>
 
-                    <h3 itemprop="headline">
-                        <a class="blog-title" href="/{{ blog.slug }}/" style="font-size:20px">
-                            {{ blog.title }}
-                        </a>
-                    </h3>
+    </article>
+</div>
+{% endfor %}
+            <div class="row">
+    <div class="col-12 text-center mt-3">
+        <button id="loadMoreBtn" class="btn btn-info" style="background-color:#7977C6;color:#FFFFFF">
+            Load More
+        </button>
+    </div>
+</div>
 
-                </article>
-
-            </div>
-            {% endfor %}
 
         </div>
     </div>
@@ -264,6 +272,42 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 
 
+</script>
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+
+    const items = document.querySelectorAll(".blog-item");
+    const loadMoreBtn = document.getElementById("loadMoreBtn");
+
+    const ITEMS_PER_LOAD = 4;
+    let visibleCount = ITEMS_PER_LOAD;
+
+    // Hide all first
+    items.forEach((item, index) => {
+        if (index >= ITEMS_PER_LOAD) {
+            item.style.display = "none";
+        }
+    });
+
+    loadMoreBtn.addEventListener("click", function () {
+        let shown = 0;
+
+        items.forEach((item, index) => {
+            if (item.style.display === "none" && shown < 4) {
+                item.style.display = "block";
+                shown++;
+            }
+        });
+
+        visibleCount += shown;
+
+        if (visibleCount >= items.length) {
+            loadMoreBtn.style.display = "none";
+        }
+    });
+
+});
 </script>
 
 </body>
