@@ -151,7 +151,7 @@ def BlogDetails(request, slug=None):
         blogList = Blogs.objects.filter(
             status=1,
             is_deleted=False
-        ).exclude(slug=slug)
+        ).exclude(slug=slug).order_by('-created_date')
 
         return render(
             request,
