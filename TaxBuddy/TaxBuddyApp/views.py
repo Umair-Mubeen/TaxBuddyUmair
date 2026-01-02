@@ -169,7 +169,13 @@ def viewBlogs(request, slug=None):
     try:
         type_map = {"income-tax": 1,"sales-tax": 2}
         if slug in type_map:
-            blogs = Blogs.objects.filter(type=type_map[slug], status=1, is_deleted=False)
+            #blogs = Blogs.objects.filter(type=type_map[slug], status=1, is_deleted=False)
+            blogs = Blogs.objects.filter(
+                type=type_map[slug],
+                status=1,
+                is_deleted=False
+            ).order_by('-created_date')
+
         else:
             raise Http404("Invalid category")
         return render(request,"partials/viewBlogs.html",{"blogs": blogs})
