@@ -18,6 +18,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 STATIC_URL = '/static/'
 STATIC_ROOT = BASE_DIR / 'staticfiles'
 
+RECAPTCHA_SECRET_KEY = "6LesUD4sAAAAADDLaRxJpqYYXWkXygQasHX7sMFT"
 
 STATICFILES_DIRS = [
     BASE_DIR / 'static',   # 👈 Your actual static folder
