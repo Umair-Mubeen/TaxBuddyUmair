@@ -2,6 +2,157 @@
 {% load static %}
 <html>
 <head>
+    <style>
+        /* Interactive Blog Card */
+.interactive-blog {
+    height: 100%;
+    border-radius: 14px;
+    background: #fff;
+    transition: all 0.35s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.interactive-blog:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 18px 40px rgba(0,0,0,0.12);
+}
+
+/* Image */
+.interactive-blog .blog-img {
+    position: relative;
+    overflow: hidden;
+    border-radius: 14px 14px 0 0;
+}
+
+.interactive-blog .blog-img img {
+    width: 100%;
+    transition: transform 0.5s ease;
+}
+
+.interactive-blog:hover .blog-img img {
+    transform: scale(1.08);
+}
+
+/* Badge */
+.blog-badge {
+    position: absolute;
+    top: 12px;
+    left: 12px;
+    background: #1d4ed8;
+    color: #fff;
+    font-size: 11px;
+    padding: 5px 10px;
+    border-radius: 20px;
+    opacity: 0;
+    transform: translateY(-5px);
+    transition: 0.3s ease;
+}
+
+.interactive-blog:hover .blog-badge {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Content */
+.blog-content {
+    padding: 15px;
+}
+
+.blog-title {
+    font-size: 18px;
+    line-height: 1.4;
+    margin-bottom: 8px;
+}
+
+.blog-title a {
+    color: #111827;
+    text-decoration: none;
+}
+
+.blog-title a:hover {
+    color: #1d4ed8;
+}
+
+/* Widget title */
+.widget-title {
+    font-size: 18px;
+    font-weight: 700;
+    margin-bottom: 15px;
+    border-bottom: 2px solid #e5e7eb;
+    padding-bottom: 6px;
+}
+
+/* Wrapper link */
+.recent-post-link {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+    text-decoration: none;
+    padding: 10px;
+    border-radius: 10px;
+    transition: all 0.3s ease;
+}
+
+.recent-post-link:hover {
+    background: #f9fafb;
+}
+
+/* Content */
+.recent-post-content {
+    flex: 1;
+}
+
+.recent-post-title {
+    font-size: 14px;
+    font-weight: 600;
+    color: #111827;
+    line-height: 1.4;
+    margin-bottom: 4px;
+}
+
+.recent-post-link:hover .recent-post-title {
+    color: #1d4ed8;
+}
+
+/* Meta */
+.recent-post-meta {
+    font-size: 12px;
+    color: #6b7280;
+}
+
+/* Image */
+.recent-img {
+    width: 70px;
+    height: 55px;
+    overflow: hidden;
+    border-radius: 8px;
+    flex-shrink: 0;
+}
+
+.recent-img img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.4s ease;
+}
+
+
+/* Mobile optimization */
+@media (max-width: 576px) {
+    .recent-post-title {
+        font-size: 13px;
+    }
+
+    .recent-img {
+        width: 60px;
+        height: 50px;
+    }
+}
+
+
+
+    </style>
 
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-EEP4P5YWE6"></script>
     <script>
@@ -9,6 +160,8 @@
       function gtag(){dataLayer.push(arguments);}
       gtag('js', new Date());
       gtag('config', 'G-EEP4P5YWE6');
+
+
 
 
     </script>
@@ -121,12 +274,14 @@
 
 
 
+
+
     </style>
 </head>
 
 <body>
 {% include 'partials/topbar.html' %}
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 
 <!--===== Single Blog Start =====-->
 <div class="single-blog-area padding-top inner-font-1 inner-blog-1">
@@ -135,9 +290,9 @@
             <div class="col-lg-8">
                 <div class="single-blog-contents lg-ml-15">
 
-<!--                    <div class="blog-main-image">-->
-<!--                        <img alt="{{ blog.title }}" loading="lazy" src="{{ blog.image.url }}">-->
-<!--                    </div>-->
+                    <!--                    <div class="blog-main-image">-->
+                    <!--                        <img alt="{{ blog.title }}" loading="lazy" src="{{ blog.image.url }}">-->
+                    <!--                    </div>-->
 
                     <h3>{{ blog.title }}</h3>
 
@@ -203,19 +358,30 @@
                     </div>
 
                     <div class="single-widget recent-posts">
-                        <h3>Recent Blogs</h3>
-                        <div class="recent-post">
-                            <div class="recent-post-content">
-                                <a href="{% url 'BlogDetails' slug=blog.slug %}">{{ blog.title }}</a>
-                                <div class="blog-date-time">
-                                    <ul class="blog-date">
-                                        <li>{{ blog.created_date|date }}</li>
-                                    </ul>
+                        <h3 class="widget-title">Recent Blogs</h3>
+
+                        <div class="recent-post-item">
+                            <a class="recent-post-link" href="{% url 'BlogDetails' slug=blog.slug %}">
+
+                                <div class="recent-post-content">
+                                    <h4 class="recent-post-title">
+                                        {{ blog.title|truncatechars:60 }}
+                                    </h4>
+
+                                    <div class="recent-post-meta">
+                    <span class="post-date">
+                        {{ blog.created_date|date:"M d, Y" }}
+                    </span>
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="recent-img">
-                                <img alt="{{ blog.title }}" src="{{ blog.image.url }}">
-                            </div>
+
+                                <div class="recent-img">
+                                    <img alt="{{ blog.title }}"
+                                         loading="lazy"
+                                         src="{{ blog.image.url }}">
+                                </div>
+
+                            </a>
                         </div>
                     </div>
 
@@ -232,18 +398,34 @@
     <div class="container">
         <div class="row">
             {% for other in blogList %}
-            <div class="col-md-6 col-lg-4">
-                <div class="single-blog blog-md">
+            <div class="col-md-6 col-lg-3 mb-4">
+                <article class="single-blog blog-md interactive-blog">
+
+                    <!-- Image -->
                     <div class="blog-img">
                         <a href="{% url 'BlogDetails' slug=other.slug %}">
-                            <img alt="{{ other.title }}" src="{{ other.image.url }}">
+                            <img alt="{{ other.title }}"
+                                 loading="lazy"
+                                 src="{{ other.image.url }}">
                         </a>
+
+
                     </div>
-                    <h3>
-                        <a href="{% url 'BlogDetails' slug=other.slug %}">{{ other.title }}</a>
-                    </h3>
-                </div>
+
+                    <!-- Content -->
+                    <div class="blog-content">
+                        <h3 class="blog-title">
+                            <a href="{% url 'BlogDetails' slug=other.slug %}" style="font-size:20px">
+                                {{ other.title }}
+                            </a>
+                        </h3>
+
+
+                    </div>
+
+                </article>
             </div>
+
             {% endfor %}
         </div>
     </div>
