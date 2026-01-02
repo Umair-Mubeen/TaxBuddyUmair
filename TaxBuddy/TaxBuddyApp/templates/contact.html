@@ -99,7 +99,6 @@
                     </div>
                     <form action="contact" method="POST">
                         {% csrf_token %}
-<input type="hidden" name="g-recaptcha-response" id="recaptchaToken">
 
                         <div class="form-input-all">
                             <div class="form-input-box">
@@ -169,11 +168,6 @@
 
                             <div class="space20"></div>
 
-                            <div class="contact6-from-input text-center">
-                                <div class="g-recaptcha"
-                                     data-sitekey="6LesUD4sAAAAAGihejIqA70J-9gVxHzPmYaHXR-b">
-                                </div>
-                            </div>
 
                             <div class="space20"></div>
                             <div class="button6">
@@ -224,19 +218,23 @@
 
 <script src="https://www.google.com/recaptcha/api.js?render=6LesUD4sAAAAAGihejIqA70J-9gVxHzPmYaHXR-b"></script>
 
+<input type="hidden" name="g-recaptcha-response" id="recaptchaToken">
+
 <script>
 document.querySelector("form").addEventListener("submit", function(e) {
     e.preventDefault();
 
     grecaptcha.ready(function () {
-        grecaptcha.execute("YOUR_SITE_KEY", {action: "contact"}).then(function (token) {
+        grecaptcha.execute("6LesUD4sAAAAAGihejIqA70J-9gVxHzPmYaHXR-b", {
+            action: "contact"
+        }).then(function (token) {
             document.getElementById("recaptchaToken").value = token;
             e.target.submit();
         });
     });
 });
-
 </script>
+
 <script>
 function showToast(message, type='success') {
   const toast = document.getElementById('toast');
