@@ -277,6 +277,140 @@
 
 
     </style>
+
+        <style>
+    .blog-filter {
+    display: inline-flex;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.filter-btn {
+    border: none;
+    padding: 8px 18px;
+    border-radius: 30px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    background: #e5e7eb;
+    color: #111827;
+    transition: 0.3s ease;
+}
+
+.filter-btn:hover {
+    background: #1d4ed8;
+    color: #ffffff;
+}
+
+.filter-btn.active {
+    background: #1d4ed8;
+    color: #ffffff;
+}
+
+        .single-blog {
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            background: #ffffff;
+            border-radius: 12px;
+            padding: 15px;
+            transition: 0.3s ease;
+        }
+
+        .single-blog:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 12px 30px rgba(0,0,0,0.08);
+        }
+
+        .blog-img {
+            width: 100%;
+            height: 240px;
+            background: #f4f6f8;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 10px;
+            overflow: hidden;
+            margin-bottom: 12px;
+        }
+
+        .blog-img img {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain; /* SHOW FULL IMAGE */
+        }
+
+        .blog-tags {
+            list-style: none;
+            padding: 0;
+            margin: 0 0 8px;
+        }
+
+        .blog-tags li a {
+            font-size: 12px;
+            font-weight: 600;
+            color: #7977C6;
+            padding: 4px 10px;
+            border-radius: 20px;
+            text-decoration: none;
+        }
+
+        .blog-title {
+            font-size: 15px;
+            line-height: 1.4;
+            font-weight: 700;
+            color: #111827;
+            text-decoration: none;
+        }
+
+        .blog-title:hover {
+            color: #1d4ed8;
+        }
+
+        @media (max-width: 768px) {
+            .blog-img {
+                height: 180px;
+            }
+        }
+@media (max-width: 576px) {
+    .blog-area .row.mb-4 {
+        margin-bottom: 20px !important;
+    }
+}
+
+
+@media (max-width: 576px) {
+
+    .blog-filter {
+        margin-top: 40px;
+
+    }
+    }
+
+
+@media (max-width: 576px) {
+    .blog-img {
+        height: 160px;
+    }
+}
+
+@media (max-width: 576px) {
+    .blog-title {
+        font-size: 16px;
+        line-height: 1.45;
+    }
+}
+
+@media (max-width: 576px) {
+    .single-blog {
+        margin-bottom: 18px;
+    }
+}
+
+
+
+    </style>
+
 </head>
 
 <body>
@@ -389,34 +523,47 @@
 <div class="section-padding2 blog-area inner-blog-1">
     <div class="container">
         <div class="row">
-            {% for other in blogList %}
-            <div class="col-md-6 col-lg-3 mb-4">
-                <article class="single-blog blog-md interactive-blog">
 
-                    <!-- Image -->
+             {% for other in blogList %}
+
+                     <div class="col-lg-3 col-md-6 mb-4 blog-item"
+                 data-type="{% if blog.type == '1' %}income{% else %}sales{% endif %}">
+
+
+                <article class="single-blog" itemscope itemtype="https://schema.org/BlogPosting">
+
                     <div class="blog-img">
-                        <a href="{% url 'BlogDetails' slug=other.slug %}">
-                            <img alt="{{ other.title }}"
-                                 loading="lazy"
-                                 src="{{ other.image.url }}">
+                        <a href="/{{ other.slug }}/" itemprop="url">
+                            <img
+                                    alt="{{ other.title }}"
+                                    itemprop="image"
+                                    loading="lazy"
+                                    src="{{ other.image.url }}">
                         </a>
-
-
                     </div>
 
-                    <!-- Content -->
-                    <div class="blog-content">
-                        <h3 class="blog-title">
-                            <a href="{% url 'BlogDetails' slug=other.slug %}" style="font-size:20px">
-                                {{ other.title }}
+                    <ul class="blog-tags">
+                        <li>
+                            <a href="#" itemprop="about" style="background-color:#7977C6;color:#FFFFFF">
+                                {% if other.type == '1' %}
+                                Income Tax
+                                {% else %}
+                                Sales Tax
+                                {% endif %}
                             </a>
-                        </h3>
+                        </li>
+                    </ul>
 
-
-                    </div>
+                    <h3 itemprop="headline">
+                        <a class="blog-title" href="/{{ other.slug }}/" style="font-size:20px">
+                            {{ other.title }}
+                        </a>
+                    </h3>
 
                 </article>
+
             </div>
+
 
             {% endfor %}
         </div>
