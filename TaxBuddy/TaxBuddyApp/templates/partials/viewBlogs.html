@@ -31,6 +31,34 @@
 
     <!-- Blog UI CSS -->
     <style>
+    .blog-filter {
+    display: inline-flex;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.filter-btn {
+    border: none;
+    padding: 8px 18px;
+    border-radius: 30px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    background: #e5e7eb;
+    color: #111827;
+    transition: 0.3s ease;
+}
+
+.filter-btn:hover {
+    background: #1d4ed8;
+    color: #ffffff;
+}
+
+.filter-btn.active {
+    background: #1d4ed8;
+    color: #ffffff;
+}
+
         .single-blog {
             height: 100%;
             display: flex;
@@ -74,14 +102,13 @@
             font-size: 12px;
             font-weight: 600;
             color: #1d4ed8;
-            background: #e0e7ff;
             padding: 4px 10px;
             border-radius: 20px;
             text-decoration: none;
         }
 
         .blog-title {
-            font-size: 18px;
+            font-size: 15px;
             line-height: 1.4;
             font-weight: 700;
             color: #111827;
@@ -107,10 +134,23 @@
 <!-- BLOG LIST -->
 <section class="blog-area section-padding">
     <div class="container">
+        <!-- BLOG FILTER -->
+<div class="row mb-4">
+    <div class="col-12 text-center">
+        <div class="blog-filter">
+            <button class="filter-btn active" data-filter="all">All</button>
+            <button class="filter-btn" data-filter="income">Income Tax</button>
+            <button class="filter-btn" data-filter="sales">Sales Tax</button>
+        </div>
+    </div>
+</div>
+
         <div class="row">
 
             {% for blog in blogs %}
-            <div class="col-lg-4 col-md-6 mb-4">
+           <div class="col-lg-3 col-md-6 mb-4 blog-item"
+     data-type="{% if blog.type == '1' %}income{% else %}sales{% endif %}">
+
 
                 <article class="single-blog" itemscope itemtype="https://schema.org/BlogPosting">
 
@@ -137,7 +177,7 @@
                     </ul>
 
                     <h3 itemprop="headline">
-                        <a href="/{{ blog.slug }}/" class="blog-title">
+                        <a href="/{{ blog.slug }}/" class="blog-title" style="text-align:justify; font-size:20px">
                             {{ blog.title }}
                         </a>
                     </h3>
@@ -154,6 +194,34 @@
 {% include 'partials/footer.html' %}
 {% include 'partials/up.html' %}
 {% include 'partials/footer-scripts.html' %}
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    const buttons = document.querySelectorAll(".filter-btn");
+    const blogs = document.querySelectorAll(".blog-item");
+
+    buttons.forEach(btn => {
+        btn.addEventListener("click", () => {
+
+            // active button
+            buttons.forEach(b => b.classList.remove("active"));
+            btn.classList.add("active");
+
+            const filter = btn.getAttribute("data-filter");
+
+            blogs.forEach(blog => {
+                const type = blog.getAttribute("data-type");
+
+                if (filter === "all" || filter === type) {
+                    blog.style.display = "block";
+                } else {
+                    blog.style.display = "none";
+                }
+            });
+        });
+    });
+});
+</script>
 
 </body>
 </html>
