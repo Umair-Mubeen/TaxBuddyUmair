@@ -2,7 +2,9 @@ import mimetypes
 from datetime import timezone, timedelta
 from decimal import Decimal
 
+from django.conf import settings
 from django.contrib.auth.decorators import login_required
+from django.contrib.sites import requests
 from django.http import HttpResponse, request, Http404
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import authenticate, login, logout
@@ -211,23 +213,56 @@ def userComments(request):
 def contact(request):
     try:
         if request.method == 'POST':
-            first_name = request.POST['first_name']
-            last_name = request.POST['last_name']
-            phone_number = request.POST['phone_number']
-            email_address = request.POST['email_address']
-            subject = request.POST['subject']
-            additional_details = request.POST['additional_details']
-            Contact.objects.create(first_name=first_name, last_name=last_name,
-                                   phone_number=phone_number, email_address=email_address, subject=subject,
-                                   additional_details=additional_details)
+
+            # 🔐 reCAPTCHA v3 verification
+            recaptcha_token = request.POST.get('g-recaptcha-response')
+
+            if not recaptcha_token:
+                messages.error(request, "Captcha verification failed.")
+                return redirect('/')
+
+            recaptcha_response = requests.post(
+                'https://www.google.com/recaptcha/api/siteverify',
+                data={
+                    'secret': settings.RECAPTCHA_SECRET_KEY,
+                    'response': recaptcha_token
+                }
+            )
+
+            recaptcha_result = recaptcha_response.json()
+
+            # ❌ Block suspicious requests
+            if (
+                not recaptcha_result.get('success')
+                or recaptcha_result.get('score', 0) < 0.5
+            ):
+                messages.error(request, "Suspicious activity detected. Please try again.")
+                return redirect('/')
+
+            # ✅ Passed reCAPTCHA → process form
+            first_name = request.POST.get('first_name')
+            last_name = request.POST.get('last_name')
+            phone_number = request.POST.get('phone_number')
+            email_address = request.POST.get('email_address')
+            subject = request.POST.get('subject')
+            additional_details = request.POST.get('additional_details')
+
+            Contact.objects.create(
+                first_name=first_name,
+                last_name=last_name,
+                phone_number=phone_number,
+                email_address=email_address,
+                subject=subject,
+                additional_details=additional_details
+            )
+
             messages.success(request, "Form submitted successfully!")
-
             return redirect('/')
-    except Exception as e:
-        print('Exception at Contact Page :', str(e))
-        messages.error(request, f"Exception at Contact Page: {str(e)}")
-        return redirect('/')
 
+    except Exception as e:
+        print('Exception at Contact Page:', str(e))
+        messages.error(request, "Something went wrong. Please try again later.")
+        return redirect('/')
 
 def AOPCalculator(request):
     try:
