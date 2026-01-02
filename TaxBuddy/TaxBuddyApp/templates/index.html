@@ -806,6 +806,90 @@ src="https://www.facebook.com/tr?id=1689887312418361&ev=PageView&noscript=1"
         </div>
     </section>
 
+     <!--===== Latest Blog Section =====-->
+
+    <div class="blog-area blog2 section-padding2" style="background: radial-gradient(circle at top right, #DAE7E3 0%, #F6FBF9 70%); padding: 90px 0;">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-5 m-auto">
+          <div class="heading2 text-center">
+            <small data-aos="fade-up" data-aos-duration="600" class="heading-top aos-init aos-animate"><img src="{% static 'assets/img/icons/hands.svg' %}" alt="">TaxBuddy Umair Here For Your Tax
+              Relief.</small>
+            <h2 data-aos="fade-up" data-aos-duration="800" class="aos-init aos-animate"><span class="heilight-left">Take</span> a look at the latest
+              articles from TaxBuddy Umair.</h2>
+          </div>
+        </div>
+      </div>
+ <div class="row">
+
+    {% for blog in latest_blogs %}
+    <div class="col-lg-4 col-md-6 mb-4 aos-init aos-animate"
+         data-aos="fade-up"
+         data-aos-duration="600">
+
+        <div class="single-blog blog-md">
+
+            <!-- Blog Image -->
+            <div class="blog-img">
+                <a href="/{{ blog.slug }}/">
+                    <img src="{{ blog.image.url }}"
+                         alt="{{ blog.title }}"
+                         loading="lazy">
+                </a>
+            </div>
+
+            <!-- Blog Content -->
+            <div class="blog-contents">
+
+                <!-- Blog Tag -->
+                <ul class="blog-tags">
+                    <li>
+                        <a href="#">
+                            <img src="{% static 'assets/img/icons/hands.svg' %}" alt="">
+                            {% if blog.type == '1' %}
+                                Income Tax
+                            {% else %}
+                                Sales Tax
+                            {% endif %}
+                        </a>
+                    </li>
+                </ul>
+
+                <!-- Blog Title -->
+                <h3>
+                    <a href="/{{ blog.slug }}/">
+                        {{ blog.title }}
+                    </a>
+                </h3>
+
+                <!-- Read More -->
+                <a href="/{{ blog.slug }}/" class="theme-btn-4">
+                    Read More
+                    <span>
+                        <svg class="svg-inline--fa fa-arrow-right"
+                             aria-hidden="true"
+                             focusable="false"
+                             viewBox="0 0 448 512">
+                            <path fill="currentColor"
+                                  d="M438.6 278.6l-160 160C272.4 444.9 264.2 448 256 448s-16.38-3.125-22.62-9.375c-12.5-12.5-12.5-32.75 0-45.25L338.8 288H32C14.33 288 .0016 273.7 .0016 256S14.33 224 32 224h306.8l-105.4-105.4c-12.5-12.5-12.5-32.75 0-45.25s32.75-12.5 45.25 0l160 160C451.1 245.9 451.1 266.1 438.6 278.6z">
+                            </path>
+                        </svg>
+                    </span>
+                </a>
+
+            </div>
+        </div>
+
+    </div>
+    {% endfor %}
+
+</div>
+
+    </div>
+  </div>
+
+     <!--===== Latest Blog Section Ends Here =====-->
+
     <!--===== Why Choose TaxBuddy Umair Section =====-->
     <section class="work9-section" id="whyus"
              style="background: radial-gradient(circle at top right, #DAE7E3 0%, #F6FBF9 70%); padding: 90px 0;">

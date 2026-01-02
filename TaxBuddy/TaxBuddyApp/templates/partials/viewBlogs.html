@@ -11,22 +11,25 @@
       function gtag(){dataLayer.push(arguments);}
       gtag('js', new Date());
       gtag('config', 'G-EEP4P5YWE6');
+
     </script>
 
     <title>Tax News & FBR Updates | Income & Sales Tax Blog – TaxBuddy Umair</title>
 
-    <meta name="description" content="Latest FBR updates, income tax & sales tax laws, property tax guidance and expert tax tips in Pakistan by TaxBuddy Umair.">
-    <meta name="keywords" content="FBR Pakistan, income tax blog, sales tax updates, tax laws Pakistan, tax filing guide">
-    <meta name="robots" content="index, follow">
+    <meta content="Latest FBR updates, income tax & sales tax laws, property tax guidance and expert tax tips in Pakistan by TaxBuddy Umair."
+          name="description">
+    <meta content="FBR Pakistan, income tax blog, sales tax updates, tax laws Pakistan, tax filing guide"
+          name="keywords">
+    <meta content="index, follow" name="robots">
 
     <!-- Open Graph (SEO / Social Sharing) -->
-    <meta property="og:title" content="Tax News & FBR Updates – TaxBuddy Umair">
-    <meta property="og:description" content="Expert insights on Income Tax, Sales Tax & FBR laws in Pakistan.">
-    <meta property="og:type" content="website">
-    <meta property="og:url" content="{{ request.build_absolute_uri }}">
-    <meta property="og:image" content="https://taxbuddyumair.com/static/assets/img/icons/fab2.png">
+    <meta content="Tax News & FBR Updates – TaxBuddy Umair" property="og:title">
+    <meta content="Expert insights on Income Tax, Sales Tax & FBR laws in Pakistan." property="og:description">
+    <meta content="website" property="og:type">
+    <meta content="{{ request.build_absolute_uri }}" property="og:url">
+    <meta content="https://taxbuddyumair.com/static/assets/img/icons/fab2.png" property="og:image">
 
-    <link rel="shortcut icon" href="{% static 'assets/img/icons/fab2.png' %}">
+    <link href="{% static 'assets/img/icons/fab2.png' %}" rel="shortcut icon">
     {% include 'partials/head-css.html' %}
 
     <!-- Blog UI CSS -->
@@ -101,7 +104,7 @@
         .blog-tags li a {
             font-size: 12px;
             font-weight: 600;
-            color: #1d4ed8;
+            color: #7977C6;
             padding: 4px 10px;
             border-radius: 20px;
             text-decoration: none;
@@ -124,6 +127,7 @@
                 height: 180px;
             }
         }
+
     </style>
 
 </head>
@@ -135,21 +139,21 @@
 <section class="blog-area section-padding">
     <div class="container">
         <!-- BLOG FILTER -->
-<div class="row mb-4">
-    <div class="col-12 text-center">
-        <div class="blog-filter">
-            <button class="filter-btn active" data-filter="all">All</button>
-            <button class="filter-btn" data-filter="income">Income Tax</button>
-            <button class="filter-btn" data-filter="sales">Sales Tax</button>
+        <div class="row mb-4">
+            <div class="col-12 text-center">
+                <div class="blog-filter">
+                    <button class="filter-btn active" data-filter="all">All</button>
+                    <button class="filter-btn" data-filter="income">Income Tax</button>
+                    <button class="filter-btn" data-filter="sales">Sales Tax</button>
+                </div>
+            </div>
         </div>
-    </div>
-</div>
 
         <div class="row">
 
             {% for blog in blogs %}
-           <div class="col-lg-3 col-md-6 mb-4 blog-item"
-     data-type="{% if blog.type == '1' %}income{% else %}sales{% endif %}">
+            <div class="col-lg-3 col-md-6 mb-4 blog-item"
+                 data-type="{% if blog.type == '1' %}income{% else %}sales{% endif %}">
 
 
                 <article class="single-blog" itemscope itemtype="https://schema.org/BlogPosting">
@@ -157,27 +161,27 @@
                     <div class="blog-img">
                         <a href="/{{ blog.slug }}/" itemprop="url">
                             <img
-                                src="{{ blog.image.url }}"
-                                alt="{{ blog.title }}"
-                                loading="lazy"
-                                itemprop="image">
+                                    alt="{{ blog.title }}"
+                                    itemprop="image"
+                                    loading="lazy"
+                                    src="{{ blog.image.url }}">
                         </a>
                     </div>
 
                     <ul class="blog-tags">
                         <li>
-                            <a href="#" itemprop="about">
+                            <a href="#" itemprop="about" style="background-color:#7977C6;color:#FFFFFF">
                                 {% if blog.type == '1' %}
-                                    Income Tax
+                                Income Tax
                                 {% else %}
-                                    Sales Tax
+                                Sales Tax
                                 {% endif %}
                             </a>
                         </li>
                     </ul>
 
                     <h3 itemprop="headline">
-                        <a href="/{{ blog.slug }}/" class="blog-title" style="font-size:20px">
+                        <a class="blog-title" href="/{{ blog.slug }}/" style="font-size:20px">
                             {{ blog.title }}
                         </a>
                     </h3>
@@ -221,6 +225,7 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     });
 });
+
 </script>
 
 </body>
