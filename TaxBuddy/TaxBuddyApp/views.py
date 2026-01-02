@@ -224,7 +224,7 @@ def contact(request):
             recaptcha_response = requests.post(
                 'https://www.google.com/recaptcha/api/siteverify',
                 data={
-                    'secret': settings.RECAPTCHA_SECRET_KEY,
+                    'secret': '6LesUD4sAAAAADDLaRxJpqYYXWkXygQasHX7sMFT',
                     'response': recaptcha_token
                 }
             )
