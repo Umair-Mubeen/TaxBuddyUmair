@@ -1,5 +1,5 @@
 import mimetypes
-from datetime import timezone
+from datetime import timezone, timedelta
 from decimal import Decimal
 
 from django.contrib.auth.decorators import login_required
@@ -8,6 +8,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import authenticate, login, logout
 from django.utils.text import slugify
 from django.contrib import messages
+from django.utils.timezone import now
 
 from .models import Blogs, Comment, Contact, TaxBracket, Business_AOP_Slab, Property_Business_AOP_Slab,Question,Option
 
@@ -15,7 +16,13 @@ from .models import Blogs, Comment, Contact, TaxBracket, Business_AOP_Slab, Prop
 def index(request):
     try:
         result = Blogs.objects.filter(status=1, is_deleted=False)
-        return render(request, 'index.html', {'result': result})
+        latest_blogs = Blogs.objects.filter(
+            status=1,
+            is_deleted=False,
+            created_date__gte=now().date() - timedelta(days=3)
+        ).order_by('-created_date')[:3]
+        print(latest_blogs)
+        return render(request, 'index.html', {'result': result,'latest_blogs' :latest_blogs })
     except Exception as e:
         return HttpResponse(str(e))
 
