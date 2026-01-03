@@ -821,7 +821,7 @@ src="https://www.facebook.com/tr?id=1689887312418361&ev=PageView&noscript=1"
           </div>
         </div>
       </div>
- <div class="row">
+<div class="row">
 
     {% for blog in latest_blogs %}
     <div class="col-lg-4 col-md-6 mb-4 aos-init aos-animate"
@@ -833,9 +833,17 @@ src="https://www.facebook.com/tr?id=1689887312418361&ev=PageView&noscript=1"
             <!-- Blog Image -->
             <div class="blog-img">
                 <a href="/{{ blog.slug }}/">
-                    <img src="{{ blog.image.url }}"
-                         alt="{{ blog.title }}"
-                         loading="lazy">
+                    <img
+                        src="{{ blog.image.url }}"
+                        alt="{{ blog.title }}"
+                        {% if forloop.counter <= 3 %}
+                            fetchpriority="high"
+                        {% else %}
+                            loading="lazy"
+                        {% endif %}
+                        width="400"
+                        height="225"
+                        style="aspect-ratio: 16 / 9; object-fit: cover;">
                 </a>
             </div>
 
@@ -846,7 +854,7 @@ src="https://www.facebook.com/tr?id=1689887312418361&ev=PageView&noscript=1"
                 <ul class="blog-tags">
                     <li>
                         <a href="#">
-                            <img src="{% static 'assets/img/icons/hands.svg' %}" alt="">
+                            <img src="{% static 'assets/img/icons/hands.svg' %}" alt="" width="16" height="16">
                             {% if blog.type == '1' %}
                                 Income Tax
                             {% else %}
@@ -864,7 +872,7 @@ src="https://www.facebook.com/tr?id=1689887312418361&ev=PageView&noscript=1"
                 </h3>
 
                 <!-- Read More -->
-                <a href="/{{ blog.slug }}/" class="theme-btn-4" target="_blank">
+                <a href="/{{ blog.slug }}/" class="theme-btn-4" target="_blank" rel="noopener noreferrer">
                     Read More
                     <span>
                         <svg class="svg-inline--fa fa-arrow-right"
