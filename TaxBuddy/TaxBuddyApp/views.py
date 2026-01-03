@@ -22,7 +22,7 @@ def index(request):
             status=1,
             is_deleted=False,
             created_date__gte=now().date() - timedelta(days=3)
-        ).order_by('-created_date')[:3]
+        ).order_by('-updated_date')[:3]
         print(latest_blogs)
         return render(request, 'index.html', {'result': result,'latest_blogs' :latest_blogs })
     except Exception as e:
