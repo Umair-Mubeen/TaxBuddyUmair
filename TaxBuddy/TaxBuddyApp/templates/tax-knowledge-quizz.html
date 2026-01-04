@@ -12,6 +12,48 @@
     <link rel="shortcut icon" href="{% static 'assets/img/icons/fab2.png' %}">
     {% include 'partials/head-css.html' %}
     <style>
+    .question {
+    margin-bottom: 20px;
+}
+
+.option {
+    padding: 10px;
+    border-radius: 6px;
+    margin-bottom: 8px;
+    background: #f8f9fa;
+}
+
+.quiz-navigation {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 25px;
+}
+
+.quiz-navigation button {
+    padding: 10px 16px;
+    font-size: 14px;
+}
+
+#pageInfo {
+    font-size: 14px;
+    color: #666;
+}
+
+@media (max-width: 576px) {
+    .quiz-navigation {
+        flex-direction: column;
+        align-items: stretch;
+        text-align: center;
+    }
+
+    .quiz-navigation button {
+        width: 100%;
+    }
+}
+
 
 .quiz-message {
     background: #fff3cd;
@@ -45,7 +87,6 @@
 /* Header */
 .quiz-header {
     text-align: center;
-    margin-bottom: 35px;
 }
 
 .quiz-header h1 {
@@ -61,14 +102,12 @@
 
 /* Question */
 .question {
-    margin-bottom: 35px;
 }
 
 .question h3 {
     font-size: 18px;
     font-weight: 600;
     color: #111827;
-    margin-bottom: 18px;
 }
 
 /* Options */
@@ -217,26 +256,40 @@
 
 
 <form id="quizForm">
-{% for q in questions %}
-<div class="question">
-    <h3>{{ forloop.counter }}. {{ q.question_text }}</h3>
 
-    {% for opt in q.options.all %}
-    <label class="option" data-correct="{{ opt.is_correct|yesno:'true,false' }}">
-        <input type="radio" name="q{{ q.id }}" value="{{ opt.is_correct|yesno:'1,0' }}">
-        {{ opt.option_text }}
-    </label>
+    {% for q in questions %}
+    <div class="question">
+        <h3>{{ forloop.counter }}. {{ q.question_text }}</h3>
+
+        {% for opt in q.options.all %}
+        <label class="option d-block"
+               data-correct="{{ opt.is_correct|yesno:'true,false' }}">
+            <input type="radio" name="q{{ q.id }}">
+            {{ opt.option_text }}
+        </label>
+        {% endfor %}
+    </div>
     {% endfor %}
-</div>
-{% endfor %}
 
-<button type="button" class="submit-btn" onclick="calculateScore()">
-    Submit Quiz
-</button>
+    <!-- Navigation -->
+    <div class="quiz-navigation">
+        <button type="button" id="prevBtn" onclick="prevPage()" class="btn btn-success" disabled>
+            Previous
+        </button>
+
+        <span id="pageInfo"></span>
+
+        <button type="button" id="nextBtn" onclick="nextPage()" class="btn btn-success">
+            Next
+        </button>
+    </div>
+
 </form>
+
+<div id="result" style="display:none;"></div>
+
         <div id="message" class="quiz-message" style="display:none;"></div>
 
-        <div class="result-box" id="result"></div>
 
         <div class="footer-note">
             © TaxBuddy Umair – Tax Awareness Initiative
@@ -252,38 +305,59 @@
 
 </body>
 <script>
-function calculateScore() {
+let quizFinished = false;
+
+function calculateScoreIfComplete() {
+    if (quizFinished) return;
+
+    const questions = document.querySelectorAll(".question");
     let score = 0;
-    let total = document.querySelectorAll(".question").length;
+    let total = questions.length;
     let allAnswered = true;
 
-    const messageBox = document.getElementById("message");
     const resultBox = document.getElementById("result");
 
-    // Reset messages
-    messageBox.style.display = "none";
-    resultBox.style.display = "none";
-
-    document.querySelectorAll(".question").forEach(question => {
+    questions.forEach(question => {
         const selected = question.querySelector("input:checked");
+        const options = question.querySelectorAll(".option");
 
         if (!selected) {
             allAnswered = false;
-            question.classList.add("unanswered");
-        } else {
-            question.classList.remove("unanswered");
-            score += parseInt(selected.value);
+            return;
         }
+
+        const selectedOption = selected.parentElement;
+
+        // Reset styles
+        options.forEach(opt => opt.classList.remove("correct", "wrong"));
+
+        // Check correctness using data-correct
+        if (selectedOption.dataset.correct === "true") {
+            score++;
+            selectedOption.classList.add("correct");
+        } else {
+            selectedOption.classList.add("wrong");
+
+            // Highlight correct option
+            options.forEach(opt => {
+                if (opt.dataset.correct === "true") {
+                    opt.classList.add("correct");
+                }
+            });
+        }
+
+        // Lock question
+        options.forEach(opt => {
+            opt.querySelector("input").disabled = true;
+        });
     });
 
-    // If any question is missing
-    if (!allAnswered) {
-        messageBox.style.display = "block";
-        messageBox.innerHTML = "Please attempt all questions before submitting.";
-        return;
-    }
+    // 🚫 Do nothing until ALL questions answered
+    if (!allAnswered) return;
 
-    // Show result
+    quizFinished = true;
+
+    // ✅ Show result ONCE
     resultBox.style.display = "block";
     resultBox.innerHTML = `
         <h4>Your Score: ${score} / ${total}</h4>
@@ -293,27 +367,14 @@ function calculateScore() {
                 : "👍 Good attempt! Keep learning with TaxBuddy Umair."}
         </div>
     `;
+
+    resultBox.scrollIntoView({ behavior: "smooth" });
 }
 
-// Highlight correct/wrong
-document.querySelectorAll(".option input").forEach(input => {
-    input.addEventListener("change", function () {
-        const question = this.closest(".question");
-        const options = question.querySelectorAll(".option");
-
-        options.forEach(opt => {
-            opt.querySelector("input").disabled = true;
-            opt.classList.remove("correct", "wrong");
-
-            if (opt.dataset.correct === "true") {
-                opt.classList.add("correct");
-            }
-        });
-
-        if (this.parentElement.dataset.correct !== "true") {
-            this.parentElement.classList.add("wrong");
-        }
-    });
+// Auto-check on every answer
+document.addEventListener("change", function (e) {
+    if (!e.target.matches(".option input")) return;
+    calculateScoreIfComplete();
 });
 </script>
 
