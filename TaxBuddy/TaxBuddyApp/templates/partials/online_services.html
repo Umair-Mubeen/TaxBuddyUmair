@@ -1,0 +1,131 @@
+<style>
+  .tax-services {
+  padding: 70px 0;
+}
+
+.container {
+  max-width: 1200px;
+  margin: auto;
+  padding: 0 20px;
+}
+
+.services-title {
+  text-align: center;
+  font-size: 34px;
+  color: #0b5ed7;
+  font-weight: 700;
+  margin-bottom: 5px;
+}
+
+.services-subtitle {
+  text-align: center;
+  color: #6c757d;
+  margin-bottom: 45px;
+}
+
+.services-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 25px;
+}
+
+.service-card {
+  background: #ffffff;
+  border-radius: 14px;
+  padding: 30px 25px;
+  text-align: center;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.06);
+}
+
+.service-card h3 {
+  font-size: 18px;
+  color: #0b5ed7;
+  margin-bottom: 18px;
+  font-weight: 700;
+  line-height: 1.4;
+}
+
+.service-card img {
+  width: 140px;
+  margin: 10px auto 20px;
+  display: block;
+}
+
+.service-card p {
+  font-size: 14px;
+  color: #6c757d;
+  margin-bottom: 20px;
+}
+
+.price {
+  font-size: 22px;
+  font-weight: 700;
+  color: #0b5ed7;
+  margin-bottom: 22px;
+}
+
+.btn {
+  display: inline-block;
+  padding: 12px 26px;
+  border-radius: 8px;
+  font-weight: 600;
+  text-decoration: none;
+  color: #fff;
+}
+
+.btn.green {
+  background: linear-gradient(180deg, #28a745, #218838);
+}
+
+.btn.green:hover {
+  background: #1e7e34;
+}
+
+</style>
+<section class="tax-services" style="background: radial-gradient(circle at top right, #DAE7E3 0%, #F6FBF9 70%); padding: 90px 0;">
+  <div class="container">
+
+    <h2 class="services-title">Our Tax Services</h2>
+    <p class="services-subtitle">Choose the Service You Need</p>
+
+    <div class="services-grid">
+
+      <!-- Income Tax Return (Salaried) -->
+      <div class="service-card">
+        <h3>Income Tax Return<br>(Salaried)</h3>
+        <img src="https://img.freepik.com/free-vector/tax-concept-illustration_114360-1269.jpg" alt="Income Tax Return Salaried">
+        <p>Filing for salaried individuals.</p>
+        <div class="price">PKR 3,000</div>
+        <a href="#" class="btn green">Book Now</a>
+      </div>
+
+      <!-- Business Tax Return -->
+      <div class="service-card">
+        <h3>Business<br>Tax Return</h3>
+        <img src="https://img.freepik.com/free-vector/accounting-concept-illustration_114360-1605.jpg" alt="Business Tax Return">
+        <p>Tax filing for businesses.</p>
+        <div class="price">PKR 6,000</div>
+        <a href="#" class="btn green">Book Now</a>
+      </div>
+
+      <!-- Sales Tax Registration -->
+      <div class="service-card">
+        <h3>Sales Tax<br>Registration</h3>
+        <img src="https://img.freepik.com/free-vector/tax-preparation-concept-illustration_114360-1378.jpg" alt="Sales Tax Registration">
+        <p>Register for Sales Tax (STRN)</p>
+        <div class="price">PKR 4,500</div>
+        <a href="#" class="btn green">Get Started</a>
+      </div>
+
+      <!-- NTN Registration -->
+      <div class="service-card">
+        <h3>NTN<br>Registration</h3>
+        <img src="https://img.freepik.com/free-vector/identity-card-concept-illustration_114360-1253.jpg" alt="NTN Registration">
+        <p>Get your National Tax Number.</p>
+        <div class="price">PKR 2,250</div>
+        <a href="#" class="btn green">Register Now</a>
+      </div>
+
+    </div>
+  </div>
+</section>
