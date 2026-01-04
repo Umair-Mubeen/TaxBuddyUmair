@@ -542,6 +542,12 @@ def tax_knowledge_quiz(request):
         print("Exception as e:" + str(e))
 
 
+def online_services(request):
+    try:
+        return render(request, "partials/online_services.html")
+    except Exception as e:
+        return HttpResponse("Exception  :" +  str(e))
+
 
 def question_list(request):
     try:

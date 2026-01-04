@@ -28,6 +28,7 @@ urlpatterns = [
     path("questions/<int:pk>/delete/", views.delete_question, name="delete-question"),
 
     path("tax-mcq-quizz", views.question_list, name="tax-mcq-quizz"),
+path("online-services", views.online_services, name="online-services"),
 
     path('AddEditBlog/', views.AddEditBlog, name='AddBlog'),  # create
     path('AddEditBlog/<slug:slug>/', views.AddEditBlog, name='EditBlog'),
