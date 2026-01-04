@@ -13,6 +13,20 @@
     {% include 'partials/head-css.html' %}
     <style>
 
+.quiz-message {
+    background: #fff3cd;
+    color: #856404;
+    padding: 10px;
+    border-radius: 6px;
+    margin-bottom: 12px;
+    font-size: 14px;
+}
+
+.unanswered {
+    border: 1px solid #ffc107;
+    border-radius: 6px;
+    padding: 6px;
+}
 
 /* Card */
 .quiz-card {
@@ -221,6 +235,8 @@
     Submit Quiz
 </button>
 </form>
+        <div id="message" class="quiz-message" style="display:none;"></div>
+
         <div class="result-box" id="result"></div>
 
         <div class="footer-note">
@@ -235,55 +251,42 @@
 {% include 'partials/footer-scripts.html' %}
 
 
-<script>
-
-function calculateScore() {
-    const totalQuestions = 3;
-    let score = 0;
-
-    for (let i = 1; i <= totalQuestions; i++) {
-        const selected = document.querySelector(`input[name="q${i}"]:checked`);
-        if (!selected) {
-            alert("Please answer all questions before submitting.");
-            return;
-        }
-        score += parseInt(selected.value);
-    }
-
-    const resultBox = document.getElementById("result");
-    resultBox.style.display = "block";
-    resultBox.innerHTML = `
-        <h4>Your Score: ${score} / ${totalQuestions}</h4>
-        <div class="explanation">
-            <b>Correct Answers:</b><br>
-            1. Federal Board of Revenue (FBR)<br>
-            2. Sales Tax Act, 1990<br>
-            3. Holding Period<br><br>
-            ${score === totalQuestions ?
-            "Excellent! You have strong tax knowledge." :
-            "Good attempt! Keep learning with TaxBuddy Umair."}
-        </div>
-    `;
-}
-</script>
-
 </body>
 <script>
 function calculateScore() {
     let score = 0;
     let total = document.querySelectorAll(".question").length;
+    let allAnswered = true;
+
+    const messageBox = document.getElementById("message");
+    const resultBox = document.getElementById("result");
+
+    // Reset messages
+    messageBox.style.display = "none";
+    resultBox.style.display = "none";
 
     document.querySelectorAll(".question").forEach(question => {
         const selected = question.querySelector("input:checked");
+
         if (!selected) {
-            alert("Please answer all questions");
-            return;
+            allAnswered = false;
+            question.classList.add("unanswered");
+        } else {
+            question.classList.remove("unanswered");
+            score += parseInt(selected.value);
         }
-        score += parseInt(selected.value);
     });
 
-    document.getElementById("result").style.display = "block";
-    document.getElementById("result").innerHTML = `
+    // If any question is missing
+    if (!allAnswered) {
+        messageBox.style.display = "block";
+        messageBox.innerHTML = "Please attempt all questions before submitting.";
+        return;
+    }
+
+    // Show result
+    resultBox.style.display = "block";
+    resultBox.innerHTML = `
         <h4>Your Score: ${score} / ${total}</h4>
         <div class="explanation">
             ${score === total
