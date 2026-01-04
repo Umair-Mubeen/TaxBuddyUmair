@@ -98,67 +98,101 @@
         <!-- Main content -->
         <div class="container-fluid mt-5">
     <div class="row justify-content-center">
-        <div class="col-lg-12 col-md-8">
+<div class="col-lg-12 col-md-8">
 
-            <div class="card quiz-card">
-                <div class="card-header quiz-card-header">
-                    <h5 class="mb-0">Add New Quiz Question - Create MCQs for Tax Awareness</h5>
-                </div>
-
-                <div class="card-body">
-                    <form method="POST" action="{% url 'questions-add' %}">
-                        {% csrf_token %}
-
-                        <!-- Question -->
-                        <div class="mb-3">
-                            <label class="form-label fw-semibold">Question</label>
-                            <input type="text" name="question_text"
-                                   class="form-control"
-                                   placeholder="Enter question here" required>
-                        </div>
-
-                        <!-- Options -->
-                        <label class="form-label fw-semibold">Options</label>
-
-                        <div class="option-card">
-                            <span class="option-label">A</span>
-                            <input type="text" name="option_text" class="form-control"
-                                   placeholder="Option 1" required>
-                        </div>
-
-                        <div class="option-card">
-                            <span class="option-label">B</span>
-                            <input type="text" name="option_text" class="form-control"
-                                   placeholder="Option 2" required>
-                        </div>
-
-                        <div class="option-card">
-                            <span class="option-label">C</span>
-                            <input type="text" name="option_text" class="form-control"
-                                   placeholder="Option 3" required>
-                        </div>
-
-                        <div class="option-card">
-                            <span class="option-label">D</span>
-                            <input type="text" name="option_text" class="form-control"
-                                   placeholder="Option 4" required>
-                        </div>
-
-                        <!-- Submit -->
-                        <div class="d-grid mt-4">
-                            <button type="submit" class="btn btn-primary btn-lg">
-                               Save Question
-                            </button>
-                        </div>
-                    </form>
-                </div>
-
-                <div class="card-footer text-center text-muted small">
-                    © TaxBuddy Umair
-                </div>
-            </div>
-
+    <div class="card quiz-card">
+        <div class="card-header quiz-card-header">
+            <h5 class="mb-0">Add New Quiz Question - Create MCQs for Tax Awareness</h5>
         </div>
+
+        <div class="card-body">
+            <form method="POST" action="{% url 'questions-add' %}">
+                {% csrf_token %}
+
+                <!-- Question -->
+                <div class="mb-3">
+                    <label class="form-label fw-semibold">Question</label>
+                    <input type="text" name="question_text"
+                           class="form-control"
+                           placeholder="Enter question here" required>
+                </div>
+
+                <!-- Options -->
+                <label class="form-label fw-semibold mb-2">
+                    Options <small class="text-muted">(Mark the correct one)</small>
+                </label>
+
+                <!-- Hidden field to store correct option index -->
+                <input type="hidden" name="correct_option" id="correct_option" required>
+
+                <!-- Option A -->
+                <div class="option-card option-row">
+                    <div class="d-flex align-items-center gap-2">
+                        <span class="option-label">A</span>
+                        <input type="text" name="option_text" class="form-control"
+                               placeholder="Option 1" required>
+                    </div>
+                    <div class="form-check mt-1">
+                        <input class="form-check-input correct-check" type="checkbox">
+                        <label class="form-check-label">This option is correct</label>
+                    </div>
+                </div>
+
+                <!-- Option B -->
+                <div class="option-card option-row">
+                    <div class="d-flex align-items-center gap-2">
+                        <span class="option-label">B</span>
+                        <input type="text" name="option_text" class="form-control"
+                               placeholder="Option 2" required>
+                    </div>
+                    <div class="form-check mt-1">
+                        <input class="form-check-input correct-check" type="checkbox">
+                        <label class="form-check-label">This option is correct</label>
+                    </div>
+                </div>
+
+                <!-- Option C -->
+                <div class="option-card option-row">
+                    <div class="d-flex align-items-center gap-2">
+                        <span class="option-label">C</span>
+                        <input type="text" name="option_text" class="form-control"
+                               placeholder="Option 3" required>
+                    </div>
+                    <div class="form-check mt-1">
+                        <input class="form-check-input correct-check" type="checkbox">
+                        <label class="form-check-label">This option is correct</label>
+                    </div>
+                </div>
+
+                <!-- Option D -->
+                <div class="option-card option-row">
+                    <div class="d-flex align-items-center gap-2">
+                        <span class="option-label">D</span>
+                        <input type="text" name="option_text" class="form-control"
+                               placeholder="Option 4" required>
+                    </div>
+                    <div class="form-check mt-1">
+                        <input class="form-check-input correct-check" type="checkbox">
+                        <label class="form-check-label">This option is correct</label>
+                    </div>
+                </div>
+
+                <!-- Submit -->
+                <div class="d-grid mt-4">
+                    <button type="submit" class="btn btn-primary btn-lg">
+                        Save Question
+                    </button>
+                </div>
+            </form>
+        </div>
+
+        <div class="card-footer text-center text-muted small">
+            © TaxBuddy Umair
+        </div>
+    </div>
+
+</div>
+
     </div>
 </div>
 
@@ -176,4 +210,20 @@
 
 
 </body>
+
+<script>
+document.querySelectorAll(".correct-check").forEach((checkbox, index) => {
+    checkbox.addEventListener("change", function () {
+
+        // Allow only one correct option
+        document.querySelectorAll(".correct-check").forEach(cb => {
+            if (cb !== this) cb.checked = false;
+        });
+
+        // Store selected index
+        document.getElementById("correct_option").value = this.checked ? index : "";
+    });
+});
+</script>
+
 </html>
