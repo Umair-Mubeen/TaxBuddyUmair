@@ -11,97 +11,42 @@
 
     <link rel="shortcut icon" href="{% static 'assets/img/icons/fab2.png' %}">
     {% include 'partials/head-css.html' %}
-    <style>
-    .question {
-    margin-bottom: 20px;
+
+ <style>
+
+.question.unanswered {
+    border: 2px solid #f59e0b;
+    background: #fffbeb;
+    border-radius: 10px;
+    padding: 12px;
 }
 
-.option {
-    padding: 10px;
-    border-radius: 6px;
-    margin-bottom: 8px;
-    background: #f8f9fa;
+.question.unanswered h3::after {
+    content: " (Required)";
+    color: #f59e0b;
+    font-size: 13px;
+    font-weight: 600;
 }
 
-.quiz-navigation {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 10px;
-    justify-content: space-between;
-    align-items: center;
-    margin-top: 25px;
-}
-
-.quiz-navigation button {
-    padding: 10px 16px;
-    font-size: 14px;
-}
-
-#pageInfo {
-    font-size: 14px;
-    color: #666;
-}
-
-@media (max-width: 576px) {
-    .quiz-navigation {
-        flex-direction: column;
-        align-items: stretch;
-        text-align: center;
-    }
-
-    .quiz-navigation button {
-        width: 100%;
-    }
+@keyframes pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.02); }
+    100% { transform: scale(1); }
 }
 
 
-.quiz-message {
-    background: #fff3cd;
-    color: #856404;
-    padding: 10px;
-    border-radius: 6px;
-    margin-bottom: 12px;
-    font-size: 14px;
-}
 
-.unanswered {
-    border: 1px solid #ffc107;
-    border-radius: 6px;
-    padding: 6px;
-}
-
-/* Card */
+     /* Quiz Card */
 .quiz-card {
-    background: #ffffff;
-    padding: 35px;
+    background: #fff;
+    padding: 30px;
     border-radius: 14px;
-    box-shadow: 0 15px 40px rgba(13, 44, 84, 0.08);
-    animation: fadeIn 0.5s ease-in-out;
-}
-
-@keyframes fadeIn {
-    from { opacity: 0; transform: translateY(12px); }
-    to { opacity: 1; transform: translateY(0); }
-}
-
-/* Header */
-.quiz-header {
-    text-align: center;
-}
-
-.quiz-header h1 {
-    color: #0d2c54;
-    font-weight: 800;
-    letter-spacing: -0.5px;
-}
-
-.quiz-header p {
-    color: #6b7280;
-    font-size: 15px;
+    box-shadow: 0 15px 40px rgba(13,44,84,0.08);
 }
 
 /* Question */
 .question {
+    margin-bottom: 25px;
 }
 
 .question h3 {
@@ -117,17 +62,20 @@
     padding: 14px 16px;
     margin-bottom: 12px;
     cursor: pointer;
-    transition: all 0.25s ease;
+    transition: 0.25s;
     display: flex;
     align-items: center;
     gap: 12px;
-    background: #ffffff;
+    background: #fff;
 }
 
 .option:hover {
     border-color: #0d2c54;
     background: #f5f9ff;
-    transform: translateY(-1px);
+}
+
+.option span {
+    flex: 1;
 }
 
 /* Custom radio */
@@ -155,26 +103,46 @@
     left: 3px;
 }
 
-/* Submit button */
-.submit-btn {
-    width: 100%;
-    background: linear-gradient(135deg, #0d2c54, #093a75);
-    color: #fff;
-    border: none;
-    padding: 15px;
-    font-size: 17px;
+/* Correct / Wrong (RIGHT SIDE) */
+.option.correct {
+    background: #ecfdf5;
+    border-color: #22c55e;
+}
+
+.option.wrong {
+    background: #fef2f2;
+    border-color: #ef4444;
+}
+
+.option.correct::after {
+    content: "✔ Correct";
+    margin-left: auto;
     font-weight: 700;
-    border-radius: 12px;
-    cursor: pointer;
-    transition: 0.3s;
+    color: #22c55e;
 }
 
-.submit-btn:hover {
-    transform: translateY(-1px);
-    box-shadow: 0 10px 25px rgba(13, 44, 84, 0.25);
+.option.wrong::after {
+    content: "✖ Wrong";
+    margin-left: auto;
+    font-weight: 700;
+    color: #ef4444;
 }
 
-/* Result box */
+/* Navigation */
+.quiz-navigation {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 30px;
+    gap: 10px;
+}
+
+#pageInfo {
+    font-size: 14px;
+    color: #6b7280;
+}
+
+/* Result */
 .result-box {
     display: none;
     margin-top: 30px;
@@ -182,65 +150,16 @@
     background: #f0f7ff;
     border-left: 6px solid #0d2c54;
     border-radius: 10px;
-    animation: fadeIn 0.4s ease;
-}
-
-.result-box h4 {
-    color: #0d2c54;
-    font-weight: 700;
-    margin-bottom: 10px;
-}
-
-/* Correct / Wrong */
-.option.correct {
-    background: #ecfdf5;
-    border-color: #22c55e;
-    color: #065f46;
-}
-
-.option.wrong {
-    background: #fef2f2;
-    border-color: #ef4444;
-    color: #7f1d1d;
-}
-
-.option.correct::after,
-.option.wrong::after {
-    margin-left: auto;
-    font-weight: 700;
-}
-
-.option.correct::after {
-    content: "✔ Correct";
-    color: #22c55e;
-}
-
-.option.wrong::after {
-    content: "✖ Wrong";
-    color: #ef4444;
-}
-
-/* Footer */
-.footer-note {
-    text-align: center;
-    margin-top: 35px;
-    font-size: 13px;
-    color: #9ca3af;
 }
 
 /* Mobile */
 @media (max-width: 576px) {
-    .quiz-card {
-        padding: 22px;
-        border-radius: 10px;
-    }
-
-    .question h3 {
-        font-size: 16px;
+    .quiz-navigation {
+        flex-direction: column;
     }
 }
 
-    </style>
+ </style>
 </head>
 
 <body>
@@ -250,8 +169,8 @@
 <div class="quiz-wrapper container">
     <div class="quiz-card">
 
-        <div class="quiz-header">
-            <h1>Tax Knowledge Quiz in Pakistan| Income Tax Ordinance, 2001</h1>
+        <div class="quiz-header text-center">
+            <h1>Tax Knowledge Quiz in Pakistan | Income Tax Ordinance, 2001</h1>
         </div>
 
 
@@ -262,10 +181,9 @@
         <h3>{{ forloop.counter }}. {{ q.question_text }}</h3>
 
         {% for opt in q.options.all %}
-        <label class="option d-block"
-               data-correct="{{ opt.is_correct|yesno:'true,false' }}">
+        <label class="option" data-correct="{{ opt.is_correct|yesno:'true,false' }}">
             <input type="radio" name="q{{ q.id }}">
-            {{ opt.option_text }}
+            <span>{{ opt.option_text }}</span>
         </label>
         {% endfor %}
     </div>
@@ -273,27 +191,23 @@
 
     <!-- Navigation -->
     <div class="quiz-navigation">
-        <button type="button" id="prevBtn" onclick="prevPage()" class="btn btn-success" disabled>
+        <button type="button" id="prevBtn" class="btn btn-success" onclick="prevPage()" disabled>
             Previous
         </button>
 
         <span id="pageInfo"></span>
 
-        <button type="button" id="nextBtn" onclick="nextPage()" class="btn btn-success">
+        <button type="button" id="nextBtn" class="btn btn-success" onclick="nextPage()">
             Next
         </button>
     </div>
 
 </form>
 
-<div id="result" style="display:none;"></div>
-
-        <div id="message" class="quiz-message" style="display:none;"></div>
+<div id="result" class="result-box"></div>
 
 
-        <div class="footer-note">
-            © TaxBuddy Umair – Tax Awareness Initiative
-        </div>
+
 
     </div>
 </div>
@@ -305,78 +219,173 @@
 
 </body>
 <script>
+const questionsPerPage = 5;
+let currentPage = 1;
 let quizFinished = false;
 
-function calculateScoreIfComplete() {
-    if (quizFinished) return;
+const questions = document.querySelectorAll(".question");
+const totalPages = Math.ceil(questions.length / questionsPerPage);
 
-    const questions = document.querySelectorAll(".question");
-    let score = 0;
-    let total = questions.length;
-    let allAnswered = true;
+const prevBtn = document.getElementById("prevBtn");
+const nextBtn = document.getElementById("nextBtn");
+const pageInfo = document.getElementById("pageInfo");
+const resultBox = document.getElementById("result");
 
-    const resultBox = document.getElementById("result");
+/* ---------------- PAGINATION ---------------- */
+function showPage(page) {
+    const start = (page - 1) * questionsPerPage;
+    const end = start + questionsPerPage;
 
-    questions.forEach(question => {
-        const selected = question.querySelector("input:checked");
-        const options = question.querySelectorAll(".option");
-
-        if (!selected) {
-            allAnswered = false;
-            return;
-        }
-
-        const selectedOption = selected.parentElement;
-
-        // Reset styles
-        options.forEach(opt => opt.classList.remove("correct", "wrong"));
-
-        // Check correctness using data-correct
-        if (selectedOption.dataset.correct === "true") {
-            score++;
-            selectedOption.classList.add("correct");
-        } else {
-            selectedOption.classList.add("wrong");
-
-            // Highlight correct option
-            options.forEach(opt => {
-                if (opt.dataset.correct === "true") {
-                    opt.classList.add("correct");
-                }
-            });
-        }
-
-        // Lock question
-        options.forEach(opt => {
-            opt.querySelector("input").disabled = true;
-        });
+    questions.forEach((q, index) => {
+        q.style.display = (index >= start && index < end) ? "block" : "none";
+        q.classList.remove("unanswered");
     });
 
-    // 🚫 Do nothing until ALL questions answered
-    if (!allAnswered) return;
+    pageInfo.innerText = `Page ${page} of ${totalPages}`;
+    prevBtn.disabled = page === 1;
+    nextBtn.disabled = true;
+
+    // Smooth scroll AFTER 3 seconds
+    setTimeout(() => {
+        document.getElementById("quizForm")
+            .scrollIntoView({ behavior: "smooth" });
+    }, 3000);
+}
+
+function nextPage() {
+    const pageStart = (currentPage - 1) * questionsPerPage;
+    const pageEnd = pageStart + questionsPerPage;
+
+    let pageAnswered = true;
+    let firstMissed = null;
+
+    for (let i = pageStart; i < pageEnd && i < questions.length; i++) {
+        const question = questions[i];
+        const isAnswered =
+            question.querySelector(".option.correct") ||
+            question.querySelector(".option.wrong");
+
+        question.classList.remove("unanswered");
+
+        if (!isAnswered) {
+            question.classList.add("unanswered");
+            pageAnswered = false;
+
+            // 🔽 store first missed MCQ
+            if (!firstMissed) firstMissed = question;
+        }
+    }
+
+    nextBtn.disabled = !pageAnswered;
+
+    if (!pageAnswered && firstMissed) {
+        // 🔽 AUTO-SCROLL to missed MCQ
+        firstMissed.scrollIntoView({
+            behavior: "smooth",
+            block: "center"
+        });
+        return;
+    }
+
+    if (pageAnswered && currentPage < totalPages) {
+        currentPage++;
+        showPage(currentPage);
+    }
+}
+
+function prevPage() {
+    if (currentPage > 1) {
+        currentPage--;
+        showPage(currentPage);
+    }
+}
+
+/* ---------------- ANSWER CHECKING ---------------- */
+document.addEventListener("change", function (e) {
+    if (!e.target.matches(".option input")) return;
+
+    const option = e.target.closest(".option");
+    const question = option.closest(".question");
+    const options = question.querySelectorAll(".option");
+
+    // Lock options
+    options.forEach(opt => {
+        opt.querySelector("input").disabled = true;
+        opt.classList.remove("correct", "wrong");
+    });
+
+    if (option.dataset.correct === "true") {
+        option.classList.add("correct");
+    } else {
+        option.classList.add("wrong");
+        options.forEach(opt => {
+            if (opt.dataset.correct === "true") {
+                opt.classList.add("correct");
+            }
+        });
+    }
+
+    // Remove highlight once answered
+    question.classList.remove("unanswered");
+
+    checkPageCompletion();
+    checkQuizCompletion();
+});
+
+/* ---------------- PAGE COMPLETION CHECK ---------------- */
+function checkPageCompletion() {
+    const pageStart = (currentPage - 1) * questionsPerPage;
+    const pageEnd = pageStart + questionsPerPage;
+
+    let pageAnswered = true;
+
+    for (let i = pageStart; i < pageEnd && i < questions.length; i++) {
+        const isAnswered =
+            questions[i].querySelector(".option.correct") ||
+            questions[i].querySelector(".option.wrong");
+
+        if (!isAnswered) {
+            pageAnswered = false;
+            break;
+        }
+    }
+
+    nextBtn.disabled = !pageAnswered;
+}
+
+/* ---------------- FINAL RESULT ---------------- */
+function checkQuizCompletion() {
+    if (quizFinished) return;
+
+    let answered = 0;
+    let score = 0;
+
+    questions.forEach(q => {
+        const correct = q.querySelector(".option.correct");
+        const wrong = q.querySelector(".option.wrong");
+
+        if (correct || wrong) {
+            answered++;
+            if (correct) score++;
+        }
+    });
+
+    if (answered !== questions.length) return;
 
     quizFinished = true;
-
-    // ✅ Show result ONCE
     resultBox.style.display = "block";
     resultBox.innerHTML = `
-        <h4>Your Score: ${score} / ${total}</h4>
-        <div class="explanation">
-            ${score === total
-                ? "🎉 Excellent! Perfect score."
-                : "👍 Good attempt! Keep learning with TaxBuddy Umair."}
-        </div>
+        <h4>Your Score: ${score} / ${questions.length}</h4>
+        <p>${score === questions.length ? "🎉 Excellent!" : "👍 Keep practicing with TaxBuddy Umair."}</p>
     `;
 
     resultBox.scrollIntoView({ behavior: "smooth" });
 }
 
-// Auto-check on every answer
-document.addEventListener("change", function (e) {
-    if (!e.target.matches(".option input")) return;
-    calculateScoreIfComplete();
-});
+/* ---------------- INIT ---------------- */
+showPage(currentPage);
 </script>
+
 
 </html>
 
