@@ -206,9 +206,9 @@
             {% endfor %}
 
             <div class="quiz-navigation">
-                <button type="button" id="prevBtn" onclick="prevPage()" disabled>Previous</button>
+                <button type="button" class="btn btn-success" id="prevBtn" onclick="prevPage()" disabled>Previous</button>
                 <span id="pageInfo"></span>
-                <button type="button" id="nextBtn" onclick="nextPage()">Next</button>
+                <button type="button" class="btn btn-success"  id="nextBtn" onclick="nextPage()">Next</button>
             </div>
         </form>
 
@@ -216,7 +216,7 @@
 
         <div id="result" class="result-box"></div>
 
-        <button id="retryBtn" class="submit-btn" style="display:none" onclick="location.reload()">
+        <button id="retryBtn" class="submit-btn btn btn-success" style="display:none" onclick="location.reload()">
             Try Again
         </button>
 
