@@ -12,8 +12,24 @@
     <link rel="shortcut icon" href="{% static 'assets/img/icons/fab2.png' %}">
     {% include 'partials/head-css.html' %}
 
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
 <style>
-/* ---------------- Quiz Layout ---------------- */
+body {
+    font-family: 'Inter', sans-serif;
+}
+
+.question h3 {
+    font-weight: 600;
+}
+
+.option {
+    font-weight: 500;
+}
+
+/* ---------------- Quiz Card ---------------- */
 .quiz-card {
     background: #ffffff;
     padding: 32px;
@@ -21,20 +37,44 @@
     box-shadow: 0 15px 40px rgba(13,44,84,0.08);
 }
 
+/* ---------------- Header ---------------- */
 .quiz-header {
     text-align: center;
-    margin-bottom: 25px;
+    margin-bottom: 20px;
 }
-
 .quiz-header h1 {
     font-weight: 800;
     color: #0d2c54;
 }
 
+/* ---------------- Progress ---------------- */
+.quiz-progress {
+    margin-bottom: 25px;
+}
+.progress {
+    height: 10px;
+    background: #e5e7eb;
+    border-radius: 20px;
+    overflow: hidden;
+}
+.progress-bar {
+    height: 100%;
+    width: 0%;
+    background: linear-gradient(135deg, #0d2c54, #22c55e);
+    transition: width 0.4s ease;
+}
+.progress-text {
+    margin-top: 6px;
+    font-size: 13px;
+    font-weight: 600;
+    color: #374151;
+    text-align: right;
+}
+
+/* ---------------- Questions ---------------- */
 .question {
     margin-bottom: 30px;
 }
-
 .question legend {
     font-size: 17px;
     font-weight: 600;
@@ -55,12 +95,10 @@
     transition: 0.25s;
     background: #fff;
 }
-
 .option:hover {
     background: #f5f9ff;
     border-color: #0d2c54;
 }
-
 .option input {
     appearance: none;
     width: 18px;
@@ -69,11 +107,9 @@
     border: 2px solid #9ca3af;
     position: relative;
 }
-
 .option input:checked {
     border-color: #0d2c54;
 }
-
 .option input:checked::after {
     content: "";
     width: 8px;
@@ -91,20 +127,17 @@
     border-color: #22c55e;
     color: #065f46;
 }
-
 .option.wrong {
     background: #fef2f2;
     border-color: #ef4444;
     color: #7f1d1d;
 }
-
 .option.correct::after {
     content: "✔ Correct";
     margin-left: auto;
     font-weight: 700;
     color: #22c55e;
 }
-
 .option.wrong::after {
     content: "✖ Wrong";
     margin-left: auto;
@@ -127,7 +160,6 @@
     gap: 12px;
     margin-top: 25px;
 }
-
 #pageInfo {
     font-weight: 600;
     color: #0d2c54;
@@ -145,15 +177,11 @@
 
 /* ---------------- Mobile ---------------- */
 @media (max-width: 576px) {
-    .quiz-card {
-        padding: 22px;
-    }
-
+    .quiz-card { padding: 22px; }
     .quiz-navigation {
         flex-direction: column;
         align-items: stretch;
     }
-
     .quiz-navigation button {
         width: 100%;
     }
@@ -171,6 +199,16 @@
 
         <div class="quiz-header">
             <h1>Tax Knowledge Quiz – Pakistan Income Tax</h1>
+        </div>
+
+        <!-- Progress -->
+        <div class="quiz-progress">
+            <div class="progress">
+                <div id="progressBar" class="progress-bar"></div>
+            </div>
+            <div id="progressText" class="progress-text">
+                Answered 0 / {{ questions|length }}
+            </div>
         </div>
 
         <form id="quizForm">
@@ -200,9 +238,16 @@
                     Next
                 </button>
             </div>
+
         </form>
 
         <div id="result"></div>
+
+        <div class="text-center mt-4">
+            <button id="retryBtn" class="btn btn btn-success" style="display:none;">
+                Retry Quiz
+            </button>
+        </div>
 
         <div class="footer-note text-center mt-4">
             © TaxBuddy Umair – Tax Awareness Initiative
@@ -226,7 +271,11 @@ const prevBtn = document.getElementById("prevBtn");
 const nextBtn = document.getElementById("nextBtn");
 const pageInfo = document.getElementById("pageInfo");
 const resultBox = document.getElementById("result");
+const retryBtn = document.getElementById("retryBtn");
+const progressBar = document.getElementById("progressBar");
+const progressText = document.getElementById("progressText");
 
+/* Pagination */
 function showPage(page) {
     const start = (page - 1) * questionsPerPage;
     const end = start + questionsPerPage;
@@ -238,24 +287,23 @@ function showPage(page) {
     prevBtn.disabled = page === 1;
     nextBtn.disabled = page === totalPages;
 
-    pageInfo.textContent = `Questions ${start + 1}–${Math.min(end, questions.length)} of ${questions.length}`;
+    pageInfo.textContent =
+        `Questions ${start + 1}–${Math.min(end, questions.length)} of ${questions.length}`;
+
     window.scrollTo({ top: 0, behavior: "smooth" });
 }
 
-prevBtn.onclick = () => {
-    if (currentPage > 1) {
-        currentPage--;
-        showPage(currentPage);
-    }
-};
+/* Progress */
+function updateProgress() {
+    const answered = document.querySelectorAll(".question input:checked").length;
+    const total = questions.length;
+    const percent = Math.round((answered / total) * 100);
 
-nextBtn.onclick = () => {
-    if (currentPage < totalPages) {
-        currentPage++;
-        showPage(currentPage);
-    }
-};
+    progressBar.style.width = percent + "%";
+    progressText.textContent = `Answered ${answered} / ${total}`;
+}
 
+/* Evaluation */
 function evaluateQuizIfComplete() {
     if (quizFinished) return;
 
@@ -273,8 +321,8 @@ function evaluateQuizIfComplete() {
         }
 
         question.classList.remove("unanswered");
-
         const selectedOption = selected.parentElement;
+
         options.forEach(opt => opt.classList.remove("correct", "wrong"));
 
         if (selectedOption.dataset.correct === "true") {
@@ -296,9 +344,13 @@ function evaluateQuizIfComplete() {
 
     quizFinished = true;
     resultBox.style.display = "block";
+    retryBtn.style.display = "inline-block";
+
     resultBox.innerHTML = `
         <h4>Your Score: ${score} / ${questions.length}</h4>
-        <p>${score === questions.length ? "🎉 Excellent! Perfect score." : "👍 Good attempt! Keep learning with TaxBuddy Umair."}</p>
+        <p>${score === questions.length
+            ? "🎉 Excellent! Perfect score."
+            : "👍 Good attempt! Keep learning with TaxBuddy Umair."}</p>
     `;
 
     setTimeout(() => {
@@ -306,12 +358,38 @@ function evaluateQuizIfComplete() {
     }, 3000);
 }
 
+/* Retry */
+retryBtn.onclick = () => {
+    quizFinished = false;
+    currentPage = 1;
+
+    questions.forEach(q => {
+        q.classList.remove("unanswered");
+        q.querySelectorAll(".option").forEach(opt => {
+            opt.classList.remove("correct", "wrong");
+            opt.querySelector("input").disabled = false;
+            opt.querySelector("input").checked = false;
+        });
+    });
+
+    resultBox.style.display = "none";
+    retryBtn.style.display = "none";
+    updateProgress();
+    showPage(currentPage);
+};
+
+/* Events */
+prevBtn.onclick = () => { if (currentPage > 1) { currentPage--; showPage(currentPage); } };
+nextBtn.onclick = () => { if (currentPage < totalPages) { currentPage++; showPage(currentPage); } };
+
 document.addEventListener("change", e => {
-    if (e.target.matches(".option input")) {
-        evaluateQuizIfComplete();
-    }
+    if (!e.target.matches(".option input")) return;
+    updateProgress();
+    evaluateQuizIfComplete();
 });
 
+/* Init */
+updateProgress();
 showPage(currentPage);
 </script>
 
