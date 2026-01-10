@@ -12,7 +12,6 @@
     <link rel="shortcut icon" href="{% static 'assets/img/icons/fab2.png' %}">
     {% include 'partials/head-css.html' %}
 
-<<<<<<< HEAD
     <style>
         /* ---------- Layout ---------- */
         .quiz-card {
@@ -27,51 +26,12 @@
             font-weight: 800;
             color: #0d2c54;
         }
-=======
- <style>
-
-.question.unanswered {
-    border: 2px solid #f59e0b;
-    background: #fffbeb;
-    border-radius: 10px;
-    padding: 12px;
-}
-
-.question.unanswered h3::after {
-    content: " (Required)";
-    color: #f59e0b;
-    font-size: 13px;
-    font-weight: 600;
-}
-
-@keyframes pulse {
-    0% { transform: scale(1); }
-    50% { transform: scale(1.02); }
-    100% { transform: scale(1); }
-}
-
-
-
-     /* Quiz Card */
-.quiz-card {
-    background: #fff;
-    padding: 30px;
-    border-radius: 14px;
-    box-shadow: 0 15px 40px rgba(13,44,84,0.08);
-}
-
-/* Question */
-.question {
-    margin-bottom: 25px;
-}
->>>>>>> 89ae1335f728c0063a6d5437c8b9f3ddd91eafff
 
         /* ---------- Progress ---------- */
         .quiz-progress {
             margin: 20px 0;
         }
 
-<<<<<<< HEAD
         .progress {
             height: 6px;
             background: #e5e7eb;
@@ -85,30 +45,6 @@
             background: #0d2c54;
             transition: width .4s ease;
         }
-=======
-/* Options */
-.option {
-    border: 2px solid #e5e7eb;
-    border-radius: 12px;
-    padding: 14px 16px;
-    margin-bottom: 12px;
-    cursor: pointer;
-    transition: 0.25s;
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    background: #fff;
-}
-
-.option:hover {
-    border-color: #0d2c54;
-    background: #f5f9ff;
-}
-
-.option span {
-    flex: 1;
-}
->>>>>>> 89ae1335f728c0063a6d5437c8b9f3ddd91eafff
 
         #progressText {
             font-size: 14px;
@@ -127,7 +63,6 @@
             margin-bottom: 14px;
         }
 
-<<<<<<< HEAD
         .option {
             border: 2px solid #e5e7eb;
             border-radius: 12px;
@@ -232,65 +167,6 @@
             color: #9ca3af;
         }
     </style>
-=======
-/* Correct / Wrong (RIGHT SIDE) */
-.option.correct {
-    background: #ecfdf5;
-    border-color: #22c55e;
-}
-
-.option.wrong {
-    background: #fef2f2;
-    border-color: #ef4444;
-}
-
-.option.correct::after {
-    content: "✔ Correct";
-    margin-left: auto;
-    font-weight: 700;
-    color: #22c55e;
-}
-
-.option.wrong::after {
-    content: "✖ Wrong";
-    margin-left: auto;
-    font-weight: 700;
-    color: #ef4444;
-}
-
-/* Navigation */
-.quiz-navigation {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-top: 30px;
-    gap: 10px;
-}
-
-#pageInfo {
-    font-size: 14px;
-    color: #6b7280;
-}
-
-/* Result */
-.result-box {
-    display: none;
-    margin-top: 30px;
-    padding: 22px;
-    background: #f0f7ff;
-    border-left: 6px solid #0d2c54;
-    border-radius: 10px;
-}
-
-/* Mobile */
-@media (max-width: 576px) {
-    .quiz-navigation {
-        flex-direction: column;
-    }
-}
-
- </style>
->>>>>>> 89ae1335f728c0063a6d5437c8b9f3ddd91eafff
 </head>
 
 <body>
@@ -301,13 +177,8 @@
 <div class="container">
     <div class="quiz-card">
 
-<<<<<<< HEAD
         <div class="quiz-header">
             <h1>Tax Knowledge Quiz – Income Tax Ordinance, 2001</h1>
-=======
-        <div class="quiz-header text-center">
-            <h1>Tax Knowledge Quiz in Pakistan | Income Tax Ordinance, 2001</h1>
->>>>>>> 89ae1335f728c0063a6d5437c8b9f3ddd91eafff
         </div>
 
         <!-- Progress -->
@@ -349,72 +220,40 @@
             Try Again
         </button>
 
-<<<<<<< HEAD
         <div class="footer-note">
             © TaxBuddy Umair – Tax Awareness Initiative
         </div>
-=======
-        {% for opt in q.options.all %}
-        <label class="option" data-correct="{{ opt.is_correct|yesno:'true,false' }}">
-            <input type="radio" name="q{{ q.id }}">
-            <span>{{ opt.option_text }}</span>
-        </label>
-        {% endfor %}
->>>>>>> 89ae1335f728c0063a6d5437c8b9f3ddd91eafff
     </div>
 </div>
 
-<<<<<<< HEAD
 {% include 'partials/footer.html' %}
 {% include 'partials/footer-scripts.html' %}
-=======
-    <!-- Navigation -->
-    <div class="quiz-navigation">
-        <button type="button" id="prevBtn" class="btn btn-success" onclick="prevPage()" disabled>
-            Previous
-        </button>
->>>>>>> 89ae1335f728c0063a6d5437c8b9f3ddd91eafff
 
 <script>
 const questionsPerPage = 5;
 let currentPage = 1;
 let quizFinished = false;
 
-<<<<<<< HEAD
 const questions = document.querySelectorAll(".question");
 const totalQuestions = questions.length;
 const totalPages = Math.ceil(totalQuestions / questionsPerPage);
-=======
-        <button type="button" id="nextBtn" class="btn btn-success" onclick="nextPage()">
-            Next
-        </button>
-    </div>
->>>>>>> 89ae1335f728c0063a6d5437c8b9f3ddd91eafff
 
 function showPage(page) {
     const start = (page - 1) * questionsPerPage;
     const end = start + questionsPerPage;
 
-<<<<<<< HEAD
     questions.forEach((q, i) => {
         q.style.display = (i >= start && i < end) ? "block" : "none";
     });
 
     document.getElementById("pageInfo").innerText =
         `Page ${page} of ${totalPages}`;
-=======
-<div id="result" class="result-box"></div>
-
->>>>>>> 89ae1335f728c0063a6d5437c8b9f3ddd91eafff
 
     document.getElementById("progressText").innerText =
         `Questions ${start + 1}–${Math.min(end, totalQuestions)}`;
 
-<<<<<<< HEAD
     document.getElementById("progressBar").style.width =
         `${(end / totalQuestions) * 100}%`;
-=======
->>>>>>> 89ae1335f728c0063a6d5437c8b9f3ddd91eafff
 
     document.getElementById("prevBtn").disabled = page === 1;
     document.getElementById("nextBtn").style.display =
@@ -437,7 +276,6 @@ function prevPage() {
     window.scrollTo({ top: 0, behavior: "smooth" });
 }
 
-<<<<<<< HEAD
 function pageAnswered() {
     const start = (currentPage - 1) * questionsPerPage;
     const end = start + questionsPerPage;
@@ -463,44 +301,12 @@ function calculateIfComplete() {
     questions.forEach(q => {
         const selected = q.querySelector("input:checked");
         const options = q.querySelectorAll(".option");
-=======
-</body>
-<script>
-const questionsPerPage = 5;
-let currentPage = 1;
-let quizFinished = false;
 
-const questions = document.querySelectorAll(".question");
-const totalPages = Math.ceil(questions.length / questionsPerPage);
+        if (!selected) {
+            allAnswered = false;
+            return;
+        }
 
-const prevBtn = document.getElementById("prevBtn");
-const nextBtn = document.getElementById("nextBtn");
-const pageInfo = document.getElementById("pageInfo");
-const resultBox = document.getElementById("result");
-
-/* ---------------- PAGINATION ---------------- */
-function showPage(page) {
-    const start = (page - 1) * questionsPerPage;
-    const end = start + questionsPerPage;
-
-    questions.forEach((q, index) => {
-        q.style.display = (index >= start && index < end) ? "block" : "none";
-        q.classList.remove("unanswered");
-    });
->>>>>>> 89ae1335f728c0063a6d5437c8b9f3ddd91eafff
-
-    pageInfo.innerText = `Page ${page} of ${totalPages}`;
-    prevBtn.disabled = page === 1;
-    nextBtn.disabled = true;
-
-    // Smooth scroll AFTER 3 seconds
-    setTimeout(() => {
-        document.getElementById("quizForm")
-            .scrollIntoView({ behavior: "smooth" });
-    }, 3000);
-}
-
-<<<<<<< HEAD
         const selOpt = selected.parentElement;
 
         options.forEach(o => o.classList.remove("correct","wrong"));
@@ -513,33 +319,8 @@ function showPage(page) {
             options.forEach(o => {
                 if (o.dataset.correct === "true") o.classList.add("correct");
             });
-=======
-function nextPage() {
-    const pageStart = (currentPage - 1) * questionsPerPage;
-    const pageEnd = pageStart + questionsPerPage;
-
-    let pageAnswered = true;
-    let firstMissed = null;
-
-    for (let i = pageStart; i < pageEnd && i < questions.length; i++) {
-        const question = questions[i];
-        const isAnswered =
-            question.querySelector(".option.correct") ||
-            question.querySelector(".option.wrong");
-
-        question.classList.remove("unanswered");
-
-        if (!isAnswered) {
-            question.classList.add("unanswered");
-            pageAnswered = false;
-
-            // 🔽 store first missed MCQ
-            if (!firstMissed) firstMissed = question;
->>>>>>> 89ae1335f728c0063a6d5437c8b9f3ddd91eafff
         }
-    }
 
-<<<<<<< HEAD
         options.forEach(o => o.querySelector("input").disabled = true);
     });
 
@@ -552,109 +333,6 @@ function nextPage() {
     result.innerHTML = `
         <h4>Your Score: ${score} / ${totalQuestions}</h4>
         <p>${score === totalQuestions ? "🎉 Excellent!" : "👍 Good attempt!"}</p>
-=======
-    nextBtn.disabled = !pageAnswered;
-
-    if (!pageAnswered && firstMissed) {
-        // 🔽 AUTO-SCROLL to missed MCQ
-        firstMissed.scrollIntoView({
-            behavior: "smooth",
-            block: "center"
-        });
-        return;
-    }
-
-    if (pageAnswered && currentPage < totalPages) {
-        currentPage++;
-        showPage(currentPage);
-    }
-}
-
-function prevPage() {
-    if (currentPage > 1) {
-        currentPage--;
-        showPage(currentPage);
-    }
-}
-
-/* ---------------- ANSWER CHECKING ---------------- */
-document.addEventListener("change", function (e) {
-    if (!e.target.matches(".option input")) return;
-
-    const option = e.target.closest(".option");
-    const question = option.closest(".question");
-    const options = question.querySelectorAll(".option");
-
-    // Lock options
-    options.forEach(opt => {
-        opt.querySelector("input").disabled = true;
-        opt.classList.remove("correct", "wrong");
-    });
-
-    if (option.dataset.correct === "true") {
-        option.classList.add("correct");
-    } else {
-        option.classList.add("wrong");
-        options.forEach(opt => {
-            if (opt.dataset.correct === "true") {
-                opt.classList.add("correct");
-            }
-        });
-    }
-
-    // Remove highlight once answered
-    question.classList.remove("unanswered");
-
-    checkPageCompletion();
-    checkQuizCompletion();
-});
-
-/* ---------------- PAGE COMPLETION CHECK ---------------- */
-function checkPageCompletion() {
-    const pageStart = (currentPage - 1) * questionsPerPage;
-    const pageEnd = pageStart + questionsPerPage;
-
-    let pageAnswered = true;
-
-    for (let i = pageStart; i < pageEnd && i < questions.length; i++) {
-        const isAnswered =
-            questions[i].querySelector(".option.correct") ||
-            questions[i].querySelector(".option.wrong");
-
-        if (!isAnswered) {
-            pageAnswered = false;
-            break;
-        }
-    }
-
-    nextBtn.disabled = !pageAnswered;
-}
-
-/* ---------------- FINAL RESULT ---------------- */
-function checkQuizCompletion() {
-    if (quizFinished) return;
-
-    let answered = 0;
-    let score = 0;
-
-    questions.forEach(q => {
-        const correct = q.querySelector(".option.correct");
-        const wrong = q.querySelector(".option.wrong");
-
-        if (correct || wrong) {
-            answered++;
-            if (correct) score++;
-        }
-    });
-
-    if (answered !== questions.length) return;
-
-    quizFinished = true;
-    resultBox.style.display = "block";
-    resultBox.innerHTML = `
-        <h4>Your Score: ${score} / ${questions.length}</h4>
-        <p>${score === questions.length ? "🎉 Excellent!" : "👍 Keep practicing with TaxBuddy Umair."}</p>
->>>>>>> 89ae1335f728c0063a6d5437c8b9f3ddd91eafff
     `;
 
     document.getElementById("retryBtn").style.display = "block";
@@ -664,7 +342,6 @@ function checkQuizCompletion() {
     }, 3000);
 }
 
-<<<<<<< HEAD
 document.addEventListener("change", e => {
     if (e.target.matches(".option input")) {
         document.getElementById("message").style.display = "none";
@@ -676,11 +353,4 @@ showPage(currentPage);
 </script>
 
 </body>
-=======
-/* ---------------- INIT ---------------- */
-showPage(currentPage);
-</script>
-
-
->>>>>>> 89ae1335f728c0063a6d5437c8b9f3ddd91eafff
 </html>
