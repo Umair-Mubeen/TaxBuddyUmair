@@ -3,380 +3,354 @@
 {% load static %}
 <head>
     <meta charset="UTF-8">
-    <title>Tax Knowledge Quiz | Pakistan Income & Sales Tax – TaxBuddy Umair</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tax Knowledge Quiz – Pakistan Income Tax MCQs | TaxBuddy Umair</title>
 
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description"
-          content="Test your knowledge of Pakistan Income Tax, Sales Tax and Property Tax laws. Free tax awareness quiz by TaxBuddy Umair.">
+          content="Practice Income Tax MCQs under the Income Tax Ordinance, 2001. Beginner to advanced tax knowledge quiz for Pakistan by TaxBuddy Umair.">
 
     <link rel="shortcut icon" href="{% static 'assets/img/icons/fab2.png' %}">
     {% include 'partials/head-css.html' %}
+
     <style>
-    .question {
-    margin-bottom: 20px;
-}
+        /* ---------- Layout ---------- */
+        .quiz-card {
+            background: #fff;
+            padding: 35px;
+            border-radius: 14px;
+            box-shadow: 0 15px 40px rgba(13,44,84,.08);
+        }
 
-.option {
-    padding: 10px;
-    border-radius: 6px;
-    margin-bottom: 8px;
-    background: #f8f9fa;
-}
+        .quiz-header h1 {
+            text-align: center;
+            font-weight: 800;
+            color: #0d2c54;
+        }
 
-.quiz-navigation {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 10px;
-    justify-content: space-between;
-    align-items: center;
-    margin-top: 25px;
-}
+        /* ---------- Progress ---------- */
+        .quiz-progress {
+            margin: 20px 0;
+        }
 
-.quiz-navigation button {
-    padding: 10px 16px;
-    font-size: 14px;
-}
+        .progress {
+            height: 6px;
+            background: #e5e7eb;
+            border-radius: 10px;
+            overflow: hidden;
+        }
 
-#pageInfo {
-    font-size: 14px;
-    color: #666;
-}
+        .progress-bar {
+            height: 100%;
+            width: 0%;
+            background: #0d2c54;
+            transition: width .4s ease;
+        }
 
-@media (max-width: 576px) {
-    .quiz-navigation {
-        flex-direction: column;
-        align-items: stretch;
-        text-align: center;
-    }
+        #progressText {
+            font-size: 14px;
+            color: #555;
+            margin-bottom: 6px;
+        }
 
-    .quiz-navigation button {
-        width: 100%;
-    }
-}
+        /* ---------- Questions ---------- */
+        .question {
+            margin-bottom: 22px;
+        }
 
+        .question h3 {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 14px;
+        }
 
-.quiz-message {
-    background: #fff3cd;
-    color: #856404;
-    padding: 10px;
-    border-radius: 6px;
-    margin-bottom: 12px;
-    font-size: 14px;
-}
+        .option {
+            border: 2px solid #e5e7eb;
+            border-radius: 12px;
+            padding: 14px 16px;
+            margin-bottom: 10px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            transition: .25s;
+        }
 
-.unanswered {
-    border: 1px solid #ffc107;
-    border-radius: 6px;
-    padding: 6px;
-}
+        .option:hover {
+            background: #f5f9ff;
+            border-color: #0d2c54;
+        }
 
-/* Card */
-.quiz-card {
-    background: #ffffff;
-    padding: 35px;
-    border-radius: 14px;
-    box-shadow: 0 15px 40px rgba(13, 44, 84, 0.08);
-    animation: fadeIn 0.5s ease-in-out;
-}
+        .option input {
+            appearance: none;
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            border: 2px solid #9ca3af;
+            position: relative;
+        }
 
-@keyframes fadeIn {
-    from { opacity: 0; transform: translateY(12px); }
-    to { opacity: 1; transform: translateY(0); }
-}
+        .option input:checked {
+            border-color: #0d2c54;
+        }
 
-/* Header */
-.quiz-header {
-    text-align: center;
-}
+        .option input:checked::after {
+            content: "";
+            width: 8px;
+            height: 8px;
+            background: #0d2c54;
+            border-radius: 50%;
+            position: absolute;
+            top: 3px;
+            left: 3px;
+        }
 
-.quiz-header h1 {
-    color: #0d2c54;
-    font-weight: 800;
-    letter-spacing: -0.5px;
-}
+        /* ---------- Correct / Wrong ---------- */
+        .option.correct {
+            background: #ecfdf5;
+            border-color: #22c55e;
+            color: #065f46;
+        }
 
-.quiz-header p {
-    color: #6b7280;
-    font-size: 15px;
-}
+        .option.wrong {
+            background: #fef2f2;
+            border-color: #ef4444;
+            color: #7f1d1d;
+        }
 
-/* Question */
-.question {
-}
+        /* ---------- Navigation ---------- */
+        .quiz-navigation {
+            display: flex;
+            justify-content: space-between;
+            gap: 10px;
+            margin-top: 25px;
+        }
 
-.question h3 {
-    font-size: 18px;
-    font-weight: 600;
-    color: #111827;
-}
+        .quiz-navigation button {
+            padding: 10px 18px;
+            font-size: 14px;
+        }
 
-/* Options */
-.option {
-    border: 2px solid #e5e7eb;
-    border-radius: 12px;
-    padding: 14px 16px;
-    margin-bottom: 12px;
-    cursor: pointer;
-    transition: all 0.25s ease;
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    background: #ffffff;
-}
+        @media (max-width: 576px) {
+            .quiz-card { padding: 22px; }
+            .quiz-navigation {
+                flex-direction: column;
+            }
+            .quiz-navigation button {
+                width: 100%;
+            }
+        }
 
-.option:hover {
-    border-color: #0d2c54;
-    background: #f5f9ff;
-    transform: translateY(-1px);
-}
+        /* ---------- Result ---------- */
+        .result-box {
+            display: none;
+            margin-top: 30px;
+            padding: 22px;
+            background: #f0f7ff;
+            border-left: 6px solid #0d2c54;
+            border-radius: 10px;
+        }
 
-/* Custom radio */
-.option input {
-    appearance: none;
-    width: 18px;
-    height: 18px;
-    border-radius: 50%;
-    border: 2px solid #9ca3af;
-    position: relative;
-}
+        .quiz-message {
+            display: none;
+            background: #fff3cd;
+            color: #856404;
+            padding: 10px;
+            border-radius: 6px;
+            margin-top: 15px;
+            font-size: 14px;
+        }
 
-.option input:checked {
-    border-color: #0d2c54;
-}
-
-.option input:checked::after {
-    content: "";
-    width: 8px;
-    height: 8px;
-    background: #0d2c54;
-    border-radius: 50%;
-    position: absolute;
-    top: 3px;
-    left: 3px;
-}
-
-/* Submit button */
-.submit-btn {
-    width: 100%;
-    background: linear-gradient(135deg, #0d2c54, #093a75);
-    color: #fff;
-    border: none;
-    padding: 15px;
-    font-size: 17px;
-    font-weight: 700;
-    border-radius: 12px;
-    cursor: pointer;
-    transition: 0.3s;
-}
-
-.submit-btn:hover {
-    transform: translateY(-1px);
-    box-shadow: 0 10px 25px rgba(13, 44, 84, 0.25);
-}
-
-/* Result box */
-.result-box {
-    display: none;
-    margin-top: 30px;
-    padding: 22px;
-    background: #f0f7ff;
-    border-left: 6px solid #0d2c54;
-    border-radius: 10px;
-    animation: fadeIn 0.4s ease;
-}
-
-.result-box h4 {
-    color: #0d2c54;
-    font-weight: 700;
-    margin-bottom: 10px;
-}
-
-/* Correct / Wrong */
-.option.correct {
-    background: #ecfdf5;
-    border-color: #22c55e;
-    color: #065f46;
-}
-
-.option.wrong {
-    background: #fef2f2;
-    border-color: #ef4444;
-    color: #7f1d1d;
-}
-
-.option.correct::after,
-.option.wrong::after {
-    margin-left: auto;
-    font-weight: 700;
-}
-
-.option.correct::after {
-    content: "✔ Correct";
-    color: #22c55e;
-}
-
-.option.wrong::after {
-    content: "✖ Wrong";
-    color: #ef4444;
-}
-
-/* Footer */
-.footer-note {
-    text-align: center;
-    margin-top: 35px;
-    font-size: 13px;
-    color: #9ca3af;
-}
-
-/* Mobile */
-@media (max-width: 576px) {
-    .quiz-card {
-        padding: 22px;
-        border-radius: 10px;
-    }
-
-    .question h3 {
-        font-size: 16px;
-    }
-}
-
+        .footer-note {
+            text-align: center;
+            margin-top: 30px;
+            font-size: 13px;
+            color: #9ca3af;
+        }
     </style>
 </head>
 
 <body>
 
 {% include 'partials/topbar.html' %}
-<div class="space100"> </div>
-<div class="quiz-wrapper container">
+<div class="space100"></div>
+
+<div class="container">
     <div class="quiz-card">
 
         <div class="quiz-header">
-            <h1>Tax Knowledge Quiz in Pakistan| Income Tax Ordinance, 2001</h1>
+            <h1>Tax Knowledge Quiz – Income Tax Ordinance, 2001</h1>
         </div>
 
+        <!-- Progress -->
+        <div class="quiz-progress">
+            <div id="progressText">Questions 1–5</div>
+            <div class="progress">
+                <div id="progressBar" class="progress-bar"></div>
+            </div>
+        </div>
 
-<form id="quizForm">
+        <!-- Quiz -->
+        <form id="quizForm">
+            {% for q in questions %}
+            <div class="question">
+                <h3>{{ forloop.counter }}. {{ q.question_text }}</h3>
 
-    {% for q in questions %}
-    <div class="question">
-        <h3>{{ forloop.counter }}. {{ q.question_text }}</h3>
+                {% for opt in q.options.all %}
+                <label class="option"
+                       data-correct="{{ opt.is_correct|yesno:'true,false' }}">
+                    <input type="radio" name="q{{ q.id }}">
+                    {{ opt.option_text }}
+                </label>
+                {% endfor %}
+            </div>
+            {% endfor %}
 
-        {% for opt in q.options.all %}
-        <label class="option d-block"
-               data-correct="{{ opt.is_correct|yesno:'true,false' }}">
-            <input type="radio" name="q{{ q.id }}">
-            {{ opt.option_text }}
-        </label>
-        {% endfor %}
-    </div>
-    {% endfor %}
+            <div class="quiz-navigation">
+                <button type="button" id="prevBtn" onclick="prevPage()" disabled>Previous</button>
+                <span id="pageInfo"></span>
+                <button type="button" id="nextBtn" onclick="nextPage()">Next</button>
+            </div>
+        </form>
 
-    <!-- Navigation -->
-    <div class="quiz-navigation">
-        <button type="button" id="prevBtn" onclick="prevPage()" class="btn btn-success" disabled>
-            Previous
+        <div id="message" class="quiz-message"></div>
+
+        <div id="result" class="result-box"></div>
+
+        <button id="retryBtn" class="submit-btn" style="display:none" onclick="location.reload()">
+            Try Again
         </button>
-
-        <span id="pageInfo"></span>
-
-        <button type="button" id="nextBtn" onclick="nextPage()" class="btn btn-success">
-            Next
-        </button>
-    </div>
-
-</form>
-
-<div id="result" style="display:none;"></div>
-
-        <div id="message" class="quiz-message" style="display:none;"></div>
-
 
         <div class="footer-note">
             © TaxBuddy Umair – Tax Awareness Initiative
         </div>
-
     </div>
 </div>
 
 {% include 'partials/footer.html' %}
-{% include 'partials/up.html' %}
 {% include 'partials/footer-scripts.html' %}
 
-
-</body>
 <script>
+const questionsPerPage = 5;
+let currentPage = 1;
 let quizFinished = false;
 
-function calculateScoreIfComplete() {
+const questions = document.querySelectorAll(".question");
+const totalQuestions = questions.length;
+const totalPages = Math.ceil(totalQuestions / questionsPerPage);
+
+function showPage(page) {
+    const start = (page - 1) * questionsPerPage;
+    const end = start + questionsPerPage;
+
+    questions.forEach((q, i) => {
+        q.style.display = (i >= start && i < end) ? "block" : "none";
+    });
+
+    document.getElementById("pageInfo").innerText =
+        `Page ${page} of ${totalPages}`;
+
+    document.getElementById("progressText").innerText =
+        `Questions ${start + 1}–${Math.min(end, totalQuestions)}`;
+
+    document.getElementById("progressBar").style.width =
+        `${(end / totalQuestions) * 100}%`;
+
+    document.getElementById("prevBtn").disabled = page === 1;
+    document.getElementById("nextBtn").style.display =
+        page === totalPages ? "none" : "inline-block";
+}
+
+function nextPage() {
+    if (!pageAnswered()) {
+        showMessage("Please answer all questions on this page.");
+        return;
+    }
+    currentPage++;
+    showPage(currentPage);
+    window.scrollTo({ top: 0, behavior: "smooth" });
+}
+
+function prevPage() {
+    currentPage--;
+    showPage(currentPage);
+    window.scrollTo({ top: 0, behavior: "smooth" });
+}
+
+function pageAnswered() {
+    const start = (currentPage - 1) * questionsPerPage;
+    const end = start + questionsPerPage;
+
+    for (let i = start; i < end && i < totalQuestions; i++) {
+        if (!questions[i].querySelector("input:checked")) return false;
+    }
+    return true;
+}
+
+function showMessage(text) {
+    const msg = document.getElementById("message");
+    msg.innerText = text;
+    msg.style.display = "block";
+}
+
+function calculateIfComplete() {
     if (quizFinished) return;
 
-    const questions = document.querySelectorAll(".question");
     let score = 0;
-    let total = questions.length;
     let allAnswered = true;
 
-    const resultBox = document.getElementById("result");
-
-    questions.forEach(question => {
-        const selected = question.querySelector("input:checked");
-        const options = question.querySelectorAll(".option");
+    questions.forEach(q => {
+        const selected = q.querySelector("input:checked");
+        const options = q.querySelectorAll(".option");
 
         if (!selected) {
             allAnswered = false;
             return;
         }
 
-        const selectedOption = selected.parentElement;
+        const selOpt = selected.parentElement;
 
-        // Reset styles
-        options.forEach(opt => opt.classList.remove("correct", "wrong"));
+        options.forEach(o => o.classList.remove("correct","wrong"));
 
-        // Check correctness using data-correct
-        if (selectedOption.dataset.correct === "true") {
+        if (selOpt.dataset.correct === "true") {
             score++;
-            selectedOption.classList.add("correct");
+            selOpt.classList.add("correct");
         } else {
-            selectedOption.classList.add("wrong");
-
-            // Highlight correct option
-            options.forEach(opt => {
-                if (opt.dataset.correct === "true") {
-                    opt.classList.add("correct");
-                }
+            selOpt.classList.add("wrong");
+            options.forEach(o => {
+                if (o.dataset.correct === "true") o.classList.add("correct");
             });
         }
 
-        // Lock question
-        options.forEach(opt => {
-            opt.querySelector("input").disabled = true;
-        });
+        options.forEach(o => o.querySelector("input").disabled = true);
     });
 
-    // 🚫 Do nothing until ALL questions answered
     if (!allAnswered) return;
 
     quizFinished = true;
 
-    // ✅ Show result ONCE
-    resultBox.style.display = "block";
-    resultBox.innerHTML = `
-        <h4>Your Score: ${score} / ${total}</h4>
-        <div class="explanation">
-            ${score === total
-                ? "🎉 Excellent! Perfect score."
-                : "👍 Good attempt! Keep learning with TaxBuddy Umair."}
-        </div>
+    const result = document.getElementById("result");
+    result.style.display = "block";
+    result.innerHTML = `
+        <h4>Your Score: ${score} / ${totalQuestions}</h4>
+        <p>${score === totalQuestions ? "🎉 Excellent!" : "👍 Good attempt!"}</p>
     `;
 
-    resultBox.scrollIntoView({ behavior: "smooth" });
+    document.getElementById("retryBtn").style.display = "block";
+
+    setTimeout(() => {
+        result.scrollIntoView({ behavior: "smooth" });
+    }, 3000);
 }
 
-// Auto-check on every answer
-document.addEventListener("change", function (e) {
-    if (!e.target.matches(".option input")) return;
-    calculateScoreIfComplete();
+document.addEventListener("change", e => {
+    if (e.target.matches(".option input")) {
+        document.getElementById("message").style.display = "none";
+        calculateIfComplete();
+    }
 });
+
+showPage(currentPage);
 </script>
 
+</body>
 </html>
-
