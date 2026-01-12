@@ -12,7 +12,7 @@ urlpatterns = [
     path('', views.index, name='index'),  # Home Page
     # path('contact-us', views.Contact, name='contact-us'),  # Contact Page
     path('userComments', views.userComments, name='userComments'),  # Comments Page
-
+path("terms-and-conditions/", views.terms_and_conditions, name="terms-and-conditions"),
     #Dashboard URL
     path('Login', views.Login, name='Login'),  # Login Page
     path('Logout', views.Logout, name='Logout'),  # Login Page
@@ -29,7 +29,6 @@ urlpatterns = [
 
     path("income-tax-mcqs-pakistan", views.question_list, name="income-tax-mcqs-pakistan"),
 path("online-services", views.online_services, name="online-services"),
-
     path('AddEditBlog/', views.AddEditBlog, name='AddBlog'),  # create
     path('AddEditBlog/<slug:slug>/', views.AddEditBlog, name='EditBlog'),
     path('blog/<slug:slug>/', views.viewBlogs, name='viewBlogs'),  # BlogDetails Page
@@ -38,7 +37,7 @@ path("online-services", views.online_services, name="online-services"),
 
     path('ManageBlogs', views.ManageBlogs, name='ManageBlogs'),  # ManageBlogsPage
 
-    path("contact", views.contact, name='contact'),
+    path('contact', views.contact, name='contact'),
     path("SalaryCalculator", views.SalaryCalculator, name='SalaryCalculator'),
     path("BusinessCalculator", views.BusinessCalculator, name='BusinessCalculator'),
     path("AOPCalculator", views.AOPCalculator, name='AOPCalculator'),
@@ -46,10 +45,7 @@ path("online-services", views.online_services, name="online-services"),
 
     #tax slab brackets
     path("add_salary_tax_brackets", views.add_salary_tax_brackets,name="add_salary_tax_brackets"),
-
-
-
-
+    path("privacy-policy", views.privacy_policy, name="privacy_policy"),
 
 
 ]

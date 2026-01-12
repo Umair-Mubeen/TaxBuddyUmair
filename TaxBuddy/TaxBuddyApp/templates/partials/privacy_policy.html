@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+
+{% load static %}
+
+<head>
+
+    {% include 'partials/head-css.html' %}
+    <!-- ===== Privacy Policy Styles ===== -->
+<style>
+
+.policy-card {
+    background: #ffffff;
+    padding: 50px 45px;
+    border-radius: 16px;
+    box-shadow: 0 12px 35px rgba(0,0,0,0.08);
+}
+
+.policy-card h3 {
+    font-size: 22px;
+    font-weight: 700;
+    color: #0C3B32;
+    margin-top: 40px;
+    margin-bottom: 12px;
+    position: relative;
+}
+
+.policy-card h3::before {
+    content: "";
+    position: absolute;
+    left: -14px;
+    top: 6px;
+    width: 4px;
+    height: 70%;
+    background: #0c5b47;
+    border-radius: 2px;
+}
+
+.policy-card p {
+    font-size: 16.5px;
+    line-height: 1.8;
+    color: #3f4f49;
+    margin-bottom: 14px;
+}
+
+.policy-card ul {
+    padding-left: 20px;
+    margin-bottom: 20px;
+}
+
+.policy-card ul li {
+    font-size: 16px;
+    line-height: 1.7;
+    margin-bottom: 8px;
+    color: #3f4f49;
+}
+
+/* Mobile */
+@media (max-width: 768px) {
+    .policy-card {
+        padding: 30px 22px;
+    }
+    .policy-card h3 {
+        font-size: 20px;
+    }
+    .policy-card p,
+    .policy-card ul li {
+        font-size: 15.5px;
+    }
+}
+</style>
+
+</head>
+<body>
+{% include 'partials/topbar.html' %}
+
+<!-- ===== Privacy Policy Page ===== -->
+<section class="policy-area sp2"
+         style="background: radial-gradient(circle at top right, #DAE7E3 0%, #F6FBF9 70%);
+                padding: 90px 0;">
+
+    <div class="container">
+
+        <!-- PAGE HEADER -->
+        <div class="row">
+            <div class="col-lg-8 m-auto text-center">
+                <div class="hadding6">
+                    <h1 class="font-f-7">Privacy Policy</h1>
+                    <p class="mt-3"
+                       style="font-size:16px; color:#35534A; max-width:700px; margin:auto;">
+                        This Privacy Policy explains how TaxBuddy Umair collects, uses,
+                        and protects your information when you use this website.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <div class="space60"></div>
+
+        <!-- POLICY CARD -->
+        <div class="row">
+            <div class="col-lg-10 m-auto">
+                <div class="policy-card">
+
+                    <h3>1. Introduction</h3>
+                    <p>
+                        TaxBuddy Umair respects your privacy and is committed to protecting
+                        your personal information. This website is an informational and
+                        educational platform that provides general content related to
+                        taxation in Pakistan.
+                    </p>
+
+                    <h3>2. Information We Collect</h3>
+                    <p>We may collect the following information when you use this website:</p>
+                    <ul>
+                        <li>Name, email address, and phone number (when submitted via forms)</li>
+                        <li>IP address, browser type, and device information</li>
+                        <li>Pages visited and interaction data</li>
+                    </ul>
+
+                    <h3>3. How We Use Your Information</h3>
+                    <ul>
+                        <li>To respond to general queries</li>
+                        <li>To improve website content and user experience</li>
+                        <li>For analytics, security, and spam prevention</li>
+                        <li>To display advertisements through third-party services</li>
+                    </ul>
+                    <p>
+                        We do not sell, rent, or share your personal information with third
+                        parties for commercial purposes.
+                    </p>
+
+                    <h3>4. Cookies</h3>
+                    <p>
+                        This website uses cookies to analyze traffic, improve functionality,
+                        and display relevant advertisements. You can disable cookies through
+                        your browser settings if you prefer.
+                    </p>
+
+                    <h3>5. Google AdSense & Advertising</h3>
+                    <p>
+                        TaxBuddy Umair may use Google AdSense to display advertisements.
+                        Google uses cookies (including the DoubleClick cookie) to serve ads
+                        based on users’ visits to this and other websites.
+                    </p>
+                    <p>
+                        Users may opt out of personalized advertising by visiting Google Ad Settings.
+                    </p>
+
+                    <h3>6. Third-Party Services</h3>
+                    <p>
+                        We may use third-party services such as Google Analytics,
+                        Google AdSense, and Google reCAPTCHA. These services operate
+                        under their own privacy policies, and we have no control over
+                        their data handling practices.
+                    </p>
+
+                    <h3>7. Data Security</h3>
+                    <p>
+                        Reasonable technical and administrative measures are taken
+                        to protect your information. However, no online transmission
+                        method is completely secure.
+                    </p>
+
+                    <h3>8. External Links</h3>
+                    <p>
+                        This website may contain links to external websites.
+                        We are not responsible for the privacy practices or content
+                        of those third-party sites.
+                    </p>
+
+                    <h3>9. Children’s Information</h3>
+                    <p>
+                        TaxBuddy Umair does not knowingly collect personal information
+                        from children under the age of 13.
+                    </p>
+
+                    <h3>10. Changes to This Privacy Policy</h3>
+                    <p>
+                        This Privacy Policy may be updated from time to time.
+                        Any changes will be reflected on this page.
+                    </p>
+
+                    <h3>11. Contact Information</h3>
+                    <p>If you have any questions about this Privacy Policy, you may contact us:</p>
+                    <ul>
+                        <li><strong>Email:</strong> umair.mubeenir@gmail.com</li>
+                        <li><strong>Location:</strong> Karachi, Pakistan</li>
+                    </ul>
+
+
+                </div>
+            </div>
+        </div>
+
+    </div>
+</section>
+
+{% include 'partials/footer.html' %}
+{% include 'partials/up.html' %}
+{% include 'partials/footer-scripts.html' %}
+
+</body>
+</html>

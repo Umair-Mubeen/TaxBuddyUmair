@@ -9,164 +9,190 @@
   gtag('config', 'G-EEP4P5YWE6');
 </script>
 
+    <style>
+        /* Text alignment (limited scope – safer than global) */
+.single-price h5 {
+    text-align: justify;
+}
+
+/* Primary CTA Button */
+.theme-btn-11 {
+    display: inline-block;
+    width: 100%;
+    padding: 12px 20px;
+    background-color: #198754; /* Bootstrap success green */
+    color: #ffffff;
+    border: none;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 16px;
+    text-align: center;
+    text-decoration: none;
+    cursor: pointer;
+    transition: background-color 0.3s ease,
+                transform 0.2s ease,
+                box-shadow 0.2s ease;
+}
+
+/* Hover state */
+.theme-btn-11:hover {
+    background-color: #157347; /* darker green */
+    color: #ffffff;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 14px rgba(25, 135, 84, 0.35);
+}
+
+/* Active (click) state */
+.theme-btn-11:active {
+    transform: translateY(0);
+    box-shadow: 0 3px 8px rgba(25, 135, 84, 0.25);
+}
+
+/* Focus state (keyboard & accessibility – AdSense friendly) */
+.theme-btn-11:focus,
+.theme-btn-11:focus-visible {
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(25, 135, 84, 0.35);
+}
+
+    </style>
 </head>
-<style>
-    h5{text-align: justify;}
-    .theme-btn-11 {
-      display: inline-block;
-      width: 100%;
-      padding: 12px 20px;
-      background-color: #198754; /* Bootstrap Primary Blue */
-      color: #fff;
-      border: none;
-      border-radius: 8px;
-      font-weight: 600;
-      font-size: 16px;
-      text-align: center;
-      transition: all 0.3s ease;
-      text-decoration: none;
-    }
 
-    .theme-btn-11:hover {
-      background-color: #198754; /* Darker blue on hover */
-      color: #fff;
-      transform: translateY(-2px);
-      box-shadow: 0 4px 10px rgba(13, 110, 253, 0.3);
-    }
+<!--===== Tax Guidance Packages (Informational) =====-->
+<section class="tab-content container"
+         aria-label="Tax guidance packages">
 
-    .theme-btn-11:active {
-      transform: translateY(0);
-      box-shadow: none;
-    }
-</style>
-
-<div class="tab-content container">
     <div id="tax-services">
         <div class="row">
 
-            <!-- NTN Registration -->
-            <div class="col-lg-3">
+            <!-- NTN Guidance -->
+            <div class="col-lg-4">
                 <div class="single-price">
                     <div class="price-heading">
-                        <p>NTN Registration - Salaried</p>
-                        <h5>Register your National Tax Number (NTN) with FBR hassle-free.</h5>
-                        <h3>Rs. 2,000</h3>
-                        <h6>One Time Service Fee</h6>
+                        <p>NTN Registration Guidance (Salaried)</p>
+                        <h5>
+                            Learn the complete procedure and required documents
+                            for NTN registration with FBR.
+                        </h5>
+                        <h3>Information Guide</h3>
+                        <h6>Educational Content</h6>
                     </div>
                     <div class="price-body">
-                        <a class="theme-btn-11 full-btn" href="#">Get NTN Registration</a>
+                        <a class="theme-btn-11 full-btn" href="#">
+                            View Guide
+                        </a>
                     </div>
                 </div>
             </div>
 
-
-               <div class="col-lg-3">
+            <!-- Business NTN -->
+            <div class="col-lg-4">
                 <div class="single-price">
                     <div class="price-heading">
-                        <p>NTN Registration - Business</p>
-                        <h5>Register your National Tax Number (NTN) with FBR hassle-free.</h5>
-                        <h3>Rs. 3,000</h3>
-                        <h6>One Time Service Fee</h6>
+                        <p>NTN Registration Guidance (Business)</p>
+                        <h5>
+                            Understand how business NTN registration works,
+                            including FBR requirements.
+                        </h5>
+                        <h3>Information Guide</h3>
+                        <h6>Educational Content</h6>
                     </div>
                     <div class="price-body">
-                        <a class="theme-btn-11 full-btn" href="#">Get Business Registration</a>
+                        <a class="theme-btn-11 full-btn" href="#">
+                            View Guide
+                        </a>
                     </div>
                 </div>
             </div>
 
-            <!-- AOP Registration -->
-            <div class="col-lg-3">
+            <!-- AOP -->
+            <div class="col-lg-4">
                 <div class="single-price">
                     <div class="price-heading">
-                        <p>NTN Registration - AOP</p>
-                        <h5>Register your National Tax Number (NTN) with FBR hassle-free.</h5>
-                        <h3>Rs. 4,000</h3>
-                        <h6>One Time Service Fee</h6>
+                        <p>AOP Registration Overview</p>
+                        <h5>
+                            Learn how Association of Persons (AOP)
+                            registration works under FBR rules.
+                        </h5>
+                        <h3>Information Guide</h3>
+                        <h6>Educational Content</h6>
                     </div>
                     <div class="price-body">
-                        <a class="theme-btn-11 full-btn" href="#">Get AOP Registration</a>
+                        <a class="theme-btn-11 full-btn" href="/blog/aop-registration-pakistan">
+                            View Guide
+                        </a>
                     </div>
                 </div>
             </div>
 
-
-            <!-- Sales Tax Registration -->
-            <div class="col-lg-3">
+            <!-- Sales Tax -->
+            <div class="col-lg-4">
                 <div class="single-price">
                     <div class="price-heading">
-                        <p>Sales Tax Registration</p>
-                        <h5>Register your Sales Tax Registration Number (STRN) with FBR hassle-free.</h5>
-                        <h3>Rs. 5,000</h3>
-                        <h6>One Time Service Fee</h6>
+                        <p>Sales Tax Registration Basics</p>
+                        <h5>
+                            Understand who is required to register
+                            for sales tax and the general process.
+                        </h5>
+                        <h3>Information Guide</h3>
+                        <h6>Educational Content</h6>
                     </div>
                     <div class="price-body">
-                        <a class="theme-btn-11 full-btn" href="#">Get Sales Tax Registration</a>
-
+                        <a class="theme-btn-11 full-btn" href="#">
+                            View Guide
+                        </a>
                     </div>
                 </div>
             </div>
 
-            <!-- PSEB Registration -->
-            <div class="col-lg-3 mb-4">
+            <!-- Income Tax Return -->
+            <div class="col-lg-4 mb-4">
                 <div class="single-price">
                     <div class="price-heading">
-                        <p>Freelancers Registration</p>
-                        <h5>Assist Freelancers in obtaining official registration with the (PSEB).</h5>
-                        <h3>Rs. 2,000</h3>
-                        <h6>One-Time Service Fee</h6>
+                        <p>Income Tax Return – Salaried</p>
+                        <h5>
+                            Learn how salaried individuals calculate
+                            and submit income tax returns in Pakistan.
+                        </h5>
+                        <h3>Step-by-Step</h3>
+                        <h6>Educational Content</h6>
                     </div>
                     <div class="price-body">
-                        <a class="btn btn-success w-100" href="#">Get PSEB Registration</a>
+                        <a class="theme-btn-11 full-btn" href="#">
+                            Read Guide
+                        </a>
                     </div>
                 </div>
             </div>
 
-              <!-- Income Tax Return -->
-            <div class="col-lg-3">
+            <!-- Sales Tax Return -->
+            <div class="col-lg-4 mb-4">
                 <div class="single-price">
                     <div class="price-heading">
-                        <p>Income Tax Return - Salaried</p>
-                        <h5>File your annual Income Tax Return and stay active on Active Taxpayer List (ATL).</h5>
-                        <h3>Rs. 2,000</h3>
-                        <h6>Per Year Fee</h6>
+                        <p>Sales Tax Return Overview</p>
+                        <h5>
+                            Understand monthly sales tax return basics,
+                            due dates, and common mistakes.
+                        </h5>
+                        <h3>Step-by-Step</h3>
+                        <h6>Educational Content</h6>
                     </div>
                     <div class="price-body">
-                        <a class="theme-btn-11 full-btn" href="#">Salaried Individual Return</a>
+                        <a class="theme-btn-11 full-btn" href="#">
+                            Read Guide
+                        </a>
                     </div>
                 </div>
             </div>
-
-                 <div class="col-lg-3">
-                <div class="single-price">
-                    <div class="price-heading">
-                        <p>Income Tax Return - Business</p>
-                        <h5>File your annual Income Tax Return and stay active on Active Taxpayer List (ATL).</h5>
-                        <h3>Rs. 3,000</h3>
-                        <h6>Per Year Fee</h6>
-                    </div>
-                    <div class="price-body">
-                        <a class="theme-btn-11 full-btn" href="#">Business Individual Return</a>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Sales Tax Return Filing-->
-            <div class="col-lg-3 mb-4">
-                <div class="single-price">
-                    <div class="price-heading">
-                        <p>Sales Tax Return Filing</p>
-                        <h5>File your Monthly Sales Tax Return on time — due by the 15th of each month.</h5>
-                        <h3>Rs. 5,000</h3>
-                        <h6>Per month Fee</h6>
-                    </div>
-                    <div class="price-body">
-                        <a class="theme-btn-11 full-btn" href="#">File Sales Tax Return</a>
-                    </div>
-                </div>
-            </div>
-
-
 
         </div>
+
+        <!-- DISCLAIMER -->
+        <p class="text-center mt-4"
+           style="font-size:13px; color:#6c757d;">
+            This section provides general tax information and educational guidance only.
+            No tax filing or consultancy services are offered through this website.
+        </p>
+
     </div>
-</div>
+</section>
