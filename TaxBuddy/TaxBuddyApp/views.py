@@ -4,7 +4,7 @@ from decimal import Decimal
 
 from django.conf import settings
 from django.contrib.auth.decorators import login_required
-from django.contrib.sites import requests
+import requests
 from django.http import HttpResponse, request, Http404
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import authenticate, login, logout
@@ -12,7 +12,7 @@ from django.utils.text import slugify
 from django.contrib import messages
 from django.utils.timezone import now
 
-from .models import Blogs, Comment, Contact, TaxBracket, Business_AOP_Slab, Property_Business_AOP_Slab,Question,Option
+from .models import Blogs, Comment, Contact, TaxBracket, Business_AOP_Slab, Property_Business_AOP_Slab, Question, Option
 
 
 def index(request):
@@ -24,9 +24,10 @@ def index(request):
             created_date__gte=now().date() - timedelta(days=3)
         ).order_by('-updated_date')[:3]
         print(latest_blogs)
-        return render(request, 'index.html', {'result': result,'latest_blogs' :latest_blogs })
+        return render(request, 'index.html', {'result': result, 'latest_blogs': latest_blogs})
     except Exception as e:
         return HttpResponse(str(e))
+
 
 def Login(request):
     try:
@@ -176,9 +177,9 @@ def BlogDetails(request, slug=None):
 
 def viewBlogs(request, slug=None):
     try:
-        type_map = {"income-tax": 1,"sales-tax": 2}
+        type_map = {"income-tax": 1, "sales-tax": 2}
         if slug in type_map:
-            #blogs = Blogs.objects.filter(type=type_map[slug], status=1, is_deleted=False)
+            # blogs = Blogs.objects.filter(type=type_map[slug], status=1, is_deleted=False)
             blogs = Blogs.objects.filter(
                 type=type_map[slug],
                 status=1,
@@ -187,7 +188,7 @@ def viewBlogs(request, slug=None):
 
         else:
             raise Http404("Invalid category")
-        return render(request,"partials/viewBlogs.html",{"blogs": blogs})
+        return render(request, "partials/viewBlogs.html", {"blogs": blogs})
     except Exception as e:
         print('Exception at Blog Details Page :', str(e))
         return HttpResponse(str('Exception at View Blogs Details Page :' + str(e)))
@@ -209,60 +210,47 @@ def userComments(request):
         return HttpResponse(str(e))
 
 
-
 def contact(request):
-    try:
-        if request.method == 'POST':
+    if request.method == "POST":
+        try:
+            token = request.POST.get('g-recaptcha-response')
+            print("TOKEN:", request.POST.get('g-recaptcha-response'))
 
-            # 🔐 reCAPTCHA v3 verification
-            recaptcha_token = request.POST.get('g-recaptcha-response')
+            data = {
+                'secret': '6LesUD4sAAAAADDLaRxJpqYYXWkXygQasHX7sMFT',
+                'response': token
+            }
 
-            if not recaptcha_token:
-                messages.error(request, "Captcha verification failed.")
-                return redirect('/')
-
-            recaptcha_response = requests.post(
+            r = requests.post(
                 'https://www.google.com/recaptcha/api/siteverify',
-                data={
-                    'secret': '6LesUD4sAAAAADDLaRxJpqYYXWkXygQasHX7sMFT',
-                    'response': recaptcha_token
-                }
+                data=data
             )
+            result = r.json()
+            print("RECAPTCHA RESPONSE:", result)
 
-            recaptcha_result = recaptcha_response.json()
-
-            # ❌ Block suspicious requests
-            if (
-                not recaptcha_result.get('success')
-                or recaptcha_result.get('score', 0) < 0.5
-            ):
-                messages.error(request, "Suspicious activity detected. Please try again.")
-                return redirect('/')
-
-            # ✅ Passed reCAPTCHA → process form
-            first_name = request.POST.get('first_name')
-            last_name = request.POST.get('last_name')
-            phone_number = request.POST.get('phone_number')
-            email_address = request.POST.get('email_address')
-            subject = request.POST.get('subject')
-            additional_details = request.POST.get('additional_details')
+            if not result.get('success') or result.get('score', 0) < 0.5:
+                messages.error(request, "Captcha verification failed.")
+                return redirect('/#contact')
 
             Contact.objects.create(
-                first_name=first_name,
-                last_name=last_name,
-                phone_number=phone_number,
-                email_address=email_address,
-                subject=subject,
-                additional_details=additional_details
+                first_name=request.POST.get('first_name'),
+                last_name=request.POST.get('last_name'),
+                phone_number=request.POST.get('phone_number'),
+                email_address=request.POST.get('email_address'),
+                subject=request.POST.get('subject'),
+                additional_details=request.POST.get('additional_details')
             )
 
-            messages.success(request, "Form submitted successfully!")
-            return redirect('/')
+            messages.success(request, "Thank you! We will contact you shortly.")
+            return redirect('/#contact')
 
-    except Exception as e:
-        print('Exception at Contact Page:', str(e))
-        messages.error(request, "Something went wrong. Please try again later.")
-        return redirect('/')
+        except Exception as e:
+            print("Contact form error:", e)
+            messages.error(request, "Something went wrong. Please try again.")
+            return redirect('/#contact')
+
+    return redirect('/')
+
 
 def AOPCalculator(request):
     try:
@@ -537,7 +525,7 @@ def tax_knowledge_quiz(request):
         print('-----------')
         questions = Question.objects.prefetch_related('options')
         print(questions)
-        return render(request, 'tax-knowledge-quizz.html',{"questions": questions})
+        return render(request, 'tax-knowledge-quizz.html', {"questions": questions})
     except Exception as e:
         print("Exception as e:" + str(e))
 
@@ -546,7 +534,7 @@ def online_services(request):
     try:
         return render(request, "partials/online_services.html")
     except Exception as e:
-        return HttpResponse("Exception  :" +  str(e))
+        return HttpResponse("Exception  :" + str(e))
 
 
 def question_list(request):
@@ -554,7 +542,7 @@ def question_list(request):
         questions = Question.objects.prefetch_related("options").order_by("-updated_at")
         return render(request, "tax-knowledge-quizz.html", {"questions": questions})
     except Exception as e:
-        return HttpResponse("Exception at Blog Details Page :" +  str(e))
+        return HttpResponse("Exception at Blog Details Page :" + str(e))
 
 
 @login_required(login_url='Login')  # redirect when user is not logged in
@@ -577,9 +565,10 @@ def add_question(request):
 
     return render(request, 'Cpanel/question.html')
 
+
 @login_required(login_url='Login')  # redirect when user is not logged in
 def view_questions(request):
-        return render(request, 'Cpanel/view_questions.html')
+    return render(request, 'Cpanel/view_questions.html')
 
 
 @login_required(login_url='Login')  # redirect when user is not logged in
@@ -612,3 +601,19 @@ def delete_question(request, pk):
     question = get_object_or_404(Question, pk=pk)
     question.delete()
     return redirect("question-list")
+
+
+def privacy_policy(request):
+    try:
+        return render(request, 'partials/privacy_policy.html')
+
+    except Exception as e:
+        return HttpResponse(str("Exception : " + str(e)))
+
+
+def terms_and_conditions(request):
+    try:
+        return render(request, 'partials/terms_conditions.html')
+
+    except Exception as e:
+        return HttpResponse(str("Exception : " + str(e)))
