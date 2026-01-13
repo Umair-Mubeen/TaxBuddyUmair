@@ -1,4 +1,50 @@
 {% load static %}
+<style>
+    .footer-inline{
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 8px;
+    flex-wrap: wrap;
+    font-size: 14px;
+}
+
+.footer-inline a{
+    color: #000;
+    text-decoration: none;
+    white-space: nowrap;
+}
+
+.footer-inline a:hover{
+    text-decoration: underline;
+}
+
+.footer-copy{
+    white-space: nowrap;
+}
+
+.footer-sep{
+    color: #aaa;
+}
+
+/* 📱 Mobile optimization */
+@media (max-width: 576px){
+    .footer-inline{
+        justify-content: center;
+        text-align: center;
+        line-height: 1.6;
+    }
+
+    .footer-copy{
+        width: 100%;
+    }
+
+    .footer-sep{
+        display: none; /* hide | on mobile */
+    }
+}
+
+</style>
 <!--===== Footer start =====-->
 <footer class="footer-area padding-top footer-2 bg9"
         style="background: radial-gradient(circle at top right, #DAE7E3 0%, #F6FBF9 70%);">
@@ -83,15 +129,21 @@
 
         <!-- BOTTOM -->
      <div class="row align-items-center copyright2">
-    <div class="col-lg-6 col-12 text-lg-start text-center mb-3 mb-lg-0">
-        <p class="footer-copy">
+<div class="col-lg-6 col-12">
+    <div class="footer-inline">
+        <span class="footer-copy">
             © 2025 TaxBuddy Umair. All Rights Reserved.
-            <span class="footer-links">
-                | <a href="/privacy-policy" style="color:black">Privacy Policy</a>
-                | <a href="/terms-and-conditions" style="color:black">Terms & Conditions</a>
-            </span>
-        </p>
+        </span>
+
+        <span class="footer-sep">|</span>
+
+        <a href="/privacy-policy">Privacy Policy</a>
+
+        <span class="footer-sep">|</span>
+
+        <a href="/terms-and-conditions">Terms & Conditions</a>
     </div>
+</div>
 
     <div class="col-lg-6 col-12 text-lg-end text-center">
         <div class="social social2">

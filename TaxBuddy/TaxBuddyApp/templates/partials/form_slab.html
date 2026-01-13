@@ -1,5 +1,179 @@
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+body {
+  font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+}
+p{
+text-align:justify;
+}
+
+.tax-ui {
+  background: linear-gradient(180deg, #f6fbf9 0%, #ffffff 100%);
+  padding: 80px 0;
+  font-family: 'Inter', sans-serif;
+}
+
+.page-header {
+  max-width: 800px;
+  margin-bottom: 50px;
+}
+
+.page-header h1 {
+  font-size: 36px;
+  margin: 15px 0;
+  color: #0f172a;
+}
+
+.page-header p {
+  font-size: 17px;
+  color: #475569;
+  line-height: 1.7;
+}
+
+.badge {
+  display: inline-block;
+  background: #e7f6f1;
+  color: #0c5b47;
+  padding: 6px 14px;
+  border-radius: 999px;
+  font-size: 13px;
+  font-weight: 500;
+}
+
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 24px;
+  margin-bottom: 40px;
+}
+
+.card,
+.content-card,
+.calculator-card {
+  background: #ffffff;
+  border-radius: 16px;
+  padding: 28px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.06);
+}
+
+.card h3,
+.content-card h3,
+.calculator-card h2 {
+  margin-bottom: 15px;
+  color: #0f172a;
+}
+
+.card ul,
+.content-card ul {
+  padding-left: 18px;
+}
+
+.card li,
+.content-card li {
+  margin-bottom: 8px;
+  color: #334155;
+}
+
+.calculator-card {
+  margin: 50px 0;
+  border: 1px solid #e2e8f0;
+}
+
+.disclaimer-box {
+  background: #f1f5f9;
+  padding: 18px;
+  border-radius: 12px;
+  font-size: 14px;
+  color: #475569;
+  margin-top: 40px;
+}
+
+</style>
 <!--=====Income Tax Calculator  =======-->
-<div class="contct6 sp2" id="contact">
+<div class="contct6" id="contact">
+<section class="tax-ui">
+  <div class="container">
+
+    <!-- Header -->
+    <div class="page-header">
+      <span class="badge">{{ content.badge }}</span>
+      <h1>{{ content.title }}</h1>
+      <p>{{ content.intro }}</p>
+    </div>
+
+    <!-- Info Cards -->
+    <div class="card-grid">
+
+      <!-- Who Should Use -->
+      <div class="card">
+        <h3>Who Should Use This?</h3>
+        <ul>
+          {% for item in content.who %}
+            <li>{{ item }}</li>
+          {% endfor %}
+        </ul>
+      </div>
+
+      <!-- How It Works -->
+      <div class="card">
+        <h3>How It Works</h3>
+        <p>{{ content.how }}</p>
+      </div>
+
+      <!-- Key Features (OPTIONAL BUT RECOMMENDED) -->
+      {% if content.features %}
+      <div class="card">
+        <h3>Key Features</h3>
+        <ul>
+          {% for feature in content.features %}
+            <li>{{ feature }}</li>
+          {% endfor %}
+        </ul>
+      </div>
+      {% endif %}
+
+    </div>
+
+    <!-- Calculator Card -->
+    <div class="calculator-card">
+      <h2>{{ title }} – Income Tax Calculator</h2>
+
+      <!-- YOUR EXISTING CALCULATOR FORM HERE -->
+
+    </div>
+
+    <!-- After Calculator -->
+    <div class="content-card">
+
+      <h3>Example Calculation</h3>
+      <ul>
+        {% for ex in content.example %}
+          <li>{{ ex }}</li>
+        {% endfor %}
+      </ul>
+
+      <h3>Important Notes</h3>
+      <ul>
+        {% for note in content.notes %}
+          <li>{{ note }}</li>
+        {% endfor %}
+      </ul>
+
+    </div>
+
+    <!-- Disclaimer -->
+    <div class="disclaimer-box">
+      <strong>Disclaimer:</strong>
+      This calculator is for educational and informational purposes only and
+      does not constitute legal or tax advice.
+    </div>
+
+  </div>
+</section>
+
     <div class="container">
         <div class="row">
             <div class="col-12">
