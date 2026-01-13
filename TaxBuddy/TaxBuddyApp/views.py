@@ -254,79 +254,197 @@ def contact(request):
 
 def AOPCalculator(request):
     try:
+        content = {
+            "title": "AOP Income Tax Calculator – Pakistan",
+            "badge": "Multi-Year Tax Comparison",
+            "intro": "This AOP income tax calculator helps partnerships and firms calculate and compare their tax liability across different tax years under the Income Tax Ordinance, 2001.",
+            "who": [
+                "Registered partnership firms",
+                "Unregistered partnership firms",
+                "Joint ventures",
+                "Businesses classified as Association of Persons (AOP)"
+            ],
+            "how": "Enter the taxable income of the AOP and select one or more tax years. The calculator applies applicable AOP tax slabs for each selected year and provides a clear comparison of tax payable.",
+            "features": [
+                "Compare AOP tax across multiple tax years",
+                "Yearly tax calculation based on AOP slabs",
+                "Accurate slab-based computation",
+                "Instant comparison results"
+            ],
+            "example": [
+                "Monthly income: PKR 400,000",
+                "Annual income: PKR 4,800,000",
+                "Tax comparison across selected tax years"
+            ],
+            "notes": [
+                "Partners’ share of profit may be taxed separately",
+                "Withholding tax adjustments are not included",
+                "Actual tax liability may vary after assessment"
+            ]
+        }
+
+        # Base context (ALWAYS sent)
+        context = {
+            'content': content,
+            'title': 'AOP',
+            'url': '/AOPCalculator'
+        }
+
         if request.method == 'POST':
-            income_type = request.POST.get('income_type')  # 'Monthly' or 'Yearly'
+            income_type = request.POST.get('income_type')
             income_amount = int(request.POST.get('income_amount'))
-            tax_year_1 = request.POST.get('tax_year_1')  # 'Monthly' or 'Yearly'
-            tax_year_2 = request.POST.get('tax_year_2')  # 'Monthly' or 'Yearly'
+            tax_year_1 = request.POST.get('tax_year_1')
+            tax_year_2 = request.POST.get('tax_year_2')
 
-            if income_type == 'Monthly':
-                yearly_income = income_amount * 12
-            else:
-                yearly_income = income_amount  # Already yearly income
+            yearly_income = income_amount * 12 if income_type == 'Monthly' else income_amount
 
-            context = FetchResult(tax_year_1, tax_year_2, 'AOP', yearly_income)
+            result_context = FetchResult(
+                tax_year_1,
+                tax_year_2,
+                'AOP',
+                yearly_income
+            )
+
+            context.update(result_context)
             context.update({
-                'income_type': income_type,
-                'url': '/AOPCalculator',
-                'title': 'AOP'
+                'income_type': income_type
             })
-            return render(request, 'partials/aop_slab.html', context)
-        return render(request, 'partials/aop_slab.html', {'title': 'AOP', 'url': '/AOPCalculator'})
+
+        return render(request, 'partials/aop_slab.html', context)
+
     except Exception as e:
-        print("Exception / Error at AOP Tax Calculator : " + str(e))
-        return HttpResponse("Exception / Error at AOP Tax Calculator : " + str(e))
+        print("Exception / Error at AOP Tax Calculator :", e)
+        return HttpResponse("Exception / Error at AOP Tax Calculator")
 
 
 def BusinessCalculator(request):
     try:
+        content = {
+            "title": "Business Income Tax Calculator – Pakistan",
+            "badge": "Monthly & Yearly Comparison",
+            "intro": "This business income tax calculator allows individuals and sole proprietors to calculate and compare their business tax across different tax years. Results can be viewed on monthly or yearly basis using applicable tax rules.",
+            "who": [
+                "Sole proprietors",
+                "Freelancers earning business income",
+                "Small and medium business owners",
+                "Service providers and traders"
+            ],
+            "how": "Enter your net business income and select one or more tax years. The calculator applies applicable business income tax rates and provides a clear comparison of tax payable.",
+            "features": [
+                "Compare business tax across tax years",
+                "Monthly and yearly tax calculation",
+                "Net income based calculation",
+                "Instant comparison results"
+            ],
+            "example": [
+                "Monthly profit: PKR 200,000",
+                "Annual profit: PKR 2,400,000",
+                "Tax comparison across selected tax years"
+            ],
+            "notes": [
+                "Allowable business expenses reduce taxable income",
+                "Advance and withholding tax not included",
+                "Sales tax is excluded from this calculation"
+            ]
+        }
+
+        # Base context (ALWAYS sent)
+        context = {
+            'content': content,
+            'title': 'Business Individual',
+            'url': '/BusinessCalculator'
+        }
+
         if request.method == 'POST':
-            income_type = request.POST.get('income_type')  # 'Monthly' or 'Yearly'
+            income_type = request.POST.get('income_type')
             income_amount = int(request.POST.get('income_amount'))
-            tax_year_1 = request.POST.get('tax_year_1')  # 'Monthly' or 'Yearly'
-            tax_year_2 = request.POST.get('tax_year_2')  # 'Monthly' or 'Yearly'
+            tax_year_1 = request.POST.get('tax_year_1')
+            tax_year_2 = request.POST.get('tax_year_2')
 
-            if income_type == 'Monthly':
-                yearly_income = income_amount * 12
-            else:
-                yearly_income = income_amount  # Already yearly income
+            yearly_income = income_amount * 12 if income_type == 'Monthly' else income_amount
 
-            context = FetchResult(tax_year_1, tax_year_2, 'Business Individual', yearly_income)
+            result_context = FetchResult(
+                tax_year_1,
+                tax_year_2,
+                'Business Individual',
+                yearly_income
+            )
+
+            context.update(result_context)
             context.update({
-                'income_type': income_type,
-                'url': '/BusinessCalculator',
-                'title': 'Business Individual'
+                'income_type': income_type
             })
-            return render(request, 'partials/business_slab.html', context)
-        return render(request, 'partials/business_slab.html',
-                      {'title': 'Business Individual', 'url': '/BusinessCalculator'})
+
+        return render(request, 'partials/business_slab.html', context)
 
     except Exception as e:
-        print("Exception / Error at Business Tax Calculator : " + str(e))
-        return HttpResponse("Exception / Error at Business Tax Calculator : " + str(e))
+        print("Exception / Error at Business Tax Calculator :", e)
+        return HttpResponse("Exception / Error at Business Tax Calculator")
 
 
 def SalaryCalculator(request):
     try:
+        content = {
+            "title": "Salary Income Tax Calculator – Pakistan",
+            "badge": "Compare Tax by Year",
+            "intro": "This salary income tax calculator allows you to calculate and compare your tax liability across different tax years. You can view tax results on a monthly or yearly basis using the latest FBR tax slabs.",
+            "who": [
+                "Government employees",
+                "Private sector employees",
+                "Contract-based salaried individuals",
+                "Individuals earning salary income in Pakistan"
+            ],
+            "how": "Enter your salary and select one or more tax years. The calculator converts your income into annual salary and applies the relevant tax slabs for each selected year, allowing easy comparison of tax amounts.",
+            "features": [
+                "Compare tax for multiple tax years",
+                "Monthly and yearly tax calculation",
+                "Based on FBR notified tax slabs",
+                "Instant comparison results"
+            ],
+            "example": [
+                "Monthly salary: PKR 100,000",
+                "Tax Year 2025 vs Tax Year 2026 comparison",
+                "Monthly and annual tax difference displayed"
+            ],
+            "notes": [
+                "Tax credits and exemptions are not included",
+                "Allowances may be taxable depending on law",
+                "Final tax may vary based on individual profile"
+            ]
+        }
+
+        # Base context (ALWAYS SENT)
+        context = {
+            'content': content,
+            'title': 'Salary Individual',
+            'url': '/SalaryCalculator'
+        }
+
         if request.method == 'POST':
-            tax_year_1 = request.POST.get('tax_year_1')  # 'Monthly' or 'Yearly'
-            tax_year_2 = request.POST.get('tax_year_2')  # 'Monthly' or 'Yearly'
+            tax_year_1 = request.POST.get('tax_year_1')
+            tax_year_2 = request.POST.get('tax_year_2')
             income_type = request.POST.get('income_type')
             income_amount = int(request.POST.get('income_amount'))
 
-            if income_type == 'Monthly':
-                yearly_income = income_amount * 12
-            else:
-                yearly_income = income_amount  # Already yearly income
+            yearly_income = income_amount * 12 if income_type == 'Monthly' else income_amount
 
-            context = FetchResult(tax_year_1, tax_year_2, 'Salary Individual', yearly_income)
-            context.update({'income_type': income_type, 'url': '/SalaryCalculator', 'title': 'Salary Individual'})
-            return render(request, 'partials/salary_slab.html', context)
-        return render(request, 'partials/salary_slab.html', {'title': 'Salary Individual', 'url': '/SalaryCalculator'})
+            result_context = FetchResult(
+                tax_year_1,
+                tax_year_2,
+                'Salary Individual',
+                yearly_income
+            )
+
+            context.update(result_context)
+            context.update({
+                'income_type': income_type
+            })
+
+        return render(request, 'partials/salary_slab.html', context)
 
     except Exception as e:
-        print("Exception / Error at Salary Tax Calculator : " + str(e))
-        return HttpResponse("Exception / Error at Salary Tax Calculator : " + str(e))
+        print("Exception / Error at Salary Tax Calculator :", e)
+        return HttpResponse("Exception / Error at Salary Tax Calculator")
 
 
 def PropertyCalculator(request):
