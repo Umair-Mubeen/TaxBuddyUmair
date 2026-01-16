@@ -46,6 +46,14 @@
     <changefreq>monthly</changefreq>
   </url>
 
+  <url>
+  <loc>https://taxbuddyumair.com/income-tax-mcqs-pakistan</loc>
+  <lastmod>2026-01-16</lastmod>
+  <changefreq>weekly</changefreq>
+  <priority>0.9</priority>
+</url>
+
+
   <!-- Homepage Sections (Anchors) -->
   <!-- These anchors (#about, #work, #service, etc.) are not separate pages,
        so they should NOT be in the sitemap. Google ignores them anyway. -->
