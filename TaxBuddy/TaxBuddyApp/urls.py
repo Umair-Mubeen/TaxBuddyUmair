@@ -20,12 +20,9 @@ path("terms-and-conditions/", views.terms_and_conditions, name="terms-and-condit
 # Add new question (card form)
     path("questions-add/", views.add_question, name="questions-add"),
     path("view-questions/", views.view_questions, name="view-questions"),
+ path("questions/edit/<int:pk>/", views.edit_question, name="questions-edit"),
+    path("questions/delete/<int:pk>/", views.delete_question, name="questions-delete"),
 
-    # Update question
-    path("questions/<int:pk>/edit/", views.update_question, name="update-question"),
-
-    # Delete question
-    path("questions/<int:pk>/delete/", views.delete_question, name="delete-question"),
 
     path("income-tax-mcqs-pakistan", views.question_list, name="income-tax-mcqs-pakistan"),
 path("online-services", views.online_services, name="online-services"),

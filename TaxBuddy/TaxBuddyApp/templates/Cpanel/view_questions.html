@@ -1,58 +1,196 @@
-<html>
 {% load static %}
-
-{% include 'Cpanel/reusable.html' %}
+<html lang="en">
 <head>
-    <title>Create Blog </title>
+    <meta charset="UTF-8">
+    <title>All MCQs – TaxBuddy Umair</title>
 
+    {% include 'Cpanel/reusable.html' %}
+
+    <style>
+        .question-card {
+            background:#fff;
+            border-radius:14px;
+            box-shadow:0 12px 30px rgba(13,44,84,.08);
+            padding:22px;
+        }
+
+        .question-header {
+            display:flex;
+            justify-content:space-between;
+            align-items:center;
+            margin-bottom:20px;
+        }
+
+        .question-header h4 {
+            font-weight:700;
+            color:#0d2c54;
+        }
+
+        .table thead th {
+            background:#0d2c54;
+            color:#fff;
+            font-weight:600;
+            vertical-align:middle;
+        }
+
+        .badge-category {
+            background:#eef2ff;
+            color:#3730a3;
+            font-weight:600;
+            padding:6px 10px;
+            border-radius:20px;
+        }
+
+        .badge-basic { background:#ecfeff; color:#0369a1; }
+        .badge-intermediate { background:#fff7ed; color:#9a3412; }
+        .badge-advanced { background:#fef2f2; color:#991b1b; }
+
+        .question-text {
+            font-weight:600;
+            color:#111827;
+        }
+
+        .action-btns a {
+            margin-right:6px;
+        }
+
+        .status-active {
+            background:#ecfdf5;
+            color:#065f46;
+            padding:5px 10px;
+            border-radius:12px;
+            font-weight:600;
+        }
+
+        .status-inactive {
+            background:#fef2f2;
+            color:#7f1d1d;
+            padding:5px 10px;
+            border-radius:12px;
+            font-weight:600;
+        }
+
+        .search-box {
+            max-width:300px;
+        }
+
+        @media(max-width:768px){
+            .question-header {
+                flex-direction:column;
+                gap:12px;
+                align-items:flex-start;
+            }
+        }
+    </style>
 </head>
+
 <body class="sidebar-mini layout-fixed sidebar-collapse">
 
 <div class="wrapper">
 
-    {% include 'Cpanel/navbar.html' %}
-    {% include 'Cpanel/sidebar.html' %}
-    <!-- Content Wrapper. Contains page content -->
-    <div class="content-wrapper">
-        <!-- Content Header (Page header) -->
-        <div class="content-header">
-            <div class="container-fluid">
-                <div class="row mb-2">
-                    <div class="col-sm-6">
-                        <h1 class="m-0">TaxBuddy Umair</h1>
-                    </div><!-- /.col -->
-                    <div class="col-sm-6">
-                        <ol class="breadcrumb float-sm-right">
-                            <li class="breadcrumb-item"><a href="/Dashboard" style="color:black"><i
-                                    class="fa fa-home"></i></a>
-                            </li>
-                            <li class="breadcrumb-item active">
-                                <a href="/ManageBlogs" style="color:black">
-                                    Questions </a>
-                            </li>
-                            <li class="breadcrumb-item">Create</li>
+{% include 'Cpanel/navbar.html' %}
+{% include 'Cpanel/sidebar.html' %}
 
-                        </ol>
-                    </div><!-- /.col -->
-                </div><!-- /.row -->
-            </div><!-- /.container-fluid -->
-        </div>
-        <!-- /.content-header -->
+<div class="content-wrapper">
 
-        <!-- Main content -->
-
-
-
+<div class="content-header">
+    <div class="container-fluid">
+        <h3 class="mb-0">All MCQ Questions</h3>
     </div>
-    <!-- /.content-wrapper -->
+</div>
 
+<div class="container-fluid mt-4">
+<div class="question-card">
+
+    <!-- HEADER -->
+    <div class="question-header">
+        <h4>MCQ Bank</h4>
+
+        <div class="d-flex gap-2">
+            <input type="text" class="form-control search-box"
+                   placeholder="Search question...">
+            <a href="{% url 'questions-add' %}" class="btn btn-success">
+                ➕
+            </a>
+        </div>
+    </div>
+
+    <!-- TABLE -->
+    <div class="table-responsive">
+        <table class="table table-bordered align-middle table-responsive">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Question</th>
+                    <th>Category</th>
+                    <th>Difficulty</th>
+                    <th>Status</th>
+                    <th width="10%">Actions</th>
+                </tr>
+            </thead>
+
+            <tbody>
+            {% for q in questions %}
+                <tr>
+                    <td>{{ forloop.counter }}</td>
+
+                    <td class="question-text">
+                        {{ q.question_text|truncatechars:90 }}
+                    </td>
+
+                    <td>
+                        <span class="badge-category">{{ q.category }}</span>
+                    </td>
+
+                    <td>
+                        {% if q.difficulty == "basic" %}
+                            <span class="badge badge-basic">Basic</span>
+                        {% elif q.difficulty == "intermediate" %}
+                            <span class="badge badge-intermediate">Intermediate</span>
+                        {% else %}
+                            <span class="badge badge-advanced">Advanced</span>
+                        {% endif %}
+                    </td>
+
+                    <td>
+                        {% if q.is_active %}
+                            <span class="status-active">Active</span>
+                        {% else %}
+                            <span class="status-inactive">Inactive</span>
+                        {% endif %}
+                    </td>
+
+                    <td class="action-btns">
+                        <a href="{% url 'questions-edit' q.id %}"
+                           class="btn btn-sm btn-warning">
+                            ✏
+                        </a>
+
+                        <a href="{% url 'questions-delete' q.id %}"
+                           onclick="return confirm('Are you sure you want to delete this question?')"
+                           class="btn btn-sm btn-danger">
+                            🗑
+                        </a>
+                    </td>
+                </tr>
+            {% empty %}
+                <tr>
+                    <td colspan="6" class="text-center text-muted">
+                        No questions found.
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
 
 </div>
-<!-- /.content-wrapper -->
+</div>
 
+</div>
+</div>
 
 {% include 'Cpanel/footer.html' %}
-
 
 </body>
 </html>

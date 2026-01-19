@@ -1,229 +1,212 @@
+<!DOCTYPE html>
 <html>
 {% load static %}
 
 {% include 'Cpanel/reusable.html' %}
 <head>
-    <title>Create Blog </title>
-    <style>
-        .quiz-card {
-    border: none;
-    border-radius: 14px;
-    box-shadow: 0 15px 40px rgba(13, 44, 84, 0.1);
-}
+    <title>Add Quiz Question – TaxBuddy Umair</title>
 
-.quiz-card-header {
-    background: linear-gradient(135deg, #0d2c54, #093a75);
-    color: #fff;
-    border-radius: 14px 14px 0 0;
-    padding: 18px 22px;
+<style>
+.quiz-card{
+    border:none;border-radius:14px;
+    box-shadow:0 15px 40px rgba(13,44,84,.1)
 }
-
-.quiz-card-header h5 {
-    font-weight: 700;
+.quiz-card-header{
+    background:linear-gradient(135deg,#0d2c54,#093a75);
+    color:#fff;border-radius:14px 14px 0 0;
+    padding:18px 22px
 }
+.quiz-card-header h5{font-weight:700}
 
-.option-card {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    background: #f8fafc;
-    border: 1px solid #e5e7eb;
-    border-radius: 10px;
-    padding: 10px;
-    margin-bottom: 12px;
-    transition: 0.2s;
+.option-card{
+    display:flex;justify-content:space-between;
+    gap:12px;background:#f8fafc;
+    border:1px solid #e5e7eb;
+    border-radius:10px;
+    padding:12px;margin-bottom:12px
 }
-
-.option-card:hover {
-    border-color: #0d2c54;
-    background: #f1f6ff;
+.option-label{
+    width:36px;height:36px;background:#0d2c54;
+    color:#fff;border-radius:50%;
+    display:flex;align-items:center;justify-content:center;
+    font-weight:700
 }
-
-.option-label {
-    width: 36px;
-    height: 36px;
-    background: #0d2c54;
-    color: #fff;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-weight: 700;
-}
-
-.btn-primary {
-    background: #0d2c54;
-    border: none;
-}
-
-.btn-primary:hover {
-    background: #093a75;
-}
-
-    </style>
+.btn-primary{background:#0d2c54;border:none}
+.btn-primary:hover{background:#093a75}
+</style>
 </head>
+
 <body class="sidebar-mini layout-fixed sidebar-collapse">
 
 <div class="wrapper">
+{% include 'Cpanel/navbar.html' %}
+{% include 'Cpanel/sidebar.html' %}
 
-    {% include 'Cpanel/navbar.html' %}
-    {% include 'Cpanel/sidebar.html' %}
-    <!-- Content Wrapper. Contains page content -->
-    <div class="content-wrapper">
-        <!-- Content Header (Page header) -->
-        <div class="content-header">
-            <div class="container-fluid">
-                <div class="row mb-2">
-                    <div class="col-sm-6">
-                        <h1 class="m-0">TaxBuddy Umair</h1>
-                    </div><!-- /.col -->
-                    <div class="col-sm-6">
-                        <ol class="breadcrumb float-sm-right">
-                            <li class="breadcrumb-item"><a href="/Dashboard" style="color:black"><i
-                                    class="fa fa-home"></i></a>
-                            </li>
-                            <li class="breadcrumb-item active">
-                                <a href="/ManageBlogs" style="color:black">
-                                    Questions </a>
-                            </li>
-                            <li class="breadcrumb-item">Create</li>
+<div class="content-wrapper">
 
-                        </ol>
-                    </div><!-- /.col -->
-                </div><!-- /.row -->
-            </div><!-- /.container-fluid -->
-        </div>
-        <!-- /.content-header -->
-
-        <!-- Main content -->
-        <div class="container-fluid mt-5">
-    <div class="row justify-content-center">
-<div class="col-lg-12 col-md-8">
-
-    <div class="card quiz-card">
-        <div class="card-header quiz-card-header">
-            <h5 class="mb-0">Add New Quiz Question - Create MCQs for Tax Awareness</h5>
-        </div>
-
-        <div class="card-body">
-            <form method="POST" action="{% url 'questions-add' %}">
-                {% csrf_token %}
-
-                <!-- Question -->
-                <div class="mb-3">
-                    <label class="form-label fw-semibold">Question</label>
-                    <input type="text" name="question_text"
-                           class="form-control"
-                           placeholder="Enter question here" required>
-                </div>
-
-                <!-- Options -->
-                <label class="form-label fw-semibold mb-2">
-                    Options <small class="text-muted">(Mark the correct one)</small>
-                </label>
-
-                <!-- Hidden field to store correct option index -->
-                <input type="hidden" name="correct_option" id="correct_option" required>
-
-                <!-- Option A -->
-                <div class="option-card option-row">
-                    <div class="d-flex align-items-center gap-2">
-                        <span class="option-label">A</span>
-                        <input type="text" name="option_text" class="form-control"
-                               placeholder="Option 1" required>
-                    </div>
-                    <div class="form-check mt-1">
-                        <input class="form-check-input correct-check" type="checkbox">
-                        <label class="form-check-label">This option is correct</label>
-                    </div>
-                </div>
-
-                <!-- Option B -->
-                <div class="option-card option-row">
-                    <div class="d-flex align-items-center gap-2">
-                        <span class="option-label">B</span>
-                        <input type="text" name="option_text" class="form-control"
-                               placeholder="Option 2" required>
-                    </div>
-                    <div class="form-check mt-1">
-                        <input class="form-check-input correct-check" type="checkbox">
-                        <label class="form-check-label">This option is correct</label>
-                    </div>
-                </div>
-
-                <!-- Option C -->
-                <div class="option-card option-row">
-                    <div class="d-flex align-items-center gap-2">
-                        <span class="option-label">C</span>
-                        <input type="text" name="option_text" class="form-control"
-                               placeholder="Option 3" required>
-                    </div>
-                    <div class="form-check mt-1">
-                        <input class="form-check-input correct-check" type="checkbox">
-                        <label class="form-check-label">This option is correct</label>
-                    </div>
-                </div>
-
-                <!-- Option D -->
-                <div class="option-card option-row">
-                    <div class="d-flex align-items-center gap-2">
-                        <span class="option-label">D</span>
-                        <input type="text" name="option_text" class="form-control"
-                               placeholder="Option 4" required>
-                    </div>
-                    <div class="form-check mt-1">
-                        <input class="form-check-input correct-check" type="checkbox">
-                        <label class="form-check-label">This option is correct</label>
-                    </div>
-                </div>
-
-                <!-- Submit -->
-                <div class="d-grid mt-4">
-                    <button type="submit" class="btn btn-primary btn-lg">
-                        Save Question
-                    </button>
-                </div>
-            </form>
-        </div>
-
-        <div class="card-footer text-center text-muted small">
-            © TaxBuddy Umair
-        </div>
-    </div>
-
+<div class="content-header">
+<div class="container-fluid">
+<h1 class="m-0">Add MCQ Question</h1>
+</div>
 </div>
 
-    </div>
+<div class="container-fluid mt-4">
+<div class="row justify-content-center">
+<div class="col-lg-10">
+
+<div class="card quiz-card">
+<div class="card-header quiz-card-header">
+<h5>Add New Tax MCQ</h5>
 </div>
 
+<div class="card-body">
+<form method="POST" action="{% if id %}{% url url id %}{% else %}{% url url %}{% endif %}">
+{% csrf_token %}
 
+<!-- Question -->
+<div class="mb-3">
+<label class="fw-semibold">Question *</label>
+<input type="text" name="question_text" class="form-control"
+       value="{{ question.question_text }}"
+       required>
+</div>
 
+<!-- Category -->
+<div class="mb-3">
+<label class="fw-semibold">Category *</label>
+<input type="text" name="category" class="form-control"
+       value="{{ question.category }}"
+       required>
+</div>
+
+<!-- Difficulty -->
+<div class="mb-3">
+<label class="fw-semibold">Difficulty</label>
+<select name="difficulty" class="form-select form-control">
+    <option value="basic" {% if question.difficulty == "basic" %}selected{% endif %}>
+        Basic
+    </option>
+    <option value="intermediate" {% if question.difficulty == "intermediate" %}selected{% endif %}>
+        Intermediate
+    </option>
+    <option value="advanced" {% if question.difficulty == "advanced" %}selected{% endif %}>
+        Advanced
+    </option>
+</select>
+</div>
+
+<!-- Section Reference -->
+<div class="mb-3">
+<label class="fw-semibold">Section Reference</label>
+<input type="text" name="section_ref" class="form-control"
+       value="{{ question.section_ref }}">
+</div>
+
+<!-- Explanation -->
+<div class="mb-3">
+<label class="fw-semibold">Explanation *</label>
+<textarea name="explanation" rows="3" class="form-control" required>
+{{ question.explanation }}</textarea>
+</div>
+
+<hr>
+
+<label class="fw-semibold mb-2">
+Options <small class="text-muted">(Select ONLY one correct)</small>
+</label>
+
+<input type="hidden" name="correct_option" id="correct_option"
+       value="{% if id %}
+              {% for opt in options %}
+              {% if opt.is_correct %}{{ forloop.counter0 }}{% endif %}
+              {% endfor %}
+              {% endif %}">
+
+{% if id %}
+    {# -------- EDIT MODE -------- #}
+    {% for opt in options %}
+    <div class="option-card">
+        <div class="d-flex gap-2 flex-grow-1">
+          <span class="option-label">
+    {{ "ABCD"|slice:forloop.counter0|add:1 }}
+</span>
+            <input type="text"
+                   name="options[]"
+                   class="form-control"
+                   value="{{ opt.option_text }}"
+                   required>
+        </div>
+
+        <div class="form-check">
+            <input class="form-check-input correct-check"
+                   type="radio"
+                   name="correct_radio"
+                   {% if opt.is_correct %}checked{% endif %}>
+        </div>
     </div>
-    <!-- /.content-wrapper -->
+    {% endfor %}
 
+{% else %}
+    {# -------- ADD MODE -------- #}
+    {% for i in "1234" %}
+    <div class="option-card">
+        <div class="d-flex gap-2 flex-grow-1">
+            <span class="option-label">
+    {{ "ABCD"|slice:forloop.counter0|add:1 }}
+</span>
+            <input type="text"
+                   name="options[]"
+                   class="form-control"
+                   placeholder="Option {{ forloop.counter }}"
+                   required>
+        </div>
+
+        <div class="form-check">
+            <input class="form-check-input correct-check"
+                   type="radio"
+                   name="correct_radio">
+        </div>
+    </div>
+    {% endfor %}
+{% endif %}
+
+<!-- Active -->
+<div class="form-check mt-3">
+<input class="form-check-input" type="checkbox" name="is_active"
+       {% if question.is_active %}checked{% endif %}>
+<label class="form-check-label">Active Question</label>
+</div>
+
+<div class="d-grid mt-4">
+<button type="submit" class="btn btn-primary btn-lg">
+Update Question
+</button>
+</div>
+
+</form>
+</div>
+
+<div class="card-footer text-center small text-muted">
+© TaxBuddy Umair
+</div>
 
 </div>
-<!-- /.content-wrapper -->
+</div>
+</div>
+</div>
 
+</div>
+</div>
 
 {% include 'Cpanel/footer.html' %}
 
-
-</body>
-
 <script>
-document.querySelectorAll(".correct-check").forEach((checkbox, index) => {
-    checkbox.addEventListener("change", function () {
-
-        // Allow only one correct option
-        document.querySelectorAll(".correct-check").forEach(cb => {
-            if (cb !== this) cb.checked = false;
-        });
-
-        // Store selected index
-        document.getElementById("correct_option").value = this.checked ? index : "";
+document.querySelectorAll(".correct-check").forEach((radio, index) => {
+    radio.addEventListener("change", function () {
+        document.getElementById("correct_option").value = index;
     });
 });
 </script>
 
+</body>
 </html>
