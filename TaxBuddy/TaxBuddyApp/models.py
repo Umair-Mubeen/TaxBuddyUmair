@@ -102,13 +102,53 @@ class Property_Business_AOP_Slab(models.Model):
     base_tax = models.BigIntegerField()
 
 
+class Category(models.Model):
+    """
+    MCQ Category
+    e.g. Basic Income Tax, Withholding Tax, Salary Income
+    """
+    name = models.CharField(max_length=100, unique=True)
+    order = models.PositiveIntegerField(default=0)
+
+    class Meta:
+        ordering = ["order", "name"]
+
+    def __str__(self):
+        return self.name
+
+
 class Question(models.Model):
-    question_text = models.CharField(max_length=255)
+    question_text = models.CharField(max_length=500)
+
+    category = models.CharField(
+        max_length=100,
+        help_text="e.g. Basic Income Tax, Withholding Tax"
+    )
+
+    explanation = models.TextField(blank=True)
+    section_ref = models.CharField(max_length=100, blank=True)
+
+    difficulty = models.CharField(
+        max_length=20,
+        choices=[
+            ("basic", "Basic"),
+            ("intermediate", "Intermediate"),
+            ("advanced", "Advanced"),
+        ],
+        default="basic"
+    )
+
+    is_active = models.BooleanField(default=True)
+
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
+    class Meta:
+        ordering = ["category", "id"]   # ✅ FIXED
+
     def __str__(self):
         return self.question_text
+
 
 
 class Option(models.Model):
@@ -117,10 +157,15 @@ class Option(models.Model):
         related_name="options",
         on_delete=models.CASCADE
     )
+
     option_text = models.CharField(max_length=255)
     is_correct = models.BooleanField(default=False)
+
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        ordering = ["id"]
 
     def __str__(self):
         return f"{self.option_text} ({'Correct' if self.is_correct else 'Wrong'})"

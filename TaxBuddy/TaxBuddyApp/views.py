@@ -638,15 +638,26 @@ def calculate_tax(income, tax_brackets, surcharge_rate):
         print(str(e))
 
 
-def tax_knowledge_quiz(request):
-    try:
-        print('-----------')
-        questions = Question.objects.prefetch_related('options')
-        print(questions)
-        return render(request, 'tax-knowledge-quizz.html', {"questions": questions})
-    except Exception as e:
-        print("Exception as e:" + str(e))
+from django.shortcuts import render
+from .models import Question
 
+
+def tax_knowledge_quiz(request):
+    questions = (
+        Question.objects
+        .filter(is_active=True)
+        .select_related("category")
+        .prefetch_related("options")
+        .order_by("category__order", "id")
+    )
+
+    return render(
+        request,
+        "tax-knowledge-quizz.html",
+        {
+            "questions": questions,
+        }
+    )
 
 def online_services(request):
     try:
@@ -662,15 +673,40 @@ def question_list(request):
     except Exception as e:
         return HttpResponse("Exception at Blog Details Page :" + str(e))
 
-
-@login_required(login_url='Login')  # redirect when user is not logged in
+@login_required(login_url='Login')
 def add_question(request):
     if request.method == "POST":
         question_text = request.POST.get("question_text")
-        options = request.POST.getlist("option_text")
+        category = request.POST.get("category")
+        explanation = request.POST.get("explanation")
+        section_ref = request.POST.get("section_ref", "")
+        difficulty = request.POST.get("difficulty", "basic")
+        is_active = True if request.POST.get("is_active") else False
+
+        options = request.POST.getlist("options[]")
         correct_index = request.POST.get("correct_option")
 
-        question = Question.objects.create(question_text=question_text)
+        # Validation
+        if not question_text or not category or not explanation:
+            messages.error(request, "Please fill all required fields.")
+            return redirect("questions-add")
+
+        if correct_index in [None, ""]:
+            messages.error(request, "Please select the correct option.")
+            return redirect("questions-add")
+
+        if len(options) < 2:
+            messages.error(request, "At least two options are required.")
+            return redirect("questions-add")
+
+        question = Question.objects.create(
+            question_text=question_text,
+            category=category,
+            explanation=explanation,
+            section_ref=section_ref,
+            difficulty=difficulty,
+            is_active=is_active
+        )
 
         for i, opt in enumerate(options):
             Option.objects.create(
@@ -679,46 +715,75 @@ def add_question(request):
                 is_correct=(str(i) == correct_index)
             )
 
-        return render(request, 'Cpanel/question.html')
+        messages.success(request, "Question added successfully.")
+        return redirect("questions-add")
 
-    return render(request, 'Cpanel/question.html')
+    # IMPORTANT: pass question & options
+    return render(
+        request,
+        "Cpanel/question.html",
+        {
+            "url": "questions-add",
+            "id": "",
+            "question": None,
+            "options": []
+        }
+    )
+
 
 
 @login_required(login_url='Login')  # redirect when user is not logged in
 def view_questions(request):
-    return render(request, 'Cpanel/view_questions.html')
+    questions = Question.objects.all().order_by("category", "id")
+    return render(request, "Cpanel/view_questions.html", {"questions": questions})
 
 
-@login_required(login_url='Login')  # redirect when user is not logged in
-def update_question(request, pk):
+@login_required(login_url='Login')
+def edit_question(request, pk):
     question = get_object_or_404(Question, pk=pk)
+    options = list(question.options.all())
 
     if request.method == "POST":
         question.question_text = request.POST.get("question_text")
+        question.category = request.POST.get("category")
+        question.explanation = request.POST.get("explanation")
+        question.section_ref = request.POST.get("section_ref", "")
+        question.difficulty = request.POST.get("difficulty", "basic")
+        question.is_active = True if request.POST.get("is_active") else False
         question.save()
 
-        question.options.all().delete()
-
-        options = request.POST.getlist("option_text")
+        option_texts = request.POST.getlist("options[]")
         correct_index = request.POST.get("correct_option")
 
         for i, opt in enumerate(options):
-            Option.objects.create(
-                question=question,
-                option_text=opt,
-                is_correct=(str(i) == correct_index)
-            )
+            if i < len(option_texts):
+                opt.option_text = option_texts[i]
+                opt.is_correct = (str(i) == correct_index)
+                opt.save()
 
-        return redirect("question-list")
+        messages.success(request, "Question updated successfully.")
+        return redirect("view-questions")
 
-    return render(request, "update_question.html", {"question": question})
+    return render(
+        request,
+        "Cpanel/question.html",
+        {
+            "question": question,
+            "options": options,
+            "url": "questions-edit",
+            "id": question.id
+        }
+    )
 
 
-@login_required(login_url='Login')  # redirect when user is not logged in
+
+# DELETE QUESTION
+@login_required(login_url='Login')
 def delete_question(request, pk):
     question = get_object_or_404(Question, pk=pk)
     question.delete()
-    return redirect("question-list")
+    messages.success(request, "Question deleted successfully.")
+    return redirect("questions-list")
 
 
 def privacy_policy(request):
