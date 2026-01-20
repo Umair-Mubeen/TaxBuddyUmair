@@ -2,260 +2,143 @@
 <html lang="en">
 {% load static %}
 <head>
-    <meta charset="UTF-8">
-    <title>Pakistan Income Tax MCQs Quiz (With Answers) – TaxBuddy Umair</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <meta name="description"
-          content="Practice Pakistan Income Tax MCQs based on Income Tax Ordinance, 2001. Interactive quiz with answers & explanations for students, FBR aspirants and tax professionals.">
+    <title>Pakistan Income Tax MCQs (With Answers) – TaxBuddy Umair</title>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
 
-    <link rel="shortcut icon" href="{% static 'assets/img/icons/fab2.png' %}">
-    {% include 'partials/head-css.html' %}
+    <meta content="Pakistan Income Tax MCQs with correct answers, explanations and section references based on Income Tax Ordinance, 2001."
+          name="description">
 
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="{% static 'assets/img/icons/fab2.png' %}" rel="shortcut icon">
 
-<style>
-.quiz-card {
+    <style>
+.quiz-card{
     background:#fff;
     padding:32px;
     border-radius:14px;
-    box-shadow:0 15px 40px rgba(13,44,84,.08)
+    box-shadow:0 15px 40px rgba(13,44,84,.08);
 }
+
 .quiz-header{text-align:center;margin-bottom:20px}
 .quiz-header h1{font-weight:800;color:#0d2c54}
 
-.quiz-intro p{font-size:15px;line-height:1.7;color:#374151}
+.question{margin-bottom:35px}
+.question legend{font-size:17px;font-weight:600;margin-bottom:14px}
 
-.progress{height:10px;background:#e5e7eb;border-radius:20px;overflow:hidden}
-.progress-bar{height:100%;width:0%;background:linear-gradient(135deg,#0d2c54,#22c55e);transition:.4s}
-.progress-text{margin-top:6px;font-size:13px;font-weight:600;text-align:right;color:#374151}
+.option{
+    display:flex;
+    align-items:center;
+    gap:12px;
+    padding:14px 16px;
+    margin-bottom:10px;
+    border-radius:12px;
+    border:2px solid #e5e7eb;
+}
 
-.question{margin-bottom:30px}
-.question legend{font-size:17px;font-weight:600;color:#111827;margin-bottom:14px}
+.option.correct{
+    background:#ecfdf5;
+    border-color:#22c55e;
+    color:#065f46;
+    font-weight:600;
+}
 
-.option{display:flex;align-items:center;gap:12px;padding:14px 16px;margin-bottom:10px;
-    border-radius:12px;border:2px solid #e5e7eb;cursor:pointer;transition:.25s}
-.option:hover{background:#f5f9ff;border-color:#0d2c54}
-.option input{appearance:none;width:18px;height:18px;border-radius:50%;
-    border:2px solid #9ca3af;position:relative}
-.option input:checked{border-color:#0d2c54}
-.option input:checked::after{content:"";width:8px;height:8px;background:#0d2c54;
-    border-radius:50%;position:absolute;top:3px;left:3px}
+.option.correct::after{
+    content:"✔ Correct";
+    margin-left:auto;
+    font-weight:700;
+}
 
-.option.correct{background:#ecfdf5;border-color:#22c55e;color:#065f46}
-.option.wrong{background:#fef2f2;border-color:#ef4444;color:#7f1d1d}
-.option.correct::after{content:"✔ Correct";margin-left:auto;font-weight:700}
-.option.wrong::after{content:"✖ Wrong";margin-left:auto;font-weight:700}
+.option input{
+    appearance:none;
+    width:16px;
+    height:16px;
+    border-radius:50%;
+    border:2px solid #9ca3af;
+}
 
 .explanation{
-    display:none;background:#f8fafc;border-left:4px solid #0d2c54;
-    padding:12px;border-radius:8px;font-size:14px;color:#374151
+    background:#f8fafc;
+    border-left:4px solid #0d2c54;
+    padding:14px;
+    border-radius:8px;
+    font-size:14px;
+    margin-top:12px;
 }
-.explanation strong{color:#0d2c54}
 
-.unanswered{border:2px dashed #f59e0b;padding:14px;border-radius:12px}
-
-.quiz-navigation{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-top:25px}
-#pageInfo{font-weight:600;color:#0d2c54}
-
-#result{display:none;margin-top:30px;padding:22px;background:#f0f7ff;
-    border-left:6px solid #0d2c54;border-radius:10px}
-
-@media(max-width:576px){
-    .quiz-card{padding:22px}
-    .quiz-navigation{flex-direction:column}
-    .quiz-navigation button{width:100%}
+.category-title{
+    color:#0d2c54;
+    font-weight:700;
+    margin:30px 0 15px;
 }
-</style>
+
+
+    </style>
+    {% include 'partials/head-css.html' %}
+
 </head>
 
 <body>
+
 {% include 'partials/topbar.html' %}
-<div class="space100"></div>
+
+<!-- SAFE SPACING (NO OVERLAP, NO TOUCH BLOCK) -->
+
+            <div class="space100"></div>
 
 <div class="container">
-<div class="quiz-card">
+    <div class="quiz-card">
 
-<!-- INTRO -->
-<div class="quiz-intro mb-4">
-    <p>
-        These <strong>Pakistan Income Tax MCQs</strong> are based on the
-        <strong>Income Tax Ordinance, 2001</strong>. This quiz is ideal for
-        <strong>students, FBR job aspirants, CSS/PCS candidates, tax practitioners</strong>
-        and anyone preparing for tax exams. Each question includes
-        <strong>correct answers with explanations</strong>.
-    </p>
-</div>
-
-<div class="quiz-header">
-    <h1>Pakistan Income Tax MCQs Quiz</h1>
-</div>
-
-<!-- PROGRESS -->
-<div class="quiz-progress mb-4">
-    <div class="progress">
-        <div id="progressBar" class="progress-bar"></div>
-    </div>
-    <div id="progressText" class="progress-text">
-        Answered 0 / {{ questions|length }}
-    </div>
-</div>
-
-<form id="quizForm">
-
-{% for q in questions %}
-
-    {% ifchanged q.category %}
-    <h4 class="mt-4 mb-3" style="color:#0d2c54;font-weight:700;">
-        {{ q.category }}
-    </h4>
-    {% endifchanged %}
-
-    <fieldset class="question">
-        <legend>{{ forloop.counter }}. {{ q.question_text }}</legend>
-
-        {% for opt in q.options.all %}
-        <label class="option" data-correct="{{ opt.is_correct|yesno:'true,false' }}">
-            <input type="radio" name="q{{ q.id }}">
-            {{ opt.option_text }}
-        </label>
-        {% endfor %}
-
-        <div class="explanation">
-            <strong>Explanation:</strong> {{ q.explanation }}
-            {% if q.section_ref %}
-            <div class="mt-1">
-                <strong>Reference:</strong> {{ q.section_ref }}
-            </div>
-            {% endif %}
+        <div class="quiz-header">
+            <h1>Pakistan Income Tax MCQs (With Answers)</h1>
+            <p class="text-muted">
+                Based on Income Tax Ordinance, 2001 – Updated for Tax Year 2026
+            </p>
         </div>
-    </fieldset>
 
-{% endfor %}
+        <form>
 
-<div class="quiz-navigation">
-    <button type="button" id="prevBtn" class="btn btn-success" disabled>
-        Previous
-    </button>
-    <span id="pageInfo"></span>
-    <button type="button" id="nextBtn" class="btn btn-success">
-        Next
-    </button>
-</div>
+            {% for q in questions %}
+            {% ifchanged q.category %}
+            <h4 class="category-title">{{ q.category }}</h4>
+            {% endifchanged %}
 
-</form>
+            <fieldset class="question">
+                <legend>{{ forloop.counter }}. {{ q.question_text }}</legend>
 
-<div id="result"></div>
+                {% for opt in q.options.all %}
+                <label class="option {% if opt.is_correct %}correct{% endif %}">
+                    <input disabled type="radio">
+                    {{ opt.option_text }}
+                </label>
+                {% endfor %}
 
-<div class="text-center mt-4">
-    <button id="retryBtn" class="btn btn-success" style="display:none">Retry Quiz</button>
-</div>
+                <div class="explanation">
+                    <strong>Explanation:</strong><br>
+                    {{ q.explanation }}
 
-<div class="mt-4 p-3" style="background:#ecfeff;border-radius:10px;font-size:14px">
-    Based on Income Tax Ordinance, 2001<br>
-    Updated for Tax Year 2025<br>
-    Prepared & Reviewed by TaxBuddy Umair
-</div>
+                    {% if q.section_ref %}
+                    <div class="mt-1">
+                        <strong>Reference:</strong> {{ q.section_ref }}
+                    </div>
+                    {% endif %}
+                </div>
 
-<div class="footer-note text-center mt-4">
-    © TaxBuddy Umair – Tax Awareness Initiative
-</div>
+            </fieldset>
+            {% endfor %}
 
-</div>
+        </form>
+
+        <div class="footer-note text-center mt-4">
+            © TaxBuddy Umair – Tax Awareness Initiative
+        </div>
+
+    </div>
 </div>
 
 {% include 'partials/footer.html' %}
+{% include 'partials/up.html' %}
+
 {% include 'partials/footer-scripts.html' %}
-
-<script>
-const questions=document.querySelectorAll(".question");
-const perPage=5;let page=1;let finished=false;
-const totalPages=Math.ceil(questions.length/perPage);
-
-const prevBtn=document.getElementById("prevBtn");
-const nextBtn=document.getElementById("nextBtn");
-const pageInfo=document.getElementById("pageInfo");
-const resultBox=document.getElementById("result");
-const retryBtn=document.getElementById("retryBtn");
-const progressBar=document.getElementById("progressBar");
-const progressText=document.getElementById("progressText");
-
-function showPage(p){
-    const start=(p-1)*perPage,end=start+perPage;
-    questions.forEach((q,i)=>q.style.display=(i>=start&&i<end)?"block":"none");
-    prevBtn.disabled=p===1;nextBtn.disabled=p===totalPages;
-    pageInfo.textContent=`Questions ${start+1}–${Math.min(end,questions.length)} of ${questions.length}`;
-    window.scrollTo({top:0,behavior:"smooth"});
-}
-
-function updateProgress(){
-    const a=document.querySelectorAll(".question input:checked").length;
-    progressBar.style.width=Math.round(a/questions.length*100)+"%";
-    progressText.textContent=`Answered ${a} / ${questions.length}`;
-}
-
-function evaluate(){
-    if(finished)return;
-    let score=0,all=true;
-    questions.forEach(q=>{
-        const sel=q.querySelector("input:checked");
-        const opts=q.querySelectorAll(".option");
-        if(!sel){all=false;q.classList.add("unanswered");return;}
-        q.classList.remove("unanswered");
-        opts.forEach(o=>o.classList.remove("correct","wrong"));
-        const chosen=sel.parentElement;
-        if(chosen.dataset.correct==="true"){score++;chosen.classList.add("correct");}
-        else{
-            chosen.classList.add("wrong");
-            opts.forEach(o=>o.dataset.correct==="true"&&o.classList.add("correct"));
-        }
-        opts.forEach(o=>o.querySelector("input").disabled=true);
-        q.querySelector(".explanation").style.display="block";
-    });
-    if(!all)return;
-    finished=true;
-    resultBox.style.display="block";
-    retryBtn.style.display="inline-block";
-    resultBox.innerHTML=`<h4>Your Score: ${score}/${questions.length}</h4>`;
-}
-
-retryBtn.onclick=()=>{
-    finished=false;page=1;
-    questions.forEach(q=>{
-        q.classList.remove("unanswered");
-        q.querySelectorAll(".option").forEach(o=>{
-            o.classList.remove("correct","wrong");
-            o.querySelector("input").checked=false;
-            o.querySelector("input").disabled=false;
-        });
-        q.querySelector(".explanation").style.display="none";
-    });
-    resultBox.style.display="none";retryBtn.style.display="none";
-    updateProgress();showPage(page);
-};
-
-prevBtn.onclick=()=>{if(page>1){page--;showPage(page)}};
-nextBtn.onclick=()=>{if(page<totalPages){page++;showPage(page)}};
-
-document.addEventListener("change",e=>{
-    if(!e.target.matches(".option input"))return;
-    updateProgress();evaluate();
-});
-
-updateProgress();showPage(page);
-</script>
-
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "Quiz",
-  "name": "Pakistan Income Tax MCQs Quiz",
-  "description": "Interactive MCQs based on Income Tax Ordinance, 2001 of Pakistan with answers and explanations.",
-  "educationalLevel": "Intermediate to Advanced"
-}
-</script>
 
 </body>
 </html>
