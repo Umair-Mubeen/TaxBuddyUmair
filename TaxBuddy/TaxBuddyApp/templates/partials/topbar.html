@@ -1,214 +1,4 @@
 {% load static %}
-<style>
-h1, h2, h3, h4, h5, h6 {
-  font-family: "Poppins", Arial, sans-serif; /* modern clean font */
-  font-size: 24px;       /* consistent size */
-  font-weight: 600;      /* semi-bold for clarity */
-  line-height: 1.4;      /* good readability */
-  margin: 15px 0;        /* equal spacing */
-  color: #222;           /* dark gray for better contrast */
-  text-transform: capitalize; /* optional: makes text neater */
-}
-
-
-/* Make step titles & descriptions white */
-.work6-hadding h2,
-.work6-hadding h3,
-.work6-hadding h3 a,
-.work6-hadding p {
-  color: #fff;
-}
-
-.work6-hadding h3 a {
-  text-decoration: none; /* remove underline */
-}
-
-
-
-    .single-blog-img {
-  width: 100%;
-  max-width: 700px;     /* control size */
-  margin: 0 auto;       /* center it */
-  text-align: center;   /* keeps image centered */
-}
-
-.single-blog-img img {
-  width: 100%;
-  height: auto;         /* keeps natural aspect ratio */
-  object-fit: contain;  /* shows the whole image */
-}
-
-
-.chatbot-button {
-  position: fixed;
-  bottom: 30px;
-  right: 30px;
-  background-color: #004225; /* Match your theme green */
-  color: #fff;
-  width: 60px;
-  height: 60px;
-  border-radius: 50%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  cursor: pointer;
-  z-index: 9999;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.2);
-  display:none;
-}
-
-.chatbot-box {
-  position: fixed;
-  bottom: 100px;
-  right: 30px;
-  width: 300px;
-  max-height: 400px;
-  background-color: #ffffff;
-  border-radius: 10px;
-  box-shadow: 0 4px 15px rgba(0,0,0,0.3);
-  display: flex;
-  flex-direction: column;
-  z-index: 9999;
-  font-family: 'Segoe UI', sans-serif;
-}
-
-.chatbot-header {
-  background: #004225; /* Your theme's dark green */
-  color: white;
-  padding: 10px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  border-top-left-radius: 10px;
-  border-top-right-radius: 10px;
-  font-weight: bold;
-}
-
-.chatbot-header button {
-  background: none;
-  border: none;
-  color: white;
-  font-size: 18px;
-  cursor: pointer;
-}
-
-.chatbot-body {
-  flex: 1;
-  padding: 10px;
-  overflow-y: auto;
-  font-size: 14px;
-  color: #333;
-}
-
-.chatbot-footer {
-  display: flex;
-  border-top: 1px solid #ddd;
-}
-
-.chatbot-footer input {
-  flex: 1;
-  padding: 8px;
-  border: none;
-  outline: none;
-  font-size: 14px;
-}
-
-.chatbot-footer button {
-  background: #004225;
-  color: white;
-  border: none;
-  padding: 0 15px;
-  cursor: pointer;
-}
-
-.d-none {
-  display: none;
-}
-
-
-
-
-    html { scroll-behavior: smooth; }
-img {
-  max-width: 100%;
-  height: auto;
-}
-
-    @media (max-width: 767px) {
-  h1, h2, h3, h4 {
-    font-size: 1.3rem !important;
-    line-height: 1.6;
-  }
-  .space40 { height: 20px; }
-  .space30 { height: 15px; }
-  .space20 { height: 10px; }
-}
-@media (max-width: 576px) {
-  .button6 a, .header6-button a {
-    width: 100%;
-    margin-bottom: 10px;
-  }
-}
-
-
-.tes7 .owl-nav button svg,
-.tes7 .owl-dots button.active,
-.tes7 .owl-dots button:after {
-  background-color: #198754; /* Bootstrap success green */
-  border-radius: 5px;        /* optional: make it look smoother */
-  transition: 0.3s;          /* optional: smooth hover/active effect */
-}
-
-
-    .list-group-item.active {
-  background-color: #0a6847 !important;  /* Dark green background */
-  color: white !important;               /* White text */
-  font-weight: bold;
-  border: 2px solid #0a6847;             /* Matching border */
-  border-radius: 8px;                    /* Optional: Rounded like button */
-  transition: all 0.2s ease-in-out;
-}
-
-.mobile-sidebar {
-  transform: translateX(-100%);
-  transition: 0.3s ease;
-  position: fixed;
-  z-index: 9999;
-  width: 300px;
-  height: 100vh;
-}
-
-.mobile-sidebar.active {
-  transform: translateX(0);
-}
-
-/* Mobile adjustments */
-@media (max-width: 768px) {
-  #results h1 {
-    font-size: 22px;       /* Smaller heading */
-    line-height: 30px;
-  }
-
-  #results label {
-    display: block;
-    font-weight: 600;
-    margin: 10px 0;
-    font-size: 16px;
-  }
-
-  #results table {
-    font-size: 14px;       /* Smaller table text */
-  }
-
-  #results th,
-  #results td {
-    padding: 6px 8px;      /* Compact spacing */
-    word-break: break-word; /* Prevent overflow */
-  }
-}
-
-p{text-align: justify;}
-</style>
 
 <!--=====Header start=======-->
 <header class="header header-6 header-absolute d-none d-lg-block sticky-top shadow-sm bg-white" id="header">
@@ -218,59 +8,57 @@ p{text-align: justify;}
                 <div class="header-elements">
                     <div class="header_menu_area">
                         <div class="logo">
-                            <a href="/"><img alt="home6-header-logo"
-                                             src="{% static 'assets/img/logo/home6-header-logo.svg' %}"></a>
+                            <a href="/">
+                            <svg aria-label="TaxBuddy Umair Logo"
+                                 height="44"
+                                 role="img"
+                                 viewBox="0 0 320 44"
+                                 width="320"
+                                 xmlns="http://www.w3.org/2000/svg">
+
+                                <!-- Icon circle -->
+                                <circle cx="22" cy="22" fill="#F5C542" r="20"/>
+
+                                <!-- Bar chart (simplified for clarity) -->
+                                <rect fill="#1C3B2E" height="10" rx="1.5" width="5" x="16" y="22"/>
+                                <rect fill="#1C3B2E" height="15" rx="1.5" width="5" x="23" y="17"/>
+
+                                <!-- Growth arrow -->
+                                <path d="M14 23 C19 18, 25 17, 30 14"
+                                      fill="none"
+                                      stroke="#1C3B2E"
+                                      stroke-linecap="round"
+                                      stroke-width="2"/>
+
+                                <polygon fill="#1C3B2E" points="30,14 28.5,14 29.5,12.2"/>
+
+                                <!-- Logo text -->
+                                <text fill="#1C3B2E"
+                                      font-family="Playfair Display, Georgia, serif"
+                                      font-size="19"
+                                      font-weight="700"
+                                      letter-spacing="0.6"
+                                      x="60"
+                                      y="29">
+                                    TaxBuddy Umair
+                                </text>
+
+                            </svg>
+                            </a>
+
+                            <!--                            <a href="/"><img alt="home6-header-logo"-->
+                            <!--                                             src="{% static 'assets/img/logo/home6-header-logo.svg' %}"></a>-->
                         </div>
                         <div class="main-menu main-menu6">
                             <div class="menu-wrap">
 
                                 <ul class="menu_list" class="list-group" id="list-example">
+                                    <li><a class="list-group-item list-group-item-action" href="/#about">Home</a></li>
                                     <li><a class="list-group-item list-group-item-action" href="/#about">About</a></li>
-                                    <li><a class="list-group-item list-group-item-action" href="/#work">How It Works</a>
+
+                                    <li><a class="list-group-item list-group-item-action" href="/#work">Income Tax Guides</a>
                                     </li>
-                                    <li><a class="list-group-item list-group-item-action" href="/#service">services</a>
-                                    </li>
-                                    <li><a class="list-group-item list-group-item-action" href="/#whyus">Why Us</a>
-                                    </li>
-
-                                    <li><a class="list-group-item list-group-item-action"
-                                           href="/#customer">Clients</a>
-                                    </li>
-
-
-                                    <li class="dropdown-parrent"><a href="#">Resources</a>
-                                        <ul class="theme-dropdown">
-                                            <li class="multi-dropdown-parrent"><a
-                                                    href="https://www.fbr.gov.pk/categ/income-tax-ordinance/326"
-                                                    target="_blank">ITO, 2001 <span
-                                                    class="multi-drop-icon"></span></a>
-                                            </li>
-                                            <li class="multi-dropdown-parrent"><a
-                                                    href="https://www.fbr.gov.pk/categ/sales-tax-act/301"
-                                                    target="_blank">Sales Tax Act, 1990 <span
-                                                    class="multi-drop-icon"></span></a>
-                                            </li>
-                                            <li class="multi-dropdown-parrent"><a
-                                                    href="https://fbr.gov.pk/ShowSROs?Department=Sales%20Tax"
-                                                    target="_blank">Latest SRO / ITGO <span
-                                                    class="multi-drop-icon"></span></a>
-                                            </li>
-
-                                        </ul>
-                                    </li>
-
-
-                                    <li class="dropdown-parrent"><a href="#">Blog</a>
-                                        <ul class="theme-dropdown">
-                                            <li class="multi-dropdown-parrent"><a href="/blog/income-tax/">Income Tax
-                                                <span
-                                                        class="multi-drop-icon"></span></a>
-                                            </li>
-                                            <li class="multi-dropdown-parrent"><a href="/blog/sales-tax/">Sales Tax
-                                                <span
-                                                        class="multi-drop-icon"></span></a>
-                                            </li>
-                                        </ul>
+                                    <li><a class="list-group-item list-group-item-action" href="/#service">Sales Tax Guides</a>
                                     </li>
                                     <li class="dropdown-parrent"><a href="#">Tax Calculators</a>
                                         <ul class="theme-dropdown">
@@ -286,10 +74,10 @@ p{text-align: justify;}
                                                     class="multi-drop-icon"></span></a>
                                             </li>
 
-<!--                                            <li class="multi-dropdown-parrent"><a href="/PropertyCalculator">Rental-->
-<!--                                                Property<span-->
-<!--                                                        class="multi-drop-icon"></span></a>-->
-<!--                                            </li>-->
+                                            <!--                                            <li class="multi-dropdown-parrent"><a href="/PropertyCalculator">Rental-->
+                                            <!--                                                Property<span-->
+                                            <!--                                                        class="multi-drop-icon"></span></a>-->
+                                            <!--                                            </li>-->
 
                                             <!--                                            <li class="multi-dropdown-parrent"><a href="#">Immovable Property <span-->
                                             <!--                                                    class="multi-drop-icon"></span></a>-->
@@ -304,13 +92,53 @@ p{text-align: justify;}
                                         </ul>
                                     </li>
 
+                                   <li class="dropdown-parrent"><a href="#">Tax Articles</a>
+                                        <ul class="theme-dropdown">
+                                            <li class="multi-dropdown-parrent"><a href="/blog/income-tax/">Income Tax
+                                                <span
+                                                        class="multi-drop-icon"></span></a>
+                                            </li>
+                                            <li class="multi-dropdown-parrent"><a href="/blog/sales-tax/">Sales Tax
+                                                <span
+                                                        class="multi-drop-icon"></span></a>
+                                            </li>
+                                        </ul>
+                                    </li>
+
+                                                                        <li><a class="list-group-item list-group-item-action" href="/income-tax-mcqs-pakistan">Tax MCQs</a>
+
+
+
+<!--                                    <li class="dropdown-parrent"><a href="#">Resources</a>-->
+<!--                                        <ul class="theme-dropdown">-->
+<!--                                            <li class="multi-dropdown-parrent"><a-->
+<!--                                                    href="https://www.fbr.gov.pk/categ/income-tax-ordinance/326"-->
+<!--                                                    target="_blank">ITO, 2001 <span-->
+<!--                                                    class="multi-drop-icon"></span></a>-->
+<!--                                            </li>-->
+<!--                                            <li class="multi-dropdown-parrent"><a-->
+<!--                                                    href="https://www.fbr.gov.pk/categ/sales-tax-act/301"-->
+<!--                                                    target="_blank">Sales Tax Act, 1990 <span-->
+<!--                                                    class="multi-drop-icon"></span></a>-->
+<!--                                            </li>-->
+<!--                                            <li class="multi-dropdown-parrent"><a-->
+<!--                                                    href="https://fbr.gov.pk/ShowSROs?Department=Sales%20Tax"-->
+<!--                                                    target="_blank">Latest SRO / ITGO <span-->
+<!--                                                    class="multi-drop-icon"></span></a>-->
+<!--                                            </li>-->
+
+<!--                                        </ul>-->
+<!--                                    </li>-->
+
+
+
                                 </ul>
                             </div>
                         </div>
                     </div>
                     <div class="desktop-info">
                         <div class="button6">
-                            <a href="/income-tax-mcqs-pakistan">Study Mode</a>
+                            <a href="/#contact">Contact</a>
                         </div>
                     </div>
                 </div>
@@ -326,8 +154,44 @@ p{text-align: justify;}
         <div class="col-12">
             <div class="mobile-header-elements">
                 <div class="mobile-logo">
-                    <a href="/"><img alt="home4-header-logo" class="img-responsive"
-                                     src="{% static 'assets/img/logo/home6-header-logo.svg' %}"></a>
+                                                <svg aria-label="TaxBuddy Umair Logo"
+                                 height="44"
+                                 role="img"
+                                 viewBox="0 0 320 44"
+                                 width="320"
+                                 xmlns="http://www.w3.org/2000/svg">
+
+                                <!-- Icon circle -->
+                                <circle cx="22" cy="22" fill="#F5C542" r="20"/>
+
+                                <!-- Bar chart (simplified for clarity) -->
+                                <rect fill="#1C3B2E" height="10" rx="1.5" width="5" x="16" y="22"/>
+                                <rect fill="#1C3B2E" height="15" rx="1.5" width="5" x="23" y="17"/>
+
+                                <!-- Growth arrow -->
+                                <path d="M14 23 C19 18, 25 17, 30 14"
+                                      fill="none"
+                                      stroke="#1C3B2E"
+                                      stroke-linecap="round"
+                                      stroke-width="2"/>
+
+                                <polygon fill="#1C3B2E" points="30,14 28.5,14 29.5,12.2"/>
+
+                                <!-- Logo text -->
+                                <text fill="#1C3B2E"
+                                      font-family="Playfair Display, Georgia, serif"
+                                      font-size="19"
+                                      font-weight="700"
+                                      letter-spacing="0.6"
+                                      x="60"
+                                      y="29">
+                                    TaxBuddy Umair
+                                </text>
+
+                            </svg>
+
+<!--                    <a href="/"><img alt="home4-header-logo" class="img-responsive"-->
+<!--                                     src="{% static 'assets/img/logo/home6-header-logo.svg' %}"></a>-->
                 </div>
                 <div class="mobile-nav-icon">
                     <i class="fa-solid fa-bars"></i>
@@ -377,7 +241,7 @@ p{text-align: justify;}
                     <li><a href="/SalaryCalculator">Salary</a></li>
                     <li><a href="/BusinessCalculator">Business Individual</a></li>
                     <li><a href="/AOPCalculator">AOP</a></li>
-<!--                    <li><a href="/PropertyCalculator">Rental Property</a></li>-->
+                    <!--                    <li><a href="/PropertyCalculator">Rental Property</a></li>-->
                 </ul>
             </li>
 

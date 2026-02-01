@@ -239,56 +239,64 @@ textarea.is-invalid{
 </section>
 
 <script>
-document.getElementById("contact-form").addEventListener("submit", function (e) {
+document.addEventListener("DOMContentLoaded", function () {
 
-    let form = this;
-    let isValid = true;
+    const form = document.getElementById("contact-form");
+    if (!form) return;
 
-    // 🔍 Validate only visible fields
-    const fields = form.querySelectorAll("input:not([type='hidden']), textarea");
+    form.addEventListener("submit", function (e) {
 
-    fields.forEach(field => {
-        const error = field.nextElementSibling;
+        let isValid = true;
+        const fields = form.querySelectorAll("input:not([type='hidden']), textarea");
 
-        if (!field.checkValidity()) {
-            field.classList.add("is-invalid");
-            error.style.display = "block";
+        fields.forEach(field => {
+            const error = field.nextElementSibling;
 
-            if (field.validity.valueMissing) {
-                error.innerText = "This field is required.";
-            } else if (field.validity.typeMismatch) {
-                error.innerText = "Please enter a valid value.";
-            } else if (field.validity.patternMismatch) {
-                error.innerText = "Please enter a valid phone number (03XXXXXXXXX).";
-            } else if (field.validity.tooShort) {
-                error.innerText = `Minimum ${field.minLength} characters required.`;
+            if (!field.checkValidity()) {
+                field.classList.add("is-invalid");
+                error.style.display = "block";
+
+                if (field.validity.valueMissing) {
+                    error.innerText = "This field is required.";
+                } else if (field.validity.typeMismatch) {
+                    error.innerText = "Please enter a valid value.";
+                } else if (field.validity.patternMismatch) {
+                    error.innerText = "Please enter a valid phone number (03XXXXXXXXX).";
+                } else if (field.validity.tooShort) {
+                    error.innerText = `Minimum ${field.minLength} characters required.`;
+                }
+
+                isValid = false;
+            } else {
+                field.classList.remove("is-invalid");
+                error.style.display = "none";
             }
+        });
 
-            isValid = false;
-        } else {
-            field.classList.remove("is-invalid");
-            error.style.display = "none";
+        if (!isValid) {
+            e.preventDefault();
+            return;
         }
-    });
 
-    if (!isValid) {
         e.preventDefault();
-        return;
-    }
 
-    e.preventDefault();
+        const submitBtn = form.querySelector("button[type='submit']");
+        submitBtn.disabled = true;
+        submitBtn.innerText = "Sending...";
 
-    // 🔒 Prevent double submit
-    const submitBtn = form.querySelector("button[type='submit']");
-    submitBtn.disabled = true;
-    submitBtn.innerText = "Sending...";
+        if (typeof grecaptcha === "undefined") {
+            console.error("reCAPTCHA not loaded");
+            form.submit(); // fallback submit
+            return;
+        }
 
-    grecaptcha.ready(function () {
-        grecaptcha.execute('6LesUD4sAAAAAGihejIqA70J-9gVxHzPmYaHXR-b', {
-            action: 'contact'
-        }).then(function (token) {
-            document.getElementById('g-recaptcha-response').value = token;
-            form.submit();
+        grecaptcha.ready(function () {
+            grecaptcha.execute("6LesUD4sAAAAAGihejIqA70J-9gVxHzPmYaHXR-b", {
+                action: "contact"
+            }).then(function (token) {
+                document.getElementById("g-recaptcha-response").value = token;
+                form.submit();
+            });
         });
     });
 
