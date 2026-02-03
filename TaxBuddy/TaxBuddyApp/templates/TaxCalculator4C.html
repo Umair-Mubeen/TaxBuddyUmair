@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Section 4C – Super Tax Working</title>
+
+<style>
+body{font-family:Arial;padding:20px;background:#f4f6f6}
+.container{max-width:1150px;margin:auto;background:#fff;padding:20px;border:1px solid #000}
+h2{text-align:center;font-size:18px;margin-bottom:15px}
+table{width:100%;border-collapse:collapse;font-size:14px}
+th,td{border:1px solid #000;padding:6px}
+th{background:#0f766e;color:#fff;text-align:center}
+.section{background:#e6f2ef;font-weight:bold}
+input,select{width:100%;border:none;text-align:right;padding:4px}
+input[readonly]{background:#f0f0f0;font-weight:bold}
+select{text-align:center}
+.center{text-align:center}
+.note{font-size:12px;margin-top:10px}
+</style>
+</head>
+
+<body>
+<div class="container">
+
+<h2>SECTION 4C – SUPER TAX WORKING (OFFICIAL FORMAT)</h2>
+
+<table>
+<tr>
+<th>WORKING</th>
+<th>PARTICULARS</th>
+<th>AMOUNT (Rs.)</th>
+<th>AUTO / REMARKS</th>
+</tr>
+
+<!-- TAX YEAR -->
+<tr class="section"><td colspan="4">TAX YEAR</td></tr>
+<tr>
+<td></td>
+<td>Select Tax Year</td>
+<td>
+<select id="taxYear">
+<option value="2022">2022</option>
+<option value="2023">2023</option>
+<option value="2024">2024</option>
+<option value="2025">2025</option>
+<option value="2026" selected>2026</option>
+</select>
+</td>
+<td class="center">Auto</td>
+</tr>
+
+<!-- NORMAL INCOME -->
+<tr class="section"><td colspan="4">NORMAL INCOME</td></tr>
+<tr><td></td><td>Profit on Debt</td><td><input class="normal"></td><td></td></tr>
+<tr><td></td><td>Dividend Income</td><td><input class="normal"></td><td></td></tr>
+<tr><td></td><td>Commission u/s 233 @10%</td><td><input class="normal"></td><td></td></tr>
+<tr><td></td><td>Commission u/s 233 @12%</td><td><input class="normal"></td><td></td></tr>
+<tr><td></td><td>Capital Gains @12.5%</td><td><input class="normal"></td><td></td></tr>
+<tr><td></td><td>Capital Gains @15%</td><td><input class="normal"></td><td></td></tr>
+<tr><td></td><td>Capital Gains @0%</td><td><input class="normal"></td><td></td></tr>
+
+<tr>
+<td></td>
+<td><b>Total Normal Income</b></td>
+<td><input id="totalNormal" readonly></td>
+<td class="center">Auto</td>
+</tr>
+
+<!-- PTR -->
+<tr class="section"><td colspan="4">IMPUTABLE INCOME (PTR)</td></tr>
+<tr><td></td><td>Import u/s 148 @5.5%</td><td><input class="ptr"></td><td></td></tr>
+<tr><td></td><td>Export Proceeds u/s 154(1) @1%</td><td><input class="ptr"></td><td></td></tr>
+<tr><td></td><td>Issuance of Bonus Shares u/s 236Z</td><td><input class="ptr"></td><td></td></tr>
+<tr><td></td><td>Any Other PTR Income</td><td><input class="ptr"></td><td></td></tr>
+
+<tr>
+<td></td>
+<td><b>Total Imputable Income</b></td>
+<td><input id="totalPtr" readonly></td>
+<td class="center">Auto</td>
+</tr>
+
+<!-- SCHEDULAR -->
+<tr class="section"><td colspan="4">SCHEDULAR INCOME</td></tr>
+<tr>
+<td></td>
+<td>E&amp;P Companies / Insurance / Others</td>
+<td><input id="schedular"></td>
+<td></td>
+</tr>
+
+<!-- TOTAL 4C -->
+<tr>
+<td></td>
+<td><b>Total Income for Super Tax</b></td>
+<td><input id="total4c" readonly></td>
+<td class="center">Final 4C Income</td>
+</tr>
+
+<!-- SUPER TAX -->
+<tr class="section" id="superTaxSection"><td colspan="4">SUPER TAX</td></tr>
+
+<tr>
+<td></td>
+<td>Applicable Super Tax Rate</td>
+<td class="center"><b id="rate">0%</b></td>
+<td>Auto (DB)</td>
+</tr>
+
+<tr>
+<td></td>
+<td><b>SUPER TAX PAYABLE</b></td>
+<td><input id="superTax" readonly></td>
+<td class="center">Auto</td>
+</tr>
+
+<tr>
+<td></td>
+<td>Tax Already Paid</td>
+<td><input id="paid"></td>
+<td></td>
+</tr>
+
+<tr>
+<td></td>
+<td><b>Difference Payable</b></td>
+<td><input id="difference" readonly></td>
+<td class="center">Auto</td>
+</tr>
+</table>
+
+<div class="note">
+<b>Note:</b> Section 4C(2) applied. No brought forward losses, depreciation or amortization allowed.
+</div>
+
+</div>
+
+<script>
+
+    document.addEventListener("DOMContentLoaded", () => {
+    document.querySelectorAll("input").forEach(input => {
+        if (input.value === "") {
+            input.value = "0";
+        }
+    });
+});
+
+function sum(cls){
+    return [...document.querySelectorAll(cls)]
+        .reduce((t,i)=>t+(parseFloat(i.value)||0),0);
+}
+
+async function fetchRate(income, taxYear){
+    const res = await fetch(
+        `/section-4c-rate/?income=${income}&tax_year=${taxYear}`
+    );
+    return await res.json();
+}
+
+async function calculateSuperTax(){
+    let normal = sum(".normal");
+    let ptr = sum(".ptr");
+    let schedular = parseFloat(document.getElementById("schedular").value) || 0;
+    let paid = parseFloat(document.getElementById("paid").value) || 0;
+    let taxYear = document.getElementById("taxYear").value;
+
+    /* ✅ FIXED NAMING */
+    let total4cAmount = normal + ptr + schedular;
+
+    /* ✅ ELEMENT REFERENCES */
+    let total4cField = document.getElementById("total4c");
+
+    /* ✅ UPDATE TOTALS */
+    totalNormal.value = normal.toLocaleString();
+    totalPtr.value = ptr.toLocaleString();
+    total4cField.value = total4cAmount.toLocaleString();
+
+    /* ✅ FETCH RATE */
+    let data = await fetchRate(total4cAmount, taxYear);
+    let rate = data.rate || 0;
+
+    /* ✅ TAX */
+    let tax = total4cAmount * rate;
+
+    document.getElementById("rate").innerText =
+        (rate * 100).toFixed(2) + "%";
+
+    superTax.value = tax.toLocaleString();
+    difference.value = (tax - paid).toLocaleString();
+}
+
+/* EVENTS */
+document.querySelectorAll("input").forEach(el=>{
+    el.addEventListener("input", calculateSuperTax);
+});
+
+document.getElementById("taxYear").addEventListener("change", () => {
+    calculateSuperTax();
+
+    // 🔽 Smooth scroll to Super Tax section
+    document.getElementById("superTaxSection")
+        .scrollIntoView({ behavior: "smooth", block: "start" });
+});
+
+
+document.addEventListener("DOMContentLoaded", calculateSuperTax);
+</script>
+
+</body>
+</html>

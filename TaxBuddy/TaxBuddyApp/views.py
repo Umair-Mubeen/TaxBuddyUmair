@@ -11,8 +11,9 @@ from django.contrib.auth import authenticate, login, logout
 from django.utils.text import slugify
 from django.contrib import messages
 from django.utils.timezone import now
-
-from .models import Blogs, Comment, Contact, TaxBracket, Business_AOP_Slab, Property_Business_AOP_Slab, Question, Option
+from django.db.models import Q
+from django.http import JsonResponse
+from .models import Blogs, Comment, Contact, TaxBracket, Business_AOP_Slab, Property_Business_AOP_Slab, Question, Option, SuperTax4CRate
 
 
 def index(request):
@@ -793,6 +794,13 @@ def privacy_policy(request):
     except Exception as e:
         return HttpResponse(str("Exception : " + str(e)))
 
+def TaxCalculator4C(request):
+    try:
+        return render(request, 'TaxCalculator4C.html')
+
+    except Exception as e:
+        return HttpResponse(str("Exception : " + str(e)))
+
 
 def terms_and_conditions(request):
     try:
@@ -800,3 +808,39 @@ def terms_and_conditions(request):
 
     except Exception as e:
         return HttpResponse(str("Exception : " + str(e)))
+
+
+def section_4c_rate_view(request):
+    try:
+        income = int(float(request.GET.get("income", 0)))
+        print(income)
+        tax_year = int(request.GET.get("tax_year"))
+        print(tax_year)
+    except (TypeError, ValueError):
+        return JsonResponse({
+            "rate": 0,
+            "rate_percent": 0,
+            "error": "Invalid income or tax year"
+        }, status=400)
+
+    slab = (
+        SuperTax4CRate.objects
+        .filter(
+            tax_year=tax_year,
+            income_from__lte=income
+        )
+        .filter(
+            Q(income_to__gte=income) | Q(income_to__isnull=True)
+        )
+        .order_by("income_from")
+        .first()
+    )
+
+    rate = float(slab.rate) if slab else 0.0
+
+    return JsonResponse({
+        "tax_year": tax_year,
+        "income": income,
+        "rate": rate,
+        "rate_percent": round(rate * 100, 2)
+    })
