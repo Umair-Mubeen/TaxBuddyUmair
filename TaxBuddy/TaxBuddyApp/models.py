@@ -169,3 +169,10 @@ class Option(models.Model):
 
     def __str__(self):
         return f"{self.option_text} ({'Correct' if self.is_correct else 'Wrong'})"
+
+
+class SuperTax4CRate(models.Model):
+    tax_year = models.IntegerField()
+    income_from = models.BigIntegerField()
+    income_to = models.BigIntegerField(null=True, blank=True)
+    rate = models.DecimalField(max_digits=5, decimal_places=4)  # e.g. 0.03 = 3%

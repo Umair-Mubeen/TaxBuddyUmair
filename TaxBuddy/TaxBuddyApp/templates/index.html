@@ -246,7 +246,6 @@ body{
     background-size:cover;
     background-position:center right;
     background-repeat:no-repeat;
-    opacity:0.65;
     z-index:0;
 }
 
@@ -769,21 +768,21 @@ body{
             <div class="guides-cards">
 
                 <div class="guide-card">
-                    <img src="/static/assets/img/guides/income-tax.jpg" alt="">
+                    <img src="{% static 'assets/img/image/income_tax.webp' %}" alt="Income Tax Guide">
                     <h4>Income Tax Basics</h4>
                     <p>Learn about income tax, sales filing requirements, and more.</p>
                     <a href="#">Read More →</a>
                 </div>
 
                 <div class="guide-card">
-                    <img src="/static/assets/img/guides/sales-tax.jpg" alt="">
+                    <img src="{% static 'assets/img/image/sales_tax.webp' %}" alt="Sales Tax Guide">
                     <h4>Sales Tax Guide</h4>
                     <p>GST & Business Tax Solutions for maintain & reporting.</p>
                     <a href="#">Read More →</a>
                 </div>
 
                 <div class="guide-card">
-                    <img src="/static/assets/img/guides/freelancer.jpg" alt="">
+                    <img src="{% static 'assets/img/image/tax_calculators.webp' %}" alt="Tax Calculators">
                     <h4>Freelancer Tax Rules</h4>
                     <p>Easy tax calculator tools for your businesses income.</p>
                     <a href="#">Read More →</a>
@@ -793,7 +792,7 @@ body{
 
             <!-- RIGHT SIDEBAR -->
             <div class="guide-sidebar">
-                <img src="/static/assets/img/guides/sidebar.jpg" alt="">
+                <img src="{% static 'assets/img/image/tax_drifting.webp' %}" alt="Tax Drifting">
                 <h4>Tax Tax Drifting</h4>
 
                 <ul>
@@ -824,14 +823,12 @@ body{
                     </p>
 
                     <div class="about-card d-flex align-items-start gap-3">
-                        <img src="/static/assets/img/umair.jpg" class="profile-img" alt="TaxBuddy Umair">
+                        <img src="{% static 'assets/img/image/About.webp' %}" class="profile-img" alt="TaxBuddy Umair">
 
                         <div>
                             <h4>About TaxBuddy Umair</h4>
                             <p>
-                                I’m Umair Mubeen, a tax consultant with over 8 years of experience helping
-                                Pakistanis understand income and sales tax matters.
-                                My goal is to make taxes easy to understand.
+                               TaxBuddy Umair is an educational and informational platform. The content provided is for general learning purposes only and does not constitute professional tax, legal, or financial advice. Users should consult qualified professionals for case-specific guidance.
                             </p>
 
                             <ul class="about-list">

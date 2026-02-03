@@ -23,6 +23,7 @@ path("terms-and-conditions/", views.terms_and_conditions, name="terms-and-condit
  path("questions/edit/<int:pk>/", views.edit_question, name="questions-edit"),
     path("questions/delete/<int:pk>/", views.delete_question, name="questions-delete"),
 
+    path("section-4c-rate/", views.section_4c_rate_view, name="section_4c_rate"),
 
     path("income-tax-mcqs-pakistan", views.question_list, name="income-tax-mcqs-pakistan"),
 path("online-services", views.online_services, name="online-services"),
@@ -43,7 +44,7 @@ path("online-services", views.online_services, name="online-services"),
     #tax slab brackets
     path("add_salary_tax_brackets", views.add_salary_tax_brackets,name="add_salary_tax_brackets"),
     path("privacy-policy", views.privacy_policy, name="privacy_policy"),
-
+    path("TaxCalculator4C", views.TaxCalculator4C, name="TaxCalculator4C"),
 
 ]
 
