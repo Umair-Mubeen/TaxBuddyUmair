@@ -198,38 +198,65 @@ body{
     font-weight:500;
 }
 
-/* ---------------------------------------------------------
-   HERO LINKS (PILLS)
---------------------------------------------------------- */
+/* Base (desktop & tablet) */
 .hero-links{
     display:flex;
     gap:12px;
-    flex-wrap:nowrap;
+    flex-wrap:wrap;
+    justify-content:flex-start;
+}
+
+/* Pills */
+.hero-links a{
+    font-size:13px;
+    padding:8px 16px;
+    border-radius:999px;
+    background:#ffffff;
+    color:#0f172a;
+    border:1px solid rgba(15,118,110,0.18);
+    display:inline-flex;
+    align-items:center;
+    gap:6px;
     white-space:nowrap;
 }
 
-.hero-links a{
-    font-size:13px;
-    padding:9px 18px;
-    border-radius:999px;
-    background:rgba(255,255,255,0.9);
-    color:var(--text);
-    border:1px solid var(--border);
-    display:flex;
-    align-items:center;
-    gap:6px;
-    transition:all 0.2s ease;
+/* ---------------------------------------------------------
+   PHONES (≤ 768px) – horizontal scroll
+--------------------------------------------------------- */
+@media (max-width: 768px){
+    .hero-links{
+        flex-wrap:nowrap;
+        overflow-x:auto;
+        -webkit-overflow-scrolling:touch;
+        scrollbar-width:none;
+        padding-bottom:6px;
+        margin-left:-6px;
+        margin-right:-6px;
+    }
+
+    .hero-links::-webkit-scrollbar{
+        display:none;
+    }
+
+    .hero-links a{
+        flex:0 0 auto;
+    }
 }
 
-.hero-links a::before{
-    content:"+";
-    font-weight:700;
-    color:var(--green);
-}
+/* ---------------------------------------------------------
+   VERY SMALL PHONES (≤ 360px) – wrap instead of scroll
+--------------------------------------------------------- */
+@media (max-width: 360px){
+    .hero-links{
+        flex-wrap:wrap;
+        justify-content:center;
+        overflow-x:visible;
+    }
 
-.hero-links a:hover{
-    border-color:var(--green);
-    transform:translateY(-1px);
+    .hero-links a{
+        font-size:12px;
+        padding:7px 14px;
+    }
 }
 
 /* ---------------------------------------------------------
@@ -272,6 +299,9 @@ body{
 --------------------------------------------------------- */
 @media (max-width: 992px){
 
+.home6-full-header{
+             height:600px
+      }
     .home6-full-header.hero-fluid::after{
         display:none;
     }
@@ -364,6 +394,8 @@ body{
    VERY SMALL DEVICES (≤ 360px)
 --------------------------------------------------------- */
 @media (max-width: 360px){
+
+
 
     .hero-content h1{
         font-size:23px;
@@ -613,82 +645,19 @@ body{
     .profile-img{
         margin:auto;
     }
-}
-
-
-/* ==============================
-   HERO QUICK LINKS STRIP
-================================ */
-
-.hero-quick-strip{
-    padding:28px 0 36px;
-    background:#f6fbf9;
-}
-
-.quick-links{
-    display:flex;
-    justify-content:center;
-    gap:14px;
-    flex-wrap:nowrap;
-}
-
-.quick-pill{
-    display:inline-flex;
-    align-items:center;
-    gap:8px;
-    padding:10px 20px;
-    background:#ffffff;
-    border:1px solid #e2ebe6;
-    border-radius:999px;
-    font-size:14px;
-    font-weight:500;
-    color:#0f172a;
-    text-decoration:none;
-    box-shadow:0 6px 18px rgba(0,0,0,0.04);
-    transition:all 0.2s ease;
-}
-
-.quick-pill:hover{
-    border-color:#0f766e;
-    transform:translateY(-2px);
-    box-shadow:0 10px 24px rgba(0,0,0,0.08);
-}
-
-.pill-icon{
-    width:18px;
-    height:18px;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    border-radius:50%;
-    font-size:14px;
-    font-weight:700;
-    color:#0f766e;
-    background:#e6f4f1;
-}
-
-/* RESPONSIVE */
-@media (max-width: 768px){
-    .quick-links{
-        justify-content:flex-start;
-        overflow-x:auto;
-        padding-bottom:6px;
-        -webkit-overflow-scrolling:touch;
-        scrollbar-width:none;
-    }
-
-    .quick-links::-webkit-scrollbar{
-        display:none;
-    }
-
-    .quick-pill{
-        flex:0 0 auto;
-        white-space:nowrap;
+.mobile-header{
+        position: static !important;
+        top: auto !important;
+        left: auto !important;
+        right: auto !important;
     }
 }
 
 
-  </style>
+
+
+
+    </style>
 </head>
 <body>
 
@@ -720,38 +689,16 @@ body{
 </p>
 
 
-            <div class="hero-links">
-                <a href="#">How to Become a Tax Filer</a>
-                <a href="#">ATL vs Non-ATL Status</a>
-                <a href="#">Income Tax Deductions</a>
-            </div>
+<!--            <div class="hero-links">-->
+<!--                <a href="#">How to Become a Tax Filer</a>-->
+<!--                <a href="#">ATL vs Non-ATL Status</a>-->
+<!--                <a href="#">Income Tax Deductions</a>-->
+<!--            </div>-->
 
         </div>
     </div>
 </section>
 
-<section class="hero-quick-strip">
-    <div class="container">
-        <div class="quick-links">
-
-            <a href="#" class="quick-pill">
-                <span class="pill-icon">+</span>
-                How to Become a Tax Filer
-            </a>
-
-            <a href="#" class="quick-pill">
-                <span class="pill-icon">+</span>
-                ATL vs Non-ATL Status
-            </a>
-
-            <a href="#" class="quick-pill">
-                <span class="pill-icon">+</span>
-                Income Tax Deductions
-            </a>
-
-        </div>
-    </div>
-</section>
 
 <section class="featured-guides" style="background: radial-gradient(circle at top right, #DAE7E3 0%, #F6FBF9 70%);">
     <div class="container">
