@@ -5,13 +5,6 @@
 <html lang="en">
 <head>
  <script async src="https://www.googletagmanager.com/gtag/js?id=G-EEP4P5YWE6"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-
-  gtag('config', 'G-EEP4P5YWE6');
-</script>
 
 <link rel="shortcut icon" type="image/x-icon" href="{% static 'assets/img/icons/fab2.png' %}">
 
@@ -34,12 +27,14 @@
 <meta name="theme-color" content="#0A9D8F">
 
 {% include 'partials/head-css.html' %}
+
 </head>
 <body>
 
 <!--=====Navigation Bar=======-->
 {% include 'partials/topbar.html' %}
 <!--=====Navigation Bar Ends Here=======-->
+
 {% include 'partials/form_slab.html' %}
 
 {% include 'partials/footer.html' %}
