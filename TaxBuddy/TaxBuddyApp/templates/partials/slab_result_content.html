@@ -1,7 +1,82 @@
 {% load humanize %}
 {% if monthly_income %}
-    <div class="space20"></div>
-    <div class="row g-4" id="results">
+<style>
+    /* ===============================
+   TAX RESULT TABLE UI
+================================ */
+
+.tax-table{
+  border-collapse:separate;
+  border-spacing:0;
+  font-size:14.5px;
+}
+
+.tax-table th{
+  font-weight:600;
+  color:#0f172a;
+  background:#f9fbfa;
+  width:55%;
+}
+
+.tax-table td{
+  font-weight:600;
+  color:#1f2937;
+  text-align:right;
+}
+
+/* Remove harsh borders */
+.tax-table th,
+.tax-table td{
+  border:1px solid #eef2f1 !important;
+  padding:14px 16px;
+}
+
+/* Row hover (desktop only) */
+@media(min-width:992px){
+  .tax-table tr:hover{
+    background:#f6fbf9;
+  }
+}
+
+/* TOTAL TAX – primary focus */
+.tax-total{
+  background:#0f766e !important;
+  color:#ffffff !important;
+  font-size:16px;
+  font-weight:800;
+}
+
+.tax-total th,
+.tax-total td{
+}
+
+/* Monthly tax – secondary highlight */
+.tax-table tr.bg-success{
+  background:#e9f6f2 !important;
+}
+
+.tax-table tr.bg-success th,
+.tax-table tr.bg-success td{
+  color:#0c5b47 !important;
+  font-weight:700;
+}
+
+/* Card header polish */
+.card-header{
+  border-radius:14px 14px 0 0;
+  padding:14px 18px;
+}
+
+/* Card body breathing room */
+.card-body{
+  padding:18px;
+}
+
+
+</style>
+
+
+<div class="row" id="results">
     <div class="col-12">
         <div class="contact3-form-all">
             <div class="hadding6 text-center">
@@ -12,166 +87,170 @@
         </div>
 
         <!-- Grid Row for Tables -->
-        <div class="row g-4">
-            <!-- Left Table Card -->
-            <div class="col-12 col-lg-6">
-                <div class="card shadow-sm h-100">
-                    <div class="card-header bg-success">
-                        <h5 class="mb-0 text-white">Tax Calculation for Tax Year: {{tax_year_1}}</h5>
-                    </div>
-                    <div class="card-body">
-                        <div class="table-responsive">
-                            <table class="table table-bordered align-middle mb-0">
-                                <tr>
-                                    <th>Monthly Income</th>
-                                    <td>Rs. {{ monthly_income|intcomma }}</td>
-                                </tr>
-                                <tr>
-                                    <th>Yearly Income</th>
-                                    <td>
-                                        Rs. {% if total_deductions %}
-                                        {{yearly_income}}
-                                        {% else %}
-                                        {{ tax_year_1_result.income|intcomma }}
-                                        {% endif %}
-                                    </td>
-                                </tr>
-                                {% if total_deductions %}
-                                <tr>
-                                    <th>Total Deductions u/s 15A</th>
-                                    <td>Rs. {{ total_deductions|intcomma }}</td>
-                                </tr>
-                                {% endif %}
-                                <tr class="bg-success text-white">
-                                    <th class="text-white">Applicable Tax Bracket</th>
-                                    <td class="text-white">Rs. {{ tax_year_1_result.lower|floatformat:"-0"|intcomma }} to Rs. {{ tax_year_1_result.upper|floatformat:"-0"|intcomma }}
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <th>Base Tax</th>
-                                    <td>Rs. {{ tax_year_1_result.fixed_tax|floatformat:"-0"|intcomma }}</td>
-                                </tr>
-                                <tr>
-                                    <th>Amount Exceeding Bracket</th>
-                                    <td>Rs. {{ tax_year_1_result.amount_exceeding|floatformat:"-0"|intcomma }}</td>
-                                </tr>
-                                <tr class="bg-success text-white">
-                                    <th>Rate Applied</th>
-                                    <td>{{ tax_year_1_result.rate|floatformat:1 }} %</td>
-                                </tr>
-                                <tr>
-                                    <th>Tax on Amount Exceeding</th>
-                                    <td>Rs. {{ tax_year_1_result.tax_on_exceeding|intcomma }}</td>
-                                </tr>
+        <div class="container">
+            <div class="row">
+                <!-- Left Table Card -->
+                <div class="col-12 col-lg-6">
+                    <div class="card shadow-sm h-100">
+                        <div class="card-header bg-success">
+                            <h5 class="mb-0 text-white">Tax Calculation for Tax Year: {{tax_year_1}}</h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table class="table tax-table mb-0">
+                                    <tr>
+                                        <th>Monthly Income</th>
+                                        <td>Rs. {{ monthly_income|intcomma }}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Yearly Income</th>
+                                        <td>
+                                            Rs. {% if total_deductions %}
+                                            {{yearly_income}}
+                                            {% else %}
+                                            {{ tax_year_1_result.income|intcomma }}
+                                            {% endif %}
+                                        </td>
+                                    </tr>
+                                    {% if total_deductions %}
+                                    <tr>
+                                        <th>Total Deductions u/s 15A</th>
+                                        <td>Rs. {{ total_deductions|intcomma }}</td>
+                                    </tr>
+                                    {% endif %}
+                                    <tr class="bg-success text-white">
+                                        <th class="text-white">Applicable Tax Bracket</th>
+                                        <td class="text-white">Rs. {{ tax_year_1_result.lower|floatformat:"-0"|intcomma
+                                            }} to Rs. {{ tax_year_1_result.upper|floatformat:"-0"|intcomma }}
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th>Base Tax</th>
+                                        <td>Rs. {{ tax_year_1_result.fixed_tax|floatformat:"-0"|intcomma }}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Amount Exceeding Bracket</th>
+                                        <td>Rs. {{ tax_year_1_result.amount_exceeding|floatformat:"-0"|intcomma }}</td>
+                                    </tr>
+                                    <tr class="bg-success text-white">
+                                        <th>Rate Applied</th>
+                                        <td>{{ tax_year_1_result.rate|floatformat:1 }} %</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Tax on Amount Exceeding</th>
+                                        <td>Rs. {{ tax_year_1_result.tax_on_exceeding|intcomma }}</td>
+                                    </tr>
 
-                                 {% if tax_year_1_result.surcharge %}
-                                 <tr class="bg-success text-white">
-                                    <th>Tax on {{surcharge_label_1}}</th>
-                                    <td>Rs. {{tax_year_1_result.surcharge|intcomma }} </td>
-                                </tr>
+                                    {% if tax_year_1_result.surcharge %}
+                                    <tr class="bg-success text-white">
+                                        <th>Tax on {{surcharge_label_1}}</th>
+                                        <td>Rs. {{tax_year_1_result.surcharge|intcomma }}</td>
+                                    </tr>
 
-                                  <tr>
-                                    <th>Total Tax Chargeable</th>
-                                    <td>Rs. {{ tax_year_1_result.total_tax_with_surcharge|intcomma }}</td>
-                                </tr>
-                                {% else %}
-                                 <tr>
-                                    <th>Total Tax Chargeable</th>
-                                    <td>Rs. {{ tax_year_1_result.total_tax|intcomma }}</td>
-                                </tr>
-                                {% endif %}
+                                    <tr class="tax-total">
+                                        <th>Total Tax Chargeable</th>
+                                        <td>Rs. {{ tax_year_1_result.total_tax_with_surcharge|intcomma }}</td>
+                                    </tr>
+                                    {% else %}
+                                    <tr class="tax-total">
+                                        <th>Total Tax Chargeable</th>
+                                        <td>Rs. {{ tax_year_1_result.total_tax|intcomma }}</td>
+                                    </tr>
+                                    {% endif %}
 
-                                <tr class="bg-success text-white">
-                                    <th class="text-white">Monthly Tax</th>
-                                    <td class="text-white">Rs. {{ tax_year_1_result.per_month|intcomma }}</td>
-                                </tr>
-                            </table>
+                                    <tr class="bg-success text-white">
+                                        <th class="text-white">Monthly Tax</th>
+                                        <td class="text-white">Rs. {{ tax_year_1_result.per_month|intcomma }}</td>
+                                    </tr>
+                                </table>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
 
-            <!-- Right Table Card -->
-            <div class="col-12 col-lg-6">
-                <div class="card shadow-sm h-100">
-                    <div class="card-header bg-success">
-                        <h5 class="mb-0 text-white">Tax Calculation for Tax Year: {{tax_year_2}}</h5>
-                    </div>
-                    <div class="card-body">
-                        <div class="table-responsive">
-                            <table class="table table-bordered align-middle mb-0">
-                                <tr>
-                                    <th>Monthly Income</th>
-                                    <td>Rs. {{ monthly_income|intcomma }}</td>
-                                </tr>
-                                <tr>
-                                    <th>Yearly Income</th>
-                                    <td>
-                                        Rs. {% if total_deductions %}
-                                        {{yearly_income}}
-                                        {% else %}
-                                        {{ tax_year_2_result.income|intcomma }}
-                                        {% endif %}
-                                    </td>
-                                </tr>
-                                {% if total_deductions %}
-                                <tr>
-                                    <th>Total Deductions u/s 15A</th>
-                                    <td>Rs. {{ total_deductions|intcomma }}</td>
-                                </tr>
-                                {% endif %}
-                                <tr class="bg-success">
-                                    <th class="text-white">Applicable Tax Bracket</th>
-                                    <td class="text-white">Rs. {{ tax_year_2_result.lower|floatformat:"-0"|intcomma }}
-                                        to Rs. {{ tax_year_2_result.upper|floatformat:"-0"|intcomma }}
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <th>Base Tax</th>
-                                    <td>Rs. {{ tax_year_2_result.fixed_tax|floatformat:"-0"|intcomma }}</td>
-                                </tr>
-                                <tr>
-                                    <th>Amount Exceeding Bracket</th>
-                                    <td>Rs. {{ tax_year_2_result.amount_exceeding|floatformat:"-0"|intcomma }}</td>
-                                </tr>
-                                <tr class="bg-success text-white">
-                                    <th>Rate Applied</th>
-                                    <td>{{ tax_year_2_result.rate|floatformat:1 }} %</td>
-                                </tr>
-                                <tr>
-                                    <th>Tax on Amount Exceeding</th>
-                                    <td>Rs. {{ tax_year_2_result.tax_on_exceeding|intcomma }}</td>
-                                </tr>
-                                {% if tax_year_2_result.surcharge %}
-                                 <tr class="bg-success text-white">
-                                    <th>Tax on {{surcharge_label_2}}</th>
-                                    <td>Rs. {{tax_year_2_result.surcharge|intcomma }} </td>
-                                </tr>
+                <!-- Right Table Card -->
+                <div class="col-12 col-lg-6">
+                    <div class="card shadow-sm h-100">
+                        <div class="card-header bg-success">
+                            <h5 class="mb-0 text-white">Tax Calculation for Tax Year: {{tax_year_2}}</h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table class="table tax-table mb-0">
+                                    <tr>
+                                        <th>Monthly Income</th>
+                                        <td>Rs. {{ monthly_income|intcomma }}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Yearly Income</th>
+                                        <td>
+                                            Rs. {% if total_deductions %}
+                                            {{yearly_income}}
+                                            {% else %}
+                                            {{ tax_year_2_result.income|intcomma }}
+                                            {% endif %}
+                                        </td>
+                                    </tr>
+                                    {% if total_deductions %}
+                                    <tr>
+                                        <th>Total Deductions u/s 15A</th>
+                                        <td>Rs. {{ total_deductions|intcomma }}</td>
+                                    </tr>
+                                    {% endif %}
+                                    <tr class="bg-success">
+                                        <th class="text-white">Applicable Tax Bracket</th>
+                                        <td class="text-white">Rs. {{ tax_year_2_result.lower|floatformat:"-0"|intcomma
+                                            }}
+                                            to Rs. {{ tax_year_2_result.upper|floatformat:"-0"|intcomma }}
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th>Base Tax</th>
+                                        <td>Rs. {{ tax_year_2_result.fixed_tax|floatformat:"-0"|intcomma }}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Amount Exceeding Bracket</th>
+                                        <td>Rs. {{ tax_year_2_result.amount_exceeding|floatformat:"-0"|intcomma }}</td>
+                                    </tr>
+                                    <tr class="bg-success text-white">
+                                        <th>Rate Applied</th>
+                                        <td>{{ tax_year_2_result.rate|floatformat:1 }} %</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Tax on Amount Exceeding</th>
+                                        <td>Rs. {{ tax_year_2_result.tax_on_exceeding|intcomma }}</td>
+                                    </tr>
+                                    {% if tax_year_2_result.surcharge %}
+                                    <tr class="bg-success text-white">
+                                        <th>Tax on {{surcharge_label_2}}</th>
+                                        <td>Rs. {{tax_year_2_result.surcharge|intcomma }}</td>
+                                    </tr>
 
-                                  <tr>
-                                    <th>Total Tax Chargeable</th>
-                                    <td>Rs. {{ tax_year_2_result.total_tax_with_surcharge|intcomma }}</td>
-                                </tr>
-                                {% else %}
-                                 <tr>
-                                    <th>Total Tax Chargeable</th>
-                                    <td>Rs. {{ tax_year_2_result.total_tax|intcomma }}</td>
-                                </tr>
-                                {% endif %}
+                                    <tr class="tax-total">
+                                        <th>Total Tax Chargeable</th>
+                                        <td>Rs. {{ tax_year_2_result.total_tax_with_surcharge|intcomma }}</td>
+                                    </tr>
+                                    {% else %}
+                                    <tr class="tax-total">
+                                        <th>Total Tax Chargeable</th>
+                                        <td>Rs. {{ tax_year_2_result.total_tax|intcomma }}</td>
+                                    </tr>
+                                    {% endif %}
 
-                                <tr class="bg-success text-white">
-                                    <th class="text-white">Monthly Tax</th>
-                                    <td class="text-white">Rs. {{ tax_year_2_result.per_month|intcomma }}</td>
-                                </tr>
-                            </table>
+                                    <tr class="bg-success text-white">
+                                        <th class="text-white">Monthly Tax</th>
+                                        <td class="text-white">Rs. {{ tax_year_2_result.per_month|intcomma }}</td>
+                                    </tr>
+                                </table>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
+
+
     </div>
-
-
 </div>
 {% endif %}
 
@@ -182,6 +261,7 @@ document.addEventListener("DOMContentLoaded", function() {
         results.scrollIntoView({ behavior: "smooth", block: "start" });
     }
 });
+
 
 
 </script>
