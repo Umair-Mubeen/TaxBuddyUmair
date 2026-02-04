@@ -13,7 +13,8 @@ from django.contrib import messages
 from django.utils.timezone import now
 from django.db.models import Q
 from django.http import JsonResponse
-from .models import Blogs, Comment, Contact, TaxBracket, Business_AOP_Slab, Property_Business_AOP_Slab, Question, Option, SuperTax4CRate
+from .models import Blogs, Comment, Contact, TaxBracket, Business_AOP_Slab, Property_Business_AOP_Slab, Question, \
+    Option, SuperTax4CRate
 
 
 def index(request):
@@ -646,10 +647,10 @@ from .models import Question
 def tax_knowledge_quiz(request):
     questions = (
         Question.objects
-        .filter(is_active=True)
-        .select_related("category")
-        .prefetch_related("options")
-        .order_by("category__order", "id")
+            .filter(is_active=True)
+            .select_related("category")
+            .prefetch_related("options")
+            .order_by("category__order", "id")
     )
 
     return render(
@@ -659,6 +660,7 @@ def tax_knowledge_quiz(request):
             "questions": questions,
         }
     )
+
 
 def online_services(request):
     try:
@@ -673,6 +675,7 @@ def question_list(request):
         return render(request, "tax-knowledge-quizz.html", {"questions": questions})
     except Exception as e:
         return HttpResponse("Exception at Blog Details Page :" + str(e))
+
 
 @login_required(login_url='Login')
 def add_question(request):
@@ -732,7 +735,6 @@ def add_question(request):
     )
 
 
-
 @login_required(login_url='Login')  # redirect when user is not logged in
 def view_questions(request):
     questions = Question.objects.all().order_by("category", "id")
@@ -777,7 +779,6 @@ def edit_question(request, pk):
     )
 
 
-
 # DELETE QUESTION
 @login_required(login_url='Login')
 def delete_question(request, pk):
@@ -794,9 +795,26 @@ def privacy_policy(request):
     except Exception as e:
         return HttpResponse(str("Exception : " + str(e)))
 
+
 def TaxCalculator4C(request):
     try:
         return render(request, 'TaxCalculator4C.html')
+
+    except Exception as e:
+        return HttpResponse(str("Exception : " + str(e)))
+
+
+def income_tax_guides(request):
+    try:
+        return render(request, 'income-tax-guides.html')
+
+    except Exception as e:
+        return HttpResponse(str("Exception : " + str(e)))
+
+
+def sales_tax_guides(request):
+    try:
+        return render(request, 'sales-tax-guides.html')
 
     except Exception as e:
         return HttpResponse(str("Exception : " + str(e)))
@@ -825,15 +843,15 @@ def section_4c_rate_view(request):
 
     slab = (
         SuperTax4CRate.objects
-        .filter(
+            .filter(
             tax_year=tax_year,
             income_from__lte=income
         )
-        .filter(
+            .filter(
             Q(income_to__gte=income) | Q(income_to__isnull=True)
         )
-        .order_by("income_from")
-        .first()
+            .order_by("income_from")
+            .first()
     )
 
     rate = float(slab.rate) if slab else 0.0

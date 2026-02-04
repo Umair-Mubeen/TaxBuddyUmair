@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html lang="en">
+{% load static %}
+
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sales Tax Guides | TaxBuddy Umair</title>
+
+<style>
+@media(max-width:768px){
+  .hero-visual img{
+    max-width:300px;
+    margin:auto;
+  }
+}
+
+:root{
+  --green:#0f766e;
+  --green-dark:#0c5b47;
+  --green-soft:#e9f6f2;
+  --text:#0f172a;
+  --muted:#5b6b65;
+  --border:#e2ebe6;
+  --bg:#f6fbf9;
+}
+
+*{
+  box-sizing:border-box;
+}
+
+body{
+  margin:0;
+  font-family:system-ui,-apple-system,"Segoe UI",Roboto;
+  background:var(--bg);
+  color:var(--text);
+}
+
+/* =========================
+   PAGE WRAPPER
+========================= */
+.container{
+  max-width:1200px;
+  margin:auto;
+}
+
+/* =========================
+   HERO
+========================= */
+.guides-hero{
+  display:grid;
+  grid-template-columns:1.2fr 1fr;
+  gap:40px;
+  align-items:center;
+  margin-bottom:50px;
+}
+
+.guides-hero h1{
+  font-size:36px;
+  font-weight:800;
+  margin-bottom:12px;
+}
+
+.guides-hero p{
+  font-size:16px;
+  color:var(--muted);
+  max-width:520px;
+  margin-bottom:20px;
+}
+
+/* SEARCH */
+.search-box{
+  display:flex;
+  gap:10px;
+}
+
+.search-box input{
+  flex:1;
+  padding:14px 16px;
+  border-radius:12px;
+  border:1px solid var(--border);
+  font-size:14px;
+}
+
+.search-box button{
+  padding:14px 22px;
+  border-radius:12px;
+  border:none;
+  background:var(--green);
+  color:#fff;
+  font-weight:600;
+  cursor:pointer;
+}
+
+/* HERO ILLUSTRATION */
+.hero-visual{
+  background:#ffffff;
+  border-radius:18px;
+  padding:24px;
+  box-shadow:0 14px 40px rgba(0,0,0,0.06);
+  text-align:center;
+  background:linear-gradient(135deg,#f2fbf8,#ffffff);
+
+}
+
+.hero-visual img{
+  width:100%;
+  max-width:380px;
+}
+
+/* =========================
+   CATEGORY TABS
+========================= */
+.tabs{
+  display:flex;
+  gap:12px;
+  overflow-x:auto;
+  margin-bottom:40px;
+}
+
+.tab{
+  padding:10px 18px;
+  border-radius:999px;
+  border:1px solid var(--border);
+  background:#fff;
+  font-size:14px;
+  white-space:nowrap;
+  cursor:pointer;
+}
+
+.tab.active{
+  background:var(--green);
+  color:#fff;
+  border-color:var(--green);
+}
+
+/* =========================
+   GRID
+========================= */
+.guides-grid{
+  display:grid;
+  grid-template-columns:2fr 1fr;
+  gap:24px;
+}
+
+/* LEFT SECTIONS */
+.guides-section{
+  background:#fff;
+  border-radius:18px;
+  padding:24px;
+  margin-bottom:24px;
+  box-shadow:0 10px 28px rgba(0,0,0,0.06);
+}
+
+.section-head{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-bottom:16px;
+}
+
+.section-head h3{
+  font-size:18px;
+  font-weight:700;
+}
+
+.section-head a{
+  font-size:14px;
+  color:var(--green);
+  text-decoration:none;
+  font-weight:600;
+}
+
+.guides-list{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:12px;
+}
+
+.guides-list li{
+  list-style:none;
+  font-size:14px;
+  color:#344;
+}
+
+.guides-list li::before{
+  content:"✓";
+  color:var(--green);
+  margin-right:8px;
+}
+
+/* RIGHT SIDEBAR */
+.sidebar{
+  background:#fff;
+  border-radius:18px;
+  padding:24px;
+  box-shadow:0 10px 28px rgba(0,0,0,0.06);
+  height:fit-content;
+}
+
+.sidebar h4{
+  font-size:16px;
+  font-weight:700;
+  margin-bottom:14px;
+}
+
+.sidebar ul{
+  padding:0;
+}
+
+.sidebar li{
+  list-style:none;
+  font-size:14px;
+  margin-bottom:10px;
+  color:#455;
+}
+
+/* =========================
+   NEWSLETTER
+========================= */
+.newsletter{
+  margin-top:60px;
+  background:linear-gradient(135deg,#e9f6f2,#f6fbf9);
+  border-radius:20px;
+  padding:40px;
+  display:grid;
+  grid-template-columns:1.2fr 1fr;
+  gap:20px;
+  align-items:center;
+}
+
+.newsletter h3{
+  font-size:22px;
+  margin-bottom:8px;
+}
+
+.newsletter p{
+  font-size:14px;
+  color:var(--muted);
+}
+
+.newsletter form{
+  display:flex;
+  gap:10px;
+}
+
+.newsletter input{
+  flex:1;
+  padding:14px;
+  border-radius:12px;
+  border:1px solid var(--border);
+}
+
+.newsletter button{
+  padding:14px 24px;
+  border:none;
+  border-radius:12px;
+  background:var(--green);
+  color:#fff;
+  font-weight:600;
+}
+
+/* =========================
+   RESPONSIVE
+========================= */
+@media(max-width:992px){
+  .guides-hero{
+    grid-template-columns:1fr;
+    text-align:center;
+  }
+
+  .guides-grid{
+    grid-template-columns:1fr;
+  }
+
+  .guides-list{
+    grid-template-columns:1fr;
+  }
+
+  .newsletter{
+    grid-template-columns:1fr;
+    text-align:center;
+  }
+}
+
+
+</style>
+{% include 'partials/head-css.html' %}
+
+</head>
+
+<body>
+<!--=====Navigation Bar=======-->
+{% include 'partials/topbar.html' %}
+<!--=====Navigation Bar Ends Here=======-->
+<div class="container sp1">
+
+  <!-- HERO -->
+  <div class="guides-hero">
+
+    <!-- LEFT -->
+    <div>
+      <h1>Sales Tax Guides</h1>
+      <p>
+        Learn how sales tax works in Pakistan including registration, filing,
+        withholding, and compliance for individuals and businesses.
+      </p>
+
+      <div class="search-box">
+        <input type="text" placeholder="Search sales tax guides…">
+        <button>Search</button>
+      </div>
+    </div>
+
+    <!-- RIGHT ILLUSTRATION -->
+    <div class="hero-visual">
+      <img
+        src="/static/assets/img/guides/sales-tax-guides-illustration.png"
+        alt="Sales tax guides illustration showing GST registration, invoices, and tax calculator">
+    </div>
+
+  </div>
+
+  <!-- CATEGORY TABS -->
+  <div class="tabs">
+
+    <div class="tab active">
+      Basics
+    </div>
+
+    <div class="tab">
+      Registration
+    </div>
+
+    <div class="tab">
+      Filing
+    </div>
+
+    <div class="tab">
+      Withholding
+    </div>
+
+    <div class="tab">
+      Adjustments
+    </div>
+
+    <div class="tab">
+      Refunds
+    </div>
+
+  </div>
+
+  <!-- CONTENT GRID -->
+  <div class="guides-grid">
+
+    <!-- LEFT CONTENT -->
+    <div>
+
+      <!-- SECTION 1 -->
+      <div class="guides-section">
+        <div class="section-head">
+          <h3>Sales Tax Basics</h3>
+          <a href="#">View All →</a>
+        </div>
+
+        <ul class="guides-list">
+          <li>What is Sales Tax in Pakistan?</li>
+          <li>Difference Between Sales Tax & Income Tax</li>
+          <li>Federal vs Provincial Sales Tax</li>
+          <li>Sales Tax Registration Threshold</li>
+          <li>Goods vs Services – Sales Tax Treatment</li>
+          <li>Sales Tax Rates Explained</li>
+        </ul>
+      </div>
+
+      <!-- SECTION 2 -->
+      <div class="guides-section">
+        <div class="section-head">
+          <h3>Sales Tax Registration</h3>
+          <a href="#">View All →</a>
+        </div>
+
+        <ul class="guides-list">
+          <li>Who Must Register for Sales Tax?</li>
+          <li>GST Registration Process (Step-by-Step)</li>
+          <li>Required Documents for Registration</li>
+          <li>Voluntary vs Mandatory Registration</li>
+        </ul>
+      </div>
+
+      <!-- SECTION 3 -->
+      <div class="guides-section">
+        <div class="section-head">
+          <h3>Sales Tax Return Filing</h3>
+          <a href="#">View All →</a>
+        </div>
+
+        <ul class="guides-list">
+          <li>Monthly Sales Tax Return Explained</li>
+          <li>How to File Sales Tax Return in Pakistan</li>
+          <li>Input vs Output Tax</li>
+          <li>Common Filing Errors to Avoid</li>
+        </ul>
+      </div>
+
+    </div>
+
+    <!-- RIGHT SIDEBAR -->
+    <div class="sidebar">
+      <h4>In This Guide</h4>
+      <ul>
+        <li>Sales Tax Basics</li>
+        <li>GST Registration</li>
+        <li>Monthly Filing</li>
+        <li>Withholding Sales Tax</li>
+        <li>Refunds & Adjustments</li>
+      </ul>
+    </div>
+
+  </div>
+
+  <!-- NEWSLETTER -->
+  <div class="newsletter">
+    <div>
+      <h3>Stay Updated on Sales Tax Rules</h3>
+      <p>
+        Get notified about changes in sales tax laws, rates, and filing deadlines.
+      </p>
+    </div>
+
+    <form>
+      <input type="email" placeholder="Enter your email">
+      <button>Subscribe</button>
+    </form>
+  </div>
+
+</div>
+
+{% include 'partials/footer.html' %}
+
+{% include 'partials/up.html' %}
+
+{% include 'partials/footer-scripts.html' %}
+
+</body>
+</html>
