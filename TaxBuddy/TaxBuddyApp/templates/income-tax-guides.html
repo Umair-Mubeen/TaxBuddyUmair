@@ -4,10 +4,12 @@
 {% load static %}
 
 <head>
+    <meta charset="UTF-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
 
-<title>Income Tax Guides | TaxBuddy Umair</title>
+    <title>Income Tax Guides | TaxBuddy Umair</title>
 
-<script src="https://www.google.com/recaptcha/api.js?render=6LesUD4sAAAAAGihejIqA70J-9gVxHzPmYaHXR-b"></script>
+    <script src="https://www.google.com/recaptcha/api.js?render=6LesUD4sAAAAAGihejIqA70J-9gVxHzPmYaHXR-b"></script>
 
 
     <!-- Google tag (gtag.js) -->
@@ -21,7 +23,7 @@
 
     {% include 'partials/head-css.html' %}
 
-<style>
+    <style>
   /* =========================================================
    TAXBUDDY UMAIR – GUIDES UI (STABLE & RESPONSIVE)
 ========================================================= */
@@ -117,7 +119,6 @@ header,
   padding:14px 22px;
   border-radius:12px;
   border:none;
-  background:var(--green);
   color:#fff;
   font-weight:600;
   cursor:pointer;
@@ -262,7 +263,6 @@ header,
 ========================= */
 .newsletter{
   margin:60px 0;
-  background:linear-gradient(135deg,#e9f6f2,#f6fbf9);
   border-radius:22px;
   padding:40px;
   display:grid;
@@ -297,8 +297,6 @@ header,
   padding:14px 24px;
   border:none;
   border-radius:12px;
-  background:var(--green);
-  color:#fff;
   font-weight:600;
 }
 
@@ -336,7 +334,8 @@ header,
   }
 }
 
-</style>
+
+    </style>
 
 </head>
 <body>
@@ -346,107 +345,113 @@ header,
 <!--=====Navigation Bar Ends Here=======-->
 
 
-<div class="home6-full-header container">
+<div class="home6-full-header">
 
-  <!-- HERO -->
-  <div class="guides-hero">
-    <div>
-      <h1>Income Tax Guides</h1>
-      <p>
-        Learn how income tax works in Pakistan from start to finish with
-        step-by-step guides for individuals, freelancers, and businesses.
-      </p>
+    <!-- HERO -->
+    <div class="container">
+    <div class="guides-hero">
+        <div>
+            <h1>Income Tax Guides</h1>
+            <p>
+                Learn how income tax works in Pakistan from start to finish with
+                step-by-step guides for individuals, freelancers, and businesses.
+            </p>
 
-      <div class="search-box">
-        <input type="text" placeholder="Search tax guides…">
-        <button>Search</button>
-      </div>
-    </div>
-
-    <div class="hero-visual">
-      <img src="{% static 'assets/img/image/income_tax_guide.webp'%}" alt="income_tax_guides">
-    </div>
-  </div>
-
-  <!-- TABS -->
-  <div class="tabs">
-    <div class="tab active">Basics</div>
-    <div class="tab">Salary</div>
-    <div class="tab">Business</div>
-    <div class="tab">Freelancing</div>
-    <div class="tab">Withholding</div>
-    <div class="tab">Deductions</div>
-    <div class="tab">Filing</div>
-  </div>
-
-  <!-- GRID -->
-  <div class="guides-grid">
-
-    <!-- LEFT -->
-    <div>
-
-      <div class="guides-section">
-        <div class="section-head">
-          <h3>Income Tax Basics</h3>
-          <a href="#">View All →</a>
+            <div class="button6 search-box">
+                <input class="" placeholder="Search tax guides…" type="text">
+                <button class="button6">Search</button>
+            </div>
         </div>
-        <ul class="guides-list">
-          <li>What is Income Tax in Pakistan?</li>
-          <li>Who is Liable to Pay Income Tax?</li>
-          <li>Difference Between Filer & Non-Filer</li>
-          <li>What is Active Taxpayer List (ATL)?</li>
-          <li>Allowances & Benefits – Tax Treatment</li>
-          <li>Advance Tax Explained</li>
-        </ul>
-      </div>
 
-      <div class="guides-section">
-        <div class="section-head">
-          <h3>Income Tax on Salary</h3>
-          <a href="#">View All →</a>
+        <div class="hero-visual">
+            <img alt="income_tax_guides" src="{% static 'assets/img/image/income_tax_guide.webp'%}">
         </div>
-        <ul class="guides-list">
-          <li>Salary Tax Slabs</li>
-          <li>Allowances & Perquisites</li>
-          <li>Tax Credits for Salaried Persons</li>
-          <li>Advance Tax on Salary</li>
-        </ul>
-      </div>
+    </div>
+
+    <!-- TABS -->
+    <!--  <div class="tabs">-->
+    <!--    <div class="tab active">Basics</div>-->
+    <!--    <div class="tab">Salary</div>-->
+    <!--    <div class="tab">Business</div>-->
+    <!--    <div class="tab">Freelancing</div>-->
+    <!--    <div class="tab">Withholding</div>-->
+    <!--    <div class="tab">Deductions</div>-->
+    <!--    <div class="tab">Filing</div>-->
+    <!--  </div>-->
+
+    <!-- GRID -->
+    <div class="guides-grid">
+
+        <!-- LEFT -->
+        <div>
+
+            <div class="guides-section">
+                <div class="section-head">
+                    <h3>Income Tax Basics</h3>
+                    <a href="#">View All →</a>
+                </div>
+                <ul class="guides-list">
+                    <li>What is Income Tax in Pakistan?</li>
+                    <li>Who is Liable to Pay Income Tax?</li>
+                    <li>Difference Between Filer & Non-Filer</li>
+                    <li>What is Active Taxpayer List (ATL)?</li>
+                    <li>Allowances & Benefits – Tax Treatment</li>
+                    <li>Advance Tax Explained</li>
+                </ul>
+            </div>
+
+            <div class="guides-section">
+                <div class="section-head">
+                    <h3>Income Tax on Salary</h3>
+                    <a href="#">View All →</a>
+                </div>
+                <ul class="guides-list">
+                    <li>Salary Tax Slabs</li>
+                    <li>Allowances & Perquisites</li>
+                    <li>Tax Credits for Salaried Persons</li>
+                    <li>Advance Tax on Salary</li>
+                </ul>
+            </div>
+
+        </div>
+
+        <!-- RIGHT -->
+        <div class="sidebar">
+            <h4>In This Guide</h4>
+            <ul>
+                <li>What is Income Tax?</li>
+                <li>Pakistan Income Tax Rates</li>
+                <li>How to Become a Tax Filer</li>
+                <li>File Your Tax Return</li>
+                <li>Tax Exemptions</li>
+            </ul>
+        </div>
 
     </div>
 
-    <!-- RIGHT -->
-    <div class="sidebar">
-      <h4>In This Guide</h4>
-      <ul>
-        <li>What is Income Tax?</li>
-        <li>Pakistan Income Tax Rates</li>
-        <li>How to Become a Tax Filer</li>
-        <li>File Your Tax Return</li>
-        <li>Tax Exemptions</li>
-      </ul>
+    <!-- NEWSLETTER -->
+    <div class="newsletter">
+        <div>
+            <h3>Get Free Tax Tips!</h3>
+            <p>Join our newsletter for new guides, updates, and learning resources.</p>
+        </div>
+
+        <div class="button6">
+            <form>
+                <input class="form-control" placeholder="Enter your email" type="email">
+                <button class="button6">Subscribe</button>
+            </form>
+        </div>
     </div>
 
-  </div>
-
-  <!-- NEWSLETTER -->
-  <div class="newsletter">
-    <div>
-      <h3>Get Free Tax Tips!</h3>
-      <p>Join our newsletter for new guides, updates, and learning resources.</p>
-    </div>
-
-    <form>
-      <input type="email" placeholder="Enter your email">
-      <button>Subscribe</button>
-    </form>
-  </div>
 
 </div>
-
-{% include 'partials/footer.html' %}
+       {% include 'partials/footer.html' %}
 {% include 'partials/up.html' %}
 {% include 'partials/footer-scripts.html' %}
+
+
+</div>
 
 
 </body>

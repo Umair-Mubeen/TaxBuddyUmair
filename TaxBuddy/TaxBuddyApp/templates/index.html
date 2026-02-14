@@ -5,6 +5,94 @@
 
 <head>
 
+<style>
+    .calculator-section{
+  padding:80px 0;
+}
+
+.section-header{
+  margin-bottom:50px;
+}
+
+.section-header h2{
+  font-size:32px;
+  font-weight:700;
+  margin-bottom:10px;
+}
+
+.section-header p{
+  color:#5b6b65;
+}
+
+.calculator-cards{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:30px;
+}
+
+.calculator-card{
+  position:relative;
+  background:#fff;
+  border-radius:20px;
+  padding:40px 25px;
+  text-align:center;
+  text-decoration:none;
+  box-shadow:0 10px 30px rgba(0,0,0,0.06);
+  transition:all 0.3s ease;
+  overflow:hidden;
+}
+
+.calculator-card:hover{
+  transform:translateY(-8px);
+  box-shadow:0 20px 40px rgba(0,0,0,0.1);
+}
+
+/* NEW Badge */
+.badge-new{
+  position:absolute;
+  top:15px;
+  right:15px;
+  background:#0f766e;
+  color:#fff;
+  font-size:11px;
+  padding:6px 10px;
+  border-radius:20px;
+  font-weight:600;
+}
+
+/* Icon */
+.icon-wrap{
+  width:70px;
+  height:70px;
+  margin:0 auto 20px;
+  background:#e9f6f2;
+  border-radius:50%;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:26px;
+  color:#0f766e;
+}
+
+.card-content h3{
+  font-size:18px;
+  margin-bottom:10px;
+  color:#0f172a;
+}
+
+.card-content p{
+  font-size:14px;
+  color:#555;
+}
+
+/* Responsive */
+@media(max-width:992px){
+  .calculator-cards{
+    grid-template-columns:1fr;
+  }
+}
+
+</style>
     <!-- Meta Pixel Code -->
     <script>
 !function(f,b,e,v,n,t,s)
@@ -100,11 +188,7 @@ body{
     width:100%;
     position:relative;
     overflow:hidden;
-    background:radial-gradient(
-        circle at top right,
-        #dae7e3 0%,
-        #f6fbf9 72%
-    );
+
 }
 
 /* ---------------------------------------------------------
@@ -549,7 +633,6 @@ body{
 
 .tax-info-section{
     padding:80px 0;
-    background:#f7f9f8;
 }
 
 .box-card{
@@ -665,7 +748,7 @@ body{
 {% include 'partials/topbar.html' %}
 <!--=====Navigation Bar Ends Here=======-->
 
-<section class="home6-full-header hero-fluid">
+<section class="home6-full-header hero-fluid" style="background: radial-gradient(circle at top right, #DAE7E3 0%, #F6FBF9 70%);">
     <div class="hero-fluid-inner">
         <div class="hero-content">
 
@@ -718,14 +801,14 @@ body{
                     <img src="{% static 'assets/img/image/income_tax.webp' %}" alt="Income Tax Guide">
                     <h4>Income Tax Basics</h4>
                     <p>Learn about income tax, sales filing requirements, and more.</p>
-                    <a href="#">Read More →</a>
+                    <a href="/income-tax-guides">Read More →</a>
                 </div>
 
                 <div class="guide-card">
                     <img src="{% static 'assets/img/image/sales_tax.webp' %}" alt="Sales Tax Guide">
                     <h4>Sales Tax Guide</h4>
                     <p>GST & Business Tax Solutions for maintain & reporting.</p>
-                    <a href="#">Read More →</a>
+                    <a href="/sales-tax-guides">Read More →</a>
                 </div>
 
                 <div class="guide-card">
@@ -755,6 +838,65 @@ body{
     </div>
 </section>
 
+<section class="calculator-section" style="background: radial-gradient(circle at top right, #DAE7E3 0%, #F6FBF9 70%);">
+  <div class="container">
+
+    <div class="section-header">
+      <h2>Tax Calculators</h2>
+      <p>Calculate your income tax instantly using our smart tools.</p>
+    </div>
+
+    <div class="calculator-cards">
+
+      <!-- Salary -->
+      <a href="{% url 'SalaryCalculator' %}" class="calculator-card">
+        <span class="badge-new">NEW</span>
+
+        <div class="icon-wrap">
+          <i class="fas fa-user-tie"></i>
+        </div>
+
+        <div class="card-content">
+          <h3>Salary Tax Calculator</h3>
+          <p>Calculate tax on salaried income using latest slabs.</p>
+        </div>
+      </a>
+
+      <!-- Business -->
+      <a href="{% url 'BusinessCalculator' %}" class="calculator-card">
+        <span class="badge-new">NEW</span>
+
+        <div class="icon-wrap">
+          <i class="fas fa-briefcase"></i>
+        </div>
+
+        <div class="card-content">
+          <h3>Business Tax Calculator</h3>
+          <p>Estimate tax for sole proprietors & small businesses.</p>
+        </div>
+      </a>
+
+      <!-- AOP -->
+      <a href="{% url 'AOPCalculator' %}" class="calculator-card">
+        <span class="badge-new">NEW</span>
+
+        <div class="icon-wrap">
+          <i class="fas fa-users"></i>
+        </div>
+
+        <div class="card-content">
+          <h3>AOP Tax Calculator</h3>
+          <p>Compute tax liability for partnership firms (AOP).</p>
+        </div>
+      </a>
+
+    </div>
+
+  </div>
+</section>
+
+{% include 'Faq_question.html' %}
+
 <section class="tax-info-section" style="background: radial-gradient(circle at top right, #DAE7E3 0%, #F6FBF9 70%);">
     <div class="container">
         <div class="row g-4">
@@ -764,7 +906,7 @@ body{
 
                 <!-- EASY TAX CALCULATORS -->
                 <div class="box-card mb-4">
-                    <h3 class="section-title">Easy Tax Calculators</h3>
+                    <h3 class="section-title">About TaxBuddy Umair</h3>
                     <p class="section-subtitle">
                         Quickly calculate your income and salary tax
                     </p>
@@ -784,41 +926,12 @@ body{
                                 <li>Personalized tax consultation for individuals and businesses</li>
                             </ul>
 
-                            <a href="#" class="btn btn-success mt-2">
-                                Learn More About Me →
-                            </a>
+
                         </div>
                     </div>
                 </div>
 
                 <!-- QUICK LINKS -->
-                <div class="box-card">
-                    <div class="row text-center">
-                        <div class="col-md-4">
-                            <h5>Income Tax Guides</h5>
-                            <ul class="simple-list">
-                                <li>Tax Filing Process</li>
-                                <li>Tax Benefits Info</li>
-                            </ul>
-                        </div>
-
-                        <div class="col-md-4">
-                            <h5>Sales Tax Guides</h5>
-                            <ul class="simple-list">
-                                <li>GST Registration</li>
-                                <li>Sales Tax Compliance</li>
-                            </ul>
-                        </div>
-
-                        <div class="col-md-4">
-                            <h5>Useful Calculators</h5>
-                            <ul class="simple-list">
-                                <li>Income Tax Calculator</li>
-                                <li>Salary Tax Calculator</li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
 
             </div>
 
@@ -829,29 +942,16 @@ body{
                 <div class="box-card mb-4">
                     <h4>Latest Articles</h4>
 
+                    {% for blog in latest_blogs %}
                     <div class="article-item">
-                        <img src="/static/assets/img/article.jpg" alt="">
+                        <img src="{{blog.image.url}}" alt="">
                         <div>
-                            <p>How to Become a Tax Filer in Pakistan</p>
-                            <a href="#">Read More →</a>
+                            <p>{{blog.title}}</p>
+                            <a href="{{blog.slug}}">Read More →</a>
                         </div>
                     </div>
+                    {% endfor %}
 
-                    <div class="article-item">
-                        <img src="/static/assets/img/article.jpg" alt="">
-                        <div>
-                            <p>Understanding ATL vs Non-ATL Status</p>
-                            <a href="#">Read More →</a>
-                        </div>
-                    </div>
-
-                    <div class="article-item">
-                        <img src="/static/assets/img/article.jpg" alt="">
-                        <div>
-                            <p>Common Tax Filing Mistakes to Avoid</p>
-                            <a href="#">Read More →</a>
-                        </div>
-                    </div>
                 </div>
 
                 <!-- GET IN TOUCH -->
@@ -859,32 +959,17 @@ body{
                     <h4>Get In Touch</h4>
 
                     <ul class="contact-list">
-                        <li>📧 info@taxbuddyumair.com</li>
-                        <li>📞 +92 300 1234567</li>
+                        <li>📧 umair.mubeenir@gmail.com</li>
+                        <li>📞 +92 3332482742</li>
                         <li>📍 Karachi, Pakistan</li>
                     </ul>
-
-                    <a href="#" class="btn btn-success w-100">
-                        Send Message →
-                    </a>
-                </div>
+                    </div>
 
             </div>
 
         </div>
     </div>
 </section>
-
-<!--=====Welcome end=======-->
-
-
-<!--=====brand end=======-->
-
-<div class="scrollspy-example" data-bs-offset="0" data-bs-spy="scroll" data-bs-target="#list-example" tabindex="0">
-    <!--===== About Section =====-->
-
-
-</div>
 
 
 <!--=====contact start=======-->
