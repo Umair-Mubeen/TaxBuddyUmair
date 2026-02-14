@@ -3,11 +3,11 @@
 {% load static %}
 
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Sales Tax Guides | TaxBuddy Umair</title>
+    <meta charset="UTF-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <title>Sales Tax Guides | TaxBuddy Umair</title>
 
-<script src="https://www.google.com/recaptcha/api.js?render=6LesUD4sAAAAAGihejIqA70J-9gVxHzPmYaHXR-b"></script>
+    <script src="https://www.google.com/recaptcha/api.js?render=6LesUD4sAAAAAGihejIqA70J-9gVxHzPmYaHXR-b"></script>
 
 
     <!-- Google tag (gtag.js) -->
@@ -19,9 +19,9 @@
     <meta content="https://www.taxbuddyumair.com/" property="og:url">
     <meta content="https://taxbuddyumair.com/static/assets/img/icons/fab2.png" property="og:image"/>
 
-  {% include 'partials/head-css.html' %}
+    {% include 'partials/head-css.html' %}
 
-<style>
+    <style>
   /* =========================================================
    TAXBUDDY UMAIR – GUIDES UI (STABLE & RESPONSIVE)
 ========================================================= */
@@ -336,7 +336,8 @@ header,
   }
 }
 
-</style>
+
+    </style>
 
 
 </head>
@@ -345,155 +346,160 @@ header,
 <!--=====Navigation Bar=======-->
 {% include 'partials/topbar.html' %}
 <!--=====Navigation Bar Ends Here=======-->
-<div class="home6-full-header container">
+<div class="home6-full-header">
 
-  <!-- HERO -->
-  <div class="guides-hero">
+    <!-- HERO -->
+    <div class="container">
+        <div class="guides-hero">
 
-    <!-- LEFT -->
-    <div>
-      <h1>Sales Tax Guides</h1>
-      <p>
-        Learn how sales tax works in Pakistan including registration, filing,
-        withholding, and compliance for individuals and businesses.
-      </p>
+            <!-- LEFT -->
+            <div>
+                <h1>Sales Tax Guides</h1>
+                <p>
+                    Learn how sales tax works in Pakistan including registration, filing,
+                    withholding, and compliance for individuals and businesses.
+                </p>
 
-      <div class="search-box">
-        <input type="text" placeholder="Search sales tax guides…">
-        <button>Search</button>
-      </div>
-    </div>
+                <div class="search-box">
+                    <input placeholder="Search sales tax guides…" type="text">
+                    <button>Search</button>
+                </div>
+            </div>
 
-    <!-- RIGHT ILLUSTRATION -->
-    <div class="hero-visual">
+            <!-- RIGHT ILLUSTRATION -->
+            <div class="hero-visual">
 
-      <img
-        src="{% static 'assets/img/image/income_tax_guide.webp'%}"
-        alt="Sales tax guides illustration showing GST registration, invoices, and tax calculator">
-    </div>
+                <img
+                        alt="Sales tax guides illustration showing GST registration, invoices, and tax calculator"
+                        src="{% static 'assets/img/image/income_tax_guide.webp'%}">
+            </div>
 
-  </div>
-
-  <!-- CATEGORY TABS -->
-  <div class="tabs">
-
-    <div class="tab active">
-      Basics
-    </div>
-
-    <div class="tab">
-      Registration
-    </div>
-
-    <div class="tab">
-      Filing
-    </div>
-
-    <div class="tab">
-      Withholding
-    </div>
-
-    <div class="tab">
-      Adjustments
-    </div>
-
-    <div class="tab">
-      Refunds
-    </div>
-
-  </div>
-
-  <!-- CONTENT GRID -->
-  <div class="guides-grid">
-
-    <!-- LEFT CONTENT -->
-    <div>
-
-      <!-- SECTION 1 -->
-      <div class="guides-section">
-        <div class="section-head">
-          <h3>Sales Tax Basics</h3>
-          <a href="#">View All →</a>
         </div>
 
-        <ul class="guides-list">
-          <li>What is Sales Tax in Pakistan?</li>
-          <li>Difference Between Sales Tax & Income Tax</li>
-          <li>Federal vs Provincial Sales Tax</li>
-          <li>Sales Tax Registration Threshold</li>
-          <li>Goods vs Services – Sales Tax Treatment</li>
-          <li>Sales Tax Rates Explained</li>
-        </ul>
-      </div>
+        <!-- CATEGORY TABS -->
+<!--        <div class="tabs">-->
 
-      <!-- SECTION 2 -->
-      <div class="guides-section">
-        <div class="section-head">
-          <h3>Sales Tax Registration</h3>
-          <a href="#">View All →</a>
+<!--            <div class="tab active">-->
+<!--                Basics-->
+<!--            </div>-->
+
+<!--            <div class="tab">-->
+<!--                Registration-->
+<!--            </div>-->
+
+<!--            <div class="tab">-->
+<!--                Filing-->
+<!--            </div>-->
+
+<!--            <div class="tab">-->
+<!--                Withholding-->
+<!--            </div>-->
+
+<!--            <div class="tab">-->
+<!--                Adjustments-->
+<!--            </div>-->
+
+<!--            <div class="tab">-->
+<!--                Refunds-->
+<!--            </div>-->
+
+<!--        </div>-->
+
+        <!-- CONTENT GRID -->
+        <div class="guides-grid">
+
+            <!-- LEFT CONTENT -->
+            <div>
+
+                <!-- SECTION 1 -->
+                <div class="guides-section">
+                    <div class="section-head">
+                        <h3>Sales Tax Basics</h3>
+                        <a href="#">View All →</a>
+                    </div>
+
+                    <ul class="guides-list">
+                        <li>What is Sales Tax in Pakistan?</li>
+                        <li>Difference Between Sales Tax & Income Tax</li>
+                        <li>Federal vs Provincial Sales Tax</li>
+                        <li>Sales Tax Registration Threshold</li>
+                        <li>Goods vs Services – Sales Tax Treatment</li>
+                        <li>Sales Tax Rates Explained</li>
+                    </ul>
+                </div>
+
+                <!-- SECTION 2 -->
+                <div class="guides-section">
+                    <div class="section-head">
+                        <h3>Sales Tax Registration</h3>
+                        <a href="#">View All →</a>
+                    </div>
+
+                    <ul class="guides-list">
+                        <li>Who Must Register for Sales Tax?</li>
+                        <li>GST Registration Process (Step-by-Step)</li>
+                        <li>Required Documents for Registration</li>
+                        <li>Voluntary vs Mandatory Registration</li>
+                    </ul>
+                </div>
+
+                <!-- SECTION 3 -->
+                <div class="guides-section">
+                    <div class="section-head">
+                        <h3>Sales Tax Return Filing</h3>
+                        <a href="#">View All →</a>
+                    </div>
+
+                    <ul class="guides-list">
+                        <li>Monthly Sales Tax Return Explained</li>
+                        <li>How to File Sales Tax Return in Pakistan</li>
+                        <li>Input vs Output Tax</li>
+                        <li>Common Filing Errors to Avoid</li>
+                    </ul>
+                </div>
+
+            </div>
+
+            <!-- RIGHT SIDEBAR -->
+            <div class="sidebar">
+                <h4>In This Guide</h4>
+                <ul>
+                    <li>Sales Tax Basics</li>
+                    <li>GST Registration</li>
+                    <li>Monthly Filing</li>
+                    <li>Withholding Sales Tax</li>
+                    <li>Refunds & Adjustments</li>
+                </ul>
+            </div>
+
         </div>
 
-        <ul class="guides-list">
-          <li>Who Must Register for Sales Tax?</li>
-          <li>GST Registration Process (Step-by-Step)</li>
-          <li>Required Documents for Registration</li>
-          <li>Voluntary vs Mandatory Registration</li>
-        </ul>
-      </div>
+        <!-- NEWSLETTER -->
+        <div class="newsletter">
+            <div>
+                <h3>Stay Updated on Sales Tax Rules</h3>
+                <p>
+                    Get notified about changes in sales tax laws, rates, and filing deadlines.
+                </p>
+            </div>
 
-      <!-- SECTION 3 -->
-      <div class="guides-section">
-        <div class="section-head">
-          <h3>Sales Tax Return Filing</h3>
-          <a href="#">View All →</a>
+                   <div class="button6">
+            <form>
+                <input class="form-control" placeholder="Enter your email" type="email">
+                <button class="button6">Subscribe</button>
+            </form>
         </div>
 
-        <ul class="guides-list">
-          <li>Monthly Sales Tax Return Explained</li>
-          <li>How to File Sales Tax Return in Pakistan</li>
-          <li>Input vs Output Tax</li>
-          <li>Common Filing Errors to Avoid</li>
-        </ul>
-      </div>
+        </div>
 
     </div>
+    {% include 'partials/footer.html' %}
 
-    <!-- RIGHT SIDEBAR -->
-    <div class="sidebar">
-      <h4>In This Guide</h4>
-      <ul>
-        <li>Sales Tax Basics</li>
-        <li>GST Registration</li>
-        <li>Monthly Filing</li>
-        <li>Withholding Sales Tax</li>
-        <li>Refunds & Adjustments</li>
-      </ul>
-    </div>
+    {% include 'partials/up.html' %}
 
-  </div>
-
-  <!-- NEWSLETTER -->
-  <div class="newsletter">
-    <div>
-      <h3>Stay Updated on Sales Tax Rules</h3>
-      <p>
-        Get notified about changes in sales tax laws, rates, and filing deadlines.
-      </p>
-    </div>
-
-    <form>
-      <input type="email" placeholder="Enter your email">
-      <button>Subscribe</button>
-    </form>
-  </div>
+    {% include 'partials/footer-scripts.html' %}
 
 </div>
-
-{% include 'partials/footer.html' %}
-
-{% include 'partials/up.html' %}
-
-{% include 'partials/footer-scripts.html' %}
 
 </body>
 </html>

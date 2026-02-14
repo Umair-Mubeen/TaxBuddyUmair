@@ -1,0 +1,151 @@
+<script type="application/ld+json">
+{
+ "@context": "https://schema.org",
+ "@type": "FAQPage",
+ "mainEntity": [{
+   "@type": "Question",
+   "name": "Who is required to file income tax in Pakistan?",
+   "acceptedAnswer": {
+     "@type": "Answer",
+     "text": "Individuals earning taxable income above the threshold must file tax returns with FBR."
+   }
+ }]
+}
+</script>
+
+<style>
+  .faq-section{
+  padding:80px 0;
+  background:#f6fbf9;
+}
+
+.faq-header{
+  text-align:center;
+  margin-bottom:50px;
+}
+
+.faq-header h2{
+  font-size:30px;
+  font-weight:700;
+  margin-bottom:10px;
+}
+
+.faq-header p{
+  color:#5b6b65;
+}
+
+.faq-wrapper{
+  max-width:800px;
+  margin:0 auto;
+}
+
+.faq-item{
+  background:#fff;
+  border-radius:14px;
+  margin-bottom:15px;
+  box-shadow:0 6px 20px rgba(0,0,0,0.05);
+  overflow:hidden;
+}
+
+.faq-question{
+  width:100%;
+  background:none;
+  border:none;
+  padding:20px;
+  font-size:16px;
+  font-weight:600;
+  text-align:left;
+  cursor:pointer;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+}
+
+.faq-question span{
+  font-size:20px;
+  transition:0.3s;
+}
+
+.faq-answer{
+  display:none;
+  padding:0 20px 20px;
+  font-size:14px;
+  color:#555;
+  line-height:1.6;
+}
+
+</style>
+<section class="faq-section">
+  <div class="container">
+
+    <div class="faq-header">
+      <h2>Frequently Asked Questions</h2>
+      <p>Common questions about income tax and filing in Pakistan.</p>
+    </div>
+
+    <div class="faq-wrapper">
+
+      <div class="faq-item">
+        <button class="faq-question">
+          Who is required to file income tax in Pakistan?
+          <span>+</span>
+        </button>
+        <div class="faq-answer">
+          Individuals earning taxable income above the minimum threshold
+          are required to file income tax returns with FBR.
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-question">
+          What is the Active Taxpayer List (ATL)?
+          <span>+</span>
+        </button>
+        <div class="faq-answer">
+          ATL is a list published by FBR containing names of individuals
+          who have filed their income tax returns.
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-question">
+          What is the difference between filer and non-filer?
+          <span>+</span>
+        </button>
+        <div class="faq-answer">
+          A filer submits annual tax returns and enjoys lower tax rates,
+          while a non-filer pays higher withholding taxes.
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-question">
+          How can I calculate my income tax?
+          <span>+</span>
+        </button>
+        <div class="faq-answer">
+          You can use our Salary, Business, or AOP tax calculators
+          available above to compute your estimated tax liability.
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+</section>
+<script>
+document.querySelectorAll(".faq-question").forEach(button => {
+  button.addEventListener("click", () => {
+    const answer = button.nextElementSibling;
+    const symbol = button.querySelector("span");
+
+    if (answer.style.display === "block") {
+      answer.style.display = "none";
+      symbol.textContent = "+";
+    } else {
+      answer.style.display = "block";
+      symbol.textContent = "−";
+    }
+  });
+});
+</script>

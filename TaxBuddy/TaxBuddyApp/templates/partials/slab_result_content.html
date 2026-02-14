@@ -78,13 +78,13 @@
 
 <div class="row" id="results">
     <div class="col-12">
-        <div class="contact3-form-all">
-            <div class="hadding6 text-center">
-                <h1 class="font-30 font-f-7 font-lg-40 weight-500 line-height-lg-48 line-height-38">
-                    Tax Calculation Comparison - {{taxpayer_type}}
-                </h1>
-            </div>
-        </div>
+<!--        <div class="contact3-form-all">-->
+<!--            <div class="hadding6 text-center">-->
+<!--                <h1 class="font-30 font-f-7 font-lg-40 weight-500 line-height-lg-48 line-height-38">-->
+<!--                    Tax Calculation Comparison - {{taxpayer_type}}-->
+<!--                </h1>-->
+<!--            </div>-->
+<!--        </div>-->
 
         <!-- Grid Row for Tables -->
         <div class="container">
@@ -120,8 +120,7 @@
                                     {% endif %}
                                     <tr class="bg-success text-white">
                                         <th class="text-white">Applicable Tax Bracket</th>
-                                        <td class="text-white">Rs. {{ tax_year_1_result.lower|floatformat:"-0"|intcomma
-                                            }} to Rs. {{ tax_year_1_result.upper|floatformat:"-0"|intcomma }}
+                                        <td class="text-white">Rs. {{ tax_year_1_result.lower|floatformat:"-0"|intcomma }} to Rs. {{ tax_year_1_result.upper|floatformat:"-0"|intcomma }}
                                         </td>
                                     </tr>
                                     <tr>
@@ -199,9 +198,7 @@
                                     {% endif %}
                                     <tr class="bg-success">
                                         <th class="text-white">Applicable Tax Bracket</th>
-                                        <td class="text-white">Rs. {{ tax_year_2_result.lower|floatformat:"-0"|intcomma
-                                            }}
-                                            to Rs. {{ tax_year_2_result.upper|floatformat:"-0"|intcomma }}
+                                        <td class="text-white">Rs. {{ tax_year_2_result.lower|floatformat:"-0"|intcomma }} to Rs. {{ tax_year_2_result.upper|floatformat:"-0"|intcomma }}
                                         </td>
                                     </tr>
                                     <tr>
