@@ -12,7 +12,7 @@ from django.utils.timezone import now
 from django.db.models import Q
 from django.http import JsonResponse
 from .models import Blog, Comment, Contact, TaxBracket, Business_AOP_Slab, Property_Business_AOP_Slab, Question, \
-    Option, SuperTax4CRate
+    Option, SuperTax4CRate, Category, Tag
 
 
 def index(request):
@@ -55,61 +55,62 @@ def Dashboard(request):
         return HttpResponse(str(e))
 
 
-@login_required(login_url='Login')  # redirect when user is not logged in
+@login_required
 def AddEditBlog(request, slug=None):
-    try:
-        blog = None  # default: no blog (create mode)
-        # Only fetch if slug exists (edit mode)
-        if slug:
-            blog = get_object_or_404(Blog, slug=slug, status=1, is_deleted=False)
 
-        if request.method == 'POST':
-            title = request.POST.get('title', '').strip()
-            content = request.POST.get('content', '').strip()
-            blog_type = request.POST.get('type')
-            image = request.FILES.get('featured_image')
+    blog = None
 
-            if not title or not content:
-                return HttpResponse("Title and content are required.", status=400)
+    if slug:
+        blog = get_object_or_404(Blog, slug=slug, is_deleted=False)
 
-            # Unique slug
-            new_slug = slugify(title)
-            counter = 1
-            while Blog.objects.filter(slug=new_slug).exclude(pk=blog.pk if blog else None).exists():
-                new_slug = f"{slugify(title)}-{counter}"
-                counter += 1
+    categories = Category.objects.all()
+    tags = Tag.objects.all()
 
-            if blog:  # update mode
-                blog.type = blog_type
-                blog.title = title
-                blog.slug = new_slug
-                blog.content = content
+    if request.method == "POST":
 
-                if image:
-                    if image.content_type not in ["image/jpeg", "image/png", "image/webp", "application/pdf"]:
-                        return HttpResponse("Invalid file format.", status=400)
-                    blog.featured_image = image
+        category_id = request.POST.get("category")
+        tag_ids = request.POST.getlist("tags")
 
-                blog.save()
+        if blog:
+            # UPDATE
+            blog.title = request.POST.get("title")
+            blog.type = request.POST.get("type")
+            blog.content = request.POST.get("content")
+            blog.status = request.POST.get("status")
+            blog.meta_title = request.POST.get("meta_title")
+            blog.meta_description = request.POST.get("meta_description")
+            blog.category_id = category_id
 
-            else:  # create mode
-                if not image:
-                    return HttpResponse("File is required for new blog.", status=400)
+        else:
+            # CREATE
+            blog = Blog(
+                title=request.POST.get("title"),
+                type=request.POST.get("type"),
+                content=request.POST.get("content"),
+                status=request.POST.get("status"),
+                meta_title=request.POST.get("meta_title"),
+                meta_description=request.POST.get("meta_description"),
+                author=request.user
+            )
 
-                if image.content_type not in ["image/jpeg", "image/png", "image/webp", "application/pdf"]:
-                    return HttpResponse("Invalid file format.", status=400)
+        # Handle image update
+        if request.FILES.get("featured_image"):
+            blog.featured_image = request.FILES.get("featured_image")
 
-                blog = Blog.objects.create(
-                    title=title,
-                    type=blog_type,
-                    slug=new_slug,
-                    content=content,
-                    featured_image=image,
-                )
-        return render(request, 'Cpanel/AddEditBlog.html', {'blog': blog})
-    except Exception as e:
-        print('Exception at Add Edit Blog Page :', str(e))
-        return HttpResponse("Exception: " + str(e))
+        blog.save()
+
+        # Save many-to-many tags
+        blog.tags.set(tag_ids)
+
+        return redirect("ManageBlogs")  # change if your url name differs
+
+    context = {
+        "blog": blog,
+        "categories": categories,
+        "tags": tags,
+    }
+
+    return render(request, "Cpanel/AddEditBlog.html", context)
 
 
 @login_required(login_url='Login')  # redirect when user is not logged in
