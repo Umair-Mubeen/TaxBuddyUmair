@@ -39,63 +39,115 @@
         <!-- /.content-header -->
 
         <!-- Main content -->
-        <form action="{% if blog.slug %}/AddEditBlog/{{ blog.slug }}/{% else %}/AddEditBlog/{% endif %}"
-              enctype="multipart/form-data" method="POST">
-            {% csrf_token %}
-            <input class="form-control" id="hdrowId" name="hdrowId" type="hidden" value="{{blog.id}}">
-            <input class="form-control" id="hd_type" type="hidden" value="{{blog.type}}">
+    <form action="{% if blog %}{% url 'AddEditBlog' blog.slug %}{% else %}{% url 'AddEditBlog' %}{% endif %}"
+      method="POST"
+      enctype="multipart/form-data">
 
-            <section class="content">
-                <div class="container-fluid">
-                    <div class="col-md-12">
-                        <div class="card card-primary card-outline">
-                            <div class="card-header">
-                                <h3 class="card-title">Create New Blog </h3>
-                            </div>
-                            <!-- /.card-header -->
-                            <div class="card-body">
-                                <div class="form-group">
-                                    <select class="form-control" id="type" name="type">
-                                        <option value="1"> Income Tax</option>
-                                        <option value="2"> Sale Tax</option>
+    {% csrf_token %}
 
-                                    </select>
-                                </div>
-                                <div class="form-group">
-                                    <input class="form-control" name="title" placeholder="Blog Title:"
-                                           value="{{blog.title}}">
-                                </div>
-                                <div class="form-group">
-                    <textarea class="form-control" cols="3" id="compose-textarea" name="description" rows="10"> {{blog.description}}
-                       </textarea>
-                                </div>
-                                <div class="form-group">
-                                    <div class="btn btn-default btn-file">
-                                        <i class="fas fa-paperclip"></i> Attachment
-                                        <input class="form-control" name="attachment" type="file">
-                                    </div>
-                                </div>
-                            </div>
-                            <!-- /.card-body -->
-                            <div class="card-footer">
-                                <div class="float-right">
-                                    <button class="btn btn-primary" type="submit"><i class="far fa-envelope"></i> Submit
-                                    </button>
-                                </div>
-                                <button class="btn btn-default" type="reset"><i class="fas fa-times"></i> Discard
-                                </button>
-                            </div>
-                            <!-- /.card-footer -->
-                        </div>
-                        <!-- /.card -->
-                    </div>
+    {% if blog %}
+        <input type="hidden" name="blog_id" value="{{ blog.id }}">
+    {% endif %}
 
+<section class="content">
+<div class="container-fluid">
+<div class="col-md-12">
+<div class="card card-primary card-outline">
 
-                </div>
+    <div class="card-header">
+        <h3 class="card-title">
+            {% if blog %} Update Blog {% else %} Create New Blog {% endif %}
+        </h3>
+    </div>
 
+    <div class="card-body">
 
-            </section>
-        </form>
+        <!-- TYPE -->
+        <div class="form-group">
+            <label>Type</label>
+            <select class="form-control" name="type" required>
+                <option value="article" {% if blog.type == "article" %}selected{% endif %}>Article</option>
+                <option value="blog" {% if blog.type == "blog" %}selected{% endif %}>Blog</option>
+                <option value="news" {% if blog.type == "news" %}selected{% endif %}>News</option>
+                <option value="event" {% if blog.type == "event" %}selected{% endif %}>Event</option>
+            </select>
+        </div>
+
+        <!-- TITLE -->
+        <div class="form-group">
+            <label>Title</label>
+            <input class="form-control"
+                   name="title"
+                   placeholder="Blog Title"
+                   value="{{ blog.title|default:'' }}"
+                   required>
+        </div>
+
+        <!-- CONTENT -->
+        <div class="form-group">
+            <label>Content</label>
+            <textarea class="form-control"
+                      id="compose-textarea"
+                      name="content"
+                      rows="8"
+                      required>{{ blog.content|default:'' }}</textarea>
+        </div>
+
+        <!-- IMAGE -->
+        <div class="form-group">
+            <label>Featured Image</label>
+            <input class="form-control" name="featured_image" type="file">
+
+            {% if blog.featured_image %}
+                <br>
+                <img src="{{ blog.featured_image.url }}" width="120">
+            {% endif %}
+        </div>
+
+        <!-- STATUS -->
+        <div class="form-group">
+            <label>Status</label>
+            <select class="form-control" name="status">
+                <option value="draft" {% if blog.status == "draft" %}selected{% endif %}>Draft</option>
+                <option value="published" {% if blog.status == "published" %}selected{% endif %}>Published</option>
+                <option value="archived" {% if blog.status == "archived" %}selected{% endif %}>Archived</option>
+            </select>
+        </div>
+
+        <!-- SEO -->
+        <div class="form-group">
+            <label>Meta Title</label>
+            <input class="form-control"
+                   name="meta_title"
+                   value="{{ blog.meta_title|default:'' }}">
+        </div>
+
+        <div class="form-group">
+            <label>Meta Description</label>
+            <textarea class="form-control"
+                      name="meta_description"
+                      rows="3">{{ blog.meta_description|default:'' }}</textarea>
+        </div>
+
+    </div>
+
+    <div class="card-footer">
+        <div class="float-right">
+            <button class="btn btn-primary" type="submit">
+                Submit
+            </button>
+        </div>
+        <button class="btn btn-default" type="reset">
+            Discard
+        </button>
+    </div>
+
+</div>
+</div>
+</div>
+</section>
+
+</form>
 
 
     </div>

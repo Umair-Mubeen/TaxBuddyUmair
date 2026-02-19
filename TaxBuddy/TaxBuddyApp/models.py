@@ -1,9 +1,52 @@
+from django.contrib.auth.models import User
 from django.db import models
 from django.utils.text import slugify
 from django.utils import timezone
+from django.urls import reverse
+
+class Category(models.Model):
+    name = models.CharField(max_length=100)
+    parent = models.ForeignKey(
+        'self',
+        on_delete=models.CASCADE,
+        null=True,
+        blank=True,
+        related_name='children'
+    )
+
+    def __str__(self):
+        return self.name
 
 
-class Blogs(models.Model):
+# ==============================
+# TAG MODEL
+# ==============================
+
+class Tag(models.Model):
+    name = models.CharField(max_length=100, unique=True)
+    slug = models.SlugField(unique=True, blank=True)
+
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            self.slug = slugify(self.name)
+        super().save(*args, **kwargs)
+
+    def __str__(self):
+        return self.name
+
+
+# ==============================
+# BLOG MODEL
+# ==============================
+
+class Blog(models.Model):
+
+    STATUS_CHOICES = [
+        ('draft', 'Draft'),
+        ('published', 'Published'),
+        ('archived', 'Archived'),
+    ]
+
     TYPE_CHOICES = [
         ('article', 'Article'),
         ('blog', 'Blog'),
@@ -11,30 +54,100 @@ class Blogs(models.Model):
         ('event', 'Event'),
     ]
 
+    # Basic Info
     title = models.CharField(max_length=255)
-    slug = models.SlugField(unique=True, blank=True, max_length=255, null=True)  # SEO
-    type = models.CharField(max_length=50, choices=TYPE_CHOICES)
-    description = models.TextField()
-    image = models.ImageField(upload_to='uploads/', blank=True, null=True)
-    status = models.IntegerField(default=1)
-    created_date = models.DateTimeField(auto_now_add=True)
-    updated_date = models.DateTimeField(auto_now=True)
-    is_deleted = models.BooleanField(default=False)  # soft delete field
-    deleted_at = models.DateTimeField(null=True, blank=True)
+    slug = models.SlugField(max_length=255, unique=True)
 
+    author = models.ForeignKey(
+        User,
+        on_delete=models.SET_NULL,
+        null=True,
+        related_name="blogs"
+    )
+
+
+    tags = models.ManyToManyField(Tag, blank=True, related_name="blogs")
+
+    type = models.CharField(max_length=50, choices=TYPE_CHOICES)
+
+    # Content
+    content = models.TextField()
+    excerpt = models.TextField(blank=True, null=True)
+
+    featured_image = models.ImageField(upload_to="blog/", blank=True, null=True)
+
+    # SEO Fields
+    meta_title = models.CharField(max_length=255, blank=True, null=True)
+    meta_description = models.TextField(blank=True, null=True)
+    focus_keyword = models.CharField(max_length=150, blank=True, null=True)
+
+    # Status & Publishing
+    status = models.CharField(max_length=20, choices=STATUS_CHOICES, default="draft")
+    is_featured = models.BooleanField(default=False)
+
+    published_at = models.DateTimeField(blank=True, null=True)
+
+    # Analytics
+    views = models.PositiveIntegerField(default=0)
+
+    # Soft Delete
+    is_deleted = models.BooleanField(default=False)
+    deleted_at = models.DateTimeField(blank=True, null=True)
+
+    # Timestamps
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        ordering = ['-published_at', '-created_at']
+        indexes = [
+            models.Index(fields=['slug']),
+            models.Index(fields=['status']),
+            models.Index(fields=['published_at']),
+        ]
+
+    # ==========================
+    # SAVE METHOD
+    # ==========================
     def save(self, *args, **kwargs):
+
+        # Auto slug generator
         if not self.slug:
-            self.slug = slugify(self.title)
+            base_slug = slugify(self.title)
+            slug = base_slug
+            counter = 1
+
+            while Blog.objects.filter(slug=slug).exists():
+                slug = f"{base_slug}-{counter}"
+                counter += 1
+
+            self.slug = slug
+
+        # Auto set publish date
+        if self.status == "published" and not self.published_at:
+            self.published_at = timezone.now()
+
         super().save(*args, **kwargs)
 
-    def delete(self, using=None, keep_parents=False):
+    # ==========================
+    # Soft Delete
+    # ==========================
+    def soft_delete(self):
         self.is_deleted = True
         self.deleted_at = timezone.now()
         self.save()
 
+    # ==========================
+    # URL Helper
+    # ==========================
+    def get_absolute_url(self):
+        return reverse("blog_detail", kwargs={"slug": self.slug})
+
+    def __str__(self):
+        return self.title
 
 class Comment(models.Model):
-    blog = models.ForeignKey(Blogs, on_delete=models.CASCADE, related_name='comments')
+    blog = models.ForeignKey(Blog, on_delete=models.CASCADE, related_name='comments')
     name = models.CharField(max_length=100)
     email_address = models.EmailField()
     comment = models.TextField()
@@ -101,20 +214,6 @@ class Property_Business_AOP_Slab(models.Model):
     base_income = models.BigIntegerField()
     base_tax = models.BigIntegerField()
 
-
-class Category(models.Model):
-    """
-    MCQ Category
-    e.g. Basic Income Tax, Withholding Tax, Salary Income
-    """
-    name = models.CharField(max_length=100, unique=True)
-    order = models.PositiveIntegerField(default=0)
-
-    class Meta:
-        ordering = ["order", "name"]
-
-    def __str__(self):
-        return self.name
 
 
 class Question(models.Model):

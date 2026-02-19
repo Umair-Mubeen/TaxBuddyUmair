@@ -1,11 +1,9 @@
-import mimetypes
-from datetime import timezone, timedelta
+from datetime import timedelta
 from decimal import Decimal
 
-from django.conf import settings
 from django.contrib.auth.decorators import login_required
 import requests
-from django.http import HttpResponse, request, Http404
+from django.http import HttpResponse, Http404
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import authenticate, login, logout
 from django.utils.text import slugify
@@ -13,18 +11,18 @@ from django.contrib import messages
 from django.utils.timezone import now
 from django.db.models import Q
 from django.http import JsonResponse
-from .models import Blogs, Comment, Contact, TaxBracket, Business_AOP_Slab, Property_Business_AOP_Slab, Question, \
+from .models import Blog, Comment, Contact, TaxBracket, Business_AOP_Slab, Property_Business_AOP_Slab, Question, \
     Option, SuperTax4CRate
 
 
 def index(request):
     try:
-        result = Blogs.objects.filter(status=1, is_deleted=False)
-        latest_blogs = Blogs.objects.filter(
+        result = Blog.objects.filter(status=1, is_deleted=False)
+        latest_blogs = Blog.objects.filter(
             status=1,
             is_deleted=False,
-            created_date__gte=now().date() - timedelta(days=3)
-        ).order_by('-updated_date')[:3]
+            created_at__gte=now().date() - timedelta(days=3)
+        ).order_by('-updated_at')[:3]
         print(latest_blogs)
         return render(request, 'index.html', {'result': result, 'latest_blogs': latest_blogs})
     except Exception as e:
@@ -63,21 +61,21 @@ def AddEditBlog(request, slug=None):
         blog = None  # default: no blog (create mode)
         # Only fetch if slug exists (edit mode)
         if slug:
-            blog = get_object_or_404(Blogs, slug=slug, status=1, is_deleted=False)
+            blog = get_object_or_404(Blog, slug=slug, status=1, is_deleted=False)
 
         if request.method == 'POST':
             title = request.POST.get('title', '').strip()
-            description = request.POST.get('description', '').strip()
-            blog_type = int(request.POST.get('type', 0))
-            image = request.FILES.get('attachment')
+            content = request.POST.get('content', '').strip()
+            blog_type = request.POST.get('type')
+            image = request.FILES.get('featured_image')
 
-            if not title or not description:
-                return HttpResponse("Title and description are required.", status=400)
+            if not title or not content:
+                return HttpResponse("Title and content are required.", status=400)
 
             # Unique slug
             new_slug = slugify(title)
             counter = 1
-            while Blogs.objects.filter(slug=new_slug).exclude(pk=blog.pk if blog else None).exists():
+            while Blog.objects.filter(slug=new_slug).exclude(pk=blog.pk if blog else None).exists():
                 new_slug = f"{slugify(title)}-{counter}"
                 counter += 1
 
@@ -85,25 +83,29 @@ def AddEditBlog(request, slug=None):
                 blog.type = blog_type
                 blog.title = title
                 blog.slug = new_slug
-                blog.description = description
+                blog.content = content
+
                 if image:
                     if image.content_type not in ["image/jpeg", "image/png", "image/webp", "application/pdf"]:
                         return HttpResponse("Invalid file format.", status=400)
-                    blog.image = image
+                    blog.featured_image = image
+
                 blog.save()
+
             else:  # create mode
                 if not image:
                     return HttpResponse("File is required for new blog.", status=400)
+
                 if image.content_type not in ["image/jpeg", "image/png", "image/webp", "application/pdf"]:
                     return HttpResponse("Invalid file format.", status=400)
-                blog = Blogs.objects.create(
+
+                blog = Blog.objects.create(
                     title=title,
                     type=blog_type,
                     slug=new_slug,
-                    description=description,
-                    image=image,
+                    content=content,
+                    featured_image=image,
                 )
-
         return render(request, 'Cpanel/AddEditBlog.html', {'blog': blog})
     except Exception as e:
         print('Exception at Add Edit Blog Page :', str(e))
@@ -113,7 +115,7 @@ def AddEditBlog(request, slug=None):
 @login_required(login_url='Login')  # redirect when user is not logged in
 def deleteBlog(request, slug=None):
     try:
-        blogs = Blogs.objects.filter(status=1, slug=slug, is_deleted=False)
+        blogs = Blog.objects.filter(status=1, slug=slug, is_deleted=False)
         for blog in blogs:
             blog.delete()
         return redirect('ManageBlogs')
@@ -125,7 +127,7 @@ def deleteBlog(request, slug=None):
 @login_required(login_url='Login')  # redirect when user is not logged in
 def ManageBlogs(request):
     try:
-        result = Blogs.objects.filter(status=1, is_deleted=False)
+        result = Blog.objects.filter(status=1, is_deleted=False)
         return render(request, 'Cpanel/ManageBlogs.html', {'result': result})
     except Exception as e:
         print('Exception at Manage Blog Page :', str(e))
@@ -142,7 +144,7 @@ def BlogDetails(request, slug=None):
             raise Http404("Blog slug not provided")
 
         blog = get_object_or_404(
-            Blogs,
+            Blog,
             slug=slug,
             status=1,
             is_deleted=False
@@ -153,10 +155,10 @@ def BlogDetails(request, slug=None):
             slug=blog.slug
         )
 
-        blogList = Blogs.objects.filter(
+        blogList = Blog.objects.filter(
             status=1,
             is_deleted=False
-        ).exclude(slug=slug).order_by('-created_date')
+        ).exclude(slug=slug).order_by('-created_at')
 
         return render(
             request,
@@ -182,11 +184,11 @@ def viewBlogs(request, slug=None):
         type_map = {"income-tax": 1, "sales-tax": 2}
         if slug in type_map:
             # blogs = Blogs.objects.filter(type=type_map[slug], status=1, is_deleted=False)
-            blogs = Blogs.objects.filter(
+            blogs = Blog.objects.filter(
                 type=type_map[slug],
                 status=1,
                 is_deleted=False
-            ).order_by('-created_date')
+            ).order_by('-created_at')
 
         else:
             raise Http404("Invalid category")
@@ -203,7 +205,7 @@ def userComments(request):
             email = request.POST['email']
             comment = request.POST['comment']
             slug = request.POST['slug']
-            blog = get_object_or_404(Blogs, slug=slug)
+            blog = get_object_or_404(Blog, slug=slug)
             Comment.objects.create(blog=blog, name=user, email_address=email, comment=comment, slug=slug)
             return redirect(f'/{slug}')  # or use reverse()
 
@@ -638,10 +640,6 @@ def calculate_tax(income, tax_brackets, surcharge_rate):
         return None
     except Exception as e:
         print(str(e))
-
-
-from django.shortcuts import render
-from .models import Question
 
 
 def tax_knowledge_quiz(request):
