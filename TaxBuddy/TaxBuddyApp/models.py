@@ -5,7 +5,7 @@ from django.utils import timezone
 from django.urls import reverse
 
 class Category(models.Model):
-    name = models.CharField(max_length=100)
+    name = models.CharField(max_length=100, unique=True)
     parent = models.ForeignKey(
         'self',
         on_delete=models.CASCADE,
@@ -18,21 +18,21 @@ class Category(models.Model):
         return self.name
 
 
-# ==============================
-# TAG MODEL
-# ==============================
-
 class Tag(models.Model):
     name = models.CharField(max_length=100, unique=True)
     slug = models.SlugField(unique=True, blank=True)
 
     def save(self, *args, **kwargs):
+        self.name = self.name.strip().lower()
+
         if not self.slug:
             self.slug = slugify(self.name)
+
         super().save(*args, **kwargs)
 
     def __str__(self):
         return self.name
+
 
 
 # ==============================
@@ -65,6 +65,14 @@ class Blog(models.Model):
         related_name="blogs"
     )
 
+    # 🔥 ADD THIS
+    category = models.ForeignKey(
+        Category,
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name="blogs"
+    )
 
     tags = models.ManyToManyField(Tag, blank=True, related_name="blogs")
 
@@ -106,9 +114,6 @@ class Blog(models.Model):
             models.Index(fields=['published_at']),
         ]
 
-    # ==========================
-    # SAVE METHOD
-    # ==========================
     def save(self, *args, **kwargs):
 
         # Auto slug generator
@@ -123,28 +128,23 @@ class Blog(models.Model):
 
             self.slug = slug
 
-        # Auto set publish date
+        # Auto publish date
         if self.status == "published" and not self.published_at:
             self.published_at = timezone.now()
 
         super().save(*args, **kwargs)
 
-    # ==========================
-    # Soft Delete
-    # ==========================
     def soft_delete(self):
         self.is_deleted = True
         self.deleted_at = timezone.now()
         self.save()
 
-    # ==========================
-    # URL Helper
-    # ==========================
     def get_absolute_url(self):
         return reverse("blog_detail", kwargs={"slug": self.slug})
 
     def __str__(self):
         return self.title
+
 
 class Comment(models.Model):
     blog = models.ForeignKey(Blog, on_delete=models.CASCADE, related_name='comments')
