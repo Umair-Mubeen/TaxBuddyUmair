@@ -17,9 +17,9 @@ from .models import Blog, Comment, Contact, TaxBracket, Business_AOP_Slab, Prope
 
 def index(request):
     try:
-        result = Blog.objects.filter(status=1, is_deleted=False)
+        result = Blog.objects.filter(status='published', is_deleted=False)
         latest_blogs = Blog.objects.filter(
-            status=1,
+            status='published',
             is_deleted=False,
             created_at__gte=now().date() - timedelta(days=3)
         ).order_by('-updated_at')[:3]
@@ -63,13 +63,9 @@ def AddEditBlog(request, slug=None):
     if slug:
         blog = get_object_or_404(Blog, slug=slug, is_deleted=False)
 
-    categories = Category.objects.all()
-    tags = Tag.objects.all()
-
     if request.method == "POST":
 
-        category_id = request.POST.get("category")
-        tag_ids = request.POST.getlist("tags")
+        tag = request.POST.get("tag")
 
         if blog:
             # UPDATE
@@ -79,7 +75,8 @@ def AddEditBlog(request, slug=None):
             blog.status = request.POST.get("status")
             blog.meta_title = request.POST.get("meta_title")
             blog.meta_description = request.POST.get("meta_description")
-            blog.category_id = category_id
+            blog.tag = tag
+            blog.category = request.POST.get("category")
 
         else:
             # CREATE
@@ -90,7 +87,10 @@ def AddEditBlog(request, slug=None):
                 status=request.POST.get("status"),
                 meta_title=request.POST.get("meta_title"),
                 meta_description=request.POST.get("meta_description"),
-                author=request.user
+                author=request.user,
+                tag=tag,
+                category = request.POST.get("category")
+
             )
 
         # Handle image update
@@ -99,15 +99,10 @@ def AddEditBlog(request, slug=None):
 
         blog.save()
 
-        # Save many-to-many tags
-        blog.tags.set(tag_ids)
-
         return redirect("ManageBlogs")  # change if your url name differs
 
     context = {
         "blog": blog,
-        "categories": categories,
-        "tags": tags,
     }
 
     return render(request, "Cpanel/AddEditBlog.html", context)
@@ -125,78 +120,71 @@ def deleteBlog(request, slug=None):
         return HttpResponse(str('Exception at Delete Details Page :' + str(e)))
 
 
-@login_required(login_url='Login')  # redirect when user is not logged in
+@login_required(login_url='Login')
 def ManageBlogs(request):
     try:
-        result = Blog.objects.filter(status=1, is_deleted=False)
-        return render(request, 'Cpanel/ManageBlogs.html', {'result': result})
+        result = Blog.objects.filter(is_deleted=False).order_by('-id')
+
+        return render(request, 'Cpanel/ManageBlogs.html', {
+            'result': result
+        })
+
     except Exception as e:
         print('Exception at Manage Blog Page :', str(e))
-        return HttpResponse(str('Exception at Manage Blog Page :' + str(e)))
+        return HttpResponse('Exception at Manage Blog Page :' + str(e))
 
 
 def BlogDetails(request, slug=None):
-    try:
-        blog = None
-        blogComments = []
-        blogList = []
 
-        if not slug:
-            raise Http404("Blog slug not provided")
+    if not slug:
+        raise Http404("Blog slug not provided")
 
-        blog = get_object_or_404(
-            Blog,
-            slug=slug,
-            status=1,
-            is_deleted=False
-        )
+    blog = get_object_or_404(
+        Blog,
+        slug__iexact=slug.strip(),
+        status='published',
+        is_deleted=False
+    )
 
-        blogComments = Comment.objects.filter(
-            status=1,
-            slug=blog.slug
-        )
+    tags_list = []
+    if blog.tag:
+        tags_list = [t.strip() for t in blog.tag.split(',') if t.strip()]
 
-        blogList = Blog.objects.filter(
-            status=1,
-            is_deleted=False
-        ).exclude(slug=slug).order_by('-created_at')
+    blogComments = Comment.objects.filter(
+        status=1,
+        slug=blog.slug
+    )
 
-        return render(
-            request,
-            'partials/BlogDetails.html',
-            {
-                'blog': blog,
-                'userComments': blogComments,
-                'length': blogComments.count(),
-                'blogList': blogList,
-            }
-        )
+    blogList = Blog.objects.filter(
+        status='published',   # ✅ FIXED
+        is_deleted=False
+    ).exclude(slug=slug).order_by('-created_at')
 
-    except Http404:
-        raise  # let Django handle 404 properly
-
-    except Exception as e:
-        print('Exception at Blog Details Page :', str(e))
-        raise Http404("Something went wrong")
-
-
+    return render(
+        request,
+        'partials/BlogDetails.html',
+        {
+            'blog': blog,
+            'userComments': blogComments,
+            'length': blogComments.count(),
+            'blogList': blogList,
+            'tags_list': tags_list
+        }
+    )
 def viewBlogs(request, slug=None):
     try:
-        type_map = {"income-tax": 1, "sales-tax": 2}
-        if slug in type_map:
-            # blogs = Blogs.objects.filter(type=type_map[slug], status=1, is_deleted=False)
-            blogs = Blog.objects.filter(
-                type=type_map[slug],
-                status=1,
-                is_deleted=False
-            ).order_by('-created_at')
+        # Convert URL slug to match DB value
+        category_name = slug.replace('-', ' ')
 
-        else:
-            raise Http404("Invalid category")
+        blogs = Blog.objects.filter(category__iexact=category_name,status='published',is_deleted=False).order_by('-created_at')
+        if not blogs.exists():
+            raise Http404("Category not found")
+
         return render(request, "partials/viewBlogs.html", {"blogs": blogs})
+
     except Exception as e:
-        print('Exception at Blog Details Page :', str(e))
-        return HttpResponse(str('Exception at View Blogs Details Page :' + str(e)))
+        print('Exception at View Blogs Page :', str(e))
+        return HttpResponse('Exception at View Blogs Page :' + str(e))
 
 
 def userComments(request):

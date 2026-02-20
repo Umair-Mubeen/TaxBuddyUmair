@@ -65,16 +65,10 @@ class Blog(models.Model):
         related_name="blogs"
     )
 
-    # 🔥 ADD THIS
-    category = models.ForeignKey(
-        Category,
-        on_delete=models.SET_NULL,
-        null=True,
-        blank=True,
-        related_name="blogs"
-    )
 
-    tags = models.ManyToManyField(Tag, blank=True, related_name="blogs")
+    tag = models.CharField(max_length=100, unique=True, default="")
+    category = models.CharField(max_length=100, unique=True,default="")
+
 
     type = models.CharField(max_length=50, choices=TYPE_CHOICES)
 

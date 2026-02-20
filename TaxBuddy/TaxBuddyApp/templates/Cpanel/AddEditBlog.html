@@ -72,7 +72,10 @@
     <!-- CATEGORY -->
     <div class="form-group">
         <label>Category</label>
-         <input class="form-control" name="category" value="" required>
+        <select name="category" class="form-control">
+                <option value="Income Tax" {% if blog and blog.category == "Income Tax" %}selected{% endif %}> Income Tax </option>
+                 <option value="Sales Tax" {% if blog and blog.category == "Sales Tax" %}selected{% endif %}> Sales Tax </option>
+        </select>
 
           </div>
 
@@ -98,11 +101,11 @@
 
     <!-- TAGS -->
     <div class="form-group">
-        <label>Tags</label>
-                 <input class="form-control" name="category" value="" required>
-
-    </div>
-
+    <label>Tags</label>
+    <input type="text" class="form-control" name="tag"
+           placeholder="Enter tags separated by comma"
+           value="{{ blog.tag }}">
+</div>
     <!-- IMAGE -->
     <div class="form-group">
         <label>Featured Image</label>
