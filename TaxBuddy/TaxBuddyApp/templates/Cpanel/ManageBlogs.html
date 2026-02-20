@@ -85,6 +85,7 @@
                             <thead>
                             <tr>
                                 <th>Title</th>
+                                <th>Category</th>
                                 <th>Type</th>
                                 <th>Description</th>
                                 <th>Image</th>
@@ -97,6 +98,8 @@
                             {% for res in result %}
                       <tr>
     <td>{{ res.title }}</td>
+    <td>{{ res.category }}</td>
+
     <td>{{ res.type }}</td>
     <td>
         <div id="short-{{ res.id }}" class="truncate">{{ res.description|truncatechars_html:100|safe }}</div>
@@ -113,7 +116,7 @@
         {% endif %}
     </td>
     <td>
-        {% if res.status == 1 %}<span class="badge badge-success">Active</span>{% else %}<span class="badge badge-danger">Inactive</span>{% endif %}
+        {% if res.status == 'published' %}<span class="badge badge-success">Active</span>{% else %}<span class="badge badge-danger">Inactive</span>{% endif %}
     </td>
     <td>
         <a href="AddEditBlog/{{ res.slug }}" title="Edit" >

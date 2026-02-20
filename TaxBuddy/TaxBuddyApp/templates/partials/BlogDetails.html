@@ -429,12 +429,12 @@
 
                     <div class="blog-date-time">
                         <ul class="blog-date">
-                            <li><a href="#">{{ blog.updated_date|date }}</a></li>
+                            <li><a href="#">{{ blog.created_at|date }}</a></li>
                         </ul>
                     </div>
 
                     <div class="blog-content" style="text-align:justify">
-                        {{ blog.description|safe }}
+                        {{ blog.content|safe }}
                     </div>
 
                     <div class="theme-border"></div>
@@ -442,12 +442,17 @@
                     <div class="row align-items-center">
                         <div class="col-md-6">
                             <div class="tags">
-                                <ul>
-                                    <li>TAGS:</li>
-                                    <li><a href="#">Income Tax</a></li>
-                                    <li><a href="#">Sales Tax</a></li>
-                                </ul>
-                            </div>
+   <ul>
+    <li>TAGS :</li>
+    {% for tag in tags_list %}
+        <li>
+            <a href="#">{{ tag }}</a>
+        </li>
+    {% empty %}
+        <li>No Tags</li>
+    {% endfor %}
+</ul>
+</div>
                         </div>
 
                         <div class="col-md-6">
@@ -538,7 +543,7 @@
                                     alt="{{ other.title }}"
                                     itemprop="image"
                                     loading="lazy"
-                                    src="{{ other.image.url }}">
+                                    src="{{ other.featured_image.url }}">
                         </a>
                     </div>
 
