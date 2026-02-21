@@ -52,7 +52,6 @@
   position:absolute;
   top:15px;
   right:15px;
-  background:#0f766e;
   color:#fff;
   font-size:11px;
   padding:6px 10px;
@@ -763,8 +762,8 @@ body{
             </p>
 
             <div class="hero-buttons">
-                <a class="btn-primary" href="#">Explore Tax Guides</a>
-                <a class="btn-secondary" href="#">Use Tax Calculators</a>
+                <a class="btn-primary" href="#tax-guides" style="color:white">Explore Tax Guides</a>
+                <a class="btn-primary" href="#tax-calculators" style="color:white">Use Tax Calculators</a>
             </div>
 
             <p class="hero-trust">
@@ -783,7 +782,7 @@ body{
 </section>
 
 
-<section class="featured-guides" style="background: radial-gradient(circle at top right, #DAE7E3 0%, #F6FBF9 70%);">
+<section class="featured-guides" id="tax-guides" style="background: radial-gradient(circle at top right, #DAE7E3 0%, #F6FBF9 70%);">
     <div class="container">
 
         <!-- Section Header -->
@@ -838,7 +837,7 @@ body{
     </div>
 </section>
 
-<section class="calculator-section" style="background: radial-gradient(circle at top right, #DAE7E3 0%, #F6FBF9 70%);">
+<section class="calculator-section"  id="tax-calculators" style="background: radial-gradient(circle at top right, #DAE7E3 0%, #F6FBF9 70%);">
   <div class="container">
 
     <div class="section-header">
@@ -850,9 +849,9 @@ body{
 
       <!-- Salary -->
       <a href="{% url 'SalaryCalculator' %}" class="calculator-card">
-        <span class="badge-new">NEW</span>
+        <span class="badge-new bg-success">NEW</span>
 
-        <div class="icon-wrap">
+        <div class="icon-wrap bg-success text-white">
           <i class="fas fa-user-tie"></i>
         </div>
 
@@ -864,9 +863,9 @@ body{
 
       <!-- Business -->
       <a href="{% url 'BusinessCalculator' %}" class="calculator-card">
-        <span class="badge-new">NEW</span>
+        <span class="badge-new bg-success">NEW</span>
 
-        <div class="icon-wrap">
+        <div class="icon-wrap bg-success text-white">
           <i class="fas fa-briefcase"></i>
         </div>
 
@@ -878,9 +877,9 @@ body{
 
       <!-- AOP -->
       <a href="{% url 'AOPCalculator' %}" class="calculator-card">
-        <span class="badge-new">NEW</span>
+        <span class="badge-new bg-success">NEW</span>
 
-        <div class="icon-wrap">
+        <div class="icon-wrap bg-success text-white">
           <i class="fas fa-users"></i>
         </div>
 
@@ -897,41 +896,54 @@ body{
 
 {% include 'Faq_question.html' %}
 
-<section class="tax-info-section" style="background: radial-gradient(circle at top right, #DAE7E3 0%, #F6FBF9 70%);">
+<section class="tax-info-section" style="background: radial-gradient(circle at top right, #DAE7E3 0%, #F6FBF9 70%); padding:70px 0;">
     <div class="container">
         <div class="row g-4">
 
             <!-- LEFT COLUMN -->
             <div class="col-lg-8">
 
-                <!-- EASY TAX CALCULATORS -->
-                <div class="box-card mb-4">
-                    <h3 class="section-title">About TaxBuddy Umair</h3>
-                    <p class="section-subtitle">
-                        Quickly calculate your income and salary tax
-                    </p>
+                <!-- ABOUT SECTION -->
+                <div class="box-card mb-4 p-4">
 
-                    <div class="about-card d-flex align-items-start gap-3">
-                        <img src="{% static 'assets/img/image/About.webp' %}" class="profile-img" alt="TaxBuddy Umair">
+                    <div class="about-card d-flex align-items-start gap-4">
+                        <img src="{% static 'assets/img/image/About.webp' %}"
+                             class="profile-img rounded-circle"
+                             alt="Umair Mubeen - Tax Consultant"
+                             style="width:110px;height:110px;object-fit:cover;">
 
                         <div>
-                            <h4>About TaxBuddy Umair</h4>
+                            <h3 class="section-title mb-3">About TaxBuddy Umair</h3>
+
                             <p>
-                               TaxBuddy Umair is an educational and informational platform. The content provided is for general learning purposes only and does not constitute professional tax, legal, or financial advice. Users should consult qualified professionals for case-specific guidance.
+                                <strong>TaxBuddy Umair</strong> is a Pakistan-based educational platform focused on
+                                simplifying income tax, sales tax, and compliance matters under the
+                                Income Tax Ordinance 2001 and relevant FBR regulations.
                             </p>
 
-                            <ul class="about-list">
-                                <li>Educational articles, guides, and calculators</li>
-                                <li>Up-to-date information on Pakistan tax laws</li>
-                                <li>Personalized tax consultation for individuals and businesses</li>
-                            </ul>
+                            <p>
+                                The goal of this platform is to help salaried individuals, freelancers,
+                                business owners, and Associations of Persons (AOP) understand tax laws
+                                in a clear and practical manner.
+                            </p>
 
+                            <p class="text-muted" style="font-size:14px;">
+                                <strong>Disclaimer:</strong> The information provided on this website is for
+                                educational purposes only and does not constitute legal, financial, or
+                                professional tax advice. For case-specific matters, consult a qualified
+                                tax professional or advisor.
+                            </p>
+
+                            <ul class="about-list mt-3">
+                                <li>✔ Detailed tax guides and compliance tutorials</li>
+                                <li>✔ Updated tax calculators based on current slabs</li>
+                                <li>✔ Practical explanations of ATL, filer status & withholding tax</li>
+                                <li>✔ Support for individuals and small businesses</li>
+                            </ul>
 
                         </div>
                     </div>
                 </div>
-
-                <!-- QUICK LINKS -->
 
             </div>
 
@@ -939,28 +951,39 @@ body{
             <div class="col-lg-4">
 
                 <!-- LATEST ARTICLES -->
-                <div class="box-card mb-4">
-                    <h4>Latest Articles</h4>
+                <div class="box-card p-4">
+                    <h4 class="mb-4">Latest Articles</h4>
 
                     {% for blog in latest_blogs %}
-                    <div class="article-item">
-                        <img src="{{blog.featured_image.url}}" alt="">
+                    <div class="article-item d-flex align-items-start gap-3 mb-3">
+
+                        <img src="{{ blog.featured_image.url }}"
+                             alt="{{ blog.title }}"
+                             style="width:70px;height:70px;object-fit:cover;border-radius:10px;">
+
                         <div>
-                            <p>{{blog.title}}</p>
-                            <a href="{{blog.slug}}">Read More →</a>
+                            <h6 style="font-size:14px;margin-bottom:6px;">
+                                {{ blog.title }}
+                            </h6>
+
+                            <a href="{% url 'BlogDetails' blog.slug %}"
+                               style="font-size:13px;font-weight:500;">
+                                Read More →
+                            </a>
                         </div>
+
                     </div>
+                    {% empty %}
+                        <p class="text-muted">No articles available yet.</p>
                     {% endfor %}
 
                 </div>
-
 
             </div>
 
         </div>
     </div>
 </section>
-
 
 <!--=====contact start=======-->
 {% include 'contact.html' %}
