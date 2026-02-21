@@ -65,10 +65,8 @@ class Blog(models.Model):
         related_name="blogs"
     )
 
-
-    tag = models.CharField(max_length=100, unique=True, default="")
-    category = models.CharField(max_length=100, unique=True,default="")
-
+    tag = models.CharField(max_length=100, default="", blank=True)
+    category = models.CharField(max_length=100, default="", blank=True)
 
     type = models.CharField(max_length=50, choices=TYPE_CHOICES)
 

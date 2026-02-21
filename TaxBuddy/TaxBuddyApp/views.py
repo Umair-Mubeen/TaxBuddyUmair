@@ -849,3 +849,48 @@ def section_4c_rate_view(request):
         "rate": rate,
         "rate_percent": round(rate * 100, 2)
     })
+
+# from django.http import HttpResponse
+# from django.db import connection
+# from django.utils.text import slugify
+# from .models import Blog
+#
+# def migrate_old_blogs(request):
+#     cursor = connection.cursor()
+#     cursor.execute("SELECT * FROM taxbuddyapp_blogs")
+#     rows = cursor.fetchall()
+#
+#     count = 0
+#
+#     for row in rows:
+#         (
+#             id,
+#             title,
+#             type_value,
+#             description,
+#             image,
+#             created_date,
+#             updated_date,
+#             status,
+#             slug,
+#             deleted_at,
+#             is_deleted
+#         ) = row
+#
+#         # Avoid duplicate insert
+#         if not Blog.objects.filter(slug=slug).exists():
+#
+#             Blog.objects.create(
+#                 title=title,
+#                 slug=slug if slug else slugify(title),
+#                 type=type_value if type_value in ['article','blog','news','event'] else 'blog',
+#                 content=description,
+#                 featured_image=image,
+#                 status=status if status in ['draft','published','archived'] else 'draft',
+#                 is_deleted=is_deleted,
+#                 deleted_at=deleted_at
+#             )
+#
+#             count += 1
+#
+#     return HttpResponse(f"✅ Migration Completed. {count} blogs migrated.")
