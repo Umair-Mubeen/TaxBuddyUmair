@@ -1,20 +1,64 @@
+<!-- ================= FAQ SCHEMA (SEO RICH RESULTS) ================= -->
 <script type="application/ld+json">
 {
- "@context": "https://schema.org",
- "@type": "FAQPage",
- "mainEntity": [{
-   "@type": "Question",
-   "name": "Who is required to file income tax in Pakistan?",
-   "acceptedAnswer": {
-     "@type": "Answer",
-     "text": "Individuals earning taxable income above the threshold must file tax returns with FBR."
-   }
- }]
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "Who is required to file income tax in Pakistan?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Any individual earning taxable income above the minimum exemption threshold defined under the Income Tax Ordinance 2001 is required to file an income tax return with the Federal Board of Revenue (FBR). Filing may also be mandatory if you own property, vehicles above specified engine capacity, conduct business activities, or maintain foreign assets."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What is the Active Taxpayer List (ATL)?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "The Active Taxpayer List (ATL) is an official list published by the Federal Board of Revenue (FBR) containing names of individuals and businesses who have filed their income tax returns. Taxpayers listed on the ATL benefit from lower withholding tax rates on financial transactions."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What is the difference between filer and non-filer in Pakistan?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "A filer is a person whose name appears on the Active Taxpayer List after submitting their annual tax return. Filers are subject to lower withholding tax rates on property, vehicle purchases, banking transactions, and other financial activities. A non-filer does not file a return and pays higher withholding taxes."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What is the income tax filing deadline in Pakistan?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "The income tax filing deadline for salaried individuals and business persons is generally 30th September following the end of the tax year, unless extended by FBR through official notification."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What happens if I do not file my income tax return?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Failure to file income tax returns may result in penalties, higher withholding tax rates, restriction on financial transactions, and possible legal notices from FBR. Non-filers also lose benefits available to active taxpayers."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How can I calculate my income tax in Pakistan?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Income tax is calculated based on applicable tax slabs for salaried individuals, business income, or Associations of Persons (AOP). You can use an updated online tax calculator to estimate your liability according to the current tax year rates."
+      }
+    }
+  ]
 }
 </script>
 
+<!-- ================= FAQ SECTION ================= -->
 <style>
-  .faq-section{
+.faq-section{
   padding:80px 0;
   background:#f6fbf9;
 }
@@ -25,7 +69,7 @@
 }
 
 .faq-header h2{
-  font-size:30px;
+  font-size:32px;
   font-weight:700;
   margin-bottom:10px;
 }
@@ -35,23 +79,28 @@
 }
 
 .faq-wrapper{
-  max-width:800px;
+  max-width:900px;
   margin:0 auto;
 }
 
 .faq-item{
   background:#fff;
-  border-radius:14px;
-  margin-bottom:15px;
-  box-shadow:0 6px 20px rgba(0,0,0,0.05);
+  border-radius:16px;
+  margin-bottom:18px;
+  box-shadow:0 8px 25px rgba(0,0,0,0.06);
   overflow:hidden;
+  transition:0.3s ease;
+}
+
+.faq-item:hover{
+  transform:translateY(-2px);
 }
 
 .faq-question{
   width:100%;
   background:none;
   border:none;
-  padding:20px;
+  padding:22px 25px;
   font-size:16px;
   font-weight:600;
   text-align:left;
@@ -62,25 +111,31 @@
 }
 
 .faq-question span{
-  font-size:20px;
+  font-size:22px;
   transition:0.3s;
 }
 
 .faq-answer{
-  display:none;
-  padding:0 20px 20px;
-  font-size:14px;
+  max-height:0;
+  overflow:hidden;
+  padding:0 25px;
+  font-size:14.5px;
   color:#555;
-  line-height:1.6;
+  line-height:1.7;
+  transition:max-height 0.4s ease;
 }
 
+.faq-item.active .faq-answer{
+  padding:0 25px 22px;
+}
 </style>
+
 <section class="faq-section">
   <div class="container">
 
     <div class="faq-header">
       <h2>Frequently Asked Questions</h2>
-      <p>Common questions about income tax and filing in Pakistan.</p>
+      <p>Common questions about income tax filing, ATL status, and compliance in Pakistan.</p>
     </div>
 
     <div class="faq-wrapper">
@@ -91,8 +146,7 @@
           <span>+</span>
         </button>
         <div class="faq-answer">
-          Individuals earning taxable income above the minimum threshold
-          are required to file income tax returns with FBR.
+          Any individual earning taxable income above the exemption threshold defined under the Income Tax Ordinance 2001 must file an income tax return with FBR. Filing may also be required if you own property, vehicles, operate a business, or maintain foreign assets.
         </div>
       </div>
 
@@ -102,8 +156,7 @@
           <span>+</span>
         </button>
         <div class="faq-answer">
-          ATL is a list published by FBR containing names of individuals
-          who have filed their income tax returns.
+          The Active Taxpayer List (ATL) is published by FBR and includes names of taxpayers who have filed their income tax returns. Individuals listed on ATL enjoy lower withholding tax rates on various transactions.
         </div>
       </div>
 
@@ -113,8 +166,27 @@
           <span>+</span>
         </button>
         <div class="faq-answer">
-          A filer submits annual tax returns and enjoys lower tax rates,
-          while a non-filer pays higher withholding taxes.
+          A filer appears on ATL after submitting an annual return and benefits from reduced tax rates. A non-filer does not submit returns and is subject to higher withholding taxes on property, vehicles, banking, and other transactions.
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-question">
+          What is the income tax filing deadline in Pakistan?
+          <span>+</span>
+        </button>
+        <div class="faq-answer">
+          The standard filing deadline is 30th September following the end of the tax year unless extended by FBR via official notification.
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-question">
+          What happens if I do not file my income tax return?
+          <span>+</span>
+        </button>
+        <div class="faq-answer">
+          Non-filing may result in penalties, higher withholding tax deductions, restrictions on financial transactions, and possible legal action from FBR.
         </div>
       </div>
 
@@ -124,26 +196,36 @@
           <span>+</span>
         </button>
         <div class="faq-answer">
-          You can use our Salary, Business, or AOP tax calculators
-          available above to compute your estimated tax liability.
+          Income tax is calculated according to the applicable tax slabs for salaried individuals, business income, or AOP. You can use an updated tax calculator to estimate your liability based on current rates.
         </div>
       </div>
 
     </div>
-
   </div>
 </section>
+
 <script>
 document.querySelectorAll(".faq-question").forEach(button => {
   button.addEventListener("click", () => {
-    const answer = button.nextElementSibling;
+    const item = button.parentElement;
+    const answer = item.querySelector(".faq-answer");
     const symbol = button.querySelector("span");
 
-    if (answer.style.display === "block") {
-      answer.style.display = "none";
+    document.querySelectorAll(".faq-item").forEach(faq => {
+      if (faq !== item) {
+        faq.classList.remove("active");
+        faq.querySelector(".faq-answer").style.maxHeight = null;
+        faq.querySelector(".faq-question span").textContent = "+";
+      }
+    });
+
+    item.classList.toggle("active");
+
+    if (answer.style.maxHeight) {
+      answer.style.maxHeight = null;
       symbol.textContent = "+";
     } else {
-      answer.style.display = "block";
+      answer.style.maxHeight = answer.scrollHeight + "px";
       symbol.textContent = "−";
     }
   });
