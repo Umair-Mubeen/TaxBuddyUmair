@@ -36,7 +36,7 @@ def index(request):
             created_at__gte=now().date() - timedelta(days=3)
         ).order_by('-updated_at')[:3]
         print(latest_blogs)
-        return render(request, 'index.html', {'result': result, 'latest_blogs': latest_blogs,        "preview_questions": preview_questions
+        return render(request, 'index.html', {'result': result, 'latest_blogs': latest_blogs, "preview_questions": preview_questions
 })
     except Exception as e:
         return HttpResponse(str(e))

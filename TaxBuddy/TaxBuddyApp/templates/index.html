@@ -5,7 +5,19 @@
 
 <head>
 
-<style>
+    <style>
+    .masonry-grid {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.mesonry-item img {
+    transition: 0.4s ease;
+}
+
+.mesonry-item:hover img {
+    transform: scale(1.05);
+}
     .calculator-section{
   padding:80px 0;
 }
@@ -91,7 +103,8 @@
   }
 }
 
-</style>
+
+    </style>
     <!-- Meta Pixel Code -->
     <script>
 !function(f,b,e,v,n,t,s)
@@ -104,6 +117,7 @@ s.parentNode.insertBefore(t,s)}(window, document,'script',
 'https://connect.facebook.net/en_US/fbevents.js');
 fbq('init', '1689887312418361');
 fbq('track', 'PageView');
+
 
 
 
@@ -124,9 +138,10 @@ fbq('track', 'PageView');
   gtag('config', 'G-EEP4P5YWE6');
 
 
+
     </script>
 
-<script src="https://www.google.com/recaptcha/api.js?render=6LesUD4sAAAAAGihejIqA70J-9gVxHzPmYaHXR-b"></script>
+    <script src="https://www.google.com/recaptcha/api.js?render=6LesUD4sAAAAAGihejIqA70J-9gVxHzPmYaHXR-b"></script>
 
 
     <!-- Google tag (gtag.js) -->
@@ -152,7 +167,11 @@ fbq('track', 'PageView');
     <meta content="https://taxbuddyumair.com/static/assets/img/icons/fab2.png" property="og:image"/>
 
     {% include 'partials/head-css.html' %}
-  <style>
+    <style>
+    .card:hover {
+    transform: translateY(-6px);
+    transition: 0.3s ease;
+}
       /* =========================================================
    TAXBUDDY UMAIR – HERO (FINAL, RESPONSIVE, CLEAN)
 ========================================================= */
@@ -731,6 +750,7 @@ body{
 
 
 
+
     </style>
 </head>
 <body>
@@ -739,7 +759,9 @@ body{
 {% include 'partials/topbar.html' %}
 <!--=====Navigation Bar Ends Here=======-->
 
-<section class="home6-full-header hero-fluid" style="background: radial-gradient(circle at top right, #DAE7E3 0%, #F6FBF9 70%);">
+
+<section class="home6-full-header hero-fluid"
+         style="background: radial-gradient(circle at top right, #DAE7E3 0%, #F6FBF9 70%);">
     <div class="hero-fluid-inner">
         <div class="hero-content">
 
@@ -759,22 +781,76 @@ body{
             </div>
 
             <p class="hero-trust">
-    ✔ Updated as per FBR tax laws · ✔ Free & educational
-</p>
+                ✔ Updated as per FBR tax laws · ✔ Free & educational
+            </p>
 
 
-<!--            <div class="hero-links">-->
-<!--                <a href="#">How to Become a Tax Filer</a>-->
-<!--                <a href="#">ATL vs Non-ATL Status</a>-->
-<!--                <a href="#">Income Tax Deductions</a>-->
-<!--            </div>-->
+            <!--            <div class="hero-links">-->
+            <!--                <a href="#">How to Become a Tax Filer</a>-->
+            <!--                <a href="#">ATL vs Non-ATL Status</a>-->
+            <!--                <a href="#">Income Tax Deductions</a>-->
+            <!--            </div>-->
 
         </div>
     </div>
 </section>
+<section id="latest-blogs" style="background: radial-gradient(circle at top right, #DAE7E3 0%, #F6FBF9 70%);">
+    <div class="container">
+
+        <!-- Section Heading -->
+        <div class="text-center mb-5">
+            <h2 style="font-weight:700;">Latest Tax Blogs</h2>
+        </div>
+
+        <div class="row masonry-grid">
+
+            <!-- Blog Item -->
+            {% for blog in latest_blogs %}
+            <div class="col-md-6 col-lg-4 mb-4 mesonry-item design marketing stories">
+                <div class="card h-100 shadow-sm border-0">
+
+                    <!-- Masonry Image Div -->
+                    <div class="blog-img position-relative overflow-hidden">
+                        <a href="#">
+                            <img src="{{blog.featured_image.url}}"
+                                 class="card-img-top img-fluid"
+                                 alt="{{blog.title}}"
+                                  loading="lazy"
+                                  width="70"
+                                  style="object-fit:cover;border-radius:10px;">
+                        </a>
+                    </div>
+
+                    <div class="card-body">
+
+                        <span class="badge bg-success mb-2">{{blog.category}}</span>
+
+                        <h5 class="card-title">
+                            <a href="{{blog.slug}}" class="text-dark text-decoration-none">{{blog.title}}</a>
+                        </h5>
 
 
-<section class="featured-guides" id="tax-guides" style="background: radial-gradient(circle at top right, #DAE7E3 0%, #F6FBF9 70%);">
+                        <a href="{{blog.slug}}" class="btn btn-sm btn-outline-success">
+                            Read More →
+                        </a>
+
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+
+        </div>
+
+        <div class="text-center mt-4">
+            <a href="/blog/income-tax" class="btn btn-success px-4">
+                View All Blogs
+            </a>
+        </div>
+
+    </div>
+</section>
+    <section class="featured-guides" id="tax-guides"
+         style="background: radial-gradient(circle at top right, #DAE7E3 0%, #F6FBF9 70%);">
     <div class="container">
 
         <!-- Section Header -->
@@ -789,34 +865,34 @@ body{
             <div class="guides-cards">
 
                 <div class="guide-card">
-<img src="{% static 'assets/img/image/income_tax.webp' %}"
-     alt="Income Tax Guide"
-     width="400"
-     height="300"
-     loading="lazy"
-     decoding="async">                    <h4>Income Tax Basics</h4>
+                    <img alt="Income Tax Guide"
+                         decoding="async"
+                         height="300"
+                         loading="lazy"
+                         src="{% static 'assets/img/image/income_tax.webp' %}"
+                         width="400">                    <h4>Income Tax Basics</h4>
                     <p>Learn about income tax, sales filing requirements, and more.</p>
                     <a href="/income-tax-guides">Read More →</a>
                 </div>
 
                 <div class="guide-card">
-<img src="{% static 'assets/img/image/sales_tax.webp' %}"
-     alt="Sales Tax Guide"
-     width="400"
-     height="300"
-     loading="lazy"
-     decoding="async">                    <h4>Sales Tax Guide</h4>
+                    <img alt="Sales Tax Guide"
+                         decoding="async"
+                         height="300"
+                         loading="lazy"
+                         src="{% static 'assets/img/image/sales_tax.webp' %}"
+                         width="400">                    <h4>Sales Tax Guide</h4>
                     <p>GST & Business Tax Solutions for maintain & reporting.</p>
                     <a href="/sales-tax-guides">Read More →</a>
                 </div>
 
                 <div class="guide-card">
-<img src="{% static 'assets/img/image/tax_calculators.webp' %}"
-     alt="Tax Calculators"
-     width="400"
-     height="300"
-     loading="lazy"
-     decoding="async">                    <h4>Freelancer Tax Rules</h4>
+                    <img alt="Tax Calculators"
+                         decoding="async"
+                         height="300"
+                         loading="lazy"
+                         src="{% static 'assets/img/image/tax_calculators.webp' %}"
+                         width="400">                    <h4>Freelancer Tax Rules</h4>
                     <p>Easy tax calculator tools for your businesses income.</p>
                     <a href="#">Read More →</a>
                 </div>
@@ -825,12 +901,12 @@ body{
 
             <!-- RIGHT SIDEBAR -->
             <div class="guide-sidebar">
-<img src="{% static 'assets/img/image/tax_drifting.webp' %}"
-     alt="Tax Drifting"
-     width="400"
-     height="300"
-     loading="lazy"
-     decoding="async">                <h4>Tax Tax Drifting</h4>
+                <img alt="Tax Drifting"
+                     decoding="async"
+                     height="300"
+                     loading="lazy"
+                     src="{% static 'assets/img/image/tax_drifting.webp' %}"
+                     width="400">                <h4>Tax Tax Drifting</h4>
 
                 <ul>
                     <li><strong>Income Tax Drizzle</strong></li>
@@ -845,68 +921,70 @@ body{
     </div>
 </section>
 
-<section class="calculator-section"  id="tax-calculators" style="background: radial-gradient(circle at top right, #DAE7E3 0%, #F6FBF9 70%);">
-  <div class="container">
+<section class="calculator-section" id="tax-calculators"
+         style="background: radial-gradient(circle at top right, #DAE7E3 0%, #F6FBF9 70%);">
+    <div class="container">
 
-    <div class="section-header">
-      <h2>Tax Calculators</h2>
-      <p>Calculate your income tax instantly using our smart tools.</p>
+        <div class="section-header">
+            <h2>Tax Calculators</h2>
+            <p>Calculate your income tax instantly using our smart tools.</p>
+        </div>
+
+        <div class="calculator-cards">
+
+            <!-- Salary -->
+            <a class="calculator-card" href="{% url 'SalaryCalculator' %}">
+                <span class="badge-new bg-success">NEW</span>
+
+                <div class="icon-wrap bg-success text-white">
+                    <i class="fas fa-user-tie"></i>
+                </div>
+
+                <div class="card-content">
+                    <h3>Salary Tax Calculator</h3>
+                    <p>Calculate tax on salaried income using latest slabs.</p>
+                </div>
+            </a>
+
+            <!-- Business -->
+            <a class="calculator-card" href="{% url 'BusinessCalculator' %}">
+                <span class="badge-new bg-success">NEW</span>
+
+                <div class="icon-wrap bg-success text-white">
+                    <i class="fas fa-briefcase"></i>
+                </div>
+
+                <div class="card-content">
+                    <h3>Business Tax Calculator</h3>
+                    <p>Estimate tax for sole proprietors & small businesses.</p>
+                </div>
+            </a>
+
+            <!-- AOP -->
+            <a class="calculator-card" href="{% url 'AOPCalculator' %}">
+                <span class="badge-new bg-success">NEW</span>
+
+                <div class="icon-wrap bg-success text-white">
+                    <i class="fas fa-users"></i>
+                </div>
+
+                <div class="card-content">
+                    <h3>AOP Tax Calculator</h3>
+                    <p>Compute tax liability for partnership firms (AOP).</p>
+                </div>
+            </a>
+
+        </div>
+
     </div>
-
-    <div class="calculator-cards">
-
-      <!-- Salary -->
-      <a href="{% url 'SalaryCalculator' %}" class="calculator-card">
-        <span class="badge-new bg-success">NEW</span>
-
-        <div class="icon-wrap bg-success text-white">
-          <i class="fas fa-user-tie"></i>
-        </div>
-
-        <div class="card-content">
-          <h3>Salary Tax Calculator</h3>
-          <p>Calculate tax on salaried income using latest slabs.</p>
-        </div>
-      </a>
-
-      <!-- Business -->
-      <a href="{% url 'BusinessCalculator' %}" class="calculator-card">
-        <span class="badge-new bg-success">NEW</span>
-
-        <div class="icon-wrap bg-success text-white">
-          <i class="fas fa-briefcase"></i>
-        </div>
-
-        <div class="card-content">
-          <h3>Business Tax Calculator</h3>
-          <p>Estimate tax for sole proprietors & small businesses.</p>
-        </div>
-      </a>
-
-      <!-- AOP -->
-      <a href="{% url 'AOPCalculator' %}" class="calculator-card">
-        <span class="badge-new bg-success">NEW</span>
-
-        <div class="icon-wrap bg-success text-white">
-          <i class="fas fa-users"></i>
-        </div>
-
-        <div class="card-content">
-          <h3>AOP Tax Calculator</h3>
-          <p>Compute tax liability for partnership firms (AOP).</p>
-        </div>
-      </a>
-
-    </div>
-
-  </div>
 </section>
 {% include 'partials/view_mcq.html' with preview_questions=preview_questions %}
 
 {% include 'Faq_question.html' %}
 
 
-<section class="tax-info-section" style="background: radial-gradient(circle at top right, #DAE7E3 0%, #F6FBF9 70%); padding:70px 0;">
+<section class="tax-info-section"
+         style="background: radial-gradient(circle at top right, #DAE7E3 0%, #F6FBF9 70%); padding:70px 0;">
     <div class="container" id="about">
         <div class="row g-4">
 
@@ -917,13 +995,13 @@ body{
                 <div class="box-card mb-4 p-4">
 
                     <div class="about-card d-flex align-items-start gap-4">
-                    <img src="{% static 'assets/img/image/About.webp' %}"
-     class="profile-img"
-     alt="Umair Mubeen - Tax Consultant"
-     width="110"
-     height="110"
-     loading="lazy"
-     decoding="async">
+                        <img alt="Umair Mubeen - Tax Consultant"
+                             class="profile-img"
+                             decoding="async"
+                             height="110"
+                             loading="lazy"
+                             src="{% static 'assets/img/image/About.webp' %}"
+                             width="110">
                         <div>
                             <h3 class="section-title mb-3">About TaxBuddy Umair</h3>
 
@@ -969,12 +1047,12 @@ body{
                     {% for blog in latest_blogs %}
                     <div class="article-item d-flex align-items-start gap-3 mb-3">
 
-                            <img src="{{ blog.featured_image.url }}"
-     alt="{{ blog.title }}"
-     width="70"
-     height="70"
-     loading="lazy"
-     style="object-fit:cover;border-radius:10px;">
+                        <img alt="{{ blog.title }}"
+                             height="70"
+                             loading="lazy"
+                             src="{{ blog.featured_image.url }}"
+                             style="object-fit:cover;border-radius:10px;"
+                             width="70">
                         <div>
                             <h6 style="font-size:14px;margin-bottom:6px;">
                                 {{ blog.title }}
@@ -988,7 +1066,7 @@ body{
 
                     </div>
                     {% empty %}
-                        <p class="text-muted">No articles available yet.</p>
+                    <p class="text-muted">No articles available yet.</p>
                     {% endfor %}
 
                 </div>
