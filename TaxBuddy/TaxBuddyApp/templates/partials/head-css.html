@@ -50,5 +50,185 @@ body, p, li, input, button {
   font-family: "Inter", sans-serif;
 }
 
+/* =====================================================
+   GLOBAL RESPONSIVE FIX – TAXBUDDY UMAIR
+===================================================== */
+
+/* Prevent horizontal scroll everywhere */
+html, body{
+  overflow-x:hidden;
+}
+
+/* Images always responsive */
+img{
+  max-width:100%;
+  height:auto;
+  display:block;
+}
+
+/* Make all containers safe */
+
+
+/* =====================================================
+   HERO FIX
+===================================================== */
+
+@media(max-width:992px){
+
+  /* Remove fixed height */
+  .home6-full-header{
+    height:auto !important;
+  }
+
+}
+
+@media(max-width:768px){
+
+  .hero-fluid-inner{
+    padding:40px 16px !important;
+  }
+
+  .hero-content h1{
+    font-size:24px !important;
+  }
+
+  .hero-content p{
+    font-size:14px !important;
+  }
+
+}
+
+/* =====================================================
+   FEATURED GUIDES FIX
+===================================================== */
+
+@media(max-width:1200px){
+  .guides-cards{
+    grid-template-columns:repeat(2,1fr);
+  }
+}
+
+@media(max-width:768px){
+
+  .guides-grid{
+    grid-template-columns:1fr !important;
+  }
+
+  .guides-cards{
+    grid-template-columns:1fr !important;
+  }
+
+  .guide-sidebar{
+    margin-top:20px;
+  }
+
+}
+
+/* =====================================================
+   CALCULATOR SECTION FIX
+===================================================== */
+
+@media(max-width:1200px){
+  .calculator-cards{
+    grid-template-columns:repeat(2,1fr);
+  }
+}
+
+@media(max-width:768px){
+  .calculator-cards{
+    grid-template-columns:1fr !important;
+  }
+
+  .calculator-card{
+    padding:30px 20px;
+  }
+}
+
+/* =====================================================
+   TAX INFO SECTION FIX
+===================================================== */
+
+@media(max-width:992px){
+
+  .row{
+    flex-direction:column;
+  }
+
+  .col-lg-8,
+  .col-lg-4{
+    width:100%;
+  }
+
+}
+
+/* =====================================================
+   BUTTONS FULL WIDTH ON SMALL DEVICES
+===================================================== */
+
+@media(max-width:480px){
+
+  .btn-primary,
+  .btn-secondary,
+  .mcq-main-btn{
+    width:100%;
+    text-align:center;
+  }
+
+}
+
+/* =====================================================
+   ARTICLE LIST FIX
+===================================================== */
+
+@media(max-width:576px){
+
+  .article-item{
+    flex-direction:column;
+  }
+
+  .article-item img{
+    width:100%;
+    height:auto;
+  }
+
+}
+
+/* =====================================================
+   ABOUT CARD FIX
+===================================================== */
+
+@media(max-width:768px){
+
+  .about-card{
+    flex-direction:column !important;
+    text-align:center;
+  }
+
+  .profile-img{
+    margin:auto;
+  }
+
+}
+
+/* =====================================================
+   SMALL PHONE TUNING
+===================================================== */
+
+@media(max-width:360px){
+
+  h1{
+    font-size:20px !important;
+  }
+
+  h2{
+    font-size:18px !important;
+  }
+
+  .section-header h2{
+    font-size:20px !important;
+  }
+
+}
+
 
 </style>
