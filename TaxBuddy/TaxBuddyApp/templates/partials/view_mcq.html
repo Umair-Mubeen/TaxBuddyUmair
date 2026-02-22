@@ -107,6 +107,8 @@
   border:none;
   color:#198754;
   font-weight:600;
+    font-size:14px;
+
   padding:0;
   margin-bottom:15px;
   cursor:pointer;
@@ -157,7 +159,6 @@
 
 .mcq-btn:hover{
   color:#145c3a;
-  text-decoration:underline;
 }
 
 /* ================= FOOTER ================= */
@@ -267,10 +268,10 @@ function toggleAnswer(button){
   const answerSection = button.nextElementSibling;
   if(answerSection.style.display === "block"){
       answerSection.style.display = "none";
-      button.innerText = "Show Answer";
+      button.innerText = "Show Explanation";
   } else {
       answerSection.style.display = "block";
-      button.innerText = "Hide Answer";
+      button.innerText = "Hide Explanation";
   }
 }
 </script>
