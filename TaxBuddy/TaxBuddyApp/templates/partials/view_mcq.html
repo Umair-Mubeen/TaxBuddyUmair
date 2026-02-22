@@ -1,0 +1,200 @@
+<!-- ================= MCQ PREVIEW SECTION ================= -->
+<style>
+
+/* ================= SECTION ================= */
+
+.mcq-section{
+  padding:90px 20px;
+  background:#f9fbfa;
+}
+
+.mcq-header{
+  text-align:center;
+  margin-bottom:55px;
+}
+
+.mcq-header h2{
+  font-size:30px;
+  font-weight:700;
+  color:#1a1a1a;
+  margin-bottom:8px;
+}
+
+.mcq-header p{
+  color:#555;
+  font-size:15px;
+}
+
+/* ================= GRID ================= */
+
+.mcq-grid{
+  max-width:900px;
+  margin:0 auto;
+  display:flex;
+  flex-direction:column;
+  gap:25px;
+}
+
+/* ================= CARD ================= */
+
+.mcq-card{
+  background:#ffffff;
+  padding:26px 28px;
+  border-radius:8px;
+  border:1px solid #dce6e2;
+  transition:0.2s ease;
+}
+
+.mcq-card:hover{
+  background:#f3f7f6;
+}
+
+/* ================= BADGE ================= */
+
+.mcq-badge{
+  display:inline-block;
+  background:#eef5f3;
+  color:#0f5132;
+  font-size:12px;
+  font-weight:600;
+  padding:5px 10px;
+  border-radius:4px;
+  margin-bottom:12px;
+}
+
+/* ================= QUESTION ================= */
+
+.mcq-question{
+  font-size:16px;
+  font-weight:600;
+  color:#1a1a1a;
+  margin-bottom:16px;
+  line-height:1.7;
+}
+
+/* ================= OPTIONS ================= */
+
+.mcq-options{
+  padding-left:18px;
+  margin-bottom:12px;
+}
+
+.mcq-options li{
+  margin-bottom:6px;
+  font-size:14.5px;
+  color:#333;
+}
+
+.correct-option{
+  color:#0f5132;
+  font-weight:600;
+}
+
+/* ================= SECTION REF ================= */
+
+.mcq-section-ref{
+  font-size:13px;
+  margin-top:6px;
+  color:#555;
+}
+
+/* ================= EXPLANATION ================= */
+
+.mcq-explanation{
+  margin-top:12px;
+  padding:12px 14px;
+  background:#eef5f3;
+  border-left:4px solid #0f5132;
+  font-size:14px;
+  color:#333;
+  line-height:1.6;
+}
+
+/* ================= FOOTER ================= */
+
+.mcq-footer{
+  text-align:center;
+  margin-top:45px;
+}
+
+.mcq-main-btn{
+  display:inline-block;
+  padding:12px 26px;
+  background:#0f5132;
+  color:#ffffff;
+  border-radius:4px;
+  font-weight:600;
+  text-decoration:none;
+  transition:0.3s ease;
+}
+
+.mcq-main-btn:hover{
+  background:#0c3f27;
+}
+
+/* ================= MOBILE ================= */
+
+@media(max-width:768px){
+
+  .mcq-question{
+    font-size:15px;
+  }
+
+  .mcq-card{
+    padding:20px;
+  }
+
+}
+
+</style>
+<section class="mcq-section" style="background: radial-gradient(circle at top right, #DAE7E3 0%, #F6FBF9 70%);">
+  <div class="mcq-header">
+    <h2>Income Tax MCQs – Practice Questions</h2>
+    <p>Test your knowledge with real Income Tax MCQs for Pakistan. Perfect for students, professionals, and exam preparation.</p>
+  </div>
+
+  <div class="mcq-grid">
+
+      {% for question in preview_questions %}
+
+<div class="mcq-card">
+
+  <span class="mcq-badge">
+    {{ question.category }}
+  </span>
+
+  <div class="mcq-question">
+    {{ forloop.counter }}. {{ question.question_text }}
+  </div>
+
+  <ul class="mcq-options">
+    {% for option in question.options.all %}
+      <li class="{% if option.is_correct %}correct-option{% endif %}">
+        {{ option.option_text }}
+      </li>
+    {% endfor %}
+  </ul>
+
+  {% if question.section_ref %}
+  <div class="mcq-section-ref">
+    <strong>Section:</strong> {{ question.section_ref }}
+  </div>
+  {% endif %}
+
+  {% if question.explanation %}
+  <div class="mcq-explanation">
+    <strong>Explanation:</strong> {{ question.explanation }}
+  </div>
+  {% endif %}
+
+</div>
+
+{% endfor %}
+  </div>
+
+  <div class="mcq-footer">
+    <a href="/income-tax-mcqs-pakistan" style="color:white" class="mcq-main-btn">
+      View All Income Tax MCQs
+    </a>
+  </div>
+</section>
