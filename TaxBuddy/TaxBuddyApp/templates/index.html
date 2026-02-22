@@ -951,10 +951,12 @@ body{
                     {% for blog in latest_blogs %}
                     <div class="article-item d-flex align-items-start gap-3 mb-3">
 
-                        <img src="{{ blog.featured_image.url }}"
-                             alt="{{ blog.title }}"
-                             style="width:70px;height:70px;object-fit:cover;border-radius:10px;">
-
+                            <img src="{{ blog.featured_image.url }}"
+     alt="{{ blog.title }}"
+     width="70"
+     height="70"
+     loading="lazy"
+     style="object-fit:cover;border-radius:10px;">
                         <div>
                             <h6 style="font-size:14px;margin-bottom:6px;">
                                 {{ blog.title }}
