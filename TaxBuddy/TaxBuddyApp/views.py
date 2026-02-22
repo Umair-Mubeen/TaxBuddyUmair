@@ -18,18 +18,15 @@ from .models import Blog, Comment, Contact, TaxBracket, Business_AOP_Slab, Prope
 
 def index(request):
     try:
+        print('---------')
         questions = Question.objects.filter(is_active=True).prefetch_related("options")
+        print(questions)
 
-        # Convert queryset to list for random sampling
         questions_list = list(questions)
 
-        # Select 4 random questions (change to 6 if needed)
-        preview_questions = random.sample(
-            questions_list,
-            min(len(questions_list), 4)
-        )
+        preview_questions = random.sample(questions_list,min(len(questions_list), 3))
 
-        preview_questions = {
+        context = {
             "preview_questions": preview_questions
         }
         result = Blog.objects.filter(status='published', is_deleted=False)
@@ -39,7 +36,8 @@ def index(request):
             created_at__gte=now().date() - timedelta(days=3)
         ).order_by('-updated_at')[:3]
         print(latest_blogs)
-        return render(request, 'index.html', {'result': result, 'latest_blogs': latest_blogs,'preview_questions' : preview_questions})
+        return render(request, 'index.html', {'result': result, 'latest_blogs': latest_blogs,        "preview_questions": preview_questions
+})
     except Exception as e:
         return HttpResponse(str(e))
 
