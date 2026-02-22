@@ -170,7 +170,29 @@
     <title>TaxBuddy Umair | {{ blog.title }}</title>
 
     <meta content="{{ blog.title }}" property="og:title">
-    <meta content="https://taxbuddyumair.com{{ blog.image.url }}" property="og:image">
+
+    <meta name="title" content="{{ blog.meta_title|default:blog.title }}">
+    <meta name="description" content="{{ blog.meta_description|default:blog.meta_description|truncatechars:160 }}">
+<!--    <meta name="keywords" content="{{ blog.focus_keyword }}">-->
+    <meta name="author" content="Umair Mubeen">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://www.taxbuddyumair.com/{{ blog.slug }}/">
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="{{ blog.meta_title|default:blog.title }}">
+    <meta property="og:description" content="{{ blog.meta_description|default:blog.meta_description|truncatechars:160 }}">
+    <meta property="og:image" content="https://taxbuddyumair.com{{ blog.featured_image.url }}">
+    <meta property="og:url" content="https://www.taxbuddyumair.com/{{ blog.slug }}/">
+    <meta property="og:site_name" content="TaxBuddy Umair">
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="{{ blog.meta_title|default:blog.title }}">
+    <meta name="twitter:description" content="{{ blog.meta_description|default:blog.meta_description|truncatechars:160 }}">
+    <meta name="twitter:image" content="https://taxbuddyumair.com{{ blog.featured_image.url }}">
+
+    <meta content="https://taxbuddyumair.com{{ blog.featured_image.url }}" property="og:image">
     <meta content="https://www.taxbuddyumair.com/{{ blog.slug }}/" property="og:url">
 
     {% include 'partials/head-css.html' %}

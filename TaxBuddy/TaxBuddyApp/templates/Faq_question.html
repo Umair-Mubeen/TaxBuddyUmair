@@ -1,98 +1,43 @@
-<!-- ================= FAQ SCHEMA (SEO RICH RESULTS) ================= -->
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "FAQPage",
-  "mainEntity": [
-    {
-      "@type": "Question",
-      "name": "Who is required to file income tax in Pakistan?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "Any individual earning taxable income above the minimum exemption threshold defined under the Income Tax Ordinance 2001 is required to file an income tax return with the Federal Board of Revenue (FBR). Filing may also be mandatory if you own property, vehicles above specified engine capacity, conduct business activities, or maintain foreign assets."
-      }
-    },
-    {
-      "@type": "Question",
-      "name": "What is the Active Taxpayer List (ATL)?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "The Active Taxpayer List (ATL) is an official list published by the Federal Board of Revenue (FBR) containing names of individuals and businesses who have filed their income tax returns. Taxpayers listed on the ATL benefit from lower withholding tax rates on financial transactions."
-      }
-    },
-    {
-      "@type": "Question",
-      "name": "What is the difference between filer and non-filer in Pakistan?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "A filer is a person whose name appears on the Active Taxpayer List after submitting their annual tax return. Filers are subject to lower withholding tax rates on property, vehicle purchases, banking transactions, and other financial activities. A non-filer does not file a return and pays higher withholding taxes."
-      }
-    },
-    {
-      "@type": "Question",
-      "name": "What is the income tax filing deadline in Pakistan?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "The income tax filing deadline for salaried individuals and business persons is generally 30th September following the end of the tax year, unless extended by FBR through official notification."
-      }
-    },
-    {
-      "@type": "Question",
-      "name": "What happens if I do not file my income tax return?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "Failure to file income tax returns may result in penalties, higher withholding tax rates, restriction on financial transactions, and possible legal notices from FBR. Non-filers also lose benefits available to active taxpayers."
-      }
-    },
-    {
-      "@type": "Question",
-      "name": "How can I calculate my income tax in Pakistan?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "Income tax is calculated based on applicable tax slabs for salaried individuals, business income, or Associations of Persons (AOP). You can use an updated online tax calculator to estimate your liability according to the current tax year rates."
-      }
-    }
-  ]
-}
-</script>
-
-<!-- ================= FAQ SECTION ================= -->
 <style>
 .faq-section{
-  padding:80px 0;
-  background:#f6fbf9;
+  padding:100px 20px;
+  background:#f4f9f8;
 }
 
 .faq-header{
   text-align:center;
-  margin-bottom:50px;
+  margin-bottom:60px;
 }
 
 .faq-header h2{
-  font-size:32px;
+  font-size:34px;
   font-weight:700;
-  margin-bottom:10px;
+  margin-bottom:12px;
+  color:#1c2e2e;
 }
 
 .faq-header p{
-  color:#5b6b65;
+  color:#6c7a76;
+  font-size:16px;
 }
 
 .faq-wrapper{
-  max-width:900px;
+  max-width:820px;
   margin:0 auto;
 }
 
 .faq-item{
-  background:#fff;
-  border-radius:16px;
-  margin-bottom:18px;
-  box-shadow:0 8px 25px rgba(0,0,0,0.06);
+  background:#ffffff;
+  border-radius:18px;
+  margin-bottom:22px;
+  box-shadow:0 5px 18px rgba(0,0,0,0.05);
   overflow:hidden;
-  transition:0.3s ease;
+  transition:all 0.25s ease;
+  border:1px solid #e6efec;
 }
 
 .faq-item:hover{
+  box-shadow:0 10px 28px rgba(0,0,0,0.08);
   transform:translateY(-2px);
 }
 
@@ -100,33 +45,49 @@
   width:100%;
   background:none;
   border:none;
-  padding:22px 25px;
-  font-size:16px;
+  padding:24px 28px;
+  font-size:16.5px;
   font-weight:600;
   text-align:left;
   cursor:pointer;
   display:flex;
   justify-content:space-between;
   align-items:center;
+  color:#1c2e2e;
+  -webkit-appearance:none;
+  appearance:none;
+  outline:none;
+  -webkit-tap-highlight-color: transparent;
 }
 
 .faq-question span{
-  font-size:22px;
-  transition:0.3s;
+  font-size:20px;
+  font-weight:700;
+  transition:all 0.3s ease;
+  color:#198754;
 }
 
 .faq-answer{
   max-height:0;
   overflow:hidden;
-  padding:0 25px;
-  font-size:14.5px;
-  color:#555;
-  line-height:1.7;
-  transition:max-height 0.4s ease;
+  padding:0 28px;
+  font-size:15px;
+  color:#495957;
+  line-height:1.8;
+  transition:max-height 0.4s ease, padding 0.3s ease;
+}
+
+.faq-item.active{
+  border:1px solid #d3e6df;
+  background:#ffffff;
 }
 
 .faq-item.active .faq-answer{
-  padding:0 25px 22px;
+  padding:0 28px 26px;
+}
+
+.faq-item.active .faq-question span{
+  transform:rotate(45deg);
 }
 </style>
 
@@ -141,7 +102,7 @@
     <div class="faq-wrapper">
 
       <div class="faq-item">
-        <button class="faq-question">
+        <button class="faq-question" aria-expanded="false">
           Who is required to file income tax in Pakistan?
           <span>+</span>
         </button>
@@ -151,7 +112,7 @@
       </div>
 
       <div class="faq-item">
-        <button class="faq-question">
+        <button class="faq-question" aria-expanded="false">
           What is the Active Taxpayer List (ATL)?
           <span>+</span>
         </button>
@@ -161,7 +122,7 @@
       </div>
 
       <div class="faq-item">
-        <button class="faq-question">
+        <button class="faq-question" aria-expanded="false">
           What is the difference between filer and non-filer?
           <span>+</span>
         </button>
@@ -171,7 +132,7 @@
       </div>
 
       <div class="faq-item">
-        <button class="faq-question">
+        <button class="faq-question" aria-expanded="false">
           What is the income tax filing deadline in Pakistan?
           <span>+</span>
         </button>
@@ -181,7 +142,7 @@
       </div>
 
       <div class="faq-item">
-        <button class="faq-question">
+        <button class="faq-question" aria-expanded="false">
           What happens if I do not file my income tax return?
           <span>+</span>
         </button>
@@ -191,7 +152,7 @@
       </div>
 
       <div class="faq-item">
-        <button class="faq-question">
+        <button class="faq-question" aria-expanded="false">
           How can I calculate my income tax?
           <span>+</span>
         </button>
@@ -204,29 +165,25 @@
   </div>
 </section>
 
+
 <script>
 document.querySelectorAll(".faq-question").forEach(button => {
   button.addEventListener("click", () => {
+
     const item = button.parentElement;
     const answer = item.querySelector(".faq-answer");
-    const symbol = button.querySelector("span");
+    const expanded = button.getAttribute("aria-expanded") === "true";
 
     document.querySelectorAll(".faq-item").forEach(faq => {
-      if (faq !== item) {
-        faq.classList.remove("active");
-        faq.querySelector(".faq-answer").style.maxHeight = null;
-        faq.querySelector(".faq-question span").textContent = "+";
-      }
+      faq.classList.remove("active");
+      faq.querySelector(".faq-answer").style.maxHeight = null;
+      faq.querySelector(".faq-question").setAttribute("aria-expanded", "false");
     });
 
-    item.classList.toggle("active");
-
-    if (answer.style.maxHeight) {
-      answer.style.maxHeight = null;
-      symbol.textContent = "+";
-    } else {
+    if (!expanded) {
+      item.classList.add("active");
       answer.style.maxHeight = answer.scrollHeight + "px";
-      symbol.textContent = "−";
+      button.setAttribute("aria-expanded", "true");
     }
   });
 });
