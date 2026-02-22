@@ -671,7 +671,7 @@ def online_services(request):
 
 def question_list(request):
     try:
-        questions = Question.objects.prefetch_related("options").order_by("-updated_at")
+        questions = Question.objects.prefetch_related("options").order_by("id")
         return render(request, "tax-knowledge-quizz.html", {"questions": questions})
     except Exception as e:
         return HttpResponse("Exception at Blog Details Page :" + str(e))
