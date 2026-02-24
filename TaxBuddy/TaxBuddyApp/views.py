@@ -24,7 +24,7 @@ def index(request):
 
         questions_list = list(questions)
 
-        preview_questions = random.sample(questions_list,min(len(questions_list), 3))
+        preview_questions = random.sample(questions_list, min(len(questions_list), 3))
 
         context = {
             "preview_questions": preview_questions
@@ -36,8 +36,9 @@ def index(request):
             created_at__gte=now().date() - timedelta(days=3)
         ).order_by('-updated_at')[:3]
         print(latest_blogs)
-        return render(request, 'index.html', {'result': result, 'latest_blogs': latest_blogs, "preview_questions": preview_questions
-})
+        return render(request, 'index.html',
+                      {'result': result, 'latest_blogs': latest_blogs, "preview_questions": preview_questions
+                       })
     except Exception as e:
         return HttpResponse(str(e))
 
@@ -70,7 +71,6 @@ def Dashboard(request):
 
 @login_required
 def AddEditBlog(request, slug=None):
-
     blog = None
 
     if slug:
@@ -102,7 +102,7 @@ def AddEditBlog(request, slug=None):
                 meta_description=request.POST.get("meta_description"),
                 author=request.user,
                 tag=tag,
-                category = request.POST.get("category")
+                category=request.POST.get("category")
 
             )
 
@@ -148,7 +148,6 @@ def ManageBlogs(request):
 
 
 def BlogDetails(request, slug=None):
-
     if not slug:
         raise Http404("Blog slug not provided")
 
@@ -169,7 +168,7 @@ def BlogDetails(request, slug=None):
     )
 
     blogList = Blog.objects.filter(
-        status='published',   # ✅ FIXED
+        status='published',  # ✅ FIXED
         is_deleted=False
     ).exclude(slug=slug).order_by('-created_at')
 
@@ -184,12 +183,15 @@ def BlogDetails(request, slug=None):
             'tags_list': tags_list
         }
     )
+
+
 def viewBlogs(request, slug=None):
     try:
         # Convert URL slug to match DB value
         category_name = slug.replace('-', ' ')
 
-        blogs = Blog.objects.filter(category__iexact=category_name,status='published',is_deleted=False).order_by('-created_at')
+        blogs = Blog.objects.filter(category__iexact=category_name, status='published', is_deleted=False).order_by(
+            '-created_at')
         if not blogs.exists():
             raise Http404("Category not found")
 
@@ -647,10 +649,10 @@ def calculate_tax(income, tax_brackets, surcharge_rate):
 def tax_knowledge_quiz(request):
     questions = (
         Question.objects
-            .filter(is_active=True)
-            .select_related("category")
-            .prefetch_related("options")
-            .order_by("category__order", "id")
+        .filter(is_active=True)
+        .select_related("category")
+        .prefetch_related("options")
+        .order_by("category__order", "id")
     )
 
     return render(
@@ -820,6 +822,14 @@ def sales_tax_guides(request):
         return HttpResponse(str("Exception : " + str(e)))
 
 
+def income_tax_rates(request):
+    try:
+        return render(request, 'partials/income_tax_rates.html')
+
+    except Exception as e:
+        return HttpResponse(str("Exception : " + str(e)))
+
+
 def terms_and_conditions(request):
     try:
         return render(request, 'partials/terms_conditions.html')
@@ -843,15 +853,15 @@ def section_4c_rate_view(request):
 
     slab = (
         SuperTax4CRate.objects
-            .filter(
+        .filter(
             tax_year=tax_year,
             income_from__lte=income
         )
-            .filter(
+        .filter(
             Q(income_to__gte=income) | Q(income_to__isnull=True)
         )
-            .order_by("income_from")
-            .first()
+        .order_by("income_from")
+        .first()
     )
 
     rate = float(slab.rate) if slab else 0.0
