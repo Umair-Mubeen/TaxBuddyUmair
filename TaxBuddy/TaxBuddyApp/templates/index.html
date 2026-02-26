@@ -971,10 +971,86 @@
 
     </div>
 </section>
+
+<section class="calculator-section" id="tax-rates"
+         style="background: radial-gradient(circle at top right, #DAE7E3 0%, #F6FBF9 70%);">
+    <div class="container">
+
+        <div class="section-header">
+            <h2>Tax Rates</h2>
+            <p>Explore updated tax rates under Income Tax Ordinance, 2001.</p>
+        </div>
+
+        <div class="calculator-cards">
+
+            <!-- Salary -->
+            <a class="calculator-card"
+               href="{% url 'income-tax-rates' %}?section=salary">
+                <span class="badge-new bg-success">RATES</span>
+
+                <div class="icon-wrap bg-success text-white">
+                    <i class="fas fa-user-tie"></i>
+                </div>
+
+                <div class="card-content">
+                    <h3>Salaried Individuals</h3>
+                    <p>View latest income tax slabs for salaried persons.</p>
+                </div>
+            </a>
+
+            <!-- Business -->
+            <a class="calculator-card"
+               href="{% url 'income-tax-rates' %}?section=business">
+                <span class="badge-new bg-success">RATES</span>
+
+                <div class="icon-wrap bg-success text-white">
+                    <i class="fas fa-briefcase"></i>
+                </div>
+
+                <div class="card-content">
+                    <h3>Business Individuals</h3>
+                    <p>Check tax slabs for non-salaried persons.</p>
+                </div>
+            </a>
+
+            <!-- AOP -->
+            <a class="calculator-card"
+               href="{% url 'income-tax-rates' %}?section=aop">
+                <span class="badge-new bg-success">RATES</span>
+
+                <div class="icon-wrap bg-success text-white">
+                    <i class="fas fa-users"></i>
+                </div>
+
+                <div class="card-content">
+                    <h3>AOP (Partnership Firms)</h3>
+                    <p>View applicable tax rates for Associations of Persons.</p>
+                </div>
+            </a>
+
+            <!-- Banks / Corporate -->
+            <a class="calculator-card"
+               href="{% url 'income-tax-rates' %}?section=corporate">
+                <span class="badge-new bg-success">RATES</span>
+
+                <div class="icon-wrap bg-success text-white">
+                    <i class="fas fa-university"></i>
+                </div>
+
+                <div class="card-content">
+                    <h3>Banks & Companies</h3>
+                    <p>Corporate & banking company tax rates.</p>
+                </div>
+            </a>
+
+        </div>
+
+    </div>
+</section>
+
 {% include 'partials/view_mcq.html' with preview_questions=preview_questions %}
 
 {% include 'Faq_question.html' %}
-
 <section class="tax-info-section"
          style="background: radial-gradient(circle at top right, #DAE7E3 0%, #F6FBF9 70%); padding:70px 0;">
     <div class="container" id="about">
