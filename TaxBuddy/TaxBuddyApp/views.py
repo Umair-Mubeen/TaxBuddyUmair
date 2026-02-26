@@ -824,10 +824,67 @@ def sales_tax_guides(request):
 
 def income_tax_rates(request):
     try:
-        return render(request, 'partials/income_tax_rates.html')
+        selected_year = request.GET.get("year")
+
+        # Get distinct years from BOTH models
+        salary_years = TaxBracket.objects.values_list("year", flat=True)
+        business_years = Business_AOP_Slab.objects.values_list("year", flat=True)
+        active_section = request.GET.get('section', 'salary')
+
+        years = sorted(set(list(salary_years) + list(business_years)), reverse=True)
+        print(years)
+
+        # Default latest year
+        if not selected_year:
+            selected_year = years[0] if years else None
+
+        # ===== SALARIED =====
+        salary_brackets = TaxBracket.objects.filter(
+            year=selected_year
+        ).order_by("income_min")
+
+        # ===== BUSINESS & AOP (SAME TABLE) =====
+        business_aop_brackets = Business_AOP_Slab.objects.filter(
+            year=selected_year
+        ).order_by("income_min")
+
+        # Convert rate to %
+        for bracket in salary_brackets:
+            bracket.rate_percent = bracket.rate * 100
+
+        for bracket in business_aop_brackets:
+            bracket.rate_percent = bracket.rate * 100
+
+        company_tax_rates = {
+            2024-2025: {
+                "Banking Company": 44,
+                "Small Company": 20,
+                "Any Other Company": 29,
+            },
+            2025-2026: {
+                "Banking Company": 43,
+                "Small Company": 20,
+                "Any Other Company": 29,
+            },
+            2026-2027: {
+                "Banking Company": 42,
+                "Small Company": 20,
+                "Any Other Company": 29,
+            }
+        }
+        return render(request, "partials/income_tax_rates.html", {
+            "salary_brackets": salary_brackets,
+            "business_brackets": business_aop_brackets,
+            "aop_brackets": business_aop_brackets,  # SAME DATA
+            "years": years,
+            "selected_year": selected_year,
+            'active_section': active_section,
+            'company_tax_rates' : company_tax_rates
+
+        })
 
     except Exception as e:
-        return HttpResponse(str("Exception : " + str(e)))
+        return HttpResponse("Exception: " + str(e))
 
 
 def terms_and_conditions(request):
