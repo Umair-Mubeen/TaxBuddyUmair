@@ -672,38 +672,66 @@ def online_services(request):
         return HttpResponse("Exception  :" + str(e))
 
 
-def question_list(request):
+def question_list(request, category_slug=None):
 
     try:
-
-        category = request.GET.get("category")
 
         questions = Question.objects.prefetch_related(
             "options"
         ).order_by("id")
 
-        # filter by category
-        if category:
-            questions = questions.filter(category=category)
+        selected_category = None
 
-        # pagination (10 per page)
+
+        # ---------- CATEGORY SLUG FILTER ----------
+
+        if category_slug:
+
+            for c in Question.objects.values_list(
+                "category",
+                flat=True
+            ).distinct():
+
+                if slugify(c) == category_slug:
+                    selected_category = c
+                    break
+
+            if selected_category:
+                questions = questions.filter(
+                    category=selected_category
+                )
+
+
+        # ---------- PAGINATION ----------
+
         paginator = Paginator(questions, 5)
 
         page_number = request.GET.get("page")
+
         page_obj = paginator.get_page(page_number)
 
-        # category list for filter
-        categories = (
-            Question.objects
-            .order_by("category")
-            .values_list("category", flat=True)
-            .distinct()
-        )
+
+        # ---------- CATEGORY LIST ----------
+
+        categories = []
+
+        for c in Question.objects.values_list(
+            "category",
+            flat=True
+        ).distinct():
+
+            categories.append({
+                "name": c,
+                "slug": slugify(c)
+            })
+
 
         context = {
             "page_obj": page_obj,
             "categories": categories,
-            "selected_category": category,
+            "selected_category": selected_category,
+            "seo_category": selected_category,
+            "category_slug": category_slug,
         }
 
         return render(
@@ -713,8 +741,9 @@ def question_list(request):
         )
 
     except Exception as e:
+
         return HttpResponse(
-            "Exception at Question List: " + str(e)
+            "Exception: " + str(e)
         )
 
 
