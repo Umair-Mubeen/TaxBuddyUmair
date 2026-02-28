@@ -282,7 +282,7 @@ Based on Income Tax Ordinance, 2001 – Updated for Tax Year 2026
 <form method="get" class="filter-box">
 
 <select name="category"
-class="form-select"
+class="form-select form-control"
 onchange="this.form.submit()">
 
 <option value="">All Categories</option>
@@ -393,9 +393,11 @@ class="explanation collapse">
 
 <!-- PAGINATION -->
 
+<!-- PAGINATION -->
+
 <div class="mt-4">
 
-<nav aria-label="Page navigation">
+<nav>
 
 <ul class="pagination justify-content-center flex-wrap">
 
@@ -404,7 +406,12 @@ class="explanation collapse">
 <li class="page-item">
 
 <a class="page-link"
-href="?page={{ page_obj.previous_page_number }}">
+
+href="{% if category_slug %}
+/income-tax-mcqs-pakistan/{{ category_slug }}/?page={{ page_obj.previous_page_number }}
+{% else %}
+?page={{ page_obj.previous_page_number }}
+{% endif %}">
 
 Prev
 
@@ -419,13 +426,15 @@ Prev
 {% for num in page_obj.paginator.page_range %}
 
 <li class="page-item
-{% if page_obj.number == num %}
-active
-{% endif %}
-">
+{% if page_obj.number == num %}active{% endif %}">
 
 <a class="page-link"
-href="?page={{ num }}">
+
+href="{% if category_slug %}
+/income-tax-mcqs-pakistan/{{ category_slug }}/?page={{ num }}
+{% else %}
+?page={{ num }}
+{% endif %}">
 
 {{ num }}
 
@@ -442,7 +451,12 @@ href="?page={{ num }}">
 <li class="page-item">
 
 <a class="page-link"
-href="?page={{ page_obj.next_page_number }}">
+
+href="{% if category_slug %}
+/income-tax-mcqs-pakistan/{{ category_slug }}/?page={{ page_obj.next_page_number }}
+{% else %}
+?page={{ page_obj.next_page_number }}
+{% endif %}">
 
 Next
 
@@ -452,13 +466,11 @@ Next
 
 {% endif %}
 
-
 </ul>
 
 </nav>
 
 </div>
-
 
 <div class="footer-note">
 
