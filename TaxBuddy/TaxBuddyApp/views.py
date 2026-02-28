@@ -14,6 +14,7 @@ from django.db.models import Q
 from django.http import JsonResponse
 from .models import Blog, Comment, Contact, TaxBracket, Business_AOP_Slab, Property_Business_AOP_Slab, Question, \
     Option, SuperTax4CRate, Category, Tag
+from django.core.paginator import Paginator
 
 
 def index(request):
@@ -672,11 +673,48 @@ def online_services(request):
 
 
 def question_list(request):
+
     try:
-        questions = Question.objects.prefetch_related("options").order_by("id")
-        return render(request, "tax-knowledge-quizz.html", {"questions": questions})
+
+        category = request.GET.get("category")
+
+        questions = Question.objects.prefetch_related(
+            "options"
+        ).order_by("id")
+
+        # filter by category
+        if category:
+            questions = questions.filter(category=category)
+
+        # pagination (10 per page)
+        paginator = Paginator(questions, 10)
+
+        page_number = request.GET.get("page")
+        page_obj = paginator.get_page(page_number)
+
+        # category list for filter
+        categories = (
+            Question.objects.values_list(
+                "category", flat=True
+            ).distinct()
+        )
+
+        context = {
+            "page_obj": page_obj,
+            "categories": categories,
+            "selected_category": category,
+        }
+
+        return render(
+            request,
+            "tax-knowledge-quizz.html",
+            context,
+        )
+
     except Exception as e:
-        return HttpResponse("Exception at Blog Details Page :" + str(e))
+        return HttpResponse(
+            "Exception at Question List: " + str(e)
+        )
 
 
 @login_required(login_url='Login')
