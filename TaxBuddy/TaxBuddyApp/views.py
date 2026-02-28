@@ -694,9 +694,10 @@ def question_list(request):
 
         # category list for filter
         categories = (
-            Question.objects.values_list(
-                "category", flat=True
-            ).distinct()
+            Question.objects
+            .order_by("category")
+            .values_list("category", flat=True)
+            .distinct()
         )
 
         context = {
