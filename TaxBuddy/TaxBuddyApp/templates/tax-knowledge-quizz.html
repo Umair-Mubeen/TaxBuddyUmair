@@ -14,7 +14,6 @@ content="Pakistan Income Tax MCQs with answers, explanations and section referen
 
 {% include 'partials/head-css.html' %}
 
-
 <style>
 
 body{
@@ -144,22 +143,49 @@ background:#f8fafc;
 border-left:4px solid #0d6efd;
 padding:14px;
 border-radius:10px;
-font-size:14px;
+font-size:16px;
 margin-top:12px;
 }
 
 
+/* ========================= */
+/* SHOW EXPLANATION BUTTON */
+/* ========================= */
+
+.show-btn{
+background:#198754;
+color:#fff;
+border:none;
+}
+
+.show-btn:hover{
+background:#ffc107;
+color:#000;
+}
+
+
+/* ========================= */
 /* PAGINATION */
+/* ========================= */
 
 .pagination .page-link{
 border-radius:8px;
 margin:0 4px;
-color:#0d2c54;
+background:#198754;
+color:#fff;
+border:1px solid #198754;
+}
+
+.pagination .page-link:hover{
+background:#ffc107;
+color:#000;
+border-color:#ffc107;
 }
 
 .pagination .active .page-link{
-background:#0d6efd;
-border-color:#0d6efd;
+background:#198754;
+border-color:#198754;
+color:#fff;
 }
 
 
@@ -173,7 +199,6 @@ margin-top:20px;
 }
 
 </style>
-
 </head>
 
 
@@ -273,7 +298,7 @@ selected
 
 <button
 type="button"
-class="btn btn-sm btn-outline-primary mt-2"
+class="btn btn-sm show-btn mt-2"
 data-bs-toggle="collapse"
 data-bs-target="#exp{{q.id}}">
 

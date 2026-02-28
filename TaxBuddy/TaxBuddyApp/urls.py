@@ -23,8 +23,7 @@ urlpatterns = [
     path("questions/delete/<int:pk>/", views.delete_question, name="questions-delete"),
 
     path("section-4c-rate/", views.section_4c_rate_view, name="section_4c_rate"),
-    path("income-tax-mcqs-pakistan/", views.question_list,name="mcq_list"),
-    path("income-tax-mcqs-pakistan/<slug:category_slug>/",views.question_list,name="mcq_category"),
+    path("income-tax-mcqs-pakistan", views.question_list, name="income-tax-mcqs-pakistan"),
     path("online-services", views.online_services, name="online-services"),
 
     path('AddEditBlog/', views.AddEditBlog, name='AddEditBlog'),

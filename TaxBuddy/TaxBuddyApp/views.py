@@ -687,7 +687,7 @@ def question_list(request):
             questions = questions.filter(category=category)
 
         # pagination (10 per page)
-        paginator = Paginator(questions, 10)
+        paginator = Paginator(questions, 5)
 
         page_number = request.GET.get("page")
         page_obj = paginator.get_page(page_number)
