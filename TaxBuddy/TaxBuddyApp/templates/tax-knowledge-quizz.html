@@ -1,27 +1,14 @@
 <!DOCTYPE html>
 <html lang="en">
 {% load static %}
-
 <head>
 
-<title>
-{% if seo_category %}
-{{ seo_category }} MCQs Pakistan – Income Tax Ordinance 2001 | TaxBuddy Umair
-{% else %}
-Pakistan Income Tax MCQs with Answers (2026) – Income Tax Ordinance 2001 Quiz
-{% endif %}
-</title>
+<title>Pakistan Income Tax MCQs (With Answers) – TaxBuddy Umair</title>
 
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
 
 <meta name="description"
-content="
-{% if seo_category %}
-Practice {{ seo_category }} MCQs from Income Tax Ordinance 2001 with answers, explanations and references.
-{% else %}
-Pakistan Income Tax MCQs with answers, explanations and section references based on Income Tax Ordinance 2001.
-{% endif %}
-">
+content="Pakistan Income Tax MCQs with answers, explanations and section references based on Income Tax Ordinance 2001.">
 
 <link href="{% static 'assets/img/icons/fab2.png' %}" rel="shortcut icon">
 
@@ -30,37 +17,61 @@ Pakistan Income Tax MCQs with answers, explanations and section references based
 
 <style>
 
+body{
+background:#f4f7fb;
+}
 
-/* card */
+
+/* CARD */
 
 .quiz-card{
 background:#fff;
 padding:35px;
 border-radius:16px;
 box-shadow:0 20px 50px rgba(0,0,0,.08);
+transition:.3s;
 }
 
-/* header */
+.quiz-card:hover{
+transform:translateY(-3px);
+box-shadow:0 25px 60px rgba(0,0,0,.12);
+}
 
-.quiz-header{text-align:center;margin-bottom:20px}
+
+/* HEADER */
+
+.quiz-header{
+text-align:center;
+margin-bottom:20px;
+}
 
 .quiz-header h1{
 font-weight:800;
 color:#0d2c54;
 }
 
-/* category buttons */
+.quiz-header p{
+color:#6b7280;
+}
+
+
+/* FILTER */
 
 .filter-box{
-text-align:center;
+max-width:320px;
+margin:auto;
 margin-bottom:25px;
+position:sticky;
+top:80px;
+z-index:10;
+background:#fff;
+padding:10px;
+border-radius:10px;
+box-shadow:0 5px 20px rgba(0,0,0,.05);
 }
 
-.filter-box a{
-margin:4px;
-}
 
-/* category title */
+/* CATEGORY */
 
 .category-title{
 font-weight:800;
@@ -70,9 +81,12 @@ border-left:5px solid #22c55e;
 padding-left:10px;
 }
 
-/* question */
 
-.question{margin-bottom:40px}
+/* QUESTION */
+
+.question{
+margin-bottom:40px;
+}
 
 .question legend{
 font-size:18px;
@@ -80,61 +94,88 @@ font-weight:600;
 margin-bottom:15px;
 }
 
-/* option */
+
+/* OPTION */
 
 .option{
 display:flex;
-gap:10px;
-padding:12px;
+align-items:center;
+gap:12px;
+padding:14px 16px;
+margin-bottom:10px;
+border-radius:12px;
 border:2px solid #e5e7eb;
-border-radius:10px;
-margin-bottom:8px;
+transition:.2s;
+cursor:pointer;
+}
+
+.option:hover{
+background:#f1f5f9;
+border-color:#0d6efd;
 }
 
 .option.correct{
 background:#ecfdf5;
 border-color:#22c55e;
+color:#065f46;
 font-weight:600;
 }
 
 .option.correct::after{
 content:"✔ Correct";
 margin-left:auto;
+font-weight:700;
+color:#16a34a;
 }
 
-/* explanation */
+.option input{
+appearance:none;
+width:16px;
+height:16px;
+border-radius:50%;
+border:2px solid #9ca3af;
+}
+
+
+/* EXPLANATION */
 
 .explanation{
 background:#f8fafc;
 border-left:4px solid #0d6efd;
-padding:10px;
+padding:14px;
+border-radius:10px;
+font-size:14px;
+margin-top:12px;
+}
+
+
+/* PAGINATION */
+
+.pagination .page-link{
 border-radius:8px;
-margin-top:10px;
+margin:0 4px;
+color:#0d2c54;
 }
-
-/* button hover */
-
-.btn-success-hover{
-background:#198754;
-color:#fff;
-border:none;
-}
-
-.btn-success-hover:hover{
-background:#ffc107;
-color:#000;
-}
-
-/* pagination */
 
 .pagination .active .page-link{
-background:#198754;
-border-color:#198754;
+background:#0d6efd;
+border-color:#0d6efd;
+}
+
+
+/* FOOTER */
+
+.footer-note{
+font-size:13px;
+color:#6b7280;
+text-align:center;
+margin-top:20px;
 }
 
 </style>
 
 </head>
+
 
 
 <body>
@@ -143,6 +184,7 @@ border-color:#198754;
 
 <div class="space100"></div>
 
+
 <div class="container">
 
 <div class="quiz-card">
@@ -150,58 +192,48 @@ border-color:#198754;
 
 <div class="quiz-header">
 
-<h1>
+<h1>Pakistan Income Tax MCQs (With Answers)</h1>
 
-{% if seo_category %}
-{{ seo_category }} MCQs – Income Tax Ordinance 2001
-{% else %}
-Pakistan Income Tax MCQs (With Answers)
-{% endif %}
-
-</h1>
+<p>
+Based on Income Tax Ordinance, 2001 – Updated for Tax Year 2026
+</p>
 
 </div>
 
 
 
-<!-- CATEGORY BUTTONS -->
+<!-- FILTER -->
 
+<form method="get" class="filter-box">
 
-<div class="filter-box">
+<select name="category"
+class="form-select"
+onchange="this.form.submit()">
 
-<a href="/income-tax-mcqs-pakistan/"
-class="btn btn-outline-secondary btn-sm">
-
-All
-
-</a>
-
+<option value="">All Categories</option>
 
 {% for c in categories %}
 
-<a href="/income-tax-mcqs-pakistan/{{ c|slugify }}/"
-
-class="btn btn-sm
-
+<option value="{{ c }}"
 {% if c == selected_category %}
-btn-success
-{% else %}
-btn-outline-success
+selected
 {% endif %}
-">
+>
 
 {{ c }}
 
-</a>
+</option>
 
 {% endfor %}
 
-</div>
+</select>
+
+</form>
+
 
 
 
 <form>
-
 
 {% for q in page_obj %}
 
@@ -241,7 +273,7 @@ btn-outline-success
 
 <button
 type="button"
-class="btn btn-success-hover btn-sm"
+class="btn btn-sm btn-outline-primary mt-2"
 data-bs-toggle="collapse"
 data-bs-target="#exp{{q.id}}">
 
@@ -253,15 +285,16 @@ Show Explanation
 
 <div
 id="exp{{q.id}}"
-class="collapse explanation">
+class="explanation collapse">
 
-<strong>Explanation:</strong>
+<strong>Explanation:</strong><br>
 
 {{ q.explanation }}
 
+
 {% if q.section_ref %}
 
-<div>
+<div class="mt-1">
 
 <strong>Reference:</strong>
 
@@ -285,6 +318,8 @@ class="collapse explanation">
 
 <!-- PAGINATION -->
 
+<div class="mt-4">
+
 <nav>
 
 <ul class="pagination justify-content-center">
@@ -295,9 +330,9 @@ class="collapse explanation">
 <li class="page-item">
 
 <a class="page-link"
-href="?page={{ page_obj.previous_page_number }}">
+href="?page={{ page_obj.previous_page_number }}{% if selected_category %}&category={{selected_category}}{% endif %}">
 
-Prev
+Previous
 
 </a>
 
@@ -310,13 +345,10 @@ Prev
 {% for num in page_obj.paginator.page_range %}
 
 <li class="page-item
-{% if page_obj.number == num %}
-active
-{% endif %}
-">
+{% if page_obj.number == num %}active{% endif %}">
 
 <a class="page-link"
-href="?page={{ num }}">
+href="?page={{ num }}{% if selected_category %}&category={{selected_category}}{% endif %}">
 
 {{ num }}
 
@@ -333,7 +365,7 @@ href="?page={{ num }}">
 <li class="page-item">
 
 <a class="page-link"
-href="?page={{ page_obj.next_page_number }}">
+href="?page={{ page_obj.next_page_number }}{% if selected_category %}&category={{selected_category}}{% endif %}">
 
 Next
 
@@ -348,10 +380,20 @@ Next
 
 </nav>
 
+</div>
+
+
+
+<div class="footer-note">
+
+© TaxBuddy Umair – Tax Awareness Initiative
+
+</div>
 
 
 </div>
 </div>
+
 
 
 {% include 'partials/footer.html' %}
