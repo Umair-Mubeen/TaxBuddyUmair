@@ -704,7 +704,7 @@ def question_list(request, category_slug=None):
 
         # -------- PAGINATION --------
 
-        paginator = Paginator(questions, 5)
+        paginator = Paginator(questions, 10)
 
         page_number = request.GET.get("page")
 
