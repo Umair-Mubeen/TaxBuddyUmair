@@ -683,17 +683,17 @@ def question_list(request, category_slug=None):
         selected_category = None
 
 
-        # ---------- CATEGORY SLUG FILTER ----------
+        # -------- CATEGORY FILTER --------
 
         if category_slug:
 
             for c in Question.objects.values_list(
                 "category",
                 flat=True
-            ).distinct():
+            ):
 
-                if slugify(c) == category_slug:
-                    selected_category = c
+                if c and slugify(c.strip()) == category_slug:
+                    selected_category = c.strip()
                     break
 
             if selected_category:
@@ -702,7 +702,7 @@ def question_list(request, category_slug=None):
                 )
 
 
-        # ---------- PAGINATION ----------
+        # -------- PAGINATION --------
 
         paginator = Paginator(questions, 5)
 
@@ -711,14 +711,21 @@ def question_list(request, category_slug=None):
         page_obj = paginator.get_page(page_number)
 
 
-        # ---------- CATEGORY LIST ----------
+        # -------- UNIQUE CATEGORY --------
 
-        categories = []
+        unique_categories = set()
 
         for c in Question.objects.values_list(
             "category",
             flat=True
-        ).distinct():
+        ):
+            if c:
+                unique_categories.add(c.strip())
+
+
+        categories = []
+
+        for c in sorted(unique_categories):
 
             categories.append({
                 "name": c,
@@ -734,11 +741,13 @@ def question_list(request, category_slug=None):
             "category_slug": category_slug,
         }
 
+
         return render(
             request,
             "tax-knowledge-quizz.html",
             context,
         )
+
 
     except Exception as e:
 
