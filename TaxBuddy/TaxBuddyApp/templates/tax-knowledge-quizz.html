@@ -1,27 +1,27 @@
 <!DOCTYPE html>
 <html lang="en">
 {% load static %}
+
 <head>
 
 <title>
-Pakistan Income Tax MCQs with Answers (2026) – Income Tax Ordinance 2001
+{% if seo_category %}
+{{ seo_category }} MCQs Pakistan – Income Tax Ordinance 2001 | TaxBuddy Umair
+{% else %}
+Pakistan Income Tax MCQs with Answers (2026) – Income Tax Ordinance 2001 Quiz
+{% endif %}
 </title>
 
-<meta name="description"
-content="Pakistan Income Tax MCQs with answers, explanations and section references based on Income Tax Ordinance 2001. Updated for Tax Year 2026 for students, tax professionals, FBR, ICAP, ICMAP, CSS and PMS exams.">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<meta name="keywords"
+<meta name="description"
 content="
-income tax mcqs pakistan,
-income tax ordinance 2001 mcqs,
-pakistan tax mcqs,
-fbr mcqs,
-income tax quiz pakistan,
-tax mcqs with answers,
-income tax questions pakistan,
-taxbuddy umair mcqs
+{% if seo_category %}
+Practice {{ seo_category }} MCQs from Income Tax Ordinance 2001 with answers, explanations and references.
+{% else %}
+Pakistan Income Tax MCQs with answers, explanations and section references based on Income Tax Ordinance 2001.
+{% endif %}
 ">
-<meta content="width=device-width, initial-scale=1.0" name="viewport">
 
 <link href="{% static 'assets/img/icons/fab2.png' %}" rel="shortcut icon">
 
@@ -30,61 +30,37 @@ taxbuddy umair mcqs
 
 <style>
 
-body{
-background:#f4f7fb;
-}
 
-
-/* CARD */
+/* card */
 
 .quiz-card{
 background:#fff;
 padding:35px;
 border-radius:16px;
 box-shadow:0 20px 50px rgba(0,0,0,.08);
-transition:.3s;
 }
 
-.quiz-card:hover{
-transform:translateY(-3px);
-box-shadow:0 25px 60px rgba(0,0,0,.12);
-}
+/* header */
 
-
-/* HEADER */
-
-.quiz-header{
-text-align:center;
-margin-bottom:20px;
-}
+.quiz-header{text-align:center;margin-bottom:20px}
 
 .quiz-header h1{
 font-weight:800;
 color:#0d2c54;
 }
 
-.quiz-header p{
-color:#6b7280;
-}
-
-
-/* FILTER */
+/* category buttons */
 
 .filter-box{
-max-width:320px;
-margin:auto;
+text-align:center;
 margin-bottom:25px;
-position:sticky;
-top:80px;
-z-index:10;
-background:#fff;
-padding:10px;
-border-radius:10px;
-box-shadow:0 5px 20px rgba(0,0,0,.05);
 }
 
+.filter-box a{
+margin:4px;
+}
 
-/* CATEGORY */
+/* category title */
 
 .category-title{
 font-weight:800;
@@ -94,12 +70,9 @@ border-left:5px solid #22c55e;
 padding-left:10px;
 }
 
+/* question */
 
-/* QUESTION */
-
-.question{
-margin-bottom:40px;
-}
+.question{margin-bottom:40px}
 
 .question legend{
 font-size:18px;
@@ -107,88 +80,61 @@ font-weight:600;
 margin-bottom:15px;
 }
 
-
-/* OPTION */
+/* option */
 
 .option{
 display:flex;
-align-items:center;
-gap:12px;
-padding:14px 16px;
-margin-bottom:10px;
-border-radius:12px;
+gap:10px;
+padding:12px;
 border:2px solid #e5e7eb;
-transition:.2s;
-cursor:pointer;
-}
-
-.option:hover{
-background:#f1f5f9;
-border-color:#0d6efd;
+border-radius:10px;
+margin-bottom:8px;
 }
 
 .option.correct{
 background:#ecfdf5;
 border-color:#22c55e;
-color:#065f46;
 font-weight:600;
 }
 
 .option.correct::after{
 content:"✔ Correct";
 margin-left:auto;
-font-weight:700;
-color:#16a34a;
 }
 
-.option input{
-appearance:none;
-width:16px;
-height:16px;
-border-radius:50%;
-border:2px solid #9ca3af;
-}
-
-
-/* EXPLANATION */
+/* explanation */
 
 .explanation{
 background:#f8fafc;
 border-left:4px solid #0d6efd;
-padding:14px;
-border-radius:10px;
-font-size:14px;
-margin-top:12px;
-}
-
-
-/* PAGINATION */
-
-.pagination .page-link{
+padding:10px;
 border-radius:8px;
-margin:0 4px;
-color:#0d2c54;
+margin-top:10px;
 }
+
+/* button hover */
+
+.btn-success-hover{
+background:#198754;
+color:#fff;
+border:none;
+}
+
+.btn-success-hover:hover{
+background:#ffc107;
+color:#000;
+}
+
+/* pagination */
 
 .pagination .active .page-link{
-background:#0d6efd;
-border-color:#0d6efd;
-}
-
-
-/* FOOTER */
-
-.footer-note{
-font-size:13px;
-color:#6b7280;
-text-align:center;
-margin-top:20px;
+background:#198754;
+border-color:#198754;
 }
 
 </style>
 
 </head>
-
 
 
 <body>
@@ -197,7 +143,6 @@ margin-top:20px;
 
 <div class="space100"></div>
 
-
 <div class="container">
 
 <div class="quiz-card">
@@ -205,48 +150,58 @@ margin-top:20px;
 
 <div class="quiz-header">
 
-<h1>Pakistan Income Tax MCQs (With Answers)</h1>
+<h1>
 
-<p>
-Based on Income Tax Ordinance, 2001 – Updated for Tax Year 2026
-</p>
+{% if seo_category %}
+{{ seo_category }} MCQs – Income Tax Ordinance 2001
+{% else %}
+Pakistan Income Tax MCQs (With Answers)
+{% endif %}
+
+</h1>
 
 </div>
 
 
 
-<!-- FILTER -->
+<!-- CATEGORY BUTTONS -->
 
-<form method="get" class="filter-box">
 
-<select name="category"
-class="form-select"
-onchange="this.form.submit()">
+<div class="filter-box">
 
-<option value="">All Categories</option>
+<a href="/income-tax-mcqs-pakistan/"
+class="btn btn-outline-secondary btn-sm">
+
+All
+
+</a>
+
 
 {% for c in categories %}
 
-<option value="{{ c }}"
+<a href="/income-tax-mcqs-pakistan/{{ c|slugify }}/"
+
+class="btn btn-sm
+
 {% if c == selected_category %}
-selected
+btn-success
+{% else %}
+btn-outline-success
 {% endif %}
->
+">
 
 {{ c }}
 
-</option>
+</a>
 
 {% endfor %}
 
-</select>
-
-</form>
-
+</div>
 
 
 
 <form>
+
 
 {% for q in page_obj %}
 
@@ -286,7 +241,7 @@ selected
 
 <button
 type="button"
-class="btn btn-sm btn-outline-primary mt-2"
+class="btn btn-success-hover btn-sm"
 data-bs-toggle="collapse"
 data-bs-target="#exp{{q.id}}">
 
@@ -298,16 +253,15 @@ Show Explanation
 
 <div
 id="exp{{q.id}}"
-class="explanation collapse">
+class="collapse explanation">
 
-<strong>Explanation:</strong><br>
+<strong>Explanation:</strong>
 
 {{ q.explanation }}
 
-
 {% if q.section_ref %}
 
-<div class="mt-1">
+<div>
 
 <strong>Reference:</strong>
 
@@ -331,8 +285,6 @@ class="explanation collapse">
 
 <!-- PAGINATION -->
 
-<div class="mt-4">
-
 <nav>
 
 <ul class="pagination justify-content-center">
@@ -343,9 +295,9 @@ class="explanation collapse">
 <li class="page-item">
 
 <a class="page-link"
-href="?page={{ page_obj.previous_page_number }}{% if selected_category %}&category={{selected_category}}{% endif %}">
+href="?page={{ page_obj.previous_page_number }}">
 
-Previous
+Prev
 
 </a>
 
@@ -358,10 +310,13 @@ Previous
 {% for num in page_obj.paginator.page_range %}
 
 <li class="page-item
-{% if page_obj.number == num %}active{% endif %}">
+{% if page_obj.number == num %}
+active
+{% endif %}
+">
 
 <a class="page-link"
-href="?page={{ num }}{% if selected_category %}&category={{selected_category}}{% endif %}">
+href="?page={{ num }}">
 
 {{ num }}
 
@@ -378,7 +333,7 @@ href="?page={{ num }}{% if selected_category %}&category={{selected_category}}{%
 <li class="page-item">
 
 <a class="page-link"
-href="?page={{ page_obj.next_page_number }}{% if selected_category %}&category={{selected_category}}{% endif %}">
+href="?page={{ page_obj.next_page_number }}">
 
 Next
 
@@ -393,20 +348,10 @@ Next
 
 </nav>
 
-</div>
-
-
-
-<div class="footer-note">
-
-© TaxBuddy Umair – Tax Awareness Initiative
-
-</div>
 
 
 </div>
 </div>
-
 
 
 {% include 'partials/footer.html' %}

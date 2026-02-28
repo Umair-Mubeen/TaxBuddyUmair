@@ -15,6 +15,7 @@ from django.http import JsonResponse
 from .models import Blog, Comment, Contact, TaxBracket, Business_AOP_Slab, Property_Business_AOP_Slab, Question, \
     Option, SuperTax4CRate, Category, Tag
 from django.core.paginator import Paginator
+from django.utils.text import slugify
 
 
 def index(request):
@@ -672,51 +673,64 @@ def online_services(request):
         return HttpResponse("Exception  :" + str(e))
 
 
-def question_list(request):
+def question_list(request, category_slug=None):
 
-    try:
+    questions = Question.objects.prefetch_related(
+        "options"
+    ).order_by("id")
 
-        category = request.GET.get("category")
 
-        questions = Question.objects.prefetch_related(
-            "options"
-        ).order_by("id")
+    category = None
 
-        # filter by category
+
+    # filter by slug
+    if category_slug:
+
+        for c in Question.objects.values_list(
+            "category",
+            flat=True
+        ).distinct():
+
+            if slugify(c) == category_slug:
+                category = c
+                break
+
         if category:
-            questions = questions.filter(category=category)
+            questions = questions.filter(
+                category=category
+            )
 
-        # pagination (10 per page)
-        paginator = Paginator(questions, 10)
 
-        page_number = request.GET.get("page")
-        page_obj = paginator.get_page(page_number)
+    paginator = Paginator(questions, 5)
 
-        # category list for filter
-        categories = (
-            Question.objects
-            .order_by("category")
-            .values_list("category", flat=True)
-            .distinct()
+    page_number = request.GET.get("page")
+
+    page_obj = paginator.get_page(page_number)
+
+
+    categories = sorted(
+        set(
+            Question.objects.values_list(
+                "category",
+                flat=True
+            )
         )
+    )
 
-        context = {
-            "page_obj": page_obj,
-            "categories": categories,
-            "selected_category": category,
-        }
 
-        return render(
-            request,
-            "tax-knowledge-quizz.html",
-            context,
-        )
+    context = {
+        "page_obj": page_obj,
+        "categories": categories,
+        "selected_category": category,
+        "seo_category": category,
+    }
 
-    except Exception as e:
-        return HttpResponse(
-            "Exception at Question List: " + str(e)
-        )
 
+    return render(
+        request,
+        "tax-knowledge-quizz.html",
+        context,
+    )
 
 @login_required(login_url='Login')
 def add_question(request):
