@@ -3,15 +3,20 @@
 {% load static %}
 <head>
 
-    <title>Pakistan Income Tax MCQs (With Answers) – TaxBuddy Umair</title>
-    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>Pakistan Income Tax MCQs (With Answers) – TaxBuddy Umair</title>
 
-    <meta content="Pakistan Income Tax MCQs with correct answers, explanations and section references based on Income Tax Ordinance, 2001."
-          name="description">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
 
-    <link href="{% static 'assets/img/icons/fab2.png' %}" rel="shortcut icon">
+<meta name="description"
+content="Pakistan Income Tax MCQs with answers, explanations and section references based on Income Tax Ordinance 2001.">
 
-    <style>
+<link href="{% static 'assets/img/icons/fab2.png' %}" rel="shortcut icon">
+
+{% include 'partials/head-css.html' %}
+
+
+<style>
+
 .quiz-card{
     background:#fff;
     padding:32px;
@@ -23,7 +28,12 @@
 .quiz-header h1{font-weight:800;color:#0d2c54}
 
 .question{margin-bottom:35px}
-.question legend{font-size:17px;font-weight:600;margin-bottom:14px}
+
+.question legend{
+    font-size:17px;
+    font-weight:600;
+    margin-bottom:14px
+}
 
 .option{
     display:flex;
@@ -71,73 +81,228 @@
     margin:30px 0 15px;
 }
 
+.filter-box{
+    max-width:300px;
+    margin:auto;
+    margin-bottom:20px;
+}
 
-    </style>
-    {% include 'partials/head-css.html' %}
+</style>
 
 </head>
+
 
 <body>
 
 {% include 'partials/topbar.html' %}
 
-<!-- SAFE SPACING (NO OVERLAP, NO TOUCH BLOCK) -->
+<div class="space100"></div>
 
-            <div class="space100"></div>
 
 <div class="container">
-    <div class="quiz-card">
 
-        <div class="quiz-header">
-            <h1>Pakistan Income Tax MCQs (With Answers)</h1>
-            <p class="text-muted">
-                Based on Income Tax Ordinance, 2001 – Updated for Tax Year 2026
-            </p>
-        </div>
+<div class="quiz-card">
 
-        <form>
 
-            {% for q in questions %}
-            {% ifchanged q.category %}
-            <h4 class="category-title">{{ q.category }}</h4>
-            {% endifchanged %}
+<div class="quiz-header">
 
-            <fieldset class="question">
-                <legend>{{ forloop.counter }}. {{ q.question_text }}</legend>
+<h1>Pakistan Income Tax MCQs (With Answers)</h1>
 
-                {% for opt in q.options.all %}
-                <label class="option {% if opt.is_correct %}correct{% endif %}">
-                    <input disabled type="radio">
-                    {{ opt.option_text }}
-                </label>
-                {% endfor %}
+<p class="text-muted">
+Based on Income Tax Ordinance, 2001 – Updated for Tax Year 2026
+</p>
 
-                <div class="explanation">
-                    <strong>Explanation:</strong><br>
-                    {{ q.explanation }}
-
-                    {% if q.section_ref %}
-                    <div class="mt-1">
-                        <strong>Reference:</strong> {{ q.section_ref }}
-                    </div>
-                    {% endif %}
-                </div>
-
-            </fieldset>
-            {% endfor %}
-
-        </form>
-
-        <div class="footer-note text-center mt-4">
-            © TaxBuddy Umair – Tax Awareness Initiative
-        </div>
-
-    </div>
 </div>
+
+
+
+<!-- CATEGORY FILTER -->
+
+<form method="get" class="filter-box">
+
+<select name="category"
+class="form-select"
+onchange="this.form.submit()">
+
+<option value="">All Categories</option>
+
+{% for c in categories %}
+
+<option value="{{ c }}"
+{% if c == selected_category %}
+selected
+{% endif %}
+>
+
+{{ c }}
+
+</option>
+
+{% endfor %}
+
+</select>
+
+</form>
+
+
+
+<form>
+
+
+{% for q in page_obj %}
+
+
+{% ifchanged q.category %}
+<h4 class="category-title">
+{{ q.category }}
+</h4>
+{% endifchanged %}
+
+
+
+<fieldset class="question">
+
+<legend>
+
+{{ forloop.counter0|add:page_obj.start_index }}.
+{{ q.question_text }}
+
+</legend>
+
+
+
+{% for opt in q.options.all %}
+
+<label class="option {% if opt.is_correct %}correct{% endif %}">
+
+<input disabled type="radio">
+
+{{ opt.option_text }}
+
+</label>
+
+{% endfor %}
+
+
+
+<div class="explanation">
+
+<strong>Explanation:</strong><br>
+
+{{ q.explanation }}
+
+
+{% if q.section_ref %}
+
+<div class="mt-1">
+
+<strong>Reference:</strong>
+{{ q.section_ref }}
+
+</div>
+
+{% endif %}
+
+</div>
+
+
+</fieldset>
+
+
+{% endfor %}
+
+
+</form>
+
+
+
+<!-- PAGINATION -->
+
+
+<div class="mt-4 text-center">
+
+<nav>
+
+<ul class="pagination justify-content-center">
+
+
+{% if page_obj.has_previous %}
+
+<li class="page-item">
+
+<a class="page-link"
+
+href="?page={{ page_obj.previous_page_number }}{% if selected_category %}&category={{selected_category}}{% endif %}">
+
+Previous
+
+</a>
+
+</li>
+
+{% endif %}
+
+
+
+{% for num in page_obj.paginator.page_range %}
+
+<li class="page-item
+{% if page_obj.number == num %}active{% endif %}">
+
+<a class="page-link"
+
+href="?page={{ num }}{% if selected_category %}&category={{selected_category}}{% endif %}">
+
+{{ num }}
+
+</a>
+
+</li>
+
+{% endfor %}
+
+
+
+{% if page_obj.has_next %}
+
+<li class="page-item">
+
+<a class="page-link"
+
+href="?page={{ page_obj.next_page_number }}{% if selected_category %}&category={{selected_category}}{% endif %}">
+
+Next
+
+</a>
+
+</li>
+
+{% endif %}
+
+
+
+</ul>
+
+</nav>
+
+</div>
+
+
+
+<div class="footer-note text-center mt-4">
+
+© TaxBuddy Umair – Tax Awareness Initiative
+
+</div>
+
+
+</div>
+</div>
+
+
 
 {% include 'partials/footer.html' %}
 {% include 'partials/up.html' %}
-
 {% include 'partials/footer-scripts.html' %}
 
 </body>
