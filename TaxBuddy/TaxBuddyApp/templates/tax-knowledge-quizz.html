@@ -3,12 +3,25 @@
 {% load static %}
 <head>
 
-<title>Pakistan Income Tax MCQs (With Answers) – TaxBuddy Umair</title>
-
-<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>
+Pakistan Income Tax MCQs with Answers (2026) – Income Tax Ordinance 2001
+</title>
 
 <meta name="description"
-content="Pakistan Income Tax MCQs with answers, explanations and section references based on Income Tax Ordinance 2001.">
+content="Pakistan Income Tax MCQs with answers, explanations and section references based on Income Tax Ordinance 2001. Updated for Tax Year 2026 for students, tax professionals, FBR, ICAP, ICMAP, CSS and PMS exams.">
+
+<meta name="keywords"
+content="
+income tax mcqs pakistan,
+income tax ordinance 2001 mcqs,
+pakistan tax mcqs,
+fbr mcqs,
+income tax quiz pakistan,
+tax mcqs with answers,
+income tax questions pakistan,
+taxbuddy umair mcqs
+">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
 
 <link href="{% static 'assets/img/icons/fab2.png' %}" rel="shortcut icon">
 
@@ -17,79 +30,165 @@ content="Pakistan Income Tax MCQs with answers, explanations and section referen
 
 <style>
 
-.quiz-card{
-    background:#fff;
-    padding:32px;
-    border-radius:14px;
-    box-shadow:0 15px 40px rgba(13,44,84,.08);
+body{
+background:#f4f7fb;
 }
 
-.quiz-header{text-align:center;margin-bottom:20px}
-.quiz-header h1{font-weight:800;color:#0d2c54}
 
-.question{margin-bottom:35px}
+/* CARD */
+
+.quiz-card{
+background:#fff;
+padding:35px;
+border-radius:16px;
+box-shadow:0 20px 50px rgba(0,0,0,.08);
+transition:.3s;
+}
+
+.quiz-card:hover{
+transform:translateY(-3px);
+box-shadow:0 25px 60px rgba(0,0,0,.12);
+}
+
+
+/* HEADER */
+
+.quiz-header{
+text-align:center;
+margin-bottom:20px;
+}
+
+.quiz-header h1{
+font-weight:800;
+color:#0d2c54;
+}
+
+.quiz-header p{
+color:#6b7280;
+}
+
+
+/* FILTER */
+
+.filter-box{
+max-width:320px;
+margin:auto;
+margin-bottom:25px;
+position:sticky;
+top:80px;
+z-index:10;
+background:#fff;
+padding:10px;
+border-radius:10px;
+box-shadow:0 5px 20px rgba(0,0,0,.05);
+}
+
+
+/* CATEGORY */
+
+.category-title{
+font-weight:800;
+color:#0d2c54;
+margin:35px 0 15px;
+border-left:5px solid #22c55e;
+padding-left:10px;
+}
+
+
+/* QUESTION */
+
+.question{
+margin-bottom:40px;
+}
 
 .question legend{
-    font-size:17px;
-    font-weight:600;
-    margin-bottom:14px
+font-size:18px;
+font-weight:600;
+margin-bottom:15px;
 }
 
+
+/* OPTION */
+
 .option{
-    display:flex;
-    align-items:center;
-    gap:12px;
-    padding:14px 16px;
-    margin-bottom:10px;
-    border-radius:12px;
-    border:2px solid #e5e7eb;
+display:flex;
+align-items:center;
+gap:12px;
+padding:14px 16px;
+margin-bottom:10px;
+border-radius:12px;
+border:2px solid #e5e7eb;
+transition:.2s;
+cursor:pointer;
+}
+
+.option:hover{
+background:#f1f5f9;
+border-color:#0d6efd;
 }
 
 .option.correct{
-    background:#ecfdf5;
-    border-color:#22c55e;
-    color:#065f46;
-    font-weight:600;
+background:#ecfdf5;
+border-color:#22c55e;
+color:#065f46;
+font-weight:600;
 }
 
 .option.correct::after{
-    content:"✔ Correct";
-    margin-left:auto;
-    font-weight:700;
+content:"✔ Correct";
+margin-left:auto;
+font-weight:700;
+color:#16a34a;
 }
 
 .option input{
-    appearance:none;
-    width:16px;
-    height:16px;
-    border-radius:50%;
-    border:2px solid #9ca3af;
+appearance:none;
+width:16px;
+height:16px;
+border-radius:50%;
+border:2px solid #9ca3af;
 }
+
+
+/* EXPLANATION */
 
 .explanation{
-    background:#f8fafc;
-    border-left:4px solid #0d2c54;
-    padding:14px;
-    border-radius:8px;
-    font-size:14px;
-    margin-top:12px;
+background:#f8fafc;
+border-left:4px solid #0d6efd;
+padding:14px;
+border-radius:10px;
+font-size:14px;
+margin-top:12px;
 }
 
-.category-title{
-    color:#0d2c54;
-    font-weight:700;
-    margin:30px 0 15px;
+
+/* PAGINATION */
+
+.pagination .page-link{
+border-radius:8px;
+margin:0 4px;
+color:#0d2c54;
 }
 
-.filter-box{
-    max-width:300px;
-    margin:auto;
-    margin-bottom:20px;
+.pagination .active .page-link{
+background:#0d6efd;
+border-color:#0d6efd;
+}
+
+
+/* FOOTER */
+
+.footer-note{
+font-size:13px;
+color:#6b7280;
+text-align:center;
+margin-top:20px;
 }
 
 </style>
 
 </head>
+
 
 
 <body>
@@ -108,7 +207,7 @@ content="Pakistan Income Tax MCQs with answers, explanations and section referen
 
 <h1>Pakistan Income Tax MCQs (With Answers)</h1>
 
-<p class="text-muted">
+<p>
 Based on Income Tax Ordinance, 2001 – Updated for Tax Year 2026
 </p>
 
@@ -116,7 +215,7 @@ Based on Income Tax Ordinance, 2001 – Updated for Tax Year 2026
 
 
 
-<!-- CATEGORY FILTER -->
+<!-- FILTER -->
 
 <form method="get" class="filter-box">
 
@@ -146,8 +245,8 @@ selected
 
 
 
-<form>
 
+<form>
 
 {% for q in page_obj %}
 
@@ -185,7 +284,21 @@ selected
 
 
 
-<div class="explanation">
+<button
+type="button"
+class="btn btn-sm btn-outline-primary mt-2"
+data-bs-toggle="collapse"
+data-bs-target="#exp{{q.id}}">
+
+Show Explanation
+
+</button>
+
+
+
+<div
+id="exp{{q.id}}"
+class="explanation collapse">
 
 <strong>Explanation:</strong><br>
 
@@ -197,6 +310,7 @@ selected
 <div class="mt-1">
 
 <strong>Reference:</strong>
+
 {{ q.section_ref }}
 
 </div>
@@ -211,15 +325,13 @@ selected
 
 {% endfor %}
 
-
 </form>
 
 
 
 <!-- PAGINATION -->
 
-
-<div class="mt-4 text-center">
+<div class="mt-4">
 
 <nav>
 
@@ -231,7 +343,6 @@ selected
 <li class="page-item">
 
 <a class="page-link"
-
 href="?page={{ page_obj.previous_page_number }}{% if selected_category %}&category={{selected_category}}{% endif %}">
 
 Previous
@@ -250,7 +361,6 @@ Previous
 {% if page_obj.number == num %}active{% endif %}">
 
 <a class="page-link"
-
 href="?page={{ num }}{% if selected_category %}&category={{selected_category}}{% endif %}">
 
 {{ num }}
@@ -268,7 +378,6 @@ href="?page={{ num }}{% if selected_category %}&category={{selected_category}}{%
 <li class="page-item">
 
 <a class="page-link"
-
 href="?page={{ page_obj.next_page_number }}{% if selected_category %}&category={{selected_category}}{% endif %}">
 
 Next
@@ -280,7 +389,6 @@ Next
 {% endif %}
 
 
-
 </ul>
 
 </nav>
@@ -289,7 +397,7 @@ Next
 
 
 
-<div class="footer-note text-center mt-4">
+<div class="footer-note">
 
 © TaxBuddy Umair – Tax Awareness Initiative
 
