@@ -198,6 +198,58 @@ text-align:center;
 margin-top:20px;
 }
 
+    /* ========================= */
+/* RESPONSIVE PAGINATION */
+/* ========================= */
+
+.pagination{
+flex-wrap: wrap;
+justify-content: center;
+}
+
+.pagination .page-item{
+margin:3px;
+}
+
+.pagination .page-link{
+background:#198754;
+color:#fff;
+border:1px solid #198754;
+padding:6px 10px;
+font-size:14px;
+border-radius:6px;
+min-width:36px;
+text-align:center;
+}
+
+.pagination .page-link:hover{
+background:#ffc107;
+color:#000;
+border-color:#ffc107;
+}
+
+.pagination .active .page-link{
+background:#198754;
+border-color:#198754;
+color:#fff;
+}
+
+
+/* MOBILE FIX */
+
+@media (max-width: 576px){
+
+.pagination{
+flex-wrap: wrap;
+}
+
+.pagination .page-link{
+padding:5px 8px;
+font-size:12px;
+min-width:32px;
+}
+
+}
 </style>
 </head>
 
@@ -345,19 +397,18 @@ class="explanation collapse">
 
 <div class="mt-4">
 
-<nav>
+<nav aria-label="Page navigation">
 
-<ul class="pagination justify-content-center">
-
+<ul class="pagination justify-content-center flex-wrap">
 
 {% if page_obj.has_previous %}
 
 <li class="page-item">
 
 <a class="page-link"
-href="?page={{ page_obj.previous_page_number }}{% if selected_category %}&category={{selected_category}}{% endif %}">
+href="?page={{ page_obj.previous_page_number }}">
 
-Previous
+Prev
 
 </a>
 
@@ -370,10 +421,13 @@ Previous
 {% for num in page_obj.paginator.page_range %}
 
 <li class="page-item
-{% if page_obj.number == num %}active{% endif %}">
+{% if page_obj.number == num %}
+active
+{% endif %}
+">
 
 <a class="page-link"
-href="?page={{ num }}{% if selected_category %}&category={{selected_category}}{% endif %}">
+href="?page={{ num }}">
 
 {{ num }}
 
@@ -390,7 +444,7 @@ href="?page={{ num }}{% if selected_category %}&category={{selected_category}}{%
 <li class="page-item">
 
 <a class="page-link"
-href="?page={{ page_obj.next_page_number }}{% if selected_category %}&category={{selected_category}}{% endif %}">
+href="?page={{ page_obj.next_page_number }}">
 
 Next
 
@@ -406,7 +460,6 @@ Next
 </nav>
 
 </div>
-
 
 
 <div class="footer-note">
