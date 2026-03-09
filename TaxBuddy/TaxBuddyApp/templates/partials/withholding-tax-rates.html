@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+{% load static %}
+{% load humanize %}
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<link href="{% static 'assets/img/icons/fab2.png' %}" rel="shortcut icon">
+
+<title>Withholding Tax Rates Pakistan 2026 – Filer, Late Filer & Non-Filer WHT</title>
+
+<meta name="description"
+content="Latest withholding tax rates Pakistan 2026. Section 236C, 236K, 236Y, filer, late filer, non filer tax rates.">
+
+{% include 'partials/head-css.html' %}
+
+<style>
+
+body{
+background:#f8faf9;
+font-family: Inter, sans-serif;
+}
+
+.sp1{
+padding:80px 0;
+}
+
+.page-title{
+font-size:28px;
+font-weight:700;
+color:#198754;
+margin-bottom:20px;
+}
+
+.section-card{
+background:#fff;
+padding:25px;
+border-radius:18px;
+box-shadow:0 6px 20px rgba(0,0,0,.05);
+}
+
+.accordion-item{
+border:none;
+margin-bottom:15px;
+border-radius:14px;
+overflow:hidden;
+box-shadow:0 4px 14px rgba(0,0,0,.05);
+}
+
+.accordion-button{
+font-weight:600;
+color:#198754;
+}
+
+.accordion-button:not(.collapsed){
+background:#e9f7ef;
+}
+
+.custom-table-head{
+background:#198754;
+color:#fff;
+}
+
+.table{
+font-size:14px;
+}
+
+.table tbody tr:hover{
+background:#f1fbf6;
+}
+
+@media(max-width:768px){
+
+.page-title{
+font-size:20px;
+}
+
+.table{
+font-size:12px;
+}
+
+}
+
+</style>
+
+</head>
+<body>
+
+{% include 'partials/topbar.html' %}
+
+<div class="container sp1">
+
+<h1 class="page-title">
+Withholding Tax Rates Pakistan – Tax Year 2026
+</h1>
+
+<div class="section-card">
+
+<input type="hidden" id="activeSection" value="{{active_section}}">
+
+<div class="accordion" id="taxAccordion">
+
+
+<!-- ================= PURCHASE ================= -->
+
+<div class="accordion-item" id="purchase-section">
+
+<h2 class="accordion-header">
+
+<button class="accordion-button"
+type="button"
+data-bs-toggle="collapse"
+data-bs-target="#collapsePurchase">
+
+236K – Advance Tax on Purchase of Property
+
+</button>
+
+</h2>
+
+<div id="collapsePurchase"
+class="accordion-collapse collapse
+{% if active_section == 'purchase' or not active_section %}show{% endif %}">
+
+<div class="accordion-body">
+
+<div class="table-responsive">
+
+<table class="table table-bordered">
+
+<thead class="custom-table-head">
+
+<tr>
+<th>Section</th>
+<th>Value</th>
+<th>Filer</th>
+<th>Late</th>
+<th>Non</th>
+</tr>
+
+</thead>
+
+<tbody>
+
+<tr>
+<td>236K</td>
+<td>≤ 50M</td>
+<td>1.5%</td>
+<td>4.5%</td>
+<td>10.5%</td>
+</tr>
+
+<tr>
+<td>236K</td>
+<td>50M-100M</td>
+<td>2%</td>
+<td>5.5%</td>
+<td>14.5%</td>
+</tr>
+
+<tr>
+<td>236K</td>
+<td>100M+</td>
+<td>2.5%</td>
+<td>6.5%</td>
+<td>18.5%</td>
+</tr>
+
+</tbody>
+
+</table>
+
+</div>
+</div>
+</div>
+</div>
+
+
+
+<!-- ================= SALE ================= -->
+
+<div class="accordion-item" id="sale-section">
+
+<h2 class="accordion-header">
+
+<button class="accordion-button collapsed"
+type="button"
+data-bs-toggle="collapse"
+data-bs-target="#collapseSale">
+
+236C – Advance Tax on Sale of Property
+
+</button>
+
+</h2>
+
+<div id="collapseSale"
+class="accordion-collapse collapse
+{% if active_section == 'sale' %}show{% endif %}">
+
+<div class="accordion-body">
+
+<table class="table table-bordered">
+
+<thead class="custom-table-head">
+
+<tr>
+<th>Section</th>
+<th>Value</th>
+<th>Filer</th>
+<th>Late</th>
+<th>Non</th>
+</tr>
+
+</thead>
+
+<tbody>
+
+<tr>
+<td>236C</td>
+<td>≤ 50M</td>
+<td>4.5%</td>
+<td>7.5%</td>
+<td>11.5%</td>
+</tr>
+
+<tr>
+<td>236C</td>
+<td>50M-100M</td>
+<td>5%</td>
+<td>8.5%</td>
+<td>11.5%</td>
+</tr>
+
+<tr>
+<td>236C</td>
+<td>100M+</td>
+<td>5.5%</td>
+<td>9.5%</td>
+<td>11.5%</td>
+</tr>
+
+</tbody>
+
+</table>
+
+</div>
+</div>
+</div>
+
+
+
+<!-- ================= REMITTANCE ================= -->
+
+<div class="accordion-item">
+
+<h2 class="accordion-header">
+
+<button class="accordion-button collapsed"
+type="button"
+data-bs-toggle="collapse"
+data-bs-target="#collapseRemit">
+
+236Y – Remittance Abroad
+
+</button>
+
+</h2>
+
+<div id="collapseRemit"
+class="accordion-collapse collapse">
+
+<div class="accordion-body">
+
+<table class="table table-bordered">
+
+<thead class="custom-table-head">
+
+<tr>
+<th>Section</th>
+<th>Description</th>
+<th>Filer</th>
+<th>Non</th>
+</tr>
+
+</thead>
+
+<tbody>
+
+<tr>
+<td>236Y</td>
+<td>Credit / Debit card</td>
+<td>5%</td>
+<td>10%</td>
+</tr>
+
+</tbody>
+
+</table>
+
+</div>
+</div>
+</div>
+
+
+
+</div>
+</div>
+</div>
+
+
+{% include 'partials/footer.html' %}
+{% include 'partials/footer-scripts.html' %}
+
+
+<script>
+
+document.addEventListener("DOMContentLoaded", function () {
+
+let active = "{{active_section}}";
+
+if(active==="purchase"){
+document.getElementById("purchase-section").scrollIntoView();
+}
+
+if(active==="sale"){
+document.getElementById("sale-section").scrollIntoView();
+}
+
+});
+
+</script>
+
+
+</body>
+</html>
