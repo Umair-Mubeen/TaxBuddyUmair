@@ -49,6 +49,7 @@ urlpatterns = [
     path("sales-tax-guides", views.sales_tax_guides, name="sales-tax-guides"),
     #path('migrate-blogs/', views.migrate_old_blogs),
     path("income-tax-rates", views.income_tax_rates, name="income-tax-rates"),
+    path("withholding-tax-rates", views.withholding_tax_rates, name="withholding-tax-rates"),
 
     # 🔥 KEEP THIS ABSOLUTELY LAST
     path('<slug:slug>/', views.BlogDetails, name='BlogDetails'),

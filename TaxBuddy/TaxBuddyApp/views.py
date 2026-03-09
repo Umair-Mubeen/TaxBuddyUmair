@@ -673,7 +673,6 @@ def online_services(request):
 
 
 def question_list(request, category_slug=None):
-
     try:
 
         questions = Question.objects.prefetch_related(
@@ -682,14 +681,13 @@ def question_list(request, category_slug=None):
 
         selected_category = None
 
-
         # -------- CATEGORY FILTER --------
 
         if category_slug:
 
             for c in Question.objects.values_list(
-                "category",
-                flat=True
+                    "category",
+                    flat=True
             ):
 
                 if c and slugify(c.strip()) == category_slug:
@@ -701,7 +699,6 @@ def question_list(request, category_slug=None):
                     category=selected_category
                 )
 
-
         # -------- PAGINATION --------
 
         paginator = Paginator(questions, 10)
@@ -710,28 +707,24 @@ def question_list(request, category_slug=None):
 
         page_obj = paginator.get_page(page_number)
 
-
         # -------- UNIQUE CATEGORY --------
 
         unique_categories = set()
 
         for c in Question.objects.values_list(
-            "category",
-            flat=True
+                "category",
+                flat=True
         ):
             if c:
                 unique_categories.add(c.strip())
 
-
         categories = []
 
         for c in sorted(unique_categories):
-
             categories.append({
                 "name": c,
                 "slug": slugify(c)
             })
-
 
         context = {
             "page_obj": page_obj,
@@ -740,7 +733,6 @@ def question_list(request, category_slug=None):
             "seo_category": selected_category,
             "category_slug": category_slug,
         }
-
 
         return render(
             request,
@@ -933,17 +925,17 @@ def income_tax_rates(request):
             bracket.rate_percent = bracket.rate * 100
 
         company_tax_rates = {
-            2024-2025: {
+            2024 - 2025: {
                 "Banking Company": 44,
                 "Small Company": 20,
                 "Any Other Company": 29,
             },
-            2025-2026: {
+            2025 - 2026: {
                 "Banking Company": 43,
                 "Small Company": 20,
                 "Any Other Company": 29,
             },
-            2026-2027: {
+            2026 - 2027: {
                 "Banking Company": 42,
                 "Small Company": 20,
                 "Any Other Company": 29,
@@ -956,7 +948,7 @@ def income_tax_rates(request):
             "years": years,
             "selected_year": selected_year,
             'active_section': active_section,
-            'company_tax_rates' : company_tax_rates
+            'company_tax_rates': company_tax_rates
 
         })
 
@@ -970,6 +962,14 @@ def terms_and_conditions(request):
 
     except Exception as e:
         return HttpResponse(str("Exception : " + str(e)))
+
+
+def withholding_tax_rates(request):
+    try:
+        active_section = request.GET.get('section', 'sale')
+        return render(request, 'partials/withholding-tax-rates.html',{'active_section' : active_section})
+    except Exception as e:
+        return str(e)
 
 
 def section_4c_rate_view(request):
