@@ -972,6 +972,12 @@ def withholding_tax_rates(request):
         return str(e)
 
 
+def layout(request):
+    try:
+        return render(request, 'layout.html')
+    except Exception as e:
+        return str(e)
+
 def section_4c_rate_view(request):
     try:
         income = int(float(request.GET.get("income", 0)))
