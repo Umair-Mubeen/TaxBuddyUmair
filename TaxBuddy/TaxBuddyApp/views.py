@@ -967,16 +967,19 @@ def terms_and_conditions(request):
 def withholding_tax_rates(request):
     try:
         active_section = request.GET.get('section', 'sale')
-        return render(request, 'partials/withholding-tax-rates.html',{'active_section' : active_section})
+        return render(request, 'partials/withholding-tax-rates.html', {'active_section': active_section})
     except Exception as e:
         return str(e)
 
 
 def layout(request):
     try:
-        return render(request, 'layout.html')
+        blogs = Blog.objects.filter(status='published', is_deleted=False)
+
+        return render(request, 'layout.html',{"blogs" : blogs})
     except Exception as e:
         return str(e)
+
 
 def section_4c_rate_view(request):
     try:
