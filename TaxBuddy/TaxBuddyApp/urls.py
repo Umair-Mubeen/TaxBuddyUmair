@@ -51,6 +51,8 @@ urlpatterns = [
     path("income-tax-rates", views.income_tax_rates, name="income-tax-rates"),
     path("withholding-tax-rates", views.withholding_tax_rates, name="withholding-tax-rates"),
     path('test', views.test, name='test'),
+    path("layout", views.layout, name="layout"),
+
     # 🔥 KEEP THIS ABSOLUTELY LAST
     path('<slug:slug>/', views.BlogDetails, name='BlogDetails'),
 
