@@ -1,0 +1,465 @@
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>All Blogs - TaxBuddy Umair</title>
+
+    <!-- Google Fonts: Plus Jakarta Sans -->
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        /* --- CSS Variables for Light/Dark Theme --- */
+        :root {
+            --bg-body: #f4f6f8;
+            --bg-card: #ffffff;
+            --text-main: #1e293b;
+            --text-muted: #64748b;
+            --border-color: #e2e8f0;
+            --primary-color: #0f172a;
+            --primary-hover: #3b82f6;
+            --ad-bg: #e2e8f0;
+            --ad-text: #64748b;
+            --shadow-sm: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+            --shadow-md: 0 10px 15px -3px rgba(0, 0, 0, 0.05);
+        }
+
+        [data-theme="dark"] {
+            --bg-body: #0f172a;
+            --bg-card: #1e293b;
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --border-color: #334155;
+            --primary-color: #3b82f6;
+            --primary-hover: #60a5fa;
+            --ad-bg: #334155;
+            --ad-text: #94a3b8;
+            --shadow-sm: 0 4px 6px -1px rgba(0, 0, 0, 0.2);
+        }
+
+        body {
+            background-color: var(--bg-body);
+            color: var(--text-main);
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            transition: all 0.3s ease;
+        }
+
+        .main-container {
+            background-color: var(--bg-card);
+            border-radius: 20px;
+            box-shadow: var(--shadow-sm);
+            margin: 2rem auto;
+            max-width: 1200px;
+        }
+
+        /* --- Header & Search --- */
+        .site-header {
+            border-bottom: 1px solid var(--border-color);
+            padding: 1.5rem 2rem;
+        }
+        .brand-logo {
+            font-weight: 800;
+            font-size: 1.5rem;
+            color: var(--text-main);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .brand-icon {
+            background: var(--text-main);
+            color: var(--bg-card);
+            padding: 5px 8px;
+            border-radius: 6px;
+        }
+        .nav-links a {
+            color: var(--text-main);
+            font-weight: 600;
+            margin-left: 1.5rem;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        .nav-links a.active, .nav-links a:hover { color: var(--primary-hover); }
+
+        .search-wrapper {
+            padding: 1.5rem 2rem;
+            border-bottom: 1px solid var(--border-color);
+        }
+        .search-input {
+            background: var(--bg-body);
+            border: 1px solid var(--border-color);
+            color: var(--text-main);
+            border-radius: 8px 0 0 8px;
+            padding: 12px 20px;
+        }
+        .search-btn {
+            background: var(--text-main);
+            color: var(--bg-card);
+            border: none;
+            border-radius: 0 8px 8px 0;
+            padding: 0 25px;
+        }
+
+        .theme-toggle {
+            background: transparent;
+            border: 1px solid var(--border-color);
+            color: var(--text-main);
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+        }
+
+        /* --- Page Title & Category Headers --- */
+        .page-header {
+            background: var(--bg-body);
+            padding: 2rem;
+            border-radius: 12px;
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+        .page-title {
+            font-weight: 800;
+            margin: 0;
+            color: var(--text-main);
+        }
+        .category-title {
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: var(--text-main);
+            border-left: 5px solid var(--primary-hover);
+            padding-left: 15px;
+            margin-bottom: 1.5rem;
+        }
+
+        /* --- Article Cards --- */
+        .article-card { background: transparent; border: none; }
+        .article-img {
+            background-color: var(--ad-bg);
+            height: 180px;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+            transition: transform 0.3s ease;
+        }
+        .article-card:hover .article-img { transform: scale(1.03); }
+        .article-title { font-weight: 700; font-size: 1.15rem; color: var(--text-main); margin-bottom: 0.5rem; }
+        .article-desc { color: var(--text-muted); font-size: 0.9rem; margin-bottom: 1rem; }
+
+        .btn-custom {
+            background-color: var(--text-main);
+            color: var(--bg-card);
+            font-weight: 600;
+            border-radius: 6px;
+            padding: 8px 20px;
+            border: none;
+            transition: all 0.3s ease;
+        }
+        .btn-custom:hover { background-color: var(--primary-hover); color: white; transform: translateY(-2px); }
+
+        /* --- Ads --- */
+        .ad-space {
+            background-color: var(--ad-bg);
+            color: var(--ad-text);
+            font-weight: 700;
+            letter-spacing: 2px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 8px;
+            width: 100%;
+            margin-bottom: 2rem;
+            text-align: center;
+            font-size: 0.85rem;
+        }
+        .ad-h-medium { height: 120px; }
+
+        /* --- Sidebar Elements --- */
+        .sticky-sidebar { position: sticky; top: 2rem; }
+        .section-title { font-size: 1rem; font-weight: 800; text-transform: uppercase; margin-bottom: 1.5rem; }
+        .popular-posts { list-style: none; padding: 0; margin: 0 0 2rem 0; }
+        .popular-posts li { border-bottom: 1px solid var(--border-color); }
+        .popular-posts a {
+            display: flex; align-items: center; padding: 15px 0;
+            color: var(--text-main); text-decoration: none; font-weight: 600;
+        }
+        .popular-posts a i { color: var(--text-muted); margin-right: 12px; font-size: 0.8rem; }
+        .popular-posts a:hover { color: var(--primary-hover); }
+
+        .cat-box {
+            background-color: var(--bg-body); border: 1px solid var(--border-color);
+            border-radius: 6px; padding: 12px; text-align: center; font-weight: 600;
+            color: var(--text-main); text-decoration: none; display: block;
+        }
+        .cat-box:hover { background-color: var(--primary-hover); color: white; border-color: var(--primary-hover); }
+
+        /* --- Pagination --- */
+        .pagination .page-link {
+            background-color: var(--bg-body);
+            border-color: var(--border-color);
+            color: var(--text-main);
+            font-weight: 600;
+        }
+        .pagination .page-link:hover, .pagination .active .page-link {
+            background-color: var(--primary-hover);
+            color: white;
+            border-color: var(--primary-hover);
+        }
+
+        /* --- Footer --- */
+        .site-footer {
+            background-color: var(--bg-body);
+            border-top: 1px solid var(--border-color);
+            padding: 2rem;
+            text-align: center;
+            border-radius: 0 0 20px 20px;
+        }
+        .footer-links a { color: var(--text-main); text-decoration: none; font-weight: 500; font-size: 0.95rem; margin: 0 15px; }
+        .footer-links a:hover { color: var(--primary-hover); }
+        .footer-links span { color: var(--border-color); }
+    </style>
+</head>
+<body>
+
+<div class="container px-0 main-container">
+
+    <!-- Header [1] -->
+    <header class="site-header d-flex justify-content-between align-items-center">
+        <a href="index.html" class="brand-logo">
+            <span class="brand-icon"><i class="fa-solid fa-chart-line"></i></span>
+            TaxBuddy Umair
+        </a>
+        <div class="d-flex align-items-center">
+            <nav class="nav-links d-none d-lg-block me-4">
+                <a href="index.html">Home</a>
+                <a href="blogs.html" class="active">Blog</a>
+                <a href="#">Tools</a>
+                <a href="#">About</a>
+            </nav>
+            <button class="theme-toggle" id="themeBtn" aria-label="Toggle Dark Mode">
+                <i class="fa-solid fa-moon"></i>
+            </button>
+        </div>
+    </header>
+
+    <!-- Search Bar [1] -->
+    <div class="search-wrapper">
+        <div class="input-group">
+            <input type="text" class="form-control search-input shadow-none" placeholder="Search blogs...">
+            <button class="btn search-btn" type="button"><i class="fa-solid fa-magnifying-glass"></i></button>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="p-4 p-md-5">
+
+        <!-- Page Title -->
+        <div class="page-header">
+            <h1 class="page-title">Tax Guides & Articles</h1>
+            <p class="text-muted mt-2 mb-0">Explore comprehensive guides on Income Tax and Sales Tax in Pakistan.</p>
+        </div>
+
+        <div class="row g-5">
+
+            <!-- LEFT COLUMN (Main Content) [1] -->
+            <div class="col-lg-8">
+
+                <!-- Income Tax Section -->
+                <div class="mb-5">
+                    <h2 class="category-title">Income Tax Blogs</h2>
+                    <div class="row g-4">
+                        <!-- Card 1 -->
+                        <div class="col-md-6">
+                            <div class="article-card">
+                                <div class="article-img"></div>
+                                <h3 class="article-title">How to File Your Income Tax Return?</h3>
+                                <p class="article-desc">A complete step-by-step guide for salaried individuals.</p>
+                                <button class="btn-custom btn-sm">Read More</button>
+                            </div>
+                        </div>
+                        <!-- Card 2 -->
+                        <div class="col-md-6">
+                            <div class="article-card">
+                                <div class="article-img"></div>
+                                <h3 class="article-title">Filer vs Non-Filer: Income Tax Benefits</h3>
+                                <p class="article-desc">Understand why becoming a filer is crucial for saving money.</p>
+                                <button class="btn-custom btn-sm">Read More</button>
+                            </div>
+                        </div>
+                        <!-- Card 3 -->
+                        <div class="col-md-6">
+                            <div class="article-card">
+                                <div class="article-img"></div>
+                                <h3 class="article-title">Latest Income Tax Slabs 2023-2024</h3>
+                                <p class="article-desc">Check the updated tax rates applied to your monthly salary.</p>
+                                <button class="btn-custom btn-sm">Read More</button>
+                            </div>
+                        </div>
+                        <!-- Card 4 -->
+                        <div class="col-md-6">
+                            <div class="article-card">
+                                <div class="article-img"></div>
+                                <h3 class="article-title">How to Check Active Taxpayer List (ATL)?</h3>
+                                <p class="article-desc">Verify your filer status on the FBR portal instantly.</p>
+                                <button class="btn-custom btn-sm">Read More</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Ad Space [1] -->
+                <div class="ad-space ad-h-medium">AD SPACE</div>
+
+                <!-- Sales Tax Section -->
+                <div class="mb-5 mt-5">
+                    <h2 class="category-title">Sales Tax Blogs</h2>
+                    <div class="row g-4">
+                        <!-- Card 1 -->
+                        <div class="col-md-6">
+                            <div class="article-card">
+                                <div class="article-img"></div>
+                                <h3 class="article-title">Understanding General Sales Tax (GST)</h3>
+                                <p class="article-desc">What is GST and how does it affect businesses in Pakistan?</p>
+                                <button class="btn-custom btn-sm">Read More</button>
+                            </div>
+                        </div>
+                        <!-- Card 2 -->
+                        <div class="col-md-6">
+                            <div class="article-card">
+                                <div class="article-img"></div>
+                                <h3 class="article-title">How to Register for Sales Tax (STRN)?</h3>
+                                <p class="article-desc">A complete guide for businesses to get their Sales Tax number.</p>
+                                <button class="btn-custom btn-sm">Read More</button>
+                            </div>
+                        </div>
+                        <!-- Card 3 -->
+                        <div class="col-md-6">
+                            <div class="article-card">
+                                <div class="article-img"></div>
+                                <h3 class="article-title">FBR POS Integration Rules</h3>
+                                <p class="article-desc">Rules for integrating Point of Sale systems with FBR.</p>
+                                <button class="btn-custom btn-sm">Read More</button>
+                            </div>
+                        </div>
+                        <!-- Card 4 -->
+                        <div class="col-md-6">
+                            <div class="article-card">
+                                <div class="article-img"></div>
+                                <h3 class="article-title">Monthly Sales Tax Return Filing</h3>
+                                <p class="article-desc">Deadlines and procedures for filing your monthly Annexures.</p>
+                                <button class="btn-custom btn-sm">Read More</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Pagination -->
+                <nav aria-label="Page navigation" class="mt-5">
+                    <ul class="pagination justify-content-center">
+                        <li class="page-item disabled"><a class="page-link" href="#" tabindex="-1">Previous</a></li>
+                        <li class="page-item active"><a class="page-link" href="#">1</a></li>
+                        <li class="page-item"><a class="page-link" href="#">2</a></li>
+                        <li class="page-item"><a class="page-link" href="#">3</a></li>
+                        <li class="page-item"><a class="page-link" href="#">Next</a></li>
+                    </ul>
+                </nav>
+
+            </div>
+
+            <!-- RIGHT COLUMN (Sidebar) [1] -->
+            <div class="col-lg-4">
+                <div class="sticky-sidebar">
+
+                    <!-- Sidebar Ad Top [1] -->
+                    <div class="ad-space ad-h-medium">AD SPACE</div>
+
+                    <!-- Popular Posts [1] -->
+                    <div>
+                        <h4 class="section-title">POPULAR POSTS</h4>
+                        <ul class="popular-posts">
+                            <li><a href="#"><i class="fa-solid fa-play"></i> Filer vs Non-Filer</a></li>
+                            <li><a href="#"><i class="fa-solid fa-play"></i> Tax Rate Updates</a></li>
+                            <li><a href="#"><i class="fa-solid fa-play"></i> NTN Registration Guide</a></li>
+                        </ul>
+                    </div>
+
+                    <!-- Tax Calculator CTA [1] -->
+                    <button class="btn-custom w-100 py-3 mb-4 fs-6">TAX CALCULATOR</button>
+
+                    <!-- Sidebar Ad Middle [1] -->
+                    <div class="ad-space ad-h-medium">AD SPACE</div>
+
+                    <!-- Browse Categories [1] -->
+                    <div class="mb-4">
+                        <h4 class="section-title">BROWSE CATEGORIES</h4>
+                        <div class="row g-2">
+                            <div class="col-6"><a href="#" class="cat-box">Income Tax</a></div>
+                            <div class="col-6"><a href="#" class="cat-box">Sales Tax</a></div>
+                            <div class="col-6"><a href="#" class="cat-box">NTN Info</a></div>
+                            <div class="col-6"><a href="#" class="cat-box">Filing Guides</a></div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- Footer [1] -->
+    <footer class="site-footer">
+        <div class="footer-links">
+            <a href="#">About Us</a> <span>|</span>
+            <a href="#">Contact Us</a> <span>|</span>
+            <a href="#">Privacy Policy</a> <span>|</span>
+            <a href="#">Disclaimer</a>
+        </div>
+    </footer>
+
+</div>
+
+<!-- Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+<!-- Dark Mode Logic -->
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+    const themeBtn = document.getElementById('themeBtn');
+    const body = document.documentElement;
+    const icon = themeBtn.querySelector('i');
+
+    const savedTheme = localStorage.getItem('theme');
+    if (savedTheme === 'dark') {
+        body.setAttribute('data-theme', 'dark');
+        icon.classList.replace('fa-moon', 'fa-sun');
+    }
+
+    themeBtn.addEventListener('click', () => {
+        if (body.getAttribute('data-theme') === 'dark') {
+            body.removeAttribute('data-theme');
+            icon.classList.replace('fa-sun', 'fa-moon');
+            localStorage.setItem('theme', 'light');
+        } else {
+            body.setAttribute('data-theme', 'dark');
+            icon.classList.replace('fa-moon', 'fa-sun');
+            localStorage.setItem('theme', 'dark');
+        }
+    });
+});
+</script>
+
+</body>
+</html>
+
+
