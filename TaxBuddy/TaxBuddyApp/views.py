@@ -196,7 +196,7 @@ def viewBlogs(request, slug=None):
         if not blogs.exists():
             raise Http404("Category not found")
 
-        return render(request, "partials/viewBlogs.html", {"blogs": blogs})
+        return render(request, "clone.html", {"blogs": blogs})
 
     except Exception as e:
         print('Exception at View Blogs Page :', str(e))
