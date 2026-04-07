@@ -1060,3 +1060,7 @@ def section_4c_rate_view(request):
 #             count += 1
 #
 #     return HttpResponse(f"✅ Migration Completed. {count} blogs migrated.")
+
+
+def test(request):
+    return render(request,'test.html')
