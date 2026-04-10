@@ -14,6 +14,32 @@
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="TaxBuddy Umair | Pakistan Tax Expert">
 <meta name="twitter:description" content="Free tax guides, calculators & expert FBR consultation. Updated for Tax Year 2026.">
+
+<!-- Open Graph image (shown when sharing on Facebook, WhatsApp, LinkedIn) -->
+<meta property="og:image" content="https://www.taxbuddyumair.com/static/assets/img/image/About.webp">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="TaxBuddy Umair — Pakistan Tax Expert & FBR Consultant">
+<meta property="og:locale" content="en_PK">
+<meta property="og:site_name" content="TaxBuddy Umair">
+<meta name="twitter:image" content="https://www.taxbuddyumair.com/static/assets/img/image/About.webp">
+
+<!-- Mobile browser chrome colour -->
+<meta name="theme-color" content="#0a2238">
+<meta name="msapplication-TileColor" content="#0a2238">
+
+<!-- Favicon (add your actual favicon path) -->
+<link rel="icon" type="image/x-icon" href="/favicon.ico">
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+
+<!-- Google Analytics 4 — replace G-XXXXXXXXXX with your Measurement ID -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-XXXXXXXXXX', { anonymize_ip: true });
+</script>
 <link rel="canonical" href="https://www.taxbuddyumair.com/">
 <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
 <meta name="language" content="English">
@@ -66,7 +92,14 @@
 </script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,700;1,700&display=swap" rel="stylesheet">
+<!-- Non-render-blocking font load — improves LCP score -->
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,700;1,700&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,700;1,700&display=swap" media="print" onload="this.media='all'">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,700;1,700&display=swap"></noscript>
+<!-- DNS prefetch for external resources -->
+<link rel="dns-prefetch" href="//pagead2.googlesyndication.com">
+<link rel="dns-prefetch" href="//www.google-analytics.com">
+<link rel="dns-prefetch" href="//wa.me">
 <style>
   :root {
     --navy: #0a2238;
@@ -904,16 +937,94 @@
   }
   .policy-disclaimer p strong { font-weight: 600; }
 
+  /* ── CORE WEB VITALS PERFORMANCE ── */
+
+  /* Reduce layout shift — reserve space for ad zones */
+  .ad-zone-leaderboard { min-height: 100px; contain: layout; }
+  .ad-zone-rectangle   { min-height: 260px; contain: layout; }
+
+  /* content-visibility for below-fold sections = faster initial paint */
+  #about, #blog, #mcq, #cta { content-visibility: auto; contain-intrinsic-size: 0 500px; }
+
+  /* Smooth progress bar paint */
+  .topbar-progress-fill { will-change: width; }
+
+  /* Prevent font flash on load */
+  html { font-display: swap; }
+
+  /* Image elements — prevent layout shift */
+  img, svg { display: block; }
+
+  /* Tap target minimum size (mobile accessibility) */
+  .nav-links a, .btn, .service-link, .tool-action,
+  .slab-tab, .calc-toggle, .calc-submit, .mcq-opt {
+    min-height: 44px; min-width: 44px;
+  }
+  .nav-links a, .slab-tab, .calc-toggle { display: inline-flex; align-items: center; }
+
+  /* Skip navigation link (screen reader + keyboard users) */
+  .skip-link {
+    position: absolute; top: -100px; left: 1rem; z-index: 9999;
+    background: var(--green); color: var(--navy);
+    font-family: 'Inter', sans-serif; font-size: 13px; font-weight: 700;
+    padding: 10px 20px; border-radius: var(--r-sm);
+    transition: top 0.2s; text-decoration: none;
+  }
+  .skip-link:focus { top: 1rem; }
+
+  /* Focus-visible outline — keyboard navigation */
+  :focus-visible {
+    outline: 2px solid var(--green);
+    outline-offset: 3px;
+    border-radius: 4px;
+  }
+  a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible {
+    outline: 2px solid var(--green);
+    outline-offset: 3px;
+  }
+
+  /* Prefers-reduced-motion — accessibility for vestibular disorders */
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+    .fade-in { opacity: 1 !important; transform: none !important; }
+  }
+
+  /* Print styles — Google values printable content */
+  @media print {
+    #navbar, #scroll-top, .nav-wa, .hero-btns, .cta-box,
+    .ad-zone, .ad-below-stats, .ad-between-sections, .ad-above-footer,
+    .share-btn, #mobile-menu { display: none !important; }
+    body { background: #fff; color: #000; font-size: 12pt; }
+    .container { max-width: 100%; padding: 0; }
+    h1, h2, h3 { page-break-after: avoid; }
+    .slab-table-wrap, .compare-table-wrap { overflow: visible; }
+    a[href]::after { content: " (" attr(href) ")"; font-size: 10pt; color: #555; }
+    a[href^="tel"]::after, a[href^="https://wa.me"]::after { content: ""; }
+  }
+
+  /* High contrast mode support */
+  @media (forced-colors: active) {
+    .btn-primary, .nav-wa, .calc-submit { forced-color-adjust: none; }
+  }
+
 </style>
 </head>
 <body>
 
+<!-- Skip to main content — accessibility (screen readers, keyboard nav) -->
+<a href="#main-content" class="skip-link">Skip to main content</a>
+
 <!-- NAVBAR -->
-<nav id="navbar">
+<nav id="navbar" aria-label="Main navigation" role="navigation">
   <div class="container">
     <div class="nav-inner">
       <a href="#" class="nav-logo">Tax<em>Buddy</em> Umair</a>
-      <ul class="nav-links">
+      <ul class="nav-links" role="list" aria-label="Site links">
         <li><a href="#services">Services</a></li>
         <li><a href="#tools">Calculators</a></li>
         <li><a href="#about">About</a></li>
@@ -921,7 +1032,7 @@
         <li><a href="#mcq">Tax MCQs</a></li>
       </ul>
       <div class="nav-right">
-        <a href="https://wa.me/923332482742" class="nav-wa" target="_blank">
+        <a href="https://wa.me/923332482742" class="nav-wa" target="_blank" rel="noopener noreferrer" aria-label="Book a tax consultation on WhatsApp">
           <svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
           Book Consultation
         </a>
@@ -958,7 +1069,7 @@
           Confused by FBR notices, IRIS portal, NTN registration or sales tax returns? Get clear, practical guidance — straight from someone who works inside FBR.
         </p>
         <div class="hero-btns">
-          <a href="https://wa.me/923332482742" class="btn btn-primary" target="_blank">
+          <a href="https://wa.me/923332482742" class="btn btn-primary" target="_blank" rel="noopener noreferrer">
             Book a Consultation <span class="arrow">→</span>
           </a>
           <a href="#tools" class="btn btn-outline">Free Tax Calculators</a>
@@ -1042,6 +1153,7 @@
 </div>
 
 <!-- AD ZONE 1: Below stats bar — Leaderboard 728×90 (AdSense policy: min 150px from nav ✓) -->
+<main id="main-content" aria-label="Main content">
 <div class="ad-below-stats" style="padding-top:28px;padding-bottom:0;">
   <div class="ad-zone">
     <div class="ad-zone-label">Advertisement</div>
@@ -1077,7 +1189,7 @@
         <div class="service-desc">Income tax or sales tax return filed correctly on IRIS. Step-by-step guidance for business owners and individuals.</div>
         <div class="service-footer">
           <div class="service-price">PKR 1,500 – 3,000</div>
-          <a href="https://wa.me/923332482742" class="service-link" target="_blank">WhatsApp to book <span class="arrow">→</span></a>
+          <a href="https://wa.me/923332482742" class="service-link" target="_blank" rel="noopener noreferrer">WhatsApp to book <span class="arrow">→</span></a>
         </div>
       </div>
       <div class="service-card">
@@ -1088,7 +1200,7 @@
         <div class="service-desc">Received an FBR notice? Get expert help understanding it and drafting the correct response before the deadline.</div>
         <div class="service-footer">
           <div class="service-price">PKR 2,000 – 5,000</div>
-          <a href="https://wa.me/923332482742" class="service-link" target="_blank">WhatsApp <span class="arrow">→</span></a>
+          <a href="https://wa.me/923332482742" class="service-link" target="_blank" rel="noopener noreferrer">WhatsApp <span class="arrow">→</span></a>
         </div>
       </div>
       <div class="service-card">
@@ -1099,7 +1211,7 @@
         <div class="service-desc">Full assistance with National Tax Number registration on the IRIS portal. Required documents, form filling, and submission.</div>
         <div class="service-footer">
           <div class="service-price">PKR 1,000 – 2,000</div>
-          <a href="https://wa.me/923332482742" class="service-link" target="_blank">WhatsApp <span class="arrow">→</span></a>
+          <a href="https://wa.me/923332482742" class="service-link" target="_blank" rel="noopener noreferrer">WhatsApp <span class="arrow">→</span></a>
         </div>
       </div>
       <div class="service-card">
@@ -1110,7 +1222,7 @@
         <div class="service-desc">Quick WhatsApp or Google Meet session for any specific tax question — filer status, withholding tax, property transactions.</div>
         <div class="service-footer">
           <div class="service-price">PKR 1,000 – 1,500</div>
-          <a href="https://wa.me/923332482742" class="service-link" target="_blank">WhatsApp <span class="arrow">→</span></a>
+          <a href="https://wa.me/923332482742" class="service-link" target="_blank" rel="noopener noreferrer">WhatsApp <span class="arrow">→</span></a>
         </div>
       </div>
     </div>
@@ -1346,19 +1458,19 @@
           <div class="about-badge">Karachi, Pakistan</div>
         </div>
         <div class="about-social">
-          <a href="https://www.facebook.com/TaxBuddyUmair" class="social-pill" target="_blank">
+          <a href="https://www.facebook.com/TaxBuddyUmair" class="social-pill" target="_blank" rel="noopener noreferrer">
             <svg viewBox="0 0 24 24" fill="currentColor"><path d="M18 2h-3a5 5 0 00-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 011-1h3z"/></svg>
             Facebook
           </a>
-          <a href="https://www.instagram.com/taxbuddy_umair/" class="social-pill" target="_blank">
+          <a href="https://www.instagram.com/taxbuddy_umair/" class="social-pill" target="_blank" rel="noopener noreferrer">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="0.5" fill="currentColor"/></svg>
             Instagram
           </a>
-          <a href="https://www.youtube.com/@TaxBuddyUmair" class="social-pill" target="_blank">
+          <a href="https://www.youtube.com/@TaxBuddyUmair" class="social-pill" target="_blank" rel="noopener noreferrer">
             <svg viewBox="0 0 24 24" fill="currentColor"><path d="M22.54 6.42a2.78 2.78 0 00-1.95-1.96C18.88 4 12 4 12 4s-6.88 0-8.59.46a2.78 2.78 0 00-1.95 1.96A29 29 0 001 12a29 29 0 00.46 5.58A2.78 2.78 0 003.41 19.6C5.12 20 12 20 12 20s6.88 0 8.59-.46a2.78 2.78 0 001.95-1.95A29 29 0 0023 12a29 29 0 00-.46-5.58zM9.75 15.02V8.98L15.5 12l-5.75 3.02z"/></svg>
             YouTube
           </a>
-          <a href="https://www.taxbuddyumair.com" class="social-pill" target="_blank">
+          <a href="https://www.taxbuddyumair.com" class="social-pill" target="_blank" rel="noopener noreferrer">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 010 20M12 2a15.3 15.3 0 000 20"/></svg>
             Website
           </a>
@@ -1392,11 +1504,11 @@
           </div>
         </div>
         <div class="about-social">
-          <a href="/cdn-cgi/l/email-protection#3f4a525e564d11524a5d5a5a51564d7f58525e5653115c5052" class="social-pill">
+          <a href="mailto:umair.mubeenir@gmail.com" class="social-pill" aria-label="Email umair.mubeenir@gmail.com">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
-            <span class="__cf_email__" data-cfemail="1c69717d756e3271697e797972756e5c7b717d7570327f7371">[email&#160;protected]</span>
+            umair.mubeenir@gmail.com
           </a>
-          <a href="https://wa.me/923332482742" class="social-pill" target="_blank">
+          <a href="https://wa.me/923332482742" class="social-pill" target="_blank" rel="noopener noreferrer">
             <svg viewBox="0 0 24 24" fill="currentColor" style="width:12px;height:12px"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
             +92 333 2482742
           </a>
@@ -1525,7 +1637,7 @@
           <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
           WhatsApp Now
         </a>
-        <a href="/cdn-cgi/l/email-protection#1c69717d756e3271697e797972756e5c7b717d7570327f7371" class="btn btn-outline" style="white-space:nowrap">Send Email</a>
+        <a href="mailto:umair.mubeenir@gmail.com" class="btn btn-outline" style="white-space:nowrap" aria-label="Send an email to TaxBuddy Umair">Send Email</a>
       </div>
     </div>
   </div>
@@ -1548,11 +1660,13 @@
 <!-- POLICY DISCLAIMER (Required for YMYL financial content per AdSense policy) -->
 <div class="policy-disclaimer" style="margin-bottom:32px;">
   <div class="policy-disclaimer-icon">⚠️</div>
-  <p><strong>Disclaimer:</strong> The content on this website is for <strong>educational and informational purposes only</strong> and does not constitute legal, financial, or professional tax advice. Tax laws change frequently — always verify information on the official <a href="https://www.fbr.gov.pk" target="_blank" rel="noopener" style="color:#92400e;text-decoration:underline;">FBR website</a> or consult a qualified tax professional for your specific situation.</p>
+  <p><strong>Disclaimer:</strong> The content on this website is for <strong>educational and informational purposes only</strong> and does not constitute legal, financial, or professional tax advice. Tax laws change frequently — always verify information on the official <a href="https://www.fbr.gov.pk" target="_blank" rel="noopener noreferrer" style="color:#92400e;text-decoration:underline;">FBR website</a> or consult a qualified tax professional for your specific situation.</p>
 </div>
 
+</main>
+
 <!-- FOOTER -->
-<footer>
+<footer role="contentinfo">
   <div class="container">
     <div class="footer-grid">
       <div class="footer-brand">
@@ -1560,7 +1674,7 @@
         <div class="footer-tagline">Educational platform simplifying Pakistan's tax laws for individuals, freelancers, and business owners.</div>
         <div class="footer-contact">
           <a href="tel:+923332482742">+92 333 2482742</a>
-          <a href="/cdn-cgi/l/email-protection#552038343c277b38203730303b3c27153238343c397b363a38"><span class="__cf_email__" data-cfemail="e89d8589819ac6859d8a8d8d86819aa88f85898184c68b8785">[email&#160;protected]</span></a>
+          <a href="mailto:umair.mubeenir@gmail.com">umair.mubeenir@gmail.com</a>
           <a href="#">Gulshan-e-Iqbal, Karachi</a>
         </div>
       </div>
@@ -1581,10 +1695,10 @@
       </div>
       <div class="footer-col">
         <h4>Connect</h4>
-        <a href="https://www.facebook.com/TaxBuddyUmair" target="_blank">Facebook (10K+)</a>
-        <a href="https://www.instagram.com/taxbuddy_umair/" target="_blank">Instagram</a>
-        <a href="https://www.youtube.com/@TaxBuddyUmair" target="_blank">YouTube</a>
-        <a href="https://wa.me/923332482742" target="_blank">WhatsApp</a>
+        <a href="https://www.facebook.com/TaxBuddyUmair" target="_blank" rel="noopener noreferrer">Facebook (10K+)</a>
+        <a href="https://www.instagram.com/taxbuddy_umair/" target="_blank" rel="noopener noreferrer">Instagram</a>
+        <a href="https://www.youtube.com/@TaxBuddyUmair" target="_blank" rel="noopener noreferrer">YouTube</a>
+        <a href="https://wa.me/923332482742" target="_blank" rel="noopener noreferrer">WhatsApp</a>
       </div>
     </div>
     <div class="footer-bottom">
@@ -1604,12 +1718,22 @@
   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="18 15 12 9 6 15"/></svg>
 </button>
 
-<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
-  /* ── NAVBAR SCROLL ── */
+<script>
+  /* ── REDUCED MOTION CHECK ── */
+  const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  /* ── NAVBAR SCROLL (rAF throttled) ── */
   const navbar = document.getElementById('navbar');
+  let ticking = false;
   window.addEventListener('scroll', () => {
-    navbar.classList.toggle('scrolled', window.scrollY > 40);
-    document.getElementById('scroll-top').classList.toggle('show', window.scrollY > 400);
+    if(!ticking) {
+      requestAnimationFrame(() => {
+        navbar.classList.toggle('scrolled', window.scrollY > 40);
+        document.getElementById('scroll-top').classList.toggle('show', window.scrollY > 400);
+        ticking = false;
+      });
+      ticking = true;
+    }
   }, { passive: true });
 
   /* ── HAMBURGER ── */
@@ -1622,10 +1746,15 @@
   });
 
   /* ── FADE IN ON SCROLL ── */
-  const observer = new IntersectionObserver((entries) => {
-    entries.forEach(e => { if(e.isIntersecting) { e.target.classList.add('visible'); observer.unobserve(e.target); } });
-  }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
-  document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+  /* ── FADE IN ON SCROLL ── */
+  if(prefersReducedMotion) {
+    document.querySelectorAll('.fade-in').forEach(el => el.classList.add('visible'));
+  } else {
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(e => { if(e.isIntersecting) { e.target.classList.add('visible'); observer.unobserve(e.target); } });
+    }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+    document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+  }
 
   /* ── MCQ ── */
   const mcqs = [
