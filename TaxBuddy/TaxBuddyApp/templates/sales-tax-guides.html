@@ -1,505 +1,740 @@
 <!DOCTYPE html>
 <html lang="en">
-{% load static %}
-
 <head>
-    <meta charset="UTF-8">
-    <meta content="width=device-width, initial-scale=1.0" name="viewport">
-    <title>Sales Tax Guides | TaxBuddy Umair</title>
-
-    <script src="https://www.google.com/recaptcha/api.js?render=6LesUD4sAAAAAGihejIqA70J-9gVxHzPmYaHXR-b"></script>
-
-
-    <!-- Google tag (gtag.js) -->
-    <link href="{% static 'assets/img/icons/fab2.png' %}" rel="shortcut icon" type="image/x-icon">
-    <!--=====Website Google Verification=======-->
-    <meta content="YRiHeT1-EtI8-FYtI3Oa0L9nx4ufgdHfxyqF2DVUpnw" name="google-site-verification"/>
-    <!--=====Website Google Verification Ends Here =======-->
-
-    <meta content="https://www.taxbuddyumair.com/" property="og:url">
-    <meta content="https://taxbuddyumair.com/static/assets/img/icons/fab2.png" property="og:image"/>
-
-    {% include 'partials/head-css.html' %}
-
-    <style>
-  /* =========================================================
-   TAXBUDDY UMAIR – GUIDES UI (STABLE & RESPONSIVE)
-========================================================= */
-
-/* =========================
-   ROOT VARIABLES
-========================= */
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sales Tax Guides Pakistan — Complete STA 1990 Resource | TaxBuddy Umair</title>
+<meta name="description" content="Complete sales tax guides for Pakistan — registration, Tier-1 retailers, input tax adjustment, return filing, zero-rated goods, and more. Based on Sales Tax Act 1990. Updated 2026.">
+<meta name="author" content="Umair Mubeen">
+<meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large">
+<link rel="canonical" href="https://www.taxbuddyumair.com/sales-tax-guides/">
+<meta property="og:title" content="Sales Tax Guides Pakistan — Complete STA 1990 Resource | TaxBuddy Umair">
+<meta property="og:description" content="Step-by-step sales tax guides for Pakistan — registration, return filing, Tier-1 retailers, and more.">
+<meta property="og:url" content="https://www.taxbuddyumair.com/sales-tax-guides/">
+<meta property="og:type" content="website">
+<meta property="og:image" content="https://www.taxbuddyumair.com/static/assets/img/image/About.webp">
+<meta property="og:locale" content="en_PK">
+<meta property="og:site_name" content="TaxBuddy Umair">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="theme-color" content="#0a2238">
+<link rel="icon" type="image/x-icon" href="/favicon.ico">
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,700;1,700&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,700;1,700&display=swap" media="print" onload="this.media='all'">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,700;1,700&display=swap"></noscript>
+<link rel="dns-prefetch" href="//pagead2.googlesyndication.com">
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-XXXXXXXXXXXXXXXX" crossorigin="anonymous"></script>
+<script type="application/ld+json">
+{
+  "@context":"https://schema.org",
+  "@type":"CollectionPage",
+  "name":"Sales Tax Guides Pakistan",
+  "description":"Complete sales tax guides for Pakistan based on Sales Tax Act 1990 — registration, Tier-1 retailers, return filing, input tax, zero-rated goods, and more.",
+  "url":"https://www.taxbuddyumair.com/sales-tax-guides/",
+  "author":{"@type":"Person","name":"Umair Mubeen","jobTitle":"Tax Officer, FBR Pakistan","url":"https://www.taxbuddyumair.com"},
+  "publisher":{"@type":"Organization","name":"TaxBuddy Umair","url":"https://www.taxbuddyumair.com"}
+}
+</script>
+<style>
 :root{
-  --green:#0f766e;
-  --green-dark:#0c5b47;
-  --green-soft:#e9f6f2;
-  --text:#0f172a;
-  --muted:#5b6b65;
-  --border:#e2ebe6;
-  --bg:#f6fbf9;
+  --navy:#0a2238;--navy-light:#112d47;--navy-mid:#1a3f5c;
+  --green:#22c97a;--green-dark:#18a362;--green-pale:rgba(34,201,122,0.1);
+  --blue:#378add;--blue-pale:rgba(55,138,221,0.1);--blue-dark:#185fa5;
+  --cream:#f7f5f0;--cream-dark:#ede9e0;--white:#ffffff;
+  --text:#0a2238;--text-mid:#3a5068;--text-muted:#7a909f;
+  --border:rgba(10,34,56,0.1);--border-md:rgba(10,34,56,0.14);
+  --shadow:0 2px 12px rgba(10,34,56,0.08);--shadow-md:0 8px 32px rgba(10,34,56,0.12);
+  --r:12px;--r-sm:8px;--r-lg:16px;--r-pill:99px;
+  /* Sales tax gets a blue accent to differentiate from income tax green */
+  --accent:var(--blue);--accent-dark:var(--blue-dark);--accent-pale:var(--blue-pale);
 }
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:'Inter',-apple-system,sans-serif;background:var(--cream);color:var(--text);font-size:15px;line-height:1.7;overflow-x:hidden;-webkit-font-smoothing:antialiased}
+a{text-decoration:none;color:inherit}
+img,svg{display:block}
+.container{max-width:1100px;margin:0 auto;padding:0 2rem}
+.skip-link{position:absolute;top:-100px;left:1rem;z-index:9999;background:var(--blue);color:#fff;font-size:13px;font-weight:700;padding:10px 20px;border-radius:var(--r-sm);transition:top 0.2s}
+.skip-link:focus{top:1rem}
+:focus-visible{outline:2px solid var(--blue);outline-offset:3px;border-radius:4px}
+@media(prefers-reduced-motion:reduce){*{transition-duration:0.01ms!important;animation-duration:0.01ms!important}.fade-in{opacity:1!important;transform:none!important}}
 
-/* =========================
-   GLOBAL RESET
-========================= */
-*{
-  box-sizing:border-box;
-}
+/* NAV */
+#navbar{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(10,34,56,0.97);backdrop-filter:blur(12px);border-bottom:1px solid rgba(255,255,255,0.07);height:60px}
+.nav-inner{display:flex;align-items:center;justify-content:space-between;height:100%;gap:2rem}
+.nav-logo{font-family:'Playfair Display',serif;font-size:20px;font-style:italic;font-weight:700;color:#fff;flex-shrink:0}
+.nav-logo em{color:var(--green);font-style:normal}
+.nav-links{display:flex;align-items:center;gap:4px;list-style:none}
+.nav-links a{color:rgba(255,255,255,0.65);font-size:13px;font-weight:500;padding:6px 13px;border-radius:var(--r-sm);transition:all 0.15s}
+.nav-links a:hover{color:#fff;background:rgba(255,255,255,0.07)}
+.nav-links a.active{color:#fff;background:rgba(55,138,221,0.2)}
+.nav-wa{display:flex;align-items:center;gap:7px;background:var(--green);color:var(--navy);font-size:13px;font-weight:700;padding:8px 16px;border-radius:var(--r-sm);transition:all 0.2s;flex-shrink:0}
+.nav-wa:hover{background:var(--green-dark);color:#fff}
+.nav-wa svg{width:14px;height:14px;fill:currentColor}
+.hamburger{display:none;background:none;border:none;cursor:pointer;color:#fff;padding:6px}
+.hamburger svg{width:22px;height:22px}
+#mobile-menu{display:none;position:fixed;top:60px;left:0;right:0;z-index:99;background:var(--navy);border-bottom:1px solid rgba(255,255,255,0.1);padding:1rem 2rem 1.5rem}
+#mobile-menu.open{display:block}
+#mobile-menu a{display:block;color:rgba(255,255,255,0.75);font-size:15px;padding:10px 0;border-bottom:1px solid rgba(255,255,255,0.06)}
+#mobile-menu a:last-child{border:none}
 
-html, body{
-  margin:0;
-  padding:0;
-  width:100%;
-}
-body{
-  background:#F6FBF9;
-}
+/* HERO — uses blue instead of green for sales tax identity */
+.page-hero{background:var(--navy);padding:96px 0 56px;overflow:hidden;position:relative}
+.page-hero::after{content:'';position:absolute;top:-80px;right:-80px;width:400px;height:400px;border-radius:50%;background:radial-gradient(circle,rgba(55,138,221,0.08),transparent 70%);pointer-events:none}
+.breadcrumb{display:flex;align-items:center;gap:8px;font-size:12px;color:rgba(255,255,255,0.4);margin-bottom:20px}
+.breadcrumb a:hover{color:var(--blue)}
+.breadcrumb-sep{opacity:0.4}
+.eyebrow{display:inline-flex;align-items:center;gap:6px;font-size:10px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:#85b7eb;background:rgba(55,138,221,0.15);border:1px solid rgba(55,138,221,0.3);padding:4px 14px;border-radius:var(--r-pill);margin-bottom:16px}
+.eyebrow::before{content:'';width:6px;height:6px;border-radius:50%;background:var(--blue);display:block}
+.page-hero h1{font-family:'Playfair Display',serif;font-weight:700;font-style:italic;font-size:clamp(28px,4.5vw,52px);color:#fff;line-height:1.15;letter-spacing:-0.02em;margin-bottom:16px}
+.page-hero h1 em{color:#85b7eb}
+.page-hero .hero-desc{color:rgba(255,255,255,0.55);font-size:15px;max-width:560px;line-height:1.75;margin-bottom:28px}
+.hero-stats{display:flex;gap:24px;flex-wrap:wrap;padding-top:24px;border-top:1px solid rgba(255,255,255,0.08)}
+.hero-stat{display:flex;align-items:center;gap:8px;color:rgba(255,255,255,0.5);font-size:12.5px}
+.hstat-dot{width:6px;height:6px;border-radius:50%;background:var(--blue);flex-shrink:0}
 
-/* =========================
-   PAGE WRAPPER
-========================= */
-.container{
-  margin:auto;
-  background:transparent;
-}
+/* QUICK JUMP */
+.quick-jump{background:var(--white);border-bottom:1px solid var(--border);padding:14px 0;position:sticky;top:60px;z-index:50}
+.qj-inner{display:flex;align-items:center;gap:8px;overflow-x:auto;scrollbar-width:none}
+.qj-inner::-webkit-scrollbar{display:none}
+.qj-label{font-size:11px;font-weight:700;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.08em;white-space:nowrap;margin-right:4px}
+.qj-btn{display:inline-flex;align-items:center;gap:6px;font-size:12px;font-weight:500;color:var(--text-muted);background:var(--cream);border:1px solid var(--border);padding:6px 14px;border-radius:var(--r-pill);cursor:pointer;transition:all 0.15s;white-space:nowrap;flex-shrink:0}
+.qj-btn:hover{background:var(--navy);color:#fff;border-color:var(--navy)}
+.qj-btn.active{background:var(--navy);color:#fff;border-color:var(--navy)}
 
-/* =========================
-   HEADER SAFETY (NO COLLAPSE)
-========================= */
-header,
-.site-header{
-  position:sticky;
-  top:0;
-  z-index:999;
-  background:#ffffff;
-}
+/* AD ZONES */
+.ad-wrap{margin:0 0 32px}
+.ad-zone{width:100%;display:flex;flex-direction:column;background:var(--white);border:1px solid var(--border);border-radius:var(--r);overflow:hidden}
+.ad-label{padding:4px 0;font-size:10px;font-weight:600;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.1em;text-align:center;background:var(--cream);border-bottom:1px solid var(--border)}
+.ad-zone ins{display:block;width:100%;min-height:90px}
 
-/* =========================
-   HERO SECTION
-========================= */
-.guides-hero{
-  display:grid;
-  grid-template-columns:1.2fr 1fr;
-  gap:40px;
-  align-items:center;
-  margin:60px 0 50px;
-}
+/* MAIN LAYOUT */
+.guide-layout{max-width:1100px;margin:0 auto;padding:40px 2rem 80px;display:grid;grid-template-columns:1fr 300px;gap:48px;align-items:start}
 
-.guides-hero h1{
-  font-size:36px;
-  font-weight:800;
-  margin-bottom:12px;
-}
+/* GUIDE SECTIONS */
+.guide-section{margin-bottom:48px}
+.section-anchor{scroll-margin-top:120px}
+.section-header{display:flex;align-items:flex-start;gap:16px;margin-bottom:24px;padding-bottom:16px;border-bottom:2px solid var(--blue)}
+.section-icon{width:48px;height:48px;border-radius:var(--r-sm);display:flex;align-items:center;justify-content:center;flex-shrink:0;background:var(--navy)}
+.section-icon svg{width:22px;height:22px;stroke:#85b7eb;fill:none;stroke-width:1.75}
+.section-title-wrap{}
+.section-label{font-size:10px;font-weight:700;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.1em;margin-bottom:4px}
+.section-title{font-family:'Playfair Display',serif;font-size:clamp(20px,2.5vw,26px);font-weight:700;color:var(--navy);line-height:1.2;letter-spacing:-0.01em}
+.section-desc{font-size:13.5px;color:var(--text-muted);line-height:1.6;margin-top:4px}
 
-.guides-hero p{
-  font-size:16px;
-  color:var(--muted);
-  max-width:520px;
-  margin-bottom:20px;
-}
+/* Guide cards */
+.guide-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px}
+.guide-card{background:var(--white);border:1px solid var(--border);border-radius:var(--r);padding:1.25rem;display:flex;gap:14px;align-items:flex-start;transition:all 0.2s;text-decoration:none}
+.guide-card:hover{box-shadow:var(--shadow-md);transform:translateY(-2px);border-color:var(--blue)}
+.guide-card-icon{width:36px;height:36px;border-radius:var(--r-sm);background:var(--blue-pale);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.guide-card-icon svg{width:18px;height:18px;stroke:var(--blue-dark);fill:none;stroke-width:1.75}
+.guide-card-body{}
+.guide-card-title{font-size:13.5px;font-weight:600;color:var(--navy);line-height:1.4;letter-spacing:-0.01em;margin-bottom:4px;transition:color 0.15s}
+.guide-card:hover .guide-card-title{color:var(--blue-dark)}
+.guide-card-desc{font-size:12px;color:var(--text-muted);line-height:1.5}
+.guide-card-tag{display:inline-block;font-size:10px;font-weight:600;color:var(--blue-dark);background:var(--blue-pale);border:1px solid rgba(55,138,221,0.2);padding:2px 8px;border-radius:var(--r-pill);margin-top:6px}
 
-/* SEARCH */
-.search-box{
-  display:flex;
-  gap:10px;
-  max-width:520px;
-}
+/* Featured */
+.guide-card.featured{border-color:var(--blue);background:var(--navy);grid-column:span 2}
+.guide-card.featured .guide-card-icon{background:rgba(55,138,221,0.2)}
+.guide-card.featured .guide-card-icon svg{stroke:#85b7eb}
+.guide-card.featured .guide-card-title{color:#fff;font-size:15px}
+.guide-card.featured .guide-card-desc{color:rgba(255,255,255,0.5)}
+.guide-card.featured .guide-card-tag{background:rgba(55,138,221,0.2);color:#85b7eb;border-color:rgba(55,138,221,0.3)}
 
-.search-box input{
-  flex:1;
-  padding:14px 16px;
-  border-radius:12px;
-  border:1px solid var(--border);
-  font-size:14px;
-}
+/* Key terms */
+.terms-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-top:16px}
+.term-item{background:var(--white);border:1px solid var(--border);border-radius:var(--r-sm);padding:12px 14px}
+.term-name{font-size:13px;font-weight:700;color:var(--navy);margin-bottom:4px;letter-spacing:-0.01em}
+.term-def{font-size:12px;color:var(--text-muted);line-height:1.55}
 
-.search-box button{
-  padding:14px 22px;
-  border-radius:12px;
-  border:none;
-  color:#fff;
-  font-weight:600;
-  cursor:pointer;
-}
+/* Goods type table */
+.goods-table-wrap{overflow-x:auto;border-radius:var(--r);border:1px solid var(--border);margin-top:16px}
+.goods-table{width:100%;border-collapse:collapse;font-size:13.5px;background:var(--white)}
+.goods-table thead tr{background:var(--navy)}
+.goods-table th{color:rgba(255,255,255,0.8);font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:0.07em;padding:11px 16px;text-align:left;white-space:nowrap}
+.goods-table tbody tr{border-bottom:1px solid var(--border);transition:background 0.1s}
+.goods-table tbody tr:hover{background:var(--cream)}
+.goods-table tbody tr:last-child{border:none}
+.goods-table td{padding:11px 16px;color:var(--text-mid);vertical-align:middle}
+.goods-table td:first-child{font-weight:600;color:var(--navy)}
+.type-std{color:#b45309;font-weight:700}
+.type-zero{color:var(--green-dark);font-weight:700}
+.type-exempt{color:#dc2626;font-weight:700}
 
-/* HERO IMAGE CARD */
-.hero-visual{
-  background:linear-gradient(135deg,#EEF7F3 0%,#FFFFFF 70%);
-  border-radius:20px;
-  padding:26px;
-  box-shadow:0 14px 40px rgba(0,0,0,0.06);
-  text-align:center;
-}
+/* Registration steps */
+.steps{display:flex;flex-direction:column;gap:0;margin-top:16px}
+.step{display:flex;gap:16px;padding:16px 0;border-bottom:1px solid var(--border)}
+.step:last-child{border:none}
+.step-num{width:32px;height:32px;border-radius:50%;background:var(--blue);color:#fff;font-size:13px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px}
+.step-title{font-size:14px;font-weight:700;color:var(--navy);margin-bottom:4px;letter-spacing:-0.01em}
+.step-desc{font-size:13px;color:var(--text-muted);line-height:1.6}
 
-.hero-visual img{
-  width:100%;
-  max-width:380px;
-  height:auto;
-}
+/* Callout */
+.callout{display:flex;gap:12px;padding:14px 16px;border-radius:var(--r);margin:16px 0}
+.callout.info{background:#eff6ff;border:1px solid #bfdbfe}
+.callout.warning{background:#fffbeb;border:1px solid #fde68a}
+.callout.success{background:#f0fdf4;border:1px solid #bbf7d0}
+.callout.danger{background:#fef2f2;border:1px solid #fca5a5}
+.callout-icon{font-size:16px;flex-shrink:0;line-height:1.5}
+.callout-title{font-size:13px;font-weight:700;color:var(--navy);margin-bottom:3px}
+.callout-text{font-size:12.5px;color:var(--text-mid);line-height:1.6}
 
-/* =========================
-   CATEGORY TABS
-========================= */
-.tabs{
-  display:flex;
-  gap:12px;
-  overflow-x:auto;
-  padding-bottom:6px;
-  margin-bottom:40px;
-}
+/* Tier comparison */
+.tier-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:16px}
+.tier-card{background:var(--white);border:1px solid var(--border);border-radius:var(--r);padding:1.25rem}
+.tier-card.tier-1{border-top:3px solid var(--blue)}
+.tier-card.tier-2{border-top:3px solid var(--green)}
+.tier-label{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.09em;margin-bottom:8px;padding:3px 10px;border-radius:var(--r-pill);display:inline-block}
+.tier-label.t1{background:var(--blue-pale);color:var(--blue-dark)}
+.tier-label.t2{background:var(--green-pale);color:var(--green-dark)}
+.tier-name{font-size:15px;font-weight:700;color:var(--navy);margin-bottom:6px;letter-spacing:-0.01em}
+.tier-desc{font-size:12.5px;color:var(--text-muted);line-height:1.6;margin-bottom:10px}
+.tier-list{list-style:none;display:flex;flex-direction:column;gap:5px}
+.tier-list li{font-size:12px;color:var(--text-mid);display:flex;align-items:flex-start;gap:7px}
+.tier-list li::before{content:'';width:6px;height:6px;border-radius:50%;flex-shrink:0;margin-top:6px}
+.tier-card.tier-1 .tier-list li::before{background:var(--blue)}
+.tier-card.tier-2 .tier-list li::before{background:var(--green)}
 
-.tabs::-webkit-scrollbar{
-  display:none;
-}
+/* SIDEBAR */
+.guide-sidebar{display:flex;flex-direction:column;gap:20px;position:sticky;top:116px}
+.sidebar-card{background:var(--white);border:1px solid var(--border);border-radius:var(--r);overflow:hidden}
+.sb-head{padding:12px 16px;border-bottom:1px solid var(--border);font-size:11px;font-weight:700;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.09em}
+.sb-body{padding:14px 16px}
+.toc-link{display:flex;align-items:center;gap:8px;font-size:12.5px;color:var(--text-muted);font-weight:500;padding:7px 0;border-bottom:1px solid var(--border);transition:color 0.15s;cursor:pointer}
+.toc-link:last-child{border:none}
+.toc-link:hover,.toc-link.active{color:var(--navy);font-weight:600}
+.toc-link::before{content:'';width:3px;height:14px;border-radius:99px;background:var(--border);flex-shrink:0;transition:background 0.15s}
+.toc-link.active::before,.toc-link:hover::before{background:var(--blue)}
+.quick-link{display:flex;align-items:center;justify-content:space-between;padding:9px 16px;font-size:13px;color:var(--text-mid);border-bottom:1px solid var(--border);transition:all 0.12s}
+.quick-link:last-child{border:none}
+.quick-link:hover{background:var(--cream);color:var(--navy)}
+.quick-link-arrow{font-size:12px;color:var(--text-muted);transition:transform 0.15s}
+.quick-link:hover .quick-link-arrow{transform:translateX(3px);color:var(--blue-dark)}
+.author-mini{display:flex;align-items:center;gap:12px;padding:14px 16px}
+.author-avatar{width:42px;height:42px;border-radius:50%;background:linear-gradient(135deg,var(--navy-light),var(--navy-mid));display:flex;align-items:center;justify-content:center;color:#fff;font-size:14px;font-weight:700;border:2px solid rgba(55,138,221,0.4);flex-shrink:0}
+.author-name{font-size:13.5px;font-weight:600;color:var(--text)}
+.author-role{font-size:11px;color:var(--blue-dark);font-weight:600;margin-top:1px}
+.author-bio{font-size:12px;color:var(--text-muted);line-height:1.55;padding:0 16px 12px}
+.wa-btn{display:flex;align-items:center;justify-content:center;gap:7px;background:var(--green);color:var(--navy);font-size:13px;font-weight:700;padding:10px 16px;margin:0 16px 14px;border-radius:var(--r-sm);transition:all 0.2s}
+.wa-btn:hover{background:var(--green-dark);color:#fff}
+.wa-btn svg{width:13px;height:13px;fill:currentColor}
 
-.tab{
-  padding:10px 18px;
-  border-radius:999px;
-  border:1px solid var(--border);
-  background:#fff;
-  font-size:14px;
-  white-space:nowrap;
-  cursor:pointer;
-}
+/* DISCLAIMER */
+.disclaimer{background:#fffbeb;border:1px solid #fde68a;border-radius:var(--r-sm);padding:12px 16px;margin-top:32px;display:flex;gap:10px}
+.disclaimer p{font-size:12px;color:#92400e;line-height:1.55}
+.disclaimer a{color:#92400e;text-decoration:underline}
 
-.tab.active{
-  background:var(--green);
-  color:#fff;
-  border-color:var(--green);
-}
+/* FOOTER */
+footer{background:var(--navy);border-top:1px solid rgba(255,255,255,0.07);padding:40px 0 24px}
+.footer-grid{display:grid;grid-template-columns:200px 1fr 1fr 1fr;gap:2rem;margin-bottom:2.5rem}
+.footer-logo{font-family:'Playfair Display',serif;font-size:18px;font-style:italic;color:#fff;margin-bottom:10px}
+.footer-logo em{color:var(--green);font-style:normal}
+.footer-tagline{font-size:12px;color:rgba(255,255,255,0.35);line-height:1.6;margin-bottom:14px}
+.footer-contact a{display:block;font-size:12px;color:rgba(255,255,255,0.45);margin-bottom:4px;transition:color 0.15s}
+.footer-contact a:hover{color:var(--green)}
+.footer-col h4{font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:rgba(255,255,255,0.5);margin-bottom:12px}
+.footer-col a{display:block;font-size:12.5px;color:rgba(255,255,255,0.4);margin-bottom:7px;transition:color 0.15s}
+.footer-col a:hover{color:#fff}
+.footer-bottom{border-top:1px solid rgba(255,255,255,0.07);padding-top:18px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px}
+.footer-copy{font-size:11.5px;color:rgba(255,255,255,0.25)}
+.footer-legal{display:flex;gap:14px}
+.footer-legal a{font-size:11.5px;color:rgba(255,255,255,0.25);transition:color 0.15s}
+.footer-legal a:hover{color:rgba(255,255,255,0.6)}
 
-/* =========================
-   GRID LAYOUT
-========================= */
-.guides-grid{
-  display:grid;
-  grid-template-columns:2fr 1fr;
-  gap:24px;
-}
+.fade-in{opacity:0;transform:translateY(14px);transition:opacity 0.5s,transform 0.5s}
+.fade-in.visible{opacity:1;transform:none}
 
-/* =========================
-   LEFT CONTENT SECTIONS
-========================= */
-.guides-section{
-  background:#fff;
-  border-radius:20px;
-  padding:24px;
-  margin-bottom:24px;
-  box-shadow:0 10px 28px rgba(0,0,0,0.06);
-}
-
-.section-head{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  margin-bottom:16px;
-}
-
-.section-head h3{
-  font-size:18px;
-  font-weight:700;
-}
-
-.section-head a{
-  font-size:14px;
-  color:var(--green);
-  text-decoration:none;
-  font-weight:600;
-}
-
-/* GUIDE LIST */
-.guides-list{
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:12px;
-  padding:0;
-}
-
-.guides-list li{
-  list-style:none;
-  font-size:14px;
-  color:#344;
-}
-
-.guides-list li::before{
-  content:"✓";
-  color:var(--green);
-  margin-right:8px;
-}
-
-/* =========================
-   RIGHT SIDEBAR
-========================= */
-.sidebar{
-  background:#fff;
-  border-radius:20px;
-  padding:24px;
-  box-shadow:0 10px 28px rgba(0,0,0,0.06);
-  height:fit-content;
-}
-
-.sidebar h4{
-  font-size:16px;
-  font-weight:700;
-  margin-bottom:14px;
-}
-
-.sidebar ul{
-  padding:0;
-  margin:0;
-}
-
-.sidebar li{
-  list-style:none;
-  font-size:14px;
-  margin-bottom:10px;
-  color:#455;
-}
-
-/* =========================
-   NEWSLETTER
-========================= */
-.newsletter{
-  margin:60px 0;
-  border-radius:22px;
-  padding:40px;
-  display:grid;
-  grid-template-columns:1.2fr 1fr;
-  gap:20px;
-  align-items:center;
-}
-
-.newsletter h3{
-  font-size:22px;
-  margin-bottom:8px;
-}
-
-.newsletter p{
-  font-size:14px;
-  color:var(--muted);
-}
-
-.newsletter form{
-  display:flex;
-  gap:10px;
-}
-
-.newsletter input{
-  flex:1;
-  padding:14px;
-  border-radius:12px;
-  border:1px solid var(--border);
-}
-
-.newsletter button{
-  padding:14px 24px;
-  border:none;
-  border-radius:12px;
-  font-weight:600;
-}
-
-
-/* =========================
-   RESPONSIVE FIXES
-========================= */
-@media(max-width:992px){
-  .guides-hero{
-    grid-template-columns:1fr;
-    text-align:center;
-  }
-
-  .search-box{
-    margin:auto;
-  }
-
-  .guides-grid{
-    grid-template-columns:1fr;
-  }
-
-  .guides-list{
-    grid-template-columns:1fr;
-  }
-
-  .newsletter{
-    grid-template-columns:1fr;
-    text-align:center;
-  }
-}
-
-@media(max-width:768px){
-  .hero-visual img{
-    max-width:280px;
-    margin:auto;
-  }
-  .sp2 {
-        padding: 30px 0;
-    }
-}
-
-
-    </style>
-
-
+@media(max-width:900px){.guide-layout{grid-template-columns:1fr}.guide-sidebar{position:static}.footer-grid{grid-template-columns:1fr 1fr}}
+@media(max-width:640px){.nav-links{display:none}.hamburger{display:block}.guide-grid{grid-template-columns:1fr}.guide-card.featured{grid-column:span 1}.terms-grid{grid-template-columns:1fr}.tier-grid{grid-template-columns:1fr}.footer-grid{grid-template-columns:1fr}.container{padding:0 1.25rem}}
+@media print{#navbar,.quick-jump,.ad-zone,footer{display:none!important}body{background:#fff}.guide-layout{grid-template-columns:1fr}}
+</style>
 </head>
-
 <body>
-<!--=====Navigation Bar=======-->
-{% include 'partials/topbar.html' %}
-<!--=====Navigation Bar Ends Here=======-->
-<div class="home6-full-header">
 
-    <!-- HERO -->
-    <div class="container space">
-        <div class="guides-hero">
+<a href="#main-content" class="skip-link">Skip to main content</a>
 
-            <!-- LEFT -->
-            <div>
-                <h1>Sales Tax Guides</h1>
-                <p>
-                    Learn how sales tax works in Pakistan including registration, filing,
-                    withholding, and compliance for individuals and businesses.
-                </p>
-
-                <div class="button6 search-box">
-                    <input placeholder="Search sales tax guides…" type="text">
-                <button class="button6">Search</button>
-                </div>
-            </div>
-
-            <!-- RIGHT ILLUSTRATION -->
-            <div class="hero-visual">
-
-                <img
-                        alt="Sales tax guides illustration showing GST registration, invoices, and tax calculator"
-                        src="{% static 'assets/img/image/income_tax_guide.webp'%}">
-            </div>
-
-        </div>
-
-        <!-- CATEGORY TABS -->
-<!--        <div class="tabs">-->
-
-<!--            <div class="tab active">-->
-<!--                Basics-->
-<!--            </div>-->
-
-<!--            <div class="tab">-->
-<!--                Registration-->
-<!--            </div>-->
-
-<!--            <div class="tab">-->
-<!--                Filing-->
-<!--            </div>-->
-
-<!--            <div class="tab">-->
-<!--                Withholding-->
-<!--            </div>-->
-
-<!--            <div class="tab">-->
-<!--                Adjustments-->
-<!--            </div>-->
-
-<!--            <div class="tab">-->
-<!--                Refunds-->
-<!--            </div>-->
-
-<!--        </div>-->
-
-        <!-- CONTENT GRID -->
-        <div class="guides-grid">
-
-            <!-- LEFT CONTENT -->
-            <div>
-
-                <!-- SECTION 1 -->
-                <div class="guides-section">
-                    <div class="section-head">
-                        <h3>Sales Tax Basics</h3>
-                        <a href="#">View All →</a>
-                    </div>
-
-                    <ul class="guides-list">
-                        <li>What is Sales Tax in Pakistan?</li>
-                        <li>Difference Between Sales Tax & Income Tax</li>
-                        <li>Federal vs Provincial Sales Tax</li>
-                        <li>Sales Tax Registration Threshold</li>
-                        <li>Goods vs Services – Sales Tax Treatment</li>
-                        <li>Sales Tax Rates Explained</li>
-                    </ul>
-                </div>
-
-                <!-- SECTION 2 -->
-                <div class="guides-section">
-                    <div class="section-head">
-                        <h3>Sales Tax Registration</h3>
-                        <a href="#">View All →</a>
-                    </div>
-
-                    <ul class="guides-list">
-                        <li>Who Must Register for Sales Tax?</li>
-                        <li>GST Registration Process (Step-by-Step)</li>
-                        <li>Required Documents for Registration</li>
-                        <li>Voluntary vs Mandatory Registration</li>
-                    </ul>
-                </div>
-
-                <!-- SECTION 3 -->
-                <div class="guides-section">
-                    <div class="section-head">
-                        <h3>Sales Tax Return Filing</h3>
-                        <a href="#">View All →</a>
-                    </div>
-
-                    <ul class="guides-list">
-                        <li>Monthly Sales Tax Return Explained</li>
-                        <li>How to File Sales Tax Return in Pakistan</li>
-                        <li>Input vs Output Tax</li>
-                        <li>Common Filing Errors to Avoid</li>
-                    </ul>
-                </div>
-
-            </div>
-
-            <!-- RIGHT SIDEBAR -->
-            <div class="sidebar">
-                <h4>In This Guide</h4>
-                <ul>
-                    <li>Sales Tax Basics</li>
-                    <li>GST Registration</li>
-                    <li>Monthly Filing</li>
-                    <li>Withholding Sales Tax</li>
-                    <li>Refunds & Adjustments</li>
-                </ul>
-            </div>
-
-        </div>
-
-        <!-- NEWSLETTER -->
-        <div class="newsletter">
-            <div>
-                <h3>Stay Updated on Sales Tax Rules</h3>
-                <p>
-                    Get notified about changes in sales tax laws, rates, and filing deadlines.
-                </p>
-            </div>
-
-                   <div class="button6">
-            <form>
-                <input class="form-control" placeholder="Enter your email" type="email">
-                <button class="button6">Subscribe</button>
-            </form>
-        </div>
-
-        </div>
-
+<nav id="navbar" aria-label="Main navigation" role="navigation">
+  <div class="container">
+    <div class="nav-inner">
+      <a href="/" class="nav-logo">Tax<em>Buddy</em> Umair</a>
+      <ul class="nav-links" role="list">
+        <li><a href="/income-tax-guides/">Income Tax</a></li>
+        <li><a href="/sales-tax-guides/" class="active" aria-current="page">Sales Tax</a></li>
+        <li><a href="/blog/">Blog</a></li>
+        <li><a href="/income-tax-mcqs-pakistan/">MCQs</a></li>
+        <li><a href="/#about">About</a></li>
+        <li><a href="/#contact">Contact</a></li>
+      </ul>
+      <div style="display:flex;align-items:center;gap:10px">
+        <a href="https://wa.me/923332482742" class="nav-wa" target="_blank" rel="noopener noreferrer" aria-label="Book WhatsApp consultation">
+          <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+          Consult
+        </a>
+        <button class="hamburger" id="hamburger" aria-label="Toggle menu">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
+        </button>
+      </div>
     </div>
-    {% include 'partials/footer.html' %}
+  </div>
+</nav>
 
-    {% include 'partials/up.html' %}
-
-    {% include 'partials/footer-scripts.html' %}
-
+<div id="mobile-menu">
+  <a href="/income-tax-guides/">Income Tax</a>
+  <a href="/sales-tax-guides/">Sales Tax</a>
+  <a href="/blog/">Blog</a>
+  <a href="/income-tax-mcqs-pakistan/">MCQs</a>
+  <a href="/#about">About</a>
+  <a href="/#contact">Contact</a>
+  <a href="https://wa.me/923332482742" style="color:var(--green)" target="_blank" rel="noopener noreferrer">WhatsApp Consultation</a>
 </div>
 
+<div class="page-hero">
+  <div class="container">
+    <nav class="breadcrumb" aria-label="Breadcrumb">
+      <a href="/">Home</a><span class="breadcrumb-sep">›</span>
+      <span style="color:rgba(255,255,255,0.6)" aria-current="page">Sales Tax Guides</span>
+    </nav>
+    <div class="eyebrow">Sales Tax Act 1990</div>
+    <h1>Pakistan Sales Tax,<br><em>explained completely.</em></h1>
+    <p class="hero-desc">Comprehensive guides on Pakistan's sales tax — registration, Tier-1 retailers, input tax adjustment, zero-rated goods, return filing, and penalties. Written by an FBR officer.</p>
+    <div class="hero-stats">
+      <div class="hero-stat"><div class="hstat-dot"></div>Based on Sales Tax Act 1990</div>
+      <div class="hero-stat"><div class="hstat-dot"></div>Updated 2026</div>
+      <div class="hero-stat"><div class="hstat-dot"></div>6 guide categories</div>
+      <div class="hero-stat"><div class="hstat-dot"></div>For traders &amp; businesses</div>
+    </div>
+  </div>
+</div>
+
+<div class="quick-jump" aria-label="Jump to section">
+  <div class="container">
+    <div class="qj-inner">
+      <span class="qj-label">Jump to:</span>
+      <button class="qj-btn active" onclick="scrollTo('basics')">Basics</button>
+      <button class="qj-btn" onclick="scrollTo('goods')">Types of Goods</button>
+      <button class="qj-btn" onclick="scrollTo('registration')">Registration</button>
+      <button class="qj-btn" onclick="scrollTo('retailers')">Tier-1 Retailers</button>
+      <button class="qj-btn" onclick="scrollTo('input-tax')">Input Tax</button>
+      <button class="qj-btn" onclick="scrollTo('returns')">Return Filing</button>
+      <button class="qj-btn" onclick="scrollTo('penalties')">Penalties</button>
+    </div>
+  </div>
+</div>
+
+<div class="container" style="padding-top:24px">
+  <div class="ad-wrap">
+    <div class="ad-zone"><div class="ad-label">Advertisement</div><ins class="adsbygoogle" style="display:block;min-height:90px" data-ad-client="ca-pub-XXXXXXXXXXXXXXXX" data-ad-slot="5555555555" data-ad-format="auto" data-full-width-responsive="true"></ins><script>(adsbygoogle=window.adsbygoogle||[]).push({});</script></div>
+  </div>
+</div>
+
+<main id="main-content">
+<div class="guide-layout">
+
+  <div>
+
+    <!-- 1. BASICS -->
+    <div class="guide-section section-anchor fade-in" id="basics">
+      <div class="section-header">
+        <div class="section-icon"><svg viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg></div>
+        <div class="section-title-wrap">
+          <div class="section-label">Chapter 1</div>
+          <div class="section-title">Sales Tax Basics</div>
+          <div class="section-desc">What is sales tax in Pakistan, how it works, and who is responsible for paying it.</div>
+        </div>
+      </div>
+      <div class="guide-grid">
+        <a href="/what-is-sales-tax-pakistan-sta-1990/" class="guide-card featured">
+          <div class="guide-card-icon"><svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg></div>
+          <div class="guide-card-body">
+            <div class="guide-card-title">What is sales tax in Pakistan? — Complete beginner guide</div>
+            <div class="guide-card-desc">How the GST/VAT system works in Pakistan, who collects it, who bears it, and what the Sales Tax Act 1990 covers from start to finish.</div>
+            <span class="guide-card-tag">Start here</span>
+          </div>
+        </a>
+        <a href="/what-is-value-addition-tax-sales-tax-act-1990-pakistan/" class="guide-card">
+          <div class="guide-card-icon"><svg viewBox="0 0 24 24"><path d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg></div>
+          <div class="guide-card-body">
+            <div class="guide-card-title">What is Value Addition Tax (VAT) under STA 1990?</div>
+            <div class="guide-card-desc">How the multi-stage VAT mechanism works in Pakistan — each stage pays tax only on value added.</div>
+            <span class="guide-card-tag">VAT Basics</span>
+          </div>
+        </a>
+        <a href="/essential-concepts-sales-tax-returns-pakistan/" class="guide-card">
+          <div class="guide-card-icon"><svg viewBox="0 0 24 24"><path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/></svg></div>
+          <div class="guide-card-body">
+            <div class="guide-card-title">Essential concepts for sales tax returns — Pakistan</div>
+            <div class="guide-card-desc">Output tax, input tax, tax period, tax invoice, credit notes — all key terms explained in plain language.</div>
+            <span class="guide-card-tag">Core Concepts</span>
+          </div>
+        </a>
+        <a href="/purchase-of-assets-through-banking-channel-or-digital-means/" class="guide-card">
+          <div class="guide-card-icon"><svg viewBox="0 0 24 24"><path d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"/></svg></div>
+          <div class="guide-card-body">
+            <div class="guide-card-title">Purchase of assets through banking or digital means</div>
+            <div class="guide-card-desc">Documentation and input tax credit rules when assets are purchased via banking channels or digital payment.</div>
+            <span class="guide-card-tag">Digital Payments</span>
+          </div>
+        </a>
+      </div>
+
+      <div style="margin-top:20px">
+        <div style="font-size:11px;font-weight:700;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.1em;margin-bottom:12px">Key terms in Sales Tax Act 1990</div>
+        <div class="terms-grid">
+          <div class="term-item"><div class="term-name">Taxable Supply</div><div class="term-def">A supply of taxable goods made in Pakistan by a registered person in the course of taxable activity. Section 2(41).</div></div>
+          <div class="term-item"><div class="term-name">Tax Period</div><div class="term-def">A calendar month. Sales tax returns must be filed by the 18th of the following month.</div></div>
+          <div class="term-item"><div class="term-name">Output Tax</div><div class="term-def">Sales tax charged on supplies made. Collected from buyers and payable to FBR.</div></div>
+          <div class="term-item"><div class="term-name">Input Tax</div><div class="term-def">Sales tax paid on purchases. Deductible against output tax — you only pay tax on the net difference.</div></div>
+          <div class="term-item"><div class="term-name">Registered Person</div><div class="term-def">A person registered under the Sales Tax Act 1990 and holding a valid registration certificate.</div></div>
+          <div class="term-item"><div class="term-name">Tax Invoice</div><div class="term-def">A document issued by a registered person showing the amount of tax charged. Required for input tax claims.</div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 2. TYPES OF GOODS -->
+    <div class="guide-section section-anchor fade-in" id="goods">
+      <div class="section-header">
+        <div class="section-icon"><svg viewBox="0 0 24 24"><path d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/></svg></div>
+        <div class="section-title-wrap">
+          <div class="section-label">Chapter 2</div>
+          <div class="section-title">Types of Goods &amp; Tax Treatment</div>
+          <div class="section-desc">Standard-rated, zero-rated, and exempt goods — how each category is taxed under STA 1990.</div>
+        </div>
+      </div>
+
+      <div class="guide-grid">
+        <a href="/types-of-goods-sales-tax-act-1990-pakistan/" class="guide-card featured">
+          <div class="guide-card-icon"><svg viewBox="0 0 24 24"><path d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z"/></svg></div>
+          <div class="guide-card-body">
+            <div class="guide-card-title">Types of goods under Sales Tax Act 1990 — standard, zero-rated &amp; exempt</div>
+            <div class="guide-card-desc">Comprehensive explanation of how different goods are classified and taxed. Includes practical examples for traders, retailers, and manufacturers.</div>
+            <span class="guide-card-tag">Complete guide</span>
+          </div>
+        </a>
+      </div>
+
+      <div class="goods-table-wrap" style="margin-top:16px">
+        <table class="goods-table">
+          <thead><tr><th>Category</th><th>Tax Rate</th><th>Input Tax Refund?</th><th>Examples</th></tr></thead>
+          <tbody>
+            <tr><td>Standard-rated goods</td><td class="type-std">18% GST</td><td>Yes</td><td>Most manufactured goods, electronic items, industrial products</td></tr>
+            <tr><td>Zero-rated goods</td><td class="type-zero">0% (taxable)</td><td>Yes — refundable</td><td>Exports, certain textile goods (5th Schedule)</td></tr>
+            <tr><td>Exempt goods</td><td class="type-exempt">Exempt</td><td>No</td><td>Basic food items, medicines, agricultural produce (6th Schedule)</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="callout info" style="margin-top:16px">
+        <div class="callout-icon">ℹ️</div>
+        <div class="callout-body"><div class="callout-title">Zero-rated vs exempt — key difference</div><div class="callout-text">Zero-rated goods are still taxable supplies — the supplier can claim input tax refunds. Exempt goods are outside the tax net entirely — no input tax can be claimed on expenses related to exempt supplies.</div></div>
+      </div>
+    </div>
+
+    <!-- AD ZONE 2 -->
+    <div class="ad-wrap fade-in">
+      <div class="ad-zone"><div class="ad-label">Advertisement</div><ins class="adsbygoogle" style="display:block;min-height:90px" data-ad-client="ca-pub-XXXXXXXXXXXXXXXX" data-ad-slot="6666666666" data-ad-format="auto" data-full-width-responsive="true"></ins><script>(adsbygoogle=window.adsbygoogle||[]).push({});</script></div>
+    </div>
+
+    <!-- 3. REGISTRATION -->
+    <div class="guide-section section-anchor fade-in" id="registration">
+      <div class="section-header">
+        <div class="section-icon"><svg viewBox="0 0 24 24"><path d="M10 6H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V8a2 2 0 00-2-2h-5m-4 0V5a2 2 0 114 0v1m-4 0a2 2 0 104 0"/></svg></div>
+        <div class="section-title-wrap">
+          <div class="section-label">Chapter 3</div>
+          <div class="section-title">Sales Tax Registration</div>
+          <div class="section-desc">Who must register, who is exempt, and how to register on IRIS.</div>
+        </div>
+      </div>
+
+      <div class="guide-grid">
+        <a href="/who-is-required-to-register-under-sales-tax-act-1990/" class="guide-card">
+          <div class="guide-card-icon"><svg viewBox="0 0 24 24"><path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg></div>
+          <div class="guide-card-body">
+            <div class="guide-card-title">Who is required to register under STA 1990?</div>
+            <div class="guide-card-desc">Mandatory registration conditions — turnover thresholds, manufacturers, importers, retailers, and more.</div>
+            <span class="guide-card-tag">Compulsory</span>
+          </div>
+        </a>
+        <a href="/who-is-not-liable-to-register-under-sales-tax-act-1990/" class="guide-card">
+          <div class="guide-card-icon"><svg viewBox="0 0 24 24"><path d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg></div>
+          <div class="guide-card-body">
+            <div class="guide-card-title">Who is NOT liable to register under STA 1990?</div>
+            <div class="guide-card-desc">Small businesses, retailers below threshold, and exempt suppliers — who is excluded from mandatory registration.</div>
+            <span class="guide-card-tag">Exemptions</span>
+          </div>
+        </a>
+      </div>
+
+      <div style="margin-top:20px">
+        <div style="font-size:13px;font-weight:600;color:var(--navy);margin-bottom:12px">How to register for sales tax on IRIS</div>
+        <div class="steps">
+          <div class="step"><div class="step-num">1</div><div><div class="step-title">Login to IRIS portal</div><div class="step-desc">Visit iris.fbr.gov.pk and login with your existing NTN credentials. If you don't have an NTN, register for income tax first to obtain one.</div></div></div>
+          <div class="step"><div class="step-num">2</div><div><div class="step-title">Navigate to Registration</div><div class="step-desc">Go to Registration → Sales Tax Registration → New Application. Select the appropriate category (manufacturer, importer, exporter, retailer, service provider).</div></div></div>
+          <div class="step"><div class="step-num">3</div><div><div class="step-title">Fill business details</div><div class="step-desc">Enter business name, type, address, bank account details, description of taxable activity, and estimated monthly turnover. Upload required documents (CNIC, utility bills, lease/ownership proof).</div></div></div>
+          <div class="step"><div class="step-num">4</div><div><div class="step-title">Submit and await verification</div><div class="step-desc">Submit the application. FBR may conduct a physical verification visit. Upon approval, your Sales Tax Registration Number (STRN) is issued within 2–5 working days.</div></div></div>
+          <div class="step"><div class="step-num">5</div><div><div class="step-title">Display registration certificate</div><div class="step-desc">Every registered person must display their registration certificate prominently at their business premises and issue proper tax invoices from the date of registration.</div></div></div>
+        </div>
+      </div>
+
+      <div class="callout warning" style="margin-top:4px">
+        <div class="callout-icon">⚠️</div>
+        <div class="callout-body"><div class="callout-title">Voluntary registration is also permitted</div><div class="callout-text">Even if you are below the mandatory registration threshold, you can register voluntarily. This allows you to charge sales tax, issue tax invoices, and claim input tax adjustment — beneficial if your buyers are registered persons.</div></div>
+      </div>
+    </div>
+
+    <!-- 4. TIER-1 RETAILERS -->
+    <div class="guide-section section-anchor fade-in" id="retailers">
+      <div class="section-header">
+        <div class="section-icon"><svg viewBox="0 0 24 24"><path d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"/></svg></div>
+        <div class="section-title-wrap">
+          <div class="section-label">Chapter 4</div>
+          <div class="section-title">Tier-1 Retailers</div>
+          <div class="section-desc">Who qualifies as a Tier-1 retailer, their obligations, and the fixed tax scheme for Tier-2.</div>
+        </div>
+      </div>
+
+      <div class="tier-grid">
+        <div class="tier-card tier-1">
+          <span class="tier-label t1">Tier-1 Retailer</span>
+          <div class="tier-name">Registered &amp; fully taxable</div>
+          <div class="tier-desc">Must register for sales tax, charge 18% GST, issue tax invoices, file monthly returns, and maintain records.</div>
+          <ul class="tier-list">
+            <li>Air-conditioned shop in plaza/mall</li>
+            <li>Annual turnover above specified threshold</li>
+            <li>Chain stores / franchise retailers</li>
+            <li>Importers selling directly to consumers</li>
+            <li>Distributors operating as retailers</li>
+          </ul>
+        </div>
+        <div class="tier-card tier-2">
+          <span class="tier-label t2">Tier-2 Retailer</span>
+          <div class="tier-name">Fixed tax via electricity bill</div>
+          <div class="tier-desc">Small retailers not falling in Tier-1. Pay a fixed sales tax added to their electricity bill — no monthly return filing required.</div>
+          <ul class="tier-list">
+            <li>Small shops not in malls/plazas</li>
+            <li>Below annual turnover threshold</li>
+            <li>Non-air-conditioned outlets</li>
+            <li>Kirana stores and local traders</li>
+            <li>No tax invoice requirement</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="guide-grid" style="margin-top:16px">
+        <a href="/when-wholesalers-dealers-distributors-retailers-become-tier-1-retailers-pakistan/" class="guide-card">
+          <div class="guide-card-icon"><svg viewBox="0 0 24 24"><path d="M7 16V4m0 0L3 8m4-4l4 4m6 0v12m0 0l4-4m-4 4l-4-4"/></svg></div>
+          <div class="guide-card-body">
+            <div class="guide-card-title">When do wholesalers &amp; distributors become Tier-1 retailers?</div>
+            <div class="guide-card-desc">The conditions that push a distributor or wholesaler into the Tier-1 retailer bracket under FBR rules.</div>
+            <span class="guide-card-tag">Classification</span>
+          </div>
+        </a>
+        <a href="/do-bakery-shops-fall-under-tier-1-retailers-pakistan/" class="guide-card">
+          <div class="guide-card-icon"><svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg></div>
+          <div class="guide-card-body">
+            <div class="guide-card-title">Do bakery shops fall under Tier-1 retailers?</div>
+            <div class="guide-card-desc">A common question for small food businesses — when does a bakery or confectionery qualify as Tier-1?</div>
+            <span class="guide-card-tag">Food &amp; Bakery</span>
+          </div>
+        </a>
+      </div>
+    </div>
+
+    <!-- AD ZONE 3 -->
+    <div class="ad-wrap fade-in">
+      <div class="ad-zone"><div class="ad-label">Advertisement</div><ins class="adsbygoogle" style="display:block;min-height:90px" data-ad-client="ca-pub-XXXXXXXXXXXXXXXX" data-ad-slot="7777777777" data-ad-format="auto" data-full-width-responsive="true"></ins><script>(adsbygoogle=window.adsbygoogle||[]).push({});</script></div>
+    </div>
+
+    <!-- 5. INPUT TAX -->
+    <div class="guide-section section-anchor fade-in" id="input-tax">
+      <div class="section-header">
+        <div class="section-icon"><svg viewBox="0 0 24 24"><path d="M9 14l-4-4 4-4m6 8l4-4-4-4M5 18h14"/></svg></div>
+        <div class="section-title-wrap">
+          <div class="section-label">Chapter 5</div>
+          <div class="section-title">Input Tax Adjustment</div>
+          <div class="section-desc">How to claim credit for sales tax paid on purchases against tax charged on sales.</div>
+        </div>
+      </div>
+      <div class="guide-grid">
+        <a href="/input-tax-adjustment-sales-tax-pakistan/" class="guide-card featured">
+          <div class="guide-card-icon"><svg viewBox="0 0 24 24"><path d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg></div>
+          <div class="guide-card-body">
+            <div class="guide-card-title">Input tax adjustment — complete guide for registered persons</div>
+            <div class="guide-card-desc">How input tax works, what qualifies for credit, what is blocked, and how to calculate net tax payable. Essential for every registered business.</div>
+            <span class="guide-card-tag">Core topic</span>
+          </div>
+        </a>
+        <a href="/purchase-of-assets-through-banking-channel-or-digital-means/" class="guide-card">
+          <div class="guide-card-icon"><svg viewBox="0 0 24 24"><path d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"/></svg></div>
+          <div class="guide-card-body">
+            <div class="guide-card-title">Input tax on assets via banking channel</div>
+            <div class="guide-card-desc">When assets must be purchased through banking/digital means to claim input tax — conditions and documentation.</div>
+            <span class="guide-card-tag">Documentation</span>
+          </div>
+        </a>
+      </div>
+      <div class="callout success" style="margin-top:16px">
+        <div class="callout-icon">✅</div>
+        <div class="callout-body"><div class="callout-title">Net tax formula</div><div class="callout-text"><strong>Net Tax Payable = Output Tax − Input Tax</strong>. If input tax exceeds output tax in a given month, the excess is carried forward to the next tax period or claimed as a refund (for exporters).</div></div>
+      </div>
+    </div>
+
+    <!-- 6. RETURN FILING -->
+    <div class="guide-section section-anchor fade-in" id="returns">
+      <div class="section-header">
+        <div class="section-icon"><svg viewBox="0 0 24 24"><path d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg></div>
+        <div class="section-title-wrap">
+          <div class="section-label">Chapter 6</div>
+          <div class="section-title">Sales Tax Return Filing</div>
+          <div class="section-desc">How and when to file monthly sales tax returns on IRIS.</div>
+        </div>
+      </div>
+      <div class="steps">
+        <div class="step"><div class="step-num">1</div><div><div class="step-title">Maintain sales and purchase registers</div><div class="step-desc">Record all taxable supplies made (sales/output) and all taxable purchases (input). Each entry must be supported by a valid tax invoice. Keep records for 5 years.</div></div></div>
+        <div class="step"><div class="step-num">2</div><div><div class="step-title">Login to IRIS and open Sales Tax Return</div><div class="step-desc">Go to IRIS portal → Returns → Sales Tax Return. Select the relevant tax period (month). The return form auto-populates from your sales data if you've been issuing e-invoices.</div></div></div>
+        <div class="step"><div class="step-num">3</div><div><div class="step-title">Enter output and input tax</div><div class="step-desc">Fill in total taxable sales and output tax charged. Then fill taxable purchases and input tax available. Declare any blocked input tax (personal use, passenger vehicles, etc.).</div></div></div>
+        <div class="step"><div class="step-num">4</div><div><div class="step-title">Calculate and pay net tax</div><div class="step-desc">Net tax = Output Tax − Input Tax. If positive, pay via PSID/CPR before filing. If negative (excess input), carry forward or apply for refund (exporters only).</div></div></div>
+        <div class="step"><div class="step-num">5</div><div><div class="step-title">Submit by 18th of following month</div><div class="step-desc">The deadline for monthly sales tax returns is the <strong>18th of the month</strong> following the tax period. Late filing attracts a penalty of PKR 10,000 per return under Section 33.</div></div></div>
+      </div>
+    </div>
+
+    <!-- 7. PENALTIES -->
+    <div class="guide-section section-anchor fade-in" id="penalties">
+      <div class="section-header">
+        <div class="section-icon"><svg viewBox="0 0 24 24"><path d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg></div>
+        <div class="section-title-wrap">
+          <div class="section-label">Chapter 7</div>
+          <div class="section-title">Offences &amp; Penalties</div>
+          <div class="section-desc">Penalties for non-registration, late filing, tax fraud, and other violations under STA 1990.</div>
+        </div>
+      </div>
+      <div class="guide-grid">
+        <a href="/tax-fraud-under-sales-tax-act-1990-pakistan/" class="guide-card featured">
+          <div class="guide-card-icon"><svg viewBox="0 0 24 24"><path d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg></div>
+          <div class="guide-card-body">
+            <div class="guide-card-title">Tax fraud under Sales Tax Act 1990 — penalties and consequences</div>
+            <div class="guide-card-desc">What constitutes sales tax fraud, the penalties (monetary and imprisonment), and FBR's powers to investigate and prosecute under Section 2(37) and Section 33.</div>
+            <span class="guide-card-tag">Section 33</span>
+          </div>
+        </a>
+      </div>
+      <div class="goods-table-wrap" style="margin-top:16px">
+        <table class="goods-table">
+          <thead><tr><th>Offence</th><th>Penalty Under</th><th>Consequence</th></tr></thead>
+          <tbody>
+            <tr><td>Non-registration (when required)</td><td>Section 21 / 33</td><td>PKR 10,000 or 5% of sales tax payable, whichever is higher + potential arrest</td></tr>
+            <tr><td>Late filing of monthly return</td><td>Section 33</td><td>PKR 10,000 per return for first default; PKR 50,000 for subsequent</td></tr>
+            <tr><td>Short payment of tax</td><td>Section 33</td><td>Amount of tax short-paid + 24% surcharge per annum</td></tr>
+            <tr><td>Tax fraud (false invoices)</td><td>Section 2(37) / 33</td><td>Up to 5× the tax evaded + imprisonment up to 5 years</td></tr>
+            <tr><td>Failure to issue tax invoice</td><td>Section 23 / 33</td><td>PKR 10,000 per invoice or 5% of tax involved</td></tr>
+            <tr><td>Obstruction of FBR officer</td><td>Section 33</td><td>PKR 25,000 per instance</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="callout danger" style="margin-top:16px">
+        <div class="callout-icon">🚫</div>
+        <div class="callout-body"><div class="callout-title">Fake invoices — zero tolerance</div><div class="callout-text">FBR has a dedicated unit tracking fake or flying invoice fraud. Using fake tax invoices to claim false input tax credits can result in arrest, prosecution, and imprisonment under Section 37A of STA 1990.</div></div>
+      </div>
+    </div>
+
+    <div class="disclaimer">
+      <span style="font-size:14px;flex-shrink:0">⚠️</span>
+      <p><strong>Disclaimer:</strong> All guides are for educational purposes only and do not constitute professional tax or legal advice. Tax laws change frequently — always verify with the <a href="https://www.fbr.gov.pk" target="_blank" rel="noopener noreferrer">official FBR portal</a> or consult a qualified tax professional for your specific situation.</p>
+    </div>
+
+  </div>
+
+  <!-- SIDEBAR -->
+  <aside class="guide-sidebar" aria-label="Sales tax guide sidebar">
+
+    <div class="sidebar-card fade-in">
+      <div class="sb-head">In this guide</div>
+      <div class="sb-body">
+        <div class="toc-link" onclick="scrollTo('basics')">Chapter 1 — Basics</div>
+        <div class="toc-link" onclick="scrollTo('goods')">Chapter 2 — Types of Goods</div>
+        <div class="toc-link" onclick="scrollTo('registration')">Chapter 3 — Registration</div>
+        <div class="toc-link" onclick="scrollTo('retailers')">Chapter 4 — Tier-1 Retailers</div>
+        <div class="toc-link" onclick="scrollTo('input-tax')">Chapter 5 — Input Tax</div>
+        <div class="toc-link" onclick="scrollTo('returns')">Chapter 6 — Return Filing</div>
+        <div class="toc-link" onclick="scrollTo('penalties')">Chapter 7 — Penalties</div>
+      </div>
+    </div>
+
+    <div class="sidebar-card fade-in">
+      <div class="author-mini">
+        <div class="author-avatar">UM</div>
+        <div><div class="author-name">Umair Mubeen</div><div class="author-role">FBR Officer · Tax Educator</div></div>
+      </div>
+      <p class="author-bio">Currently serving at the Federal Board of Revenue. Founder of TaxBuddy — making Pakistan tax laws accessible since 2024.</p>
+      <a href="https://wa.me/923332482742" class="wa-btn" target="_blank" rel="noopener noreferrer" aria-label="Book consultation on WhatsApp">
+        <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+        Book Consultation
+      </a>
+    </div>
+
+    <div class="sidebar-card" style="overflow:hidden">
+      <div class="ad-label" style="padding:4px 0;font-size:10px;font-weight:600;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.1em;text-align:center;background:var(--cream);border-bottom:1px solid var(--border)">Advertisement</div>
+      <ins class="adsbygoogle" style="display:block;min-height:250px;width:100%" data-ad-client="ca-pub-XXXXXXXXXXXXXXXX" data-ad-slot="8888888888" data-ad-format="rectangle" data-full-width-responsive="false"></ins>
+      <script>(adsbygoogle=window.adsbygoogle||[]).push({});</script>
+    </div>
+
+    <div class="sidebar-card fade-in">
+      <div class="sb-head">Useful links</div>
+      <a href="/income-tax-guides/" class="quick-link">Income Tax Guides<span class="quick-link-arrow">→</span></a>
+      <a href="/blog/sales-tax" class="quick-link">Sales Tax Articles<span class="quick-link-arrow">→</span></a>
+      <a href="/income-tax-mcqs-pakistan/" class="quick-link">Practice Tax MCQs<span class="quick-link-arrow">→</span></a>
+      <a href="/SalaryCalculator" class="quick-link">Salary Calculator<span class="quick-link-arrow">→</span></a>
+      <a href="https://www.fbr.gov.pk/categ/sales-tax-act/301" target="_blank" rel="noopener noreferrer" class="quick-link">STA 1990 (Official)<span class="quick-link-arrow">→</span></a>
+      <a href="https://fbr.gov.pk/ShowSROs?Department=Sales%20Tax" target="_blank" rel="noopener noreferrer" class="quick-link">Latest Sales Tax SROs<span class="quick-link-arrow">→</span></a>
+    </div>
+
+  </aside>
+</div>
+</main>
+
+<footer role="contentinfo">
+  <div class="container">
+    <div class="footer-grid">
+      <div>
+        <div class="footer-logo">Tax<em>Buddy</em> Umair</div>
+        <div class="footer-tagline">Educational platform simplifying Pakistan's tax laws for business owners and individuals.</div>
+        <div class="footer-contact"><a href="tel:+923332482742">+92 333 2482742</a><a href="mailto:umair.mubeenir@gmail.com">umair.mubeenir@gmail.com</a></div>
+      </div>
+      <div class="footer-col"><h4>Sales Tax</h4><a href="/sales-tax-guides/">Sales Tax Guides</a><a href="/blog/sales-tax">Sales Tax Articles</a><a href="https://www.fbr.gov.pk/categ/sales-tax-act/301" target="_blank" rel="noopener noreferrer">STA 1990 Official</a></div>
+      <div class="footer-col"><h4>Income Tax</h4><a href="/income-tax-guides/">Income Tax Guides</a><a href="/blog/income-tax">Income Tax Articles</a><a href="/income-tax-mcqs-pakistan/">Tax MCQs</a></div>
+      <div class="footer-col"><h4>Company</h4><a href="/#about">About Umair</a><a href="/#contact">Contact Us</a><a href="https://wa.me/923332482742" target="_blank" rel="noopener noreferrer">WhatsApp</a><a href="/sitemap.xml">Sitemap</a></div>
+    </div>
+    <div class="footer-bottom">
+      <div class="footer-copy">© 2026 TaxBuddy Umair · Educational purposes only · Not professional tax advice</div>
+      <div class="footer-legal"><a href="/privacy-policy">Privacy Policy</a><a href="/terms-and-conditions">Terms of Use</a><a href="/disclaimer">Disclaimer</a></div>
+    </div>
+  </div>
+</footer>
+
+<script>
+  const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const nb = document.getElementById('navbar');
+  let tick = false;
+  window.addEventListener('scroll',()=>{if(!tick){requestAnimationFrame(()=>{nb.classList.toggle('scrolled',window.scrollY>20);tick=false;});tick=true;}},{passive:true});
+  document.getElementById('hamburger').addEventListener('click',()=>document.getElementById('mobile-menu').classList.toggle('open'));
+  document.querySelectorAll('#mobile-menu a').forEach(a=>a.addEventListener('click',()=>document.getElementById('mobile-menu').classList.remove('open')));
+  if(prefersReducedMotion){document.querySelectorAll('.fade-in').forEach(el=>el.classList.add('visible'));}
+  else{const obs=new IntersectionObserver(entries=>{entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('visible');obs.unobserve(e.target);}});},{threshold:0.07});document.querySelectorAll('.fade-in').forEach(el=>obs.observe(el));}
+
+  function scrollTo(id){
+    const el=document.getElementById(id);
+    if(el){el.scrollIntoView({behavior:prefersReducedMotion?'auto':'smooth',block:'start'});}
+    document.querySelectorAll('.qj-btn').forEach(b=>b.classList.remove('active'));
+    document.querySelectorAll('.qj-btn').forEach(b=>{if(b.getAttribute('onclick')&&b.getAttribute('onclick').includes(id))b.classList.add('active');});
+  }
+  const sectionIds=['basics','goods','registration','retailers','input-tax','returns','penalties'];
+  window.addEventListener('scroll',()=>{
+    let cur=sectionIds[0];
+    sectionIds.forEach(id=>{const el=document.getElementById(id);if(el&&el.getBoundingClientRect().top<130)cur=id;});
+    document.querySelectorAll('.toc-link').forEach((l,i)=>l.classList.toggle('active',i===sectionIds.indexOf(cur)));
+  },{passive:true});
+</script>
 </body>
-</html>
+</html
