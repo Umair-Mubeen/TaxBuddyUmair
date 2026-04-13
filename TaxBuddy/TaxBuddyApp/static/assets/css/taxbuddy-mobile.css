@@ -1,0 +1,382 @@
+/*
+ * TaxBuddy Umair — Mobile Responsive Fixes
+ * Add this as <link rel="stylesheet" href="/static/css/mobile.css">
+ * OR paste the relevant @media blocks into each page's <style> tag
+ * Covers: homepage, blog list, blog detail, MCQ, income/sales tax guides
+ * Breakpoints: 1024px (large tablet), 768px (tablet), 480px (mobile), 360px (small mobile)
+ */
+
+/* ─────────────────────────────────────────────────
+   GLOBAL — applies to ALL pages
+───────────────────────────────────────────────── */
+
+/* Prevent horizontal scroll site-wide */
+html, body {
+  overflow-x: hidden;
+  -webkit-text-size-adjust: 100%;
+}
+
+/* Make all images fluid */
+img, svg, video, iframe {
+  max-width: 100%;
+  height: auto;
+}
+
+/* Overflow-x safe tables */
+table {
+  display: block;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* ─────────────────────────────────────────────────
+   LARGE TABLET — 1024px
+───────────────────────────────────────────────── */
+@media (max-width: 1024px) {
+  .container { padding: 0 1.5rem; }
+
+  /* Homepage hero */
+  .hero-grid { gap: 2.5rem; }
+  .hero-title { font-size: clamp(32px, 4.5vw, 52px); }
+
+  /* About section */
+  .about-grid { gap: 3rem; }
+
+  /* Guide pages layout */
+  .guide-layout { gap: 32px; }
+  .guide-sidebar { top: 80px; }
+}
+
+/* ─────────────────────────────────────────────────
+   TABLET — 768px
+───────────────────────────────────────────────── */
+@media (max-width: 768px) {
+  .container { padding: 0 1.25rem; }
+
+  /* ── NAVBAR ── */
+  .nav-links { display: none !important; }
+  .hamburger { display: block !important; }
+  .nav-wa span { display: none; } /* hide label, show icon only */
+  .nav-wa { padding: 8px 12px; }
+
+  /* ── HERO ── */
+  .hero-grid {
+    grid-template-columns: 1fr !important;
+    padding-bottom: 48px;
+  }
+  .hero-card { display: none !important; }
+  .hero-title { font-size: clamp(28px, 6vw, 40px); letter-spacing: -0.5px; }
+  .hero-sub { font-size: 14px; }
+  .hero-btns { flex-direction: column; gap: 10px; }
+  .hero-btns .btn { width: 100%; justify-content: center; }
+  .hero-trust { gap: 12px; }
+  .trust-item { font-size: 12px; }
+
+  /* ── STATS BAR ── */
+  .stats-inner { grid-template-columns: repeat(2, 1fr) !important; }
+  .stat-cell:nth-child(2) { border-right: none !important; }
+  .stat-cell:nth-child(3),
+  .stat-cell:nth-child(4) { border-top: 1px solid var(--border); }
+  .stat-cell:nth-child(4) { border-right: none !important; }
+  .stat-num { font-size: 22px; }
+
+  /* ── SERVICES ── */
+  .services-grid { grid-template-columns: 1fr !important; }
+  .services-header { flex-direction: column; align-items: flex-start; gap: 8px; }
+
+  /* ── TOOLS ── */
+  .tools-grid { grid-template-columns: 1fr !important; }
+
+  /* ── TAX SLABS ── */
+  .slabs-header { flex-direction: column; align-items: flex-start; gap: 12px; }
+  .slab-tabs { width: 100%; justify-content: space-between; }
+  .slab-tab { flex: 1; text-align: center; font-size: 12px; padding: 8px 6px; }
+
+  /* ── SALARY CALCULATOR ── */
+  .calc-wrapper { grid-template-columns: 1fr !important; }
+  .calc-left { padding: 2rem 1.5rem; }
+  .calc-right { padding: 1.5rem; }
+  .calc-toggle-group { flex-wrap: wrap; }
+  .calc-result-grid { grid-template-columns: 1fr 1fr !important; }
+
+  /* ── CONTACT SECTION ── */
+  /* Fix the inline grid style on homepage contact */
+  #contact > .container > div[style*="grid-template-columns"] {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 32px !important;
+  }
+  /* Fix the name+phone row in contact form */
+  #contact div[style*="grid-template-columns:1fr 1fr"] {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 12px !important;
+  }
+
+  /* ── ABOUT SECTION ── */
+  .about-grid { grid-template-columns: 1fr !important; gap: 32px; }
+  .about-card-right { order: -1; } /* show card above bio on mobile */
+  .about-social { flex-wrap: wrap; }
+
+  /* ── BLOG GRID ── */
+  .blog-grid { grid-template-columns: 1fr !important; }
+
+  /* ── MCQ SECTION ── */
+  .mcq-body { padding: 1.25rem; }
+  .mcq-options { gap: 7px; }
+  .mcq-opt { padding: 10px 12px; font-size: 13px; }
+
+  /* ── CTA BOX ── */
+  .cta-box {
+    grid-template-columns: 1fr !important;
+    padding: 2rem 1.5rem;
+  }
+  .cta-btns {
+    flex-direction: column !important;
+    align-items: stretch !important;
+    gap: 10px;
+  }
+  .cta-btns .btn { width: 100%; justify-content: center; }
+
+  /* ── FOOTER ── */
+  .footer-grid { grid-template-columns: 1fr 1fr !important; }
+  .footer-bottom { flex-direction: column; text-align: center; gap: 10px; }
+  .footer-legal { justify-content: center; flex-wrap: wrap; }
+
+  /* ── BLOG LIST PAGE ── */
+  .blog-main { grid-template-columns: 1fr !important; padding: 24px 1.25rem 60px; }
+  .sidebar { position: static !important; }
+  .filter-inner { flex-wrap: wrap; gap: 8px; }
+  .filter-pills { display: none; } /* hide pills on mobile, use tabs instead */
+  .search-wrap { min-width: 100%; max-width: 100%; }
+  .blog-card { flex-direction: column !important; }
+  .blog-card-thumb { width: 100% !important; min-height: 100px; }
+
+  /* ── BLOG DETAIL PAGE ── */
+  .blog-layout { grid-template-columns: 1fr !important; gap: 32px; padding: 28px 1.25rem 60px; }
+  .blog-hero { padding: 16px 1.25rem 0; }
+  .hero-share { display: none; }
+  .article-body p { font-size: 16px; }
+  .article-body h2 { font-size: clamp(18px, 4vw, 22px); }
+  .benefit-grid { grid-template-columns: 1fr !important; }
+  .stats-cards { grid-template-columns: 1fr 1fr !important; }
+  .compare-table-wrap { font-size: 12px; }
+  .compare-table td, .compare-table th { padding: 9px 10px; }
+
+  /* ── MCQ PAGE ── */
+  .mcq-layout { grid-template-columns: 1fr !important; padding: 24px 1.25rem 60px; }
+  .mcq-sidebar { position: static !important; }
+  .hero-level-pills { gap: 6px; }
+  .level-pill { font-size: 11px; padding: 6px 12px; }
+  .score-grid { grid-template-columns: 1fr 1fr 1fr !important; }
+  .tier-grid { grid-template-columns: 1fr !important; }
+
+  /* ── GUIDE PAGES ── */
+  .guide-layout { grid-template-columns: 1fr !important; gap: 32px; padding: 28px 1.25rem 60px; }
+  .guide-sidebar { position: static !important; }
+  .guide-grid { grid-template-columns: 1fr !important; }
+  .guide-card.featured { grid-column: span 1 !important; }
+  .terms-grid { grid-template-columns: 1fr !important; }
+  .wht-table-wrap, .goods-table-wrap,
+  .slab-table-wrap { font-size: 12px; }
+  .wht-table td, .wht-table th,
+  .slab-table td, .slab-table th,
+  .goods-table td, .goods-table th { padding: 9px 10px; white-space: nowrap; }
+  .quick-jump { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+  .qj-inner { flex-wrap: nowrap; overflow-x: auto; padding-bottom: 4px; }
+
+  /* Hero on guide pages */
+  .page-hero { padding: 80px 0 36px; }
+  .page-hero h1 { font-size: clamp(24px, 5vw, 36px); }
+  .hero-stats { gap: 12px; }
+  .hero-stat { font-size: 12px; }
+}
+
+/* ─────────────────────────────────────────────────
+   MOBILE — 480px
+───────────────────────────────────────────────── */
+@media (max-width: 480px) {
+  .container { padding: 0 1rem; }
+
+  /* Typography scale-down */
+  h1, .hero-title { font-size: clamp(24px, 7vw, 34px) !important; }
+  h2 { font-size: clamp(20px, 5.5vw, 28px) !important; }
+  h3 { font-size: 16px !important; }
+
+  /* Navbar */
+  .nav-logo { font-size: 17px; }
+  .nav-wa { display: none; } /* remove on very small, rely on hamburger menu link */
+
+  /* Hero */
+  .page-hero { padding: 76px 0 28px; }
+  #hero { padding-top: 96px; }
+  .hero-trust { flex-direction: column; gap: 8px; padding-top: 18px; }
+
+  /* Stats */
+  .stats-inner { grid-template-columns: 1fr 1fr !important; }
+  .stat-num { font-size: 20px; }
+  .stat-cell { padding: 16px 12px; }
+
+  /* Services */
+  .service-card { padding: 1.25rem; }
+  .service-name { font-size: 15px; }
+  .service-footer { flex-direction: column; gap: 8px; align-items: flex-start; }
+
+  /* Tools */
+  .tool-card { padding: 1.1rem; }
+
+  /* Tax slabs */
+  .slab-tabs { gap: 3px; }
+  .slab-tab { font-size: 11px; padding: 7px 4px; }
+  .slab-table td:nth-child(5),
+  .slab-table th:nth-child(5) { display: none; } /* hide last col on small screens */
+
+  /* Calculator */
+  .calc-left { padding: 1.5rem 1rem; }
+  .calc-right { padding: 1.25rem 1rem; }
+  .calc-result-grid { grid-template-columns: 1fr 1fr !important; gap: 8px; }
+  .calc-result-num { font-size: 15px; }
+  .calc-submit { font-size: 13px; padding: 12px 16px; }
+
+  /* Contact */
+  #contact { padding: 48px 0; }
+
+  /* About */
+  .about-badges { gap: 6px; }
+  .about-badge { font-size: 10.5px; padding: 4px 10px; }
+  .exp-list { gap: 8px; }
+
+  /* Blog detail */
+  .article-body p { font-size: 15px; line-height: 1.75; }
+  .pullquote blockquote { font-size: 17px; }
+  .stats-cards { grid-template-columns: 1fr 1fr !important; gap: 8px; }
+  .stat-card-num { font-size: 22px; }
+  .compare-table td, .compare-table th { padding: 8px 8px; font-size: 11.5px; }
+
+  /* MCQ */
+  .mcq-card-header { flex-wrap: wrap; gap: 8px; }
+  .mcq-ref { margin-left: 0; }
+  .mcq-opt { font-size: 12.5px; padding: 9px 10px; }
+  .mcq-opt-key { width: 24px; height: 24px; font-size: 11px; }
+  .score-grid { grid-template-columns: 1fr 1fr 1fr !important; gap: 8px; }
+  .score-val { font-size: 18px; }
+
+  /* Guides */
+  .section-header { flex-direction: column; gap: 12px; }
+  .section-icon { width: 40px; height: 40px; }
+  .guide-card { padding: 1rem; gap: 10px; }
+  .guide-card-icon { width: 32px; height: 32px; }
+  .guide-card-icon svg { width: 16px; height: 16px; }
+  .guide-card-title { font-size: 13px; }
+  .step-num { width: 28px; height: 28px; font-size: 12px; }
+  .step-title { font-size: 13.5px; }
+
+  /* Blog list */
+  .blog-card-body { padding: 0.9rem 1rem; }
+  .blog-card-title { font-size: 13.5px; }
+  .tab-btn { font-size: 12px; padding: 7px 10px; }
+
+  /* Footer */
+  .footer-grid { grid-template-columns: 1fr !important; }
+  .footer-col { margin-bottom: 4px; }
+
+  /* Page hero */
+  .page-hero h1 { font-size: clamp(22px, 6.5vw, 30px) !important; }
+  .page-hero .hero-desc { font-size: 13.5px; }
+  .hero-stat { font-size: 11.5px; }
+  .eyebrow, .hero-eyebrow { font-size: 9.5px; }
+
+  /* Breadcrumb */
+  .breadcrumb { font-size: 11px; }
+
+  /* Buttons */
+  .btn { padding: 10px 18px; font-size: 13px; }
+  .btn-primary, .nav-wa, .wa-btn, .author-wa-btn { min-height: 44px; }
+
+  /* Tier cards */
+  .tier-card { padding: 1rem; }
+  .tier-name { font-size: 14px; }
+}
+
+/* ─────────────────────────────────────────────────
+   SMALL MOBILE — 360px
+───────────────────────────────────────────────── */
+@media (max-width: 360px) {
+  .container { padding: 0 0.875rem; }
+
+  h1, .hero-title { font-size: 22px !important; }
+  h2 { font-size: 19px !important; }
+
+  .calc-result-grid { grid-template-columns: 1fr !important; }
+  .score-grid { grid-template-columns: 1fr 1fr !important; }
+  .stats-inner { grid-template-columns: 1fr 1fr !important; }
+  .stats-cards { grid-template-columns: 1fr !important; }
+
+  .hero-btns .btn { font-size: 12.5px; padding: 10px 14px; }
+  .slab-tab { font-size: 10.5px; padding: 6px 3px; }
+  .guide-card { flex-direction: column; }
+  .guide-card-icon { width: 36px; height: 36px; }
+
+  .level-pill { font-size: 10.5px; padding: 5px 10px; }
+  .mcq-opt { font-size: 12px; }
+}
+
+/* ─────────────────────────────────────────────────
+   TOUCH / TAP TARGET FIXES
+   WCAG 2.5.5 minimum 44px tap targets
+───────────────────────────────────────────────── */
+@media (max-width: 768px) {
+  .nav-links a,
+  .tab-btn,
+  .slab-tab,
+  .calc-toggle,
+  .filter-pill,
+  .qj-btn,
+  .page-btn,
+  .mcq-opt,
+  .faq-question,
+  .toc-link,
+  .quick-link,
+  .cat-item,
+  .related-item,
+  .popular-item,
+  .level-nav-item {
+    min-height: 44px;
+    display: flex;
+    align-items: center;
+  }
+
+  /* Hamburger larger tap area */
+  .hamburger { padding: 10px; }
+
+  /* Share buttons */
+  .share-btn { width: 44px; height: 44px; }
+
+  /* Scroll to top */
+  #scroll-top { width: 48px; height: 48px; bottom: 20px; right: 16px; }
+}
+
+/* ─────────────────────────────────────────────────
+   PRINT — clean output on all pages
+───────────────────────────────────────────────── */
+@media print {
+  #navbar, .hamburger, #mobile-menu, #scroll-top,
+  .ad-zone, .ad-wrap, .filter-bar, .quick-jump,
+  .nav-wa, .wa-btn, .author-wa-btn, .cta-box,
+  .end-cta, .sidebar, .guide-sidebar, .mcq-sidebar,
+  footer { display: none !important; }
+
+  body { background: #fff !important; color: #000 !important; font-size: 12pt; }
+  .container { max-width: 100% !important; padding: 0 !important; }
+  .blog-layout, .guide-layout, .mcq-layout, .blog-main {
+    grid-template-columns: 1fr !important;
+  }
+  h1, h2, h3 { page-break-after: avoid; color: #000 !important; }
+  a[href]::after { content: " (" attr(href) ")"; font-size: 9pt; color: #555; }
+  a[href^="https://wa.me"]::after,
+  a[href^="tel:"]::after,
+  a[href^="#"]::after { content: ""; }
+  .slab-table-wrap, .compare-table-wrap,
+  .wht-table-wrap, .goods-table-wrap { overflow: visible !important; }
+  table { display: table !important; width: 100%; }
+}
