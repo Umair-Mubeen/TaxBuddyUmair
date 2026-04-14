@@ -1,1138 +1,422 @@
-<!DOCTYPE html>
-<html lang="en">
-
+{% extends "base.html" %}
 {% load static %}
 
-<head>
-
-    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9107458294991357"
-            crossorigin="anonymous"></script>
-    <style>
-        .masonry-grid {
-        display: flex;
-        flex-wrap: wrap;
-    }
-
-    .mesonry-item img {
-        transition: 0.4s ease;
-    }
-
-    .mesonry-item:hover img {
-        transform: scale(1.05);
-    }
-        .calculator-section{
-      padding:80px 0;
-    }
-
-    .section-header{
-      margin-bottom:50px;
-    }
-
-    .section-header h2{
-      font-size:32px;
-      font-weight:700;
-      margin-bottom:10px;
-    }
-
-    .section-header p{
-      color:#5b6b65;
-    }
-
-    .calculator-cards{
-      display:grid;
-      grid-template-columns:repeat(3,1fr);
-      gap:30px;
-    }
-
-    .calculator-card{
-      position:relative;
-      background:#fff;
-      border-radius:20px;
-      padding:40px 25px;
-      text-align:center;
-      text-decoration:none;
-      box-shadow:0 10px 30px rgba(0,0,0,0.06);
-      transition:all 0.3s ease;
-      overflow:hidden;
-    }
-
-    .calculator-card:hover{
-      transform:translateY(-8px);
-      box-shadow:0 20px 40px rgba(0,0,0,0.1);
-    }
-
-    /* NEW Badge */
-    .badge-new{
-      position:absolute;
-      top:15px;
-      right:15px;
-      color:#fff;
-      font-size:11px;
-      padding:6px 10px;
-      border-radius:20px;
-      font-weight:600;
-    }
-
-    /* Icon */
-    .icon-wrap{
-      width:70px;
-      height:70px;
-      margin:0 auto 20px;
-      background:#e9f6f2;
-      border-radius:50%;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      font-size:26px;
-      color:#0f766e;
-    }
-
-    .card-content h3{
-      font-size:18px;
-      margin-bottom:10px;
-      color:#0f172a;
-    }
-
-    .card-content p{
-      font-size:14px;
-      color:#555;
-    }
-
-    /* Responsive */
-    @media(max-width:992px){
-      .calculator-cards{
-        grid-template-columns:1fr;
-      }
-    }
-
-
-    </style>
-    <!-- Meta Pixel Code -->
-    <script>
-        !function(f,b,e,v,n,t,s)
-        {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
-        n.callMethod.apply(n,arguments):n.queue.push(arguments)};
-        if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
-        n.queue=[];t=b.createElement(e);t.async=!0;
-        t.src=v;s=b.getElementsByTagName(e)[0];
-        s.parentNode.insertBefore(t,s)}(window, document,'script',
-        'https://connect.facebook.net/en_US/fbevents.js');
-        fbq('init', '1689887312418361');
-        fbq('track', 'PageView');
-
-
-    </script>
-    <noscript><img height="1" src="https://www.facebook.com/tr?id=1689887312418361&ev=PageView&noscript=1"
-                   style="display:none"
-                   width="1"
-    /></noscript>
-    <!-- End Meta Pixel Code -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-EEP4P5YWE6"></script>
-    <script>
-        window.dataLayer = window.dataLayer || [];
-        function gtag(){dataLayer.push(arguments);}
-        gtag('js', new Date());
-
-        gtag('config', 'G-EEP4P5YWE6');
-
-
-    </script>
-
-    <script src="https://www.google.com/recaptcha/api.js?render=6LesUD4sAAAAAGihejIqA70J-9gVxHzPmYaHXR-b"></script>
-
-
-    <!-- Google tag (gtag.js) -->
-    <link href="{% static 'assets/img/icons/fab2.png' %}" rel="shortcut icon" type="image/x-icon">
-    <!--=====Website Google Verification=======-->
-    <meta content="YRiHeT1-EtI8-FYtI3Oa0L9nx4ufgdHfxyqF2DVUpnw" name="google-site-verification"/>
-    <!--=====Website Google Verification Ends Here =======-->
-
-    <!--=====FaceBook Page Google Verification=======-->
-    <meta content="g1f2rg8kLOyn3gw_jSStSfDExb-26zGn2GzA5iPWRhU" name="google-site-verification"/>
-    <!--=====FaceBook Page Google Verification Ends Here =======-->
-
-    <title> TaxBuddy Umair | Income & Sales Tax Consultant in Pakistan</title>
-    <meta content="Expert tax consultant in Pakistan for income tax filing, sales tax registration, property tax, and FBR compliance. File your tax returns with confidence."
-          name="description">
-
-    <meta content="tax consultant Pakistan, income tax filing, sales tax registration, FBR return filing, property tax Pakistan, tax advisor Karachi, tax consultant Lahore, online tax calculator Pakistan"
-          name="keywords">
-    <meta content="TaxBuddy Umair | Income & Sales Tax Consultant in Pakistan" property="og:title">
-    <meta content="Expert tax services in Pakistan – Income Tax, Sales Tax, Property Tax & FBR compliance."
-          property="og:description">
-    <meta content="https://www.taxbuddyumair.com/" property="og:url">
-    <meta content="https://taxbuddyumair.com/static/assets/img/icons/fab2.png" property="og:image"/>
-
-    {% include 'partials/head-css.html' %}
-    <style>
-        .card:hover {
-        transform: translateY(-6px);
-        transition: 0.3s ease;
-    }
-          /* =========================================================
-       TAXBUDDY UMAIR – HERO (FINAL, RESPONSIVE, CLEAN)
-    ========================================================= */
-
-    :root{
-        --green:#0f766e;
-        --green-dark:#0c5b47;
-        --green-soft:#e9f6f2;
-        --text:#0f172a;
-        --muted:#3f5b54;
-        --border:rgba(15,118,110,0.18);
-    }
-
-    /* ---------------------------------------------------------
-       GLOBAL SAFETY
-    --------------------------------------------------------- */
-    html, body{
-        max-width:100%;
-    }
-
-    body{
-        margin:0;
-        background:#ffffff;
-        color:var(--text);
-    }
-
-    /* ---------------------------------------------------------
-       HERO SECTION (CONTAINER-FLUID)
-    --------------------------------------------------------- */
-    .home6-full-header.hero-fluid{
-        width:100%;
-        position:relative;
-        overflow:hidden;
-
-    }
-
-    /* ---------------------------------------------------------
-       HERO INNER CONTAINER
-    --------------------------------------------------------- */
-    .hero-fluid-inner{
-        max-width:1320px;
-        margin:0 auto;
-        padding:100px 56px;
-        position:relative;
-        z-index:2;
-    }
-
-    /* ---------------------------------------------------------
-       HERO CONTENT
-    --------------------------------------------------------- */
-    .hero-content{
-        max-width:620px;
-    }
-
-    .hero-content h1{
-        font-size:44px;
-        line-height:1.15;
-        font-weight:800;
-        letter-spacing:-0.025em;
-        word-spacing:-1px;
-        margin-bottom:22px;
-    }
-
-    .hero-content h1 span{
-        color:var(--green);
-        font-weight:700;
-    }
-
-    .hero-content p{
-        font-size:17px;
-        line-height:1.65;
-        color:var(--muted);
-        max-width:560px;
-        margin-bottom:34px;
-    }
-
-    /* ---------------------------------------------------------
-       HERO BUTTONS
-    --------------------------------------------------------- */
-    .hero-buttons{
-        display:flex;
-        gap:16px;
-        margin-bottom:18px;
-    }
-
-    .hero-buttons a{
-        text-decoration:none;
-        font-size:15.5px;
-        font-weight:600;
-        padding:15px 28px;
-        border-radius:14px;
-        display:inline-flex;
-        align-items:center;
-        justify-content:center;
-        transition:all 0.25s ease;
-    }
-
-    .btn-primary{
-        background:linear-gradient(135deg, var(--green), var(--green-dark));
-        color:#fff;
-        box-shadow:0 12px 30px rgba(15,118,110,0.35);
-    }
-
-    .btn-primary:hover{
-        transform:translateY(-2px);
-        box-shadow:0 18px 40px rgba(15,118,110,0.45);
-    }
-
-    .btn-secondary{
-        background:var(--green-soft);
-        color:var(--green-dark);
-    }
-
-    .btn-secondary:hover{
-        background:#def2ec;
-    }
-
-    /* ---------------------------------------------------------
-       TRUST LINE
-    --------------------------------------------------------- */
-    .hero-trust{
-        font-size:13px;
-        color:#4b6b63;
-        margin:6px 0 24px;
-        font-weight:500;
-    }
-
-    /* Base (desktop & tablet) */
-    .hero-links{
-        display:flex;
-        gap:12px;
-        flex-wrap:wrap;
-        justify-content:flex-start;
-    }
-
-    /* Pills */
-    .hero-links a{
-        font-size:13px;
-        padding:8px 16px;
-        border-radius:999px;
-        background:#ffffff;
-        color:#0f172a;
-        border:1px solid rgba(15,118,110,0.18);
-        display:inline-flex;
-        align-items:center;
-        gap:6px;
-        white-space:nowrap;
-    }
-
-    /* ---------------------------------------------------------
-       PHONES (≤ 768px) – horizontal scroll
-    --------------------------------------------------------- */
-    @media (max-width: 768px){
-        .hero-links{
-            flex-wrap:nowrap;
-            overflow-x:auto;
-            -webkit-overflow-scrolling:touch;
-            scrollbar-width:none;
-            padding-bottom:6px;
-            margin-left:-6px;
-            margin-right:-6px;
-        }
-
-        .hero-links::-webkit-scrollbar{
-            display:none;
-        }
-
-        .hero-links a{
-            flex:0 0 auto;
-        }
-    }
-
-    /* ---------------------------------------------------------
-       VERY SMALL PHONES (≤ 360px) – wrap instead of scroll
-    --------------------------------------------------------- */
-    @media (max-width: 360px){
-        .hero-links{
-            flex-wrap:wrap;
-            justify-content:center;
-            overflow-x:visible;
-        }
-
-        .hero-links a{
-            font-size:12px;
-            padding:7px 14px;
-        }
-    }
-
-    /* ---------------------------------------------------------
-       RIGHT SIDE BACKGROUND IMAGE (DESKTOP ONLY)
-    --------------------------------------------------------- */
-
-    .home6-full-header.hero-fluid{
-        width:100%;
-        position:relative;
-        overflow:hidden;
-    }
-    /* ---------------------------------------------------------
-       IMAGE BLEND OVERLAY
-    --------------------------------------------------------- */
-    .home6-full-header.hero-fluid::before{
-        content:"";
-        position:absolute;
-        inset:0;
-        background:linear-gradient(
-            to right,
-            rgba(246,251,249,1) 0%,
-            rgba(246,251,249,0.98) 45%,
-            rgba(246,251,249,0.85) 60%,
-            rgba(246,251,249,0.45) 78%,
-            rgba(246,251,249,0) 100%
-        );
-        z-index:1;
-    }
-
-    /* ---------------------------------------------------------
-       TABLET (≤ 992px)
-    --------------------------------------------------------- */
-    @media (max-width: 992px){
-
-    .home6-full-header{
-                 height:600px
-          }
-        .home6-full-header.hero-fluid::after{
-            display:none;
-        }
-
-        .hero-fluid-inner{
-            padding:72px 28px;
-            text-align:center;
-        }
-
-        .hero-content{
-            max-width:100%;
-            margin:auto;
-        }
-
-        .hero-buttons{
-            justify-content:center;
-            flex-wrap:wrap;
-        }
-
-        .hero-links{
-            justify-content:center;
-        }
-    }
-
-    /* ---------------------------------------------------------
-       MOBILE (≤ 768px)
-    --------------------------------------------------------- */
-    @media (max-width: 768px){
-
-        /* Fix absolute header on mobile */
-        .header-absolute,
-        .header.header-absolute{
-            position:relative !important;
-        }
-
-        .hero-fluid-inner{
-            padding:44px 18px;
-        }
-
-        .hero-content{
-            text-align:center;
-        }
-
-        .hero-content h1{
-            font-size:26px;
-            line-height:1.25;
-        }
-
-        .hero-content p{
-            font-size:15px;
-            margin-left:auto;
-            margin-right:auto;
-        }
-
-        .hero-buttons{
-            flex-direction:column;
-            gap:12px;
-        }
-
-        .hero-buttons a{
-            width:100%;
-        }
-
-        /* Pills scroll horizontally */
-        .hero-links{
-            justify-content:flex-start;
-            overflow-x:auto;
-            -webkit-overflow-scrolling:touch;
-            scrollbar-width:none;
-            padding-bottom:6px;
-        }
-
-        .hero-links::-webkit-scrollbar{
-            display:none;
-        }
-
-        .hero-links a{
-            flex:0 0 auto;
-            white-space:nowrap;
-        }
-
-        /* Kill background layers */
-        .home6-full-header.hero-fluid::after,
-        .home6-full-header.hero-fluid::before{
-            display:none;
-        }
-    }
-
-    /* ---------------------------------------------------------
-       VERY SMALL DEVICES (≤ 360px)
-    --------------------------------------------------------- */
-    @media (max-width: 360px){
-
-
-
-        .hero-content h1{
-            font-size:23px;
-        }
-
-        .hero-links a{
-            font-size:12px;
-            padding:8px 14px;
-        }
-    }
-    .about-card{
-        transition: all 0.25s ease;
-    }
-
-    .about-card:hover{
-        transform: translateY(-4px);
-        box-shadow: 0 14px 30px rgba(0,0,0,0.06);
-    }
-
-    /* ===============================
-       FEATURED TAX GUIDES
-    ================================ */
-
-    .featured-guides{
-        padding:80px 0;
-        background:#f7f9f8;
-    }
-
-    .section-header{
-        margin-bottom:35px;
-    }
-
-    .section-header h2{
-        font-size:28px;
-        font-weight:700;
-        color:#0c3b32;
-    }
-
-    .section-header p{
-        font-size:15px;
-        color:#5b6b65;
-    }
-
-    /* GRID LAYOUT */
-    .guides-grid{
-        display:grid;
-        grid-template-columns: 3fr 1.2fr;
-        gap:24px;
-    }
-
-    /* LEFT CARDS */
-    .guides-cards{
-        display:grid;
-        grid-template-columns: repeat(3,1fr);
-        gap:22px;
-    }
-
-    .guide-card{
-        background:#ffffff;
-        border-radius:14px;
-        padding:16px;
-        box-shadow:0 8px 24px rgba(0,0,0,0.08);
-        transition:all 0.25s ease;
-    }
-
-    .guide-card:hover{
-        transform:translateY(-6px);
-        box-shadow:0 16px 36px rgba(0,0,0,0.12);
-    }
-
-    .guide-card img{
-        width:100%;
-        height:130px;
-        object-fit:cover;
-        border-radius:10px;
-        margin-bottom:14px;
-    }
-
-    .guide-card h4{
-        font-size:16px;
-        font-weight:700;
-        margin-bottom:6px;
-    }
-
-    .guide-card p{
-        font-size:14px;
-        color:#5a6a63;
-        margin-bottom:12px;
-    }
-
-    .guide-card a{
-        font-size:14px;
-        font-weight:600;
-        color:#0f766e;
-        text-decoration:none;
-    }
-
-    /* RIGHT SIDEBAR */
-    .guide-sidebar{
-        background:#ffffff;
-        border-radius:14px;
-        padding:18px;
-        box-shadow:0 10px 26px rgba(0,0,0,0.1);
-    }
-
-    .guide-sidebar img{
-        width:100%;
-        height:150px;
-        object-fit:cover;
-        border-radius:10px;
-        margin-bottom:14px;
-    }
-
-    .guide-sidebar h4{
-        font-size:16px;
-        font-weight:700;
-        margin-bottom:10px;
-    }
-
-    .guide-sidebar ul{
-        padding-left:0;
-        list-style:none;
-        font-size:14px;
-        color:#4d5d57;
-    }
-
-    .guide-sidebar li{
-        margin-bottom:6px;
-    }
-
-    /* RESPONSIVE */
-    @media(max-width: 992px){
-        .guides-grid{
-            grid-template-columns:1fr;
-        }
-
-        .guides-cards{
-            grid-template-columns: repeat(2,1fr);
-        }
-    }
-
-    @media(max-width: 576px){
-        .guides-cards{
-            grid-template-columns:1fr;
-        }
-    }
-
-    /* ==============================
-       TAX INFO SECTION
-    ================================ */
-
-    .tax-info-section{
-        padding:80px 0;
-    }
-
-    .box-card{
-        background:#ffffff;
-        border-radius:14px;
-        padding:22px;
-        box-shadow:0 10px 26px rgba(0,0,0,0.08);
-    }
-
-    .section-title{
-        font-size:22px;
-        font-weight:700;
-    }
-
-    .section-subtitle{
-        font-size:14px;
-        color:#6b7b74;
-        margin-bottom:18px;
-    }
-
-    /* ABOUT CARD */
-    .profile-img{
-        width:120px;
-        height:120px;
-        border-radius:12px;
-        object-fit:cover;
-    }
-
-    .about-card h4{
-        font-size:18px;
-        font-weight:700;
-    }
-
-    .about-card p{
-        font-size:14px;
-        color:#5d6d67;
-    }
-
-    .about-list{
-        font-size:14px;
-        padding-left:18px;
-        color:#4f5f59;
-    }
-
-    /* QUICK LINKS */
-    .simple-list{
-        list-style:none;
-        padding-left:0;
-        font-size:14px;
-        color:#4d5d57;
-    }
-
-    /* ARTICLES */
-    .article-item{
-        display:flex;
-        gap:10px;
-        margin-bottom:12px;
-    }
-
-    .article-item img{
-        width:60px;
-        height:60px;
-        border-radius:8px;
-        object-fit:cover;
-    }
-
-    .article-item p{
-        font-size:14px;
-        margin-bottom:2px;
-    }
-
-    .article-item a{
-        font-size:13px;
-        color:#0f766e;
-        text-decoration:none;
-    }
-
-    /* CONTACT */
-    .contact-list{
-        list-style:none;
-        padding-left:0;
-        font-size:14px;
-        margin-bottom:14px;
-    }
-
-    /* RESPONSIVE */
-    @media(max-width:768px){
-        .about-card{
-            flex-direction:column;
-            text-align:center;
-        }
-
-        .profile-img{
-            margin:auto;
-        }
-    .mobile-header{
-            position: static !important;
-            top: auto !important;
-            left: auto !important;
-            right: auto !important;
-        }
-    }
-
-
-    </style>
-</head>
-<body>
-
-<!--=====Navigation Bar=======-->
-{% include 'partials/topbar.html' %}
-<!--=====Navigation Bar Ends Here=======-->
-
-
-<section class="home6-full-header hero-fluid">
-    <div class="hero-fluid-inner">
-        <div class="hero-content">
-
-            <h1>
-                Understand Pakistan Tax Laws —
-                <span>Guides, Calculators & Tutorials</span>
-            </h1>
-
-            <p>
-                Expert tips and tools for individuals, freelancers,
-                and business owners in Pakistan.
+{% block title %}TaxBuddy Umair | Pakistan Income Tax & FBR Expert{% endblock %}
+{% block meta_desc %}Free income tax & sales tax guides, FBR calculators, and expert consultation from an FBR officer. Updated Tax Year 2026.{% endblock %}
+{% block canonical %}https://www.taxbuddyumair.com/{% endblock %}
+
+{% block structured_data %}
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"Person","name":"Umair Mubeen","url":"https://www.taxbuddyumair.com","jobTitle":"Tax Officer, FBR Pakistan","sameAs":["https://www.facebook.com/TaxBuddyUmair","https://www.youtube.com/@TaxBuddyUmair"]}</script>
+{% endblock %}
+
+{% block extra_css %}
+<style>
+.btn{display:inline-flex;align-items:center;gap:8px;font-family:'Inter',sans-serif;font-size:14px;font-weight:600;padding:12px 24px;border-radius:var(--radius-sm);border:none;cursor:pointer;transition:all .2s;text-decoration:none;min-height:44px}
+.btn-green{background:var(--green);color:var(--navy)}.btn-green:hover{background:var(--green-dark);color:#fff}
+.btn-outline{background:transparent;color:#fff;border:1px solid rgba(255,255,255,.3)}.btn-outline:hover{background:rgba(255,255,255,.08);border-color:rgba(255,255,255,.5)}
+.stat-cell{padding:22px 20px;text-align:center;border-right:1px solid var(--border)}
+.stat-cell:last-child{border-right:none}
+.tool-card:hover{box-shadow:var(--shadow-md);transform:translateY(-2px);border-color:var(--green)}
+.blog-card:hover{box-shadow:var(--shadow-md);transform:translateY(-2px)}
+.contact-input{width:100%;padding:10px 12px;font-family:'Inter',sans-serif;font-size:13.5px;background:var(--cream);border:1px solid var(--border);border-radius:var(--radius-sm);outline:none;color:var(--text);transition:border-color .15s}
+.contact-input:focus{border-color:var(--navy);background:#fff}
+@media(max-width:768px){
+  #hero{padding-top:96px!important}
+  .hero-grid{grid-template-columns:1fr!important}
+  .hero-card{display:none!important}
+  .hero-btns{flex-direction:column!important}
+  .hero-btns .btn{width:100%;justify-content:center}
+  .stats-inner{grid-template-columns:1fr 1fr!important}
+  .stat-cell:nth-child(2){border-right:none}
+  .stat-cell:nth-child(3),.stat-cell:nth-child(4){border-top:1px solid var(--border)}
+  .services-grid,.tools-grid{grid-template-columns:1fr!important}
+  .blog-grid{grid-template-columns:1fr 1fr!important}
+  .contact-grid{grid-template-columns:1fr!important;gap:32px!important}
+  .contact-name-row{grid-template-columns:1fr!important}
+}
+@media(max-width:480px){
+  .blog-grid{grid-template-columns:1fr!important}
+  .tools-grid{grid-template-columns:1fr!important}
+}
+</style>
+{% endblock %}
+
+{% block content %}
+
+<!-- HERO -->
+<section id="hero" style="background:var(--navy);padding:120px 0 0;overflow:hidden;position:relative">
+  <div style="position:absolute;top:-60px;right:-60px;width:360px;height:360px;border-radius:50%;background:radial-gradient(circle,rgba(34,201,122,0.06),transparent 70%);pointer-events:none"></div>
+  <div class="container">
+    <div class="hero-grid" style="display:grid;grid-template-columns:1fr 400px;gap:4rem;align-items:end;padding-bottom:80px">
+
+      <div class="fade-in">
+        <div style="margin-bottom:20px">
+          <span style="display:inline-flex;align-items:center;gap:6px;font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--green);background:rgba(34,201,122,0.12);border:1px solid rgba(34,201,122,0.25);padding:5px 14px;border-radius:var(--radius-pill)">
+            <span style="width:6px;height:6px;border-radius:50%;background:var(--green);display:block"></span>
+            FBR Officer · Pakistan Tax Expert
+          </span>
+        </div>
+        <h1 style="font-family:'Playfair Display',serif;font-weight:700;font-style:italic;font-size:clamp(30px,5vw,58px);color:#fff;line-height:1.12;letter-spacing:-0.02em;margin-bottom:18px">Pakistan tax laws,<br><em style="color:var(--green)">finally explained</em><br>for business owners.</h1>
+        <p style="color:rgba(255,255,255,0.55);font-size:15px;line-height:1.75;max-width:480px;margin-bottom:32px">Confused by FBR notices, IRIS portal, NTN registration or sales tax? Get clear, practical guidance from someone who works inside FBR.</p>
+        <div class="hero-btns" style="display:flex;gap:12px;flex-wrap:wrap;margin-bottom:40px">
+          <a href="https://wa.me/923332482742" class="btn btn-green" target="_blank" rel="noopener noreferrer">Book a Consultation →</a>
+          <a href="{% url 'SalaryCalculator' %}" class="btn btn-outline">Free Calculators</a>
+        </div>
+        <div style="display:flex;gap:20px;flex-wrap:wrap;border-top:1px solid rgba(255,255,255,0.08);padding-top:24px">
+          {% for t in badges %}
+  <span style="color:rgba(255,255,255,0.5);font-size:12.5px">{{ t }}</span>
+{% endfor %}
+        </div>
+      </div>
+
+      <div class="hero-card fade-in" style="background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.1);border-radius:16px;padding:1.75rem;margin-bottom:2rem">
+        <div style="display:flex;align-items:center;gap:12px;margin-bottom:1.25rem">
+          <div style="width:46px;height:46px;border-radius:50%;background:linear-gradient(135deg,var(--green-dark),var(--navy-mid));display:flex;align-items:center;justify-content:center;color:#fff;font-family:'Playfair Display',serif;font-size:15px;font-weight:700;flex-shrink:0;border:2px solid rgba(34,201,122,0.3)">UM</div>
+          <div>
+            <div style="color:#fff;font-size:15px;font-weight:600">Umair Mubeen</div>
+            <div style="color:rgba(255,255,255,0.4);font-size:12px">Tax Officer · Federal Board of Revenue</div>
+          </div>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:1.25rem">
+          {{hero_stats}}
+  {% for value,label in hero_stats %}
+    <div style="background:rgba(255,255,255,0.05);border-radius:8px;padding:12px;text-align:center">
+      <div style="color:var(--green);font-size:22px;font-weight:600;line-height:1">{{ value }}</div>
+      <div style="color:rgba(255,255,255,0.35);font-size:10px;margin-top:3px;text-transform:uppercase;letter-spacing:.06em">{{ label }}</div>
+    </div>
+  {% endfor %}
+</div>
+      <div style="display:flex;gap:6px;flex-wrap:wrap">
+  {% for b in hero_tags %}
+    <span style="font-size:10px;color:rgba(255,255,255,0.5);background:rgba(255,255,255,0.06);border-radius:var(--radius-pill);padding:4px 10px;border:1px solid rgba(255,255,255,0.08)">
+      {{ b }}
+    </span>
+  {% endfor %}
+</div>
+      </div>
+    </div>
+  </div>
+  <div style="height:56px;background:var(--cream);clip-path:ellipse(55% 100% at 50% 100%);margin-top:-1px"></div>
+</section>
+
+<!-- STATS -->
+<div style="background:var(--white);border-bottom:1px solid var(--border)">
+  <div class="container">
+    <div class="stats-inner" style="display:grid;grid-template-columns:repeat(4,1fr)">
+      <div class="stat-cell"><div style="font-size:26px;font-weight:600;color:var(--navy)">10K+</div><div style="font-size:11px;color:var(--text-muted);margin-top:4px;text-transform:uppercase;letter-spacing:.07em">Facebook Followers</div></div>
+      <div class="stat-cell"><div style="font-size:26px;font-weight:600;color:var(--navy)">30+</div><div style="font-size:11px;color:var(--text-muted);margin-top:4px;text-transform:uppercase;letter-spacing:.07em">Tax Guides</div></div>
+      <div class="stat-cell"><div style="font-size:26px;font-weight:600;color:var(--navy)">5</div><div style="font-size:11px;color:var(--text-muted);margin-top:4px;text-transform:uppercase;letter-spacing:.07em">Free Calculators</div></div>
+      <div class="stat-cell"><div style="font-size:26px;font-weight:600;color:var(--navy)">2026</div><div style="font-size:11px;color:var(--text-muted);margin-top:4px;text-transform:uppercase;letter-spacing:.07em">Updated Tax Year</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- AD ZONE 1 -->
+<div class="container" style="padding-top:28px">
+  <div class="ad-zone"><div class="ad-label">Advertisement</div>
+    <ins class="adsbygoogle" style="display:block;min-height:90px" data-ad-client="{{ ADSENSE_PUBLISHER_ID }}" data-ad-slot="1111111111" data-ad-format="auto" data-full-width-responsive="true"></ins>
+    <script>(adsbygoogle=window.adsbygoogle||[]).push({});</script></div>
+</div>
+
+<!-- GUIDES STRIP -->
+<div style="background:var(--white);border-top:1px solid var(--border);border-bottom:1px solid var(--border);padding:18px 0">
+  <div class="container">
+    <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap;justify-content:space-between">
+      <span style="font-size:12px;font-weight:700;color:var(--text-muted);text-transform:uppercase;letter-spacing:.08em">Quick access:</span>
+        <div style="display:flex;gap:8px;flex-wrap:wrap">
+  {% for url_name, label in quick_links %}
+    <a href="{% url url_name %}" style="font-size:12px;font-weight:500;color:var(--text-mid);background:var(--cream);border:1px solid var(--border);padding:6px 14px;border-radius:var(--radius-pill);display:inline-flex;align-items:center">
+      {{ label }}
+    </a>
+  {% endfor %}
+</div>
+
+    </div>
+  </div>
+</div>
+
+<!-- TOOLS -->
+<section id="tools" style="padding:72px 0">
+  <div class="container">
+    <div style="display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:28px;flex-wrap:wrap;gap:1rem">
+      <div class="fade-in">
+        <div style="font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:.12em;color:var(--text-muted);margin-bottom:6px">Free Tools</div>
+        <h2 style="font-family:'Playfair Display',serif;font-size:clamp(24px,3vw,34px);font-weight:700;color:var(--navy);letter-spacing:-0.015em">Tax calculators</h2>
+      </div>
+      <p style="font-size:13px;color:var(--text-muted)">FBR 2026 slabs · Instant results · No signup</p>
+    </div>
+    <div class="tools-grid" style="display:grid;grid-template-columns:repeat(3,1fr);gap:14px">
+      <a href="{% url 'SalaryCalculator' %}" class="tool-card fade-in" style="background:var(--white);border:1px solid var(--border);border-radius:var(--radius);padding:1.5rem;display:flex;flex-direction:column;gap:10px;transition:all .2s">
+        <span style="font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:3px 10px;border-radius:var(--radius-pill);background:var(--green-pale);color:var(--green-dark);border:1px solid rgba(34,201,122,0.2);width:fit-content">Salaried</span>
+        <div style="font-size:16px;font-weight:600;color:var(--text);letter-spacing:-0.015em">Salary Tax Calculator</div>
+        <div style="font-size:12.5px;color:var(--text-muted);line-height:1.55;flex:1">Calculate income tax on salary using latest FBR slabs. Compare Tax Year 2025 vs 2026.</div>
+        <span style="font-size:12px;font-weight:600;color:var(--green-dark)">Open calculator →</span>
+      </a>
+      <a href="{% url 'BusinessCalculator' %}" class="tool-card fade-in" style="background:var(--white);border:1px solid var(--border);border-radius:var(--radius);padding:1.5rem;display:flex;flex-direction:column;gap:10px;transition:all .2s">
+        <span style="font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:3px 10px;border-radius:var(--radius-pill);background:var(--green-pale);color:var(--green-dark);border:1px solid rgba(34,201,122,0.2);width:fit-content">Business</span>
+        <div style="font-size:16px;font-weight:600;color:var(--text);letter-spacing:-0.015em">Business Tax Calculator</div>
+        <div style="font-size:12.5px;color:var(--text-muted);line-height:1.55;flex:1">Tax estimate for sole proprietors and small business individuals under ITO 2001.</div>
+        <span style="font-size:12px;font-weight:600;color:var(--green-dark)">Open calculator →</span>
+      </a>
+      <a href="{% url 'AOPCalculator' %}" class="tool-card fade-in" style="background:var(--white);border:1px solid var(--border);border-radius:var(--radius);padding:1.5rem;display:flex;flex-direction:column;gap:10px;transition:all .2s">
+        <span style="font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:3px 10px;border-radius:var(--radius-pill);background:var(--green-pale);color:var(--green-dark);border:1px solid rgba(34,201,122,0.2);width:fit-content">AOP</span>
+        <div style="font-size:16px;font-weight:600;color:var(--text);letter-spacing:-0.015em">AOP Tax Calculator</div>
+        <div style="font-size:12.5px;color:var(--text-muted);line-height:1.55;flex:1">Compute partnership firm tax liability (Association of Persons) under ITO 2001.</div>
+        <span style="font-size:12px;font-weight:600;color:var(--green-dark)">Open calculator →</span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- BLOG — uses `latest_blogs` from index view -->
+<section id="blog" style="padding:0 0 72px">
+  <div class="container">
+    <div style="display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:28px;flex-wrap:wrap;gap:1rem" class="fade-in">
+      <div>
+        <div style="font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:.12em;color:var(--text-muted);margin-bottom:6px">Latest Articles</div>
+        <h2 style="font-family:'Playfair Display',serif;font-size:clamp(24px,3vw,34px);font-weight:700;color:var(--navy);letter-spacing:-0.015em">From the blog</h2>
+      </div>
+      <a href="{% url 'viewBlogs' slug='income-tax' %}" style="font-size:13px;font-weight:500;color:var(--text-mid);border:1px solid var(--border);padding:9px 18px;border-radius:var(--radius-sm);transition:all .15s;display:inline-flex;align-items:center;min-height:40px">View all articles →</a>
+    </div>
+    <div class="blog-grid" style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px">
+      {% for blog in latest_blogs %}
+      <a href="{% url 'BlogDetails' slug=blog.slug %}" class="blog-card fade-in" style="background:var(--white);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;display:flex;flex-direction:column;transition:all .2s">
+        {% if blog.featured_image %}
+        <img src="{{ blog.featured_image.url }}" alt="{{ blog.title }}" style="width:100%;height:130px;object-fit:cover" loading="lazy">
+        {% else %}
+        <div style="height:90px;background:var(--navy);display:flex;align-items:flex-end;padding:10px;position:relative;overflow:hidden">
+          <div style="position:absolute;inset:0;opacity:0.04;background-image:repeating-linear-gradient(45deg,#fff 0,#fff 1px,transparent 0,transparent 50%);background-size:12px 12px"></div>
+          <span style="font-size:9.5px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;padding:3px 9px;border-radius:var(--radius-pill);background:rgba(34,201,122,0.2);color:var(--green);border:1px solid rgba(34,201,122,0.3);position:relative;z-index:1">{{ blog.type|default:"Article"|title }}</span>
+        </div>
+        {% endif %}
+        <div style="padding:1rem;flex:1;display:flex;flex-direction:column;gap:6px">
+          <div style="font-size:14px;font-weight:600;color:var(--text);line-height:1.45;letter-spacing:-0.01em">{{ blog.title }}</div>
+          <div style="display:flex;align-items:center;gap:8px;margin-top:auto;padding-top:8px;border-top:1px solid var(--border)">
+            <span style="font-size:11px;color:var(--text-muted)">{{ blog.created_at|date:"M j, Y" }}</span>
+            <span style="width:3px;height:3px;border-radius:50%;background:var(--border)"></span>
+            <span style="font-size:11px;color:var(--text-muted)">{{ blog.category|default:blog.type|default:"Tax"|title }}</span>
+          </div>
+        </div>
+      </a>
+      {% empty %}
+      <div style="grid-column:span 3;text-align:center;padding:48px;color:var(--text-muted);font-size:14px">No recent articles. Check back soon.</div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+<!-- AD ZONE 2 -->
+<div class="container">
+  <div class="ad-zone"><div class="ad-label">Advertisement</div>
+    <ins class="adsbygoogle" style="display:block;min-height:90px" data-ad-client="{{ ADSENSE_PUBLISHER_ID }}" data-ad-slot="2222222222" data-ad-format="auto" data-full-width-responsive="true"></ins>
+    <script>(adsbygoogle=window.adsbygoogle||[]).push({});</script></div>
+</div>
+
+<!-- MCQ PREVIEW — uses `preview_questions` from index view -->
+<section id="mcq" style="padding:72px 0">
+  <div class="container">
+    <div style="display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:24px;flex-wrap:wrap;gap:1rem" class="fade-in">
+      <div>
+        <div style="font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:.12em;color:var(--text-muted);margin-bottom:6px">Practice</div>
+        <h2 style="font-family:'Playfair Display',serif;font-size:clamp(24px,3vw,34px);font-weight:700;color:var(--navy);letter-spacing:-0.015em">Tax MCQs</h2>
+      </div>
+      <a href="{% url 'question_list' %}" style="font-size:13px;font-weight:500;color:var(--text-mid);border:1px solid var(--border);padding:9px 18px;border-radius:var(--radius-sm);transition:all .15s;display:inline-flex;align-items:center;min-height:40px">Attempt full test →</a>
+    </div>
+
+    {% if preview_questions %}
+    <div class="fade-in" style="background:var(--white);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden">
+      <div style="background:var(--navy);padding:1.25rem 1.5rem;display:flex;align-items:center;justify-content:space-between">
+        <h3 style="color:#fff;font-size:16px;font-weight:600">Sample Question</h3>
+        <span style="background:rgba(34,201,122,0.15);color:var(--green);border:1px solid rgba(34,201,122,0.25);font-size:10.5px;padding:4px 12px;border-radius:var(--radius-pill);font-weight:600">ITO 2001</span>
+      </div>
+
+      {% with q=preview_questions.0 %}
+      <div style="padding:1.5rem" id="mcq-preview">
+        {% if q.section_ref %}<span style="font-size:10.5px;font-weight:600;color:var(--text-muted);background:var(--cream);border:1px solid var(--border);padding:3px 9px;border-radius:var(--radius-pill);display:inline-block;margin-bottom:10px">{{ q.section_ref }}</span>{% endif %}
+        <p style="font-size:15px;font-weight:600;color:var(--text);line-height:1.5;margin-bottom:1rem">{{ q.question_text }}</p>
+        <div style="display:flex;flex-direction:column;gap:7px;margin-bottom:1rem" id="p-opts">
+          {% for opt in q.options.all %}
+          <div onclick="pickOpt(this, {{ opt.is_correct|lower }})"
+               style="display:flex;align-items:center;gap:10px;padding:10px 14px;border-radius:var(--radius-sm);border:1px solid var(--border);background:var(--cream);cursor:pointer;transition:all .15s;font-size:13.5px;color:var(--text-mid);min-height:44px">
+            <div style="width:26px;height:26px;border-radius:6px;background:var(--white);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:var(--text-muted);flex-shrink:0">{{ forloop.counter }}</div>
+            {{ opt.option_text }}
+          </div>
+          {% endfor %}
+        </div>
+        {% if q.explanation %}
+        <div id="p-exp" style="display:none;background:var(--cream);border-left:3px solid var(--green);border-radius:0 var(--radius-sm) var(--radius-sm) 0;padding:12px 14px;font-size:13px;color:var(--text-mid);line-height:1.65;margin-bottom:1rem">{{ q.explanation }}</div>
+        {% endif %}
+        <div style="display:flex;justify-content:flex-end">
+          <a href="{% url 'question_list' %}" style="background:var(--navy);color:#fff;font-size:13px;font-weight:600;padding:10px 20px;border-radius:var(--radius-sm);display:inline-flex;align-items:center;gap:6px;min-height:44px">Try full test →</a>
+        </div>
+      </div>
+      {% endwith %}
+    </div>
+    {% endif %}
+  </div>
+</section>
+
+<!-- CONTACT — POSTs to `contact` view using CSRF + reCAPTCHA -->
+<section id="contact" style="padding:72px 0;background:var(--white);border-top:1px solid var(--border)">
+  <div class="container">
+    <div class="contact-grid" style="display:grid;grid-template-columns:1fr 1fr;gap:56px;align-items:start;max-width:960px;margin:0 auto">
+
+      <!-- LEFT -->
+      <div class="fade-in">
+        <div style="font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:.12em;color:var(--text-muted);margin-bottom:10px">
+          Contact
+        </div>
+
+        <h2 style="font-family:'Playfair Display',serif;font-size:clamp(24px,3vw,34px);font-weight:700;color:var(--navy);line-height:1.2;letter-spacing:-0.015em;margin-bottom:14px">
+          Got a tax question?<br>
+          <em style="color:var(--green);font-style:italic">Let's talk.</em>
+        </h2>
+
+        <p style="font-size:14px;color:var(--text-muted);line-height:1.75;margin-bottom:24px">
+          Return filing, FBR notices, NTN registration, or any tax question — reply within 24 hours on business days.
+        </p>
+
+        <!-- ✅ FIXED LOOP -->
+        {% for icon,title,value,link in contact_items %}
+          <div style="display:flex;align-items:center;gap:12px;padding:12px 14px;background:var(--cream);border:1px solid var(--border);border-radius:var(--radius-sm);margin-bottom:10px">
+            <span style="font-size:18px;flex-shrink:0">{{ icon }}</span>
+            <div>
+              <div style="font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--text-muted);margin-bottom:1px">
+                {{ title }}
+              </div>
+              <a href="{{ link }}" style="font-size:14px;font-weight:600;color:var(--navy)">
+                {{ value }}
+              </a>
+            </div>
+          </div>
+        {% endfor %}
+      </div>
+
+      <!-- RIGHT FORM -->
+      <div class="fade-in" style="transition-delay:.1s">
+        <div style="background:var(--white);border:1px solid var(--border);border-radius:var(--radius);padding:2rem;box-shadow:var(--shadow)">
+
+          <p style="font-size:15px;font-weight:600;color:var(--navy);margin-bottom:18px">
+            Send a message
+          </p>
+
+          <form method="POST" action="{% url 'contact' %}" id="cf">
+            {% csrf_token %}
+            <input type="hidden" name="g-recaptcha-response" id="recaptcha-token">
+
+            <div class="contact-name-row" style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px">
+
+              <div>
+                <label for="first_name" style="display:block;font-size:10.5px;font-weight:700;color:var(--text-muted);text-transform:uppercase;letter-spacing:.08em;margin-bottom:5px">
+                  First name *
+                </label>
+                <input class="contact-input" type="text" id="first_name" name="first_name" placeholder="Ahmed" required>
+              </div>
+
+              <div>
+                <label for="phone_number" style="display:block;font-size:10.5px;font-weight:700;color:var(--text-muted);text-transform:uppercase;letter-spacing:.08em;margin-bottom:5px">
+                  WhatsApp no.
+                </label>
+                <input class="contact-input" type="tel" id="phone_number" name="phone_number" placeholder="+92 3XX XXXXXXX">
+              </div>
+
+            </div>
+
+            <div style="margin-bottom:12px">
+              <label for="subject" style="display:block;font-size:10.5px;font-weight:700;color:var(--text-muted);text-transform:uppercase;letter-spacing:.08em;margin-bottom:5px">
+                Topic
+              </label>
+
+              <select class="contact-input" id="subject" name="subject">
+                <option value="">Select a topic...</option>
+                <option>Return Filing Assistance</option>
+                <option>FBR Notice Response</option>
+                <option>NTN Registration</option>
+                <option>30-min Tax Consultation</option>
+                <option>Sales Tax Query</option>
+                <option>General Tax Question</option>
+                <option>Other</option>
+              </select>
+            </div>
+
+            <div style="margin-bottom:16px">
+              <label for="additional_details" style="display:block;font-size:10.5px;font-weight:700;color:var(--text-muted);text-transform:uppercase;letter-spacing:.08em;margin-bottom:5px">
+                Message *
+              </label>
+
+              <textarea class="contact-input" id="additional_details" name="additional_details" rows="4" required placeholder="Describe your tax question briefly..."></textarea>
+            </div>
+
+            <button type="submit" style="width:100%;background:var(--green);color:var(--navy);font-size:14px;font-weight:700;padding:13px;border-radius:var(--radius-sm);border:none;cursor:pointer">
+              Send Message
+            </button>
+
+            <p style="font-size:11px;color:var(--text-muted);text-align:center;margin-top:10px">
+              Protected by reCAPTCHA ·
+              <a href="{% url 'privacy_policy' %}" style="text-decoration:underline">
+                Privacy Policy
+              </a>
             </p>
 
-            <div class="hero-buttons">
-                <a class="btn-primary" href="#tax-guides" style="color:white">Explore Tax Guides</a>
-                <a class="btn-primary" href="#tax-calculators" style="color:white">Use Tax Calculators</a>
-            </div>
-
-            <p class="hero-trust">
-                ✔ Updated as per FBR tax laws · ✔ Free & educational
-            </p>
-
-
-            <!--            <div class="hero-links">-->
-            <!--                <a href="#">How to Become a Tax Filer</a>-->
-            <!--                <a href="#">ATL vs Non-ATL Status</a>-->
-            <!--                <a href="#">Income Tax Deductions</a>-->
-            <!--            </div>-->
+          </form>
 
         </div>
-    </div>
-</section>
-<section id="latest-blogs" style="background: radial-gradient(circle at top right, #DAE7E3 0%, #F6FBF9 70%);">
-    <div class="container">
-
-        <!-- Section Heading -->
-        <div class="text-center mb-5">
-            <h2 style="font-weight:700;">Latest Tax Blogs</h2>
-        </div>
-
-        <div class="row masonry-grid">
-
-            <!-- Blog Item -->
-            {% for blog in latest_blogs %}
-            <div class="col-md-6 col-lg-4 mb-4 mesonry-item design marketing stories">
-                <div class="card h-100 shadow-sm border-0">
-
-                    <!-- Masonry Image Div -->
-                    <div class="blog-img position-relative overflow-hidden">
-                        <a href="#">
-                            <img src="{{blog.featured_image.url}}"
-                                 class="card-img-top img-fluid"
-                                 alt="{{blog.title}}"
-                                 loading="lazy"
-                                 width="70"
-                                 style="object-fit:cover;border-radius:10px;">
-                        </a>
-                    </div>
-
-                    <div class="card-body">
-
-                        <span class="badge bg-success mb-2">{{blog.category}}</span>
-
-                        <h5 class="card-title">
-                            <a href="{{blog.slug}}" class="text-dark text-decoration-none">{{blog.title}}</a>
-                        </h5>
-
-
-                        <a href="{{blog.slug}}" class="btn btn-sm btn-outline-success">
-                            Read More →
-                        </a>
-
-                    </div>
-                </div>
-            </div>
-            {% endfor %}
-
-        </div>
-
-        <div class="text-center mt-4">
-            <a href="/blog/income-tax" class="btn btn-success px-4">
-                View All Blogs
-            </a>
-        </div>
+      </div>
 
     </div>
+  </div>
 </section>
-<section class="featured-guides" id="tax-guides"
-         style="background: radial-gradient(circle at top right, #DAE7E3 0%, #F6FBF9 70%);">
-    <div class="container">
+<!-- AD ZONE 3 -->
+<div class="container" style="padding:36px 0">
+  <div class="ad-zone"><div class="ad-label">Advertisement</div>
+    <ins class="adsbygoogle" style="display:block;min-height:90px" data-ad-client="{{ ADSENSE_PUBLISHER_ID }}" data-ad-slot="3333333333" data-ad-format="auto" data-full-width-responsive="true"></ins>
+    <script>(adsbygoogle=window.adsbygoogle||[]).push({});</script></div>
+</div>
 
-        <!-- Section Header -->
-        <div class="section-header">
-            <h2>Featured Tax Guides</h2>
-            <p>Learn about income tax, sales tax, filing requirements, and more</p>
-        </div>
+<!-- Disclaimer -->
+<div class="container" style="padding-bottom:48px">
+  <div style="background:#fffbeb;border:1px solid #fde68a;border-radius:var(--radius-sm);padding:12px 16px;display:flex;gap:10px;align-items:flex-start">
+    <span style="flex-shrink:0">⚠️</span>
+    <p style="font-size:12px;color:#92400e;line-height:1.55;margin:0"><strong>Disclaimer:</strong> All content on this website is for educational purposes only and does not constitute professional tax, legal, or financial advice. Always verify with the <a href="https://www.fbr.gov.pk" target="_blank" rel="noopener noreferrer" style="color:#92400e;text-decoration:underline">official FBR portal</a> or consult a qualified tax professional.</p>
+  </div>
+</div>
 
-        <div class="guides-grid">
+{% endblock %}
 
-            <!-- LEFT GRID -->
-            <div class="guides-cards">
-
-                <div class="guide-card">
-                    <img alt="Income Tax Guide"
-                         decoding="async"
-                         height="300"
-                         loading="lazy"
-                         src="{% static 'assets/img/image/income_tax.webp' %}"
-                         width="400">                    <h4>Income Tax Basics</h4>
-                    <p>Learn about income tax, sales filing requirements, and more.</p>
-                    <a href="/income-tax-guides">Read More →</a>
-                </div>
-
-                <div class="guide-card">
-                    <img alt="Sales Tax Guide"
-                         decoding="async"
-                         height="300"
-                         loading="lazy"
-                         src="{% static 'assets/img/image/sales_tax.webp' %}"
-                         width="400">                    <h4>Sales Tax Guide</h4>
-                    <p>GST & Business Tax Solutions for maintain & reporting.</p>
-                    <a href="/sales-tax-guides">Read More →</a>
-                </div>
-
-                <div class="guide-card">
-                    <img alt="Tax Calculators"
-                         decoding="async"
-                         height="300"
-                         loading="lazy"
-                         src="{% static 'assets/img/image/tax_calculators.webp' %}"
-                         width="400">                    <h4>Freelancer Tax Rules</h4>
-                    <p>Easy tax calculator tools for your businesses income.</p>
-                    <a href="#">Read More →</a>
-                </div>
-
-            </div>
-
-            <!-- RIGHT SIDEBAR -->
-            <div class="guide-sidebar">
-                <img alt="Tax Drifting"
-                     decoding="async"
-                     height="300"
-                     loading="lazy"
-                     src="{% static 'assets/img/image/tax_drifting.webp' %}"
-                     width="400">                <h4>Tax Tax Drifting</h4>
-
-                <ul>
-                    <li><strong>Income Tax Drizzle</strong></li>
-                    <li>✔ Learn about tax eases</li>
-                    <li>✔ Easier tax deductions</li>
-                    <li>✔ Easy usage as shown</li>
-                </ul>
-            </div>
-
-        </div>
-
-    </div>
-</section>
-
-<section class="calculator-section" id="tax-calculators"
-         style="background: radial-gradient(circle at top right, #DAE7E3 0%, #F6FBF9 70%);">
-    <div class="container">
-
-        <div class="section-header">
-            <h2>Tax Calculators</h2>
-            <p>Calculate your income tax instantly using our smart tools.</p>
-        </div>
-
-        <div class="calculator-cards">
-
-            <!-- Salary -->
-            <a class="calculator-card" href="{% url 'SalaryCalculator' %}">
-                <span class="badge-new bg-success">NEW</span>
-
-                <div class="icon-wrap bg-success text-white">
-                    <i class="fas fa-user-tie"></i>
-                </div>
-
-                <div class="card-content">
-                    <h3>Salary Tax Calculator</h3>
-                    <p>Calculate tax on salaried income using latest slabs.</p>
-                </div>
-            </a>
-
-            <!-- Business -->
-            <a class="calculator-card" href="{% url 'BusinessCalculator' %}">
-                <span class="badge-new bg-success">NEW</span>
-
-                <div class="icon-wrap bg-success text-white">
-                    <i class="fas fa-briefcase"></i>
-                </div>
-
-                <div class="card-content">
-                    <h3>Business Tax Calculator</h3>
-                    <p>Estimate tax for sole proprietors & small businesses.</p>
-                </div>
-            </a>
-
-            <!-- AOP -->
-            <a class="calculator-card" href="{% url 'AOPCalculator' %}">
-                <span class="badge-new bg-success">NEW</span>
-
-                <div class="icon-wrap bg-success text-white">
-                    <i class="fas fa-users"></i>
-                </div>
-
-                <div class="card-content">
-                    <h3>AOP Tax Calculator</h3>
-                    <p>Compute tax liability for partnership firms (AOP).</p>
-                </div>
-            </a>
-
-        </div>
-
-    </div>
-</section>
-
-<section class="" id="tax-rates"
-         style="background: radial-gradient(circle at top right, #DAE7E3 0%, #F6FBF9 70%);">
-    <div class="container">
-
-        <div class="section-header">
-            <h2>Tax Rates</h2>
-            <p>Explore updated tax rates under Income Tax Ordinance, 2001.</p>
-        </div>
-
-        <div class="calculator-cards">
-
-            <!-- Salary -->
-            <a class="calculator-card"
-               href="{% url 'income-tax-rates' %}?section=salary">
-                <span class="badge-new bg-success">RATES</span>
-
-                <div class="icon-wrap bg-success text-white">
-                    <i class="fas fa-user-tie"></i>
-                </div>
-
-                <div class="card-content">
-                    <h3>Salaried Individuals</h3>
-                    <p>View latest income tax slabs for salaried persons.</p>
-                </div>
-            </a>
-
-            <!-- Business -->
-            <a class="calculator-card"
-               href="{% url 'income-tax-rates' %}?section=business">
-                <span class="badge-new bg-success">RATES</span>
-
-                <div class="icon-wrap bg-success text-white">
-                    <i class="fas fa-briefcase"></i>
-                </div>
-
-                <div class="card-content">
-                    <h3>Business Individuals</h3>
-                    <p>Check tax slabs for non-salaried persons.</p>
-                </div>
-            </a>
-
-            <!-- AOP -->
-            <a class="calculator-card"
-               href="{% url 'income-tax-rates' %}?section=aop">
-                <span class="badge-new bg-success">RATES</span>
-
-                <div class="icon-wrap bg-success text-white">
-                    <i class="fas fa-users"></i>
-                </div>
-
-                <div class="card-content">
-                    <h3>AOP (Partnership Firms)</h3>
-                    <p>View applicable tax rates for Associations of Persons.</p>
-                </div>
-            </a>
-
-            <!-- Banks / Corporate -->
-            <a class="calculator-card"
-               href="{% url 'income-tax-rates' %}?section=corporate">
-                <span class="badge-new bg-success">RATES</span>
-
-                <div class="icon-wrap bg-success text-white">
-                    <i class="fas fa-university"></i>
-                </div>
-
-                <div class="card-content">
-                    <h3>Banks & Companies</h3>
-                    <p>Corporate & banking company tax rates.</p>
-                </div>
-            </a>
-
-        </div>
-
-    </div>
-</section>
-
-{% include 'partials/view_mcq.html' with preview_questions=preview_questions %}
-
-{% include 'Faq_question.html' %}
-<section class="tax-info-section"
-         style="background: radial-gradient(circle at top right, #DAE7E3 0%, #F6FBF9 70%); padding:70px 0;">
-    <div class="container" id="about">
-        <div class="row g-4">
-
-            <!-- LEFT COLUMN -->
-            <div class="col-lg-12">
-
-                <!-- ABOUT SECTION -->
-                <div class="box-card mb-4 p-4">
-
-                    <div class="about-card d-flex align-items-start gap-4">
-                        <img alt="Umair Mubeen - Tax Consultant"
-                             class="profile-img"
-                             decoding="async"
-                             height="110"
-                             loading="lazy"
-                             src="{% static 'assets/img/image/About.webp' %}"
-                             width="110">
-                        <div>
-                            <h3 class="section-title mb-3">About TaxBuddy Umair</h3>
-
-                            <p>
-                                <strong>TaxBuddy Umair</strong> is a Pakistan-based educational platform focused on
-                                simplifying income tax, sales tax, and compliance matters under the
-                                Income Tax Ordinance 2001 and relevant FBR regulations.
-                            </p>
-
-                            <p>
-                                The goal of this platform is to help salaried individuals, freelancers,
-                                business owners, and Associations of Persons (AOP) understand tax laws
-                                in a clear and practical manner.
-                            </p>
-
-                            <p class="text-muted" style="font-size:14px;">
-                                <strong>Disclaimer:</strong> The information provided on this website is for
-                                educational purposes only and does not constitute legal, financial, or
-                                professional tax advice. For case-specific matters, consult a qualified
-                                tax professional or advisor.
-                            </p>
-
-                            <ul class="about-list mt-3">
-                                <li>✔ Detailed tax guides and compliance tutorials</li>
-                                <li>✔ Updated tax calculators based on current slabs</li>
-                                <li>✔ Practical explanations of ATL, filer status & withholding tax</li>
-                                <li>✔ Support for individuals and small businesses</li>
-                            </ul>
-
-                        </div>
-                    </div>
-                </div>
-
-            </div>
-
-
-        </div>
-    </div>
-</section>
-
-<!--=====contact start=======-->
-{% include 'contact.html' %}
-<!--=====contact end=======-->
-
-
-{% include 'partials/footer.html' %}
-{% include 'partials/up.html' %}
-{% include 'partials/footer-scripts.html' %}
-
+{% block extra_js %}
+{% if RECAPTCHA_SITE_KEY %}
+<script src="https://www.google.com/recaptcha/api.js?render={{ RECAPTCHA_SITE_KEY }}"></script>
 <script>
-    $(document).ready(function(){
-    $('.case-studes').owlCarousel({
-        loop: true,
-        margin: 30,
-        nav: true,
-        dots: false,
-        smartSpeed: 600,
-        responsive: {
-            0: { items: 1 },
-            768: { items: 2 },
-            1200: { items: 3 }
-        }
+document.getElementById('cf').addEventListener('submit', function(e) {
+  e.preventDefault();
+  const btn = this.querySelector('button[type=submit]');
+  btn.textContent = 'Sending...'; btn.disabled = true;
+  grecaptcha.ready(() => {
+    grecaptcha.execute('{{ RECAPTCHA_SITE_KEY }}', { action: 'contact' }).then(token => {
+      document.getElementById('recaptcha-token').value = token;
+      e.target.submit();
     });
+  });
 });
 </script>
-</body>
-
-</html>
+{% endif %}
+<script>
+function pickOpt(el, correct) {
+  const c = document.getElementById('p-opts');
+  if (c.querySelector('.picked')) return;
+  el.classList.add('picked');
+  el.style.background = correct ? '#f0fdf4' : '#fef2f2';
+  el.style.borderColor = correct ? '#22c97a' : '#ef4444';
+  el.style.color = correct ? '#15803d' : '#dc2626';
+  if (!correct) {
+    c.querySelectorAll('div[onclick]').forEach(o => {
+      if (o.getAttribute('onclick').includes('true')) {
+        o.style.background = '#f0fdf4'; o.style.borderColor = '#22c97a'; o.style.color = '#15803d';
+      }
+    });
+  }
+  const exp = document.getElementById('p-exp');
+  if (exp) exp.style.display = 'block';
+}
+</script>
+{% endblock %}

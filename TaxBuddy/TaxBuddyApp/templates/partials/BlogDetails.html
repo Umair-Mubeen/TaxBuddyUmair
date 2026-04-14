@@ -1,619 +1,211 @@
-<!DOCTYPE html>
+{% extends "base.html" %}
 {% load static %}
-<html>
-<head>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-
-<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700&family=Open+Sans:wght@400;500;600&display=swap" rel="stylesheet">
-     <style>
-         body {
-    font-family: 'Open Sans', sans-serif;
-    font-size: 17px;
-    line-height: 1.7;
-    color: #222;
-}
-
-h1, h2, h3, h4, h5, h6 {
-    font-family: 'Montserrat', sans-serif;
-    font-weight: 600;
-}
-        /* Interactive Blog Card */
-.interactive-blog {
-    height: 100%;
-    border-radius: 14px;
-    background: #fff;
-    transition: all 0.35s ease;
-    position: relative;
-    overflow: hidden;
-}
-
-.interactive-blog:hover {
-    transform: translateY(-8px);
-    box-shadow: 0 18px 40px rgba(0,0,0,0.12);
-}
-
-/* Image */
-.interactive-blog .blog-img {
-    position: relative;
-    overflow: hidden;
-    border-radius: 14px 14px 0 0;
-}
-
-.interactive-blog .blog-img img {
-    width: 100%;
-    transition: transform 0.5s ease;
-}
-
-.interactive-blog:hover .blog-img img {
-    transform: scale(1.08);
-}
-
-/* Badge */
-.blog-badge {
-    position: absolute;
-    top: 12px;
-    left: 12px;
-    background: #1d4ed8;
-    color: #fff;
-    font-size: 11px;
-    padding: 5px 10px;
-    border-radius: 20px;
-    opacity: 0;
-    transform: translateY(-5px);
-    transition: 0.3s ease;
-}
-
-.interactive-blog:hover .blog-badge {
-    opacity: 1;
-    transform: translateY(0);
-}
-
-/* Content */
-.blog-content {
-    padding: 15px;
-}
-
-.blog-title {
-    font-size: 18px;
-    line-height: 1.4;
-    margin-bottom: 8px;
-}
-
-.blog-title a {
-    color: #111827;
-    text-decoration: none;
-}
-
-.blog-title a:hover {
-    color: #1d4ed8;
-}
-
-/* Widget title */
-.widget-title {
-    font-size: 18px;
-    font-weight: 700;
-    margin-bottom: 15px;
-    border-bottom: 2px solid #e5e7eb;
-    padding-bottom: 6px;
-}
-
-/* Wrapper link */
-.recent-post-link {
-    display: flex;
-    gap: 12px;
-    align-items: center;
-    text-decoration: none;
-    padding: 10px;
-    border-radius: 10px;
-    transition: all 0.3s ease;
-}
-
-.recent-post-link:hover {
-    background: #f9fafb;
-}
-
-/* Content */
-.recent-post-content {
-    flex: 1;
-}
-
-.recent-post-title {
-    font-size: 14px;
-    font-weight: 600;
-    color: #111827;
-    line-height: 1.4;
-    margin-bottom: 4px;
-}
-
-.recent-post-link:hover .recent-post-title {
-    color: #1d4ed8;
-}
-
-/* Meta */
-.recent-post-meta {
-    font-size: 12px;
-    color: #6b7280;
-}
-
-/* Image */
-.recent-img {
-    width: 70px;
-    height: 55px;
-    overflow: hidden;
-    border-radius: 8px;
-    flex-shrink: 0;
-}
-
-.recent-img img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    transition: transform 0.4s ease;
-}
-
-
-/* Mobile optimization */
-@media (max-width: 576px) {
-    .recent-post-title {
-        font-size: 13px;
-    }
-
-    .recent-img {
-        width: 60px;
-        height: 50px;
-    }
-}
-
-
-
-    </style>
-
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-EEP4P5YWE6"></script>
-    <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
-      gtag('config', 'G-EEP4P5YWE6');
-
-
-
-
-    </script>
-
-    <link href="{% static 'assets/img/icons/fab2.png' %}" rel="shortcut icon" type="image/x-icon">
-    <title>TaxBuddy Umair | {{ blog.title }}</title>
-
-    <meta content="{{ blog.title }}" property="og:title">
-
-    <meta name="title" content="{{ blog.meta_title|default:blog.title }}">
-    <meta name="description" content="{{ blog.meta_description|default:blog.meta_description|truncatechars:160 }}">
-<!--    <meta name="keywords" content="{{ blog.focus_keyword }}">-->
-    <meta name="author" content="Umair Mubeen">
-    <meta name="robots" content="index, follow">
-    <link rel="canonical" href="https://www.taxbuddyumair.com/{{ blog.slug }}/">
-
-    <!-- Open Graph / Facebook -->
-    <meta property="og:type" content="article">
-    <meta property="og:title" content="{{ blog.meta_title|default:blog.title }}">
-    <meta property="og:description" content="{{ blog.meta_description|default:blog.meta_description|truncatechars:160 }}">
-    <meta property="og:image" content="https://taxbuddyumair.com{{ blog.featured_image.url }}">
-    <meta property="og:url" content="https://www.taxbuddyumair.com/{{ blog.slug }}/">
-    <meta property="og:site_name" content="TaxBuddy Umair">
-
-    <!-- Twitter -->
-    <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="{{ blog.meta_title|default:blog.title }}">
-    <meta name="twitter:description" content="{{ blog.meta_description|default:blog.meta_description|truncatechars:160 }}">
-    <meta name="twitter:image" content="https://taxbuddyumair.com{{ blog.featured_image.url }}">
-
-    <meta content="https://taxbuddyumair.com{{ blog.featured_image.url }}" property="og:image">
-    <meta content="https://www.taxbuddyumair.com/{{ blog.slug }}/" property="og:url">
-
-    {% include 'partials/head-css.html' %}
-
-    <style>
-
-/* ==============================
-   SINGLE BLOG CONTENT AREA
-   ============================== */
-
-.single-blog-contents {
-  font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
-  font-size: 16px;
-  line-height: 1.75;
-  color: #1f2937; /* professional dark gray */
-}
-
-/* ==============================
-   BLOG MAIN IMAGE
-   ============================== */
-
-.blog-main-image {
-  max-width: 1200px;
-  margin: 0 auto 28px;
-}
-
-.blog-main-image img {
-  width: 100%;
-  height: auto;
-  object-fit: contain;
-  display: block;
-  border-radius: 10px;
-}
-
-/* ==============================
-   BLOG TITLE
-   ============================== */
-
-.single-blog-contents h3 {
-  font-size: 28px;
-  font-weight: 600;
-  margin: 16px 0 8px;
-  line-height: 1.3;
-}
-
-/* ==============================
-   DATE
-   ============================== */
-
-.blog-date-time {
-  margin-bottom: 16px;
-}
-
-.blog-date-time a {
-  font-size: 14px;
-  color: #6b7280; /* muted gray */
-  text-decoration: none;
-}
-
-/* ==============================
-   BLOG CONTENT
-   ============================== */
-
-.blog-content {
-  font-size: 17px;
-  line-height: 1.8;
-  margin-bottom: 24px;
-}
-
-.blog-content p {
-  margin-bottom: 16px;
-}
-
-/* Ensure images inside content behave well */
-.blog-content img {
-  max-width: 100%;
-  height: auto;
-  margin: 20px 0;
-  border-radius: 8px;
-}
-
-/* ==============================
-   DIVIDER
-   ============================== */
-
-.theme-border {
-  margin: 24px 0;
-  border-bottom: 1px solid #e5e7eb;
-}
-@media (max-width: 768px) {
-  .blog-main-image {
-    max-width: 100%;
-    margin: 0 0 20px;
-  }
-
-  .blog-main-image img {
-    width: 100%;
-    height: auto;
-  }
-}
-
-
-
-
-
-    </style>
-
-        <style>
-    .blog-filter {
-    display: inline-flex;
-    gap: 10px;
-    flex-wrap: wrap;
-}
-
-.filter-btn {
-    border: none;
-    padding: 8px 18px;
-    border-radius: 30px;
-    font-size: 14px;
-    font-weight: 600;
-    cursor: pointer;
-    background: #e5e7eb;
-    color: #111827;
-    transition: 0.3s ease;
-}
-
-.filter-btn:hover {
-    background: #1d4ed8;
-    color: #ffffff;
-}
-
-.filter-btn.active {
-    background: #1d4ed8;
-    color: #ffffff;
-}
-
-        .single-blog {
-            height: 100%;
-            display: flex;
-            flex-direction: column;
-            background: #ffffff;
-            border-radius: 12px;
-            padding: 15px;
-            transition: 0.3s ease;
-        }
-
-        .single-blog:hover {
-            transform: translateY(-6px);
-            box-shadow: 0 12px 30px rgba(0,0,0,0.08);
-        }
-
-        .blog-img {
-            width: 100%;
-            height: 240px;
-            background: #f4f6f8;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border-radius: 10px;
-            overflow: hidden;
-            margin-bottom: 12px;
-        }
-
-        .blog-img img {
-            max-width: 100%;
-            max-height: 100%;
-            object-fit: contain; /* SHOW FULL IMAGE */
-        }
-
-        .blog-tags {
-            list-style: none;
-            padding: 0;
-            margin: 0 0 8px;
-        }
-
-        .blog-tags li a {
-            font-size: 12px;
-            font-weight: 600;
-            color: #7977C6;
-            padding: 4px 10px;
-            border-radius: 20px;
-            text-decoration: none;
-        }
-
-        .blog-title {
-            font-size: 15px;
-            line-height: 1.4;
-            font-weight: 700;
-            color: #111827;
-            text-decoration: none;
-        }
-
-        .blog-title:hover {
-            color: #1d4ed8;
-        }
-
-        @media (max-width: 768px) {
-            .blog-img {
-                height: 180px;
-            }
-        }
-@media (max-width: 576px) {
-    .blog-area .row.mb-4 {
-        margin-bottom: 20px !important;
-    }
-}
-
-
-@media (max-width: 576px) {
-
-    .blog-filter {
-        margin-top: 40px;
-
-    }
-    }
-
-
-@media (max-width: 576px) {
-    .blog-img {
-        height: 160px;
-    }
-}
-
-@media (max-width: 576px) {
-    .blog-title {
-        font-size: 16px;
-        line-height: 1.45;
-    }
-}
-
-@media (max-width: 576px) {
-    .single-blog {
-        margin-bottom: 18px;
-    }
-}
-
-
-
-    </style>
-
-</head>
-
-<body>
-{% include 'partials/topbar.html' %}
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-
-<!--===== Single Blog Start =====-->
-<div class="single-blog-area padding-top inner-font-1 inner-blog-1">
-    <div class="container">
-        <div class="row">
-            <div class="col-lg-8">
-                <div class="single-blog-contents lg-ml-15">
-
-
-                    <h3>{{ blog.title }}</h3>
-
-                    <div class="blog-date-time">
-                        <ul class="blog-date">
-                            <li><a href="#">{{ blog.created_at|date }}</a></li>
-                        </ul>
-                    </div>
-
-                    <div class="blog-content" style="text-align:justify">
-                        {{ blog.content|safe }}
-                    </div>
-
-                    <div class="theme-border"></div>
-
-                    <div class="row align-items-center">
-                        <div class="col-md-6">
-                            <div class="tags">
-   <ul>
-    <li>TAGS :</li>
-    {% for tag in tags_list %}
-        <li>
-            <a href="#">{{ tag }}</a>
-        </li>
-    {% empty %}
-        <li>No Tags</li>
-    {% endfor %}
-</ul>
-</div>
-                        </div>
-
-                        <div class="col-md-6">
-                            <div class="social social3 text-right social-share">
-                                <ul>
-                                    <li>Share:</li>
-                                    <li>
-                                        <a href="https://www.facebook.com/TaxBuddyUmair" title="Facebook">
-                                            <i class="fa-brands fa-facebook-f"></i>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="https://www.instagram.com/umair_mubeen94/" title="Instagram">
-                                            <i class="fa-brands fa-instagram"></i>
-                                        </a>
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-
-                </div>
-            </div>
-
-            <!--===== Sidebar =====-->
-            <div class="col-lg-4">
-                <div class="widgets lg-mr-15">
-
-                    <div class="single-widget about-widget">
-                        <div class="about-author">
-                            <img alt="TaxBuddy Umair" src="{% static 'assets/img/blog/blog5.png' %}">
-                        </div>
-                        <h4>TaxBuddy Umair.</h4>
-                        <p>
-                            When it comes to taxes, remember: compliance doesn’t happen overnight —
-                            understanding tax laws like the Income Tax Ordinance, 2001 and Sales Tax Act, 1990
-                            takes time, clarity, and the right guidance.
-                        </p>
-                    </div>
-
-                    <div class="single-widget recent-posts">
-                        <h3 class="widget-title">Recent Blogs</h3>
-
-                        <div class="recent-post-item">
-                            <a class="recent-post-link" href="{% url 'BlogDetails' slug=blog.slug %}">
-
-                                <div class="recent-post-content">
-                                    <h4 class="recent-post-title">
-                                        {{ blog.title|truncatechars:60 }}
-                                    </h4>
-
-                                    <div class="recent-post-meta">
-                    <span class="post-date">
-                        {{ blog.created_date|date:"M d, Y" }}
-                    </span>
-                                    </div>
-                                </div>
-
-
-                            </a>
-                        </div>
-                    </div>
-
-                </div>
-            </div>
-
-        </div>
+{# Context from views.py BlogDetails():
+   blog, userComments, length, blogList, tags_list #}
+
+{% block title %}{{ blog.meta_title|default:blog.title }} | TaxBuddy Umair{% endblock %}
+{% block meta_desc %}{{ blog.meta_description|default:blog.title|truncatechars:160 }}{% endblock %}
+{% block canonical %}https://www.taxbuddyumair.com/{{ blog.slug }}/{% endblock %}
+{% block og_title %}{{ blog.title }}{% endblock %}
+{% block og_desc %}{{ blog.meta_description|default:blog.title|truncatechars:160 }}{% endblock %}
+{% block og_url %}https://www.taxbuddyumair.com/{{ blog.slug }}/{% endblock %}
+{% block og_image %}{% if blog.featured_image %}{{ blog.featured_image.url }}{% else %}{% static 'assets/img/image/About.webp' %}{% endif %}{% endblock %}
+
+{% block structured_data %}
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"Article","headline":"{{ blog.title|escapejs }}","description":"{{ blog.meta_description|default:blog.title|truncatechars:160|escapejs }}","author":{"@type":"Person","name":"Umair Mubeen","url":"https://www.taxbuddyumair.com"},"publisher":{"@type":"Organization","name":"TaxBuddy Umair","url":"https://www.taxbuddyumair.com"},"datePublished":"{{ blog.created_at|date:'c' }}","dateModified":"{{ blog.updated_at|date:'c' }}","url":"https://www.taxbuddyumair.com/{{ blog.slug }}/"}
+</script>
+{% endblock %}
+
+{% block extra_css %}
+<style>
+.blog-layout{max-width:1100px;margin:0 auto;padding:36px 2rem 80px;display:grid;grid-template-columns:1fr 300px;gap:48px;align-items:start}
+.article-body{font-size:16px;line-height:1.8;color:var(--text-mid)}
+.article-body h2{font-family:'Playfair Display',serif;font-size:clamp(20px,2.5vw,26px);font-weight:700;color:var(--navy);margin:2rem 0 .75rem;letter-spacing:-0.01em}
+.article-body h3{font-size:18px;font-weight:600;color:var(--navy);margin:1.5rem 0 .6rem}
+.article-body p{margin-bottom:1.2rem}
+.article-body ul,.article-body ol{margin:0 0 1.2rem 1.5rem}
+.article-body li{margin-bottom:.4rem}
+.article-body a{color:var(--green-dark);text-decoration:underline;text-underline-offset:2px}
+.article-body blockquote{border-left:3px solid var(--green);margin:1.5rem 0;padding:.75rem 1.25rem;background:var(--cream);border-radius:0 var(--radius-sm) var(--radius-sm) 0;font-style:italic;color:var(--text-mid)}
+.article-body table{width:100%;border-collapse:collapse;margin:1.5rem 0;font-size:14px}
+.article-body th{background:var(--navy);color:rgba(255,255,255,.85);padding:10px 14px;text-align:left;font-size:12px;text-transform:uppercase;letter-spacing:.06em}
+.article-body td{padding:10px 14px;border-bottom:1px solid var(--border)}
+.article-body tr:hover td{background:var(--cream)}
+.sidebar-card{background:var(--white);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;margin-bottom:20px}
+.sb-head{padding:12px 16px;border-bottom:1px solid var(--border);font-size:11px;font-weight:700;color:var(--text-muted);text-transform:uppercase;letter-spacing:.09em}
+.related-item{display:flex;gap:10px;padding:10px 16px;border-bottom:1px solid var(--border);transition:background .12s}
+.related-item:last-child{border:none}
+.related-item:hover{background:var(--cream)}
+.tag-pill{display:inline-block;font-size:11px;font-weight:500;padding:4px 12px;border-radius:var(--radius-pill);background:var(--cream);border:1px solid var(--border);color:var(--text-mid);transition:all .15s}
+.tag-pill:hover{background:var(--navy);color:#fff;border-color:var(--navy)}
+.comment-item{padding:16px;border-bottom:1px solid var(--border)}
+.comment-item:last-child{border:none}
+@media(max-width:900px){.blog-layout{grid-template-columns:1fr}.blog-sidebar{position:static!important}}
+@media(max-width:640px){.blog-layout{padding:24px 1.25rem 60px}}
+</style>
+{% endblock %}
+
+{% block content %}
+<!-- BREADCRUMB -->
+<div style="background:var(--navy);padding:80px 0 20px">
+  <div class="container">
+    <nav style="display:flex;align-items:center;gap:8px;font-size:12px;color:rgba(255,255,255,.4)" aria-label="Breadcrumb">
+      <a href="{% url 'index' %}" style="transition:color .15s" onmouseover="this.style.color='var(--green)'" onmouseout="this.style.color='rgba(255,255,255,.4)'">Home</a>
+      <span>›</span>
+      <a href="{% url 'viewBlogs' slug=blog.type|slugify %}" style="transition:color .15s" onmouseover="this.style.color='var(--green)'" onmouseout="this.style.color='rgba(255,255,255,.4)'">{{ blog.category|default:blog.type|default:"Blog"|title }}</a>
+      <span>›</span>
+      <span style="color:rgba(255,255,255,.6)">{{ blog.title|truncatechars:50 }}</span>
+    </nav>
+    <h1 style="font-family:'Playfair Display',serif;font-size:clamp(22px,3.5vw,38px);font-weight:700;color:#fff;line-height:1.2;letter-spacing:-0.02em;margin-top:16px;max-width:760px">{{ blog.title }}</h1>
+    <div style="display:flex;align-items:center;gap:14px;margin-top:14px;flex-wrap:wrap">
+      <div style="display:flex;align-items:center;gap:8px">
+        <div style="width:28px;height:28px;border-radius:50%;background:var(--green-dark);display:flex;align-items:center;justify-content:center;color:#fff;font-size:11px;font-weight:700">UM</div>
+        <span style="font-size:13px;color:rgba(255,255,255,.6)">Umair Mubeen</span>
+      </div>
+      <span style="color:rgba(255,255,255,.25)">·</span>
+      <span style="font-size:12.5px;color:rgba(255,255,255,.5)">{{ blog.created_at|date:"M j, Y" }}</span>
+      {% if blog.updated_at and blog.updated_at != blog.created_at %}
+      <span style="color:rgba(255,255,255,.25)">·</span>
+      <span style="font-size:12.5px;color:rgba(255,255,255,.5)">Updated {{ blog.updated_at|date:"M j, Y" }}</span>
+      {% endif %}
+      {% if blog.category %}
+      <span style="font-size:10.5px;font-weight:600;padding:3px 10px;border-radius:var(--radius-pill);background:rgba(34,201,122,0.15);color:var(--green);border:1px solid rgba(34,201,122,0.25)">{{ blog.category|title }}</span>
+      {% endif %}
     </div>
+  </div>
 </div>
-<!--===== Single Blog End =====-->
 
-<!--===== More Blogs =====-->
-<div class="section-padding2 blog-area inner-blog-1">
-    <div class="container">
-        <div class="row">
+{% if blog.featured_image %}
+<div class="container" style="padding-top:0;margin-top:-1px">
+  <img src="{{ blog.featured_image.url }}" alt="{{ blog.title }}" style="width:100%;max-height:420px;object-fit:cover;border-radius:0 0 var(--radius) var(--radius)" loading="eager">
+</div>
+{% endif %}
 
-             {% for other in blogList %}
+<!-- MAIN LAYOUT -->
+<div class="blog-layout">
+  <article>
+    <!-- AD ZONE above article -->
+    <div class="ad-zone" style="margin-bottom:24px"><div class="ad-label">Advertisement</div>
+      <ins class="adsbygoogle" style="display:block;min-height:90px" data-ad-client="{{ ADSENSE_PUBLISHER_ID }}" data-ad-slot="4444444444" data-ad-format="auto" data-full-width-responsive="true"></ins>
+      <script>(adsbygoogle=window.adsbygoogle||[]).push({});</script></div>
 
-                     <div class="col-lg-3 col-md-6 mb-4 blog-item"
-                 data-type="{% if blog.type == '1' %}income{% else %}sales{% endif %}">
+    <div class="article-body">{{ blog.content|safe }}</div>
 
-
-                <article class="single-blog" itemscope itemtype="https://schema.org/BlogPosting">
-
-                    <div class="blog-img">
-                        <a href="/{{ other.slug }}/" itemprop="url">
-                            <img
-                                    alt="{{ other.title }}"
-                                    itemprop="image"
-                                    loading="lazy"
-                                    src="{{ other.featured_image.url }}">
-                        </a>
-                    </div>
-
-                    <ul class="blog-tags">
-                        <li>
-                            <a href="#" itemprop="about" style="background-color:#7977C6;color:#FFFFFF">
-                                {% if other.type == '1' %}
-                                Income Tax
-                                {% else %}
-                                Sales Tax
-                                {% endif %}
-                            </a>
-                        </li>
-                    </ul>
-
-                    <h3 itemprop="headline">
-                        <a class="blog-title" href="/{{ other.slug }}/" style="font-size:20px">
-                            {{ other.title }}
-                        </a>
-                    </h3>
-
-                </article>
-
-            </div>
-
-
-            {% endfor %}
-        </div>
+    <!-- TAGS -->
+    {% if tags_list %}
+    <div style="margin-top:2rem;padding-top:1.5rem;border-top:1px solid var(--border)">
+      <div style="font-size:11px;font-weight:700;color:var(--text-muted);text-transform:uppercase;letter-spacing:.08em;margin-bottom:10px">Tags</div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap">
+        {% for tag in tags_list %}
+        <span class="tag-pill">{{ tag }}</span>
+        {% endfor %}
+      </div>
     </div>
-</div>
+    {% endif %}
 
-{% include 'partials/footer.html' %}
-{% include 'partials/up.html' %}
-{% include 'partials/footer-scripts.html' %}
-</body>
-</html>
+    <!-- IN-ARTICLE AD -->
+    <div class="ad-zone" style="margin-top:2rem"><div class="ad-label">Advertisement</div>
+      <ins class="adsbygoogle" style="display:block;min-height:90px" data-ad-client="{{ ADSENSE_PUBLISHER_ID }}" data-ad-slot="5555555555" data-ad-format="auto" data-full-width-responsive="true"></ins>
+      <script>(adsbygoogle=window.adsbygoogle||[]).push({});</script></div>
+
+    <!-- COMMENTS -->
+    <div style="margin-top:2rem">
+      <h2 style="font-family:'Playfair Display',serif;font-size:22px;font-weight:700;color:var(--navy);margin-bottom:20px">
+        Comments <span style="font-size:14px;font-weight:500;color:var(--text-muted);font-family:'Inter',sans-serif">({{ length }})</span>
+      </h2>
+
+      {% if userComments %}
+      <div style="background:var(--white);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;margin-bottom:24px">
+        {% for comment in userComments %}
+        <div class="comment-item">
+          <div style="display:flex;align-items:center;gap:10px;margin-bottom:8px">
+            <div style="width:32px;height:32px;border-radius:50%;background:var(--navy);display:flex;align-items:center;justify-content:center;color:#fff;font-size:12px;font-weight:700;flex-shrink:0">{{ comment.name|first|upper }}</div>
+            <div>
+              <div style="font-size:13.5px;font-weight:600;color:var(--navy)">{{ comment.name }}</div>
+              <div style="font-size:11px;color:var(--text-muted)">{{ comment.created_at|date:"M j, Y"|default:"" }}</div>
+            </div>
+          </div>
+          <p style="font-size:14px;color:var(--text-mid);line-height:1.65;padding-left:42px">{{ comment.comment }}</p>
+        </div>
+        {% endfor %}
+      </div>
+      {% endif %}
+
+      <!-- COMMENT FORM — POSTs to userComments view -->
+      <div style="background:var(--white);border:1px solid var(--border);border-radius:var(--radius);padding:1.5rem">
+        <h3 style="font-size:16px;font-weight:600;color:var(--navy);margin-bottom:16px">Leave a comment</h3>
+        <form method="POST" action="{% url 'userComments' %}">
+          {% csrf_token %}
+          <input type="hidden" name="slug" value="{{ blog.slug }}">
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px" class="contact-name-row">
+            <div>
+              <label style="display:block;font-size:10.5px;font-weight:700;color:var(--text-muted);text-transform:uppercase;letter-spacing:.08em;margin-bottom:5px">Name *</label>
+              <input type="text" name="user" required placeholder="Your name" style="width:100%;padding:9px 12px;font-family:'Inter',sans-serif;font-size:13.5px;background:var(--cream);border:1px solid var(--border);border-radius:var(--radius-sm);outline:none;color:var(--text)">
+            </div>
+            <div>
+              <label style="display:block;font-size:10.5px;font-weight:700;color:var(--text-muted);text-transform:uppercase;letter-spacing:.08em;margin-bottom:5px">Email *</label>
+              <input type="email" name="email" required placeholder="your@email.com" style="width:100%;padding:9px 12px;font-family:'Inter',sans-serif;font-size:13.5px;background:var(--cream);border:1px solid var(--border);border-radius:var(--radius-sm);outline:none;color:var(--text)">
+            </div>
+          </div>
+          <div style="margin-bottom:14px">
+            <label style="display:block;font-size:10.5px;font-weight:700;color:var(--text-muted);text-transform:uppercase;letter-spacing:.08em;margin-bottom:5px">Comment *</label>
+            <textarea name="comment" required rows="4" placeholder="Share your thoughts or question..." style="width:100%;padding:9px 12px;font-family:'Inter',sans-serif;font-size:13.5px;background:var(--cream);border:1px solid var(--border);border-radius:var(--radius-sm);outline:none;color:var(--text);resize:vertical;line-height:1.6"></textarea>
+          </div>
+          <button type="submit" style="background:var(--navy);color:#fff;font-family:'Inter',sans-serif;font-size:13.5px;font-weight:600;padding:11px 24px;border-radius:var(--radius-sm);border:none;cursor:pointer;min-height:44px;transition:background .2s" onmouseover="this.style.background='var(--green-dark)'" onmouseout="this.style.background='var(--navy)'">Post Comment</button>
+        </form>
+      </div>
+    </div>
+  </article>
+
+  <!-- SIDEBAR -->
+  <aside class="blog-sidebar" style="position:sticky;top:80px">
+    <!-- Author -->
+    <div class="sidebar-card">
+      <div class="sb-head">About the author</div>
+      <div style="padding:14px 16px;display:flex;align-items:center;gap:12px">
+        <div style="width:42px;height:42px;border-radius:50%;background:linear-gradient(135deg,var(--navy-light),var(--navy-mid));display:flex;align-items:center;justify-content:center;color:#fff;font-size:14px;font-weight:700;flex-shrink:0;border:2px solid rgba(34,201,122,0.3)">UM</div>
+        <div>
+          <div style="font-size:14px;font-weight:600;color:var(--text)">Umair Mubeen</div>
+          <div style="font-size:11px;color:var(--green-dark);font-weight:600">FBR Officer · Tax Educator</div>
+        </div>
+      </div>
+      <p style="font-size:12px;color:var(--text-muted);line-height:1.55;padding:0 16px 12px">Currently serving at the Federal Board of Revenue. Founder of TaxBuddy Umair — simplifying Pakistan's tax laws since 2024.</p>
+      <a href="https://wa.me/923332482742" style="display:flex;align-items:center;justify-content:center;gap:7px;background:var(--green);color:var(--navy);font-size:13px;font-weight:700;padding:10px;margin:0 16px 14px;border-radius:var(--radius-sm);transition:all .2s" target="_blank" rel="noopener noreferrer" onmouseover="this.style.background='var(--green-dark)';this.style.color='#fff'" onmouseout="this.style.background='var(--green)';this.style.color='var(--navy)'">Book Consultation</a>
+    </div>
+
+    <!-- Sidebar Ad -->
+    <div class="sidebar-card" style="overflow:hidden">
+      <div class="ad-label" style="padding:4px 0">Advertisement</div>
+      <ins class="adsbygoogle" style="display:block;min-height:250px;width:100%" data-ad-client="{{ ADSENSE_PUBLISHER_ID }}" data-ad-slot="6666666666" data-ad-format="rectangle" data-full-width-responsive="false"></ins>
+      <script>(adsbygoogle=window.adsbygoogle||[]).push({});</script>
+    </div>
+
+    <!-- Related articles — uses `blogList` from view -->
+    {% if blogList %}
+    <div class="sidebar-card">
+      <div class="sb-head">Related articles</div>
+      {% for b in blogList|slice:":5" %}
+      <a href="{% url 'BlogDetails' slug=b.slug %}" class="related-item" style="text-decoration:none;display:flex;gap:10px;padding:10px 16px;border-bottom:1px solid var(--border);transition:background .12s">
+        <div style="width:6px;height:6px;border-radius:50%;background:var(--green);flex-shrink:0;margin-top:7px"></div>
+        <div>
+          <div style="font-size:12.5px;font-weight:500;color:var(--text);line-height:1.4;letter-spacing:-0.01em;transition:color .15s">{{ b.title|truncatechars:65 }}</div>
+          <div style="font-size:11px;color:var(--text-muted);margin-top:3px">{{ b.created_at|date:"M j, Y" }}</div>
+        </div>
+      </a>
+      {% endfor %}
+    </div>
+    {% endif %}
+
+    <!-- Quick links -->
+    <div class="sidebar-card">
+      <div class="sb-head">Calculators</div>
+      {% for item in "Salary Calculator|SalaryCalculator,Business Calculator|BusinessCalculator,AOP Calculator|AOPCalculator,Property Calculator|PropertyCalculator"|split:"," %}
+        {% with p=item.split:"|" %}
+        <a href="{% url p.1 %}" style="display:flex;align-items:center;justify-content:space-between;padding:10px 16px;font-size:13px;color:var(--text-mid);border-bottom:1px solid var(--border);transition:all .12s;min-height:44px" onmouseover="this.style.background='var(--cream)'" onmouseout="this.style.background=''">{{ p.0 }}<span style="color:var(--text-muted)">→</span></a>
+        {% endwith %}
+      {% endfor %}
+    </div>
+  </aside>
+</div>
+{% endblock %}

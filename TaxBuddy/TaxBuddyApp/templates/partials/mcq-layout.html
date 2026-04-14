@@ -1,647 +1,220 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+{% extends "base.html" %}
+{% load static %}
+{# Context from views.py question_list():
+   page_obj, categories, selected_category, seo_category, category_slug #}
 
-</body>
-</html><!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Income Tax MCQs Pakistan — Beginner to Advanced | TaxBuddy Umair</title>
-<meta name="description" content="Practice income tax and sales tax MCQs for Pakistan — beginner, intermediate, and advanced levels. FBR exam prep, ITO 2001 questions, and STA 1990 multiple choice.">
-<meta name="author" content="Umair Mubeen">
-<meta name="robots" content="index, follow">
-<link rel="canonical" href="https://www.taxbuddyumair.com/income-tax-mcqs-pakistan/">
-<meta property="og:title" content="Income Tax MCQs Pakistan — Beginner to Advanced | TaxBuddy Umair">
-<meta property="og:description" content="Practice income tax MCQs for FBR exam preparation — beginner to advanced levels with explanations.">
-<meta property="og:url" content="https://www.taxbuddyumair.com/income-tax-mcqs-pakistan/">
-<meta property="og:type" content="website">
-<meta property="og:image" content="https://www.taxbuddyumair.com/static/assets/img/image/About.webp">
-<meta property="og:locale" content="en_PK">
-<meta property="og:site_name" content="TaxBuddy Umair">
-<meta name="twitter:card" content="summary_large_image">
-<meta name="theme-color" content="#0a2238">
-<link rel="icon" type="image/x-icon" href="/favicon.ico">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,700;1,700&display=swap">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,700;1,700&display=swap" media="print" onload="this.media='all'">
-<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,700;1,700&display=swap"></noscript>
-<link rel="dns-prefetch" href="//pagead2.googlesyndication.com">
-<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-XXXXXXXXXXXXXXXX" crossorigin="anonymous"></script>
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"Quiz","name":"Income Tax MCQs Pakistan","description":"Practice income tax and sales tax MCQs for Pakistan from beginner to advanced level.","url":"https://www.taxbuddyumair.com/income-tax-mcqs-pakistan/","author":{"@type":"Person","name":"Umair Mubeen","jobTitle":"Tax Officer, FBR Pakistan"}}</script>
+{% block title %}{% if seo_category %}{{ seo_category }} MCQs{% else %}Income Tax MCQs Pakistan{% endif %} — Beginner to Advanced | TaxBuddy Umair{% endblock %}
+{% block meta_desc %}Practice income tax MCQs for Pakistan — {% if seo_category %}{{ seo_category }} questions{% else %}beginner to advanced level{% endif %}. FBR exam prep, ITO 2001, and STA 1990 multiple choice questions.{% endblock %}
+{% block canonical %}https://www.taxbuddyumair.com/income-tax-mcqs-pakistan/{% if category_slug %}{{ category_slug }}/{% endif %}{% endblock %}
+
+{% block extra_css %}
 <style>
-:root{
-  --navy:#0a2238;--navy-light:#112d47;--navy-mid:#1a3f5c;
-  --green:#22c97a;--green-dark:#18a362;--green-pale:rgba(34,201,122,0.1);
-  --cream:#f7f5f0;--white:#ffffff;
-  --text:#0a2238;--text-mid:#3a5068;--text-muted:#7a909f;
-  --border:rgba(10,34,56,0.1);--border-md:rgba(10,34,56,0.14);
-  --shadow:0 2px 12px rgba(10,34,56,0.08);--shadow-md:0 8px 32px rgba(10,34,56,0.12);
-  --r:12px;--r-sm:8px;--r-pill:99px;
-  --beginner:#15803d;--beginner-bg:#dcfce7;--beginner-border:#bbf7d0;
-  --inter-c:#b45309;--inter-bg:#fef3c7;--inter-border:#fde68a;
-  --advanced:#dc2626;--advanced-bg:#fee2e2;--advanced-border:#fca5a5;
-}
-*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-html{scroll-behavior:smooth}
-body{font-family:'Inter',-apple-system,sans-serif;background:var(--cream);color:var(--text);font-size:15px;line-height:1.7;overflow-x:hidden;-webkit-font-smoothing:antialiased}
-a{text-decoration:none;color:inherit}
-.container{max-width:1100px;margin:0 auto;padding:0 2rem}
-.skip-link{position:absolute;top:-100px;left:1rem;z-index:9999;background:var(--green);color:var(--navy);font-size:13px;font-weight:700;padding:10px 20px;border-radius:var(--r-sm);transition:top 0.2s}
-.skip-link:focus{top:1rem}
-:focus-visible{outline:2px solid var(--green);outline-offset:3px;border-radius:4px}
-@media(prefers-reduced-motion:reduce){*{transition-duration:0.01ms!important;animation-duration:0.01ms!important}.fade-in{opacity:1!important;transform:none!important}}
-
-/* NAV */
-#navbar{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(10,34,56,0.97);backdrop-filter:blur(12px);border-bottom:1px solid rgba(255,255,255,0.07);height:60px}
-.nav-inner{display:flex;align-items:center;justify-content:space-between;height:100%;gap:2rem}
-.nav-logo{font-family:'Playfair Display',serif;font-size:20px;font-style:italic;font-weight:700;color:#fff;flex-shrink:0}
-.nav-logo em{color:var(--green);font-style:normal}
-.nav-links{display:flex;align-items:center;gap:4px;list-style:none}
-.nav-links a{color:rgba(255,255,255,0.65);font-size:13px;font-weight:500;padding:6px 13px;border-radius:var(--r-sm);transition:all 0.15s}
-.nav-links a:hover{color:#fff;background:rgba(255,255,255,0.07)}
-.nav-links a.active{color:#fff;background:rgba(34,201,122,0.15)}
-.nav-wa{display:flex;align-items:center;gap:7px;background:var(--green);color:var(--navy);font-size:13px;font-weight:700;padding:8px 16px;border-radius:var(--r-sm);transition:all 0.2s;flex-shrink:0}
-.nav-wa:hover{background:var(--green-dark);color:#fff}
-.nav-wa svg{width:14px;height:14px}
-.hamburger{display:none;background:none;border:none;cursor:pointer;color:#fff;padding:6px}
-.hamburger svg{width:22px;height:22px}
-#mobile-menu{display:none;position:fixed;top:60px;left:0;right:0;z-index:99;background:var(--navy);border-bottom:1px solid rgba(255,255,255,0.1);padding:1rem 2rem 1.5rem}
-#mobile-menu.open{display:block}
-#mobile-menu a{display:block;color:rgba(255,255,255,0.75);font-size:15px;padding:10px 0;border-bottom:1px solid rgba(255,255,255,0.06)}
-#mobile-menu a:last-child{border:none}
-
-/* HERO */
-.page-hero{background:var(--navy);padding:96px 0 48px}
-.breadcrumb{display:flex;align-items:center;gap:8px;font-size:12px;color:rgba(255,255,255,0.4);margin-bottom:20px}
-.breadcrumb a:hover{color:var(--green)}
-.breadcrumb-sep{opacity:0.4}
-.hero-eyebrow{display:inline-flex;align-items:center;gap:6px;font-size:10px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--green);background:rgba(34,201,122,0.12);border:1px solid rgba(34,201,122,0.25);padding:4px 14px;border-radius:var(--r-pill);margin-bottom:16px}
-.hero-eyebrow::before{content:'';width:6px;height:6px;border-radius:50%;background:var(--green);display:block}
-.page-hero h1{font-family:'Playfair Display',serif;font-weight:700;font-style:italic;font-size:clamp(28px,4vw,46px);color:#fff;line-height:1.15;letter-spacing:-0.02em;margin-bottom:14px}
-.page-hero h1 em{color:var(--green)}
-.page-hero p{color:rgba(255,255,255,0.55);font-size:15px;max-width:540px;line-height:1.75;margin-bottom:28px}
-.hero-level-pills{display:flex;gap:10px;flex-wrap:wrap}
-.level-pill{display:flex;align-items:center;gap:7px;font-size:12px;font-weight:600;padding:7px 16px;border-radius:var(--r-pill);cursor:pointer;transition:all 0.2s;border:1.5px solid transparent}
-.pill-beg{background:var(--beginner-bg);color:var(--beginner);border-color:var(--beginner-border)}
-.pill-int{background:var(--inter-bg);color:var(--inter-c);border-color:var(--inter-border)}
-.pill-adv{background:var(--advanced-bg);color:var(--advanced);border-color:var(--advanced-border)}
-.pill-all{background:rgba(255,255,255,0.1);color:#fff;border-color:rgba(255,255,255,0.2)}
-.level-pill.active{transform:scale(1.05)}
-.pill-dot{width:8px;height:8px;border-radius:50%}
-
-/* PROGRESS BAR */
-.quiz-progress-bar{background:var(--white);border-bottom:1px solid var(--border);padding:12px 0;position:sticky;top:60px;z-index:50}
-.qpb-inner{display:flex;align-items:center;gap:16px}
-.qpb-label{font-size:12px;font-weight:600;color:var(--text-muted);white-space:nowrap}
-.qpb-track{flex:1;height:6px;background:var(--border);border-radius:99px;overflow:hidden}
-.qpb-fill{height:100%;border-radius:99px;background:var(--green);transition:width 0.4s ease}
-.qpb-score{font-size:12px;font-weight:700;color:var(--navy);white-space:nowrap}
-.qpb-reset{font-size:11px;font-weight:600;color:var(--text-muted);background:var(--cream);border:1px solid var(--border);padding:5px 12px;border-radius:var(--r-sm);cursor:pointer;transition:all 0.15s}
-.qpb-reset:hover{background:var(--navy);color:#fff;border-color:var(--navy)}
-
-/* MAIN LAYOUT */
-.mcq-layout{max-width:1100px;margin:0 auto;padding:32px 2rem 80px;display:grid;grid-template-columns:1fr 300px;gap:48px;align-items:start}
-
-/* AD ZONE */
-.ad-zone{width:100%;display:flex;flex-direction:column;align-items:center;background:var(--white);border:1px solid var(--border);border-radius:var(--r);overflow:hidden;margin:0 0 24px}
-.ad-label{width:100%;padding:4px 0;font-size:10px;font-weight:600;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.1em;text-align:center;background:var(--cream);border-bottom:1px solid var(--border)}
-.ad-zone ins{display:block;width:100%;min-height:90px}
-
-/* CATEGORY SECTIONS */
-.cat-section{margin-bottom:36px}
-.cat-header{display:flex;align-items:center;gap:12px;margin-bottom:16px;padding-bottom:12px;border-bottom:2px solid var(--border)}
-.cat-badge{display:inline-flex;align-items:center;gap:6px;font-size:11px;font-weight:700;letter-spacing:0.07em;text-transform:uppercase;padding:5px 14px;border-radius:var(--r-pill)}
-.badge-beg{background:var(--beginner-bg);color:var(--beginner);border:1px solid var(--beginner-border)}
-.badge-int{background:var(--inter-bg);color:var(--inter-c);border:1px solid var(--inter-border)}
-.badge-adv{background:var(--advanced-bg);color:var(--advanced);border:1px solid var(--advanced-border)}
-.cat-title{font-family:'Playfair Display',serif;font-size:20px;font-weight:700;color:var(--navy);letter-spacing:-0.01em}
-.cat-count{font-size:12px;color:var(--text-muted);margin-left:auto}
-
-/* MCQ CARD */
-.mcq-card{background:var(--white);border:1px solid var(--border);border-radius:var(--r);overflow:hidden;margin-bottom:14px;transition:box-shadow 0.2s}
-.mcq-card.answered-correct{border-color:var(--green)}
-.mcq-card.answered-wrong{border-color:#fca5a5}
-.mcq-card-header{padding:14px 18px 10px;display:flex;align-items:flex-start;gap:12px}
-.mcq-qnum{width:28px;height:28px;border-radius:50%;background:var(--navy);color:#fff;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px}
-.mcq-card.answered-correct .mcq-qnum{background:var(--green)}
-.mcq-card.answered-wrong .mcq-qnum{background:#ef4444}
-.mcq-ref{font-size:10px;font-weight:600;color:var(--text-muted);background:var(--cream);border:1px solid var(--border);padding:3px 9px;border-radius:var(--r-pill);margin-left:auto;white-space:nowrap}
-.mcq-q-text{font-size:14.5px;font-weight:600;color:var(--navy);line-height:1.5;letter-spacing:-0.01em;flex:1}
-.mcq-opts{padding:0 18px 14px;display:flex;flex-direction:column;gap:7px}
-.mcq-opt{display:flex;align-items:center;gap:10px;padding:10px 14px;border-radius:var(--r-sm);border:1px solid var(--border);background:var(--cream);cursor:pointer;transition:all 0.15s;font-size:13.5px;color:var(--text-mid)}
+.mcq-layout{max-width:1100px;margin:0 auto;padding:32px 2rem 80px;display:grid;grid-template-columns:1fr 280px;gap:40px;align-items:start}
+.cat-pill{display:inline-flex;align-items:center;gap:6px;font-size:12px;font-weight:500;padding:7px 14px;border-radius:var(--radius-pill);border:1px solid var(--border);background:var(--white);color:var(--text-muted);transition:all .15s;min-height:36px;text-decoration:none}
+.cat-pill:hover,.cat-pill.active{background:var(--navy);color:#fff;border-color:var(--navy)}
+.mcq-card{background:var(--white);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;margin-bottom:14px}
+.mcq-card.correct{border-color:var(--green)}.mcq-card.wrong{border-color:#ef4444}
+.mcq-opt{display:flex;align-items:center;gap:10px;padding:10px 14px;border-radius:var(--radius-sm);border:1px solid var(--border);background:var(--cream);cursor:pointer;transition:all .15s;font-size:13.5px;color:var(--text-mid);min-height:44px}
 .mcq-opt:hover{border-color:var(--navy);background:var(--white)}
-.mcq-opt.correct{background:#f0fdf4;border-color:var(--green);color:#15803d}
-.mcq-opt.wrong{background:#fef2f2;border-color:#ef4444;color:#dc2626}
-.mcq-opt-key{width:26px;height:26px;border-radius:6px;background:var(--white);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:var(--text-muted);flex-shrink:0;transition:all 0.15s}
-.mcq-opt.correct .mcq-opt-key{background:var(--green);color:#fff;border-color:var(--green)}
-.mcq-opt.wrong .mcq-opt-key{background:#ef4444;color:#fff;border-color:#ef4444}
-.mcq-explanation{display:none;margin:0 18px 14px;padding:12px 14px;background:var(--cream);border-left:3px solid var(--green);border-radius:0 var(--r-sm) var(--r-sm) 0;font-size:13px;color:var(--text-mid);line-height:1.65}
-.mcq-explanation.show{display:block}
-.mcq-explanation strong{color:var(--navy)}
-
-/* SCORE SUMMARY */
-.score-summary{background:var(--navy);border-radius:var(--r);padding:1.5rem;margin-bottom:24px;display:none}
-.score-summary.show{display:block}
-.score-summary h3{font-family:'Playfair Display',serif;font-size:18px;color:#fff;margin-bottom:10px}
-.score-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
-.score-item{background:rgba(255,255,255,0.07);border-radius:var(--r-sm);padding:12px;text-align:center}
-.score-val{font-size:22px;font-weight:700;color:var(--green);line-height:1}
-.score-key{font-size:10px;color:rgba(255,255,255,0.4);text-transform:uppercase;letter-spacing:0.07em;margin-top:4px}
-.score-retry{display:flex;align-items:center;justify-content:center;gap:8px;background:var(--green);color:var(--navy);font-size:13px;font-weight:700;padding:10px 24px;border-radius:var(--r-sm);border:none;cursor:pointer;margin-top:14px;transition:all 0.2s;width:100%}
-.score-retry:hover{background:var(--green-dark);color:#fff}
-
-/* SIDEBAR */
-.mcq-sidebar{display:flex;flex-direction:column;gap:20px;position:sticky;top:116px}
-.sidebar-card{background:var(--white);border:1px solid var(--border);border-radius:var(--r);overflow:hidden}
-.sidebar-head{padding:12px 16px;border-bottom:1px solid var(--border);font-size:11px;font-weight:700;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.09em}
-.level-nav{padding:8px 0}
-.level-nav-item{display:flex;align-items:center;justify-content:space-between;padding:10px 16px;cursor:pointer;transition:background 0.12s}
-.level-nav-item:hover{background:var(--cream)}
-.level-nav-left{display:flex;align-items:center;gap:9px;font-size:13px;font-weight:500;color:var(--text)}
-.level-dot{width:10px;height:10px;border-radius:50%}
-.level-count{font-size:11px;color:var(--text-muted);background:var(--cream);border:1px solid var(--border);padding:2px 8px;border-radius:var(--r-pill)}
-.score-card-mini{padding:14px 16px}
-.score-row{display:flex;justify-content:space-between;align-items:center;padding:7px 0;border-bottom:1px solid var(--border);font-size:13px}
-.score-row:last-child{border:none}
-.score-row-label{color:var(--text-muted)}
-.score-row-val{font-weight:700;color:var(--navy)}
-.tip-card{padding:14px 16px;background:var(--cream)}
-.tip-title{font-size:11px;font-weight:700;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.09em;margin-bottom:8px}
-.tip-text{font-size:12.5px;color:var(--text-mid);line-height:1.6}
-.wa-sidebar{display:flex;align-items:center;justify-content:center;gap:7px;background:var(--green);color:var(--navy);font-size:13px;font-weight:700;padding:11px 16px;margin:14px 16px;border-radius:var(--r-sm);transition:all 0.2s}
-.wa-sidebar:hover{background:var(--green-dark);color:#fff}
-.wa-sidebar svg{width:13px;height:13px}
-
-/* PAGE DISCLAIMER */
-.page-disclaimer{background:#fffbeb;border:1px solid #fde68a;border-radius:var(--r-sm);padding:12px 16px;margin-top:28px;display:flex;gap:10px}
-.page-disclaimer p{font-size:12px;color:#92400e;line-height:1.55}
-
-/* FOOTER */
-footer{background:var(--navy);border-top:1px solid rgba(255,255,255,0.07);padding:40px 0 24px}
-.footer-grid{display:grid;grid-template-columns:200px 1fr 1fr 1fr;gap:2rem;margin-bottom:2.5rem}
-.footer-logo{font-family:'Playfair Display',serif;font-size:18px;font-style:italic;color:#fff;margin-bottom:10px}
-.footer-logo em{color:var(--green);font-style:normal}
-.footer-tagline{font-size:12px;color:rgba(255,255,255,0.35);line-height:1.6;margin-bottom:14px}
-.footer-contact a{display:block;font-size:12px;color:rgba(255,255,255,0.45);margin-bottom:4px;transition:color 0.15s}
-.footer-contact a:hover{color:var(--green)}
-.footer-col h4{font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:rgba(255,255,255,0.5);margin-bottom:12px}
-.footer-col a{display:block;font-size:12.5px;color:rgba(255,255,255,0.4);margin-bottom:7px;transition:color 0.15s}
-.footer-col a:hover{color:#fff}
-.footer-bottom{border-top:1px solid rgba(255,255,255,0.07);padding-top:18px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px}
-.footer-copy{font-size:11.5px;color:rgba(255,255,255,0.25)}
-.footer-legal{display:flex;gap:14px}
-.footer-legal a{font-size:11.5px;color:rgba(255,255,255,0.25);transition:color 0.15s}
-.footer-legal a:hover{color:rgba(255,255,255,0.6)}
-
-.fade-in{opacity:0;transform:translateY(14px);transition:opacity 0.5s,transform 0.5s}
-.fade-in.visible{opacity:1;transform:none}
-
-@media(max-width:900px){.mcq-layout{grid-template-columns:1fr}.mcq-sidebar{position:static}.footer-grid{grid-template-columns:1fr 1fr}}
-@media(max-width:640px){.nav-links{display:none}.hamburger{display:block}.hero-level-pills{gap:7px}.footer-grid{grid-template-columns:1fr}.container{padding:0 1.25rem}.score-grid{grid-template-columns:1fr 1fr}}
-@media print{#navbar,.quiz-progress-bar,.ad-zone,footer{display:none!important}body{background:#fff}}
+.mcq-opt.opt-correct{background:#f0fdf4;border-color:var(--green);color:#15803d}
+.mcq-opt.opt-wrong{background:#fef2f2;border-color:#ef4444;color:#dc2626}
+.mcq-exp{display:none;background:var(--cream);border-left:3px solid var(--green);border-radius:0 var(--radius-sm) var(--radius-sm) 0;padding:12px 14px;font-size:13px;color:var(--text-mid);line-height:1.65;margin:0 18px 14px}
+.mcq-exp.show{display:block}
+.diff-badge{display:inline-flex;align-items:center;gap:5px;font-size:10px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;padding:4px 12px;border-radius:var(--radius-pill)}
+.diff-beginner{background:#dcfce7;color:#15803d;border:1px solid #bbf7d0}
+.diff-intermediate{background:#fef3c7;color:#b45309;border:1px solid #fde68a}
+.diff-advanced{background:#fee2e2;color:#dc2626;border:1px solid #fca5a5}
+.sidebar-card{background:var(--white);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;margin-bottom:20px}
+.sb-head{padding:12px 16px;border-bottom:1px solid var(--border);font-size:11px;font-weight:700;color:var(--text-muted);text-transform:uppercase;letter-spacing:.09em}
+.pg-btn{width:36px;height:36px;border-radius:var(--radius-sm);background:var(--white);border:1px solid var(--border);font-size:13px;font-weight:500;color:var(--text-muted);cursor:pointer;transition:all .15s;display:inline-flex;align-items:center;justify-content:center}
+.pg-btn:hover{border-color:var(--navy);color:var(--navy)}
+.pg-btn.pg-active{background:var(--navy);color:#fff;border-color:var(--navy)}
+@media(max-width:900px){.mcq-layout{grid-template-columns:1fr}.mcq-sidebar{position:static!important}}
+@media(max-width:640px){.mcq-layout{padding:24px 1.25rem 60px}}
 </style>
-</head>
-<body>
+{% endblock %}
 
-<a href="#main-content" class="skip-link">Skip to main content</a>
-
-<nav id="navbar" aria-label="Main navigation" role="navigation">
+{% block content %}
+<!-- HERO -->
+<div style="background:var(--navy);padding:88px 0 40px">
   <div class="container">
-    <div class="nav-inner">
-      <a href="/" class="nav-logo">Tax<em>Buddy</em> Umair</a>
-      <ul class="nav-links" role="list">
-        <li><a href="/income-tax-guides">Income Tax</a></li>
-        <li><a href="/sales-tax-guides">Sales Tax</a></li>
-        <li><a href="/blog/">Blog</a></li>
-        <li><a href="/income-tax-mcqs-pakistan/" class="active" aria-current="page">MCQs</a></li>
-        <li><a href="/#about">About</a></li>
-        <li><a href="/#contact">Contact</a></li>
-      </ul>
-      <div style="display:flex;align-items:center;gap:10px">
-        <a href="https://wa.me/923332482742" class="nav-wa" target="_blank" rel="noopener noreferrer" aria-label="WhatsApp consultation">
-          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
-          Consult
-        </a>
-        <button class="hamburger" id="hamburger" aria-label="Toggle menu">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
-        </button>
-      </div>
-    </div>
-  </div>
-</nav>
+    <nav style="display:flex;align-items:center;gap:8px;font-size:12px;color:rgba(255,255,255,.4);margin-bottom:16px" aria-label="Breadcrumb">
+      <a href="{% url 'index' %}" style="transition:color .15s" onmouseover="this.style.color='var(--green)'" onmouseout="this.style.color='rgba(255,255,255,.4)'">Home</a>
+      <span>›</span>
+      {% if selected_category %}
+      <a href="{% url 'question_list' %}" style="transition:color .15s" onmouseover="this.style.color='var(--green)'" onmouseout="this.style.color='rgba(255,255,255,.4)'">MCQs</a>
+      <span>›</span>
+      <span style="color:rgba(255,255,255,.6)">{{ selected_category }}</span>
+      {% else %}
+      <span style="color:rgba(255,255,255,.6)">Tax MCQs</span>
+      {% endif %}
+    </nav>
+    <div style="display:inline-flex;align-items:center;gap:6px;font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--green);background:rgba(34,201,122,0.12);border:1px solid rgba(34,201,122,0.25);padding:4px 14px;border-radius:var(--radius-pill);margin-bottom:14px">Practice &amp; Exam Prep</div>
+    <h1 style="font-family:'Playfair Display',serif;font-weight:700;font-style:italic;font-size:clamp(26px,4vw,44px);color:#fff;line-height:1.15;letter-spacing:-0.02em;margin-bottom:12px">
+      {% if selected_category %}{{ selected_category }} MCQs{% else %}Income Tax MCQs,<br><em style="color:var(--green)">beginner to advanced.</em>{% endif %}
+    </h1>
+    <p style="color:rgba(255,255,255,.5);font-size:14px;max-width:520px;line-height:1.7;margin-bottom:24px">Practice multiple choice questions based on Income Tax Ordinance 2001 and Sales Tax Act 1990. Ideal for FBR exam preparation and CA students.</p>
 
-<div id="mobile-menu">
-  <a href="/income-tax-guides">Income Tax</a>
-  <a href="/sales-tax-guides">Sales Tax</a>
-  <a href="/blog/">Blog</a>
-  <a href="/income-tax-mcqs-pakistan/">MCQs</a>
-  <a href="/#about">About</a>
-  <a href="/#contact">Contact</a>
-  <a href="https://wa.me/923332482742" style="color:var(--green)" target="_blank" rel="noopener noreferrer">WhatsApp Consultation</a>
-</div>
-
-<div class="page-hero">
-  <div class="container">
-    <nav class="breadcrumb" aria-label="Breadcrumb"><a href="/">Home</a><span class="breadcrumb-sep">›</span><span style="color:rgba(255,255,255,0.6)" aria-current="page">Tax MCQs</span></nav>
-    <div class="hero-eyebrow">Practice & Exam Prep</div>
-    <h1>Income Tax MCQs,<br><em>beginner to advanced.</em></h1>
-    <p>Practice multiple choice questions based on Income Tax Ordinance 2001 and Sales Tax Act 1990. Ideal for FBR exam preparation, CA students, and tax professionals.</p>
-    <div class="hero-level-pills" role="group" aria-label="Filter by difficulty">
-      <button class="level-pill pill-all active" data-level="all" onclick="filterLevel('all')"><div class="pill-dot" style="background:#fff"></div>All Levels</button>
-      <button class="level-pill pill-beg" data-level="beginner" onclick="filterLevel('beginner')"><div class="pill-dot" style="background:var(--beginner)"></div>Beginner</button>
-      <button class="level-pill pill-int" data-level="intermediate" onclick="filterLevel('intermediate')"><div class="pill-dot" style="background:var(--inter-c)"></div>Intermediate</button>
-      <button class="level-pill pill-adv" data-level="advanced" onclick="filterLevel('advanced')"><div class="pill-dot" style="background:var(--advanced)"></div>Advanced</button>
+    {% if categories %}
+    <div style="display:flex;gap:8px;flex-wrap:wrap">
+      <a href="{% url 'question_list' %}" class="cat-pill {% if not selected_category %}active{% endif %}">All Categories</a>
+      {% for cat in categories %}
+      <a href="{% url 'question_list_category' category_slug=cat.slug %}" class="cat-pill {% if selected_category == cat.name %}active{% endif %}">{{ cat.name }}</a>
+      {% endfor %}
     </div>
-  </div>
-</div>
-
-<!-- PROGRESS BAR -->
-<div class="quiz-progress-bar" role="status" aria-label="Quiz progress">
-  <div class="container">
-    <div class="qpb-inner">
-      <span class="qpb-label">Progress</span>
-      <div class="qpb-track"><div class="qpb-fill" id="progress-fill" style="width:0%"></div></div>
-      <span class="qpb-score" id="score-display">0 / 0 answered</span>
-      <button class="qpb-reset" onclick="resetAll()" aria-label="Reset all answers">Reset</button>
-    </div>
+    {% endif %}
   </div>
 </div>
 
 <!-- AD ZONE 1 -->
 <div class="container" style="padding-top:20px">
-  <div class="ad-zone"><div class="ad-label">Advertisement</div><ins class="adsbygoogle" style="display:block;min-height:90px" data-ad-client="ca-pub-XXXXXXXXXXXXXXXX" data-ad-slot="5555555555" data-ad-format="auto" data-full-width-responsive="true"></ins><script>(adsbygoogle=window.adsbygoogle||[]).push({});</script></div>
+  <div class="ad-zone"><div class="ad-label">Advertisement</div>
+    <ins class="adsbygoogle" style="display:block;min-height:90px" data-ad-client="{{ ADSENSE_PUBLISHER_ID }}" data-ad-slot="7777777777" data-ad-format="auto" data-full-width-responsive="true"></ins>
+    <script>(adsbygoogle=window.adsbygoogle||[]).push({});</script></div>
 </div>
 
-<main id="main-content">
 <div class="mcq-layout">
-
   <!-- QUESTIONS -->
-  <div id="mcq-content">
+  <div>
+    {% for question in page_obj %}
+    {% if forloop.counter == 5 %}
+    <!-- MID-LIST AD -->
+    <div class="ad-zone"><div class="ad-label">Advertisement</div>
+      <ins class="adsbygoogle" style="display:block;min-height:90px" data-ad-client="{{ ADSENSE_PUBLISHER_ID }}" data-ad-slot="8888888888" data-ad-format="auto" data-full-width-responsive="true"></ins>
+      <script>(adsbygoogle=window.adsbygoogle||[]).push({});</script></div>
+    {% endif %}
 
-    <!-- SCORE SUMMARY (shown after all answered) -->
-    <div class="score-summary" id="score-summary">
-      <h3>Quiz complete!</h3>
-      <div class="score-grid">
-        <div class="score-item"><div class="score-val" id="sum-correct">0</div><div class="score-key">Correct</div></div>
-        <div class="score-item"><div class="score-val" id="sum-wrong" style="color:#f87171">0</div><div class="score-key">Wrong</div></div>
-        <div class="score-item"><div class="score-val" id="sum-pct">0%</div><div class="score-key">Score</div></div>
+    <div class="mcq-card fade-in" id="q{{ forloop.counter }}" data-qid="{{ forloop.counter }}">
+      <div style="padding:14px 18px 10px;display:flex;align-items:flex-start;gap:12px">
+        <div style="width:28px;height:28px;border-radius:50%;background:var(--navy);color:#fff;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px" class="q-num">{{ forloop.counter }}</div>
+        <div style="flex:1">
+          <p style="font-size:14.5px;font-weight:600;color:var(--navy);line-height:1.5">{{ question.question_text }}</p>
+        </div>
+        <div style="display:flex;align-items:center;gap:8px;flex-shrink:0;flex-wrap:wrap;justify-content:flex-end">
+          {% if question.difficulty %}
+          <span class="diff-badge diff-{{ question.difficulty }}">{{ question.difficulty|title }}</span>
+          {% endif %}
+          {% if question.section_ref %}
+          <span style="font-size:10px;font-weight:600;color:var(--text-muted);background:var(--cream);border:1px solid var(--border);padding:3px 9px;border-radius:var(--radius-pill)">{{ question.section_ref }}</span>
+          {% endif %}
+        </div>
       </div>
-      <button class="score-retry" onclick="resetAll()">Try Again →</button>
+      <div style="padding:0 18px 14px;display:flex;flex-direction:column;gap:7px">
+
+  {% for option in question.options.all %}
+  <div class="mcq-opt"
+       onclick="selectOpt(this, {{ option.is_correct|lower }}, '{{ forloop.parentloop.counter }}')">
+
+    <div style="width:26px;height:26px;border-radius:6px;background:var(--white);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:var(--text-muted);flex-shrink:0">
+
+      {{ option_labels|slice:forloop.counter0|slice:":1" }}
+
     </div>
 
-    <!-- ── BEGINNER ── -->
-    <div class="cat-section fade-in" data-level="beginner" id="section-beginner">
-      <div class="cat-header">
-        <span class="cat-badge badge-beg"><span style="width:7px;height:7px;border-radius:50%;background:var(--beginner);display:block"></span>Beginner</span>
-        <span class="cat-title">Fundamentals of Pakistan Tax</span>
-        <span class="cat-count">5 questions</span>
-      </div>
+    {{ option.option_text }}
+  </div>
+  {% endfor %}
 
-      <div class="mcq-card fade-in" data-level="beginner">
-        <div class="mcq-card-header"><div class="mcq-qnum">1</div><div class="mcq-q-text">What does ATL stand for in the context of FBR Pakistan?</div><span class="mcq-ref">ITO 2001</span></div>
-        <div class="mcq-opts">
-          <div class="mcq-opt" onclick="answer(this,false)"><div class="mcq-opt-key">A</div>Annual Tax List</div>
-          <div class="mcq-opt" onclick="answer(this,true)"><div class="mcq-opt-key">B</div>Active Taxpayer List</div>
-          <div class="mcq-opt" onclick="answer(this,false)"><div class="mcq-opt-key">C</div>Authorized Taxpayer Ledger</div>
-          <div class="mcq-opt" onclick="answer(this,false)"><div class="mcq-opt-key">D</div>Adjusted Tax Liability</div>
-        </div>
-        <div class="mcq-explanation"><strong>Active Taxpayer List (ATL)</strong> is published by FBR and contains names of individuals who have filed their income tax return. Filers on ATL enjoy lower withholding tax rates. <strong>Reference: Section 181A, ITO 2001.</strong></div>
-      </div>
-
-      <div class="mcq-card fade-in" data-level="beginner">
-        <div class="mcq-card-header"><div class="mcq-qnum">2</div><div class="mcq-q-text">What is the standard income tax return filing deadline for individuals in Pakistan?</div><span class="mcq-ref">ITO 2001</span></div>
-        <div class="mcq-opts">
-          <div class="mcq-opt" onclick="answer(this,false)"><div class="mcq-opt-key">A</div>30 June</div>
-          <div class="mcq-opt" onclick="answer(this,false)"><div class="mcq-opt-key">B</div>31 December</div>
-          <div class="mcq-opt" onclick="answer(this,true)"><div class="mcq-opt-key">C</div>30 September</div>
-          <div class="mcq-opt" onclick="answer(this,false)"><div class="mcq-opt-key">D</div>31 March</div>
-        </div>
-        <div class="mcq-explanation">The standard deadline for filing an income tax return is <strong>30 September</strong> following the end of the tax year (July–June). <strong>Reference: Section 118, ITO 2001.</strong></div>
-      </div>
-
-      <div class="mcq-card fade-in" data-level="beginner">
-        <div class="mcq-card-header"><div class="mcq-qnum">3</div><div class="mcq-q-text">What is NTN in the context of Pakistan taxation?</div><span class="mcq-ref">ITO 2001</span></div>
-        <div class="mcq-opts">
-          <div class="mcq-opt" onclick="answer(this,false)"><div class="mcq-opt-key">A</div>National Transaction Number</div>
-          <div class="mcq-opt" onclick="answer(this,true)"><div class="mcq-opt-key">B</div>National Tax Number</div>
-          <div class="mcq-opt" onclick="answer(this,false)"><div class="mcq-opt-key">C</div>Net Tax Notation</div>
-          <div class="mcq-opt" onclick="answer(this,false)"><div class="mcq-opt-key">D</div>Nominal Tax Numeral</div>
-        </div>
-        <div class="mcq-explanation"><strong>NTN (National Tax Number)</strong> is a unique identifier assigned by FBR to every registered taxpayer — individuals, companies, and AOPs. Required for filing returns and conducting most financial transactions. <strong>Reference: Section 181, ITO 2001.</strong></div>
-      </div>
-
-      <div class="mcq-card fade-in" data-level="beginner">
-        <div class="mcq-card-header"><div class="mcq-qnum">4</div><div class="mcq-q-text">Pakistan's tax year runs from:</div><span class="mcq-ref">ITO 2001</span></div>
-        <div class="mcq-opts">
-          <div class="mcq-opt" onclick="answer(this,false)"><div class="mcq-opt-key">A</div>January 1 to December 31</div>
-          <div class="mcq-opt" onclick="answer(this,true)"><div class="mcq-opt-key">B</div>July 1 to June 30</div>
-          <div class="mcq-opt" onclick="answer(this,false)"><div class="mcq-opt-key">C</div>April 1 to March 31</div>
-          <div class="mcq-opt" onclick="answer(this,false)"><div class="mcq-opt-key">D</div>October 1 to September 30</div>
-        </div>
-        <div class="mcq-explanation">Pakistan's normal tax year runs from <strong>1st July to 30th June</strong> of the following year. A special tax year may be approved by the Commissioner if a different period is required. <strong>Reference: Section 74, ITO 2001.</strong></div>
-      </div>
-
-      <div class="mcq-card fade-in" data-level="beginner">
-        <div class="mcq-card-header"><div class="mcq-qnum">5</div><div class="mcq-q-text">Which government body administers income tax in Pakistan?</div><span class="mcq-ref">General</span></div>
-        <div class="mcq-opts">
-          <div class="mcq-opt" onclick="answer(this,false)"><div class="mcq-opt-key">A</div>State Bank of Pakistan</div>
-          <div class="mcq-opt" onclick="answer(this,false)"><div class="mcq-opt-key">B</div>Securities & Exchange Commission</div>
-          <div class="mcq-opt" onclick="answer(this,true)"><div class="mcq-opt-key">C</div>Federal Board of Revenue (FBR)</div>
-          <div class="mcq-opt" onclick="answer(this,false)"><div class="mcq-opt-key">D</div>Ministry of Finance</div>
-        </div>
-        <div class="mcq-explanation"><strong>Federal Board of Revenue (FBR)</strong> is the apex tax authority in Pakistan responsible for administering and collecting income tax, sales tax, customs duties, and federal excise duty.</div>
-      </div>
+</div>
+      {% if question.explanation %}
+      <div class="mcq-exp" id="exp{{ forloop.counter }}">{{ question.explanation }}</div>
+      {% endif %}
     </div>
-
-    <!-- AD ZONE 2: Between beginner and intermediate -->
-    <div class="ad-zone"><div class="ad-label">Advertisement</div><ins class="adsbygoogle" style="display:block;min-height:90px" data-ad-client="ca-pub-XXXXXXXXXXXXXXXX" data-ad-slot="6666666666" data-ad-format="auto" data-full-width-responsive="true"></ins><script>(adsbygoogle=window.adsbygoogle||[]).push({});</script></div>
-
-    <!-- ── INTERMEDIATE ── -->
-    <div class="cat-section fade-in" data-level="intermediate" id="section-intermediate">
-      <div class="cat-header">
-        <span class="cat-badge badge-int"><span style="width:7px;height:7px;border-radius:50%;background:var(--inter-c);display:block"></span>Intermediate</span>
-        <span class="cat-title">Withholding Tax & Deductions</span>
-        <span class="cat-count">5 questions</span>
-      </div>
-
-      <div class="mcq-card fade-in" data-level="intermediate">
-        <div class="mcq-card-header"><div class="mcq-qnum">6</div><div class="mcq-q-text">Which section of ITO 2001 deals with payments to non-residents?</div><span class="mcq-ref">WHT</span></div>
-        <div class="mcq-opts">
-          <div class="mcq-opt" onclick="answer(this,false)"><div class="mcq-opt-key">A</div>Section 147</div>
-          <div class="mcq-opt" onclick="answer(this,false)"><div class="mcq-opt-key">B</div>Section 148</div>
-          <div class="mcq-opt" onclick="answer(this,false)"><div class="mcq-opt-key">C</div>Section 151</div>
-          <div class="mcq-opt" onclick="answer(this,true)"><div class="mcq-opt-key">D</div>Section 152</div>
-        </div>
-        <div class="mcq-explanation"><strong>Section 152</strong> deals with deduction of tax at source from payments of royalty, fees for technical services, and other payments made to non-resident persons. <strong>Reference: Section 152, ITO 2001.</strong></div>
-      </div>
-
-      <div class="mcq-card fade-in" data-level="intermediate">
-        <div class="mcq-card-header"><div class="mcq-qnum">7</div><div class="mcq-q-text">Under Section 236C, advance tax is collected on the:</div><span class="mcq-ref">Property</span></div>
-        <div class="mcq-opts">
-          <div class="mcq-opt" onclick="answer(this,false)"><div class="mcq-opt-key">A</div>Purchase of immovable property</div>
-          <div class="mcq-opt" onclick="answer(this,true)"><div class="mcq-opt-key">B</div>Sale or transfer of immovable property</div>
-          <div class="mcq-opt" onclick="answer(this,false)"><div class="mcq-opt-key">C</div>Rental income from property</div>
-          <div class="mcq-opt" onclick="answer(this,false)"><div class="mcq-opt-key">D</div>Construction of property</div>
-        </div>
-        <div class="mcq-explanation"><strong>Section 236C</strong> requires collection of advance tax from the <strong>seller</strong> at the time of sale or transfer of immovable property. Section 236K applies to the purchaser. <strong>Reference: Section 236C, ITO 2001.</strong></div>
-      </div>
-
-      <div class="mcq-card fade-in" data-level="intermediate">
-        <div class="mcq-card-header"><div class="mcq-qnum">8</div><div class="mcq-q-text">Section 153 of ITO 2001 deals with payments for:</div><span class="mcq-ref">WHT</span></div>
-        <div class="mcq-opts">
-          <div class="mcq-opt" onclick="answer(this,false)"><div class="mcq-opt-key">A</div>Salary and wages</div>
-          <div class="mcq-opt" onclick="answer(this,false)"><div class="mcq-opt-key">B</div>Dividend income</div>
-          <div class="mcq-opt" onclick="answer(this,true)"><div class="mcq-opt-key">C</div>Goods, services, and contracts</div>
-          <div class="mcq-opt" onclick="answer(this,false)"><div class="mcq-opt-key">D</div>Prize and winnings</div>
-        </div>
-        <div class="mcq-explanation"><strong>Section 153</strong> covers withholding tax deductions on payments for <strong>goods, services, and execution of contracts</strong>. It is one of the most widely applied WHT provisions affecting businesses. <strong>Reference: Section 153, ITO 2001.</strong></div>
-      </div>
-
-      <div class="mcq-card fade-in" data-level="intermediate">
-        <div class="mcq-card-header"><div class="mcq-qnum">9</div><div class="mcq-q-text">What is the income tax rate for a Small Company in Tax Year 2026?</div><span class="mcq-ref">Tax Rates</span></div>
-        <div class="mcq-opts">
-          <div class="mcq-opt" onclick="answer(this,false)"><div class="mcq-opt-key">A</div>20%</div>
-          <div class="mcq-opt" onclick="answer(this,false)"><div class="mcq-opt-key">B</div>25%</div>
-          <div class="mcq-opt" onclick="answer(this,false)"><div class="mcq-opt-key">C</div>29%</div>
-          <div class="mcq-opt" onclick="answer(this,true)"><div class="mcq-opt-key">D</div>21%</div>
-        </div>
-        <div class="mcq-explanation">A <strong>Small Company</strong> (registered on or after 1 July 2005 under Companies Act 2017) is taxed at <strong>21%</strong> for Tax Year 2026. <strong>Reference: First Schedule, Part I, Division II, ITO 2001.</strong></div>
-      </div>
-
-      <div class="mcq-card fade-in" data-level="intermediate">
-        <div class="mcq-card-header"><div class="mcq-qnum">10</div><div class="mcq-q-text">Section 7E of ITO 2001 relates to tax on:</div><span class="mcq-ref">Property</span></div>
-        <div class="mcq-opts">
-          <div class="mcq-opt" onclick="answer(this,false)"><div class="mcq-opt-key">A</div>Foreign remittances</div>
-          <div class="mcq-opt" onclick="answer(this,false)"><div class="mcq-opt-key">B</div>Prize winnings</div>
-          <div class="mcq-opt" onclick="answer(this,true)"><div class="mcq-opt-key">C</div>Deemed income from immovable property</div>
-          <div class="mcq-opt" onclick="answer(this,false)"><div class="mcq-opt-key">D</div>Profit on bank deposits</div>
-        </div>
-        <div class="mcq-explanation"><strong>Section 7E</strong> taxes deemed income from capital value of immovable properties at 1% of fair market value. Certain properties are exempt, including one self-occupied residential property. <strong>Reference: Section 7E, ITO 2001.</strong></div>
-      </div>
+    {% empty %}
+    <div style="text-align:center;padding:60px 20px;color:var(--text-muted)">
+      <p style="font-size:16px;margin-bottom:8px">No questions found.</p>
+      <a href="{% url 'question_list' %}" style="color:var(--green-dark);font-weight:500">View all categories →</a>
     </div>
+    {% endfor %}
 
-    <!-- AD ZONE 3: Between intermediate and advanced -->
-    <div class="ad-zone"><div class="ad-label">Advertisement</div><ins class="adsbygoogle" style="display:block;min-height:90px" data-ad-client="ca-pub-XXXXXXXXXXXXXXXX" data-ad-slot="7777777777" data-ad-format="auto" data-full-width-responsive="true"></ins><script>(adsbygoogle=window.adsbygoogle||[]).push({});</script></div>
-
-    <!-- ── ADVANCED ── -->
-    <div class="cat-section fade-in" data-level="advanced" id="section-advanced">
-      <div class="cat-header">
-        <span class="cat-badge badge-adv"><span style="width:7px;height:7px;border-radius:50%;background:var(--advanced);display:block"></span>Advanced</span>
-        <span class="cat-title">Complex Provisions & Sales Tax</span>
-        <span class="cat-count">5 questions</span>
-      </div>
-
-      <div class="mcq-card fade-in" data-level="advanced">
-        <div class="mcq-card-header"><div class="mcq-qnum">11</div><div class="mcq-q-text">Under which section is a person liable to pay advance tax on a quarterly basis?</div><span class="mcq-ref">Advance Tax</span></div>
-        <div class="mcq-opts">
-          <div class="mcq-opt" onclick="answer(this,false)"><div class="mcq-opt-key">A</div>Section 136</div>
-          <div class="mcq-opt" onclick="answer(this,false)"><div class="mcq-opt-key">B</div>Section 140</div>
-          <div class="mcq-opt" onclick="answer(this,true)"><div class="mcq-opt-key">C</div>Section 147</div>
-          <div class="mcq-opt" onclick="answer(this,false)"><div class="mcq-opt-key">D</div>Section 150</div>
-        </div>
-        <div class="mcq-explanation"><strong>Section 147</strong> requires certain taxpayers (companies, AOPs, and individuals with prior year tax liability exceeding PKR 1 million) to pay advance tax in quarterly instalments. <strong>Reference: Section 147, ITO 2001.</strong></div>
-      </div>
-
-      <div class="mcq-card fade-in" data-level="advanced">
-        <div class="mcq-card-header"><div class="mcq-qnum">12</div><div class="mcq-q-text">Section 170 of ITO 2001 deals with:</div><span class="mcq-ref">Refunds</span></div>
-        <div class="mcq-opts">
-          <div class="mcq-opt" onclick="answer(this,false)"><div class="mcq-opt-key">A</div>Penalty for late filing</div>
-          <div class="mcq-opt" onclick="answer(this,false)"><div class="mcq-opt-key">B</div>Assessment of income</div>
-          <div class="mcq-opt" onclick="answer(this,true)"><div class="mcq-opt-key">C</div>Refund of excess tax paid</div>
-          <div class="mcq-opt" onclick="answer(this,false)"><div class="mcq-opt-key">D</div>Transfer pricing adjustments</div>
-        </div>
-        <div class="mcq-explanation"><strong>Section 170</strong> provides the mechanism for a taxpayer to claim a refund for excess tax paid or deducted. A refund application must be filed within two years of the later of the assessment date or the excess payment date. <strong>Reference: Section 170, ITO 2001.</strong></div>
-      </div>
-
-      <div class="mcq-card fade-in" data-level="advanced">
-        <div class="mcq-card-header"><div class="mcq-qnum">13</div><div class="mcq-q-text">Under the Sales Tax Act 1990, who is a "Tier-1 Retailer"?</div><span class="mcq-ref">STA 1990</span></div>
-        <div class="mcq-opts">
-          <div class="mcq-opt" onclick="answer(this,false)"><div class="mcq-opt-key">A</div>Any retailer with annual sales above PKR 5 million</div>
-          <div class="mcq-opt" onclick="answer(this,false)"><div class="mcq-opt-key">B</div>A retailer listed on the stock exchange</div>
-          <div class="mcq-opt" onclick="answer(this,true)"><div class="mcq-opt-key">C</div>A retailer operating from a air-conditioned shop in a plaza, mall, or commercial area as defined</div>
-          <div class="mcq-opt" onclick="answer(this,false)"><div class="mcq-opt-key">D</div>Any retailer who imports goods directly</div>
-        </div>
-        <div class="mcq-explanation">A <strong>Tier-1 Retailer</strong> includes retailers operating from air-conditioned shops in plazas, malls, or commercial areas with certain floor area thresholds, or those with annual turnover exceeding specified limits. <strong>Reference: Section 2(43A), STA 1990.</strong></div>
-      </div>
-
-      <div class="mcq-card fade-in" data-level="advanced">
-        <div class="mcq-card-header"><div class="mcq-qnum">14</div><div class="mcq-q-text">Section 182 of ITO 2001 deals with:</div><span class="mcq-ref">Penalties</span></div>
-        <div class="mcq-opts">
-          <div class="mcq-opt" onclick="answer(this,false)"><div class="mcq-opt-key">A</div>Audit of taxpayer accounts</div>
-          <div class="mcq-opt" onclick="answer(this,true)"><div class="mcq-opt-key">B</div>Penalty for failure to furnish a return or statement</div>
-          <div class="mcq-opt" onclick="answer(this,false)"><div class="mcq-opt-key">C</div>Recovery of tax from third parties</div>
-          <div class="mcq-opt" onclick="answer(this,false)"><div class="mcq-opt-key">D</div>Appeals to Commissioner Inland Revenue</div>
-        </div>
-        <div class="mcq-explanation"><strong>Section 182</strong> prescribes penalties for failure to furnish a return, statement, or other document. Penalty of PKR 1,000 per day for first 60 days, then PKR 2,000 per day or 0.1% of taxable income — whichever is higher. <strong>Reference: Section 182, ITO 2001.</strong></div>
-      </div>
-
-      <div class="mcq-card fade-in" data-level="advanced">
-        <div class="mcq-card-header"><div class="mcq-qnum">15</div><div class="mcq-q-text">Under Section 7B of ITO 2001, tax on profit on debt exceeding Rs. 5 million is treated as:</div><span class="mcq-ref">Special Tax</span></div>
-        <div class="mcq-opts">
-          <div class="mcq-opt" onclick="answer(this,false)"><div class="mcq-opt-key">A</div>Exempt from tax</div>
-          <div class="mcq-opt" onclick="answer(this,false)"><div class="mcq-opt-key">B</div>Business income taxable at normal rates</div>
-          <div class="mcq-opt" onclick="answer(this,true)"><div class="mcq-opt-key">C</div>Taxable at 15% as a separate block of income</div>
-          <div class="mcq-opt" onclick="answer(this,false)"><div class="mcq-opt-key">D</div>Adjustable against total income</div>
-        </div>
-        <div class="mcq-explanation">Where profit on debt <strong>exceeds PKR 5 million</strong>, Section 7B treats the entire amount as a <strong>separate block of income taxable at 15%</strong>. Below PKR 5 million, it is taxed at 15% under Section 151 as a final tax. <strong>Reference: Section 7B, ITO 2001.</strong></div>
-      </div>
+    <!-- PAGINATION -->
+    {% if page_obj.has_other_pages %}
+    <div style="display:flex;align-items:center;justify-content:center;gap:6px;margin-top:28px" aria-label="Pagination">
+      {% if page_obj.has_previous %}
+      <a href="?page={{ page_obj.previous_page_number }}{% if category_slug %}&category={{ category_slug }}{% endif %}" class="pg-btn" aria-label="Previous">‹</a>
+      {% endif %}
+      {% for num in page_obj.paginator.page_range %}
+        {% if page_obj.number == num %}
+        <button class="pg-btn pg-active" aria-current="page">{{ num }}</button>
+        {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
+        <a href="?page={{ num }}{% if category_slug %}&category={{ category_slug }}{% endif %}" class="pg-btn">{{ num }}</a>
+        {% endif %}
+      {% endfor %}
+      {% if page_obj.has_next %}
+      <a href="?page={{ page_obj.next_page_number }}{% if category_slug %}&category={{ category_slug }}{% endif %}" class="pg-btn" aria-label="Next">›</a>
+      {% endif %}
     </div>
+    {% endif %}
 
-    <div class="page-disclaimer">
-      <span style="font-size:14px;flex-shrink:0">⚠️</span>
-      <p><strong>Disclaimer:</strong> These MCQs are for educational purposes only. Tax laws change — always verify with the <a href="https://www.fbr.gov.pk" target="_blank" rel="noopener noreferrer" style="color:#92400e;text-decoration:underline">official FBR portal</a> before applying in practice.</p>
+    <div style="background:#fffbeb;border:1px solid #fde68a;border-radius:var(--radius-sm);padding:12px 16px;display:flex;gap:10px;margin-top:24px">
+      <span style="flex-shrink:0">⚠️</span>
+      <p style="font-size:12px;color:#92400e;line-height:1.55;margin:0"><strong>Disclaimer:</strong> These MCQs are for educational purposes only. Always verify with the <a href="https://www.fbr.gov.pk" target="_blank" rel="noopener noreferrer" style="color:#92400e;text-decoration:underline">official FBR portal</a>.</p>
     </div>
   </div>
 
   <!-- SIDEBAR -->
-  <aside class="mcq-sidebar" aria-label="MCQ sidebar">
+  <aside class="mcq-sidebar" style="position:sticky;top:80px">
+    <!-- Score tracker -->
+    <div class="sidebar-card">
+      <div class="sb-head">Your score</div>
+        <div style="padding:14px 16px">
 
-    <!-- Live Score -->
-    <div class="sidebar-card fade-in">
-      <div class="sidebar-head">Your score</div>
-      <div class="score-card-mini">
-        <div class="score-row"><span class="score-row-label">Answered</span><span class="score-row-val" id="side-answered">0 / 15</span></div>
-        <div class="score-row"><span class="score-row-label">Correct</span><span class="score-row-val" style="color:var(--green)" id="side-correct">0</span></div>
-        <div class="score-row"><span class="score-row-label">Wrong</span><span class="score-row-val" style="color:#ef4444" id="side-wrong">0</span></div>
-        <div class="score-row"><span class="score-row-label">Score</span><span class="score-row-val" id="side-pct">—</span></div>
-      </div>
+  {% for label,value,id in score_rows %}
+    <div style="display:flex;justify-content:space-between;align-items:center;padding:7px 0;border-bottom:1px solid var(--border);font-size:13px">
+      <span style="color:var(--text-muted)">{{ label }}</span>
+      <span style="font-weight:700;color:var(--navy)" id="score-{{ id }}">{{ value }}</span>
+    </div>
+  {% endfor %}
+
+</div>
     </div>
 
-    <!-- Level Navigator -->
-    <div class="sidebar-card fade-in">
-      <div class="sidebar-head">Jump to level</div>
-      <div class="level-nav">
-        <div class="level-nav-item" onclick="scrollToSection('beginner')"><div class="level-nav-left"><div class="level-dot" style="background:var(--beginner)"></div>Beginner</div><span class="level-count">5 Qs</span></div>
-        <div class="level-nav-item" onclick="scrollToSection('intermediate')"><div class="level-nav-left"><div class="level-dot" style="background:var(--inter-c)"></div>Intermediate</div><span class="level-count">5 Qs</span></div>
-        <div class="level-nav-item" onclick="scrollToSection('advanced')"><div class="level-nav-left"><div class="level-dot" style="background:var(--advanced)"></div>Advanced</div><span class="level-count">5 Qs</span></div>
+    <!-- Categories -->
+    {% if categories %}
+    <div class="sidebar-card">
+      <div class="sb-head">Categories</div>
+      <div style="padding:8px 0">
+        <a href="{% url 'question_list' %}" style="display:flex;align-items:center;justify-content:space-between;padding:9px 16px;font-size:13px;color:var(--text-mid);border-bottom:1px solid var(--border);transition:background .12s;min-height:44px" onmouseover="this.style.background='var(--cream)'" onmouseout="this.style.background=''">All Categories<span style="color:var(--text-muted)">→</span></a>
+        {% for cat in categories %}
+        <a href="{% url 'question_list_category' category_slug=cat.slug %}" style="display:flex;align-items:center;justify-content:space-between;padding:9px 16px;font-size:13px;color:var(--text-mid);border-bottom:1px solid var(--border);transition:background .12s;min-height:44px{% if selected_category == cat.name %};background:var(--green-pale);font-weight:600{% endif %}" onmouseover="this.style.background='var(--cream)'" onmouseout="this.style.background='{% if selected_category == cat.name %}var(--green-pale){% endif %}'">{{ cat.name }}<span style="color:var(--text-muted)">→</span></a>
+        {% endfor %}
       </div>
     </div>
+    {% endif %}
 
     <!-- Sidebar Ad -->
     <div class="sidebar-card" style="overflow:hidden">
       <div class="ad-label" style="padding:4px 0">Advertisement</div>
-      <ins class="adsbygoogle" style="display:block;min-height:250px;width:100%" data-ad-client="ca-pub-XXXXXXXXXXXXXXXX" data-ad-slot="8888888888" data-ad-format="rectangle" data-full-width-responsive="false"></ins>
+      <ins class="adsbygoogle" style="display:block;min-height:250px;width:100%" data-ad-client="{{ ADSENSE_PUBLISHER_ID }}" data-ad-slot="9999999999" data-ad-format="rectangle" data-full-width-responsive="false"></ins>
       <script>(adsbygoogle=window.adsbygoogle||[]).push({});</script>
     </div>
 
-    <!-- Study Tip -->
-    <div class="sidebar-card fade-in">
-      <div class="sidebar-head">Study tip</div>
-      <div class="tip-card">
-        <div class="tip-text">Answer each question before revealing the explanation. This active recall method improves retention by up to 50% compared to passive reading.</div>
-      </div>
-      <a href="https://wa.me/923332482742" class="wa-sidebar" target="_blank" rel="noopener noreferrer" aria-label="Book a tax consultation on WhatsApp">
-        <svg viewBox="0 0 24 24" fill="currentColor" style="width:13px;height:13px"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
-        Need help? Consult Umair
-      </a>
-    </div>
-
+    <a href="https://wa.me/923332482742" style="display:flex;align-items:center;justify-content:center;gap:8px;background:var(--green);color:var(--navy);font-size:13px;font-weight:700;padding:12px;border-radius:var(--radius-sm);margin-top:4px;transition:all .2s;min-height:48px" target="_blank" rel="noopener noreferrer" onmouseover="this.style.background='var(--green-dark)';this.style.color='#fff'" onmouseout="this.style.background='var(--green)';this.style.color='var(--navy)'">📲 Book a Consultation</a>
   </aside>
 </div>
-</main>
+{% endblock %}
 
-<footer role="contentinfo">
-  <div class="container">
-    <div class="footer-grid">
-      <div>
-        <div class="footer-logo">Tax<em>Buddy</em> Umair</div>
-        <div class="footer-tagline">Educational platform simplifying Pakistan's tax laws.</div>
-        <div class="footer-contact"><a href="tel:+923332482742">+92 333 2482742</a><a href="mailto:umair.mubeenir@gmail.com">umair.mubeenir@gmail.com</a></div>
-      </div>
-      <div class="footer-col"><h4>Income Tax</h4><a href="/income-tax-guides">Tax Guides</a><a href="/blog/income-tax">Articles</a><a href="/SalaryCalculator">Salary Calculator</a><a href="/income-tax-rates">Tax Rates</a></div>
-      <div class="footer-col"><h4>Practice</h4><a href="/income-tax-mcqs-pakistan/">Income Tax MCQs</a><a href="/blog/sales-tax">Sales Tax Articles</a><a href="/AOPCalculator">AOP Calculator</a><a href="/BusinessCalculator">Business Calculator</a></div>
-      <div class="footer-col"><h4>Company</h4><a href="/#about">About Umair</a><a href="/#contact">Contact Us</a><a href="https://wa.me/923332482742" target="_blank" rel="noopener noreferrer">WhatsApp</a><a href="/sitemap.xml">Sitemap</a></div>
-    </div>
-    <div class="footer-bottom">
-      <div class="footer-copy">© 2026 TaxBuddy Umair · For educational purposes only</div>
-      <div class="footer-legal"><a href="/privacy-policy">Privacy Policy</a><a href="/terms-and-conditions">Terms of Use</a><a href="/disclaimer">Disclaimer</a></div>
-    </div>
-  </div>
-</footer>
-
+{% block extra_js %}
 <script>
-  const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  const TOTAL = 15;
-  let answered = 0, correct = 0, wrong = 0;
-
-  /* Navbar */
-  const nb = document.getElementById('navbar');
-  let tick = false;
-  window.addEventListener('scroll',()=>{if(!tick){requestAnimationFrame(()=>{nb.classList.toggle('scrolled',window.scrollY>20);tick=false;});tick=true;}},{passive:true});
-
-  /* Hamburger */
-  document.getElementById('hamburger').addEventListener('click',()=>document.getElementById('mobile-menu').classList.toggle('open'));
-  document.querySelectorAll('#mobile-menu a').forEach(a=>a.addEventListener('click',()=>document.getElementById('mobile-menu').classList.remove('open')));
-
-  /* Fade-in */
-  if(prefersReducedMotion){document.querySelectorAll('.fade-in').forEach(el=>el.classList.add('visible'));}
-  else{const obs=new IntersectionObserver(entries=>{entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('visible');obs.unobserve(e.target);}});},{threshold:0.08});document.querySelectorAll('.fade-in').forEach(el=>obs.observe(el));}
-
-  /* Answer handler */
-  function answer(el, isCorrect) {
-    const card = el.closest('.mcq-card');
-    if(card.classList.contains('answered-correct') || card.classList.contains('answered-wrong')) return;
-    const opts = card.querySelectorAll('.mcq-opt');
-    opts.forEach(o => o.style.pointerEvents = 'none');
-    el.classList.add(isCorrect ? 'correct' : 'wrong');
-    if(!isCorrect) {
-      opts.forEach(o => { if(o.onclick && o.onclick.toString().includes('true')) o.classList.add('correct'); });
-    }
-    card.classList.add(isCorrect ? 'answered-correct' : 'answered-wrong');
-    card.querySelector('.mcq-explanation').classList.add('show');
-    answered++;
-    if(isCorrect) correct++; else wrong++;
-    updateScore();
-    if(answered === TOTAL) {
-      setTimeout(()=>{
-        const s = document.getElementById('score-summary');
-        s.classList.add('show');
-        s.scrollIntoView({behavior:'smooth',block:'start'});
-      }, 600);
-    }
-  }
-
-  function updateScore() {
-    const pct = Math.round((answered/TOTAL)*100);
-    document.getElementById('progress-fill').style.width = pct + '%';
-    document.getElementById('score-display').textContent = answered + ' / ' + TOTAL + ' answered';
-    document.getElementById('side-answered').textContent = answered + ' / ' + TOTAL;
-    document.getElementById('side-correct').textContent = correct;
-    document.getElementById('side-wrong').textContent = wrong;
-    document.getElementById('side-pct').textContent = answered > 0 ? Math.round((correct/answered)*100) + '%' : '—';
-    document.getElementById('sum-correct').textContent = correct;
-    document.getElementById('sum-wrong').textContent = wrong;
-    document.getElementById('sum-pct').textContent = Math.round((correct/TOTAL)*100) + '%';
-  }
-
-  function resetAll() {
-    answered = 0; correct = 0; wrong = 0;
-    document.querySelectorAll('.mcq-opt').forEach(o=>{ o.classList.remove('correct','wrong'); o.style.pointerEvents=''; });
-    document.querySelectorAll('.mcq-card').forEach(c=>c.classList.remove('answered-correct','answered-wrong'));
-    document.querySelectorAll('.mcq-explanation').forEach(e=>e.classList.remove('show'));
-    document.getElementById('score-summary').classList.remove('show');
-    updateScore();
-    window.scrollTo({top:0,behavior:'smooth'});
-  }
-
-  function filterLevel(level) {
-    document.querySelectorAll('.level-pill').forEach(p=>p.classList.toggle('active', p.dataset.level===level));
-    document.querySelectorAll('.cat-section').forEach(s=>{
-      s.style.display = (level === 'all' || s.dataset.level === level) ? '' : 'none';
-    });
-  }
-
-  function scrollToSection(id) {
-    const el = document.getElementById('section-' + id);
-    if(el) el.scrollIntoView({behavior:'smooth', block:'start'});
-  }
+let answered = 0, correct = 0, wrong = 0;
+const totals = {};
+function selectOpt(el, isCorrect, qid) {
+  if (totals[qid]) return;
+  totals[qid] = true;
+  const opts = el.parentElement.querySelectorAll('.mcq-opt');
+  opts.forEach(o => o.style.pointerEvents = 'none');
+  el.classList.add(isCorrect ? 'opt-correct' : 'opt-wrong');
+  if (!isCorrect) opts.forEach(o => { if (o.getAttribute('onclick').includes('true')) o.classList.add('opt-correct'); });
+  const card = el.closest('.mcq-card');
+  card.classList.add(isCorrect ? 'correct' : 'wrong');
+  card.querySelector('.q-num').style.background = isCorrect ? 'var(--green)' : '#ef4444';
+  const exp = document.getElementById('exp' + qid);
+  if (exp) exp.classList.add('show');
+  answered++; if (isCorrect) correct++; else wrong++;
+  document.getElementById('score-answered').textContent = answered + ' / ' + document.querySelectorAll('.mcq-card').length;
+  document.getElementById('score-correct').textContent = correct;
+  document.getElementById('score-wrong').textContent = wrong;
+  document.getElementById('score-score').textContent = answered ? Math.round((correct/answered)*100) + '%' : '—';
+}
 </script>
-</body>
-</html>
+{% endblock %}

@@ -1,0 +1,227 @@
+{% load static %}
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>{% block title %}TaxBuddy Umair | Pakistan Tax Expert{% endblock %}</title>
+<meta name="description" content="{% block meta_desc %}Free Pakistan income tax & sales tax guides, FBR calculators, and expert consultation by an FBR officer. Updated Tax Year 2026.{% endblock %}">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="{% block canonical %}https://www.taxbuddyumair.com/{% endblock %}">
+<meta property="og:title" content="{% block og_title %}TaxBuddy Umair{% endblock %}">
+<meta property="og:description" content="{% block og_desc %}Free Pakistan tax guides & FBR consultation.{% endblock %}">
+<meta property="og:url" content="{% block og_url %}https://www.taxbuddyumair.com/{% endblock %}">
+<meta property="og:type" content="website">
+<meta property="og:image" content="{% block og_image %}{% static 'assets/img/image/About.webp' %}{% endblock %}">
+<meta property="og:locale" content="en_PK">
+<meta property="og:site_name" content="TaxBuddy Umair">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="theme-color" content="#0a2238">
+<link rel="icon" type="image/x-icon" href="{% static 'favicon.ico' %}">
+<link rel="apple-touch-icon" href="{% static 'apple-touch-icon.png' %}">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,700;1,700&display=swap" media="print" onload="this.media='all'">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,700;1,700&display=swap"></noscript>
+<link rel="stylesheet" href="{% static 'css/taxbuddy-mobile.css' %}">
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client={{ ADSENSE_PUBLISHER_ID }}" crossorigin="anonymous"></script>
+{% if GA4_MEASUREMENT_ID %}
+<script async src="https://www.googletagmanager.com/gtag/js?id={{ GA4_MEASUREMENT_ID }}"></script>
+<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','{{ GA4_MEASUREMENT_ID }}');</script>
+{% endif %}
+{% block structured_data %}{% endblock %}
+{% block extra_css %}{% endblock %}
+<style>
+:root{--navy:#0a2238;--navy-light:#112d47;--navy-mid:#1a3f5c;--green:#22c97a;--green-dark:#18a362;--green-pale:rgba(34,201,122,0.1);--cream:#f7f5f0;--white:#fff;--text:#0a2238;--text-mid:#3a5068;--text-muted:#7a909f;--border:rgba(10,34,56,0.1);--shadow:0 2px 12px rgba(10,34,56,0.08);--shadow-md:0 8px 32px rgba(10,34,56,0.12);--radius:12px;--radius-sm:8px;--radius-pill:99px}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+body{font-family:'Inter',-apple-system,sans-serif;background:var(--cream);color:var(--text);font-size:15px;line-height:1.7;overflow-x:hidden;-webkit-font-smoothing:antialiased}
+a{text-decoration:none;color:inherit}
+img,svg{display:block;max-width:100%}
+.container{max-width:1100px;margin:0 auto;padding:0 2rem}
+:focus-visible{outline:2px solid var(--green);outline-offset:3px;border-radius:4px}
+.skip-link{position:absolute;top:-100px;left:1rem;z-index:9999;background:var(--green);color:var(--navy);font-size:13px;font-weight:700;padding:10px 20px;border-radius:var(--radius-sm);transition:top .2s}
+.skip-link:focus{top:1rem}
+/* NAV */
+#navbar{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(10,34,56,0.97);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-bottom:1px solid rgba(255,255,255,0.07);height:60px}
+.nav-inner{display:flex;align-items:center;justify-content:space-between;height:100%;gap:2rem}
+.nav-logo{font-family:'Playfair Display',serif;font-size:20px;font-style:italic;font-weight:700;color:#fff;flex-shrink:0}
+.nav-logo em{color:var(--green);font-style:normal}
+.nav-links{display:flex;align-items:center;gap:4px;list-style:none}
+.nav-links a{color:rgba(255,255,255,0.65);font-size:13px;font-weight:500;padding:6px 13px;border-radius:var(--radius-sm);transition:all .15s}
+.nav-links a:hover{color:#fff;background:rgba(255,255,255,0.07)}
+.nav-links a.active{color:#fff;background:rgba(34,201,122,0.15)}
+.nav-wa{display:flex;align-items:center;gap:7px;background:var(--green);color:var(--navy);font-size:13px;font-weight:700;padding:8px 16px;border-radius:var(--radius-sm);transition:all .2s;flex-shrink:0}
+.nav-wa:hover{background:var(--green-dark);color:#fff}
+.hamburger{display:none;background:none;border:none;cursor:pointer;color:#fff;padding:10px;line-height:0}
+#mobile-menu{display:none;position:fixed;top:60px;left:0;right:0;z-index:99;background:var(--navy);border-bottom:1px solid rgba(255,255,255,0.1);padding:1rem 2rem 1.5rem;max-height:calc(100vh - 60px);overflow-y:auto}
+#mobile-menu.open{display:block}
+#mobile-menu a{display:flex;align-items:center;color:rgba(255,255,255,0.75);font-size:15px;padding:12px 0;border-bottom:1px solid rgba(255,255,255,0.06);min-height:44px}
+#mobile-menu a:last-child{border:none}
+/* MESSAGES */
+.msg-wrap{position:fixed;top:68px;left:50%;transform:translateX(-50%);z-index:200;width:min(560px,90vw);display:flex;flex-direction:column;gap:8px;pointer-events:none}
+.msg{padding:12px 16px;border-radius:var(--radius-sm);font-size:13.5px;font-weight:500;display:flex;align-items:center;justify-content:space-between;gap:12px;pointer-events:all}
+.msg-success{background:#f0fdf4;border:1px solid #bbf7d0;color:#15803d}
+.msg-error{background:#fef2f2;border:1px solid #fca5a5;color:#dc2626}
+.msg-warning{background:#fffbeb;border:1px solid #fde68a;color:#b45309}
+.msg-info{background:#eff6ff;border:1px solid #bfdbfe;color:#1d4ed8}
+.msg button{background:none;border:none;cursor:pointer;font-size:18px;color:inherit;opacity:0.5;padding:0;line-height:1}
+.msg button:hover{opacity:1}
+/* WHATSAPP FLOAT */
+.wa-float{position:fixed;bottom:84px;right:24px;z-index:90;width:52px;height:52px;border-radius:50%;background:#25d366;color:#fff;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 20px rgba(37,211,102,.4);transition:all .2s}
+.wa-float:hover{background:#1ebe5d;transform:scale(1.08)}
+#scroll-top{position:fixed;bottom:24px;right:24px;z-index:90;width:44px;height:44px;border-radius:50%;background:var(--navy);border:1px solid rgba(255,255,255,.15);color:#fff;cursor:pointer;display:flex;align-items:center;justify-content:center;opacity:0;transform:translateY(10px);transition:all .3s;box-shadow:var(--shadow)}
+#scroll-top.show{opacity:1;transform:translateY(0)}
+#scroll-top:hover{background:var(--green);border-color:var(--green);color:var(--navy)}
+/* AD */
+.ad-zone{width:100%;display:flex;flex-direction:column;background:var(--white);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;margin-bottom:28px}
+.ad-label{padding:4px 0;font-size:10px;font-weight:600;color:var(--text-muted);text-transform:uppercase;letter-spacing:.1em;text-align:center;background:var(--cream);border-bottom:1px solid var(--border)}
+.ad-zone ins{display:block;width:100%;min-height:90px}
+/* FOOTER */
+footer{background:var(--navy);border-top:1px solid rgba(255,255,255,.07);padding:40px 0 24px}
+.footer-grid{display:grid;grid-template-columns:200px 1fr 1fr 1fr;gap:2rem;margin-bottom:2.5rem}
+.f-logo{font-family:'Playfair Display',serif;font-size:18px;font-style:italic;color:#fff;margin-bottom:10px}
+.f-logo em{color:var(--green);font-style:normal}
+.f-tagline{font-size:12px;color:rgba(255,255,255,.35);line-height:1.6;margin-bottom:14px}
+.f-contact a,.f-contact span{display:block;font-size:12px;color:rgba(255,255,255,.4);margin-bottom:4px;transition:color .15s}
+.f-contact a:hover{color:var(--green)}
+.f-col h4{font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:rgba(255,255,255,.45);margin-bottom:12px}
+.f-col a{display:block;font-size:12.5px;color:rgba(255,255,255,.4);margin-bottom:7px;transition:color .15s}
+.f-col a:hover{color:#fff}
+.f-bottom{border-top:1px solid rgba(255,255,255,.07);padding-top:18px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px}
+.f-copy{font-size:11.5px;color:rgba(255,255,255,.25)}
+.f-legal{display:flex;gap:14px;flex-wrap:wrap}
+.f-legal a{font-size:11.5px;color:rgba(255,255,255,.25);transition:color .15s}
+.f-legal a:hover{color:rgba(255,255,255,.6)}
+.fade-in{opacity:0;transform:translateY(14px);transition:opacity .5s,transform .5s}
+.fade-in.visible{opacity:1;transform:none}
+@media(max-width:900px){.footer-grid{grid-template-columns:1fr 1fr}}
+@media(max-width:768px){.nav-links{display:none!important}.hamburger{display:block!important}.footer-grid{grid-template-columns:1fr 1fr}.f-bottom{flex-direction:column;text-align:center}.f-legal{justify-content:center}}
+@media(max-width:480px){.footer-grid{grid-template-columns:1fr}.container{padding:0 1rem}.wa-float{width:48px;height:48px;bottom:76px;right:16px}#scroll-top{width:40px;height:40px;bottom:20px;right:16px}}
+@media(prefers-reduced-motion:reduce){*{transition-duration:.01ms!important;animation-duration:.01ms!important}html{scroll-behavior:auto}.fade-in{opacity:1!important;transform:none!important}}
+</style>
+</head>
+<body>
+<a href="#main-content" class="skip-link">Skip to main content</a>
+
+<nav id="navbar" aria-label="Main navigation">
+  <div class="container">
+    <div class="nav-inner">
+      <a href="{% url 'index' %}" class="nav-logo">Tax<em>Buddy</em> Umair</a>
+      <ul class="nav-links" role="list">
+        <li><a href="{% url 'income_tax_guides' %}" {% if request.resolver_match.url_name == 'income_tax_guides' %}class="active" aria-current="page"{% endif %}>Income Tax</a></li>
+        <li><a href="{% url 'sales_tax_guides' %}" {% if request.resolver_match.url_name == 'sales_tax_guides' %}class="active" aria-current="page"{% endif %}>Sales Tax</a></li>
+        <li><a href="{% url 'viewBlogs' slug='income-tax' %}" {% if request.resolver_match.url_name == 'viewBlogs' %}class="active" aria-current="page"{% endif %}>Blog</a></li>
+        <li><a href="{% url 'question_list' %}" {% if request.resolver_match.url_name == 'question_list' %}class="active" aria-current="page"{% endif %}>MCQs</a></li>
+        <li><a href="{% url 'income_tax_rates' %}" {% if request.resolver_match.url_name == 'income_tax_rates' %}class="active" aria-current="page"{% endif %}>Tax Rates</a></li>
+        <li><a href="{% url 'index' %}#contact">Contact</a></li>
+      </ul>
+      <div style="display:flex;align-items:center;gap:10px">
+        <a href="https://wa.me/923332482742" class="nav-wa" target="_blank" rel="noopener noreferrer" aria-label="WhatsApp consultation">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+          Consult
+        </a>
+        <button class="hamburger" id="hamburger" aria-label="Toggle menu" aria-expanded="false" aria-controls="mobile-menu">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
+        </button>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<div id="mobile-menu" role="dialog" aria-label="Navigation">
+  <a href="{% url 'index' %}">Home</a>
+  <a href="{% url 'income_tax_guides' %}">Income Tax Guides</a>
+  <a href="{% url 'sales_tax_guides' %}">Sales Tax Guides</a>
+  <a href="{% url 'viewBlogs' slug='income-tax' %}">Blog</a>
+  <a href="{% url 'question_list' %}">Tax MCQs</a>
+  <a href="{% url 'income_tax_rates' %}">Tax Rates</a>
+  <a href="{% url 'SalaryCalculator' %}">Salary Calculator</a>
+  <a href="{% url 'index' %}#contact">Contact</a>
+  <a href="https://wa.me/923332482742" style="color:var(--green)" target="_blank" rel="noopener noreferrer">📲 WhatsApp Consultation</a>
+</div>
+
+{% if messages %}
+<div class="msg-wrap" role="alert" aria-live="polite">
+  {% for message in messages %}
+  <div class="msg msg-{{ message.tags }}">
+    <span>{{ message }}</span>
+    <button onclick="this.parentElement.remove()" aria-label="Dismiss">×</button>
+  </div>
+  {% endfor %}
+</div>
+{% endif %}
+
+<main id="main-content">{% block content %}{% endblock %}</main>
+
+<a href="https://wa.me/923332482742" class="wa-float" target="_blank" rel="noopener noreferrer" aria-label="Chat on WhatsApp">
+  <svg width="26" height="26" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+</a>
+
+<button id="scroll-top" aria-label="Back to top">
+  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="18 15 12 9 6 15"/></svg>
+</button>
+
+<footer>
+  <div class="container">
+    <div class="footer-grid">
+      <div>
+        <div class="f-logo">Tax<em>Buddy</em> Umair</div>
+        <div class="f-tagline">Educational platform simplifying Pakistan's tax laws for businesses and individuals.</div>
+        <div class="f-contact">
+          <a href="tel:+923332482742">+92 333 2482742</a>
+          <a href="mailto:umair.mubeenir@gmail.com">umair.mubeenir@gmail.com</a>
+          <span>Gulshan-e-Iqbal, Karachi</span>
+        </div>
+      </div>
+      <div class="f-col">
+        <h4>Income Tax</h4>
+        <a href="{% url 'income_tax_guides' %}">Income Tax Guides</a>
+        <a href="{% url 'viewBlogs' slug='income-tax' %}">Income Tax Blog</a>
+        <a href="{% url 'SalaryCalculator' %}">Salary Calculator</a>
+        <a href="{% url 'income_tax_rates' %}">Tax Rates 2026</a>
+      </div>
+      <div class="f-col">
+        <h4>Sales Tax</h4>
+        <a href="{% url 'sales_tax_guides' %}">Sales Tax Guides</a>
+        <a href="{% url 'viewBlogs' slug='sales-tax' %}">Sales Tax Blog</a>
+        <a href="{% url 'question_list' %}">Tax MCQs</a>
+        <a href="{% url 'BusinessCalculator' %}">Business Calculator</a>
+      </div>
+      <div class="f-col">
+        <h4>Company</h4>
+        <a href="{% url 'index' %}#about">About Umair</a>
+        <a href="{% url 'index' %}#contact">Contact</a>
+        <a href="{% url 'online_services' %}">Online Services</a>
+        <a href="https://wa.me/923332482742" target="_blank" rel="noopener noreferrer">WhatsApp</a>
+      </div>
+    </div>
+    <div class="f-bottom">
+      <div class="f-copy">© {% now "Y" %} TaxBuddy Umair · For educational purposes only · Not professional tax advice</div>
+      <div class="f-legal">
+        <a href="{% url 'privacy_policy' %}">Privacy Policy</a>
+        <a href="{% url 'terms_and_conditions' %}">Terms of Use</a>
+        <a href="/sitemap.xml">Sitemap</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script>
+const _rm = window.matchMedia('(prefers-reduced-motion:reduce)').matches;
+const _nb = document.getElementById('navbar');
+const _st = document.getElementById('scroll-top');
+let _tk = false;
+window.addEventListener('scroll', () => {
+  if (!_tk) { requestAnimationFrame(() => { _nb.classList.toggle('scrolled', window.scrollY > 40); _st.classList.toggle('show', window.scrollY > 400); _tk = false; }); _tk = true; }
+}, { passive: true });
+_st.addEventListener('click', () => window.scrollTo({ top: 0, behavior: _rm ? 'auto' : 'smooth' }));
+const _hb = document.getElementById('hamburger'), _mm = document.getElementById('mobile-menu');
+_hb.addEventListener('click', () => { const o = _mm.classList.toggle('open'); _hb.setAttribute('aria-expanded', o); document.body.style.overflow = o ? 'hidden' : ''; });
+document.querySelectorAll('#mobile-menu a').forEach(a => a.addEventListener('click', () => { _mm.classList.remove('open'); _hb.setAttribute('aria-expanded', 'false'); document.body.style.overflow = ''; }));
+if (_rm) { document.querySelectorAll('.fade-in').forEach(el => el.classList.add('visible')); }
+else { const ob = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); ob.unobserve(e.target); } }), { threshold: 0.08 }); document.querySelectorAll('.fade-in').forEach(el => ob.observe(el)); }
+document.querySelectorAll('.msg').forEach(m => setTimeout(() => { m.style.opacity = '0'; setTimeout(() => m.remove(), 400); }, 5000));
+</script>
+{% block extra_js %}{% endblock %}
+</body>
+</html>

@@ -57,6 +57,8 @@ def validate_income(request_post, field='income_amount'):
 
 def index(request):
     try:
+
+
         questions = Question.objects.filter(
             is_active=True
         ).prefetch_related("options")
@@ -76,11 +78,46 @@ def index(request):
             is_deleted=False
         ).order_by('-created_at')
 
-        return render(request, 'index.html', {
+        context = {
+                "badges": [
+                "✓ 10,000+ followers",
+                "✓ Active FBR officer",
+                "✓ Tax Year 2026"
+            ],
+
+        "hero_stats": [
+            ("10K+", "Followers"),
+            ("30+", "Guides"),
+            ("5", "Calculators"),
+            ("2026", "Updated"),
+        ],
+
+        "hero_tags": [
+            "ITO 2001",
+            "STA 1990",
+            "IRIS Portal",
+            "FBR Compliance"
+        ],
+
+        "quick_links": [
+            ("income_tax_guides", "Income Tax Guides"),
+            ("sales_tax_guides", "Sales Tax Guides"),
+            ("income_tax_rates", "Tax Rates"),
+            ("question_list", "MCQs"),
+            ("SalaryCalculator", "Salary Calculator"),
+        ],
+
+        "contact_items": [
+            ("📱", "WhatsApp", "+92 333 2482742", "tel:+923332482742"),
+            ("📧", "Email", "umair.mubeenir@gmail.com", "mailto:umair.mubeenir@gmail.com"),
+            ("📍", "Location", "Gulshan-e-Iqbal, Karachi", "#"),
+        ],
             'result': all_blogs,
             'latest_blogs': latest_blogs,
             'preview_questions': preview_questions,
-        })
+        },
+
+        return render(request, 'index.html', {'context' : context})
     except Exception as e:
         return HttpResponse(str(e))
 
@@ -149,7 +186,10 @@ def BlogDetails(request, slug=None):
 
 def viewBlogs(request, slug=None):
     try:
-        category_name = slug.replace('-', ' ')
+        if not slug:
+            raise Http404("Category not found")
+
+        category_name = slug.replace('-', ' ').strip()
 
         blogs = Blog.objects.filter(
             category__iexact=category_name,
@@ -157,16 +197,29 @@ def viewBlogs(request, slug=None):
             is_deleted=False
         ).order_by('-created_at')
 
+        # safer fallback instead of hard crash
         if not blogs.exists():
-            raise Http404("Category not found")
+            raise Http404("No blogs found in this category")
 
-        return render(request, "clone.html", {"blogs": blogs})
+        calculators = [
+            ("Salary Calculator", "SalaryCalculator"),
+            ("Business Calculator", "BusinessCalculator"),
+            ("AOP Calculator", "AOPCalculator"),
+            ("Property Calculator", "PropertyCalculator"),
+        ]
+
+        return render(request, "clone.html", {
+            "blogs": blogs,
+            "calculators": calculators,
+            "category_name": category_name
+        })
 
     except Http404:
         raise
     except Exception as e:
-        return HttpResponse('Exception at View Blogs Page: ' + str(e))
-
+        return render(request, "error.html", {
+            "error": str(e)
+        })
 
 def userComments(request):
     try:
@@ -692,6 +745,8 @@ def tax_knowledge_quiz(request):
 
 def question_list(request, category_slug=None):
     try:
+        OPTION_LABELS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+
         questions = Question.objects.prefetch_related("options").order_by("id")
         selected_category = None
 
@@ -728,12 +783,23 @@ def question_list(request, category_slug=None):
             for c in sorted(set(raw_categories))
         ]
 
+        score_rows = [
+            ("Answered", "0 / 0", "answered"),
+            ("Correct", "0", "correct"),
+            ("Wrong", "0", "wrong"),
+            ("Score", "—", "score"),
+
+        ]
+
+
         return render(request, "partials/mcq-layout.html", {
             "page_obj": page_obj,
             "categories": categories,
             "selected_category": selected_category,
             "seo_category": selected_category,
             "category_slug": category_slug,
+            'score_rows' : score_rows,
+            "option_labels" : OPTION_LABELS
         })
 
     except Exception as e:

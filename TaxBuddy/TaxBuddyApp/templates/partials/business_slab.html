@@ -1,44 +1,161 @@
-<!DOCTYPE html>
-{% load humanize %}
- {% load static %}
+{% extends "base.html" %}
+{% load static %}
+{# Context: content{}, title, url, + FetchResult keys when POST:
+   taxpayer_type, tax_year_1, tax_year_2, tax_year_1_result{}, tax_year_2_result{},
+   monthly_income, yearly_income, surcharge_label_1, surcharge_label_2, income_type #}
 
-<html lang="en">
-<head>
- <script async src="https://www.googletagmanager.com/gtag/js?id=G-EEP4P5YWE6"></script>
+{% block title %}{{ content.title }} | TaxBuddy Umair{% endblock %}
+{% block meta_desc %}{{ content.intro|truncatechars:160 }}{% endblock %}
 
-<link rel="shortcut icon" type="image/x-icon" href="{% static 'assets/img/icons/fab2.png' %}">
+{% block extra_css %}
+<style>
+.calc-wrap{max-width:900px;margin:0 auto;padding:32px 2rem 80px}
+.calc-card{background:var(--white);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden}
+.calc-header{background:var(--navy);padding:1.5rem 2rem}
+.input-row{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px}
+.calc-label{display:block;font-size:11px;font-weight:700;color:var(--text-muted);text-transform:uppercase;letter-spacing:.08em;margin-bottom:6px}
+.calc-input{width:100%;padding:10px 14px;font-family:'Inter',sans-serif;font-size:14px;background:var(--cream);border:1px solid var(--border);border-radius:var(--radius-sm);outline:none;color:var(--text);transition:border-color .15s}
+.calc-input:focus{border-color:var(--navy);background:#fff}
+.calc-submit{width:100%;background:var(--green);color:var(--navy);font-family:'Inter',sans-serif;font-size:15px;font-weight:700;padding:14px;border-radius:var(--radius-sm);border:none;cursor:pointer;transition:all .2s;min-height:52px;margin-top:6px}
+.calc-submit:hover{background:var(--green-dark);color:#fff}
+.result-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:24px}
+.result-card{background:var(--cream);border:1px solid var(--border);border-radius:var(--radius);padding:1.25rem;position:relative}
+.result-year{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--text-muted);margin-bottom:12px}
+.result-row{display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid var(--border);font-size:13px}
+.result-row:last-child{border:none;padding-top:12px}
+.result-row-label{color:var(--text-muted)}
+.result-row-val{font-weight:700;color:var(--navy)}
+.result-row-val.green{color:var(--green-dark)}
+.result-row-val.big{font-size:20px;color:var(--navy)}
+.toggle-group{display:flex;background:var(--cream);border:1px solid var(--border);border-radius:var(--radius-sm);padding:3px;margin-bottom:14px}
+.toggle-btn{flex:1;background:transparent;border:none;font-family:'Inter',sans-serif;font-size:13px;font-weight:500;color:var(--text-muted);padding:8px 16px;border-radius:6px;cursor:pointer;transition:all .15s}
+.toggle-btn.active{background:var(--navy);color:#fff}
+@media(max-width:640px){.input-row{grid-template-columns:1fr!important}.result-grid{grid-template-columns:1fr!important}}
+</style>
+{% endblock %}
 
-<title>Business Individual Tax Calculator Pakistan | TaxBuddy Umair</title>
+{% block content %}
+<div style="background:var(--navy);padding:88px 0 36px">
+  <div class="container">
+    <nav style="display:flex;align-items:center;gap:8px;font-size:12px;color:rgba(255,255,255,.4);margin-bottom:16px" aria-label="Breadcrumb">
+      <a href="{% url 'index' %}" style="transition:color .15s" onmouseover="this.style.color='var(--green)'" onmouseout="this.style.color='rgba(255,255,255,.4)'">Home</a>
+      <span>›</span><span style="color:rgba(255,255,255,.6)">{{ content.title }}</span>
+    </nav>
+    <span style="display:inline-flex;align-items:center;gap:6px;font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--green);background:rgba(34,201,122,0.12);border:1px solid rgba(34,201,122,0.25);padding:4px 14px;border-radius:var(--radius-pill);margin-bottom:12px">{{ content.badge }}</span>
+    <h1 style="font-family:'Playfair Display',serif;font-size:clamp(26px,4vw,42px);font-weight:700;font-style:italic;color:#fff;line-height:1.15;letter-spacing:-0.02em">{{ content.title }}</h1>
+    <p style="color:rgba(255,255,255,.5);font-size:14px;max-width:540px;line-height:1.7;margin-top:12px">{{ content.intro }}</p>
+  </div>
+</div>
 
-<meta name="description" content="Free Business Individual Tax Calculator for Pakistan. Calculate your income tax as a business individual accurately.">
-<meta name="keywords" content="business individual tax calculator Pakistan, business tax Pakistan, FBR business tax calculator, income tax calculator business person">
+<div class="calc-wrap">
+  <!-- AD ZONE TOP -->
+  <div class="ad-zone"><div class="ad-label">Advertisement</div>
+    <ins class="adsbygoogle" style="display:block;min-height:90px" data-ad-client="{{ ADSENSE_PUBLISHER_ID }}" data-ad-slot="1515151515" data-ad-format="auto" data-full-width-responsive="true"></ins>
+    <script>(adsbygoogle=window.adsbygoogle||[]).push({});</script></div>
 
-<meta property="og:type" content="website">
-<meta property="og:title" content="Business Income Tax Calculator Pakistan | TaxBuddy Umair">
-<meta property="og:description" content="Free Business Individual Tax Calculator for Pakistan. Calculate your business income tax accurately for tax years 2025–2026 using FBR-approved tax slabs.">
-<meta property="og:url" content="https://www.taxbuddyumair.com/BusinessCalculator">
-<meta property="og:image" content="https://taxbuddyumair.com/static/assets/BusinessCalculator.png">
+  <div class="calc-card">
+    <div class="calc-header">
+      <h2 style="color:#fff;font-size:17px;font-weight:600;margin-bottom:4px">{{ title }} Tax Calculator</h2>
+      <p style="color:rgba(255,255,255,.5);font-size:13px">Compare tax liability across two tax years — FBR notified slabs</p>
+    </div>
+    <div style="padding:1.75rem">
+      <form method="POST" action="{{ url }}">
+        {% csrf_token %}
+        <!-- INCOME TYPE TOGGLE -->
+        <label class="calc-label">Income period</label>
+        <div class="toggle-group" role="group" aria-label="Income period">
+          <button type="button" class="toggle-btn {% if not income_type or income_type == 'Monthly' %}active{% endif %}" onclick="setToggle(this,'Monthly')">Monthly</button>
+          <button type="button" class="toggle-btn {% if income_type == 'Yearly' %}active{% endif %}" onclick="setToggle(this,'Yearly')">Yearly</button>
+        </div>
+        <input type="hidden" name="income_type" id="income_type" value="{{ income_type|default:'Monthly' }}">
 
-<!-- Helps WhatsApp + Facebook show the image correctly -->
-<meta property="og:image:width" content="1200">
-<meta property="og:image:height" content="630">
+        <div class="input-row">
+          <div>
+            <label class="calc-label" for="income_amount">Income amount (PKR)</label>
+            <input class="calc-input" type="number" id="income_amount" name="income_amount" placeholder="e.g. 150000" min="0" required value="{{ yearly_income|default:'' }}">
+          </div>
+          <div></div>
+        </div>
 
-<!-- WhatsApp theme color -->
-<meta name="theme-color" content="#0A9D8F">
+        <div class="input-row">
+          <div>
+            <label class="calc-label" for="tax_year_1">Tax Year 1</label>
+            <select class="calc-input" id="tax_year_1" name="tax_year_1">
+              <option value="2024-2025" {% if tax_year_1 == '2024-2025' %}selected{% endif %}>Tax Year 2024-2025</option>
+              <option value="2025-2026" {% if tax_year_1 == '2025-2026' or not tax_year_1 %}selected{% endif %}>Tax Year 2025-2026</option>
+            </select>
+          </div>
+          <div>
+            <label class="calc-label" for="tax_year_2">Tax Year 2</label>
+            <select class="calc-input" id="tax_year_2" name="tax_year_2">
+              <option value="2024-2025" {% if tax_year_2 == '2024-2025' %}selected{% endif %}>Tax Year 2024-2025</option>
+              <option value="2025-2026" {% if tax_year_2 == '2025-2026' or not tax_year_2 %}selected{% endif %}>Tax Year 2025-2026</option>
+            </select>
+          </div>
+        </div>
+        <button type="submit" class="calc-submit">Calculate Tax →</button>
+      </form>
 
-{% include 'partials/head-css.html' %}
+      {% if tax_year_1_result %}
+      <div class="result-grid">
+        <!-- YEAR 1 RESULT -->
+        <div class="result-card">
+          <div class="result-year">{{ tax_year_1 }}</div>
+          <div class="result-row"><span class="result-row-label">Annual income</span><span class="result-row-val">PKR {{ yearly_income|floatformat:0 }}</span></div>
+          <div class="result-row"><span class="result-row-label">Tax slab rate</span><span class="result-row-val">{{ tax_year_1_result.rate|floatformat:0 }}%</span></div>
+          {% if tax_year_1_result.total_tax != tax_year_1_result.total_tax_with_surcharge %}
+          <div class="result-row"><span class="result-row-label">Base tax</span><span class="result-row-val">PKR {{ tax_year_1_result.total_tax|floatformat:0 }}</span></div>
+          <div class="result-row"><span class="result-row-label">{{ surcharge_label_1 }}</span><span class="result-row-val">PKR {{ tax_year_1_result.surcharge|floatformat:0 }}</span></div>
+          {% endif %}
+          <div class="result-row"><span class="result-row-label">Annual tax</span><span class="result-row-val big">PKR {{ tax_year_1_result.total_tax_with_surcharge|floatformat:0 }}</span></div>
+          <div class="result-row"><span class="result-row-label">Monthly tax</span><span class="result-row-val green">PKR {{ tax_year_1_result.per_month|floatformat:0 }}</span></div>
+        </div>
+        <!-- YEAR 2 RESULT -->
+        <div class="result-card">
+          <div class="result-year">{{ tax_year_2 }}</div>
+          <div class="result-row"><span class="result-row-label">Annual income</span><span class="result-row-val">PKR {{ yearly_income|floatformat:0 }}</span></div>
+          <div class="result-row"><span class="result-row-label">Tax slab rate</span><span class="result-row-val">{{ tax_year_2_result.rate|floatformat:0 }}%</span></div>
+          {% if tax_year_2_result.total_tax != tax_year_2_result.total_tax_with_surcharge %}
+          <div class="result-row"><span class="result-row-label">Base tax</span><span class="result-row-val">PKR {{ tax_year_2_result.total_tax|floatformat:0 }}</span></div>
+          <div class="result-row"><span class="result-row-label">{{ surcharge_label_2 }}</span><span class="result-row-val">PKR {{ tax_year_2_result.surcharge|floatformat:0 }}</span></div>
+          {% endif %}
+          <div class="result-row"><span class="result-row-label">Annual tax</span><span class="result-row-val big">PKR {{ tax_year_2_result.total_tax_with_surcharge|floatformat:0 }}</span></div>
+          <div class="result-row"><span class="result-row-label">Monthly tax</span><span class="result-row-val green">PKR {{ tax_year_2_result.per_month|floatformat:0 }}</span></div>
+        </div>
+      </div>
 
-</head>
-<body>
+      <div style="background:#eff6ff;border:1px solid #bfdbfe;border-radius:var(--radius-sm);padding:12px 14px;margin-top:16px;font-size:12.5px;color:#1d4ed8">
+        ℹ️ <strong>Note:</strong> This estimate is based on FBR notified slabs only. Tax credits, allowances, WHT adjustments and other deductions are not included. Always consult a tax professional for your final liability.
+      </div>
+      {% endif %}
+    </div>
+  </div>
 
-<!--=====Navigation Bar=======-->
-{% include 'partials/topbar.html' %}
-<!--=====Navigation Bar Ends Here=======-->
+  <!-- WHAT / WHO / NOTES -->
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:24px">
+    <div style="background:var(--white);border:1px solid var(--border);border-radius:var(--radius);padding:1.25rem">
+      <h3 style="font-size:14px;font-weight:700;color:var(--navy);margin-bottom:10px">Who should use this?</h3>
+      <ul style="list-style:none;display:flex;flex-direction:column;gap:6px">
+        {% for item in content.who %}<li style="display:flex;align-items:flex-start;gap:8px;font-size:13px;color:var(--text-muted)"><span style="width:6px;height:6px;border-radius:50%;background:var(--green);flex-shrink:0;margin-top:6px"></span>{{ item }}</li>{% endfor %}
+      </ul>
+    </div>
+    <div style="background:var(--white);border:1px solid var(--border);border-radius:var(--radius);padding:1.25rem">
+      <h3 style="font-size:14px;font-weight:700;color:var(--navy);margin-bottom:10px">Important notes</h3>
+      <ul style="list-style:none;display:flex;flex-direction:column;gap:6px">
+        {% for note in content.notes %}<li style="display:flex;align-items:flex-start;gap:8px;font-size:13px;color:var(--text-muted)"><span style="width:6px;height:6px;border-radius:50%;background:#f59e0b;flex-shrink:0;margin-top:6px"></span>{{ note }}</li>{% endfor %}
+      </ul>
+    </div>
+  </div>
+</div>
+{% endblock %}
 
-{% include 'partials/form_slab.html' %}
-
-{% include 'partials/footer.html' %}
-{% include 'partials/up.html' %}
-{% include 'partials/footer-scripts.html' %}
-</body>
-</html>
+{% block extra_js %}
+<script>
+function setToggle(btn, val) {
+  btn.parentElement.querySelectorAll('.toggle-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById('income_type').value = val;
+}
+document.getElementById('income_amount').addEventListener('keydown', e => { if (e.key === 'Enter') e.target.closest('form').submit(); });
+</script>
+{% endblock %}

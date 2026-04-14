@@ -1,69 +1,32 @@
-<html>
-<head>
-    <title>Login Page</title>
-</head>
+{% extends "base.html" %}
 {% load static %}
-{% include 'partials/head-css.html' %}
+{% block title %}Login | TaxBuddy Umair{% endblock %}
+{% block robots %}noindex, nofollow{% endblock %}
 
-<!--=====Form Start=======-->
-<div class="sign-form-area bg-13">
-    <div class="container">
-        <div class="row">
-            <div class="col-lg-6 col-md-8 m-auto">
-                <div class="sign-form-wrap">
-                    <div class="sign-logo text-center">
-                        <img src="{% static 'assets/img/logo/site-logo-6.svg' %}" alt=""/>
-                    </div>
-                    <div class="sign-form">
-                        <div class="form-heading">
-                            <h3>Sign In</h3>
-                            <p>
-                                Welcome back! Enter your email and password below to sign in
-                            </p>
-                        </div>
-
-                        <form action="Login" method="post">
-                             {% csrf_token %}
-
-                            <div class="form-group">
-                                <label for="username">Namee </label>
-                                <input type="text" name="username" value="" id="username"
-                                       placeholder="Enter Your username" />
-                                <span class="text-danger m-15"></span>
-                            </div>
-                            <div class="form-group">
-                                <label for="password">Password</label>
-                                <input type="password" name="password" value="" id="password"
-                                       placeholder="Enter Your Password" />
-                                <span class="text-danger m-15"></span>
-                            </div>
-
-                            <div class="theme-input-group">
-                                <div class="check-box-wrap">
-                                    <input type="checkbox" name="check-box" id="check-box" class="check-box"/>
-                                    <label for="check-box">Keep me logged in</label>
-                                </div>
-                                <a href="forgot.php">Forgot Password?</a>
-                            </div>
-                            <div class="space40"></div>
-
-                            <button type="submit" class="theme-btn-11 full-btn">
-                                Sign In
-                            </button>
-                        </form>
-                        <div class="space20"></div>
-                        <h4>Already have an account?<a href="#"> Create for free</a>
-                        </h4>
-                    </div>
-                </div>
-            </div>
-        </div>
+{% block content %}
+<div style="min-height:100vh;display:flex;align-items:center;justify-content:center;padding:80px 1rem 40px;background:var(--navy)">
+  <div style="width:100%;max-width:400px">
+    <div style="text-align:center;margin-bottom:28px">
+      <a href="{% url 'index' %}" style="font-family:'Playfair Display',serif;font-size:24px;font-style:italic;font-weight:700;color:#fff">Tax<em style="color:var(--green)">Buddy</em> Umair</a>
+      <p style="color:rgba(255,255,255,.45);font-size:13px;margin-top:6px">Admin Dashboard</p>
     </div>
+    <div style="background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:var(--radius);padding:2rem">
+      <form method="POST" action="{% url 'Login' %}">
+        {% csrf_token %}
+        <div style="margin-bottom:14px">
+          <label style="display:block;font-size:11px;font-weight:700;color:rgba(255,255,255,.5);text-transform:uppercase;letter-spacing:.08em;margin-bottom:6px">Username</label>
+          <input type="text" name="username" required autofocus autocomplete="username" placeholder="Enter username" style="width:100%;padding:11px 14px;font-family:'Inter',sans-serif;font-size:14px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.15);border-radius:var(--radius-sm);outline:none;color:#fff">
+        </div>
+        <div style="margin-bottom:20px">
+          <label style="display:block;font-size:11px;font-weight:700;color:rgba(255,255,255,.5);text-transform:uppercase;letter-spacing:.08em;margin-bottom:6px">Password</label>
+          <input type="password" name="password" required autocomplete="current-password" placeholder="Enter password" style="width:100%;padding:11px 14px;font-family:'Inter',sans-serif;font-size:14px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.15);border-radius:var(--radius-sm);outline:none;color:#fff">
+        </div>
+        <button type="submit" style="width:100%;background:var(--green);color:var(--navy);font-family:'Inter',sans-serif;font-size:14px;font-weight:700;padding:13px;border-radius:var(--radius-sm);border:none;cursor:pointer;min-height:48px;transition:all .2s">Login →</button>
+      </form>
+    </div>
+    <div style="text-align:center;margin-top:16px">
+      <a href="{% url 'index' %}" style="font-size:13px;color:rgba(255,255,255,.4);transition:color .15s" onmouseover="this.style.color='var(--green)'" onmouseout="this.style.color='rgba(255,255,255,.4)'">← Back to website</a>
+    </div>
+  </div>
 </div>
-<!--=====Form End=======-->
-
-
-{% include 'partials/up.html' %}
-
-{% include 'partials/footer-scripts.html' %}
-</html>
+{% endblock %}
