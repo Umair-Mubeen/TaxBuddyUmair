@@ -5,57 +5,75 @@ from django.views.generic import TemplateView
 
 from . import views
 
+
+
 urlpatterns = [
-    path("sitemap.xml", TemplateView.as_view(template_name="sitemap.xml", content_type="application/xml")),
-    path("robots.txt", TemplateView.as_view(template_name="robots.txt", content_type="text/plain")),
 
+    # ── PUBLIC PAGES ──────────────────────────────────────────
     path('', views.index, name='index'),
+    path('login/', views.Login, name='Login'),
+    path('logout/', views.Logout, name='Logout'),
 
-    path('userComments', views.userComments, name='userComments'),
-    path("terms-and-conditions/", views.terms_and_conditions, name="terms-and-conditions"),
-    path('Login', views.Login, name='Login'),
-    path('Logout', views.Logout, name='Logout'),
-    path('Dashboard', views.Dashboard, name='Dashboard'),
+    # ── MCQ / QUIZ ────────────────────────────────────────────
+    path('income-tax-mcqs-pakistan/', views.question_list, name='question_list'),
+    path('income-tax-mcqs-pakistan/<slug:category_slug>', views.question_list, name='question_list_category'),
+    path('tax-quiz/', views.tax_knowledge_quiz, name='tax_knowledge_quiz'),
 
-    path("questions-add/", views.add_question, name="questions-add"),
-    path("view-questions/", views.view_questions, name="view-questions"),
-    path("questions/edit/<int:pk>/", views.edit_question, name="questions-edit"),
-    path("questions/delete/<int:pk>/", views.delete_question, name="questions-delete"),
+    # ── GUIDES & RATES ────────────────────────────────────────
+    path('income-tax-guides/', views.income_tax_guides, name='income_tax_guides'),
+    path('sales-tax-guides/', views.sales_tax_guides, name='sales_tax_guides'),
+    path('income-tax-rates/', views.income_tax_rates, name='income_tax_rates'),
+    path('withholding-tax-rates/', views.withholding_tax_rates, name='withholding_tax_rates'),
 
-    path("section-4c-rate/", views.section_4c_rate_view, name="section_4c_rate"),
-    path("income-tax-mcqs-pakistan/",views.question_list,name="mcq_list"),
-    path("income-tax-mcqs-pakistan/<slug:category_slug>/",views.question_list,name="mcq_category"),
-
-    path("online-services", views.online_services, name="online-services"),
-
-    path('AddEditBlog/', views.AddEditBlog, name='AddEditBlog'),
-    path('AddEditBlog/<slug:slug>/', views.AddEditBlog, name='AddEditBlog'),
-    path('deleteBlog/<slug:slug>/', views.deleteBlog, name='deleteBlog'),
-
-    path('blog/<slug:slug>/', views.viewBlogs, name='viewBlogs'),
-    path('ManageBlogs', views.ManageBlogs, name='ManageBlogs'),
-
-    path('contact', views.contact, name='contact'),
-
-    path("SalaryCalculator", views.SalaryCalculator, name='SalaryCalculator'),
-    path("BusinessCalculator", views.BusinessCalculator, name='BusinessCalculator'),
-    path("AOPCalculator", views.AOPCalculator, name='AOPCalculator'),
-    path("PropertyCalculator", views.PropertyCalculator, name='PropertyCalculator'),
-
-    path("add_salary_tax_brackets", views.add_salary_tax_brackets,name="add_salary_tax_brackets"),
-    path("privacy-policy", views.privacy_policy, name="privacy_policy"),
-    path("TaxCalculator4C", views.TaxCalculator4C, name="TaxCalculator4C"),
-    path("income-tax-guides", views.income_tax_guides, name="income-tax-guides"),
-    path("sales-tax-guides", views.sales_tax_guides, name="sales-tax-guides"),
-    #path('migrate-blogs/', views.migrate_old_blogs),
-    path("income-tax-rates", views.income_tax_rates, name="income-tax-rates"),
-    path("withholding-tax-rates", views.withholding_tax_rates, name="withholding-tax-rates"),
-    path('test', views.test, name='test'),
-    path("layout/", views.layout, name="layout"),
-
-    # 🔥 KEEP THIS ABSOLUTELY LAST
+    # ── BLOG ──────────────────────────────────────────────────
+    path('blog/', views.viewBlogs, name='viewBlogs'),
     path('<slug:slug>/', views.BlogDetails, name='BlogDetails'),
+    path('comments/', views.userComments, name='userComments'),
 
+    # ── CONTACT ───────────────────────────────────────────────
+    path('contact/', views.contact, name='contact'),
+
+    # ── CALCULATORS ───────────────────────────────────────────
+    path('SalaryCalculator/', views.SalaryCalculator, name='SalaryCalculator'),
+    path('BusinessCalculator/', views.BusinessCalculator, name='BusinessCalculator'),
+    path('AOPCalculator/', views.AOPCalculator, name='AOPCalculator'),
+    path('PropertyCalculator/', views.PropertyCalculator, name='PropertyCalculator'),
+    path('TaxCalculator4C/', views.TaxCalculator4C, name='TaxCalculator4C'),
+
+    # ── API ───────────────────────────────────────────────────
+    path('api/section-4c-rate/', views.section_4c_rate_view, name='section_4c_rate'),
+
+
+
+
+    # ── POLICY PAGES ─────────────────────────────────────────
+    path('privacy-policy/', views.privacy_policy, name='privacy_policy'),
+    path('terms-and-conditions/', views.terms_and_conditions, name='terms_and_conditions'),
+
+    # ── MISC ──────────────────────────────────────────────────
+    path('online-services/', views.online_services, name='online_services'),
+    path('layout/', views.layout, name='layout'),
+    path('robots.txt', views.robots_txt, name='robots_txt'),
+    path('test/', views.test, name='test'),
+
+    # ── ADMIN / CPANEL ────────────────────────────────────────
+    path('dashboard/', views.Dashboard, name='Dashboard'),
+    path('manage-blogs/', views.ManageBlogs, name='ManageBlogs'),
+    path('add-blog/', views.AddEditBlog, name='AddBlog'),
+    path('edit-blog/<slug:slug>/', views.AddEditBlog, name='EditBlog'),
+    path('delete-blog/<slug:slug>/', views.deleteBlog, name='deleteBlog'),
+    path('add-tax-brackets/', views.add_salary_tax_brackets, name='add_salary_tax_brackets'),
+
+    # ── QUESTION MANAGEMENT ───────────────────────────────────
+    path('questions/add/', views.add_question, name='questions-add'),
+    path('questions/', views.view_questions, name='questions-list'),
+    path('questions/edit/<int:pk>/', views.edit_question, name='questions-edit'),
+    path('questions/delete/<int:pk>/', views.delete_question, name='questions-delete'),
+
+    # ── CUSTOM ERROR HANDLERS ─────────────────────────────────
+    # Register these in your main urls.py (not here):
+    # handler404 = 'yourapp.views.custom_404'
+    # handler500 = 'yourapp.views.custom_500'
 ]
 
 if settings.DEBUG:
