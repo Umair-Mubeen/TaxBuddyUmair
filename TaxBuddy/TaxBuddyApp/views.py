@@ -58,10 +58,10 @@ def validate_income(request_post, field='income_amount'):
 def index(request):
     try:
 
+        #return HttpResponse(str("--------------------"))
 
-        questions = Question.objects.filter(
-            is_active=True
-        ).prefetch_related("options")
+
+        questions = Question.objects.filter(is_active=True).prefetch_related("options")
 
         questions_list = list(questions)
         preview_questions = random.sample(questions_list, min(len(questions_list), 3))
@@ -69,9 +69,7 @@ def index(request):
         # FIX: removed redundant `result` query that was never used properly
         latest_blogs = Blog.objects.filter(
             status='published',
-            is_deleted=False,
-            created_at__gte=now().date() - timedelta(days=3)
-        ).order_by('-updated_at')[:3]
+            is_deleted=False).order_by('-created_at')
 
         all_blogs = Blog.objects.filter(
             status='published',
@@ -115,7 +113,9 @@ def index(request):
             'result': all_blogs,
             'latest_blogs': latest_blogs,
             'preview_questions': preview_questions,
-        },
+        }
+
+        return HttpResponse(str(context))
 
         return render(request, 'index.html', {'context' : context})
     except Exception as e:

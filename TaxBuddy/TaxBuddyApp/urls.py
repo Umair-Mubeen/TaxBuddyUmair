@@ -26,8 +26,11 @@ urlpatterns = [
     path('withholding-tax-rates/', views.withholding_tax_rates, name='withholding_tax_rates'),
 
     # ── BLOG ──────────────────────────────────────────────────
-    path('blog/', views.viewBlogs, name='viewBlogs'),
-    path('<slug:slug>/', views.BlogDetails, name='BlogDetails'),
+    #path('blog/', views.viewBlogs, name='viewBlogs'),
+    #path('<slug:slug>/', views.BlogDetails, name='BlogDetails'),
+
+path('blog/', views.viewBlogs, name='viewBlogs'),
+path('blog/<slug:slug>/', views.viewBlogs, name='viewBlogs'),
     path('comments/', views.userComments, name='userComments'),
 
     # ── CONTACT ───────────────────────────────────────────────
