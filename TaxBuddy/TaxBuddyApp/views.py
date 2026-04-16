@@ -115,7 +115,7 @@ def index(request):
             'preview_questions': preview_questions,
         }
 
-        return HttpResponse(str(context))
+        # return HttpResponse(str(context))
 
         return render(request, 'index.html', {'context' : context})
     except Exception as e:
