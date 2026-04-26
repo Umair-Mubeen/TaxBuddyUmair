@@ -1,269 +1,264 @@
-from django.contrib.auth.models import User
 from django.db import models
+from django.contrib.auth.models import User
 from django.utils.text import slugify
 from django.utils import timezone
-from django.urls import reverse
-
-class Category(models.Model):
-    name = models.CharField(max_length=100, unique=True)
-    parent = models.ForeignKey(
-        'self',
-        on_delete=models.CASCADE,
-        null=True,
-        blank=True,
-        related_name='children'
-    )
-
-    def __str__(self):
-        return self.name
 
 
-class Tag(models.Model):
-    name = models.CharField(max_length=100, unique=True)
-    slug = models.SlugField(unique=True, blank=True)
-
-    def save(self, *args, **kwargs):
-        self.name = self.name.strip().lower()
-
-        if not self.slug:
-            self.slug = slugify(self.name)
-
-        super().save(*args, **kwargs)
-
-    def __str__(self):
-        return self.name
-
-
-
-# ==============================
-# BLOG MODEL
-# ==============================
+# ─────────────────────────────────────────────────────────────
+# BLOG
+# ─────────────────────────────────────────────────────────────
 
 class Blog(models.Model):
+    STATUS_CHOICES = [('draft', 'Draft'), ('published', 'Published')]
+    TYPE_CHOICES   = [('income_tax', 'Income Tax'), ('sales_tax', 'Sales Tax'),
+                      ('general', 'General'), ('freelancer', 'Freelancer')]
 
-    STATUS_CHOICES = [
-        ('draft', 'Draft'),
-        ('published', 'Published'),
-        ('archived', 'Archived'),
-    ]
-
-    TYPE_CHOICES = [
-        ('article', 'Article'),
-        ('blog', 'Blog'),
-        ('news', 'News'),
-        ('event', 'Event'),
-    ]
-
-    # Basic Info
-    title = models.CharField(max_length=255)
-    slug = models.SlugField(max_length=255, unique=True)
-
-    author = models.ForeignKey(
-        User,
-        on_delete=models.SET_NULL,
-        null=True,
-        related_name="blogs"
-    )
-
-    tag = models.CharField(max_length=100, default="", blank=True)
-    category = models.CharField(max_length=100, default="", blank=True)
-
-    type = models.CharField(max_length=50, choices=TYPE_CHOICES)
-
-    # Content
-    content = models.TextField()
-    excerpt = models.TextField(blank=True, null=True)
-
-    featured_image = models.ImageField(upload_to="blog/", blank=True, null=True)
-
-    # SEO Fields
-    meta_title = models.CharField(max_length=255, blank=True, null=True)
-    meta_description = models.TextField(blank=True, null=True)
-    focus_keyword = models.CharField(max_length=150, blank=True, null=True)
-
-    # Status & Publishing
-    status = models.CharField(max_length=20, choices=STATUS_CHOICES, default="draft")
-    is_featured = models.BooleanField(default=False)
-
-    published_at = models.DateTimeField(blank=True, null=True)
-
-    # Analytics
-    views = models.PositiveIntegerField(default=0)
-
-    # Soft Delete
-    is_deleted = models.BooleanField(default=False)
-    deleted_at = models.DateTimeField(blank=True, null=True)
-
-    # Timestamps
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
+    title             = models.CharField(max_length=300)
+    slug              = models.SlugField(max_length=350, unique=True, blank=True)
+    category          = models.CharField(max_length=100, blank=True)
+    type              = models.CharField(max_length=50, choices=TYPE_CHOICES, default='general')
+    content           = models.TextField()
+    featured_image    = models.ImageField(upload_to='blog_images/', null=True, blank=True)
+    author            = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True)
+    status            = models.CharField(max_length=20, choices=STATUS_CHOICES, default='draft')
+    tag               = models.CharField(max_length=500, blank=True, help_text="Comma-separated tags")
+    meta_title        = models.CharField(max_length=200, blank=True)
+    meta_description  = models.TextField(max_length=300, blank=True)
+    view_count        = models.PositiveIntegerField(default=0)
+    is_deleted        = models.BooleanField(default=False)
+    deleted_at        = models.DateTimeField(null=True, blank=True)
+    created_at        = models.DateTimeField(auto_now_add=True)
+    updated_at        = models.DateTimeField(auto_now=True)
 
     class Meta:
-        ordering = ['-published_at', '-created_at']
-        indexes = [
-            models.Index(fields=['slug']),
-            models.Index(fields=['status']),
-            models.Index(fields=['published_at']),
-        ]
-
-    def save(self, *args, **kwargs):
-
-        # Auto slug generator
-        if not self.slug:
-            base_slug = slugify(self.title)
-            slug = base_slug
-            counter = 1
-
-            while Blog.objects.filter(slug=slug).exists():
-                slug = f"{base_slug}-{counter}"
-                counter += 1
-
-            self.slug = slug
-
-        # Auto publish date
-        if self.status == "published" and not self.published_at:
-            self.published_at = timezone.now()
-
-        super().save(*args, **kwargs)
-
-    def soft_delete(self):
-        self.is_deleted = True
-        self.deleted_at = timezone.now()
-        self.save()
-
-    def get_absolute_url(self):
-        return reverse("blog_detail", kwargs={"slug": self.slug})
+        ordering = ['-created_at']
+        verbose_name = 'Blog'
+        verbose_name_plural = 'Blogs'
 
     def __str__(self):
         return self.title
 
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            base = slugify(self.title)
+            slug = base
+            n = 1
+            while Blog.objects.filter(slug=slug).exists():
+                slug = f"{base}-{n}"
+                n += 1
+            self.slug = slug
+        super().save(*args, **kwargs)
+
+    def get_tags_list(self):
+        if self.tag:
+            return [t.strip() for t in self.tag.split(',') if t.strip()]
+        return []
+
 
 class Comment(models.Model):
-    blog = models.ForeignKey(Blog, on_delete=models.CASCADE, related_name='comments')
-    name = models.CharField(max_length=100)
-    email_address = models.EmailField()
-    comment = models.TextField()
-    slug = models.SlugField(max_length=255, blank=True)
-    status = models.IntegerField(default=1)
+    STATUS_CHOICES = [(0, 'Pending'), (1, 'Approved'), (2, 'Rejected')]
 
+    blog          = models.ForeignKey(Blog, on_delete=models.CASCADE, related_name='comments', null=True, blank=True)
+    slug          = models.SlugField(max_length=350, blank=True)
+    name          = models.CharField(max_length=100)
+    email_address = models.EmailField()
+    comment       = models.TextField()
+    status        = models.IntegerField(choices=STATUS_CHOICES, default=0)
+    created_at    = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ['-created_at']
+
+    def __str__(self):
+        return f"{self.name} on {self.slug}"
+
+
+# ─────────────────────────────────────────────────────────────
+# CONTACT
+# ─────────────────────────────────────────────────────────────
 
 class Contact(models.Model):
-    first_name = models.CharField(max_length=100)
-    last_name = models.CharField(max_length=100)
-    phone_number = models.CharField(max_length=15)
-    email_address = models.EmailField()
-    subject = models.CharField(max_length=200)
-    additional_details = models.TextField(blank=True, null=True)
+    first_name         = models.CharField(max_length=100)
+    last_name          = models.CharField(max_length=100, blank=True)
+    phone_number       = models.CharField(max_length=20, blank=True)
+    email_address      = models.EmailField()
+    subject            = models.CharField(max_length=200, blank=True)
+    additional_details = models.TextField(blank=True)
+    is_read            = models.BooleanField(default=False)
+    created_at         = models.DateTimeField(auto_now_add=True)
 
+    class Meta:
+        ordering = ['-created_at']
+
+    def __str__(self):
+        return f"{self.first_name} {self.last_name} – {self.email_address}"
+
+
+# ─────────────────────────────────────────────────────────────
+# TAX BRACKETS
+# ─────────────────────────────────────────────────────────────
 
 class TaxBracket(models.Model):
-    YEAR_CHOICES = [
-        ("2021-2022", "2021-2022"),
-        ("2022-2023", "2022-2023"),
-        ("2023-2024", "2023-2024"),
-        ("2024-2025", "2024-2025"),
-        ("2025-2026", "2025-2026"),
+    """Salary Individual tax brackets."""
+    year        = models.CharField(max_length=20)  # e.g. "2025-2026"
+    income_min  = models.DecimalField(max_digits=15, decimal_places=2)
+    income_max  = models.DecimalField(max_digits=15, decimal_places=2, null=True, blank=True)
+    rate        = models.DecimalField(max_digits=5, decimal_places=4)  # e.g. 0.05 = 5%
+    base_income = models.DecimalField(max_digits=15, decimal_places=2, default=0)
+    base_tax    = models.DecimalField(max_digits=15, decimal_places=2, default=0)
 
-    ]
-    year = models.CharField(max_length=20, choices=YEAR_CHOICES)
-    income_min = models.BigIntegerField()
-    income_max = models.BigIntegerField(null=True, blank=True)  # null = infinity
-    rate = models.DecimalField(max_digits=5, decimal_places=3)  # store 0.35 for 35%
-    base_income = models.BigIntegerField()
-    base_tax = models.BigIntegerField()
+    class Meta:
+        ordering = ['year', 'income_min']
+        verbose_name = 'Salary Tax Bracket'
+
+    def __str__(self):
+        return f"{self.year} | {self.income_min} – {self.income_max or '∞'} @ {self.rate*100:.1f}%"
 
 
 class Business_AOP_Slab(models.Model):
-    YEAR_CHOICES = [
-        ("2021-2022", "2021-2022"),
-        ("2022-2023", "2022-2023"),
-        ("2023-2024", "2023-2024"),
-        ("2024-2025", "2024-2025"),
-        ("2025-2026", "2025-2026"),
+    """Business Individual / AOP tax slabs."""
+    year        = models.CharField(max_length=20)
+    income_min  = models.DecimalField(max_digits=15, decimal_places=2)
+    income_max  = models.DecimalField(max_digits=15, decimal_places=2, null=True, blank=True)
+    rate        = models.DecimalField(max_digits=5, decimal_places=4)
+    base_income = models.DecimalField(max_digits=15, decimal_places=2, default=0)
+    base_tax    = models.DecimalField(max_digits=15, decimal_places=2, default=0)
 
-    ]
-    year = models.CharField(max_length=20, choices=YEAR_CHOICES)
-    income_min = models.BigIntegerField()
-    income_max = models.BigIntegerField(null=True, blank=True)  # null = infinity
-    rate = models.DecimalField(max_digits=5, decimal_places=3)  # store 0.35 for 35%
-    base_income = models.BigIntegerField()
-    base_tax = models.BigIntegerField()
+    class Meta:
+        ordering = ['year', 'income_min']
+        verbose_name = 'Business/AOP Slab'
+
+    def __str__(self):
+        return f"Biz/AOP {self.year} | {self.income_min} – {self.income_max or '∞'}"
 
 
 class Property_Business_AOP_Slab(models.Model):
-    YEAR_CHOICES = [
-        ("2021-2022", "2021-2022"),
-        ("2022-2023", "2022-2023"),
-        ("2023-2024", "2023-2024"),
-        ("2024-2025", "2024-2025"),
-        ("2025-2026", "2025-2026"),
-
-    ]
-    year = models.CharField(max_length=20, choices=YEAR_CHOICES)
-    income_min = models.BigIntegerField()
-    income_max = models.BigIntegerField(null=True, blank=True)  # null = infinity
-    rate = models.DecimalField(max_digits=5, decimal_places=3)  # store 0.35 for 35%
-    base_income = models.BigIntegerField()
-    base_tax = models.BigIntegerField()
-
-
-
-class Question(models.Model):
-    question_text = models.CharField(max_length=500)
-
-    category = models.CharField(
-        max_length=100,
-        help_text="e.g. Basic Income Tax, Withholding Tax"
-    )
-
-    explanation = models.TextField(blank=True)
-    section_ref = models.CharField(max_length=100, blank=True)
-
-    difficulty = models.CharField(
-        max_length=20,
-        choices=[
-            ("basic", "Basic"),
-            ("intermediate", "Intermediate"),
-            ("advanced", "Advanced"),
-        ],
-        default="basic"
-    )
-
-    is_active = models.BooleanField(default=True)
-
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
+    """Rental / Property income slabs."""
+    year        = models.CharField(max_length=20)
+    income_min  = models.DecimalField(max_digits=15, decimal_places=2)
+    income_max  = models.DecimalField(max_digits=15, decimal_places=2, null=True, blank=True)
+    rate        = models.DecimalField(max_digits=5, decimal_places=4)
+    base_income = models.DecimalField(max_digits=15, decimal_places=2, default=0)
+    base_tax    = models.DecimalField(max_digits=15, decimal_places=2, default=0)
 
     class Meta:
-        ordering = ["category", "id"]   # ✅ FIXED
+        ordering = ['year', 'income_min']
+        verbose_name = 'Property/Rental Slab'
 
     def __str__(self):
-        return self.question_text
-
-
-
-class Option(models.Model):
-    question = models.ForeignKey(
-        Question,
-        related_name="options",
-        on_delete=models.CASCADE
-    )
-
-    option_text = models.CharField(max_length=255)
-    is_correct = models.BooleanField(default=False)
-
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
-
-    class Meta:
-        ordering = ["id"]
-
-    def __str__(self):
-        return f"{self.option_text} ({'Correct' if self.is_correct else 'Wrong'})"
+        return f"Property {self.year} | {self.income_min}"
 
 
 class SuperTax4CRate(models.Model):
-    tax_year = models.IntegerField()
-    income_from = models.BigIntegerField()
-    income_to = models.BigIntegerField(null=True, blank=True)
-    rate = models.DecimalField(max_digits=5, decimal_places=4)  # e.g. 0.03 = 3%
+    tax_year    = models.IntegerField()
+    income_from = models.DecimalField(max_digits=15, decimal_places=2)
+    income_to   = models.DecimalField(max_digits=15, decimal_places=2, null=True, blank=True)
+    rate        = models.DecimalField(max_digits=5, decimal_places=4)
+
+    class Meta:
+        ordering = ['tax_year', 'income_from']
+        verbose_name = 'Super Tax 4C Rate'
+
+    def __str__(self):
+        return f"Super Tax {self.tax_year} | {self.income_from} @ {self.rate*100:.1f}%"
+
+
+# ─────────────────────────────────────────────────────────────
+# MCQ / QUIZ
+# ─────────────────────────────────────────────────────────────
+
+class Category(models.Model):
+    name  = models.CharField(max_length=100)
+    order = models.PositiveIntegerField(default=0)
+    slug  = models.SlugField(max_length=120, unique=True, blank=True)
+
+    class Meta:
+        ordering = ['order', 'name']
+        verbose_name_plural = 'Categories'
+
+    def __str__(self):
+        return self.name
+
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            self.slug = slugify(self.name)
+        super().save(*args, **kwargs)
+
+
+class Tag(models.Model):
+    name = models.CharField(max_length=80, unique=True)
+    slug = models.SlugField(unique=True, blank=True)
+
+    def __str__(self):
+        return self.name
+
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            self.slug = slugify(self.name)
+        super().save(*args, **kwargs)
+
+
+class Question(models.Model):
+    DIFFICULTY_CHOICES = [('basic', 'Basic'), ('medium', 'Medium'), ('advanced', 'Advanced')]
+
+    question_text = models.TextField()
+    category      = models.CharField(max_length=100, blank=True)
+    explanation   = models.TextField(blank=True)
+    section_ref   = models.CharField(max_length=200, blank=True, help_text="e.g. ITO 2001, Section 155")
+    difficulty    = models.CharField(max_length=20, choices=DIFFICULTY_CHOICES, default='basic')
+    is_active     = models.BooleanField(default=True)
+    created_at    = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ['category', 'id']
+
+    def __str__(self):
+        return self.question_text[:80]
+
+
+class Option(models.Model):
+    question   = models.ForeignKey(Question, on_delete=models.CASCADE, related_name='options')
+    option_text = models.CharField(max_length=500)
+    is_correct  = models.BooleanField(default=False)
+
+    def __str__(self):
+        return f"{'✓' if self.is_correct else '✗'} {self.option_text[:60]}"
+
+
+# ─────────────────────────────────────────────────────────────
+# TESTIMONIALS & FAQ  (new — used by homepage)
+# ─────────────────────────────────────────────────────────────
+
+class Testimonial(models.Model):
+    name       = models.CharField(max_length=100)
+    role       = models.CharField(max_length=150, blank=True)
+    initials   = models.CharField(max_length=4, blank=True)
+    text       = models.TextField()
+    rating     = models.PositiveSmallIntegerField(default=5)
+    is_active  = models.BooleanField(default=True)
+    order      = models.PositiveIntegerField(default=0)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ['order', '-created_at']
+
+    def __str__(self):
+        return f"{self.name} – {self.role}"
+
+    def stars(self):
+        return '★' * self.rating + '☆' * (5 - self.rating)
+
+
+class FAQ(models.Model):
+    question   = models.CharField(max_length=300)
+    answer     = models.TextField()
+    page       = models.CharField(max_length=50, default='home', help_text="home, calculator, mcq …")
+    order      = models.PositiveIntegerField(default=0)
+    is_active  = models.BooleanField(default=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ['page', 'order']
+
+    def __str__(self):
+        return self.question[:80]

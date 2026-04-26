@@ -1,16 +1,19 @@
-{% extends "base.html" %}
+{% extends 'base.html' %}
 {% load static %}
 {% block title %}Page Not Found | TaxBuddy Umair{% endblock %}
-{% block robots %}noindex, nofollow{% endblock %}
+{% block top_ad %}{% endblock %}
 {% block content %}
-<div style="min-height:70vh;display:flex;align-items:center;justify-content:center;padding:80px 1rem;text-align:center">
+<div style="min-height:60vh;display:flex;align-items:center;justify-content:center;text-align:center;padding:60px 20px;">
   <div>
-    <div style="font-size:80px;font-weight:700;color:var(--border);line-height:1;margin-bottom:16px">404</div>
-    <h1 style="font-family:'Playfair Display',serif;font-size:28px;font-weight:700;color:var(--navy);margin-bottom:10px">Page not found</h1>
-    <p style="font-size:15px;color:var(--text-muted);margin-bottom:28px;max-width:400px">The page you're looking for doesn't exist or has been moved.</p>
-    <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap">
-      <a href="{% url 'index' %}" style="background:var(--navy);color:#fff;font-size:14px;font-weight:600;padding:12px 24px;border-radius:var(--radius-sm);min-height:44px;display:inline-flex;align-items:center">Go to Homepage →</a>
-      <a href="{% url 'viewBlogs' slug='income-tax' %}" style="background:var(--white);color:var(--navy);border:1px solid var(--border);font-size:14px;font-weight:500;padding:12px 24px;border-radius:var(--radius-sm);min-height:44px;display:inline-flex;align-items:center">Browse Blog</a>
+    <div style="font-size:72px;margin-bottom:20px;">🔍</div>
+    <h1 style="font-family:var(--font-head);font-size:32px;color:var(--navy);margin-bottom:12px;">Page Not Found</h1>
+    <p style="font-size:15px;color:var(--text-light);margin-bottom:28px;max-width:400px;">
+      The page you're looking for doesn't exist or has been moved.
+    </p>
+    <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap;">
+      <a href="{% url 'index' %}" class="btn-primary" style="text-decoration:none;">🏠 Go Home</a>
+      <a href="{% url 'income_tax_guides' %}" class="btn-outline" style="text-decoration:none;">📚 Tax Guides</a>
+      <a href="{% url 'SalaryCalculator' %}" class="btn-outline" style="text-decoration:none;">🧮 Calculators</a>
     </div>
   </div>
 </div>

@@ -1,209 +1,191 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<title>Section 4C – Super Tax Working</title>
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Super Tax Section 4C Calculator Pakistan | TaxBuddy Umair{% endblock %}
+{% block extra_css %}<link rel="stylesheet" href="{% static 'css/calculators.css' %}">{% endblock %}
 
-<style>
-body{font-family:Arial;padding:20px}
-.container{max-width:1150px;margin:auto;background:#fff;padding:20px;border:1px solid #000}
-h2{text-align:center;font-size:18px;margin-bottom:15px}
-table{width:100%;border-collapse:collapse;font-size:14px}
-th,td{border:1px solid #000;padding:6px}
-th{background:#0f766e;color:#fff;text-align:center}
-.section{background:#e6f2ef;font-weight:bold}
-input,select{width:100%;border:none;text-align:right;padding:4px}
-input[readonly]{background:#f0f0f0;font-weight:bold}
-select{text-align:center}
-.center{text-align:center}
-.note{font-size:12px;margin-top:10px}
-</style>
-</head>
+{% block content %}
 
-<body>
-<div class="container">
-
-<h2>SECTION 4C – SUPER TAX WORKING (OFFICIAL FORMAT)</h2>
-
-<table>
-<tr>
-<th>WORKING</th>
-<th>PARTICULARS</th>
-<th>AMOUNT (Rs.)</th>
-<th>AUTO / REMARKS</th>
-</tr>
-
-<!-- TAX YEAR -->
-<tr class="section"><td colspan="4">TAX YEAR</td></tr>
-<tr>
-<td></td>
-<td>Select Tax Year</td>
-<td>
-<select id="taxYear">
-<option value="2022">2022</option>
-<option value="2023">2023</option>
-<option value="2024">2024</option>
-<option value="2025">2025</option>
-<option value="2026" selected>2026</option>
-</select>
-</td>
-<td class="center">Auto</td>
-</tr>
-
-<!-- NORMAL INCOME -->
-<tr class="section"><td colspan="4">NORMAL INCOME</td></tr>
-<tr><td></td><td>Profit on Debt</td><td><input class="normal"></td><td></td></tr>
-<tr><td></td><td>Dividend Income</td><td><input class="normal"></td><td></td></tr>
-<tr><td></td><td>Commission u/s 233 @10%</td><td><input class="normal"></td><td></td></tr>
-<tr><td></td><td>Commission u/s 233 @12%</td><td><input class="normal"></td><td></td></tr>
-<tr><td></td><td>Capital Gains @12.5%</td><td><input class="normal"></td><td></td></tr>
-<tr><td></td><td>Capital Gains @15%</td><td><input class="normal"></td><td></td></tr>
-<tr><td></td><td>Capital Gains @0%</td><td><input class="normal"></td><td></td></tr>
-<tr><td></td><td>Taxable Income</td><td><input class="normal"></td><td></td></tr>
-
-<tr>
-<td></td>
-<td><b>Total Normal Income</b></td>
-<td><input id="totalNormal" readonly></td>
-<td class="center">Auto</td>
-</tr>
-
-<!-- PTR -->
-<tr class="section"><td colspan="4">IMPUTABLE INCOME (PTR)</td></tr>
-<tr><td></td><td>Import u/s 148 @5.5%</td><td><input class="ptr"></td><td></td></tr>
-<tr><td></td><td>Export Proceeds u/s 154(1) @1%</td><td><input class="ptr"></td><td></td></tr>
-<tr><td></td><td>Issuance of Bonus Shares u/s 236Z</td><td><input class="ptr"></td><td></td></tr>
-<tr><td></td><td>Any Other PTR Income</td><td><input class="ptr"></td><td></td></tr>
-
-<tr>
-<td></td>
-<td><b>Total Imputable Income</b></td>
-<td><input id="totalPtr" readonly></td>
-<td class="center">Auto</td>
-</tr>
-
-<!-- SCHEDULAR -->
-<tr class="section"><td colspan="4">SCHEDULAR INCOME</td></tr>
-<tr>
-<td></td>
-<td>E&amp;P Companies / Insurance / Others</td>
-<td><input id="schedular"></td>
-<td></td>
-</tr>
-
-<!-- TOTAL 4C -->
-<tr>
-<td></td>
-<td><b>Total Income for Super Tax</b></td>
-<td><input id="total4c" readonly></td>
-<td class="center">Final 4C Income</td>
-</tr>
-
-<!-- SUPER TAX -->
-<tr class="section" id="superTaxSection"><td colspan="4">SUPER TAX</td></tr>
-
-<tr>
-<td></td>
-<td>Applicable Super Tax Rate</td>
-<td class="center"><b id="rate">0%</b></td>
-<td>Auto (DB)</td>
-</tr>
-
-<tr>
-<td></td>
-<td><b>SUPER TAX PAYABLE</b></td>
-<td><input id="superTax" readonly></td>
-<td class="center">Auto</td>
-</tr>
-
-<tr>
-<td></td>
-<td>Tax Already Paid</td>
-<td><input id="paid"></td>
-<td></td>
-</tr>
-
-<tr>
-<td></td>
-<td><b>Difference Payable</b></td>
-<td><input id="difference" readonly></td>
-<td class="center">Auto</td>
-</tr>
-</table>
-
-
+<div class="article-hero calc-page-header">
+  <div class="article-hero-inner">
+    <div class="breadcrumb">
+      <a href="{% url 'index' %}">Home</a><span class="breadcrumb-sep">›</span>
+      <span>Calculators</span><span class="breadcrumb-sep">›</span>
+      <span>Super Tax 4C</span>
+    </div>
+    <h1>Super Tax — Section 4C Calculator</h1>
+    <div class="article-meta">
+      <span>⚡ ITO 2001, Section 4C</span>
+      <span>🔄 Tax Years 2022–2026</span>
+      <span>🏢 For High-Income Persons &amp; Companies</span>
+    </div>
+  </div>
 </div>
 
+<div class="container">
+  <div class="ad-wrapper"><div class="ad-wrapper-label">Advertisement</div>
+    <div class="ad-zone ad-leaderboard"><div class="ad-zone-label">AdSense — Top</div><div class="ad-zone-size">728×90</div></div>
+  </div>
+</div>
+
+<div class="content-grid">
+  <main class="content-main">
+
+    <div class="highlight-box">
+      📌 <strong>What is Super Tax (Section 4C)?</strong> Super Tax is an additional tax levied under Section 4C of ITO 2001
+      on persons (individuals, AOPs, and companies) whose income exceeds PKR 150 million.
+      Rates vary by income tier and tax year.
+    </div>
+
+    <div class="calc-container" style="margin-top:20px;">
+      <div class="calc-header">
+        <div class="calc-header-icon">⚡</div>
+        <div>
+          <h2>Super Tax 4C Calculator</h2>
+          <p>Section 4C · ITO 2001 — Live Rate Lookup via API</p>
+        </div>
+      </div>
+      <div class="calc-body">
+
+        <div class="year-selectors">
+          <div>
+            <div class="year-select-label">Tax Year</div>
+            <select id="tax-year-4c" class="form-select">
+              <option value="2023">Tax Year 2023</option>
+              <option value="2024">Tax Year 2024</option>
+              <option value="2025" selected>Tax Year 2025</option>
+              <option value="2026">Tax Year 2026</option>
+            </select>
+          </div>
+          <div>
+            <div class="year-select-label">Income Type</div>
+            <select id="income-type-4c" class="form-select" onchange="updateAnnual4C()">
+              <option value="annual">Annual</option>
+              <option value="monthly">Monthly</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-group" style="margin-top:16px;">
+          <label class="form-label" for="income-4c">Taxable Income (PKR) *</label>
+          <input type="number" id="income-4c" class="form-input number-only"
+                 placeholder="e.g. 200000000"
+                 oninput="updateAnnual4C()">
+        </div>
+
+        <!-- Live Result -->
+        <div id="result-4c" class="calc-result" style="display:none;">
+          <div class="calc-result-grid">
+            <div class="calc-result-item">
+              <div class="calc-result-val" id="r4c-income">—</div>
+              <div class="calc-result-lbl">Annual Income</div>
+            </div>
+            <div class="calc-result-item">
+              <div class="calc-result-val" id="r4c-rate">—</div>
+              <div class="calc-result-lbl">Super Tax Rate</div>
+            </div>
+            <div class="calc-result-item">
+              <div class="calc-result-val" id="r4c-tax">—</div>
+              <div class="calc-result-lbl">Super Tax</div>
+            </div>
+          </div>
+          <div class="calc-cta">
+            <div class="calc-cta-text">Need help with your super tax filing? <strong>Contact us</strong></div>
+            <a href="https://wa.me/923332482742" class="btn-wa-sm" target="_blank" rel="noopener">💬 WhatsApp</a>
+          </div>
+        </div>
+
+        <div id="loading-4c" style="display:none;text-align:center;padding:16px;color:rgba(255,255,255,0.6);font-size:13px;">
+          ⏳ Fetching rate…
+        </div>
+
+        <div class="calc-disclaimer">
+          ⚠️ Super Tax applies to persons with income exceeding PKR 150 million.
+          This calculator fetches live rates from our API. Rates may be amended by Finance Acts.
+        </div>
+      </div>
+    </div>
+
+    <!-- Rates Table -->
+    <div style="background:var(--white);border:1px solid var(--border);border-radius:var(--radius-lg);overflow:hidden;margin-top:24px;">
+      <div style="background:var(--navy);padding:14px 20px;">
+        <h2 style="font-family:var(--font-head);font-size:18px;color:#fff;margin:0;">Super Tax Rates — Section 4C</h2>
+      </div>
+      <div style="overflow-x:auto;">
+        <table class="rates-table">
+          <thead>
+            <tr><th>Income Tier (PKR)</th><th>Tax Year 2022</th><th>Tax Year 2023</th><th>Tax Year 2024+</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>150M – 200M</td><td><span class="rate-badge">1%</span></td><td><span class="rate-badge">1%</span></td><td><span class="rate-badge">1%</span></td></tr>
+            <tr><td>200M – 250M</td><td><span class="rate-badge">2%</span></td><td><span class="rate-badge">2%</span></td><td><span class="rate-badge">2%</span></td></tr>
+            <tr><td>250M – 300M</td><td><span class="rate-badge">3%</span></td><td><span class="rate-badge">3%</span></td><td><span class="rate-badge">3%</span></td></tr>
+            <tr><td>300M – 350M</td><td><span class="rate-badge">4%</span></td><td><span class="rate-badge">4%</span></td><td><span class="rate-badge">4%</span></td></tr>
+            <tr><td>Above 500M (Banking)</td><td><span class="rate-badge">10%</span></td><td><span class="rate-badge">10%</span></td><td><span class="rate-badge">10%</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="ad-wrapper"><div class="ad-wrapper-label">Advertisement</div>
+      <div class="ad-zone ad-large-rect"><div class="ad-zone-label">AdSense — Below Calculator</div><div class="ad-zone-size">336×280</div></div>
+    </div>
+
+    {% include 'partials/cta_banner.html' %}
+  </main>
+
+  <aside class="content-sidebar">
+    {% include 'partials/sidebar.html' %}
+  </aside>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'js/calculators.js' %}"></script>
 <script>
+let debounceTimer;
 
-    document.addEventListener("DOMContentLoaded", () => {
-    document.querySelectorAll("input").forEach(input => {
-        if (input.value === "") {
-            input.value = "0";
-        }
-    });
-});
-
-function sum(cls){
-    return [...document.querySelectorAll(cls)]
-        .reduce((t,i)=>t+(parseFloat(i.value)||0),0);
+function updateAnnual4C() {
+  clearTimeout(debounceTimer);
+  debounceTimer = setTimeout(fetch4CRate, 400);
 }
 
-async function fetchRate(income, taxYear){
-    const res = await fetch(
-        `/section-4c-rate/?income=${income}&tax_year=${taxYear}`
-    );
-    return await res.json();
+async function fetch4CRate() {
+  const raw       = document.getElementById('income-4c').value;
+  const type      = document.getElementById('income-type-4c').value;
+  const taxYear   = document.getElementById('tax-year-4c').value;
+  const resultEl  = document.getElementById('result-4c');
+  const loadingEl = document.getElementById('loading-4c');
+
+  if (!raw) { resultEl.style.display = 'none'; return; }
+
+  let income = parseFloat(raw) || 0;
+  if (type === 'monthly') income = income * 12;
+  if (income <= 0) { resultEl.style.display = 'none'; return; }
+
+  loadingEl.style.display = 'block';
+  resultEl.style.display  = 'none';
+
+  try {
+    const res  = await fetch(`/api/section-4c-rate/?income=${Math.round(income)}&tax_year=${taxYear}`);
+    const data = await res.json();
+
+    if (data.error) { loadingEl.style.display = 'none'; return; }
+
+    const superTax = income * data.rate;
+
+    document.getElementById('r4c-income').textContent = formatPKR(income);
+    document.getElementById('r4c-rate').textContent   = data.rate_percent + '%';
+    document.getElementById('r4c-tax').textContent    = formatPKR(superTax);
+
+    loadingEl.style.display = 'none';
+    resultEl.style.display  = 'block';
+  } catch (e) {
+    loadingEl.style.display = 'none';
+    console.error('4C API error:', e);
+  }
 }
 
-async function calculateSuperTax(){
-    let normal = sum(".normal");
-    let ptr = sum(".ptr");
-    let schedular = parseFloat(document.getElementById("schedular").value) || 0;
-    let paid = parseFloat(document.getElementById("paid").value) || 0;
-    let taxYear = document.getElementById("taxYear").value;
-
-    /* ✅ FIXED NAMING */
-    let total4cAmount = normal + ptr + schedular;
-
-    /* ✅ ELEMENT REFERENCES */
-    let total4cField = document.getElementById("total4c");
-
-    /* ✅ UPDATE TOTALS */
-    totalNormal.value = normal.toLocaleString();
-    totalPtr.value = ptr.toLocaleString();
-    total4cField.value = total4cAmount.toLocaleString();
-
-    /* ✅ FETCH RATE */
-    let data = await fetchRate(total4cAmount, taxYear);
-    let rate = data.rate || 0;
-
-    /* ✅ TAX */
-    let tax = total4cAmount * rate;
-
-    document.getElementById("rate").innerText =
-        (rate * 100).toFixed(2) + "%";
-
-    superTax.value = tax.toLocaleString();
-    difference.value = (tax - paid).toLocaleString();
-}
-
-/* EVENTS */
-document.querySelectorAll("input").forEach(el=>{
-    el.addEventListener("input", calculateSuperTax);
-});
-
-document.getElementById("taxYear").addEventListener("change", () => {
-    calculateSuperTax();
-
-    // 🔽 Smooth scroll to Super Tax section
-    document.getElementById("superTaxSection")
-        .scrollIntoView({ behavior: "smooth", block: "start" });
-});
-
-
-document.addEventListener("DOMContentLoaded", calculateSuperTax);
+// Trigger on year change too
+document.getElementById('tax-year-4c').addEventListener('change', fetch4CRate);
 </script>
-
-</body>
-</html>
+{% endblock %}

@@ -1,234 +1,95 @@
-<!DOCTYPE html>
-{% load humanize %}
- {% load static %}
-
-<html lang="en">
-<head>
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-EEP4P5YWE6"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-
-  gtag('config', 'G-EEP4P5YWE6');
-</script>
-
-    <link rel="shortcut icon" type="image/x-icon" href="{% static 'assets/img/icons/fab2.png' %}">
-    <title>Rental Income Tax Calculator Pakistan | TaxBuddy Umair</title>
-<meta name="description" content="Use our free Rental Income Tax Calculator for Pakistan to estimate your tax on rental properties.">
-<meta name="keywords" content="rental income tax calculator Pakistan, property tax calculator, house rent tax calculator Pakistan, FBR rental income tax , rental income tax return">
-<meta property="og:title" content="Rental Income Tax Calculator Pakistan 2025 | TaxBuddy Umair">
-<meta property="og:description" content="Free online Rental Income Tax Calculator for Pakistan 2025. Calculate property and rental income tax easily.">
-<meta property="og:url" content="https://www.taxbuddyumair.com/PropertyCalculator">
-<meta property="og:image" content="https://taxbuddyumair.com/static/assets/img/icons/fab2.png" />
-    {% include 'partials/head-css.html' %}
-</head>
-<body>
-
-<!--=====Navigation Bar=======-->
-{% include 'partials/topbar.html' %}
-<!--=====Navigation Bar Ends Here=======-->
-
-
-<!--=====Rental Income Deductions Form=======-->
-<div class="contct6 sp2" id="rental-calculator">
-    <div class="container">
-        <div class="row">
-            <div class="col-lg-12">
-                <div class="contact3-form-all" data-aos="zoom-out" data-aos-duration="900">
-                    <div class="hadding6 text-center">
-                        <h1 class="font-30 font-f-7 font-lg-40 weight-500 line-height-lg-48 line-height-38">
-                            Rental Income – Deduction Calculator
-                        </h1>
-                    </div>
-
-                    <form action="PropertyCalculator" id="rentalForm" method="POST">
-                        {% csrf_token %}
-                        <div class="form-input-all">
-                            <div class="form-input-box">
-                                <div class="row">
-                                    <div class="col-12 col-md-4">
-                                        <div class="input-single6">
-
-                                            <label>Select Income Type</label>
-                                            <select class="form-control" id="incomeTypeSelect" name="income_type"
-                                                    required>
-                                                <option disabled value=""> Select Income Type</option>
-                                                <option value="Monthly"> Monthly Income</option>
-                                                <option value="Yearly"> Yearly</option>
-
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <div class="col-12 col-md-4">
-                                        <div class="input-single6">
-                                            <label>Select Tax Year</label>
-                                            <select class="form-control" id="tax_year_1" name="tax_year_1" required>
-                                                <option disabled value="">Select the tax year</option>
-                                                <option value="2021-2022">July - 2021 to June 2022 - (2022)</option>
-                                                <option value="2022-2023">July - 2022 to June 2023 - (2023)</option>
-                                                <option value="2023-2024">July - 2023 to June 2024 - (2024)</option>
-                                                <option value="2024-2025">July - 2024 to June 2025 - (2025)</option>
-                                                <option value="2025-2026">July - 2025 to June 2026 - (2026)</option>
-
-                                            </select>
-                                        </div>
-                                    </div>
-
-                                    <div class="col-12 col-md-4">
-                                        <div class="input-single6">
-                                            <label>Select Tax Year</label>
-                                            <select class="form-control" id="tax_year_2" name="tax_year_2" required>
-                                                <option disabled value="">Select the tax year</option>
-                                                <option value="2021-2022">July - 2021 to June 2022 - (2022)</option>
-                                                <option value="2022-2023">July - 2022 to June 2023 - (2023)</option>
-                                                <option value="2023-2024">July - 2023 to June 2024 - (2024)</option>
-                                                <option value="2024-2025">July - 2024 to June 2025 - (2025)</option>
-                                                <option value="2025-2026">July - 2025 to June 2026 - (2026)</option>
-
-                                            </select>
-                                        </div>
-                                    </div>
-
-
-                                </div>
-                                <div class="row">
-                                    <!-- Gross Rent -->
-                                    <div class="col-md-3">
-                                        <div class="input-single6">
-                                            <label>Gross Rent Received</label>
-                                            <input class="form-control" id="gross_rent" name="gross_rent" onchange="cal()"
-                                                   required type="number"/>
-
-                                        </div>
-                                    </div>
-
-                                    <!-- (a) Repairs Allowance -->
-                                    <div class="col-md-3">
-                                        <div class="input-single6">
-                                            <label>Repairs Allowance (Max 20% of Gross Rent)</label>
-                                            <input class="form-control" id="repairs_allowance" name="repairs_allowance"
-                                                   type="number" value=""/>
-                                        </div>
-                                    </div>
-
-                                    <!-- (b) Property Insurance Premium -->
-                                    <div class="col-md-3">
-                                        <div class="input-single6">
-                                            <label>Property Insurance Premium</label>
-                                            <input class="form-control" name="insurance_premium"
-                                                   type="number"/>
-                                        </div>
-                                    </div>
-
-                                    <!-- (c) Local Taxes/Rates/Cess -->
-                                    <div class="col-md-3">
-                                        <div class="input-single6">
-                                            <label>Local Taxes / Rates / Cess</label>
-                                            <input class="form-control" name="local_taxes" type="number"/>
-                                        </div>
-                                    </div>
-
-                                    <!-- (d) Ground Rent -->
-                                    <div class="col-md-3">
-                                        <div class="input-single6">
-                                            <label>Ground Rent</label>
-                                            <input class="form-control" name="ground_rent" type="number"/>
-                                        </div>
-                                    </div>
-
-                                    <!-- (e) Interest on Borrowed Money -->
-                                    <div class="col-md-3">
-                                        <div class="input-single6">
-                                            <label>Interest on Borrowed Money</label>
-                                            <input class="form-control" name="borrowed_interest" step="1000"
-                                                   type="number"/>
-                                        </div>
-                                    </div>
-
-                                    <!-- (f) HBFC/Bank Rent-Sharing Payments -->
-                                    <div class="col-md-3">
-                                        <div class="input-single6">
-                                            <label>HBFC/Bank Rent-Sharing Payments</label>
-                                            <input class="form-control" name="hbfc_payments" type="number"/>
-                                        </div>
-                                    </div>
-
-                                    <!-- (g) Interest on Mortgage -->
-                                    <div class="col-md-3">
-                                        <div class="input-single6">
-                                            <label>Interest on Mortgage</label>
-                                            <input class="form-control" name="mortgage_interest"
-                                                   type="number"/>
-                                        </div>
-                                    </div>
-
-                                    <!-- (h) Admin & Collection Expenses -->
-                                    <div class="col-md-3">
-                                        <div class="input-single6">
-                                            <label>Admin & Collection Expenses (Max 4% of Gross Rent)</label>
-                                            <input class="form-control" id="admin_expenses" name="admin_expenses"
-                                                   type="number"/>
-                                        </div>
-                                    </div>
-
-                                    <!-- (i) Legal Expenses -->
-                                    <div class="col-md-3">
-                                        <div class="input-single6">
-                                            <label>Legal Expenses for Ownership/Title Suits</label>
-                                            <input class="form-control" name="legal_expenses"
-                                                   type="number"/>
-                                        </div>
-                                    </div>
-
-                                    <!-- (j) Irrecoverable Rent -->
-                                    <div class="col-md-3">
-                                        <div class="input-single6">
-                                            <label>Irrecoverable Rent Allowance</label>
-                                            <input class="form-control" name="irrecoverable_rent"
-                                                   type="number"/>
-                                        </div>
-                                    </div>
-
-                                </div>
-                                <div class="space20"></div>
-
-                                <button class="btn btn-success" type="submit">Calculate</button>
-                            </div>
-                        </div>
-                    </form>
-
-
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="container">
-        {% include 'partials/slab_result_content.html' with content=context %}
-    </div>
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Property / Rental Income Tax Calculator Pakistan | TaxBuddy Umair{% endblock %}
+{% block extra_css %}<link rel="stylesheet" href="{% static 'css/calculators.css' %}">{% endblock %}
+{% block content %}
+<div class="article-hero calc-page-header">
+  <div class="article-hero-inner">
+    <div class="breadcrumb"><a href="{% url 'index' %}">Home</a><span class="breadcrumb-sep">›</span><span>Calculators</span><span class="breadcrumb-sep">›</span><span>Property Calculator</span></div>
+    <h1>Property / Rental Income Tax Calculator — Pakistan 2025–26</h1>
+    <div class="article-meta"><span>🏠 Section 15 · ITO 2001</span><span>🔄 Updated 2025–26</span></div>
+  </div>
 </div>
-<!--=====Rental Income Deductions Form End=======-->
-
-
-{% include 'partials/footer.html' %}
-{% include 'partials/up.html' %}
-{% include 'partials/footer-scripts.html' %}
-
-
-</body>
-
-<script>
-function cal() {
-    let grossRent = parseFloat(document.getElementById("gross_rent").value) || 0;
-
-    // Calculate values
-    let repairs = (grossRent * 0.20).toFixed(0); // 20%
-    let admin = (grossRent * 0.04).toFixed(0);   // 4%
-
-    // Bind to inputs
-    document.getElementById("repairs_allowance").value = repairs;
-    document.getElementById("admin_expenses").value = admin;
-}
-
-</script>
-</html>
+<div class="container">
+  <div class="ad-wrapper"><div class="ad-wrapper-label">Advertisement</div>
+    <div class="ad-zone ad-leaderboard"><div class="ad-zone-label">AdSense</div><div class="ad-zone-size">728×90</div></div>
+  </div>
+</div>
+<div class="content-grid">
+  <main class="content-main">
+    <div class="calc-container">
+      <div class="calc-header">
+        <div class="calc-header-icon">🏠</div>
+        <div><h2>Property Tax Calculator</h2><p>Rental Income Tax · Section 15 · ITO 2001</p></div>
+      </div>
+      <div class="calc-body">
+        <form method="POST" action="{% url 'PropertyCalculator' %}">
+          {% csrf_token %}
+          <div class="income-toggle">
+            <input type="radio" name="income_type" id="monthly" value="Monthly" {% if income_type == 'Monthly' %}checked{% endif %}><label for="monthly">Monthly Rent</label>
+            <input type="radio" name="income_type" id="yearly"  value="Yearly"  {% if income_type != 'Monthly' %}checked{% endif %}><label for="yearly">Annual Rent</label>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Gross Rental Income (PKR) *</label>
+            <input type="number" name="gross_rent" class="form-input number-only" placeholder="e.g. 50000" min="0" required value="{{ request.POST.gross_rent|default:'' }}">
+          </div>
+          <div class="deduction-section-title">Allowable Deductions (Optional)</div>
+          <div class="deduction-grid">
+            <div class="form-group"><label class="form-label">Repairs Allowance</label><input type="number" name="repairs_allowance" class="form-input number-only" placeholder="0" min="0"></div>
+            <div class="form-group"><label class="form-label">Insurance Premium</label><input type="number" name="insurance_premium" class="form-input number-only" placeholder="0" min="0"></div>
+            <div class="form-group"><label class="form-label">Local Taxes / Ground Rent</label><input type="number" name="local_taxes" class="form-input number-only" placeholder="0" min="0"></div>
+            <div class="form-group"><label class="form-label">Borrowed Capital Interest</label><input type="number" name="borrowed_interest" class="form-input number-only" placeholder="0" min="0"></div>
+            <div class="form-group"><label class="form-label">HBFC Payments</label><input type="number" name="hbfc_payments" class="form-input number-only" placeholder="0" min="0"></div>
+            <div class="form-group"><label class="form-label">Mortgage Interest</label><input type="number" name="mortgage_interest" class="form-input number-only" placeholder="0" min="0"></div>
+            <div class="form-group"><label class="form-label">Admin / Legal Expenses</label><input type="number" name="admin_expenses" class="form-input number-only" placeholder="0" min="0"></div>
+            <div class="form-group"><label class="form-label">Irrecoverable Rent</label><input type="number" name="irrecoverable_rent" class="form-input number-only" placeholder="0" min="0"></div>
+          </div>
+          <div class="year-selectors">
+            <div><div class="year-select-label">Tax Year 1</div>
+              <select name="tax_year_1" class="form-select" required>
+                <option value="">Select Year</option>
+                {% for y in years %}<option value="{{ y }}" {% if tax_year_1 == y %}selected{% endif %}>{{ y }}</option>{% endfor %}
+              </select>
+            </div>
+            <div><div class="year-select-label">Tax Year 2</div>
+              <select name="tax_year_2" class="form-select" required>
+                <option value="">Select Year</option>
+                {% for y in years %}<option value="{{ y }}" {% if tax_year_2 == y %}selected{% endif %}>{{ y }}</option>{% endfor %}
+              </select>
+            </div>
+          </div>
+          <button type="submit" class="calc-submit">🧮 Calculate Rental Tax</button>
+        </form>
+        {% if tax_year_1_result and tax_year_2_result %}
+        <div class="calc-result">
+          <div style="margin-bottom:14px;display:flex;gap:20px;flex-wrap:wrap;">
+            <span style="font-size:13px;color:rgba(255,255,255,0.6);">Gross Rent: <strong style="color:#4ee8b0;">PKR {{ yearly_income|floatformat:0 }}</strong></span>
+            <span style="font-size:13px;color:rgba(255,255,255,0.6);">Deductions: <strong style="color:#fbbf24;">PKR {{ total_deductions|floatformat:0 }}</strong></span>
+            <span style="font-size:13px;color:rgba(255,255,255,0.6);">Net Taxable: <strong style="color:#4ee8b0;">PKR {{ net_income_rental|floatformat:0 }}</strong></span>
+          </div>
+          <div class="calc-compare-grid">
+            <div class="calc-compare-card">
+              <div class="calc-compare-year">{{ tax_year_1 }}</div>
+              <div class="calc-compare-row"><span class="calc-compare-lbl">Tax Rate</span><span class="calc-compare-val">{{ tax_year_1_result.rate|floatformat:1 }}%</span></div>
+              <div class="calc-compare-row"><span class="calc-compare-lbl">Annual Tax</span><span class="calc-compare-val calc-compare-highlight">PKR {{ tax_year_1_result.total_tax|floatformat:0 }}</span></div>
+              <div class="calc-compare-row"><span class="calc-compare-lbl">Monthly</span><span class="calc-compare-val">PKR {{ tax_year_1_result.per_month|floatformat:0 }}</span></div>
+            </div>
+            <div class="calc-compare-card">
+              <div class="calc-compare-year">{{ tax_year_2 }}</div>
+              <div class="calc-compare-row"><span class="calc-compare-lbl">Tax Rate</span><span class="calc-compare-val">{{ tax_year_2_result.rate|floatformat:1 }}%</span></div>
+              <div class="calc-compare-row"><span class="calc-compare-lbl">Annual Tax</span><span class="calc-compare-val calc-compare-highlight">PKR {{ tax_year_2_result.total_tax|floatformat:0 }}</span></div>
+              <div class="calc-compare-row"><span class="calc-compare-lbl">Monthly</span><span class="calc-compare-val">PKR {{ tax_year_2_result.per_month|floatformat:0 }}</span></div>
+            </div>
+          </div>
+          <div class="calc-cta"><div class="calc-cta-text">Need property tax filing help?</div><a href="https://wa.me/923332482742" class="btn-wa-sm" target="_blank" rel="noopener">💬 WhatsApp</a></div>
+        </div>
+        {% endif %}
+        <div class="calc-disclaimer">⚠️ Estimation only. Deductions subject to FBR approval. Consult a tax professional.</div>
+      </div>
+    </div>
+    {% include 'partials/cta_banner.html' %}
+  </main>
+  <aside class="content-sidebar">{% include 'partials/sidebar.html' %}</aside>
+</div>
+{% endblock %}
+{% block extra_js %}<script src="{% static 'js/calculators.js' %}"></script>{% endblock %}

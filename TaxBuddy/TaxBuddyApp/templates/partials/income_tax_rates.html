@@ -1,414 +1,178 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-
+{% extends 'base.html' %}
 {% load static %}
-{% load humanize %}
 
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+{% block title %}Income Tax Rates Pakistan {{ selected_year }} | TaxBuddy Umair{% endblock %}
 
-<title>Income Tax Rates Pakistan 2026 – Salary, Business, AOP, Company</title>
+{% block content %}
 
-<meta name="description"
-content="Latest income tax rates Pakistan 2026 for salary, business, AOP and companies. Updated First Schedule Income Tax Ordinance.">
-
-<link href="{% static 'assets/img/icons/fab2.png' %}" rel="shortcut icon">
-
-{% include 'partials/head-css.html' %}
-
-<style>
-
-body{
-background:#f8faf9;
-font-family:Inter, sans-serif;
-}
-
-.sp1{
-padding:80px 0;
-}
-
-.page-title{
-font-size:28px;
-font-weight:700;
-color:#198754;
-margin-bottom:20px;
-}
-
-.section-card{
-background:#fff;
-padding:25px;
-border-radius:18px;
-box-shadow:0 6px 20px rgba(0,0,0,.05);
-margin-bottom:25px;
-}
-
-.accordion-item{
-border:none;
-margin-bottom:15px;
-border-radius:14px;
-overflow:hidden;
-box-shadow:0 4px 14px rgba(0,0,0,.05);
-}
-
-.accordion-button{
-font-weight:600;
-color:#198754;
-}
-
-.accordion-button:not(.collapsed){
-background:#e9f7ef;
-}
-
-.custom-table-head{
-background:#198754;
-color:#fff;
-}
-
-.table{
-font-size:14px;
-}
-
-.table tbody tr:hover{
-background:#f1fbf6;
-}
-
-@media(max-width:768px){
-
-.page-title{font-size:20px}
-.table{font-size:12px}
-
-}
-
-</style>
-
-</head>
-<body>
-
-{% include 'partials/topbar.html' %}
-
-
-<div class="container sp1">
-
-<h1 class="page-title">
-Income Tax Rates Pakistan – Tax Year {{selected_year}}
-</h1>
-
-
-
-<!-- ================= CORPORATE ================= -->
-
-<div class="section-card" id="corporate-section">
-
-<h5 class="fw-bold text-success mb-3">
-Rates of Tax for Companies
-</h5>
-
-<table class="table table-bordered text-center">
-
-<thead class="custom-table-head">
-
-<tr>
-<th>Company</th>
-<th>2025</th>
-<th>2026</th>
-<th>2027+</th>
-</tr>
-
-</thead>
-
-<tbody>
-
-<tr>
-<td>Banking</td>
-<td>44%</td>
-<td>43%</td>
-<td>42%</td>
-</tr>
-
-<tr>
-<td>Small</td>
-<td colspan="3">20%</td>
-</tr>
-
-<tr>
-<td>Other</td>
-<td colspan="3">29%</td>
-</tr>
-
-</tbody>
-
-</table>
-
+<div class="article-hero">
+  <div class="article-hero-inner">
+    <div class="breadcrumb">
+      <a href="{% url 'index' %}">Home</a><span class="breadcrumb-sep">›</span>
+      <a href="{% url 'income_tax_guides' %}">Income Tax Guides</a><span class="breadcrumb-sep">›</span>
+      <span>Tax Rates</span>
+    </div>
+    <h1>Income Tax Rates Pakistan — {{ selected_year }}</h1>
+    <div class="article-meta">
+      <span>📊 FBR Notified Slabs</span>
+      <span>🔄 Salary, Business, AOP &amp; Company</span>
+    </div>
+  </div>
 </div>
 
-
-
-<!-- YEAR SELECTOR -->
-
-<div class="section-card">
-
-<form method="get" id="yearForm">
-
-<input type="hidden"
-name="section"
-id="activeSection"
-value="{{active_section}}">
-
-<label class="fw-semibold mb-2">
-Select Tax Year
-</label>
-
-<select name="year"
-class="form-select"
-onchange="yearForm.submit()">
-
-{% for y in years %}
-
-<option value="{{y}}"
-{% if y == selected_year %}selected{% endif %}>
-Tax Year {{y}}
-</option>
-
-{% endfor %}
-
-</select>
-
-</form>
-
+<div class="container">
+  <div class="ad-wrapper"><div class="ad-wrapper-label">Advertisement</div>
+    <div class="ad-zone ad-leaderboard"><div class="ad-zone-label">AdSense — Top</div><div class="ad-zone-size">728×90</div></div>
+  </div>
 </div>
 
+<div class="content-grid">
+  <main class="content-main">
 
+    <!-- Year Selector -->
+    <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:24px;align-items:center;">
+      <span style="font-size:13px;font-weight:600;color:var(--text-mid);">Tax Year:</span>
+      {% for year in years %}
+      <a href="?section={{ active_section }}&year={{ year }}"
+         style="padding:6px 16px;border-radius:20px;font-size:13px;font-weight:600;text-decoration:none;
+                {% if selected_year == year %}background:var(--green);color:#fff;{% else %}background:var(--bg);color:var(--text-mid);border:1px solid var(--border);{% endif %}">
+        {{ year }}
+      </a>
+      {% endfor %}
+    </div>
 
-<div class="section-card">
+    <!-- Section Tabs -->
+    <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:24px;">
+      {% for tab_id, tab_label in tab_sections %}
+      <a href="?section={{ tab_id }}&year={{ selected_year }}"
+         style="padding:8px 18px;border-radius:8px;font-size:13px;font-weight:600;text-decoration:none;
+                {% if active_section == tab_id %}background:var(--navy);color:#fff;{% else %}background:var(--bg);color:var(--text-mid);border:1px solid var(--border);{% endif %}">
+        {{ tab_label }}
+      </a>
+      {% empty %}
+      <a href="?section=salary&year={{ selected_year }}" style="padding:8px 18px;border-radius:8px;font-size:13px;font-weight:600;text-decoration:none;{% if active_section == 'salary' %}background:var(--navy);color:#fff;{% else %}background:var(--bg);color:var(--text-mid);border:1px solid var(--border);{% endif %}">💼 Salary</a>
+      <a href="?section=business&year={{ selected_year }}" style="padding:8px 18px;border-radius:8px;font-size:13px;font-weight:600;text-decoration:none;{% if active_section == 'business' %}background:var(--navy);color:#fff;{% else %}background:var(--bg);color:var(--text-mid);border:1px solid var(--border);{% endif %}">🏢 Business</a>
+      <a href="?section=aop&year={{ selected_year }}" style="padding:8px 18px;border-radius:8px;font-size:13px;font-weight:600;text-decoration:none;{% if active_section == 'aop' %}background:var(--navy);color:#fff;{% else %}background:var(--bg);color:var(--text-mid);border:1px solid var(--border);{% endif %}">🤝 AOP</a>
+      <a href="?section=company&year={{ selected_year }}" style="padding:8px 18px;border-radius:8px;font-size:13px;font-weight:600;text-decoration:none;{% if active_section == 'company' %}background:var(--navy);color:#fff;{% else %}background:var(--bg);color:var(--text-mid);border:1px solid var(--border);{% endif %}">🏦 Company</a>
+      {% endfor %}
+    </div>
 
-<div class="accordion" id="taxAccordion">
+    <!-- Salary Slabs -->
+    {% if active_section == 'salary' %}
+    <div style="background:var(--white);border:1px solid var(--border);border-radius:var(--radius-lg);overflow:hidden;margin-bottom:24px;">
+      <div style="background:var(--navy);padding:14px 20px;display:flex;justify-content:space-between;align-items:center;">
+        <h2 style="font-family:var(--font-head);font-size:18px;color:#fff;margin:0;">Salary Individual — Tax Year {{ selected_year }}</h2>
+        <a href="{% url 'SalaryCalculator' %}" class="btn-wa-sm">🧮 Calculate</a>
+      </div>
+      <div style="overflow-x:auto;">
+        <table class="rates-table">
+          <thead><tr><th>Annual Income (PKR)</th><th>Base Tax (PKR)</th><th>Rate on Excess</th></tr></thead>
+          <tbody>
+            {% for bracket in salary_brackets %}
+            <tr>
+              <td>
+                {% if bracket.income_max %}
+                  {{ bracket.income_min|floatformat:0 }} – {{ bracket.income_max|floatformat:0 }}
+                {% else %}
+                  Above {{ bracket.income_min|floatformat:0 }}
+                {% endif %}
+              </td>
+              <td>{{ bracket.base_tax|floatformat:0 }}</td>
+              <td><span class="rate-badge">{{ bracket.rate_percent|floatformat:1 }}%</span></td>
+            </tr>
+            {% empty %}
+            <tr><td colspan="3" style="text-align:center;color:var(--text-light);padding:20px;">No brackets found for {{ selected_year }}</td></tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+    {% endif %}
 
+    <!-- Business / AOP Slabs -->
+    {% if active_section == 'business' or active_section == 'aop' %}
+    <div style="background:var(--white);border:1px solid var(--border);border-radius:var(--radius-lg);overflow:hidden;margin-bottom:24px;">
+      <div style="background:var(--navy);padding:14px 20px;display:flex;justify-content:space-between;align-items:center;">
+        <h2 style="font-family:var(--font-head);font-size:18px;color:#fff;margin:0;">
+          {% if active_section == 'aop' %}AOP{% else %}Business Individual{% endif %} — Tax Year {{ selected_year }}
+        </h2>
+        <a href="{% if active_section == 'aop' %}{% url 'AOPCalculator' %}{% else %}{% url 'BusinessCalculator' %}{% endif %}" class="btn-wa-sm">🧮 Calculate</a>
+      </div>
+      <div style="overflow-x:auto;">
+        <table class="rates-table">
+          <thead><tr><th>Annual Income (PKR)</th><th>Base Tax (PKR)</th><th>Rate on Excess</th></tr></thead>
+          <tbody>
+            {% for bracket in business_brackets %}
+            <tr>
+              <td>{% if bracket.income_max %}{{ bracket.income_min|floatformat:0 }} – {{ bracket.income_max|floatformat:0 }}{% else %}Above {{ bracket.income_min|floatformat:0 }}{% endif %}</td>
+              <td>{{ bracket.base_tax|floatformat:0 }}</td>
+              <td><span class="rate-badge">{{ bracket.rate_percent|floatformat:1 }}%</span></td>
+            </tr>
+            {% empty %}
+            <tr><td colspan="3" style="text-align:center;color:var(--text-light);padding:20px;">No brackets found for {{ selected_year }}</td></tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+    {% endif %}
 
+    <!-- Company Tax -->
+    {% if active_section == 'company' %}
+    <div style="background:var(--white);border:1px solid var(--border);border-radius:var(--radius-lg);overflow:hidden;margin-bottom:24px;">
+      <div style="background:var(--navy);padding:14px 20px;">
+        <h2 style="font-family:var(--font-head);font-size:18px;color:#fff;margin:0;">Company Tax Rates — {{ selected_year }}</h2>
+      </div>
+      <div style="overflow-x:auto;">
+        <table class="rates-table">
+          <thead><tr><th>Company Type</th><th>Tax Rate</th></tr></thead>
+          <tbody>
+            {% for year_key, rates in company_tax_rates.items %}
+              {% if year_key == selected_year %}
+                {% for company_type, rate in rates.items %}
+                <tr><td>{{ company_type }}</td><td><span class="rate-badge">{{ rate }}%</span></td></tr>
+                {% endfor %}
+              {% endif %}
+            {% empty %}
+            <tr><td colspan="2" style="text-align:center;color:var(--text-light);padding:20px;">No company rates found.</td></tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+    {% endif %}
 
-<!-- SALARY -->
+    <div class="ad-wrapper"><div class="ad-wrapper-label">Advertisement</div>
+      <div class="ad-zone ad-large-rect"><div class="ad-zone-label">AdSense — In-Content</div><div class="ad-zone-size">336×280</div></div>
+    </div>
 
-<div class="accordion-item" id="salary-section">
+    <div class="highlight-box">
+      📌 <strong>Note:</strong> A surcharge of 10% on tax applies for Tax Year 2024–25 and 9% for 2025–26 where taxable income exceeds PKR 10 million.
+      These rates are based on FBR notifications and may be amended by Finance Acts.
+    </div>
 
-<button class="accordion-button"
-data-bs-toggle="collapse"
-data-bs-target="#collapseSalary">
+    {% include 'partials/cta_banner.html' %}
 
-Salary Individuals
+    <div class="ad-wrapper"><div class="ad-wrapper-label">Advertisement</div>
+      <div class="ad-zone ad-leaderboard"><div class="ad-zone-label">AdSense — Bottom</div><div class="ad-zone-size">728×90</div></div>
+    </div>
 
-</button>
+  </main>
 
-<div id="collapseSalary"
-class="accordion-collapse collapse
-{% if active_section == 'salary' or not active_section %}show{% endif %}">
-
-<div class="accordion-body">
-
-<table class="table table-bordered">
-
-<thead class="custom-table-head">
-<tr>
-<th>Income</th>
-<th>Tax</th>
-<th>%</th>
-</tr>
-</thead>
-
-<tbody>
-
-{% for b in salary_brackets %}
-
-<tr>
-
-<td>
-
-{% if b.income_max %}
-{{b.income_min|intcomma}} -
-{{b.income_max|intcomma}}
-{% else %}
-Above {{b.income_min|intcomma}}
-{% endif %}
-
-</td>
-
-<td>{{b.base_tax|intcomma}}</td>
-
-<td>{{b.rate_percent}}%</td>
-
-</tr>
-
-{% endfor %}
-
-</tbody>
-
-</table>
-
+  <aside class="content-sidebar">
+    <!-- TOC -->
+    <div class="sidebar-widget">
+      <div class="sidebar-widget-header">📑 Tax Sections</div>
+      <div class="sidebar-widget-body">
+        <div class="sidebar-links">
+          <a class="sidebar-link {% if active_section == 'salary' %}active{% endif %}" href="?section=salary&year={{ selected_year }}"><span class="sidebar-link-dot"></span>Salary Individual</a>
+          <a class="sidebar-link {% if active_section == 'business' %}active{% endif %}" href="?section=business&year={{ selected_year }}"><span class="sidebar-link-dot"></span>Business Individual</a>
+          <a class="sidebar-link {% if active_section == 'aop' %}active{% endif %}" href="?section=aop&year={{ selected_year }}"><span class="sidebar-link-dot"></span>AOP / Partnership</a>
+          <a class="sidebar-link {% if active_section == 'company' %}active{% endif %}" href="?section=company&year={{ selected_year }}"><span class="sidebar-link-dot"></span>Company Tax Rates</a>
+        </div>
+      </div>
+    </div>
+    {% include 'partials/sidebar.html' %}
+  </aside>
 </div>
-</div>
-</div>
-
-
-
-<!-- BUSINESS -->
-
-<div class="accordion-item" id="business-section">
-
-<button class="accordion-button collapsed"
-data-bs-toggle="collapse"
-data-bs-target="#collapseBusiness">
-
-Business Individuals
-
-</button>
-
-<div id="collapseBusiness"
-class="accordion-collapse collapse
-{% if active_section == 'business' %}show{% endif %}">
-
-<div class="accordion-body">
-
-<table class="table table-bordered">
-
-<thead class="custom-table-head">
-<tr>
-<th>Income</th>
-<th>Tax</th>
-<th>%</th>
-</tr>
-</thead>
-
-<tbody>
-
-{% for b in business_brackets %}
-
-<tr>
-
-<td>
-
-{% if b.income_max %}
-{{b.income_min|intcomma}} -
-{{b.income_max|intcomma}}
-{% else %}
-Above {{b.income_min|intcomma}}
-{% endif %}
-
-</td>
-
-<td>{{b.base_tax|intcomma}}</td>
-
-<td>{{b.rate_percent}}%</td>
-
-</tr>
-
-{% endfor %}
-
-</tbody>
-
-</table>
-
-</div>
-</div>
-</div>
-
-
-
-<!-- AOP -->
-
-<div class="accordion-item" id="aop-section">
-
-<button class="accordion-button collapsed"
-data-bs-toggle="collapse"
-data-bs-target="#collapseAOP">
-
-AOP Tax Rates
-
-</button>
-
-<div id="collapseAOP"
-class="accordion-collapse collapse
-{% if active_section == 'aop' %}show{% endif %}">
-
-<div class="accordion-body">
-
-<table class="table table-bordered">
-
-<thead class="custom-table-head">
-<tr>
-<th>Income</th>
-<th>Tax</th>
-<th>%</th>
-</tr>
-</thead>
-
-<tbody>
-
-{% for b in aop_brackets %}
-
-<tr>
-
-<td>
-
-{% if b.income_max %}
-{{b.income_min|intcomma}} -
-{{b.income_max|intcomma}}
-{% else %}
-Above {{b.income_min|intcomma}}
-{% endif %}
-
-</td>
-
-<td>{{b.base_tax|intcomma}}</td>
-
-<td>{{b.rate_percent}}%</td>
-
-</tr>
-
-{% endfor %}
-
-</tbody>
-
-</table>
-
-</div>
-</div>
-</div>
-
-
-
-</div>
-</div>
-
-</div>
-
-
-
-{% include 'partials/footer.html' %}
-{% include 'partials/footer-scripts.html' %}
-
-
-
-<script>
-
-document.addEventListener("DOMContentLoaded",function(){
-
-let s="{{active_section}}";
-
-if(s==="salary")
-document.getElementById("salary-section").scrollIntoView();
-
-if(s==="business")
-document.getElementById("business-section").scrollIntoView();
-
-if(s==="aop")
-document.getElementById("aop-section").scrollIntoView();
-
-if(s==="corporate")
-document.getElementById("corporate-section").scrollIntoView();
-
-});
-
-</script>
-
-
-</body>
-</html>
+{% endblock %}

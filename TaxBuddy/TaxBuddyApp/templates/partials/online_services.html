@@ -1,131 +1,126 @@
-<style>
-  .tax-services {
-  padding: 70px 0;
-}
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Online Tax Services & Pricing | TaxBuddy Umair{% endblock %}
 
-.container {
-  max-width: 1200px;
-  margin: auto;
-  padding: 0 20px;
-}
+{% block content %}
 
-.services-title {
-  text-align: center;
-  font-size: 34px;
-  color: #0b5ed7;
-  font-weight: 700;
-  margin-bottom: 5px;
-}
-
-.services-subtitle {
-  text-align: center;
-  color: #6c757d;
-  margin-bottom: 45px;
-}
-
-.services-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-  gap: 25px;
-}
-
-.service-card {
-  background: #ffffff;
-  border-radius: 14px;
-  padding: 30px 25px;
-  text-align: center;
-  box-shadow: 0 10px 25px rgba(0,0,0,0.06);
-}
-
-.service-card h3 {
-  font-size: 18px;
-  color: #0b5ed7;
-  margin-bottom: 18px;
-  font-weight: 700;
-  line-height: 1.4;
-}
-
-.service-card img {
-  width: 140px;
-  margin: 10px auto 20px;
-  display: block;
-}
-
-.service-card p {
-  font-size: 14px;
-  color: #6c757d;
-  margin-bottom: 20px;
-}
-
-.price {
-  font-size: 22px;
-  font-weight: 700;
-  color: #0b5ed7;
-  margin-bottom: 22px;
-}
-
-.btn {
-  display: inline-block;
-  padding: 12px 26px;
-  border-radius: 8px;
-  font-weight: 600;
-  text-decoration: none;
-  color: #fff;
-}
-
-.btn.green {
-  background: linear-gradient(180deg, #28a745, #218838);
-}
-
-.btn.green:hover {
-  background: #1e7e34;
-}
-
-</style>
-<section class="tax-services" style="background: radial-gradient(circle at top right, #DAE7E3 0%, #F6FBF9 70%); padding: 90px 0;">
-  <div class="container">
-
-    <h2 class="services-title">Our Tax Services</h2>
-    <p class="services-subtitle">Choose the Service You Need</p>
-
-    <div class="services-grid">
-
-      <!-- Income Tax Return (Salaried) -->
-      <div class="service-card">
-        <h3>Income Tax Return<br>(Salaried)</h3>
-        <img src="https://img.freepik.com/free-vector/tax-concept-illustration_114360-1269.jpg" alt="Income Tax Return Salaried">
-        <p>Filing for salaried individuals.</p>
-        <div class="price">PKR 3,000</div>
-        <a href="#" class="btn green">Book Now</a>
-      </div>
-
-      <!-- Business Tax Return -->
-      <div class="service-card">
-        <h3>Business<br>Tax Return</h3>
-        <img src="https://img.freepik.com/free-vector/accounting-concept-illustration_114360-1605.jpg" alt="Business Tax Return">
-        <p>Tax filing for businesses.</p>
-        <div class="price">PKR 6,000</div>
-        <a href="#" class="btn green">Book Now</a>
-      </div>
-
-      <!-- Sales Tax Registration -->
-      <div class="service-card">
-        <h3>Sales Tax<br>Registration</h3>
-        <img src="https://img.freepik.com/free-vector/tax-preparation-concept-illustration_114360-1378.jpg" alt="Sales Tax Registration">
-        <p>Register for Sales Tax (STRN)</p>
-        <div class="price">PKR 4,500</div>
-        <a href="#" class="btn green">Get Started</a>
-      </div>
-
-      <!-- NTN Registration -->
-      <div class="service-card">
-        <h3>NTN<br>Registration</h3>
-        <img src="https://img.freepik.com/free-vector/identity-card-concept-illustration_114360-1253.jpg" alt="NTN Registration">
-        <p>Get your National Tax Number.</p>
-        <div class="price">PKR 2,250</div>
-        <a href="#" class="btn green">Register Now</a>
-      </div>
-
+<div class="article-hero">
+  <div class="article-hero-inner">
+    <div class="breadcrumb"><a href="{% url 'index' %}">Home</a><span class="breadcrumb-sep">›</span><span>Services &amp; Pricing</span></div>
+    <h1>Online Tax Services &amp; Pricing</h1>
+    <div class="article-meta">
+      <span>📍 Gulshan-e-Iqbal, Karachi</span>
+      <span>💬 WhatsApp: +92 333 248 2742</span>
     </div>
   </div>
-</section>
+</div>
+
+<div class="container">
+  <div class="ad-wrapper"><div class="ad-wrapper-label">Advertisement</div>
+    <div class="ad-zone ad-leaderboard"><div class="ad-zone-label">AdSense</div><div class="ad-zone-size">728×90</div></div>
+  </div>
+</div>
+
+<div class="content-grid">
+  <main class="content-main">
+
+    <!-- About -->
+    <div style="background:var(--white);border:1px solid var(--border);border-radius:var(--radius-xl);padding:28px;margin-bottom:28px;display:flex;gap:24px;align-items:flex-start;flex-wrap:wrap;">
+      <div style="width:90px;height:90px;border-radius:50%;background:var(--navy);display:flex;align-items:center;justify-content:center;font-size:36px;flex-shrink:0;">👨‍💼</div>
+      <div style="flex:1;min-width:220px;">
+        <div style="font-family:var(--font-head);font-size:22px;font-weight:700;color:var(--navy);margin-bottom:4px;">Umair Mubeen</div>
+        <div style="font-size:13px;color:var(--green);font-weight:600;margin-bottom:12px;">Income &amp; Sales Tax Consultant · Karachi, Pakistan</div>
+        <p style="font-size:14.5px;color:var(--text-mid);line-height:1.7;margin-bottom:14px;">A certified tax consultant with 5+ years of experience helping salaried individuals, freelancers, and businesses navigate FBR compliance. Founder of TaxBuddy Umair — Pakistan's trusted tax education platform.</p>
+        <div style="display:flex;gap:8px;flex-wrap:wrap;">
+          <span style="background:var(--green-light);color:var(--green-mid);padding:4px 12px;border-radius:20px;font-size:12px;font-weight:600;">✅ 500+ Clients</span>
+          <span style="background:var(--gold-light);color:#854F0B;padding:4px 12px;border-radius:20px;font-size:12px;font-weight:600;">⭐ 5+ Years</span>
+          <span style="background:rgba(10,38,71,0.07);color:var(--navy);padding:4px 12px;border-radius:20px;font-size:12px;font-weight:600;">📚 50+ Guides</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Services Grid -->
+    <div class="section-tag" style="margin-bottom:10px;">Services &amp; Pricing</div>
+    <h2 class="section-title" style="margin-bottom:20px;">What I Can Help You With</h2>
+
+    <div class="cards-grid-2" style="margin-bottom:28px;">
+      {% for svc in services %}
+      <div style="background:var(--white);border:1px solid var(--border);border-radius:var(--radius-lg);padding:22px;">
+        <div style="font-size:24px;margin-bottom:12px;">{{ svc.icon }}</div>
+        <div style="font-size:15px;font-weight:600;color:var(--navy);margin-bottom:6px;">{{ svc.name }}</div>
+        <div style="font-size:13px;color:var(--text-light);margin-bottom:14px;line-height:1.6;">{{ svc.description }}</div>
+        <div style="font-size:22px;font-weight:700;color:var(--green);font-family:var(--font-head);">{{ svc.price }}</div>
+      </div>
+      {% empty %}
+      {% for icon, name, desc, price in default_services %}
+      <div style="background:var(--white);border:1px solid var(--border);border-radius:var(--radius-lg);padding:22px;">
+        <div style="font-size:24px;margin-bottom:12px;">{{ icon }}</div>
+        <div style="font-size:15px;font-weight:600;color:var(--navy);margin-bottom:6px;">{{ name }}</div>
+        <div style="font-size:13px;color:var(--text-light);margin-bottom:14px;line-height:1.6;">{{ desc }}</div>
+        <div style="font-size:22px;font-weight:700;color:var(--green);font-family:var(--font-head);">{{ price }}</div>
+      </div>
+      {% empty %}
+      <div style="background:var(--white);border:1px solid var(--border);border-radius:var(--radius-lg);padding:22px;"><div style="font-size:24px;margin-bottom:12px;">📝</div><div style="font-size:15px;font-weight:600;color:var(--navy);margin-bottom:6px;">NTN Registration</div><div style="font-size:13px;color:var(--text-light);margin-bottom:14px;">Get registered as a taxpayer with FBR. Includes NTN generation and IRIS account setup.</div><div style="font-size:22px;font-weight:700;color:var(--green);font-family:var(--font-head);">PKR 1,000</div></div>
+      <div style="background:var(--white);border:1px solid var(--border);border-radius:var(--radius-lg);padding:22px;"><div style="font-size:24px;margin-bottom:12px;">💼</div><div style="font-size:15px;font-weight:600;color:var(--navy);margin-bottom:6px;">Salary Return Filing</div><div style="font-size:13px;color:var(--text-light);margin-bottom:14px;">Complete income tax return filing for salaried individuals including wealth statement.</div><div style="font-size:22px;font-weight:700;color:var(--green);font-family:var(--font-head);">PKR 2,000</div></div>
+      <div style="background:var(--white);border:1px solid var(--border);border-radius:var(--radius-lg);padding:22px;"><div style="font-size:24px;margin-bottom:12px;">🏢</div><div style="font-size:15px;font-weight:600;color:var(--navy);margin-bottom:6px;">Business Return Filing</div><div style="font-size:13px;color:var(--text-light);margin-bottom:14px;">Full income tax return for sole proprietors with wealth statement and audit support.</div><div style="font-size:22px;font-weight:700;color:var(--green);font-family:var(--font-head);">PKR 5,000+</div></div>
+      <div style="background:var(--white);border:1px solid var(--border);border-radius:var(--radius-lg);padding:22px;"><div style="font-size:24px;margin-bottom:12px;">📊</div><div style="font-size:15px;font-weight:600;color:var(--navy);margin-bottom:6px;">Sales Tax Registration</div><div style="font-size:13px;color:var(--text-light);margin-bottom:14px;">GST registration with FBR for businesses and traders. Includes STRN issuance.</div><div style="font-size:22px;font-weight:700;color:var(--green);font-family:var(--font-head);">PKR 3,000</div></div>
+      <div style="background:var(--white);border:1px solid var(--border);border-radius:var(--radius-lg);padding:22px;"><div style="font-size:24px;margin-bottom:12px;">📬</div><div style="font-size:15px;font-weight:600;color:var(--navy);margin-bottom:6px;">FBR Notice Response</div><div style="font-size:13px;color:var(--text-light);margin-bottom:14px;">Professional handling of FBR notices, audit queries, and compliance requirements.</div><div style="font-size:22px;font-weight:700;color:var(--green);font-family:var(--font-head);">PKR 5,000+</div></div>
+      <div style="background:var(--white);border:1px solid var(--border);border-radius:var(--radius-lg);padding:22px;"><div style="font-size:24px;margin-bottom:12px;">💬</div><div style="font-size:15px;font-weight:600;color:var(--navy);margin-bottom:6px;">Tax Consultation (30 min)</div><div style="font-size:13px;color:var(--text-light);margin-bottom:14px;">One-on-one paid consultation via Zoom or WhatsApp for your specific tax queries.</div><div style="font-size:22px;font-weight:700;color:var(--green);font-family:var(--font-head);">PKR 1,500</div></div>
+      {% endfor %}
+      {% endfor %}
+    </div>
+
+    <div class="ad-wrapper"><div class="ad-wrapper-label">Advertisement</div>
+      <div class="ad-zone ad-large-rect"><div class="ad-zone-label">AdSense — Mid Services</div><div class="ad-zone-size">336×280</div></div>
+    </div>
+
+    {% include 'partials/cta_banner.html' %}
+
+    <!-- Contact Form -->
+    <div style="background:var(--white);border:1px solid var(--border);border-radius:var(--radius-xl);padding:28px;margin-top:28px;" id="contact">
+      <div class="section-tag" style="margin-bottom:8px;">Get in Touch</div>
+      <h2 class="section-title" style="margin-bottom:20px;">Send a Message</h2>
+      <form method="POST" action="{% url 'contact' %}">
+                  {# Honeypot — hidden from humans, bots will fill this #}
+          <input type="text" name="website_url" value="" autocomplete="off"
+                 style="display:none !important;position:absolute;left:-9999px;"
+                 tabindex="-1" aria-hidden="true">
+{% csrf_token %}
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;" class="contact-grid">
+          <div class="form-group"><label class="form-label">First Name *</label><input type="text" name="first_name" class="form-input" placeholder="Muhammad" required></div>
+          <div class="form-group"><label class="form-label">Last Name</label><input type="text" name="last_name" class="form-input" placeholder="Ahmed"></div>
+          <div class="form-group"><label class="form-label">Phone / WhatsApp</label><input type="tel" name="phone_number" class="form-input" placeholder="+92 3XX XXXXXXX"></div>
+          <div class="form-group"><label class="form-label">Email *</label><input type="email" name="email_address" class="form-input" placeholder="you@example.com" required></div>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Service Required</label>
+          <select name="subject" class="form-select">
+            <option value="">Select a service</option>
+            <option>NTN Registration</option>
+            <option>Salary Return Filing</option>
+            <option>Business Return Filing</option>
+            <option>Sales Tax Registration</option>
+            <option>FBR Notice Response</option>
+            <option>Tax Consultation</option>
+            <option>Other</option>
+          </select>
+        </div>
+        <div class="form-group"><label class="form-label">Message</label><textarea name="additional_details" class="form-input" rows="4" placeholder="Describe your tax situation…"></textarea></div>
+        <button type="submit" class="btn-primary" style="border:none;padding:12px 32px;font-size:15px;cursor:pointer;width:100%;">📨 Send Message</button>
+      </form>
+    </div>
+
+  </main>
+
+  <aside class="content-sidebar">
+    <div class="sidebar-widget">
+      <div class="sidebar-widget-header">⭐ Client Reviews</div>
+      <div class="sidebar-widget-body" style="display:flex;flex-direction:column;gap:14px;">
+        <div style="border-bottom:1px solid var(--border);padding-bottom:12px;"><div style="color:var(--gold);font-size:12px;margin-bottom:5px;">★★★★★</div><div style="font-size:12.5px;color:var(--text-mid);line-height:1.5;font-style:italic;">"Filed my return in one day. Very professional and affordable."</div><div style="font-size:11.5px;color:var(--text-light);margin-top:5px;">— Zara A., Karachi</div></div>
+        <div><div style="color:var(--gold);font-size:12px;margin-bottom:5px;">★★★★★</div><div style="font-size:12.5px;color:var(--text-mid);line-height:1.5;font-style:italic;">"Helped me understand my tax obligations as a freelancer. Highly recommend!"</div><div style="font-size:11.5px;color:var(--text-light);margin-top:5px;">— Hamza R., Islamabad</div></div>
+      </div>
+    </div>
+    {% include 'partials/sidebar.html' %}
+  </aside>
+</div>
+{% endblock %}

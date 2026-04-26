@@ -1,32 +1,65 @@
-{% extends "base.html" %}
 {% load static %}
-{% block title %}Login | TaxBuddy Umair{% endblock %}
-{% block robots %}noindex, nofollow{% endblock %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Login | TaxBuddy Umair</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Literata:wght@700&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{% static 'dist/css/main.css' %}">
+  <style>
+    body { display:flex; align-items:center; justify-content:center; min-height:100vh; background:var(--navy); }
+    .login-card {
+      background: var(--white); border-radius: var(--radius-xl);
+      padding: 40px 36px; width: 100%; max-width: 400px;
+      box-shadow: 0 20px 60px rgba(0,0,0,.25);
+      margin: 20px;
+    }
+    .login-logo { text-align:center; margin-bottom:28px; }
+    .login-logo-icon {
+      width: 52px; height: 52px; background: var(--navy);
+      border-radius: 12px; display: inline-flex; align-items: center; justify-content: center;
+      color: #fff; font-family: var(--font-head); font-weight: 700; font-size: 20px;
+      margin-bottom: 10px;
+    }
+    .login-logo h1 { font-family: var(--font-head); font-size: 20px; color: var(--navy); }
+    .login-logo p  { font-size: 12px; color: var(--text-light); }
+  </style>
+</head>
+<body>
+  <div class="login-card">
+    <div class="login-logo">
+      <div class="login-logo-icon">TB</div>
+      <h1>TaxBuddy Umair</h1>
+      <p>Admin Dashboard</p>
+    </div>
 
-{% block content %}
-<div style="min-height:100vh;display:flex;align-items:center;justify-content:center;padding:80px 1rem 40px;background:var(--navy)">
-  <div style="width:100%;max-width:400px">
-    <div style="text-align:center;margin-bottom:28px">
-      <a href="{% url 'index' %}" style="font-family:'Playfair Display',serif;font-size:24px;font-style:italic;font-weight:700;color:#fff">Tax<em style="color:var(--green)">Buddy</em> Umair</a>
-      <p style="color:rgba(255,255,255,.45);font-size:13px;margin-top:6px">Admin Dashboard</p>
-    </div>
-    <div style="background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:var(--radius);padding:2rem">
-      <form method="POST" action="{% url 'Login' %}">
-        {% csrf_token %}
-        <div style="margin-bottom:14px">
-          <label style="display:block;font-size:11px;font-weight:700;color:rgba(255,255,255,.5);text-transform:uppercase;letter-spacing:.08em;margin-bottom:6px">Username</label>
-          <input type="text" name="username" required autofocus autocomplete="username" placeholder="Enter username" style="width:100%;padding:11px 14px;font-family:'Inter',sans-serif;font-size:14px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.15);border-radius:var(--radius-sm);outline:none;color:#fff">
-        </div>
-        <div style="margin-bottom:20px">
-          <label style="display:block;font-size:11px;font-weight:700;color:rgba(255,255,255,.5);text-transform:uppercase;letter-spacing:.08em;margin-bottom:6px">Password</label>
-          <input type="password" name="password" required autocomplete="current-password" placeholder="Enter password" style="width:100%;padding:11px 14px;font-family:'Inter',sans-serif;font-size:14px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.15);border-radius:var(--radius-sm);outline:none;color:#fff">
-        </div>
-        <button type="submit" style="width:100%;background:var(--green);color:var(--navy);font-family:'Inter',sans-serif;font-size:14px;font-weight:700;padding:13px;border-radius:var(--radius-sm);border:none;cursor:pointer;min-height:48px;transition:all .2s">Login →</button>
-      </form>
-    </div>
-    <div style="text-align:center;margin-top:16px">
-      <a href="{% url 'index' %}" style="font-size:13px;color:rgba(255,255,255,.4);transition:color .15s" onmouseover="this.style.color='var(--green)'" onmouseout="this.style.color='rgba(255,255,255,.4)'">← Back to website</a>
+    {% if messages %}
+      {% for message in messages %}
+      <div class="alert alert-error">{{ message }}</div>
+      {% endfor %}
+    {% endif %}
+
+    <form method="POST" action="{% url 'Login' %}">
+      {% csrf_token %}
+      <div class="form-group">
+        <label class="form-label">Username</label>
+        <input type="text" name="username" class="form-input" placeholder="Enter username" required autofocus>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Password</label>
+        <input type="password" name="password" class="form-input" placeholder="Enter password" required>
+      </div>
+      <button type="submit" class="btn-primary" style="width:100%;border:none;padding:12px;font-size:15px;cursor:pointer;margin-top:4px;">
+        Login to Dashboard
+      </button>
+    </form>
+
+    <div style="text-align:center;margin-top:20px;">
+      <a href="{% url 'index' %}" style="font-size:13px;color:var(--text-light);">← Back to website</a>
     </div>
   </div>
-</div>
-{% endblock %}
+  <script src="{% static 'js/main.js' %}"></script>
+</body>
+</html>

@@ -1,0 +1,100 @@
+/* ============================================================
+   TaxBuddy Umair — MCQ / Quiz Styles
+   ============================================================ */
+
+/* ── MCQ FILTER BAR ──────────────────────────────────────── */
+.mcq-filter-bar {
+  background: var(--white); border: 1px solid var(--border);
+  border-radius: var(--radius-lg); padding: 14px 18px;
+  margin-bottom: 20px;
+  display: flex; gap: 10px; flex-wrap: wrap; align-items: center;
+}
+.mcq-filter-label { font-size: 13px; font-weight: 600; color: var(--navy); }
+.mcq-filter-btn {
+  padding: 5px 14px; border-radius: 20px;
+  border: 1px solid var(--border);
+  background: transparent; color: var(--text-mid);
+  font-size: 12px; cursor: pointer; font-family: var(--font-body);
+  transition: all .15s;
+}
+.mcq-filter-btn:hover  { border-color: var(--green); color: var(--green); }
+.mcq-filter-btn.active { background: var(--green-light); border-color: var(--green); color: var(--green); }
+.mcq-filter-count { margin-left: auto; font-size: 12px; color: var(--text-light); }
+
+/* ── SCORE PANEL ─────────────────────────────────────────── */
+.mcq-score-panel {
+  background: var(--white); border: 1px solid var(--border);
+  border-radius: var(--radius-lg); padding: 16px;
+  margin-bottom: 20px;
+  display: grid; grid-template-columns: repeat(4,1fr); gap: 12px;
+}
+.score-item      { text-align: center; }
+.score-val       { font-family: var(--font-head); font-size: 22px; font-weight: 700; color: var(--navy); }
+.score-lbl       { font-size: 11px; color: var(--text-light); margin-top: 3px; text-transform: uppercase; letter-spacing: .06em; }
+.score-correct   { color: var(--green); }
+.score-wrong     { color: var(--red); }
+
+/* ── MCQ CARD ────────────────────────────────────────────── */
+.mcq-card { background: var(--white); border: 1px solid var(--border); border-radius: var(--radius-lg); overflow: hidden; margin-bottom: 16px; }
+.mcq-header {
+  background: var(--navy); padding: 12px 20px;
+  display: flex; align-items: center; justify-content: space-between;
+}
+.mcq-q-num   { font-size: 12px; font-weight: 600; color: rgba(255,255,255,.5); text-transform: uppercase; letter-spacing: .08em; }
+.mcq-difficulty { font-size: 11px; padding: 3px 10px; border-radius: 20px; font-weight: 500; }
+.diff-easy   { background: rgba(13,158,114,.2); color: #4ee8b0; }
+.diff-medium { background: rgba(232,160,32,.2);  color: #f5c561; }
+.diff-advanced { background: rgba(229,62,62,.2); color: #fc8181; }
+
+.mcq-body     { padding: 20px; }
+.mcq-question { font-size: 15px; font-weight: 500; color: var(--text); margin-bottom: 16px; line-height: 1.55; }
+
+/* ── OPTIONS ─────────────────────────────────────────────── */
+.mcq-options { display: flex; flex-direction: column; gap: 8px; }
+.mcq-option {
+  display: flex; align-items: flex-start; gap: 10px;
+  padding: 11px 14px;
+  border: 1.5px solid var(--border); border-radius: var(--radius);
+  cursor: pointer;
+  transition: border-color .15s, background .15s;
+  font-size: 14px; line-height: 1.5; color: var(--text);
+}
+.mcq-option:hover { border-color: var(--green); background: var(--green-light); }
+.mcq-option.selected-correct { border-color: var(--green); background: var(--green-light); color: var(--green-mid); pointer-events: none; }
+.mcq-option.selected-wrong   { border-color: var(--red);   background: var(--red-light);   color: var(--red); pointer-events: none; }
+.mcq-option.disabled { pointer-events: none; }
+.mcq-opt-key {
+  min-width: 26px; height: 26px; border-radius: 50%;
+  background: var(--bg); border: 1px solid var(--border);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 12px; font-weight: 600;
+  flex-shrink: 0; color: var(--text-mid);
+}
+.mcq-option.selected-correct .mcq-opt-key { background: var(--green); color: var(--white); border-color: var(--green); }
+.mcq-option.selected-wrong   .mcq-opt-key { background: var(--red);   color: var(--white); border-color: var(--red); }
+
+/* ── EXPLANATION ─────────────────────────────────────────── */
+.mcq-explanation {
+  margin-top: 14px;
+  background: var(--green-light); border-left: 3px solid var(--green);
+  border-radius: 0 var(--radius) var(--radius) 0;
+  padding: 12px 14px;
+  font-size: 13px; color: var(--navy-mid); line-height: 1.55;
+  display: none;
+}
+.mcq-explanation.show { display: block; }
+.mcq-explanation.wrong-exp { background: var(--red-light); border-color: var(--red); color: #7a1b1b; }
+
+/* ── EMAIL CAPTURE ───────────────────────────────────────── */
+.mcq-email-widget { background: var(--navy); border-radius: var(--radius-lg); padding: 20px; text-align: center; margin-bottom: 20px; }
+.mcq-email-widget h4 { font-family: var(--font-head); font-size: 17px; color: var(--white); margin-bottom: 6px; }
+.mcq-email-widget p  { font-size: 13px; color: rgba(255,255,255,.6); margin-bottom: 14px; }
+.mcq-email-form { display: flex; gap: 8px; }
+.mcq-email-form input { flex: 1; padding: 10px 14px; border: none; border-radius: 8px; font-size: 14px; font-family: var(--font-body); outline: none; }
+
+/* ── RESPONSIVE ──────────────────────────────────────────── */
+@media (max-width: 640px) {
+  .mcq-score-panel { grid-template-columns: repeat(2,1fr); }
+  .mcq-body { padding: 14px; }
+  .mcq-question { font-size: 14px; }
+}
