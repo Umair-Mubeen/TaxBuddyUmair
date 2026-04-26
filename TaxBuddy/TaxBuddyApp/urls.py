@@ -26,7 +26,7 @@ urlpatterns = [
     # ── GUIDES & RATES ────────────────────────────────────────
     path('income-tax-guides/', views.income_tax_guides, name='income_tax_guides'),
     path('sales-tax-guides/', views.sales_tax_guides, name='sales_tax_guides'),
-    path('income-tax-rates/', views.income_tax_rates, name='income_tax_rates'),
+    path('income-tax-rates/', views.withholding_tax_rates, name='income_tax_rates'),
     path('withholding-tax-rates/', views.withholding_tax_rates, name='withholding_tax_rates'),
 
     # ── MCQ / QUIZ ────────────────────────────────────────────
