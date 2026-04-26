@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 {% extends 'base.html' %}
 {% load static %}
 {% block title %}Privacy Policy | TaxBuddy Umair{% endblock %}
@@ -29,5 +30,64 @@
     </div>
   </main>
   <aside class="content-sidebar">{% include 'partials/sidebar.html' %}</aside>
+=======
+{% extends "base.html" %}
+{% load static %}
+{% block title %}Privacy Policy | TaxBuddy Umair{% endblock %}
+{% block meta_desc %}Privacy Policy for TaxBuddy Umair — how we collect, use, and protect your data. Includes Google AdSense and Analytics disclosure.{% endblock %}
+{% block canonical %}https://www.taxbuddyumair.com/privacy-policy/{% endblock %}
+{% block content %}
+<div style="background:var(--navy);padding:88px 0 40px">
+  <div class="container">
+    <nav style="display:flex;align-items:center;gap:8px;font-size:12px;color:rgba(255,255,255,.4);margin-bottom:16px" aria-label="Breadcrumb">
+      <a href="{% url 'index' %}" style="transition:color .15s" onmouseover="this.style.color='var(--green)'" onmouseout="this.style.color='rgba(255,255,255,.4)'">Home</a>
+      <span>›</span><span style="color:rgba(255,255,255,.6)">Privacy Policy</span>
+    </nav>
+    <h1 style="font-family:'Playfair Display',serif;font-size:clamp(26px,4vw,40px);font-weight:700;font-style:italic;color:#fff;line-height:1.2">Privacy Policy</h1>
+    <p style="color:rgba(255,255,255,.4);font-size:13px;margin-top:8px">Last updated: January 2026</p>
+  </div>
+</div>
+<div style="max-width:760px;margin:0 auto;padding:40px 2rem 80px">
+  <div style="background:var(--white);border:1px solid var(--border);border-radius:var(--radius);padding:2rem 2.5rem;font-size:15px;color:var(--text-mid);line-height:1.8">
+
+    <h2 style="font-family:'Playfair Display',serif;font-size:20px;font-weight:700;color:var(--navy);margin:0 0 12px">1. Introduction</h2>
+    <p style="margin-bottom:1.25rem">TaxBuddy Umair ("we", "our", or "us") operates the website <a href="https://www.taxbuddyumair.com" style="color:var(--navy-light)">www.taxbuddyumair.com</a>. This Privacy Policy explains how we collect, use, and protect information when you visit our website.</p>
+
+    <h2 style="font-family:'Playfair Display',serif;font-size:20px;font-weight:700;color:var(--navy);margin:1.5rem 0 12px">2. Information We Collect</h2>
+    <p style="margin-bottom:.75rem">We may collect the following types of information:</p>
+    <ul style="margin:0 0 1.25rem 1.5rem">
+      <li style="margin-bottom:.4rem"><strong>Contact form submissions:</strong> Name, phone number, email address, and message content when you fill our contact form.</li>
+      <li style="margin-bottom:.4rem"><strong>Comments:</strong> Name, email, and comment text when you post a comment on a blog article.</li>
+      <li style="margin-bottom:.4rem"><strong>Usage data:</strong> Pages visited, time spent, browser type, and device type — collected automatically via Google Analytics.</li>
+      <li><strong>Cookies:</strong> Small text files placed on your device by us or third-party services (see section 5).</li>
+    </ul>
+
+    <h2 style="font-family:'Playfair Display',serif;font-size:20px;font-weight:700;color:var(--navy);margin:1.5rem 0 12px">3. How We Use Your Information</h2>
+    <ul style="margin:0 0 1.25rem 1.5rem">
+      <li style="margin-bottom:.4rem">To respond to your contact form enquiries or WhatsApp consultations</li>
+      <li style="margin-bottom:.4rem">To display and moderate blog comments</li>
+      <li style="margin-bottom:.4rem">To analyse website traffic and improve content (via Google Analytics)</li>
+      <li>To display relevant advertisements (via Google AdSense)</li>
+    </ul>
+
+    <h2 style="font-family:'Playfair Display',serif;font-size:20px;font-weight:700;color:var(--navy);margin:1.5rem 0 12px">4. Google AdSense &amp; Third-Party Advertising</h2>
+    <p style="margin-bottom:1.25rem">We use <strong>Google AdSense</strong> to display advertisements on this website. Google may use cookies to serve ads based on your prior visits to this and other websites. You can opt out of personalised advertising by visiting <a href="https://www.google.com/settings/ads" target="_blank" rel="noopener noreferrer" style="color:var(--navy-light)">Google Ads Settings</a>. Google's use of advertising cookies is governed by the <a href="https://policies.google.com/privacy" target="_blank" rel="noopener noreferrer" style="color:var(--navy-light)">Google Privacy Policy</a>.</p>
+
+    <h2 style="font-family:'Playfair Display',serif;font-size:20px;font-weight:700;color:var(--navy);margin:1.5rem 0 12px">5. Google Analytics</h2>
+    <p style="margin-bottom:1.25rem">We use <strong>Google Analytics 4</strong> to understand how visitors use our website. Google Analytics uses cookies to collect anonymised data about website usage. This data is processed by Google in accordance with their <a href="https://policies.google.com/privacy" target="_blank" rel="noopener noreferrer" style="color:var(--navy-light)">Privacy Policy</a>. IP anonymisation is enabled on this website.</p>
+
+    <h2 style="font-family:'Playfair Display',serif;font-size:20px;font-weight:700;color:var(--navy);margin:1.5rem 0 12px">6. Cookies</h2>
+    <p style="margin-bottom:1.25rem">This website uses the following types of cookies: <strong>Essential cookies</strong> required for the website to function; <strong>Analytics cookies</strong> (Google Analytics) to measure traffic; and <strong>Advertising cookies</strong> (Google AdSense) to display relevant ads. You can control or disable cookies through your browser settings.</p>
+
+    <h2 style="font-family:'Playfair Display',serif;font-size:20px;font-weight:700;color:var(--navy);margin:1.5rem 0 12px">7. Contact Form Data</h2>
+    <p style="margin-bottom:1.25rem">Information submitted via our contact form is stored in our database solely for the purpose of responding to your query. We do not share your personal information with third parties for marketing purposes. Data is retained for a maximum of 2 years.</p>
+
+    <h2 style="font-family:'Playfair Display',serif;font-size:20px;font-weight:700;color:var(--navy);margin:1.5rem 0 12px">8. Your Rights</h2>
+    <p style="margin-bottom:1.25rem">You have the right to request access to, correction of, or deletion of personal data we hold about you. To exercise these rights, contact us at the email below.</p>
+
+    <h2 style="font-family:'Playfair Display',serif;font-size:20px;font-weight:700;color:var(--navy);margin:1.5rem 0 12px">9. Contact Us</h2>
+    <p>For privacy-related queries, contact: <a href="mailto:umair.mubeenir@gmail.com" style="color:var(--navy-light)">umair.mubeenir@gmail.com</a> or WhatsApp: <a href="https://wa.me/923332482742" style="color:var(--navy-light)">+92 333 2482742</a></p>
+  </div>
+>>>>>>> 711c074cb538f6630ca1bf6394389fc01740700d
 </div>
 {% endblock %}

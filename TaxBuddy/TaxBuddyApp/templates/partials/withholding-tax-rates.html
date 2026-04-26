@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 {% extends 'base.html' %}
 {% load static %}
 {% block title %}Withholding Tax Rates Pakistan 2025-26 | TaxBuddy Umair{% endblock %}
@@ -119,3 +120,186 @@
   </aside>
 </div>
 {% endblock %}
+=======
+{% extends "base.html" %}
+{% load static %}
+{# Context: active_section (default 'sale') from withholding_tax_rates view #}
+
+{% block title %}Withholding Tax Rates Pakistan 2026 — Filer vs Non-Filer | TaxBuddy Umair{% endblock %}
+{% block meta_desc %}Complete withholding tax rates for Pakistan 2026. Sale/purchase of property, cash withdrawal, salary, dividend, profit on debt — filer vs non-filer rates under ITO 2001.{% endblock %}
+{% block canonical %}https://www.taxbuddyumair.com/withholding-tax-rates/{% endblock %}
+
+{% block extra_css %}
+<style>
+.wht-layout{max-width:1000px;margin:0 auto;padding:32px 2rem 80px}
+.tab-bar{display:flex;background:var(--white);border:1px solid var(--border);border-radius:var(--radius-sm);padding:4px;margin-bottom:28px;gap:4px;overflow-x:auto;scrollbar-width:none}
+.tab-bar::-webkit-scrollbar{display:none}
+.tab-btn{flex:1;min-width:max-content;background:transparent;border:none;font-family:'Inter',sans-serif;font-size:13px;font-weight:500;color:var(--text-muted);padding:9px 14px;border-radius:6px;cursor:pointer;transition:all .15s;white-space:nowrap;min-height:36px}
+.tab-btn:hover{color:var(--navy)}
+.tab-btn.active{background:var(--navy);color:#fff}
+.tab-panel{display:none}.tab-panel.active{display:block}
+.wht-section-title{font-family:'Playfair Display',serif;font-size:22px;font-weight:700;color:var(--navy);margin-bottom:6px}
+.wht-section-desc{font-size:13.5px;color:var(--text-muted);line-height:1.6;margin-bottom:20px;max-width:680px}
+.wht-table-wrap{overflow-x:auto;border-radius:var(--radius);border:1px solid var(--border);margin-bottom:24px}
+.wht-table{width:100%;border-collapse:collapse;font-size:13.5px;background:var(--white);min-width:580px}
+.wht-table thead tr{background:var(--navy)}
+.wht-table th{color:rgba(255,255,255,.8);font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.07em;padding:11px 16px;text-align:left;white-space:nowrap}
+.wht-table tbody tr{border-bottom:1px solid var(--border);transition:background .1s}
+.wht-table tbody tr:last-child{border:none}
+.wht-table tbody tr:hover{background:var(--cream)}
+.wht-table td{padding:10px 16px;color:var(--text-mid);vertical-align:middle}
+.wht-table td:first-child{font-weight:500;color:var(--navy)}
+.td-filer{color:var(--navy-light);font-weight:700}
+.td-nonfiler{color:#dc2626;font-weight:600}
+.td-section{font-size:11px;color:var(--text-muted);background:var(--cream);padding:2px 8px;border-radius:var(--radius-pill);border:1px solid var(--border);white-space:nowrap}
+.note-box{background:#fffbeb;border:1px solid #fde68a;border-radius:var(--radius-sm);padding:12px 14px;font-size:12.5px;color:#92400e;line-height:1.6;margin-bottom:20px}
+</style>
+{% endblock %}
+
+{% block content %}
+<div style="background:var(--navy);padding:88px 0 40px">
+  <div class="container">
+    <nav style="display:flex;align-items:center;gap:8px;font-size:12px;color:rgba(255,255,255,.4);margin-bottom:16px" aria-label="Breadcrumb">
+      <a href="{% url 'index' %}" style="transition:color .15s" onmouseover="this.style.color='var(--green)'" onmouseout="this.style.color='rgba(255,255,255,.4)'">Home</a>
+      <span>›</span><span style="color:rgba(255,255,255,.6)">Withholding Tax Rates</span>
+    </nav>
+    <div style="display:inline-flex;align-items:center;gap:6px;font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--navy);background:rgba(24,119,242,0.12);border:1px solid rgba(24,119,242,0.25);padding:4px 14px;border-radius:var(--radius-pill);margin-bottom:12px">ITO 2001 · Updated 2026</div>
+    <h1 style="font-family:'Playfair Display',serif;font-size:clamp(26px,4vw,44px);font-weight:700;font-style:italic;color:#fff;line-height:1.15;letter-spacing:-0.02em">Withholding Tax Rates<br><em style="color:var(--navy)">Pakistan 2026</em></h1>
+    <p style="color:rgba(255,255,255,.5);font-size:14px;max-width:560px;line-height:1.7;margin-top:12px">Complete WHT reference — filer vs non-filer rates across all major transaction types under Income Tax Ordinance 2001.</p>
+  </div>
+</div>
+
+<div class="wht-layout">
+  <!-- AD ZONE -->
+  <div class="ad-zone"><div class="ad-label">Advertisement</div>
+    <ins class="adsbygoogle" style="display:block;min-height:90px" data-ad-client="{{ ADSENSE_PUBLISHER_ID }}" data-ad-slot="3535353535" data-ad-format="auto" data-full-width-responsive="true"></ins>
+    <script>(adsbygoogle=window.adsbygoogle||[]).push({});</script></div>
+
+  <!-- TAB BAR — active_section from view -->
+  <div class="tab-bar" role="tablist" aria-label="WHT categories">
+    <button class="tab-btn {% if active_section == 'sale' %}active{% endif %}" role="tab" onclick="showTab('sale',this)">Property Sale/Purchase</button>
+    <button class="tab-btn {% if active_section == 'bank' %}active{% endif %}" role="tab" onclick="showTab('bank',this)">Banking &amp; Finance</button>
+    <button class="tab-btn {% if active_section == 'salary' %}active{% endif %}" role="tab" onclick="showTab('salary',this)">Salary &amp; Employment</button>
+    <button class="tab-btn {% if active_section == 'business' %}active{% endif %}" role="tab" onclick="showTab('business',this)">Business / Contracts</button>
+    <button class="tab-btn {% if active_section == 'other' %}active{% endif %}" role="tab" onclick="showTab('other',this)">Other Payments</button>
+  </div>
+
+  <!-- PROPERTY SALE/PURCHASE -->
+  <div id="tab-sale" class="tab-panel {% if active_section == 'sale' or not active_section %}active{% endif %}" role="tabpanel">
+    <div class="wht-section-title">Property Sale &amp; Purchase</div>
+    <div class="wht-section-desc">Advance tax collected at the time of sale or purchase of immovable property. Filer status on the ATL determines the applicable rate.</div>
+    <div class="wht-table-wrap">
+      <table class="wht-table">
+        <thead><tr><th>Transaction</th><th>Section</th><th>Filer Rate</th><th>Non-Filer Rate</th><th>Who Deducts</th></tr></thead>
+        <tbody>
+          <tr><td>Sale / Transfer of property</td><td><span class="td-section">236C</span></td><td class="td-filer">3%</td><td class="td-nonfiler">6%</td><td>Registering authority</td></tr>
+          <tr><td>Purchase of immovable property</td><td><span class="td-section">236K</span></td><td class="td-filer">3%</td><td class="td-nonfiler">6%</td><td>Registering authority</td></tr>
+          <tr><td>Rental income from property</td><td><span class="td-section">155</span></td><td class="td-filer">15%</td><td class="td-nonfiler">30%</td><td>Tenant (company/AOP)</td></tr>
+          <tr><td>Section 7E deemed income tax</td><td><span class="td-section">7E</span></td><td class="td-filer">1% of FMV</td><td class="td-nonfiler">—</td><td>Self-assessed</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="note-box">⚠️ <strong>Minimum tax:</strong> Under certain conditions, Section 236C advance tax on property sale becomes the minimum tax liability — the seller cannot claim a refund even if total tax is lower.</div>
+  </div>
+
+  <!-- BANKING & FINANCE -->
+  <div id="tab-bank" class="tab-panel {% if active_section == 'bank' %}active{% endif %}" role="tabpanel">
+    <div class="wht-section-title">Banking &amp; Finance</div>
+    <div class="wht-section-desc">Withholding tax deducted by banks on cash withdrawals, profit on debt, and foreign card transactions.</div>
+    <div class="wht-table-wrap">
+      <table class="wht-table">
+        <thead><tr><th>Transaction</th><th>Section</th><th>Filer Rate</th><th>Non-Filer Rate</th><th>Threshold</th></tr></thead>
+        <tbody>
+          <tr><td>Cash withdrawal from bank</td><td><span class="td-section">231A</span></td><td class="td-filer">0.6%</td><td class="td-nonfiler">1.2%</td><td>Above PKR 50,000/day</td></tr>
+          <tr><td>Profit on debt (bank deposits)</td><td><span class="td-section">7B / 151</span></td><td class="td-filer">15%</td><td class="td-nonfiler">30%</td><td>All amounts</td></tr>
+          <tr><td>Profit on debt above PKR 5M</td><td><span class="td-section">7B</span></td><td class="td-filer">15% (block)</td><td class="td-nonfiler">30%</td><td>Exceeds PKR 5,000,000</td></tr>
+          <tr><td>Foreign debit/credit card payments</td><td><span class="td-section">236Y</span></td><td class="td-filer">1%</td><td class="td-nonfiler">2%</td><td>All transactions</td></tr>
+          <tr><td>Dividend income</td><td><span class="td-section">150</span></td><td class="td-filer">15%</td><td class="td-nonfiler">30%</td><td>All dividends</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- SALARY & EMPLOYMENT -->
+  <div id="tab-salary" class="tab-panel {% if active_section == 'salary' %}active{% endif %}" role="tabpanel">
+    <div class="wht-section-title">Salary &amp; Employment</div>
+    <div class="wht-section-desc">Employers must deduct income tax from employees' salaries every month and deposit it with FBR via CPR.</div>
+    <div class="wht-table-wrap">
+      <table class="wht-table">
+        <thead><tr><th>Payment Type</th><th>Section</th><th>Rate</th><th>Notes</th></tr></thead>
+        <tbody>
+          <tr><td>Monthly salary deduction</td><td><span class="td-section">149</span></td><td class="td-filer">Slab rates</td><td>Annual tax ÷ 12 each month</td></tr>
+          <tr><td>Bonus / perquisites</td><td><span class="td-section">149</span></td><td class="td-filer">Slab rates</td><td>Added to taxable salary</td></tr>
+          <tr><td>Vehicle registration (up to 1000cc)</td><td><span class="td-section">231B</span></td><td class="td-filer">PKR 10,000</td><td>Non-filer: PKR 30,000</td></tr>
+          <tr><td>Vehicle registration (1000–1800cc)</td><td><span class="td-section">231B</span></td><td class="td-filer">PKR 25,000</td><td>Non-filer: PKR 75,000</td></tr>
+          <tr><td>Vehicle registration (above 1800cc)</td><td><span class="td-section">231B</span></td><td class="td-filer">PKR 50,000</td><td>Non-filer: PKR 150,000</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- BUSINESS / CONTRACTS -->
+  <div id="tab-business" class="tab-panel {% if active_section == 'business' %}active{% endif %}" role="tabpanel">
+    <div class="wht-section-title">Business &amp; Contract Payments</div>
+    <div class="wht-section-desc">Tax deducted at source on payments for goods, services, and execution of contracts — the most widely applied WHT provision for businesses.</div>
+    <div class="wht-table-wrap">
+      <table class="wht-table">
+        <thead><tr><th>Payment Category</th><th>Section</th><th>Filer Rate</th><th>Non-Filer Rate</th></tr></thead>
+        <tbody>
+          <tr><td>Sale of goods (to manufacturer/importer)</td><td><span class="td-section">153(1)(a)</span></td><td class="td-filer">4%</td><td class="td-nonfiler">8%</td></tr>
+          <tr><td>Services</td><td><span class="td-section">153(1)(b)</span></td><td class="td-filer">8%</td><td class="td-nonfiler">16%</td></tr>
+          <tr><td>Execution of contracts</td><td><span class="td-section">153(1)(c)</span></td><td class="td-filer">7%</td><td class="td-nonfiler">14%</td></tr>
+          <tr><td>Sports persons / professionals</td><td><span class="td-section">153A</span></td><td class="td-filer">10%</td><td class="td-nonfiler">20%</td></tr>
+          <tr><td>Payments to non-residents</td><td><span class="td-section">152</span></td><td class="td-filer">Treaty rate</td><td class="td-nonfiler">Varies by type</td></tr>
+          <tr><td>Brokerage / commission</td><td><span class="td-section">233</span></td><td class="td-filer">12%</td><td class="td-nonfiler">15%</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- OTHER PAYMENTS -->
+  <div id="tab-other" class="tab-panel {% if active_section == 'other' %}active{% endif %}" role="tabpanel">
+    <div class="wht-section-title">Other Withholding Payments</div>
+    <div class="wht-section-desc">Additional WHT provisions covering prizes, educational fees, advance tax on functions, and imports.</div>
+    <div class="wht-table-wrap">
+      <table class="wht-table">
+        <thead><tr><th>Payment Type</th><th>Section</th><th>Filer Rate</th><th>Non-Filer Rate</th></tr></thead>
+        <tbody>
+          <tr><td>Prize on prize bond / lottery</td><td><span class="td-section">156</span></td><td class="td-filer">15%</td><td class="td-nonfiler">25%</td></tr>
+          <tr><td>Advance tax on imports</td><td><span class="td-section">148</span></td><td class="td-filer">5.5%</td><td class="td-nonfiler">8%</td></tr>
+          <tr><td>Educational fee remittance abroad</td><td><span class="td-section">236Q</span></td><td class="td-filer">5%</td><td class="td-nonfiler">5%</td></tr>
+          <tr><td>Advance tax on functions/gatherings</td><td><span class="td-section">236CB</span></td><td class="td-filer">5%</td><td class="td-nonfiler">5%</td></tr>
+          <tr><td>Telephone / internet bill</td><td><span class="td-section">236</span></td><td class="td-filer">12.5%</td><td class="td-nonfiler">12.5%</td></tr>
+          <tr><td>Electricity bill (commercial/industrial)</td><td><span class="td-section">235</span></td><td class="td-filer">Slab rates</td><td class="td-nonfiler">Higher rates</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div style="background:#fffbeb;border:1px solid #fde68a;border-radius:var(--radius-sm);padding:12px 16px;display:flex;gap:10px;margin-top:8px">
+    <span style="flex-shrink:0">⚠️</span>
+    <p style="font-size:12px;color:#92400e;line-height:1.55;margin:0"><strong>Disclaimer:</strong> Rates are based on Finance Act 2025 and FBR notifications. Always verify with the <a href="https://www.fbr.gov.pk" target="_blank" rel="noopener noreferrer" style="color:#92400e;text-decoration:underline">official FBR portal</a> before applying. Tax laws may change.</p>
+  </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+function showTab(id, btn) {
+  document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('tab-' + id).classList.add('active');
+  btn.classList.add('active');
+}
+// Init from server-side active_section
+window.addEventListener('DOMContentLoaded', () => {
+  const active = '{{ active_section|default:"sale" }}';
+  const panel = document.getElementById('tab-' + active);
+  if (panel) {
+    document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+    panel.classList.add('active');
+  }
+});
+</script>
+{% endblock %}
+>>>>>>> 711c074cb538f6630ca1bf6394389fc01740700d

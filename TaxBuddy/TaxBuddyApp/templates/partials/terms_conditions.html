@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 {% extends 'base.html' %}
 {% load static %}
 {% block title %}Terms & Conditions | TaxBuddy Umair{% endblock %}
@@ -32,5 +33,53 @@
     </div>
   </main>
   <aside class="content-sidebar">{% include 'partials/sidebar.html' %}</aside>
+=======
+{% extends "base.html" %}
+{% load static %}
+{% block title %}Terms &amp; Conditions | TaxBuddy Umair{% endblock %}
+{% block meta_desc %}Terms and conditions for using TaxBuddy Umair — Pakistan's tax education platform. Educational content disclaimer and usage policy.{% endblock %}
+{% block canonical %}https://www.taxbuddyumair.com/terms-and-conditions/{% endblock %}
+{% block content %}
+<div style="background:var(--navy);padding:88px 0 40px">
+  <div class="container">
+    <nav style="display:flex;align-items:center;gap:8px;font-size:12px;color:rgba(255,255,255,.4);margin-bottom:16px" aria-label="Breadcrumb">
+      <a href="{% url 'index' %}" style="transition:color .15s" onmouseover="this.style.color='var(--green)'" onmouseout="this.style.color='rgba(255,255,255,.4)'">Home</a>
+      <span>›</span><span style="color:rgba(255,255,255,.6)">Terms &amp; Conditions</span>
+    </nav>
+    <h1 style="font-family:'Playfair Display',serif;font-size:clamp(26px,4vw,40px);font-weight:700;font-style:italic;color:#fff;line-height:1.2">Terms &amp; Conditions</h1>
+    <p style="color:rgba(255,255,255,.4);font-size:13px;margin-top:8px">Last updated: January 2026</p>
+  </div>
+</div>
+<div style="max-width:760px;margin:0 auto;padding:40px 2rem 80px">
+  <div style="background:var(--white);border:1px solid var(--border);border-radius:var(--radius);padding:2rem 2.5rem;font-size:15px;color:var(--text-mid);line-height:1.8">
+
+    <h2 style="font-family:'Playfair Display',serif;font-size:20px;font-weight:700;color:var(--navy);margin:0 0 12px">1. Acceptance of Terms</h2>
+    <p style="margin-bottom:1.25rem">By accessing or using www.taxbuddyumair.com, you agree to be bound by these Terms and Conditions. If you disagree with any part of these terms, please do not use our website.</p>
+
+    <h2 style="font-family:'Playfair Display',serif;font-size:20px;font-weight:700;color:var(--navy);margin:1.5rem 0 12px">2. Educational Content Disclaimer</h2>
+    <p style="margin-bottom:1.25rem"><strong>All content on this website — including articles, guides, calculators, MCQs, and other materials — is provided for educational and informational purposes only.</strong> It does not constitute professional tax, legal, or financial advice. We are not liable for any decisions made based on information found on this website. Always verify information with the <a href="https://www.fbr.gov.pk" target="_blank" rel="noopener noreferrer" style="color:var(--navy-light)">official FBR portal</a> and consult a qualified tax professional for your specific situation.</p>
+
+    <h2 style="font-family:'Playfair Display',serif;font-size:20px;font-weight:700;color:var(--navy);margin:1.5rem 0 12px">3. Accuracy of Information</h2>
+    <p style="margin-bottom:1.25rem">We strive to keep all tax information accurate and updated as per Finance Acts and FBR notifications. However, tax laws change frequently. We make no warranty regarding the completeness, accuracy, or timeliness of any information on this website.</p>
+
+    <h2 style="font-family:'Playfair Display',serif;font-size:20px;font-weight:700;color:var(--navy);margin:1.5rem 0 12px">4. Intellectual Property</h2>
+    <p style="margin-bottom:1.25rem">All content, design, and code on this website is the intellectual property of TaxBuddy Umair unless otherwise stated. You may not reproduce, republish, or distribute any content without prior written permission.</p>
+
+    <h2 style="font-family:'Playfair Display',serif;font-size:20px;font-weight:700;color:var(--navy);margin:1.5rem 0 12px">5. Third-Party Links &amp; Services</h2>
+    <p style="margin-bottom:1.25rem">This website contains links to third-party websites (including FBR, Google, WhatsApp). We are not responsible for the content or privacy practices of those sites.</p>
+
+    <h2 style="font-family:'Playfair Display',serif;font-size:20px;font-weight:700;color:var(--navy);margin:1.5rem 0 12px">6. Advertising</h2>
+    <p style="margin-bottom:1.25rem">This website displays advertisements via Google AdSense. We are not responsible for the content of third-party advertisements. Clicking on ads may lead you to external websites.</p>
+
+    <h2 style="font-family:'Playfair Display',serif;font-size:20px;font-weight:700;color:var(--navy);margin:1.5rem 0 12px">7. Limitation of Liability</h2>
+    <p style="margin-bottom:1.25rem">TaxBuddy Umair and its owner shall not be liable for any direct, indirect, incidental, or consequential damages arising from the use or inability to use this website or its content.</p>
+
+    <h2 style="font-family:'Playfair Display',serif;font-size:20px;font-weight:700;color:var(--navy);margin:1.5rem 0 12px">8. Changes to Terms</h2>
+    <p style="margin-bottom:1.25rem">We reserve the right to update these terms at any time. Continued use of the website after changes constitutes acceptance of the revised terms.</p>
+
+    <h2 style="font-family:'Playfair Display',serif;font-size:20px;font-weight:700;color:var(--navy);margin:1.5rem 0 12px">9. Contact</h2>
+    <p>Questions about these terms: <a href="mailto:umair.mubeenir@gmail.com" style="color:var(--navy-light)">umair.mubeenir@gmail.com</a></p>
+  </div>
+>>>>>>> 711c074cb538f6630ca1bf6394389fc01740700d
 </div>
 {% endblock %}

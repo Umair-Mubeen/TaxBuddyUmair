@@ -83,7 +83,14 @@ def index(request):
             'meta_title':         'TaxBuddy Umair | Income & Sales Tax Consultant Pakistan',
             'meta_description':   'Expert income tax and sales tax guides, calculators and MCQs for Pakistan. Updated for FBR 2025-26.',
         }
+<<<<<<< HEAD
         return render(request, 'index.html', context)
+=======
+
+        # return HttpResponse(str(context))
+
+        return render(request, 'index.html', {'context' : context})
+>>>>>>> 711c074cb538f6630ca1bf6394389fc01740700d
     except Exception as e:
         return HttpResponse(str(e))
 
