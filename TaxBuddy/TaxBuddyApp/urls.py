@@ -1,11 +1,16 @@
 from django.urls import path
 from django.conf import settings
 from django.conf.urls.static import static
-from django.views.generic import TemplateView
+from django.contrib.sitemaps.views import sitemap
 
+from .sitemaps import BlogSitemap, StaticSitemap, CalculatorSitemap
 from . import views
 
-
+sitemaps = {
+    'static':      StaticSitemap(),
+    'calculators': CalculatorSitemap(),
+    'blog':        BlogSitemap(),
+}
 
 urlpatterns = [
 
@@ -14,10 +19,9 @@ urlpatterns = [
     path('login/', views.Login, name='Login'),
     path('logout/', views.Logout, name='Logout'),
 
-    # ── MCQ / QUIZ ────────────────────────────────────────────
-    path('income-tax-mcqs-pakistan/', views.question_list, name='question_list'),
-    path('income-tax-mcqs-pakistan/<slug:category_slug>', views.question_list, name='question_list_category'),
-    path('tax-quiz/', views.tax_knowledge_quiz, name='tax_knowledge_quiz'),
+    # ── CONTACT ───────────────────────────────────────────────
+    path('contact/', views.contact, name='contact'),
+    path('comments/', views.userComments, name='userComments'),
 
     # ── GUIDES & RATES ────────────────────────────────────────
     path('income-tax-guides/', views.income_tax_guides, name='income_tax_guides'),
@@ -25,16 +29,10 @@ urlpatterns = [
     path('income-tax-rates/', views.income_tax_rates, name='income_tax_rates'),
     path('withholding-tax-rates/', views.withholding_tax_rates, name='withholding_tax_rates'),
 
-    # ── BLOG ──────────────────────────────────────────────────
-    #path('blog/', views.viewBlogs, name='viewBlogs'),
-    #path('<slug:slug>/', views.BlogDetails, name='BlogDetails'),
-
-path('blog/', views.viewBlogs, name='viewBlogs'),
-path('blog/<slug:slug>/', views.viewBlogs, name='viewBlogs'),
-    path('comments/', views.userComments, name='userComments'),
-
-    # ── CONTACT ───────────────────────────────────────────────
-    path('contact/', views.contact, name='contact'),
+    # ── MCQ / QUIZ ────────────────────────────────────────────
+    path('income-tax-mcqs-pakistan/', views.question_list, name='question_list'),
+    path('income-tax-mcqs-pakistan/<slug:category_slug>/', views.question_list, name='question_list_category'),
+    path('tax-quiz/', views.tax_knowledge_quiz, name='tax_knowledge_quiz'),
 
     # ── CALCULATORS ───────────────────────────────────────────
     path('SalaryCalculator/', views.SalaryCalculator, name='SalaryCalculator'),
@@ -46,8 +44,9 @@ path('blog/<slug:slug>/', views.viewBlogs, name='viewBlogs'),
     # ── API ───────────────────────────────────────────────────
     path('api/section-4c-rate/', views.section_4c_rate_view, name='section_4c_rate'),
 
-
-
+    # ── SEO ───────────────────────────────────────────────────
+    path('sitemap.xml', sitemap, {'sitemaps': sitemaps}, name='django.contrib.sitemaps.views.sitemap'),
+    path('robots.txt', views.robots_txt, name='robots_txt'),
 
     # ── POLICY PAGES ─────────────────────────────────────────
     path('privacy-policy/', views.privacy_policy, name='privacy_policy'),
@@ -56,7 +55,6 @@ path('blog/<slug:slug>/', views.viewBlogs, name='viewBlogs'),
     # ── MISC ──────────────────────────────────────────────────
     path('online-services/', views.online_services, name='online_services'),
     path('layout/', views.layout, name='layout'),
-    path('robots.txt', views.robots_txt, name='robots_txt'),
     path('test/', views.test, name='test'),
 
     # ── ADMIN / CPANEL ────────────────────────────────────────
@@ -73,10 +71,16 @@ path('blog/<slug:slug>/', views.viewBlogs, name='viewBlogs'),
     path('questions/edit/<int:pk>/', views.edit_question, name='questions-edit'),
     path('questions/delete/<int:pk>/', views.delete_question, name='questions-delete'),
 
-    # ── CUSTOM ERROR HANDLERS ─────────────────────────────────
-    # Register these in your main urls.py (not here):
-    # handler404 = 'yourapp.views.custom_404'
-    # handler500 = 'yourapp.views.custom_500'
+    # ── BLOG (MUST BE LAST — slug patterns are greedy) ────────
+    path('blog/', views.viewBlogs, name='viewBlogs'),
+    path('blog/<slug:slug>/', views.viewBlogs, name='viewBlogs_category'),
+
+    # Blog detail — clean /articles/ prefix avoids slug collisions
+    path('articles/<slug:slug>/', views.BlogDetails, name='BlogDetails'),
+
+    # Legacy 301 redirect: old /<slug>/ → /articles/<slug>/
+    # Keeps old Google-indexed URLs working
+    path('<slug:slug>/', views.legacy_blog_redirect, name='legacy_blog_redirect'),
 ]
 
 if settings.DEBUG:

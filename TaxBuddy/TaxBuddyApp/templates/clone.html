@@ -1,113 +1,140 @@
-{% extends "base.html" %}
+{% extends 'base.html' %}
 {% load static %}
-{# Context from views.py viewBlogs(): blogs #}
 
-{% block title %}{% with blogs.first as b %}{{ b.category|default:"Tax"|title }} Blog | TaxBuddy Umair{% endwith %}{% endblock %}
-{% block meta_desc %}Read all {{ blogs.first.category|default:"tax" }} articles by Umair Mubeen — an FBR officer. Updated guides for Tax Year 2026.{% endblock %}
-
-{% block extra_css %}
-<style>
-.blog-list-grid{display:grid;grid-template-columns:1fr 280px;gap:40px;max-width:1100px;margin:0 auto;padding:32px 2rem 80px;align-items:start}
-.card{background:var(--white);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;display:flex;gap:0;transition:all .2s;text-decoration:none;margin-bottom:16px}
-.card:hover{box-shadow:var(--shadow-md);transform:translateY(-2px)}
-.card-thumb{width:140px;min-height:120px;background:var(--navy);flex-shrink:0;display:flex;align-items:flex-end;padding:10px;position:relative;overflow:hidden}
-.card-thumb::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,var(--navy),var(--navy-mid))}
-.card-body{padding:1rem 1.25rem;flex:1;display:flex;flex-direction:column;gap:6px}
-.card-title{font-size:14.5px;font-weight:600;color:var(--text);line-height:1.4;letter-spacing:-0.01em}
-.card:hover .card-title{color:var(--green-dark)}
-.card-meta{display:flex;align-items:center;gap:8px;margin-top:auto;padding-top:8px;border-top:1px solid var(--border)}
-.sidebar-card{background:var(--white);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;margin-bottom:20px}
-.sb-head{padding:12px 16px;border-bottom:1px solid var(--border);font-size:11px;font-weight:700;color:var(--text-muted);text-transform:uppercase;letter-spacing:.09em}
-@media(max-width:900px){.blog-list-grid{grid-template-columns:1fr}}
-@media(max-width:640px){.blog-list-grid{padding:24px 1.25rem 60px}.card{flex-direction:column}.card-thumb{width:100%;min-height:80px}}
-</style>
-{% endblock %}
+{% block title %}{{ category_name }} Tax Blog | TaxBuddy Umair{% endblock %}
 
 {% block content %}
-<div style="background:var(--navy);padding:88px 0 40px">
-  <div class="container">
-    <nav style="display:flex;align-items:center;gap:8px;font-size:12px;color:rgba(255,255,255,.4);margin-bottom:16px" aria-label="Breadcrumb">
-      <a href="{% url 'index' %}" style="transition:color .15s" onmouseover="this.style.color='var(--green)'" onmouseout="this.style.color='rgba(255,255,255,.4)'">Home</a>
-      <span>›</span>
-      <span style="color:rgba(255,255,255,.6)">{% with blogs.first as b %}{{ b.category|default:"Blog"|title }}{% endwith %}</span>
-    </nav>
-    <div style="display:inline-flex;align-items:center;gap:6px;font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--green);background:rgba(34,201,122,0.12);border:1px solid rgba(34,201,122,0.25);padding:4px 14px;border-radius:var(--radius-pill);margin-bottom:14px">Tax Knowledge Base</div>
-    <h1 style="font-family:'Playfair Display',serif;font-size:clamp(26px,4vw,44px);font-weight:700;font-style:italic;color:#fff;line-height:1.15;letter-spacing:-0.02em">
-      {% with blogs.first as b %}{{ b.category|default:"Tax"|title }}{% endwith %}<br><em style="color:var(--green)">Articles & Guides</em>
-    </h1>
-    <p style="color:rgba(255,255,255,.5);font-size:14px;margin-top:12px">{{ blogs.count }} article{{ blogs.count|pluralize }} · Written by an FBR officer · Updated 2026</p>
+
+<div class="article-hero">
+  <div class="article-hero-inner">
+    <div class="breadcrumb">
+      <a href="{% url 'index' %}">Home</a>
+      <span class="breadcrumb-sep">›</span>
+      <a href="{% url 'viewBlogs' %}">Blog</a>
+      {% if category_name != 'All' %}
+      <span class="breadcrumb-sep">›</span>
+      <span>{{ category_name }}</span>
+      {% endif %}
+    </div>
+    <h1>{% if category_name == 'All' %}All Tax Articles{% else %}{{ category_name }} Articles{% endif %}</h1>
+    <div class="article-meta">
+      <span>📰 {{ page_obj.paginator.count }} article{{ page_obj.paginator.count|pluralize }}</span>
+      <span>🔄 Updated for FBR 2025–26</span>
+    </div>
   </div>
 </div>
 
-<div class="container" style="padding-top:20px">
-  <div class="ad-zone"><div class="ad-label">Advertisement</div>
-    <ins class="adsbygoogle" style="display:block;min-height:90px" data-ad-client="{{ ADSENSE_PUBLISHER_ID }}" data-ad-slot="1212121212" data-ad-format="auto" data-full-width-responsive="true"></ins>
-    <script>(adsbygoogle=window.adsbygoogle||[]).push({});</script></div>
+<!-- Top Ad -->
+<div class="container">
+  <div class="ad-wrapper">
+    <div class="ad-wrapper-label">Advertisement</div>
+    <div class="ad-zone ad-leaderboard">
+      <div class="ad-zone-label">AdSense — Blog List Top</div>
+      <div class="ad-zone-size">728×90 / Responsive</div>
+    </div>
+  </div>
 </div>
 
-<div class="blog-list-grid">
-  <div>
-    {% for blog in blogs %}
-    {% if forloop.counter == 4 %}
-    <div class="ad-zone"><div class="ad-label">Advertisement</div>
-      <ins class="adsbygoogle" style="display:block;min-height:90px" data-ad-client="{{ ADSENSE_PUBLISHER_ID }}" data-ad-slot="1313131313" data-ad-format="auto" data-full-width-responsive="true"></ins>
-      <script>(adsbygoogle=window.adsbygoogle||[]).push({});</script></div>
-    {% endif %}
-    <a href="{% url 'BlogDetails' slug=blog.slug %}" class="card fade-in">
-      <div class="card-thumb">
+<div class="content-grid">
+  <main class="content-main">
+
+    <!-- Category Filter Pills -->
+    <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:20px;">
+      <a href="{% url 'viewBlogs' %}"
+         style="padding:6px 16px;border-radius:20px;font-size:12px;font-weight:600;
+                {% if category_name == 'All' %}background:var(--green);color:#fff;{% else %}background:var(--bg);color:var(--text-mid);border:1px solid var(--border);{% endif %}
+                text-decoration:none;">
+        All
+      </a>
+      {% for label, slug in categories %}
+      <a href="{% url 'viewBlogs_category' slug=slug %}"
+         style="padding:6px 16px;border-radius:20px;font-size:12px;font-weight:600;
+                {% if category_name|lower == label|lower %}background:var(--green);color:#fff;{% else %}background:var(--bg);color:var(--text-mid);border:1px solid var(--border);{% endif %}
+                text-decoration:none;">
+        {{ label }}
+      </a>
+      {% endfor %}
+    </div>
+
+    <!-- Blog Cards -->
+    {% if page_obj.object_list %}
+    <div class="cards-grid" style="margin-bottom:24px;">
+      {% for blog in page_obj %}
+      <a href="{% url 'BlogDetails' slug=blog.slug %}" class="card" style="text-decoration:none;">
         {% if blog.featured_image %}
-        <img src="{{ blog.featured_image.url }}" alt="{{ blog.title }}" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:0" loading="lazy">
+        <div class="card-img" style="position:relative;overflow:hidden;">
+          <img src="{{ blog.featured_image.url }}" alt="{{ blog.title }}" loading="lazy"
+               style="width:100%;height:100%;object-fit:cover;position:absolute;inset:0;">
+        </div>
         {% else %}
-        <div style="position:absolute;inset:0;opacity:.04;background-image:repeating-linear-gradient(45deg,#fff 0,#fff 1px,transparent 0,transparent 50%);background-size:12px 12px"></div>
+        <div class="card-img" style="background:linear-gradient(135deg,#0A2647,#1E5F8E);">📄</div>
         {% endif %}
-        <span style="font-size:9.5px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;padding:3px 9px;border-radius:var(--radius-pill);background:rgba(34,201,122,0.2);color:var(--green);border:1px solid rgba(34,201,122,0.3);position:relative;z-index:1">{{ blog.type|default:"Article"|title }}</span>
+        <div class="card-body">
+          <div class="card-tag">{{ blog.category|default:"Tax" }}</div>
+          <div class="card-title">{{ blog.title }}</div>
+          <div class="card-excerpt">{{ blog.meta_description|default:blog.content|striptags|truncatewords:18 }}</div>
+          <div class="card-footer">
+            <span>{{ blog.created_at|date:"M d, Y" }}</span>
+            <span class="card-read-more">Read →</span>
+          </div>
+        </div>
+      </a>
+
+      {# Insert ad after every 6th card #}
+      {% if forloop.counter|divisibleby:6 %}
       </div>
-      <div class="card-body">
-        <div class="card-title">{{ blog.title }}</div>
-        {% if blog.meta_description %}<div style="font-size:12.5px;color:var(--text-muted);line-height:1.55">{{ blog.meta_description|truncatechars:100 }}</div>{% endif %}
-        <div class="card-meta">
-          <span style="font-size:11px;color:var(--text-muted)">{{ blog.created_at|date:"M j, Y" }}</span>
-          {% if blog.category %}<span style="width:3px;height:3px;border-radius:50%;background:var(--border)"></span><span style="font-size:11px;color:var(--text-muted)">{{ blog.category|title }}</span>{% endif %}
-          <span style="font-size:12px;font-weight:600;color:var(--green-dark);margin-left:auto">Read →</span>
+      <div class="ad-wrapper">
+        <div class="ad-wrapper-label">Advertisement</div>
+        <div class="ad-zone ad-leaderboard">
+          <div class="ad-zone-label">AdSense — In-List</div>
+          <div class="ad-zone-size">728×90 / Responsive</div>
         </div>
       </div>
-    </a>
-    {% empty %}
-    <div style="text-align:center;padding:60px;color:var(--text-muted)">No articles found in this category.</div>
-    {% endfor %}
-  </div>
+      <div class="cards-grid" style="margin-bottom:24px;">
+      {% endif %}
 
-  <!-- SIDEBAR -->
-  <aside style="position:sticky;top:80px">
-    <div class="sidebar-card">
-      <div class="sb-head">Browse categories</div>
-      <div style="padding:8px 0">
-        <a href="{% url 'viewBlogs' slug='income-tax' %}" style="display:flex;align-items:center;justify-content:space-between;padding:10px 16px;font-size:13px;color:var(--text-mid);border-bottom:1px solid var(--border);transition:background .12s;min-height:44px" onmouseover="this.style.background='var(--cream)'" onmouseout="this.style.background=''">Income Tax<span style="color:var(--text-muted)">→</span></a>
-        <a href="{% url 'viewBlogs' slug='sales-tax' %}" style="display:flex;align-items:center;justify-content:space-between;padding:10px 16px;font-size:13px;color:var(--text-mid);transition:background .12s;min-height:44px" onmouseover="this.style.background='var(--cream)'" onmouseout="this.style.background=''">Sales Tax<span style="color:var(--text-muted)">→</span></a>
-      </div>
+      {% endfor %}
     </div>
 
-    <div class="sidebar-card" style="overflow:hidden">
-      <div class="ad-label" style="padding:4px 0">Advertisement</div>
-      <ins class="adsbygoogle" style="display:block;min-height:250px;width:100%" data-ad-client="{{ ADSENSE_PUBLISHER_ID }}" data-ad-slot="1414141414" data-ad-format="rectangle" data-full-width-responsive="false"></ins>
-      <script>(adsbygoogle=window.adsbygoogle||[]).push({});</script>
+    <!-- Pagination -->
+    {% if page_obj.has_other_pages %}
+    <nav class="pagination" aria-label="Blog pagination">
+      {% if page_obj.has_previous %}
+      <a href="?page={{ page_obj.previous_page_number }}">← Prev</a>
+      {% else %}
+      <span class="disabled">← Prev</span>
+      {% endif %}
+
+      {% for num in page_obj.paginator.page_range %}
+        {% if page_obj.number == num %}
+        <span class="current">{{ num }}</span>
+        {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
+        <a href="?page={{ num }}">{{ num }}</a>
+        {% endif %}
+      {% endfor %}
+
+      {% if page_obj.has_next %}
+      <a href="?page={{ page_obj.next_page_number }}">Next →</a>
+      {% else %}
+      <span class="disabled">Next →</span>
+      {% endif %}
+    </nav>
+    {% endif %}
+
+    {% else %}
+    <div style="text-align:center;padding:60px 20px;color:var(--text-light);">
+      <div style="font-size:48px;margin-bottom:16px;">📭</div>
+      <h3 style="font-family:var(--font-head);color:var(--navy);margin-bottom:8px;">No articles found</h3>
+      <p>No articles in this category yet. Check back soon!</p>
+      <a href="{% url 'viewBlogs' %}" class="btn-primary" style="display:inline-block;margin-top:16px;text-decoration:none;">View All Articles</a>
     </div>
+    {% endif %}
 
-   <div class="sidebar-card">
-  <div class="sb-head">Free Calculators</div>
+  </main>
 
-  {% for label,url_name in calculators %}
-    <a href="{% url url_name %}"
-       style="display:flex;align-items:center;justify-content:space-between;padding:10px 16px;font-size:13px;color:var(--text-mid);border-bottom:1px solid var(--border);transition:background .12s;min-height:44px"
-       onmouseover="this.style.background='var(--cream)'"
-       onmouseout="this.style.background=''">
-
-       {{ label }}
-       <span>→</span>
-    </a>
-  {% endfor %}
-
-</div>
+  <!-- Sidebar -->
+  <aside class="content-sidebar">
+    {% include 'partials/sidebar.html' %}
   </aside>
 </div>
 {% endblock %}

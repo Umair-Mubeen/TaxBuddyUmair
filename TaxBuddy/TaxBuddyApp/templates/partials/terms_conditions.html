@@ -1,227 +1,36 @@
-<!DOCTYPE html>
-<html lang="en">
-
+{% extends 'base.html' %}
 {% load static %}
-
-<head>
-
-    {% include 'partials/head-css.html' %}
-    <!-- ===== Privacy Policy Styles ===== -->
-<style>
-
-
-.policy-card {
-    background: #ffffff;
-    padding: 50px 45px;
-    border-radius: 16px;
-    box-shadow: 0 12px 35px rgba(0,0,0,0.08);
-}
-
-.policy-card h3 {
-    font-size: 22px;
-    font-weight: 700;
-    color: #0C3B32;
-    margin-top: 40px;
-    margin-bottom: 12px;
-    position: relative;
-}
-
-.policy-card h3::before {
-    content: "";
-    position: absolute;
-    left: -14px;
-    top: 6px;
-    width: 4px;
-    height: 70%;
-    background: #0c5b47;
-    border-radius: 2px;
-}
-
-.policy-card p {
-    font-size: 16.5px;
-    line-height: 1.8;
-    color: #3f4f49;
-    margin-bottom: 14px;
-}
-
-.policy-card ul {
-    padding-left: 20px;
-    margin-bottom: 20px;
-}
-
-.policy-card ul li {
-    font-size: 16px;
-    line-height: 1.7;
-    margin-bottom: 8px;
-    color: #3f4f49;
-}
-
-/* Mobile */
-@media (max-width: 768px) {
-    .policy-card {
-        padding: 30px 22px;
-    }
-    .policy-card h3 {
-        font-size: 20px;
-    }
-    .policy-card p,
-    .policy-card ul li {
-        font-size: 15.5px;
-    }
-}
-</style>
-
-</head>
-<body>
-{% include 'partials/topbar.html' %}
-
-<!-- ===== Terms & Conditions Page ===== -->
-<section class="policy-area sp2"
-         style="background: radial-gradient(circle at top right, #DAE7E3 0%, #F6FBF9 70%);
-                padding: 90px 0;">
-
-    <div class="container">
-
-        <!-- PAGE HEADER -->
-        <div class="row">
-            <div class="col-lg-8 m-auto text-center">
-                <div class="hadding6">
-                    <h1 class="font-f-7">Terms & Conditions</h1>
-                    <p class="mt-3"
-                       style="font-size:16px; color:#35534A; max-width:700px; margin:auto;">
-                        These Terms & Conditions govern your use of the TaxBuddy Umair website.
-                        By accessing this site, you agree to these terms.
-                    </p>
-                </div>
-            </div>
-        </div>
-
-        <div class="space60"></div>
-
-        <!-- TERMS CARD -->
-        <div class="row">
-            <div class="col-lg-10 m-auto">
-                <div class="policy-card">
-
-                    <h3>1. Website Purpose</h3>
-                    <p>
-                        TaxBuddy Umair is an informational and educational website that
-                        provides general content related to income tax, sales tax,
-                        and other taxation topics in Pakistan.
-                    </p>
-                    <p>
-                        The content published on this website is for general information
-                        purposes only and should not be considered professional, legal,
-                        or financial advice.
-                    </p>
-
-                    <h3>2. No Professional Relationship</h3>
-                    <p>
-                        Use of this website does not create a consultant-client,
-                        advisor-client, or any other professional relationship
-                        between you and TaxBuddy Umair.
-                    </p>
-                    <p>
-                        Users are advised to consult qualified professionals
-                        before making decisions based on tax-related information.
-                    </p>
-
-                    <h3>3. Accuracy of Information</h3>
-                    <p>
-                        While we strive to keep the information accurate and up to date,
-                        tax laws and regulations may change over time.
-                    </p>
-                    <p>
-                        TaxBuddy Umair makes no guarantees regarding the completeness,
-                        accuracy, or reliability of any information on this website.
-                    </p>
-
-                    <h3>4. User Responsibilities</h3>
-                    <p>
-                        By using this website, you agree that:
-                    </p>
-                    <ul>
-                        <li>You will use the content for lawful and informational purposes only</li>
-                        <li>You will not misuse, copy, or distribute content without permission</li>
-                        <li>You are responsible for verifying information before acting on it</li>
-                    </ul>
-
-                    <h3>5. Intellectual Property</h3>
-                    <p>
-                        All content on this website, including text, graphics,
-                        logos, calculators, and design elements, is the intellectual
-                        property of TaxBuddy Umair unless otherwise stated.
-                    </p>
-                    <p>
-                        Unauthorized copying, reproduction, or redistribution
-                        of website content is prohibited.
-                    </p>
-
-                    <h3>6. External Links</h3>
-                    <p>
-                        This website may contain links to third-party websites.
-                        These links are provided for convenience and informational purposes only.
-                    </p>
-                    <p>
-                        TaxBuddy Umair is not responsible for the content,
-                        accuracy, or privacy practices of external websites.
-                    </p>
-
-                    <h3>7. Limitation of Liability</h3>
-                    <p>
-                        TaxBuddy Umair shall not be held liable for any direct,
-                        indirect, incidental, or consequential loss or damage
-                        arising from the use of this website or reliance on its content.
-                    </p>
-                    <p>
-                        Users assume full responsibility for any actions taken
-                        based on information found on this website.
-                    </p>
-
-                    <h3>8. Availability of Website</h3>
-                    <p>
-                        We aim to keep the website available and functional at all times.
-                        However, we do not guarantee uninterrupted or error-free access.
-                    </p>
-
-                    <h3>9. Changes to These Terms</h3>
-                    <p>
-                        TaxBuddy Umair reserves the right to modify or update these
-                        Terms & Conditions at any time without prior notice.
-                    </p>
-                    <p>
-                        Continued use of the website after changes indicates
-                        acceptance of the updated terms.
-                    </p>
-
-                    <h3>10. Governing Law</h3>
-                    <p>
-                        These Terms & Conditions shall be governed and interpreted
-                        in accordance with the laws of Pakistan.
-                    </p>
-
-                    <h3>11. Contact Information</h3>
-                    <p>
-                        If you have any questions regarding these Terms & Conditions,
-                        you may contact us at:
-                    </p>
-                    <ul>
-                        <li><strong>Email:</strong> umair.mubeenir@gmail.com</li>
-                        <li><strong>Location:</strong> Karachi, Pakistan</li>
-                    </ul>
-
-
-                </div>
-            </div>
-        </div>
-
+{% block title %}Terms & Conditions | TaxBuddy Umair{% endblock %}
+{% block content %}
+<div class="article-hero">
+  <div class="article-hero-inner">
+    <div class="breadcrumb"><a href="{% url 'index' %}">Home</a><span class="breadcrumb-sep">›</span><span>Terms &amp; Conditions</span></div>
+    <h1>Terms &amp; Conditions</h1>
+    <div class="article-meta"><span>📅 Last Updated: January 2025</span></div>
+  </div>
+</div>
+<div class="content-grid">
+  <main class="content-main">
+    <div class="article-content">
+      <h2>1. Acceptance of Terms</h2>
+      <p>By accessing and using TaxBuddy Umair (taxbuddyumair.com), you accept and agree to be bound by these Terms and Conditions. If you do not agree, please do not use this website.</p>
+      <h2>2. Educational Purpose Disclaimer</h2>
+      <p>The content on this website — including tax guides, calculators, MCQs, and blog articles — is provided for <strong>general educational purposes only</strong>. It does not constitute professional tax, legal, or financial advice. Tax laws are subject to change and may vary based on individual circumstances.</p>
+      <div class="warning-box">⚠️ Always consult a qualified tax professional or the official FBR website (fbr.gov.pk) for advice specific to your situation.</div>
+      <h2>3. Calculator Accuracy</h2>
+      <p>Our tax calculators are designed to provide estimates based on published FBR tax slabs. Results are approximations and may not reflect your exact tax liability. Actual tax due depends on many factors including deductions, credits, withholding tax adjustments, and assessment orders.</p>
+      <h2>4. Intellectual Property</h2>
+      <p>All content on this website, including text, graphics, guides, and MCQs, is the property of TaxBuddy Umair unless otherwise stated. You may not reproduce or distribute any content without prior written permission.</p>
+      <h2>5. Paid Services</h2>
+      <p>When engaging paid consultation or filing services through this platform, separate service agreements may apply. Payment terms, refund policies, and deliverables will be communicated directly via WhatsApp or email prior to engagement.</p>
+      <h2>6. Limitation of Liability</h2>
+      <p>TaxBuddy Umair shall not be liable for any direct, indirect, incidental, or consequential damages arising from the use of this website or reliance on its content.</p>
+      <h2>7. Changes to Terms</h2>
+      <p>We reserve the right to modify these Terms at any time. Continued use of the website after changes constitutes acceptance of the revised Terms.</p>
+      <h2>8. Contact</h2>
+      <p>For questions about these Terms, contact us at <a href="mailto:umair.mubeenir@gmail.com">umair.mubeenir@gmail.com</a>.</p>
     </div>
-</section>
-
-
-{% include 'partials/footer.html' %}
-{% include 'partials/up.html' %}
-{% include 'partials/footer-scripts.html' %}
-
-</body>
-</html>
+  </main>
+  <aside class="content-sidebar">{% include 'partials/sidebar.html' %}</aside>
+</div>
+{% endblock %}

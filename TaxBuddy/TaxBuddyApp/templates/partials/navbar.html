@@ -1,0 +1,142 @@
+{% load static %}
+<nav role="navigation" aria-label="Main navigation">
+  <div class="nav-inner">
+
+    <!-- Logo -->
+    <a href="{% url 'index' %}" class="nav-logo" aria-label="TaxBuddy Umair Home">
+      <div class="nav-logo-icon" aria-hidden="true">TB</div>
+      <div>
+        <div class="nav-logo-text">TaxBuddy Umair</div>
+        <div class="nav-logo-sub">Pakistan Tax Consultant</div>
+      </div>
+    </a>
+
+    <!-- Desktop nav links -->
+    <ul class="nav-links" role="list">
+
+      <li>
+        <a href="{% url 'index' %}"
+           class="{% if request.resolver_match.url_name == 'index' %}active{% endif %}">
+          Home
+        </a>
+      </li>
+
+      <li class="has-dropdown">
+        <a href="#" aria-haspopup="true" aria-expanded="false">
+          Tax Guides <span class="nav-arrow" aria-hidden="true">▾</span>
+        </a>
+        <div class="dropdown" role="menu">
+          <a href="{% url 'income_tax_guides' %}" role="menuitem">📋 Income Tax Guide</a>
+          <a href="{% url 'sales_tax_guides' %}"  role="menuitem">📊 Sales Tax Guide</a>
+          <a href="{% url 'income_tax_rates' %}"  role="menuitem">📈 Income Tax Rates</a>
+          <a href="{% url 'withholding_tax_rates' %}" role="menuitem">📉 Withholding Tax Rates</a>
+        </div>
+      </li>
+
+      <li class="has-dropdown">
+        <a href="#" aria-haspopup="true" aria-expanded="false">
+          Calculators <span class="nav-arrow" aria-hidden="true">▾</span>
+        </a>
+        <div class="dropdown" role="menu">
+          <a href="{% url 'SalaryCalculator' %}"   role="menuitem">💼 Salary Tax Calculator</a>
+          <a href="{% url 'BusinessCalculator' %}" role="menuitem">🏢 Business Tax Calculator</a>
+          <a href="{% url 'AOPCalculator' %}"      role="menuitem">🤝 AOP Calculator</a>
+          <a href="{% url 'PropertyCalculator' %}" role="menuitem">🏠 Property Calculator</a>
+          <a href="{% url 'TaxCalculator4C' %}"    role="menuitem">⚡ Super Tax 4C</a>
+        </div>
+      </li>
+
+      <li>
+        <a href="{% url 'question_list' %}"
+           class="{% if 'question_list' in request.resolver_match.url_name %}active{% endif %}">
+          Tax MCQs
+        </a>
+      </li>
+
+      <li class="has-dropdown">
+        <a href="#" aria-haspopup="true" aria-expanded="false">
+          Blog <span class="nav-arrow" aria-hidden="true">▾</span>
+        </a>
+        <div class="dropdown" role="menu">
+          <a href="{% url 'viewBlogs_category' slug='income-tax' %}" role="menuitem">📝 Income Tax</a>
+          <a href="{% url 'viewBlogs_category' slug='sales-tax' %}"  role="menuitem">📝 Sales Tax</a>
+          <a href="{% url 'viewBlogs' %}" role="menuitem">📝 All Posts</a>
+        </div>
+      </li>
+
+      <li>
+        <a href="{% url 'online_services' %}"
+           class="{% if request.resolver_match.url_name == 'online_services' %}active{% endif %}">
+          Services
+        </a>
+      </li>
+
+    </ul><!-- end nav-links -->
+
+    <!-- CTA button -->
+    <a href="https://wa.me/923332482742" class="nav-cta" target="_blank" rel="noopener" aria-label="Book a consultation on WhatsApp">
+      📋 Book Consultation
+    </a>
+
+    <!-- Hamburger -->
+    <button class="nav-hamburger" id="nav-hamburger" aria-label="Toggle mobile menu" aria-expanded="false" aria-controls="mobile-nav">
+      <span></span>
+      <span></span>
+      <span></span>
+    </button>
+
+  </div><!-- end nav-inner -->
+
+  <!-- ── MOBILE NAV ──────────────────────────────────────── -->
+  <div class="mobile-nav" id="mobile-nav" role="navigation" aria-label="Mobile navigation">
+
+    <a href="{% url 'index' %}">🏠 Home</a>
+
+    <div class="mobile-nav-group">
+      <button class="mobile-nav-toggle" data-target="mob-guides" aria-expanded="false">
+        📚 Tax Guides <span class="mob-arrow">▾</span>
+      </button>
+      <div class="mobile-nav-sub" id="mob-guides">
+        <a href="{% url 'income_tax_guides' %}">Income Tax Guide</a>
+        <a href="{% url 'sales_tax_guides' %}">Sales Tax Guide</a>
+        <a href="{% url 'income_tax_rates' %}">Income Tax Rates</a>
+        <a href="{% url 'withholding_tax_rates' %}">Withholding Tax Rates</a>
+      </div>
+    </div>
+
+    <div class="mobile-nav-group">
+      <button class="mobile-nav-toggle" data-target="mob-calc" aria-expanded="false">
+        🧮 Calculators <span class="mob-arrow">▾</span>
+      </button>
+      <div class="mobile-nav-sub" id="mob-calc">
+        <a href="{% url 'SalaryCalculator' %}">Salary Tax Calculator</a>
+        <a href="{% url 'BusinessCalculator' %}">Business Tax Calculator</a>
+        <a href="{% url 'AOPCalculator' %}">AOP Calculator</a>
+        <a href="{% url 'PropertyCalculator' %}">Property Calculator</a>
+        <a href="{% url 'TaxCalculator4C' %}">Super Tax 4C</a>
+      </div>
+    </div>
+
+    <a href="{% url 'question_list' %}">📝 Tax MCQs</a>
+
+    <div class="mobile-nav-group">
+      <button class="mobile-nav-toggle" data-target="mob-blog" aria-expanded="false">
+        📰 Blog <span class="mob-arrow">▾</span>
+      </button>
+      <div class="mobile-nav-sub" id="mob-blog">
+        <a href="{% url 'viewBlogs_category' slug='income-tax' %}">Income Tax Blog</a>
+        <a href="{% url 'viewBlogs_category' slug='sales-tax' %}">Sales Tax Blog</a>
+        <a href="{% url 'viewBlogs' %}">All Posts</a>
+      </div>
+    </div>
+
+    <a href="{% url 'online_services' %}">🛎 Services</a>
+
+    <a href="https://wa.me/923332482742" target="_blank" rel="noopener"
+       style="background:var(--green);color:#fff;border-radius:8px;text-align:center;margin-top:4px;">
+      💬 Book Consultation (WhatsApp)
+    </a>
+
+  </div><!-- end mobile-nav -->
+
+</nav>

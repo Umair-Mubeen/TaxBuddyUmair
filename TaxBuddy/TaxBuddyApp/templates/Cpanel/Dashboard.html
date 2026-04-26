@@ -1,56 +1,75 @@
-<html>
+{% extends 'Cpanel/base_cpanel.html' %}
 {% load static %}
-{% include 'Cpanel/reusable.html' %}
-<head>
-<title>TaxBuddy Umair</title>
-</head>
-<body class="sidebar-mini layout-fixed sidebar-collapse">
-<div class="wrapper">
+{% block title %}Dashboard{% endblock %}
+{% block nav_dashboard %}active{% endblock %}
 
-    <!-- Navbar Starts Here -->
-    {% include 'Cpanel/navbar.html' %}
-    <!-- /.Navbar Ends Here -->
-    <!-- SideBar Start Here  -->
-    {% include 'Cpanel/sidebar.html' %}
-    <!-- SideBar Ends Here  -->
-
-    <!-- Content Wrapper. Contains page content -->
-    <div class="content-wrapper">
-        <!-- Content Header (Page header) -->
-        <div class="content-header">
-            <div class="container-fluid">
-                <div class="row mb-2">
-                    <div class="col-sm-6">
-                        <h1 class="m-0">TaxBuddy Umair</h1>
-                    </div><!-- /.col -->
-                    <div class="col-sm-6">
-                        <ol class="breadcrumb float-sm-right">
-                            <li class="breadcrumb-item"><a href="#" style="color:black"><i class="fa fa-home"></i></a>
-                            </li>
-                            <li class="breadcrumb-item active">Dashboard</li>
-                        </ol>
-                    </div><!-- /.col -->
-                </div><!-- /.row -->
-            </div><!-- /.container-fluid -->
-        </div>
-        <!-- /.content-header -->
-
-        <!-- Main content -->
-        <section class="content">
-            <div class="container-fluid">
-                {% include 'Cpanel/icons.html' %}
-            </div>
-        </section>
-
-
-
-    </div>
-    <!-- Content Wrapper. Contains page content  Ends Here -->
-
+{% block content %}
+<div class="cpanel-header">
+  <h1>📊 Dashboard</h1>
+  <span style="font-size:13px;color:var(--text-light);">Welcome back, {{ request.user.get_full_name|default:request.user.username }}</span>
 </div>
-<!-- /.content-wrapper -->
 
-{% include 'Cpanel/footer.html' %}
+<!-- Stats -->
+<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:16px;margin-bottom:28px;">
+  <div class="stat-card">
+    <div style="font-size:28px;margin-bottom:8px;">📝</div>
+    <div class="stat-card-num">{{ total_blogs|default:"0" }}</div>
+    <div class="stat-card-label">Total Blogs</div>
+  </div>
+  <div class="stat-card">
+    <div style="font-size:28px;margin-bottom:8px;">✅</div>
+    <div class="stat-card-num" style="color:var(--green);">{{ published_blogs|default:"0" }}</div>
+    <div class="stat-card-label">Published Blogs</div>
+  </div>
+  <div class="stat-card">
+    <div style="font-size:28px;margin-bottom:8px;">📬</div>
+    <div class="stat-card-num">{{ total_contacts|default:"0" }}</div>
+    <div class="stat-card-label">Contact Messages</div>
+  </div>
+  <div class="stat-card">
+    <div style="font-size:28px;margin-bottom:8px;">🔔</div>
+    <div class="stat-card-num" style="color:var(--red);">{{ unread_contacts|default:"0" }}</div>
+    <div class="stat-card-label">Unread Messages</div>
+  </div>
+  <div class="stat-card">
+    <div style="font-size:28px;margin-bottom:8px;">📋</div>
+    <div class="stat-card-num">{{ total_questions|default:"0" }}</div>
+    <div class="stat-card-label">MCQ Questions</div>
+  </div>
+</div>
 
-</body>
-</html>
+<!-- Quick Actions -->
+<div style="background:var(--white);border:1px solid var(--border);border-radius:var(--radius-lg);padding:20px;margin-bottom:24px;">
+  <h2 style="font-family:var(--font-head);font-size:17px;color:var(--navy);margin-bottom:16px;">⚡ Quick Actions</h2>
+  <div style="display:flex;gap:10px;flex-wrap:wrap;">
+    <a href="{% url 'AddBlog' %}"    class="btn-primary" style="text-decoration:none;font-size:13px;padding:9px 18px;">➕ Add Blog</a>
+    <a href="{% url 'questions-add' %}" class="btn-primary" style="text-decoration:none;font-size:13px;padding:9px 18px;">➕ Add MCQ</a>
+    <a href="{% url 'add_salary_tax_brackets' %}" class="btn-outline" style="text-decoration:none;font-size:13px;padding:9px 18px;border-color:var(--navy);color:var(--navy);">📊 Add Tax Bracket</a>
+    <a href="{% url 'ManageBlogs' %}" class="btn-outline" style="text-decoration:none;font-size:13px;padding:9px 18px;border-color:var(--navy);color:var(--navy);">📝 Manage Blogs</a>
+  </div>
+</div>
+
+<!-- Website Status -->
+<div style="background:var(--white);border:1px solid var(--border);border-radius:var(--radius-lg);padding:20px;">
+  <h2 style="font-family:var(--font-head);font-size:17px;color:var(--navy);margin-bottom:16px;">🌐 Website Links</h2>
+  <div style="display:flex;flex-direction:column;gap:8px;">
+    {% for name, url_name in site_links %}
+    <div style="display:flex;justify-content:space-between;align-items:center;padding:10px 14px;background:var(--bg);border-radius:8px;">
+      <span style="font-size:13px;color:var(--text);">{{ name }}</span>
+      <a href="{% url url_name %}" target="_blank" class="section-link" style="font-size:12px;">Visit →</a>
+    </div>
+    {% empty %}
+    {% for name, path in default_links %}
+    <div style="display:flex;justify-content:space-between;align-items:center;padding:10px 14px;background:var(--bg);border-radius:8px;">
+      <span style="font-size:13px;color:var(--text);">{{ name }}</span>
+      <a href="{{ path }}" target="_blank" class="section-link" style="font-size:12px;">Visit →</a>
+    </div>
+    {% empty %}
+    <div style="display:flex;justify-content:space-between;align-items:center;padding:10px 14px;background:var(--bg);border-radius:8px;"><span style="font-size:13px;">Homepage</span><a href="/" target="_blank" class="section-link" style="font-size:12px;">Visit →</a></div>
+    <div style="display:flex;justify-content:space-between;align-items:center;padding:10px 14px;background:var(--bg);border-radius:8px;"><span style="font-size:13px;">Tax MCQs</span><a href="/income-tax-mcqs-pakistan/" target="_blank" class="section-link" style="font-size:12px;">Visit →</a></div>
+    <div style="display:flex;justify-content:space-between;align-items:center;padding:10px 14px;background:var(--bg);border-radius:8px;"><span style="font-size:13px;">Salary Calculator</span><a href="/SalaryCalculator/" target="_blank" class="section-link" style="font-size:12px;">Visit →</a></div>
+    {% endfor %}
+    {% endfor %}
+  </div>
+</div>
+{% endblock %}

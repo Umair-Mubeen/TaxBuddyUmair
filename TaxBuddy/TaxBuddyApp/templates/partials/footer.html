@@ -1,214 +1,76 @@
 {% load static %}
-<style>
-    .footer-inline{
-    display: flex;
-    align-items: center;
-    justify-content: flex-start;
-    gap: 8px;
-    flex-wrap: wrap;
-    font-size: 14px;
-}
+<footer>
+  <!-- Footer Ad Strip -->
+  <div style="max-width:1200px;margin:0 auto;padding:0 20px 24px;text-align:center;">
+    <div class="ad-wrapper-label" style="color:rgba(255,255,255,0.3);">Advertisement</div>
+    <div class="ad-zone ad-leaderboard" style="background:rgba(255,255,255,0.04);border-color:rgba(255,255,255,0.1);">
+      <div class="ad-zone-label" style="background:rgba(255,255,255,0.06);color:rgba(255,255,255,0.3);border-color:rgba(255,255,255,0.1);">AdSense — Footer</div>
+      <div class="ad-zone-size" style="color:rgba(255,255,255,0.35);">728×90 / Responsive</div>
+    </div>
+  </div>
 
-.footer-inline a{
-    color: #000;
-    text-decoration: none;
-    white-space: nowrap;
-}
+  <div class="footer-grid">
+    <!-- Brand -->
+    <div class="footer-brand">
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:4px;">
+        <div style="width:36px;height:36px;background:var(--green);border-radius:8px;display:flex;align-items:center;justify-content:center;color:#fff;font-family:var(--font-head);font-weight:700;font-size:16px;">TB</div>
+        <span style="font-family:var(--font-head);font-weight:700;font-size:17px;color:#fff;">TaxBuddy Umair</span>
+      </div>
+      <p>Pakistan's trusted income tax &amp; sales tax education platform. Helping individuals, freelancers, and businesses navigate FBR compliance since 2020.</p>
+      <div class="footer-social">
+        <a href="#" class="footer-social-btn" title="Facebook" aria-label="Facebook">f</a>
+        <a href="#" class="footer-social-btn" title="YouTube"  aria-label="YouTube">▶</a>
+        <a href="#" class="footer-social-btn" title="Instagram" aria-label="Instagram">📷</a>
+        <a href="https://wa.me/923332482742" class="footer-social-btn" title="WhatsApp" aria-label="WhatsApp" target="_blank" rel="noopener">💬</a>
+      </div>
+    </div>
 
-.footer-inline a:hover{
-    text-decoration: underline;
-}
+    <!-- Tax Guides -->
+    <div>
+      <div class="footer-col-title">Tax Guides</div>
+      <div class="footer-links">
+        <a href="{% url 'income_tax_guides' %}">Income Tax Guide</a>
+        <a href="{% url 'sales_tax_guides' %}">Sales Tax Guide</a>
+        <a href="{% url 'income_tax_rates' %}">Income Tax Rates 2025–26</a>
+        <a href="{% url 'withholding_tax_rates' %}">Withholding Tax Rates</a>
+        <a href="{% url 'question_list' %}">Tax MCQs</a>
+      </div>
+    </div>
 
-.footer-2 .footer-menu ul li a:hover {
-    color: inherit !important;
-}
+    <!-- Tools -->
+    <div>
+      <div class="footer-col-title">Calculators</div>
+      <div class="footer-links">
+        <a href="{% url 'SalaryCalculator' %}">Salary Tax Calculator</a>
+        <a href="{% url 'BusinessCalculator' %}">Business Tax Calculator</a>
+        <a href="{% url 'AOPCalculator' %}">AOP Calculator</a>
+        <a href="{% url 'PropertyCalculator' %}">Property Calculator</a>
+        <a href="{% url 'TaxCalculator4C' %}">Super Tax 4C</a>
+      </div>
+    </div>
 
-.footer-copy{
-    white-space: nowrap;
-}
-
-.footer-sep{
-    color: #aaa;
-}
-
-/* 📱 Mobile optimization */
-@media (max-width: 576px){
-    .footer-inline{
-        justify-content: center;
-        text-align: center;
-        line-height: 1.6;
-    }
-
-    .footer-copy{
-        width: 100%;
-    }
-
-    .footer-sep{
-        display: none; /* hide | on mobile */
-    }
-}
-
-</style>
-<!--===== Footer start =====-->
-<footer class="footer-area padding-top footer-2 bg9"
-        style="background: radial-gradient(circle at top right, #DAE7E3 0%, #F6FBF9 70%);">
-
-    <div class="container">
-        <div class="row">
-
-            <!-- BRAND -->
-            <div class="col-lg-4 col-md-6">
-                <div class="single-footer mr50">
-                    <a class="footer-logo" href="/">
-                         <svg aria-label="TaxBuddy Umair Logo"
-                                 height="44"
-                                 role="img"
-                                 viewBox="0 0 320 44"
-                                 width="320"
-                                 xmlns="http://www.w3.org/2000/svg">
-
-                                <!-- Icon circle -->
-                                <circle cx="22" cy="22" fill="#F5C542" r="20"/>
-
-                                <!-- Bar chart (simplified for clarity) -->
-                                <rect fill="#1C3B2E" height="10" rx="1.5" width="5" x="16" y="22"/>
-                                <rect fill="#1C3B2E" height="15" rx="1.5" width="5" x="23" y="17"/>
-
-                                <!-- Growth arrow -->
-                                <path d="M14 23 C19 18, 25 17, 30 14"
-                                      fill="none"
-                                      stroke="#1C3B2E"
-                                      stroke-linecap="round"
-                                      stroke-width="2"/>
-
-                                <polygon fill="#1C3B2E" points="30,14 28.5,14 29.5,12.2"/>
-
-                                <!-- Logo text -->
-                                <text fill="#1C3B2E"
-                                      font-family="Playfair Display, Georgia, serif"
-                                      font-size="19"
-                                      font-weight="700"
-                                      letter-spacing="0.6"
-                                      x="60"
-                                      y="29">
-                                    TaxBuddy Umair
-                                </text>
-
-                            </svg>
-
-                    </a>
-                    <div class="space20"></div>
-                    <p>
-                        TaxBuddy Umair shares educational content, guides, and tools
-                        to help readers better understand Pakistan’s tax laws and procedures.
-                    </p>
-                </div>
-            </div>
-
-            <!-- LEARN -->
-            <div class="col-lg col-md-6">
-                <div class="single-footer">
-                    <h3>Learn</h3>
-                    <div class="footer-menu">
-                        <ul>
-                            <li><a href="/blog/income-tax/">Income Tax</a></li>
-                            <li><a href="/blog/sales-tax/">Sales Tax</a></li>
-                            <li><a href="/income-tax-mcqs-pakistan">Tax MCQs</a></li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-
-            <!-- CALCULATORS -->
-            <div class="col-lg col-md-6">
-                <div class="single-footer">
-                    <h3>Tax Calculators</h3>
-                    <div class="footer-menu">
-                        <ul>
-                            <li><a href="/BusinessCalculator">Business Individual</a></li>
-                            <li><a href="/AOPCalculator">AOP Calculator</a></li>
-                            <li><a href="/SalaryCalculator">Salary Calculator</a></li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-
-            <!-- CONTACT -->
-            <div class="col-lg-3 col-md-6">
-                <div class="single-footer">
-                    <h3>Contact</h3>
-
-                    <div class="footer-contact">
-                        <div class="single-contact">
-                            <div class="contact-icon">
-                                <img src="{% static 'assets/img/icons/contact-phone2.svg' %}"
-                                     alt="Phone icon" width="20" height="20">
-                            </div>
-                            <a href="tel:+923332482742">PAK: +92 333 2482742</a>
-                        </div>
-                    </div>
-
-                    <div class="footer-contact">
-                        <div class="single-contact">
-                            <div class="contact-icon">
-                                <img src="{% static 'assets/img/icons/contact-email2.svg' %}"
-                                     alt="Email icon" width="20" height="20">
-                            </div>
-                            <a href="mailto:umair.mubeenir@gmail.com">
-                                umair.mubeenir@gmail.com
-                            </a>
-                        </div>
-                    </div>
-
-                </div>
-            </div>
-
+    <!-- Company -->
+    <div>
+      <div class="footer-col-title">Company</div>
+      <div class="footer-links">
+        <a href="{% url 'online_services' %}">Services &amp; Pricing</a>
+        <a href="{% url 'viewBlogs' %}">Blog</a>
+        <a href="{% url 'privacy_policy' %}">Privacy Policy</a>
+        <a href="{% url 'terms_and_conditions' %}">Terms &amp; Conditions</a>
+      </div>
+      <div style="margin-top:16px;">
+        <div class="footer-col-title">Contact</div>
+        <div class="footer-links">
+          <a href="tel:+923332482742">📞 +92 333 248 2742</a>
+          <a href="mailto:umair.mubeenir@gmail.com">✉ umair.mubeenir@gmail.com</a>
+          <span style="color:rgba(255,255,255,0.4);font-size:13px;">📍 Gulshan-e-Iqbal, Karachi</span>
         </div>
-
-        <!-- BOTTOM -->
-     <div class="row align-items-center copyright2">
-<div class="col-lg-6 col-12">
-    <div class="footer-inline">
-        <span class="footer-copy">
-            © 2026 TaxBuddy Umair. All Rights Reserved.
-        </span>
-
-        <span class="footer-sep">|</span>
-
-        <a href="/privacy-policy" style="text-decoration:none">Privacy Policy</a>
-
-        <span class="footer-sep">|</span>
-
-        <a href="/terms-and-conditions" style="text-decoration:none">Terms & Conditions</a>
+      </div>
     </div>
-</div>
+  </div>
 
-    <div class="col-lg-6 col-12 text-lg-end text-center">
-        <div class="social social2">
-            <ul class="footer-social">
-                <li>
-                    <a href="https://www.facebook.com/TaxBuddyUmair"
-                       target="_blank" aria-label="Facebook">
-                        <i class="fa-brands fa-facebook-f"></i>
-                    </a>
-                </li>
-                <li>
-                    <a href="https://www.instagram.com/umair_mubeen94/"
-                       target="_blank" aria-label="Instagram">
-                        <i class="fa-brands fa-instagram"></i>
-                    </a>
-                </li>
-            </ul>
-        </div>
-    </div>
-</div>
-
-        <!-- DISCLAIMER -->
-        <p class="text-center mt-3"
-           style="font-size:13px; color:#6c757d;">
-            This website provides general tax information for educational purposes only.
-        </p>
-
-    </div>
+  <div class="footer-bottom">
+    <span>© {% now "Y" %} TaxBuddy Umair. All Rights Reserved.</span>
+    <span>Tax information is for educational purposes only. Consult a qualified tax advisor for your specific situation.</span>
+  </div>
 </footer>
-<!--===== Footer end =====-->

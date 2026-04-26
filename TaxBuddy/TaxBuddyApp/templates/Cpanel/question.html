@@ -1,212 +1,211 @@
-<!DOCTYPE html>
-<html>
+{% extends 'Cpanel/base_cpanel.html' %}
 {% load static %}
+{% block title %}{% if question %}Edit Question{% else %}Add Question{% endif %}{% endblock %}
+{% block nav_qadd %}{% if not question %}active{% endif %}{% endblock %}
 
-{% include 'Cpanel/reusable.html' %}
-<head>
-    <title>Add Quiz Question – TaxBuddy Umair</title>
-
-<style>
-.quiz-card{
-    border:none;border-radius:14px;
-    box-shadow:0 15px 40px rgba(13,44,84,.1)
-}
-.quiz-card-header{
-    background:linear-gradient(135deg,#0d2c54,#093a75);
-    color:#fff;border-radius:14px 14px 0 0;
-    padding:18px 22px
-}
-.quiz-card-header h5{font-weight:700}
-
-.option-card{
-    display:flex;justify-content:space-between;
-    gap:12px;background:#f8fafc;
-    border:1px solid #e5e7eb;
-    border-radius:10px;
-    padding:12px;margin-bottom:12px
-}
-.option-label{
-    width:36px;height:36px;background:#0d2c54;
-    color:#fff;border-radius:50%;
-    display:flex;align-items:center;justify-content:center;
-    font-weight:700
-}
-.btn-primary{background:#0d2c54;border:none}
-.btn-primary:hover{background:#093a75}
-</style>
-</head>
-
-<body class="sidebar-mini layout-fixed sidebar-collapse">
-
-<div class="wrapper">
-{% include 'Cpanel/navbar.html' %}
-{% include 'Cpanel/sidebar.html' %}
-
-<div class="content-wrapper">
-
-<div class="content-header">
-<div class="container-fluid">
-<h1 class="m-0">Add MCQ Question</h1>
-</div>
+{% block content %}
+<div class="cpanel-header">
+  <h1>{% if question %}✏️ Edit Question{% else %}➕ Add New MCQ Question{% endif %}</h1>
+  <a href="{% url 'questions-list' %}" style="font-size:13px;color:var(--text-light);text-decoration:none;">← Back to Questions</a>
 </div>
 
-<div class="container-fluid mt-4">
-<div class="row justify-content-center">
-<div class="col-lg-10">
+<form method="POST" action="{% if question %}{% url 'questions-edit' pk=id %}{% else %}{% url 'questions-add' %}{% endif %}">
+  {% csrf_token %}
 
-<div class="card quiz-card">
-<div class="card-header quiz-card-header">
-<h5>Add New Tax MCQ</h5>
-</div>
+  <div style="display:grid;grid-template-columns:1fr 300px;gap:20px;align-items:start;" class="q-form-grid">
 
-<div class="card-body">
-<form method="POST" action="{% if id %}{% url url id %}{% else %}{% url url %}{% endif %}">
-{% csrf_token %}
+    <!-- LEFT -->
+    <div style="display:flex;flex-direction:column;gap:16px;">
 
-<!-- Question -->
-<div class="mb-3">
-<label class="fw-semibold">Question *</label>
-<input type="text" name="question_text" class="form-control"
-       value="{{ question.question_text }}"
-       required>
-</div>
+      <!-- Question -->
+      <div style="background:var(--white);border:1px solid var(--border);border-radius:var(--radius-lg);padding:22px;">
+        <h3 style="font-family:var(--font-head);font-size:16px;color:var(--navy);margin-bottom:16px;">Question Details</h3>
 
-<!-- Category -->
-<div class="mb-3">
-<label class="fw-semibold">Category *</label>
-<input type="text" name="category" class="form-control"
-       value="{{ question.category }}"
-       required>
-</div>
-
-<!-- Difficulty -->
-<div class="mb-3">
-<label class="fw-semibold">Difficulty</label>
-<select name="difficulty" class="form-select form-control">
-    <option value="basic" {% if question.difficulty == "basic" %}selected{% endif %}>
-        Basic
-    </option>
-    <option value="intermediate" {% if question.difficulty == "intermediate" %}selected{% endif %}>
-        Intermediate
-    </option>
-    <option value="advanced" {% if question.difficulty == "advanced" %}selected{% endif %}>
-        Advanced
-    </option>
-</select>
-</div>
-
-<!-- Section Reference -->
-<div class="mb-3">
-<label class="fw-semibold">Section Reference</label>
-<input type="text" name="section_ref" class="form-control"
-       value="{{ question.section_ref }}">
-</div>
-
-<!-- Explanation -->
-<div class="mb-3">
-<label class="fw-semibold">Explanation *</label>
-<textarea name="explanation" rows="3" class="form-control" required>
-{{ question.explanation }}</textarea>
-</div>
-
-<hr>
-
-<label class="fw-semibold mb-2">
-Options <small class="text-muted">(Select ONLY one correct)</small>
-</label>
-
-<input type="hidden" name="correct_option" id="correct_option"
-       value="{% if id %}
-              {% for opt in options %}
-              {% if opt.is_correct %}{{ forloop.counter0 }}{% endif %}
-              {% endfor %}
-              {% endif %}">
-
-{% if id %}
-    {# -------- EDIT MODE -------- #}
-    {% for opt in options %}
-    <div class="option-card">
-        <div class="d-flex gap-2 flex-grow-1">
-          <span class="option-label">
-    {{ "ABCD"|slice:forloop.counter0|add:1 }}
-</span>
-            <input type="text"
-                   name="options[]"
-                   class="form-control"
-                   value="{{ opt.option_text }}"
-                   required>
+        <div class="form-group">
+          <label class="form-label">Question Text *</label>
+          <textarea name="question_text" class="form-input" rows="3"
+                    placeholder="Enter the MCQ question…" required>{{ question.question_text|default:'' }}</textarea>
         </div>
 
-        <div class="form-check">
-            <input class="form-check-input correct-check"
-                   type="radio"
-                   name="correct_radio"
-                   {% if opt.is_correct %}checked{% endif %}>
+        <div class="form-group">
+          <label class="form-label">Explanation *</label>
+          <textarea name="explanation" class="form-input" rows="4"
+                    placeholder="Explain the correct answer with reference to ITO 2001 section…" required>{{ question.explanation|default:'' }}</textarea>
         </div>
+
+        <div class="form-group">
+          <label class="form-label">Section Reference <span style="font-weight:400;color:var(--text-light);">(e.g. ITO 2001, Section 155)</span></label>
+          <input type="text" name="section_ref" class="form-input"
+                 placeholder="ITO 2001, Section …"
+                 value="{{ question.section_ref|default:'' }}">
+        </div>
+      </div>
+
+      <!-- Options -->
+      <div style="background:var(--white);border:1px solid var(--border);border-radius:var(--radius-lg);padding:22px;">
+        <h3 style="font-family:var(--font-head);font-size:16px;color:var(--navy);margin-bottom:6px;">Answer Options *</h3>
+        <p style="font-size:12.5px;color:var(--text-light);margin-bottom:16px;">Add at least 2 options. Select the radio button next to the correct answer.</p>
+
+        <div id="options-container">
+          {% if options %}
+            {% for opt in options %}
+            <div class="option-row" style="display:flex;align-items:center;gap:10px;margin-bottom:10px;">
+              <input type="radio" name="correct_option" value="{{ forloop.counter0 }}"
+                     {% if opt.is_correct %}checked{% endif %}
+                     style="width:18px;height:18px;accent-color:var(--green);flex-shrink:0;"
+                     title="Mark as correct answer">
+              <span style="width:28px;height:28px;border-radius:50%;background:var(--navy);color:#fff;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;flex-shrink:0;">
+                {{ forloop.counter }}
+              </span>
+              <input type="text" name="options[]" class="form-input"
+                     value="{{ opt.option_text }}" placeholder="Option text…" required
+                     style="flex:1;">
+              <button type="button" onclick="removeOption(this)"
+                      style="background:var(--red-light);border:1px solid #fca5a5;color:var(--red);border-radius:6px;padding:6px 10px;cursor:pointer;font-size:14px;flex-shrink:0;">
+                ✕
+              </button>
+            </div>
+            {% endfor %}
+          {% else %}
+            <!-- Default 4 empty options -->
+            {% for i in "ABCD" %}
+            <div class="option-row" style="display:flex;align-items:center;gap:10px;margin-bottom:10px;">
+              <input type="radio" name="correct_option" value="{{ forloop.counter0 }}"
+                     style="width:18px;height:18px;accent-color:var(--green);flex-shrink:0;"
+                     title="Mark as correct answer">
+              <span style="width:28px;height:28px;border-radius:50%;background:var(--navy);color:#fff;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;flex-shrink:0;">
+                {{ i }}
+              </span>
+              <input type="text" name="options[]" class="form-input"
+                     placeholder="Option {{ i }}…"
+                     style="flex:1;">
+              <button type="button" onclick="removeOption(this)"
+                      style="background:var(--red-light);border:1px solid #fca5a5;color:var(--red);border-radius:6px;padding:6px 10px;cursor:pointer;font-size:14px;flex-shrink:0;">
+                ✕
+              </button>
+            </div>
+            {% endfor %}
+          {% endif %}
+        </div>
+
+        <button type="button" onclick="addOption()"
+                style="margin-top:4px;background:var(--green-light);border:1px solid var(--green);color:var(--green);border-radius:8px;padding:8px 16px;cursor:pointer;font-size:13px;font-weight:600;font-family:var(--font-body);">
+          ➕ Add Another Option
+        </button>
+      </div>
+
     </div>
-    {% endfor %}
 
-{% else %}
-    {# -------- ADD MODE -------- #}
-    {% for i in "1234" %}
-    <div class="option-card">
-        <div class="d-flex gap-2 flex-grow-1">
-            <span class="option-label">
-    {{ "ABCD"|slice:forloop.counter0|add:1 }}
-</span>
-            <input type="text"
-                   name="options[]"
-                   class="form-control"
-                   placeholder="Option {{ forloop.counter }}"
-                   required>
+    <!-- RIGHT: Settings -->
+    <div style="display:flex;flex-direction:column;gap:16px;">
+
+      <div style="background:var(--white);border:1px solid var(--border);border-radius:var(--radius-lg);padding:20px;">
+        <h3 style="font-family:var(--font-head);font-size:16px;color:var(--navy);margin-bottom:16px;">⚙️ Settings</h3>
+
+        <div class="form-group">
+          <label class="form-label">Category *</label>
+          <input type="text" name="category" class="form-input"
+                 placeholder="e.g. Withholding Tax, Definitions…"
+                 value="{{ question.category|default:'' }}" required
+                 list="category-suggestions">
+          <datalist id="category-suggestions">
+            <option value="Definitions">
+            <option value="Withholding Tax">
+            <option value="Tax Rates & Slabs">
+            <option value="Returns & Filing">
+            <option value="Sales Tax">
+            <option value="Tax Credits">
+            <option value="Assessment">
+            <option value="Penalties">
+          </datalist>
         </div>
 
-        <div class="form-check">
-            <input class="form-check-input correct-check"
-                   type="radio"
-                   name="correct_radio">
+        <div class="form-group">
+          <label class="form-label">Difficulty Level</label>
+          <select name="difficulty" class="form-select">
+            <option value="basic"    {% if question.difficulty == 'basic'    or not question %}selected{% endif %}>Basic</option>
+            <option value="medium"   {% if question.difficulty == 'medium'   %}selected{% endif %}>Medium</option>
+            <option value="advanced" {% if question.difficulty == 'advanced' %}selected{% endif %}>Advanced</option>
+          </select>
         </div>
+
+        <div class="form-group" style="display:flex;align-items:center;gap:10px;">
+          <input type="checkbox" name="is_active" id="is_active"
+                 {% if question.is_active or not question %}checked{% endif %}
+                 style="width:18px;height:18px;accent-color:var(--green);">
+          <label for="is_active" class="form-label" style="margin:0;cursor:pointer;">Active (visible on website)</label>
+        </div>
+
+        <button type="submit" class="btn-primary"
+                style="width:100%;border:none;padding:12px;font-size:14px;cursor:pointer;margin-top:8px;">
+          {% if question %}💾 Update Question{% else %}✅ Save Question{% endif %}
+        </button>
+
+        <a href="{% url 'questions-list' %}"
+           style="display:block;text-align:center;margin-top:10px;font-size:13px;color:var(--text-light);">
+          Cancel
+        </a>
+      </div>
+
+      <!-- Preview box -->
+      <div style="background:var(--bg);border:1px solid var(--border);border-radius:var(--radius-lg);padding:16px;">
+        <div style="font-size:12px;font-weight:600;color:var(--text-light);text-transform:uppercase;letter-spacing:.08em;margin-bottom:8px;">💡 Tips</div>
+        <ul style="font-size:12.5px;color:var(--text-mid);line-height:1.7;padding-left:16px;">
+          <li>Keep question text clear and unambiguous</li>
+          <li>Add the correct ITO 2001 section reference</li>
+          <li>Use 4 options for best practice</li>
+          <li>Explanation should mention the relevant section</li>
+          <li>Mark exactly one option as correct</li>
+        </ul>
+      </div>
+
     </div>
-    {% endfor %}
-{% endif %}
 
-<!-- Active -->
-<div class="form-check mt-3">
-<input class="form-check-input" type="checkbox" name="is_active"
-       {% if question.is_active %}checked{% endif %}>
-<label class="form-check-label">Active Question</label>
-</div>
-
-<div class="d-grid mt-4">
-<button type="submit" class="btn btn-primary btn-lg">
-Update Question
-</button>
-</div>
-
+  </div><!-- end grid -->
 </form>
-</div>
+{% endblock %}
 
-<div class="card-footer text-center small text-muted">
-© TaxBuddy Umair
-</div>
-
-</div>
-</div>
-</div>
-</div>
-
-</div>
-</div>
-
-{% include 'Cpanel/footer.html' %}
-
+{% block extra_js %}
 <script>
-document.querySelectorAll(".correct-check").forEach((radio, index) => {
-    radio.addEventListener("change", function () {
-        document.getElementById("correct_option").value = index;
-    });
-});
-</script>
+let optionCount = document.querySelectorAll('.option-row').length;
 
-</body>
-</html>
+function addOption() {
+  const container = document.getElementById('options-container');
+  const labels = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+  const label  = labels[optionCount] || (optionCount + 1);
+  const div = document.createElement('div');
+  div.className = 'option-row';
+  div.style.cssText = 'display:flex;align-items:center;gap:10px;margin-bottom:10px;';
+  div.innerHTML = `
+    <input type="radio" name="correct_option" value="${optionCount}"
+           style="width:18px;height:18px;accent-color:var(--green);flex-shrink:0;" title="Mark as correct">
+    <span style="width:28px;height:28px;border-radius:50%;background:var(--navy);color:#fff;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;flex-shrink:0;">
+      ${label}
+    </span>
+    <input type="text" name="options[]" class="form-input"
+           placeholder="Option ${label}…" style="flex:1;">
+    <button type="button" onclick="removeOption(this)"
+            style="background:var(--red-light);border:1px solid #fca5a5;color:var(--red);border-radius:6px;padding:6px 10px;cursor:pointer;font-size:14px;flex-shrink:0;">✕</button>
+  `;
+  container.appendChild(div);
+  optionCount++;
+  div.querySelector('input[type="text"]').focus();
+}
+
+function removeOption(btn) {
+  const rows = document.querySelectorAll('.option-row');
+  if (rows.length <= 2) { alert('Minimum 2 options required.'); return; }
+  btn.closest('.option-row').remove();
+  // Renumber radio values
+  document.querySelectorAll('.option-row').forEach((row, i) => {
+    row.querySelector('input[type="radio"]').value = i;
+    row.querySelector('span').textContent = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'[i] || (i + 1);
+  });
+  optionCount = document.querySelectorAll('.option-row').length;
+}
+
+// Responsive stack
+const qGrid = document.querySelector('.q-form-grid');
+if (qGrid && window.innerWidth < 900) qGrid.style.gridTemplateColumns = '1fr';
+</script>
+{% endblock %}
