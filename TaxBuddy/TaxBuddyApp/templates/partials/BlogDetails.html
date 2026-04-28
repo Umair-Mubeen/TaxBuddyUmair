@@ -7,11 +7,352 @@
 {% block og_image %}{% if blog.featured_image %}{{ blog.featured_image.url }}{% else %}{% static 'images/og-image.png' %}{% endif %}{% endblock %}
 {% block schema_extra %}{% include 'partials/schema_blog.html' with blog=blog %}{% endblock %}
 
+{% block extra_css %}
+<style>
+/* ── READING PROGRESS BAR ──────────────────────────────── */
+#reading-progress {
+  position: fixed; top: 0; left: 0; z-index: 9999;
+  height: 3px; width: 0%;
+  background: linear-gradient(90deg, var(--green), #4ee8b0);
+  transition: width 0.1s linear;
+}
+
+/* ── ARTICLE HERO ──────────────────────────────────────── */
+.blog-hero {
+  background: var(--navy);
+  padding: 40px 0 36px;
+  position: relative; overflow: hidden;
+}
+.blog-hero::before {
+  content: '';
+  position: absolute; inset: 0;
+  background: radial-gradient(ellipse 600px 300px at 80% 50%, rgba(13,158,114,.1) 0%, transparent 70%);
+}
+.blog-hero-inner {
+  max-width: 1200px; margin: 0 auto; padding: 0 20px;
+  position: relative; z-index: 1;
+}
+.blog-category-tag {
+  display: inline-flex; align-items: center; gap: 6px;
+  background: rgba(13,158,114,.2);
+  border: 1px solid rgba(13,158,114,.3);
+  color: #4ee8b0; font-size: 11.5px; font-weight: 600;
+  text-transform: uppercase; letter-spacing: .1em;
+  padding: 5px 14px; border-radius: 20px;
+  margin-bottom: 14px; text-decoration: none;
+  transition: background .15s;
+}
+.blog-category-tag:hover { background: rgba(13,158,114,.3); color: #4ee8b0; }
+.blog-hero h1 {
+  font-family: var(--font-head);
+  font-size: 32px; font-weight: 700;
+  color: #fff; line-height: 1.25;
+  max-width: 780px; margin-bottom: 18px;
+}
+.blog-meta-row {
+  display: flex; align-items: center; gap: 16px;
+  flex-wrap: wrap; margin-bottom: 0;
+}
+.blog-meta-item {
+  display: flex; align-items: center; gap: 6px;
+  font-size: 13px; color: rgba(255,255,255,.55);
+}
+.blog-meta-item svg { width: 14px; height: 14px; opacity: .6; }
+.blog-meta-divider {
+  width: 3px; height: 3px; border-radius: 50%;
+  background: rgba(255,255,255,.2); flex-shrink: 0;
+}
+
+/* ── FEATURED IMAGE ────────────────────────────────────── */
+.blog-featured-img {
+  width: 100%; max-height: 420px;
+  object-fit: cover;
+  border-radius: 0 0 var(--radius-xl) var(--radius-xl);
+  display: block;
+}
+
+/* ── ARTICLE CONTENT ───────────────────────────────────── */
+.article-content {
+  font-size: 16px; line-height: 1.8;
+  color: var(--text);
+}
+.article-content > p:first-of-type {
+  font-size: 17px; color: var(--text-mid);
+  line-height: 1.75; font-weight: 400;
+}
+.article-content h2 {
+  font-family: var(--font-head);
+  font-size: 24px; font-weight: 700;
+  color: var(--navy); margin: 36px 0 14px;
+  padding-bottom: 10px;
+  border-bottom: 2px solid var(--border);
+}
+.article-content h3 {
+  font-family: var(--font-head);
+  font-size: 19px; font-weight: 600;
+  color: var(--navy-mid); margin: 28px 0 10px;
+}
+.article-content h4 {
+  font-size: 16px; font-weight: 700;
+  color: var(--text); margin: 20px 0 8px;
+}
+.article-content p { margin-bottom: 18px; }
+.article-content ul, .article-content ol {
+  margin: 0 0 18px 22px;
+}
+.article-content li {
+  margin-bottom: 8px; line-height: 1.7;
+}
+.article-content ul li::marker { color: var(--green); }
+.article-content a {
+  color: var(--green); text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.article-content a:hover { color: var(--green-mid); }
+.article-content strong { color: var(--navy); font-weight: 700; }
+.article-content table {
+  width: 100%; border-collapse: collapse;
+  margin: 24px 0; font-size: 14px;
+  border-radius: var(--radius-lg); overflow: hidden;
+}
+.article-content th {
+  background: var(--navy); color: #fff;
+  padding: 12px 16px; text-align: left;
+  font-weight: 500; font-size: 13px;
+}
+.article-content td {
+  padding: 11px 16px;
+  border-bottom: 1px solid var(--border);
+}
+.article-content tr:last-child td { border-bottom: none; }
+.article-content tr:nth-child(even) td { background: var(--bg); }
+.article-content blockquote {
+  border-left: 4px solid var(--green);
+  background: var(--green-light);
+  margin: 24px 0; padding: 16px 20px;
+  border-radius: 0 var(--radius-lg) var(--radius-lg) 0;
+  font-style: italic; color: var(--navy-mid);
+}
+
+/* ── AUTHOR CARD ───────────────────────────────────────── */
+.author-card {
+  background: linear-gradient(135deg, var(--navy) 0%, var(--navy-mid) 100%);
+  border-radius: var(--radius-xl); padding: 24px;
+  display: flex; gap: 18px; align-items: flex-start;
+  margin: 36px 0;
+}
+.author-avatar {
+  width: 64px; height: 64px; border-radius: 50%;
+  background: rgba(13,158,114,.2);
+  border: 3px solid rgba(255,255,255,.15);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 26px; flex-shrink: 0;
+}
+.author-name {
+  font-family: var(--font-head); font-size: 17px;
+  font-weight: 700; color: #fff; margin-bottom: 4px;
+}
+.author-title {
+  font-size: 12px; color: rgba(255,255,255,.55);
+  margin-bottom: 10px;
+}
+.author-bio {
+  font-size: 13.5px; color: rgba(255,255,255,.7);
+  line-height: 1.65; margin-bottom: 12px;
+}
+.author-wa {
+  display: inline-flex; align-items: center; gap: 6px;
+  background: #25D366; color: #fff;
+  padding: 7px 16px; border-radius: 8px;
+  font-size: 12.5px; font-weight: 600;
+  text-decoration: none;
+}
+
+/* ── SOCIAL SHARE ──────────────────────────────────────── */
+.share-bar {
+  display: flex; align-items: center; gap: 10px;
+  padding: 18px 0; border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+  margin: 28px 0; flex-wrap: wrap;
+}
+.share-label {
+  font-size: 13px; font-weight: 600; color: var(--text-mid);
+  margin-right: 4px;
+}
+.share-btn {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 8px 16px; border-radius: 8px;
+  font-size: 12.5px; font-weight: 600;
+  cursor: pointer; text-decoration: none;
+  border: none; transition: opacity .15s;
+}
+.share-btn:hover { opacity: .85; }
+.share-wa    { background: #25D366; color: #fff; }
+.share-fb    { background: #1877F2; color: #fff; }
+.share-tw    { background: #1DA1F2; color: #fff; }
+.share-copy  { background: var(--bg); border: 1px solid var(--border); color: var(--text-mid); }
+
+/* ── TAGS ──────────────────────────────────────────────── */
+.tag-cloud { display: flex; gap: 8px; flex-wrap: wrap; margin: 20px 0; }
+.tag-chip {
+  display: inline-flex; align-items: center; gap: 4px;
+  background: var(--bg); border: 1px solid var(--border);
+  color: var(--text-mid); border-radius: 20px;
+  padding: 5px 14px; font-size: 12.5px;
+  text-decoration: none; transition: all .15s;
+}
+.tag-chip:hover { background: var(--green-light); border-color: var(--green); color: var(--green); }
+
+/* ── COMMENTS ──────────────────────────────────────────── */
+.comment-section { margin-top: 44px; }
+.comment-section-title {
+  font-family: var(--font-head); font-size: 22px;
+  color: var(--navy); margin-bottom: 22px;
+  display: flex; align-items: center; gap: 10px;
+}
+.comment-count {
+  background: var(--navy); color: #fff;
+  width: 28px; height: 28px; border-radius: 50%;
+  display: inline-flex; align-items: center; justify-content: center;
+  font-size: 13px; font-weight: 700;
+}
+.comment-item {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-xl);
+  padding: 20px; margin-bottom: 16px;
+  transition: box-shadow .2s;
+}
+.comment-item:hover { box-shadow: var(--shadow-sm); }
+.comment-header {
+  display: flex; align-items: center;
+  justify-content: space-between; margin-bottom: 12px;
+}
+.comment-author {
+  display: flex; align-items: center; gap: 10px;
+}
+.comment-avatar {
+  width: 38px; height: 38px; border-radius: 50%;
+  background: var(--navy); color: #fff;
+  display: flex; align-items: center; justify-content: center;
+  font-weight: 700; font-size: 14px; flex-shrink: 0;
+}
+.comment-name { font-size: 14px; font-weight: 600; color: var(--navy); }
+.comment-date { font-size: 12px; color: var(--text-light); }
+.comment-body {
+  font-size: 14.5px; color: var(--text-mid);
+  line-height: 1.7; margin: 0;
+}
+
+/* ── COMMENT FORM ──────────────────────────────────────── */
+.comment-form-wrap {
+  background: var(--white); border: 1px solid var(--border);
+  border-radius: var(--radius-xl); padding: 28px;
+  margin-top: 28px;
+}
+.comment-form-title {
+  font-family: var(--font-head); font-size: 19px;
+  color: var(--navy); margin-bottom: 20px;
+  display: flex; align-items: center; gap: 8px;
+}
+.comment-form-grid {
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 14px; margin-bottom: 14px;
+}
+
+/* ── RELATED POSTS ─────────────────────────────────────── */
+.related-section { margin-top: 44px; }
+.related-title {
+  font-family: var(--font-head); font-size: 22px;
+  color: var(--navy); margin-bottom: 20px;
+}
+.related-grid {
+  display: grid; grid-template-columns: repeat(3,1fr);
+  gap: 16px;
+}
+.related-card {
+  background: var(--white); border: 1px solid var(--border);
+  border-radius: var(--radius-xl); overflow: hidden;
+  text-decoration: none;
+  transition: box-shadow .2s, transform .2s;
+  display: block;
+}
+.related-card:hover { box-shadow: var(--shadow-md); transform: translateY(-3px); }
+.related-card-img {
+  height: 110px; overflow: hidden; position: relative;
+  background: linear-gradient(135deg, var(--navy), var(--navy-mid));
+  display: flex; align-items: center; justify-content: center;
+  font-size: 32px; color: rgba(255,255,255,.4);
+}
+.related-card-img img {
+  width: 100%; height: 100%; object-fit: cover;
+  position: absolute; inset: 0;
+}
+.related-card-body { padding: 14px; }
+.related-card-tag {
+  font-size: 10px; font-weight: 700; color: var(--green);
+  text-transform: uppercase; letter-spacing: .1em; margin-bottom: 5px;
+}
+.related-card-title {
+  font-family: var(--font-head); font-size: 14px;
+  font-weight: 600; color: var(--navy); line-height: 1.4;
+  margin-bottom: 8px;
+  display: -webkit-box;
+  -webkit-line-clamp: 2; -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+.related-card-date { font-size: 11.5px; color: var(--text-light); }
+
+/* ── SIDEBAR TOC ───────────────────────────────────────── */
+.blog-toc {
+  background: var(--white); border: 1px solid var(--border);
+  border-radius: var(--radius-lg); overflow: hidden;
+  margin-bottom: 20px;
+}
+.blog-toc-header {
+  background: var(--navy); padding: 12px 16px;
+  font-size: 13px; font-weight: 600; color: #fff;
+  text-transform: uppercase; letter-spacing: .07em;
+}
+.blog-toc-body { padding: 12px 8px; }
+.blog-toc-link {
+  display: flex; align-items: center; gap: 8px;
+  padding: 7px 10px; border-radius: 6px;
+  font-size: 12.5px; color: var(--text-mid);
+  text-decoration: none; transition: background .15s;
+}
+.blog-toc-link:hover, .blog-toc-link.active {
+  background: var(--green-light); color: var(--green);
+}
+.blog-toc-link::before {
+  content: ''; width: 5px; height: 5px;
+  border-radius: 50%; background: var(--border-mid);
+  flex-shrink: 0; transition: background .15s;
+}
+.blog-toc-link:hover::before,
+.blog-toc-link.active::before { background: var(--green); }
+
+/* ── MOBILE ────────────────────────────────────────────── */
+@media (max-width: 768px) {
+  .blog-hero h1 { font-size: 22px; }
+  .author-card { flex-direction: column; }
+  .related-grid { grid-template-columns: 1fr; }
+  .comment-form-grid { grid-template-columns: 1fr; }
+  .share-bar { gap: 8px; }
+  .share-btn { padding: 7px 12px; font-size: 12px; }
+}
+</style>
+{% endblock %}
+
 {% block content %}
 
-<!-- Article Hero -->
-<div class="article-hero">
-  <div class="article-hero-inner">
+<!-- Reading Progress Bar -->
+<div id="reading-progress"></div>
+
+<!-- ── BLOG HERO ─────────────────────────────────────────── -->
+<div class="blog-hero">
+  <div class="blog-hero-inner">
+
     <div class="breadcrumb">
       <a href="{% url 'index' %}">Home</a>
       <span class="breadcrumb-sep">›</span>
@@ -20,23 +361,52 @@
       <span class="breadcrumb-sep">›</span>
       <a href="{% url 'viewBlogs_category' slug=blog.category|slugify %}">{{ blog.category }}</a>
       {% endif %}
-      <span class="breadcrumb-sep">›</span>
-      <span>{{ blog.title|truncatewords:6 }}</span>
     </div>
+
     {% if blog.category %}
-    <div class="article-category">{{ blog.category }}</div>
+    <a href="{% url 'viewBlogs_category' slug=blog.category|slugify %}" class="blog-category-tag">
+      📂 {{ blog.category }}
+    </a>
     {% endif %}
+
     <h1>{{ blog.title }}</h1>
-    <div class="article-meta">
-      <span>📅 {{ blog.created_at|date:"M d, Y" }}</span>
-      <span>⏱ {{ blog.content|wordcount|floatformat:0 }} words</span>
-      {% if blog.author %}<span>👤 {{ blog.author.get_full_name|default:blog.author.username }}</span>{% endif %}
-      {% if blog.updated_at %}<span>🔄 Updated {{ blog.updated_at|date:"M d, Y" }}</span>{% endif %}
+
+    <div class="blog-meta-row">
+      <div class="blog-meta-item">
+        📅 <span>{{ blog.created_at|date:"M d, Y" }}</span>
+      </div>
+      <span class="blog-meta-divider"></span>
+      <div class="blog-meta-item">
+        ⏱ <span id="read-time">Reading…</span>
+      </div>
+      {% if blog.author %}
+      <span class="blog-meta-divider"></span>
+      <div class="blog-meta-item">
+        👤 <span>{{ blog.author.get_full_name|default:blog.author.username }}</span>
+      </div>
+      {% endif %}
+      {% if blog.view_count %}
+      <span class="blog-meta-divider"></span>
+      <div class="blog-meta-item">
+        👁 <span>{{ blog.view_count }} views</span>
+      </div>
+      {% endif %}
+      {% if blog.updated_at and blog.updated_at != blog.created_at %}
+      <span class="blog-meta-divider"></span>
+      <div class="blog-meta-item">
+        🔄 Updated {{ blog.updated_at|date:"M d, Y" }}
+      </div>
+      {% endif %}
     </div>
   </div>
 </div>
 
-<!-- Top Ad -->
+{% if blog.featured_image %}
+<img src="{{ blog.featured_image.url }}" loading="eager"
+     alt="{{ blog.title }}" class="blog-featured-img">
+{% endif %}
+
+<!-- ── TOP AD ─────────────────────────────────────────────── -->
 <div class="container">
   <div class="ad-wrapper">
     <div class="ad-wrapper-label">Advertisement</div>
@@ -49,43 +419,73 @@
 
 <div class="content-grid">
 
-  <!-- Main Content -->
-  <main class="content-main">
-    <article class="article-content">
+  <!-- ── MAIN CONTENT ───────────────────────────────────── -->
+  <main class="content-main" id="article-main">
 
-      {% if blog.featured_image %}
-      <img src="{{ blog.featured_image.url }}" loading="lazy" alt="{{ blog.title }}"
-           style="width:100%;border-radius:var(--radius-lg);margin-bottom:24px;object-fit:cover;max-height:360px;">
-      {% endif %}
-
+    <article class="article-content" id="article-body">
       {{ blog.content|safe }}
-
-      <!-- In-content Ad -->
-      <div class="ad-wrapper" style="margin:32px 0;">
-        <div class="ad-wrapper-label">Advertisement</div>
-        <div class="ad-zone ad-incontent">
-          <div class="ad-zone-label">AdSense — In-Content</div>
-          <div class="ad-zone-size">468×60 / Responsive</div>
-        </div>
-      </div>
-
-      <!-- Tags -->
-      {% if tags_list %}
-      <div style="margin-top:28px;padding-top:20px;border-top:1px solid var(--border);">
-        <span style="font-size:13px;font-weight:600;color:var(--text-mid);">Tags: </span>
-        {% for tag in tags_list %}
-        <span style="display:inline-block;background:var(--bg);border:1px solid var(--border);border-radius:20px;padding:3px 12px;font-size:12px;color:var(--text-mid);margin:3px;">{{ tag }}</span>
-        {% endfor %}
-      </div>
-      {% endif %}
-
     </article>
+
+    <!-- In-content Ad -->
+    <div class="ad-wrapper" style="margin:32px 0;">
+      <div class="ad-wrapper-label">Advertisement</div>
+      <div class="ad-zone ad-incontent">
+        <div class="ad-zone-label">AdSense — In-Content</div>
+        <div class="ad-zone-size">468×60 / Responsive</div>
+      </div>
+    </div>
+
+    <!-- Tags -->
+    {% if tags_list %}
+    <div class="tag-cloud">
+      <span style="font-size:13px;font-weight:600;color:var(--text-mid);align-self:center;">🏷 Tags:</span>
+      {% for tag in tags_list %}
+      <a href="{% url 'viewBlogs' %}?q={{ tag }}" class="tag-chip">{{ tag }}</a>
+      {% endfor %}
+    </div>
+    {% endif %}
+
+    <!-- Share Bar -->
+    <div class="share-bar">
+      <span class="share-label">Share this article:</span>
+      <a href="https://wa.me/?text={{ blog.title|urlencode }}%20https://www.taxbuddyumair.com/articles/{{ blog.slug }}/"
+         class="share-btn share-wa" target="_blank" rel="noopener">
+        💬 WhatsApp
+      </a>
+      <a href="https://www.facebook.com/sharer/sharer.php?u=https://www.taxbuddyumair.com/articles/{{ blog.slug }}/"
+         class="share-btn share-fb" target="_blank" rel="noopener">
+        Facebook
+      </a>
+      <a href="https://twitter.com/intent/tweet?text={{ blog.title|urlencode }}&url=https://www.taxbuddyumair.com/articles/{{ blog.slug }}/"
+         class="share-btn share-tw" target="_blank" rel="noopener">
+        Twitter / X
+      </a>
+      <button class="share-btn share-copy" onclick="copyLink(this)">
+        🔗 Copy Link
+      </button>
+    </div>
+
+    <!-- Author Card -->
+    <div class="author-card">
+      <div class="author-avatar">👨‍💼</div>
+      <div>
+        <div class="author-name">Umair Mubeen</div>
+        <div class="author-title">Income &amp; Sales Tax Consultant · Karachi, Pakistan</div>
+        <div class="author-bio">
+          Certified tax consultant with 5+ years experience helping salaried individuals,
+          freelancers, and businesses navigate FBR compliance under ITO 2001.
+        </div>
+        <a href="https://wa.me/923332482742" class="author-wa" target="_blank" rel="noopener">
+          💬 Book Consultation
+        </a>
+      </div>
+    </div>
 
     <!-- CTA Banner -->
     {% include 'partials/cta_banner.html' %}
 
     <!-- Bottom Ad -->
-    <div class="ad-wrapper" style="margin-top:32px;">
+    <div class="ad-wrapper" style="margin:32px 0;">
       <div class="ad-wrapper-label">Advertisement</div>
       <div class="ad-zone ad-leaderboard">
         <div class="ad-zone-label">AdSense — Below Article</div>
@@ -93,67 +493,96 @@
       </div>
     </div>
 
-    <!-- Comments Section -->
-    <div style="margin-top:40px;">
-      <h3 style="font-family:var(--font-head);font-size:20px;color:var(--navy);margin-bottom:20px;">
-        💬 Comments ({{ length }})
-      </h3>
+    <!-- ── COMMENTS ──────────────────────────────────────── -->
+    <div class="comment-section" id="comments">
+      <h2 class="comment-section-title">
+        💬 Comments
+        <span class="comment-count">{{ length }}</span>
+      </h2>
 
       {% if userComments %}
         {% for comment in userComments %}
-        <div style="background:var(--white);border:1px solid var(--border);border-radius:var(--radius-lg);padding:18px;margin-bottom:14px;">
-          <div style="display:flex;justify-content:space-between;margin-bottom:8px;">
-            <strong style="font-size:14px;color:var(--navy);">{{ comment.name }}</strong>
-            <span style="font-size:12px;color:var(--text-light);">{{ comment.created_at|date:"M d, Y" }}</span>
+        <div class="comment-item">
+          <div class="comment-header">
+            <div class="comment-author">
+              <div class="comment-avatar">{{ comment.name|slice:":1"|upper }}</div>
+              <div>
+                <div class="comment-name">{{ comment.name }}</div>
+                <div class="comment-date">{{ comment.created_at|date:"M d, Y" }}</div>
+              </div>
+            </div>
           </div>
-          <p style="font-size:14px;color:var(--text-mid);line-height:1.65;margin:0;">{{ comment.comment }}</p>
+          <p class="comment-body">{{ comment.comment }}</p>
         </div>
         {% endfor %}
       {% else %}
-        <p style="font-size:14px;color:var(--text-light);font-style:italic;">No comments yet. Be the first to comment!</p>
+        <div style="background:var(--bg);border:1px solid var(--border);border-radius:var(--radius-lg);
+                    padding:28px;text-align:center;margin-bottom:24px;">
+          <div style="font-size:36px;margin-bottom:10px;">💭</div>
+          <p style="font-size:14px;color:var(--text-light);">
+            No comments yet. Be the first to share your thoughts!
+          </p>
+        </div>
       {% endif %}
 
       <!-- Comment Form -->
-      <div style="background:var(--white);border:1px solid var(--border);border-radius:var(--radius-xl);padding:24px;margin-top:28px;">
-        <h4 style="font-family:var(--font-head);font-size:17px;color:var(--navy);margin-bottom:18px;">Leave a Comment</h4>
+      <div class="comment-form-wrap" id="comment-form">
+        <h3 class="comment-form-title">✍️ Leave a Comment</h3>
+        <p style="font-size:13.5px;color:var(--text-light);margin-bottom:20px;">
+          Your comment will be reviewed before publishing. Please keep it relevant and respectful.
+        </p>
         <form method="POST" action="{% url 'userComments' %}">
           {% csrf_token %}
           <input type="hidden" name="slug" value="{{ blog.slug }}">
-          <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px;">
+          <div class="comment-form-grid">
             <div class="form-group">
-              <label class="form-label">Name *</label>
-              <input type="text" name="user" class="form-input" placeholder="Your Name" required>
+              <label class="form-label">Full Name *</label>
+              <input type="text" name="user" class="form-input"
+                     placeholder="Muhammad Ahmed" required>
             </div>
             <div class="form-group">
-              <label class="form-label">Email *</label>
-              <input type="email" name="email" class="form-input" placeholder="your@email.com" required>
+              <label class="form-label">Email * <span style="font-weight:400;color:var(--text-light);">(not published)</span></label>
+              <input type="email" name="email" class="form-input"
+                     placeholder="you@example.com" required>
             </div>
           </div>
           <div class="form-group">
             <label class="form-label">Comment *</label>
-            <textarea name="comment" class="form-input" rows="4" placeholder="Share your thoughts…" required></textarea>
+            <textarea name="comment" class="form-input" rows="5"
+                      placeholder="Share your thoughts, questions, or feedback about this article…"
+                      required></textarea>
           </div>
-          <button type="submit" class="btn-primary" style="border:none;cursor:pointer;padding:11px 28px;">
-            Submit Comment
-          </button>
+          <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;">
+            <p style="font-size:12px;color:var(--text-light);margin:0;">
+              📋 Comments are moderated. Please allow up to 24 hours for approval.
+            </p>
+            <button type="submit" class="btn-primary"
+                    style="border:none;cursor:pointer;padding:12px 28px;font-size:14px;">
+              Submit Comment →
+            </button>
+          </div>
         </form>
       </div>
     </div>
 
-    <!-- Related Posts -->
+    <!-- ── RELATED POSTS ─────────────────────────────────── -->
     {% if blogList %}
-    <div style="margin-top:40px;">
-      <h3 style="font-family:var(--font-head);font-size:20px;color:var(--navy);margin-bottom:20px;">📚 Related Articles</h3>
-      <div class="cards-grid">
+    <div class="related-section">
+      <h2 class="related-title">📚 Related Articles</h2>
+      <div class="related-grid">
         {% for related in blogList|slice:":3" %}
-        <a href="{% url 'BlogDetails' slug=related.slug %}" class="card" style="text-decoration:none;">
-          <div class="card-body" style="padding-top:20px;">
-            <div class="card-tag">{{ related.category|default:"Tax" }}</div>
-            <div class="card-title">{{ related.title }}</div>
-            <div class="card-footer">
-              <span>{{ related.created_at|date:"M d, Y" }}</span>
-              <span class="card-read-more">Read →</span>
-            </div>
+        <a href="{% url 'BlogDetails' slug=related.slug %}" class="related-card">
+          <div class="related-card-img">
+            {% if related.featured_image %}
+            <img src="{{ related.featured_image.url }}" alt="{{ related.title }}" loading="lazy">
+            {% else %}
+            📄
+            {% endif %}
+          </div>
+          <div class="related-card-body">
+            <div class="related-card-tag">{{ related.category|default:"Tax" }}</div>
+            <div class="related-card-title">{{ related.title }}</div>
+            <div class="related-card-date">{{ related.created_at|date:"M d, Y" }}</div>
           </div>
         </a>
         {% endfor %}
@@ -163,10 +592,119 @@
 
   </main>
 
-  <!-- Sidebar -->
+  <!-- ── SIDEBAR ─────────────────────────────────────────── -->
   <aside class="content-sidebar">
+
+    <!-- Dynamic Table of Contents -->
+    <div class="blog-toc" id="blog-toc">
+      <div class="blog-toc-header">📑 Table of Contents</div>
+      <div class="blog-toc-body" id="toc-links">
+        <p style="font-size:12px;color:var(--text-light);padding:4px 10px;">Loading…</p>
+      </div>
+    </div>
+
+    <!-- Sidebar Ad -->
+    <div class="ad-wrapper">
+      <div class="ad-wrapper-label">Advertisement</div>
+      <div class="ad-zone ad-rectangle">
+        <div class="ad-zone-label">AdSense — Sidebar</div>
+        <div class="ad-zone-size">300×250</div>
+      </div>
+    </div>
+
     {% include 'partials/sidebar.html' %}
+
+    <!-- Sidebar Ad 2 -->
+    <div class="ad-wrapper">
+      <div class="ad-wrapper-label">Advertisement</div>
+      <div class="ad-zone ad-rectangle">
+        <div class="ad-zone-label">AdSense — Sidebar 2</div>
+        <div class="ad-zone-size">300×250</div>
+      </div>
+    </div>
+
   </aside>
 
 </div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+/* ── READING PROGRESS BAR ─────────────────────────────────── */
+const progressBar = document.getElementById('reading-progress');
+if (progressBar) {
+  window.addEventListener('scroll', () => {
+    const article = document.getElementById('article-body');
+    if (!article) return;
+    const rect    = article.getBoundingClientRect();
+    const total   = article.offsetHeight;
+    const scrolled = Math.max(0, -rect.top);
+    const pct     = Math.min(100, (scrolled / total) * 100);
+    progressBar.style.width = pct + '%';
+  }, { passive: true });
+}
+
+/* ── READ TIME ────────────────────────────────────────────── */
+const articleBody = document.getElementById('article-body');
+const readTimeEl  = document.getElementById('read-time');
+if (articleBody && readTimeEl) {
+  const wordCount = articleBody.innerText.split(/\s+/).filter(Boolean).length;
+  const minutes   = Math.max(1, Math.ceil(wordCount / 200));
+  readTimeEl.textContent = `${minutes} min read · ${wordCount.toLocaleString()} words`;
+}
+
+/* ── DYNAMIC TABLE OF CONTENTS ───────────────────────────── */
+const tocContainer = document.getElementById('toc-links');
+const tocWidget    = document.getElementById('blog-toc');
+if (tocContainer && articleBody) {
+  const headings = articleBody.querySelectorAll('h2, h3');
+  if (headings.length >= 2) {
+    tocContainer.innerHTML = '';
+    headings.forEach((h, i) => {
+      // Ensure heading has an ID
+      if (!h.id) h.id = `section-${i + 1}`;
+      const link = document.createElement('a');
+      link.href      = `#${h.id}`;
+      link.className = 'blog-toc-link';
+      link.textContent = h.textContent;
+      if (h.tagName === 'H3') link.style.paddingLeft = '24px';
+      link.addEventListener('click', (e) => {
+        e.preventDefault();
+        const navH = document.querySelector('nav')?.offsetHeight || 70;
+        window.scrollTo({
+          top: h.getBoundingClientRect().top + window.scrollY - navH - 16,
+          behavior: 'smooth'
+        });
+      });
+      tocContainer.appendChild(link);
+    });
+
+    // Highlight active TOC item on scroll
+    const tocLinks = tocContainer.querySelectorAll('.blog-toc-link');
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          tocLinks.forEach(l => l.classList.remove('active'));
+          const active = tocContainer.querySelector(`a[href="#${entry.target.id}"]`);
+          if (active) active.classList.add('active');
+        }
+      });
+    }, { rootMargin: '-80px 0px -60% 0px' });
+    headings.forEach(h => observer.observe(h));
+  } else {
+    // No headings — hide TOC
+    if (tocWidget) tocWidget.style.display = 'none';
+  }
+}
+
+/* ── COPY LINK ────────────────────────────────────────────── */
+function copyLink(btn) {
+  navigator.clipboard.writeText(window.location.href).then(() => {
+    const orig = btn.textContent;
+    btn.textContent = '✅ Copied!';
+    btn.style.color = 'var(--green)';
+    setTimeout(() => { btn.textContent = orig; btn.style.color = ''; }, 2000);
+  });
+}
+</script>
 {% endblock %}
