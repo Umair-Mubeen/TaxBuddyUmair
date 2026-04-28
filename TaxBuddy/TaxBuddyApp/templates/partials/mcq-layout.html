@@ -1,83 +1,458 @@
 {% extends 'base.html' %}
 {% load static %}
+{% load custom_filters %}
 
-{% block title %}{% if selected_category %}{{ selected_category }} MCQs{% else %}Income Tax MCQs Pakistan — 200+ Questions{% endif %} | TaxBuddy Umair{% endblock %}
+{% block title %}{% if selected_category %}{{ selected_category }} MCQs Pakistan{% else %}Income Tax MCQs Pakistan — 200+ Practice Questions{% endif %} | TaxBuddy Umair{% endblock %}
 
 {% block extra_css %}
 <link rel="stylesheet" href="{% static 'css/mcq.css' %}">
+<style>
+/* ── MCQ PAGE ENHANCEMENTS ─────────────────────────────── */
+.mcq-hero-stats {
+  display: flex; gap: 20px; flex-wrap: wrap; margin-top: 16px;
+}
+.mcq-hero-stat {
+  display: flex; align-items: center; gap: 8px;
+  background: rgba(255,255,255,0.08);
+  border: 1px solid rgba(255,255,255,0.12);
+  border-radius: 8px; padding: 8px 14px;
+}
+.mcq-hero-stat-num {
+  font-family: var(--font-head); font-size: 18px;
+  font-weight: 700; color: #4ee8b0;
+}
+.mcq-hero-stat-lbl { font-size: 11px; color: rgba(255,255,255,0.55); }
+
+/* Progress bar */
+.mcq-progress-wrap {
+  background: var(--white); border: 1px solid var(--border);
+  border-radius: var(--radius-lg); padding: 16px 20px;
+  margin-bottom: 16px;
+}
+.mcq-progress-header {
+  display: flex; justify-content: space-between;
+  align-items: center; margin-bottom: 10px;
+}
+.mcq-progress-title { font-size: 13px; font-weight: 600; color: var(--navy); }
+.mcq-progress-pct   { font-size: 13px; font-weight: 700; color: var(--green); }
+.mcq-progress-bar-bg {
+  height: 8px; background: var(--bg);
+  border-radius: 4px; overflow: hidden;
+}
+.mcq-progress-bar-fill {
+  height: 100%; background: linear-gradient(90deg, var(--green), #4ee8b0);
+  border-radius: 4px; transition: width 0.4s ease;
+  width: 0%;
+}
+
+/* Enhanced score panel */
+.mcq-score-panel {
+  display: grid; grid-template-columns: repeat(4,1fr);
+  gap: 10px; margin-bottom: 16px;
+}
+.score-item {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 14px 10px; text-align: center;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.score-item:hover { transform: translateY(-2px); box-shadow: var(--shadow-sm); }
+.score-val {
+  font-family: var(--font-head);
+  font-size: 22px; font-weight: 700;
+  color: var(--navy); line-height: 1;
+  margin-bottom: 4px;
+}
+.score-lbl {
+  font-size: 10px; color: var(--text-light);
+  text-transform: uppercase; letter-spacing: .08em;
+}
+.score-correct { color: var(--green) !important; }
+.score-wrong   { color: var(--red)   !important; }
+
+/* Category pills improved */
+.mcq-filter-bar {
+  background: var(--white); border: 1px solid var(--border);
+  border-radius: var(--radius-lg); padding: 14px 16px;
+  margin-bottom: 20px; display: flex; gap: 8px;
+  flex-wrap: wrap; align-items: center;
+}
+.mcq-filter-label {
+  font-size: 12px; font-weight: 700; color: var(--text-mid);
+  text-transform: uppercase; letter-spacing: .08em; flex-shrink: 0;
+}
+.mcq-filter-btn {
+  padding: 6px 14px; border-radius: 20px;
+  border: 1.5px solid var(--border);
+  background: var(--bg); color: var(--text-mid);
+  font-size: 12.5px; font-weight: 500;
+  cursor: pointer; font-family: var(--font-body);
+  text-decoration: none;
+  transition: all .15s;
+}
+.mcq-filter-btn:hover { border-color: var(--green); color: var(--green); background: var(--green-light); }
+.mcq-filter-btn.active {
+  background: var(--navy); border-color: var(--navy);
+  color: #fff; font-weight: 600;
+}
+.mcq-filter-count {
+  margin-left: auto; font-size: 12px;
+  color: var(--text-light); flex-shrink: 0;
+}
+
+/* Enhanced MCQ Card */
+.mcq-card {
+  background: var(--white); border: 1px solid var(--border);
+  border-radius: var(--radius-xl); overflow: hidden;
+  margin-bottom: 20px;
+  box-shadow: var(--shadow-sm);
+  transition: box-shadow 0.2s;
+}
+.mcq-card:hover { box-shadow: var(--shadow-md); }
+.mcq-card.answered { border-left: 4px solid var(--green); }
+.mcq-card.answered-wrong { border-left: 4px solid var(--red); }
+
+.mcq-header {
+  background: var(--navy);
+  padding: 14px 20px;
+  display: flex; align-items: center;
+  justify-content: space-between; gap: 12px;
+}
+.mcq-q-badge {
+  display: flex; align-items: center; gap: 10px;
+}
+.mcq-q-number {
+  width: 32px; height: 32px; border-radius: 50%;
+  background: rgba(255,255,255,0.12);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 13px; font-weight: 700; color: #fff;
+  flex-shrink: 0;
+}
+.mcq-q-meta { display: flex; flex-direction: column; gap: 2px; }
+.mcq-q-num  { font-size: 12px; color: rgba(255,255,255,0.5); }
+.mcq-q-cat  { font-size: 13px; font-weight: 600; color: rgba(255,255,255,0.9); }
+
+.mcq-difficulty {
+  font-size: 11px; padding: 4px 12px;
+  border-radius: 20px; font-weight: 600;
+  flex-shrink: 0;
+}
+.diff-basic    { background: rgba(13,158,114,.2); color: #4ee8b0; }
+.diff-medium   { background: rgba(232,160,32,.2); color: #f5c561; }
+.diff-advanced { background: rgba(229,62,62,.2);  color: #fc8181; }
+
+.mcq-body { padding: 22px 20px 18px; }
+.mcq-question {
+  font-size: 15.5px; font-weight: 500;
+  color: var(--text); line-height: 1.6;
+  margin-bottom: 18px;
+  font-family: var(--font-body);
+}
+
+/* Enhanced Options */
+.mcq-options { display: flex; flex-direction: column; gap: 10px; }
+.mcq-option {
+  display: flex; align-items: flex-start; gap: 12px;
+  padding: 13px 16px;
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius-lg);
+  cursor: pointer;
+  transition: border-color .15s, background .15s, transform .1s;
+  font-size: 14.5px; line-height: 1.5;
+  color: var(--text); background: var(--white);
+  position: relative;
+}
+.mcq-option:hover:not(.disabled) {
+  border-color: var(--navy-mid);
+  background: rgba(10,38,71,0.03);
+  transform: translateX(3px);
+}
+.mcq-option:active:not(.disabled) { transform: translateX(1px); }
+
+.mcq-option.selected-correct {
+  border-color: var(--green);
+  background: linear-gradient(135deg, rgba(13,158,114,0.08) 0%, rgba(13,158,114,0.03) 100%);
+  color: var(--navy);
+  pointer-events: none;
+}
+.mcq-option.selected-wrong {
+  border-color: var(--red);
+  background: linear-gradient(135deg, rgba(229,62,62,0.08) 0%, rgba(229,62,62,0.03) 100%);
+  color: var(--navy);
+  pointer-events: none;
+}
+.mcq-option.disabled { pointer-events: none; opacity: .75; }
+.mcq-option.correct-highlight:not(.selected-correct) {
+  border-color: var(--green) !important;
+  background: rgba(13,158,114,0.05) !important;
+  opacity: 1 !important;
+}
+
+.mcq-opt-key {
+  min-width: 30px; height: 30px;
+  border-radius: 50%;
+  background: var(--bg); border: 1.5px solid var(--border-mid);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 12px; font-weight: 700; color: var(--text-mid);
+  flex-shrink: 0; transition: all .15s;
+}
+.mcq-option:hover:not(.disabled) .mcq-opt-key {
+  background: var(--navy); color: #fff; border-color: var(--navy);
+}
+.mcq-option.selected-correct .mcq-opt-key {
+  background: var(--green); color: #fff; border-color: var(--green);
+}
+.mcq-option.selected-wrong .mcq-opt-key {
+  background: var(--red); color: #fff; border-color: var(--red);
+}
+.mcq-option.correct-highlight .mcq-opt-key {
+  background: var(--green) !important; color: #fff !important;
+  border-color: var(--green) !important;
+}
+
+/* Result icon on option */
+.mcq-opt-result {
+  margin-left: auto; font-size: 16px; flex-shrink: 0;
+  display: none;
+}
+.mcq-option.selected-correct .mcq-opt-result { display: block; }
+.mcq-option.selected-wrong   .mcq-opt-result { display: block; }
+
+/* Enhanced Explanation */
+.mcq-explanation {
+  margin-top: 16px;
+  border-radius: var(--radius-lg);
+  padding: 0; overflow: hidden;
+  display: none;
+  animation: slideDown 0.3s ease;
+}
+@keyframes slideDown {
+  from { opacity: 0; transform: translateY(-8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.mcq-explanation.show { display: block; }
+
+.mcq-exp-inner {
+  border-left: 4px solid var(--green);
+  background: linear-gradient(135deg, #f0fdf4 0%, #f7fef9 100%);
+  padding: 16px 18px;
+  border-radius: 0 var(--radius-lg) var(--radius-lg) 0;
+}
+.mcq-exp-inner.wrong-bg {
+  border-left-color: var(--red);
+  background: linear-gradient(135deg, #fff5f5 0%, #fffafa 100%);
+}
+.mcq-exp-header {
+  display: flex; align-items: center; gap: 8px;
+  font-size: 13px; font-weight: 700;
+  color: var(--green); margin-bottom: 8px;
+}
+.mcq-exp-header.wrong { color: var(--red); }
+.mcq-exp-text {
+  font-size: 13.5px; color: var(--navy-mid);
+  line-height: 1.65;
+}
+.mcq-exp-ref {
+  display: inline-flex; align-items: center; gap: 6px;
+  margin-top: 10px; padding: 5px 12px;
+  background: rgba(10,38,71,0.06);
+  border-radius: 20px; font-size: 12px;
+  color: var(--navy-mid); font-weight: 500;
+}
+
+/* Answered indicator on card header */
+.mcq-status-dot {
+  width: 8px; height: 8px; border-radius: 50%;
+  background: rgba(255,255,255,0.2);
+  flex-shrink: 0;
+  transition: background 0.3s;
+}
+.mcq-status-dot.correct { background: #4ee8b0; }
+.mcq-status-dot.wrong   { background: #fc8181; }
+
+/* Email capture widget improved */
+.mcq-email-widget {
+  background: linear-gradient(135deg, var(--navy) 0%, var(--navy-mid) 100%);
+  border-radius: var(--radius-xl); padding: 22px 18px;
+  text-align: center; margin-bottom: 20px;
+  position: relative; overflow: hidden;
+}
+.mcq-email-widget::before {
+  content: '';
+  position: absolute; top: -30px; right: -30px;
+  width: 100px; height: 100px; border-radius: 50%;
+  background: rgba(13,158,114,0.15);
+}
+.mcq-email-widget h4 {
+  font-family: var(--font-head); font-size: 16px;
+  color: #fff; margin-bottom: 6px; position: relative;
+}
+.mcq-email-widget p {
+  font-size: 12.5px; color: rgba(255,255,255,0.65);
+  margin-bottom: 14px; line-height: 1.5; position: relative;
+}
+.mcq-email-form {
+  display: flex; gap: 6px; position: relative;
+}
+.mcq-email-form input {
+  flex: 1; padding: 10px 12px;
+  border: none; border-radius: 8px;
+  font-size: 13px; font-family: var(--font-body);
+  outline: none; min-width: 0;
+}
+.mcq-email-form button {
+  background: var(--green); color: #fff;
+  border: none; border-radius: 8px;
+  padding: 10px 14px; font-size: 12px;
+  font-weight: 600; cursor: pointer;
+  font-family: var(--font-body); white-space: nowrap;
+}
+
+/* Motivation bar */
+.mcq-motivation-bar {
+  display: none; align-items: center; justify-content: space-between;
+  padding: 10px 16px; border-radius: var(--radius-lg);
+  background: var(--green-light); border: 1px solid rgba(13,158,114,0.2);
+  margin-bottom: 16px; flex-wrap: wrap; gap: 8px;
+}
+.mcq-motivation-bar.show { display: flex; }
+.mcq-motivation-text {
+  font-size: 13px; font-weight: 600; color: var(--green-mid);
+}
+.mcq-reset-btn {
+  display: flex; align-items: center; gap: 5px;
+  background: var(--white); border: 1px solid var(--border);
+  color: var(--text-mid); border-radius: 8px;
+  padding: 6px 12px; font-size: 12px; font-weight: 600;
+  cursor: pointer; font-family: var(--font-body);
+  transition: all .15s;
+}
+.mcq-reset-btn:hover { border-color: var(--red); color: var(--red); background: var(--red-light); }
+
+/* Mobile */
+@media (max-width: 640px) {
+  .mcq-score-panel { grid-template-columns: repeat(2,1fr); }
+  .mcq-body { padding: 16px 14px 14px; }
+  .mcq-question { font-size: 14.5px; }
+  .mcq-option { padding: 11px 12px; font-size: 13.5px; gap: 10px; }
+  .mcq-opt-key { min-width: 26px; height: 26px; font-size: 11px; }
+  .mcq-header { padding: 12px 14px; }
+  .mcq-hero-stats { gap: 10px; }
+}
+</style>
 {% endblock %}
 
 {% block content %}
 
+<!-- ── HERO ──────────────────────────────────────────────── -->
 <div class="article-hero">
   <div class="article-hero-inner">
     <div class="breadcrumb">
       <a href="{% url 'index' %}">Home</a>
       <span class="breadcrumb-sep">›</span>
-      <span>Tax MCQs</span>
+      <a href="{% url 'question_list' %}">Tax MCQs</a>
       {% if selected_category %}
       <span class="breadcrumb-sep">›</span>
       <span>{{ selected_category }}</span>
       {% endif %}
     </div>
-    <h1>Income Tax MCQs Pakistan — 200+ Practice Questions</h1>
-    <div class="article-meta">
-      <span>📝 {{ page_obj.paginator.count }}+ Questions</span>
-      <span>🎯 CA · ICMAP · ACCA · CSS Exam Prep</span>
-      <span>🔄 Updated 2025</span>
+
+    <h1>
+      {% if selected_category %}
+        {{ selected_category }} — MCQ Practice
+      {% else %}
+        Income Tax MCQs Pakistan — 200+ Practice Questions
+      {% endif %}
+    </h1>
+
+    <div class="mcq-hero-stats">
+      <div class="mcq-hero-stat">
+        <div class="mcq-hero-stat-num">{{ page_obj.paginator.count }}</div>
+        <div class="mcq-hero-stat-lbl">Questions</div>
+      </div>
+      <div class="mcq-hero-stat">
+        <div class="mcq-hero-stat-num">{{ categories|length }}</div>
+        <div class="mcq-hero-stat-lbl">Topics</div>
+      </div>
+      <div class="mcq-hero-stat">
+        <div class="mcq-hero-stat-num">ITO</div>
+        <div class="mcq-hero-stat-lbl">2001 Based</div>
+      </div>
+      <div class="mcq-hero-stat">
+        <div class="mcq-hero-stat-num">Free</div>
+        <div class="mcq-hero-stat-lbl">No Sign-up</div>
+      </div>
+    </div>
+
+    <!-- exam tags -->
+    <div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:14px;">
+  {% for tag in "CA ICMAP ACCA CSS FBR Exam"|split:" " %}
+      <span style="background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.15);
+                   color:rgba(255,255,255,0.75);padding:3px 10px;border-radius:20px;font-size:11.5px;">
+        🎯 {{ tag }}
+      </span>
+      {% endfor %}
     </div>
   </div>
 </div>
 
-<!-- Top Ad -->
-<div class="container">
-  <div class="ad-wrapper">
-    <div class="ad-wrapper-label">Advertisement</div>
-    <div class="ad-zone ad-leaderboard">
-      <div class="ad-zone-label">AdSense — MCQ Top</div>
-      <div class="ad-zone-size">728×90 / Responsive</div>
-    </div>
-  </div>
-</div>
+<!-- ── TOP AD ─────────────────────────────────────────────── -->
+<!--<div class="container">-->
+<!--  <div class="ad-wrapper">-->
+<!--    <div class="ad-wrapper-label">Advertisement</div>-->
+<!--    <div class="ad-zone ad-leaderboard">-->
+<!--      <div class="ad-zone-label">AdSense — MCQ Top</div>-->
+<!--      <div class="ad-zone-size">728×90 / Responsive</div>-->
+<!--    </div>-->
+<!--  </div>-->
+<!--</div>-->
 
 <div class="content-grid">
   <main class="content-main">
 
-    <!-- Score Panel -->
+    <!-- ── SCORE PANEL ─────────────────────────────────────── -->
     <div class="mcq-score-panel" id="score-panel" aria-label="Quiz score">
       <div class="score-item">
-        <div class="score-val" id="score-answered">0 / 0</div>
+        <div class="score-val" id="score-answered">0<span style="font-size:13px;color:var(--text-light);font-weight:400;"> / 0</span></div>
         <div class="score-lbl">Answered</div>
       </div>
       <div class="score-item">
         <div class="score-val score-correct" id="score-correct">0</div>
-        <div class="score-lbl">Correct</div>
+        <div class="score-lbl">✅ Correct</div>
       </div>
       <div class="score-item">
         <div class="score-val score-wrong" id="score-wrong">0</div>
-        <div class="score-lbl">Wrong</div>
+        <div class="score-lbl">❌ Wrong</div>
       </div>
       <div class="score-item">
         <div class="score-val" id="score-pct">—</div>
-        <div class="score-lbl">Score</div>
+        <div class="score-lbl">🏆 Score</div>
       </div>
     </div>
-    <!-- Motivation + Reset -->
-    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;flex-wrap:wrap;gap:8px;">
-      <span id="mcq-motivation" style="font-size:13px;color:var(--green);font-weight:600;display:none;"></span>
-      <button id="mcq-reset-btn" onclick="resetState()"
-              style="display:none;align-items:center;gap:6px;
-                     background:var(--red-light);border:1px solid #fca5a5;
-                     color:var(--red);border-radius:8px;padding:7px 14px;
-                     font-size:12px;font-weight:600;cursor:pointer;
-                     font-family:var(--font-body);">
+
+    <!-- ── PROGRESS BAR ────────────────────────────────────── -->
+    <div class="mcq-progress-wrap">
+      <div class="mcq-progress-header">
+        <span class="mcq-progress-title">Session Progress</span>
+        <span class="mcq-progress-pct" id="progress-pct-text">0%</span>
+      </div>
+      <div class="mcq-progress-bar-bg">
+        <div class="mcq-progress-bar-fill" id="progress-bar"></div>
+      </div>
+    </div>
+
+    <!-- ── MOTIVATION + RESET ──────────────────────────────── -->
+    <div class="mcq-motivation-bar" id="mcq-motivation-bar">
+      <span class="mcq-motivation-text" id="mcq-motivation"></span>
+      <button class="mcq-reset-btn" id="mcq-reset-btn" onclick="resetState()">
         🔄 Reset Score
       </button>
     </div>
 
-    <!-- Filter Bar -->
+    <!-- ── CATEGORY FILTER ─────────────────────────────────── -->
     <div class="mcq-filter-bar">
-      <span class="mcq-filter-label">Filter:</span>
+      <span class="mcq-filter-label">Topic:</span>
       <a href="{% url 'question_list' %}"
          class="mcq-filter-btn {% if not selected_category %}active{% endif %}">
         All Topics
@@ -88,50 +463,73 @@
         {{ cat.name }}
       </a>
       {% endfor %}
-      <span class="mcq-filter-count">{{ page_obj.paginator.count }} questions</span>
+      <span class="mcq-filter-count">{{ page_obj.paginator.count }} Qs</span>
     </div>
 
-    <!-- MCQ Cards -->
+    <!-- ── MCQ CARDS ───────────────────────────────────────── -->
     {% for question in page_obj %}
-    {% with q_num=forloop.counter %}
 
-    <div class="mcq-card" data-q="{{ q_num }}">
+    <div class="mcq-card" id="mcq-card-{{ question.pk }}" data-pk="{{ question.pk }}">
+
+      <!-- Card Header -->
       <div class="mcq-header">
-        <span class="mcq-q-num">
-          Q{{ page_obj.start_index|add:forloop.counter0 }} · {{ question.category|default:"Income Tax" }}
-        </span>
-        <span class="mcq-difficulty diff-{{ question.difficulty|default:'medium' }}">
-          {{ question.difficulty|default:"Medium"|title }}
-        </span>
+        <div class="mcq-q-badge">
+          <div class="mcq-q-number">{{ page_obj.start_index|add:forloop.counter0 }}</div>
+          <div class="mcq-q-meta">
+            <span class="mcq-q-num">Question {{ page_obj.start_index|add:forloop.counter0 }} of {{ page_obj.paginator.count }}</span>
+            <span class="mcq-q-cat">{{ question.category|default:"Income Tax" }}</span>
+          </div>
+        </div>
+        <div style="display:flex;align-items:center;gap:8px;">
+          <span class="mcq-difficulty diff-{{ question.difficulty|default:'medium' }}">
+            {{ question.difficulty|default:"Medium"|title }}
+          </span>
+          <span class="mcq-status-dot" id="dot-{{ question.pk }}"></span>
+        </div>
       </div>
+
+      <!-- Card Body -->
       <div class="mcq-body">
         <div class="mcq-question">{{ question.question_text }}</div>
-        <div class="mcq-options">
+
+        <div class="mcq-options" id="opts-{{ question.pk }}">
           {% for option in question.options.all %}
           <div class="mcq-option"
                data-correct="{{ option.is_correct|lower }}"
                data-exp="exp-{{ question.pk }}"
+               data-qpk="{{ question.pk }}"
                onclick="selectMCQOption(this)"
                role="button" tabindex="0"
                aria-label="Option {{ forloop.counter }}: {{ option.option_text }}">
             <span class="mcq-opt-key">{{ option_labels|slice:forloop.counter0|slice:"-1" }}</span>
-            <span>{{ option.option_text }}</span>
+            <span style="flex:1;">{{ option.option_text }}</span>
+            <span class="mcq-opt-result">
+              {% if option.is_correct %}✅{% else %}❌{% endif %}
+            </span>
           </div>
           {% endfor %}
         </div>
 
-        <!-- Explanation (hidden until answered) -->
+        <!-- Explanation -->
         <div class="mcq-explanation" id="exp-{{ question.pk }}">
-          ✅ <strong>Explanation:</strong> {{ question.explanation }}
-          {% if question.section_ref %}
-          <br><em style="font-size:12px;color:var(--navy-mid);margin-top:4px;display:block;">📖 Reference: {{ question.section_ref }}</em>
-          {% endif %}
+          <div class="mcq-exp-inner" id="exp-inner-{{ question.pk }}">
+            <div class="mcq-exp-header" id="exp-header-{{ question.pk }}">
+              <span id="exp-icon-{{ question.pk }}">✅</span>
+              <span id="exp-title-{{ question.pk }}">Correct Answer!</span>
+            </div>
+            <div class="mcq-exp-text">{{ question.explanation }}</div>
+            {% if question.section_ref %}
+            <div style="margin-top:10px;">
+              <span class="mcq-exp-ref">📖 {{ question.section_ref }}</span>
+            </div>
+            {% endif %}
+          </div>
         </div>
       </div>
-    </div>
+    </div><!-- end mcq-card -->
 
-    {# Insert ad after every 3rd question #}
-    {% if forloop.counter|divisibleby:3 %}
+    {# Ad after every 4th question #}
+    {% if forloop.counter|divisibleby:4 %}
     <div class="ad-wrapper">
       <div class="ad-wrapper-label">Advertisement</div>
       <div class="ad-zone ad-incontent">
@@ -141,38 +539,51 @@
     </div>
     {% endif %}
 
-    {% endwith %}
     {% empty %}
-    <div style="text-align:center;padding:40px 0;color:var(--text-light);">
-      <p>No MCQs found for this category.</p>
+    <div style="text-align:center;padding:60px 20px;">
+      <div style="font-size:48px;margin-bottom:16px;">📭</div>
+      <h3 style="font-family:var(--font-head);color:var(--navy);margin-bottom:8px;">No MCQs found</h3>
+      <p style="color:var(--text-light);margin-bottom:20px;">No questions in this category yet.</p>
+      <a href="{% url 'question_list' %}" class="btn-primary" style="text-decoration:none;">
+        View All MCQs
+      </a>
     </div>
     {% endfor %}
 
-    <!-- Pagination -->
+    <!-- ── PAGINATION ──────────────────────────────────────── -->
     {% if page_obj.has_other_pages %}
-    <nav class="pagination" aria-label="MCQ pagination">
+    <nav class="pagination" aria-label="MCQ pagination" style="margin-top:28px;">
       {% if page_obj.has_previous %}
-      <a href="?page={{ page_obj.previous_page_number }}">← Prev</a>
+      <a href="?page={{ page_obj.previous_page_number }}{% if selected_category %}&cat={{ selected_category }}{% endif %}">
+        ← Prev
+      </a>
       {% else %}
       <span class="disabled">← Prev</span>
       {% endif %}
+
       {% for num in page_obj.paginator.page_range %}
         {% if page_obj.number == num %}
         <span class="current">{{ num }}</span>
         {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
-        <a href="?page={{ num }}">{{ num }}</a>
+        <a href="?page={{ num }}{% if selected_category %}&cat={{ selected_category }}{% endif %}">{{ num }}</a>
         {% endif %}
       {% endfor %}
+
       {% if page_obj.has_next %}
-      <a href="?page={{ page_obj.next_page_number }}">Next →</a>
+      <a href="?page={{ page_obj.next_page_number }}{% if selected_category %}&cat={{ selected_category }}{% endif %}">
+        Next →
+      </a>
       {% else %}
       <span class="disabled">Next →</span>
       {% endif %}
     </nav>
+    <p style="text-align:center;font-size:12px;color:var(--text-light);margin-top:8px;">
+      Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }} · Score persists across pages
+    </p>
     {% endif %}
 
-    <!-- Bottom Ad -->
-    <div class="ad-wrapper">
+    <!-- ── BOTTOM AD ───────────────────────────────────────── -->
+    <div class="ad-wrapper" style="margin-top:24px;">
       <div class="ad-wrapper-label">Advertisement</div>
       <div class="ad-zone ad-leaderboard">
         <div class="ad-zone-label">AdSense — Bottom MCQ</div>
@@ -182,25 +593,33 @@
 
   </main>
 
-  <!-- Sidebar -->
+  <!-- ── SIDEBAR ─────────────────────────────────────────── -->
   <aside class="content-sidebar">
 
     <!-- Email Capture -->
-    <div class="mcq-email-widget" style="margin-bottom:20px;">
+    <div class="mcq-email-widget">
       <h4>📥 Free MCQ PDF</h4>
-      <p>Get 200+ Tax MCQs as a free PDF for CA, ICMAP &amp; ACCA prep.</p>
+      <p>Get 200+ Tax MCQs as a free PDF — perfect for CA, ICMAP &amp; ACCA prep.</p>
       <div class="mcq-email-form">
-        <input type="email" placeholder="your@email.com" aria-label="Email address">
-        <button class="btn-calc" style="white-space:nowrap;">Get PDF</button>
+        <input type="email" placeholder="your@email.com" aria-label="Email">
+        <button>Get PDF</button>
       </div>
     </div>
 
+    <!-- Category Links -->
     <div class="sidebar-widget">
-      <div class="sidebar-widget-header">🎯 Exam Resources</div>
+      <div class="sidebar-widget-header">📚 MCQ Topics</div>
       <div class="sidebar-widget-body">
         <div class="sidebar-links">
+          <a class="sidebar-link {% if not selected_category %}active{% endif %}"
+             href="{% url 'question_list' %}"
+             style="{% if not selected_category %}color:var(--green);background:var(--green-light);{% endif %}">
+            <span class="sidebar-link-dot"></span>All Topics
+          </a>
           {% for cat in categories %}
-          <a class="sidebar-link" href="{% url 'question_list_category' category_slug=cat.slug %}">
+          <a class="sidebar-link {% if selected_category == cat.name %}active{% endif %}"
+             href="{% url 'question_list_category' category_slug=cat.slug %}"
+             style="{% if selected_category == cat.name %}color:var(--green);background:var(--green-light);{% endif %}">
             <span class="sidebar-link-dot"></span>{{ cat.name }}
           </a>
           {% endfor %}
@@ -208,10 +627,11 @@
       </div>
     </div>
 
+    <!-- Sidebar Ad -->
     <div class="ad-wrapper">
       <div class="ad-wrapper-label">Advertisement</div>
       <div class="ad-zone ad-rectangle">
-        <div class="ad-zone-label">AdSense — MCQ Sidebar</div>
+        <div class="ad-zone-label">AdSense — Sidebar</div>
         <div class="ad-zone-size">300×250</div>
       </div>
     </div>
@@ -219,6 +639,7 @@
     {% include 'partials/sidebar.html' %}
   </aside>
 </div>
+
 {% endblock %}
 
 {% block extra_js %}

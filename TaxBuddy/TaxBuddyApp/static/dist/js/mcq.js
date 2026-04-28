@@ -1,54 +1,48 @@
 /* ============================================================
    TaxBuddy Umair — MCQ / Quiz JavaScript
-   Features: Score tracking, sessionStorage persistence,
-             keyboard navigation, smooth UX
+   Drives: score panel, progress bar, status dots,
+           explanation reveal, sessionStorage persistence,
+           motivation bar, reset
    ============================================================ */
 
-// ── STATE ────────────────────────────────────────────────────
-const MCQ_STORAGE_KEY = 'taxbuddy_mcq_score';
+// ── STATE ─────────────────────────────────────────────────────
+const MCQ_KEY = 'taxbuddy_mcq_score';
+let totalOnPage = 0;
 
-let mcqState = loadState();
+let state = loadState();
 
-// ── LOAD / SAVE STATE ─────────────────────────────────────────
 function loadState() {
   try {
-    const saved = sessionStorage.getItem(MCQ_STORAGE_KEY);
-    if (saved) {
-      const parsed = JSON.parse(saved);
-      return {
-        answered: parsed.answered || 0,
-        correct:  parsed.correct  || 0,
-        wrong:    parsed.wrong    || 0,
-        total:    0, // recounted on page load
-      };
+    const raw = sessionStorage.getItem(MCQ_KEY);
+    if (raw) {
+      const p = JSON.parse(raw);
+      return { answered: p.answered || 0, correct: p.correct || 0, wrong: p.wrong || 0 };
     }
   } catch(e) {}
-  return { answered: 0, correct: 0, wrong: 0, total: 0 };
+  return { answered: 0, correct: 0, wrong: 0 };
 }
 
 function saveState() {
-  try {
-    sessionStorage.setItem(MCQ_STORAGE_KEY, JSON.stringify({
-      answered: mcqState.answered,
-      correct:  mcqState.correct,
-      wrong:    mcqState.wrong,
-    }));
-  } catch(e) {}
+  try { sessionStorage.setItem(MCQ_KEY, JSON.stringify(state)); } catch(e) {}
 }
 
 function resetState() {
-  mcqState = { answered: 0, correct: 0, wrong: 0, total: 0 };
-  try { sessionStorage.removeItem(MCQ_STORAGE_KEY); } catch(e) {}
-  mcqState.total = document.querySelectorAll('.mcq-card').length;
-  updateScorePanel();
+  state = { answered: 0, correct: 0, wrong: 0 };
+  try { sessionStorage.removeItem(MCQ_KEY); } catch(e) {}
+  updateAllUI();
+  // Hide motivation bar
+  const bar = document.getElementById('mcq-motivation-bar');
+  if (bar) bar.classList.remove('show');
+  const resetBtn = document.getElementById('mcq-reset-btn');
+  if (resetBtn) resetBtn.style.display = 'none';
 }
 
 // ── INIT ──────────────────────────────────────────────────────
 document.addEventListener('DOMContentLoaded', () => {
-  mcqState.total = document.querySelectorAll('.mcq-card').length;
-  updateScorePanel();
+  totalOnPage = document.querySelectorAll('.mcq-card').length;
+  updateAllUI();
 
-  // Keyboard support: Enter / Space to select focused option
+  // Keyboard: Enter / Space on focused option
   document.querySelectorAll('.mcq-option').forEach(opt => {
     opt.addEventListener('keydown', e => {
       if (e.key === 'Enter' || e.key === ' ') {
@@ -58,121 +52,136 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
-  // Reset button (if present)
-  const resetBtn = document.getElementById('mcq-reset-btn');
-  if (resetBtn) resetBtn.addEventListener('click', resetState);
-
-  // Show reset button if there's a saved score
-  if (mcqState.answered > 0) {
-    const btn = document.getElementById('mcq-reset-btn');
-    if (btn) btn.style.display = 'inline-flex';
+  // Show reset btn if there's a previous score
+  if (state.answered > 0) {
+    const bar = document.getElementById('mcq-motivation-bar');
+    if (bar) bar.classList.add('show');
   }
 });
 
-
 // ── SELECT OPTION ─────────────────────────────────────────────
-/**
- * Called when user clicks an MCQ option.
- * @param {HTMLElement} el - The clicked .mcq-option element
- */
 function selectMCQOption(el) {
-  const parentOptions = el.closest('.mcq-options');
-  // Already answered this question?
-  if (parentOptions.querySelector('.selected-correct, .selected-wrong')) return;
+  const parentOpts = el.closest('.mcq-options');
+  // Already answered?
+  if (parentOpts.querySelector('.selected-correct, .selected-wrong')) return;
 
   const isCorrect = el.dataset.correct === 'true';
   const expId     = el.dataset.exp;
+  const qPk       = el.dataset.qpk;
 
-  // Disable all options in this question
-  parentOptions.querySelectorAll('.mcq-option').forEach(opt => {
+  // Mark all options disabled, highlight correct answer
+  parentOpts.querySelectorAll('.mcq-option').forEach(opt => {
     opt.classList.add('disabled');
     opt.setAttribute('tabindex', '-1');
-    // Always highlight the correct answer in green
-    if (opt.dataset.correct === 'true') {
-      opt.classList.add('selected-correct');
+    if (opt.dataset.correct === 'true' && opt !== el) {
+      opt.classList.add('correct-highlight');
     }
   });
 
-  // Mark selected option right/wrong
-  if (isCorrect) {
-    el.classList.add('selected-correct');
-  } else {
-    el.classList.add('selected-wrong');
-  }
+  // Mark selected option
+  el.classList.add(isCorrect ? 'selected-correct' : 'selected-wrong');
 
   // Show explanation
-  const exp = document.getElementById(expId);
+  const exp      = document.getElementById(expId);
+  const expInner = document.getElementById(`exp-inner-${qPk}`);
+  const expHeader= document.getElementById(`exp-header-${qPk}`);
+  const expIcon  = document.getElementById(`exp-icon-${qPk}`);
+  const expTitle = document.getElementById(`exp-title-${qPk}`);
+
   if (exp) {
     exp.classList.add('show');
-    if (!isCorrect) exp.classList.add('wrong-exp');
-    // Smooth scroll to explanation on mobile
+    if (!isCorrect && expInner)  expInner.classList.add('wrong-bg');
+    if (!isCorrect && expHeader) expHeader.classList.add('wrong');
+    if (expIcon)  expIcon.textContent  = isCorrect ? '✅' : '❌';
+    if (expTitle) expTitle.textContent = isCorrect ? 'Correct Answer!' : 'Incorrect — See Explanation';
+    // Scroll explanation into view on mobile
     if (window.innerWidth < 768) {
-      setTimeout(() => {
-        exp.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-      }, 150);
+      setTimeout(() => exp.scrollIntoView({ behavior: 'smooth', block: 'nearest' }), 200);
     }
   }
 
+  // Update status dot on card header
+  const dot = document.getElementById(`dot-${qPk}`);
+  if (dot) dot.classList.add(isCorrect ? 'correct' : 'wrong');
+
+  // Style card border
+  const card = document.getElementById(`mcq-card-${qPk}`);
+  if (card) card.classList.add(isCorrect ? 'answered' : 'answered-wrong');
+
   // Update state
-  mcqState.answered++;
-  if (isCorrect) mcqState.correct++;
-  else           mcqState.wrong++;
+  state.answered++;
+  if (isCorrect) state.correct++;
+  else           state.wrong++;
 
-  saveState(); // persist across pagination
-  updateScorePanel();
-
-  // Show reset button once user has answered ≥1
-  const resetBtn = document.getElementById('mcq-reset-btn');
-  if (resetBtn) resetBtn.style.display = 'inline-flex';
+  saveState();
+  updateAllUI();
 }
 
+// ── UPDATE ALL UI ELEMENTS ────────────────────────────────────
+function updateAllUI() {
+  updateScorePanel();
+  updateProgressBar();
+  updateMotivationBar();
+}
 
-// ── UPDATE SCORE PANEL ────────────────────────────────────────
 function updateScorePanel() {
   const answeredEl = document.getElementById('score-answered');
   const correctEl  = document.getElementById('score-correct');
   const wrongEl    = document.getElementById('score-wrong');
   const pctEl      = document.getElementById('score-pct');
 
-  if (answeredEl) answeredEl.textContent = `${mcqState.answered} / ${mcqState.total}`;
-  if (correctEl)  correctEl.textContent  = mcqState.correct;
-  if (wrongEl)    wrongEl.textContent    = mcqState.wrong;
+  if (answeredEl) {
+    answeredEl.innerHTML = `${state.answered}<span style="font-size:13px;color:var(--text-light);font-weight:400;"> / ${totalOnPage}</span>`;
+  }
+  if (correctEl) correctEl.textContent = state.correct;
+  if (wrongEl)   wrongEl.textContent   = state.wrong;
 
   if (pctEl) {
-    if (mcqState.answered === 0) {
+    if (state.answered === 0) {
       pctEl.textContent = '—';
       pctEl.style.color = '';
     } else {
-      const pct = Math.round((mcqState.correct / mcqState.answered) * 100);
+      const pct = Math.round((state.correct / state.answered) * 100);
       pctEl.textContent = `${pct}%`;
-      // Colour code: green ≥70%, amber 50-69%, red <50%
-      pctEl.style.color = pct >= 70
-        ? 'var(--green)'
-        : pct >= 50
-        ? 'var(--gold)'
-        : 'var(--red)';
+      pctEl.style.color = pct >= 70 ? 'var(--green)' : pct >= 50 ? 'var(--gold)' : 'var(--red)';
     }
   }
-
-  // Show running motivation message
-  updateMotivation();
 }
 
+function updateProgressBar() {
+  const bar     = document.getElementById('progress-bar');
+  const pctText = document.getElementById('progress-pct-text');
+  if (!bar) return;
 
-// ── MOTIVATION MESSAGE ────────────────────────────────────────
-function updateMotivation() {
-  const msgEl = document.getElementById('mcq-motivation');
-  if (!msgEl || mcqState.answered === 0) return;
+  const pct = totalOnPage > 0 ? Math.round((state.answered / totalOnPage) * 100) : 0;
+  bar.style.width = pct + '%';
+  if (pctText) pctText.textContent = pct + '% complete';
 
-  const pct = Math.round((mcqState.correct / mcqState.answered) * 100);
+  // Change bar colour at 100%
+  if (pct === 100) {
+    bar.style.background = 'linear-gradient(90deg, var(--green), #4ee8b0)';
+  }
+}
+
+function updateMotivationBar() {
+  const bar    = document.getElementById('mcq-motivation-bar');
+  const msgEl  = document.getElementById('mcq-motivation');
+  const resetBtn = document.getElementById('mcq-reset-btn');
+  if (!bar || !msgEl) return;
+
+  if (state.answered === 0) return;
+
+  const pct = Math.round((state.correct / state.answered) * 100);
   let msg = '';
 
-  if (mcqState.answered < 3)       msg = '🎯 Keep going!';
-  else if (pct === 100)             msg = '🏆 Perfect score! Excellent!';
-  else if (pct >= 80)               msg = '🌟 Great work! You\'re well prepared.';
-  else if (pct >= 60)               msg = '📚 Good effort. Review the explanations.';
-  else                              msg = '💪 Keep practising — you\'ll improve!';
+  if (state.answered < 3)  msg = '🎯 Keep going!';
+  else if (pct === 100)    msg = '🏆 Perfect! Outstanding knowledge!';
+  else if (pct >= 80)      msg = '🌟 Excellent! You\'re well prepared.';
+  else if (pct >= 60)      msg = '📚 Good effort! Review the explanations.';
+  else if (pct >= 40)      msg = '💪 Keep practising — you\'ll improve!';
+  else                     msg = '📖 Focus on the ITO 2001 references.';
 
   msgEl.textContent = msg;
-  msgEl.style.display = 'block';
+  bar.classList.add('show');
+  if (resetBtn) resetBtn.style.display = 'flex';
 }
