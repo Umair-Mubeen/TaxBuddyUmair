@@ -451,20 +451,20 @@
     </div>
 
     <!-- ── CATEGORY FILTER ─────────────────────────────────── -->
-    <div class="mcq-filter-bar">
-      <span class="mcq-filter-label">Topic:</span>
-      <a href="{% url 'question_list' %}"
-         class="mcq-filter-btn {% if not selected_category %}active{% endif %}">
-        All Topics
-      </a>
-      {% for cat in categories %}
-      <a href="{% url 'question_list_category' category_slug=cat.slug %}"
-         class="mcq-filter-btn {% if selected_category == cat.name %}active{% endif %}">
-        {{ cat.name }}
-      </a>
-      {% endfor %}
-      <span class="mcq-filter-count">{{ page_obj.paginator.count }} Qs</span>
-    </div>
+<!--    <div class="mcq-filter-bar">-->
+<!--      <span class="mcq-filter-label">Topic:</span>-->
+<!--      <a href="{% url 'question_list' %}"-->
+<!--         class="mcq-filter-btn {% if not selected_category %}active{% endif %}">-->
+<!--        All Topics-->
+<!--      </a>-->
+<!--      {% for cat in categories %}-->
+<!--      <a href="{% url 'question_list_category' category_slug=cat.slug %}"-->
+<!--         class="mcq-filter-btn {% if selected_category == cat.name %}active{% endif %}">-->
+<!--        {{ cat.name }}-->
+<!--      </a>-->
+<!--      {% endfor %}-->
+<!--      <span class="mcq-filter-count">{{ page_obj.paginator.count }} Qs</span>-->
+<!--    </div>-->
 
     <!-- ── MCQ CARDS ───────────────────────────────────────── -->
     {% for question in page_obj %}

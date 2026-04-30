@@ -25,36 +25,36 @@
 </div>
 
 <!-- Top Ad -->
-<div class="container">
-  <div class="ad-wrapper">
-    <div class="ad-wrapper-label">Advertisement</div>
-    <div class="ad-zone ad-leaderboard">
-      <div class="ad-zone-label">AdSense — Blog List Top</div>
-      <div class="ad-zone-size">728×90 / Responsive</div>
-    </div>
-  </div>
-</div>
+<!--<div class="container">-->
+<!--  <div class="ad-wrapper">-->
+<!--    <div class="ad-wrapper-label">Advertisement</div>-->
+<!--    <div class="ad-zone ad-leaderboard">-->
+<!--      <div class="ad-zone-label">AdSense — Blog List Top</div>-->
+<!--      <div class="ad-zone-size">728×90 / Responsive</div>-->
+<!--    </div>-->
+<!--  </div>-->
+<!--</div>-->
 
 <div class="content-grid">
   <main class="content-main">
 
     <!-- Category Filter Pills -->
-    <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:20px;">
-      <a href="{% url 'viewBlogs' %}"
-         style="padding:6px 16px;border-radius:20px;font-size:12px;font-weight:600;
-                {% if category_name == 'All' %}background:var(--green);color:#fff;{% else %}background:var(--bg);color:var(--text-mid);border:1px solid var(--border);{% endif %}
-                text-decoration:none;">
-        All
-      </a>
-      {% for label, slug in categories %}
-      <a href="{% url 'viewBlogs_category' slug=slug %}"
-         style="padding:6px 16px;border-radius:20px;font-size:12px;font-weight:600;
-                {% if category_name|lower == label|lower %}background:var(--green);color:#fff;{% else %}background:var(--bg);color:var(--text-mid);border:1px solid var(--border);{% endif %}
-                text-decoration:none;">
-        {{ label }}
-      </a>
-      {% endfor %}
-    </div>
+<!--    <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:20px;">-->
+<!--      <a href="{% url 'viewBlogs' %}"-->
+<!--         style="padding:6px 16px;border-radius:20px;font-size:12px;font-weight:600;-->
+<!--                {% if category_name == 'All' %}background:var(&#45;&#45;green);color:#fff;{% else %}background:var(&#45;&#45;bg);color:var(&#45;&#45;text-mid);border:1px solid var(&#45;&#45;border);{% endif %}-->
+<!--                text-decoration:none;">-->
+<!--        All-->
+<!--      </a>-->
+<!--      {% for label, slug in categories %}-->
+<!--      <a href="{% url 'viewBlogs_category' slug=slug %}"-->
+<!--         style="padding:6px 16px;border-radius:20px;font-size:12px;font-weight:600;-->
+<!--                {% if category_name|lower == label|lower %}background:var(&#45;&#45;green);color:#fff;{% else %}background:var(&#45;&#45;bg);color:var(&#45;&#45;text-mid);border:1px solid var(&#45;&#45;border);{% endif %}-->
+<!--                text-decoration:none;">-->
+<!--        {{ label }}-->
+<!--      </a>-->
+<!--      {% endfor %}-->
+<!--    </div>-->
 
     <!-- Blog Cards -->
     {% if page_obj.object_list %}
