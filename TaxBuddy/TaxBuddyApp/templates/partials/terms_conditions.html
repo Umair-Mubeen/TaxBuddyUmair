@@ -1,39 +1,3 @@
-<<<<<<< HEAD
-{% extends 'base.html' %}
-{% load static %}
-{% block title %}Terms & Conditions | TaxBuddy Umair{% endblock %}
-{% block content %}
-<div class="article-hero">
-  <div class="article-hero-inner">
-    <div class="breadcrumb"><a href="{% url 'index' %}">Home</a><span class="breadcrumb-sep">›</span><span>Terms &amp; Conditions</span></div>
-    <h1>Terms &amp; Conditions</h1>
-    <div class="article-meta"><span>📅 Last Updated: January 2025</span></div>
-  </div>
-</div>
-<div class="content-grid">
-  <main class="content-main">
-    <div class="article-content">
-      <h2>1. Acceptance of Terms</h2>
-      <p>By accessing and using TaxBuddy Umair (taxbuddyumair.com), you accept and agree to be bound by these Terms and Conditions. If you do not agree, please do not use this website.</p>
-      <h2>2. Educational Purpose Disclaimer</h2>
-      <p>The content on this website — including tax guides, calculators, MCQs, and blog articles — is provided for <strong>general educational purposes only</strong>. It does not constitute professional tax, legal, or financial advice. Tax laws are subject to change and may vary based on individual circumstances.</p>
-      <div class="warning-box">⚠️ Always consult a qualified tax professional or the official FBR website (fbr.gov.pk) for advice specific to your situation.</div>
-      <h2>3. Calculator Accuracy</h2>
-      <p>Our tax calculators are designed to provide estimates based on published FBR tax slabs. Results are approximations and may not reflect your exact tax liability. Actual tax due depends on many factors including deductions, credits, withholding tax adjustments, and assessment orders.</p>
-      <h2>4. Intellectual Property</h2>
-      <p>All content on this website, including text, graphics, guides, and MCQs, is the property of TaxBuddy Umair unless otherwise stated. You may not reproduce or distribute any content without prior written permission.</p>
-      <h2>5. Paid Services</h2>
-      <p>When engaging paid consultation or filing services through this platform, separate service agreements may apply. Payment terms, refund policies, and deliverables will be communicated directly via WhatsApp or email prior to engagement.</p>
-      <h2>6. Limitation of Liability</h2>
-      <p>TaxBuddy Umair shall not be liable for any direct, indirect, incidental, or consequential damages arising from the use of this website or reliance on its content.</p>
-      <h2>7. Changes to Terms</h2>
-      <p>We reserve the right to modify these Terms at any time. Continued use of the website after changes constitutes acceptance of the revised Terms.</p>
-      <h2>8. Contact</h2>
-      <p>For questions about these Terms, contact us at <a href="mailto:umair.mubeenir@gmail.com">umair.mubeenir@gmail.com</a>.</p>
-    </div>
-  </main>
-  <aside class="content-sidebar">{% include 'partials/sidebar.html' %}</aside>
-=======
 {% extends "base.html" %}
 {% load static %}
 {% block title %}Terms &amp; Conditions | TaxBuddy Umair{% endblock %}
@@ -42,10 +6,6 @@
 {% block content %}
 <div style="background:var(--navy);padding:88px 0 40px">
   <div class="container">
-    <nav style="display:flex;align-items:center;gap:8px;font-size:12px;color:rgba(255,255,255,.4);margin-bottom:16px" aria-label="Breadcrumb">
-      <a href="{% url 'index' %}" style="transition:color .15s" onmouseover="this.style.color='var(--green)'" onmouseout="this.style.color='rgba(255,255,255,.4)'">Home</a>
-      <span>›</span><span style="color:rgba(255,255,255,.6)">Terms &amp; Conditions</span>
-    </nav>
     <h1 style="font-family:'Playfair Display',serif;font-size:clamp(26px,4vw,40px);font-weight:700;font-style:italic;color:#fff;line-height:1.2">Terms &amp; Conditions</h1>
     <p style="color:rgba(255,255,255,.4);font-size:13px;margin-top:8px">Last updated: January 2026</p>
   </div>
@@ -80,6 +40,5 @@
     <h2 style="font-family:'Playfair Display',serif;font-size:20px;font-weight:700;color:var(--navy);margin:1.5rem 0 12px">9. Contact</h2>
     <p>Questions about these terms: <a href="mailto:umair.mubeenir@gmail.com" style="color:var(--navy-light)">umair.mubeenir@gmail.com</a></p>
   </div>
->>>>>>> 711c074cb538f6630ca1bf6394389fc01740700d
 </div>
 {% endblock %}
