@@ -96,9 +96,301 @@
 
   <!-- Favicon -->
   <link rel="icon" type="image/png" href="{% static 'images/favicon.png' %}">
+  <style>
+/* ── MOBILE NAVBAR ── */
+
+/* Hide desktop nav links on mobile */
+@media (max-width: 992px) {
+  /* Hide desktop nav */
+  .navbar-nav,
+  .nav-links,
+  header nav ul,
+  nav .desktop-menu,
+  .top-nav {
+    display: none !important;
+  }
+
+  /* Show hamburger button */
+  .hamburger,
+  .navbar-toggler,
+  .menu-toggle,
+  #hamburger,
+  .mobile-toggle {
+    display: flex !important;
+    align-items: center;
+    justify-content: center;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    padding: 8px;
+    color: #fff;
+    min-width: 44px;
+    min-height: 44px;
+    -webkit-tap-highlight-color: transparent;
+  }
+}
+
+/* Mobile menu overlay */
+#tb-mobile-menu {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 9999;
+  background: #0a2238;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  flex-direction: column;
+}
+
+#tb-mobile-menu.tb-open {
+  display: flex;
+}
+
+/* Mobile menu header */
+.tb-menu-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 20px;
+  border-bottom: 1px solid rgba(255,255,255,0.1);
+  background: #0a2238;
+  position: sticky;
+  top: 0;
+  z-index: 1;
+}
+
+.tb-menu-logo {
+  font-family: serif;
+  font-size: 20px;
+  font-style: italic;
+  font-weight: 700;
+  color: #fff;
+}
+
+.tb-menu-logo em {
+  color: #22c97a;
+  font-style: normal;
+}
+
+.tb-close-btn {
+  background: rgba(255,255,255,0.1);
+  border: 1px solid rgba(255,255,255,0.2);
+  border-radius: 8px;
+  color: #fff;
+  width: 44px;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 22px;
+  line-height: 1;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.tb-close-btn:hover {
+  background: rgba(255,255,255,0.2);
+}
+
+/* Mobile menu body */
+.tb-menu-body {
+  padding: 12px 0;
+  flex: 1;
+}
+
+/* Menu items */
+.tb-menu-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 20px;
+  color: rgba(255,255,255,0.85);
+  font-size: 15px;
+  font-weight: 500;
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+  text-decoration: none;
+  min-height: 52px;
+  cursor: pointer;
+  transition: background 0.15s;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.tb-menu-item:hover,
+.tb-menu-item:active {
+  background: rgba(255,255,255,0.06);
+  color: #fff;
+}
+
+.tb-menu-item .tb-arrow {
+  font-size: 12px;
+  color: rgba(255,255,255,0.4);
+  transition: transform 0.2s;
+}
+
+.tb-menu-item.tb-expanded .tb-arrow {
+  transform: rotate(90deg);
+}
+
+/* Dropdown sub-items */
+.tb-submenu {
+  display: none;
+  background: rgba(0,0,0,0.2);
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+}
+
+.tb-submenu.tb-show {
+  display: block;
+}
+
+.tb-submenu a {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 13px 20px 13px 36px;
+  color: rgba(255,255,255,0.7);
+  font-size: 14px;
+  text-decoration: none;
+  border-bottom: 1px solid rgba(255,255,255,0.04);
+  min-height: 48px;
+  transition: background 0.15s, color 0.15s;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.tb-submenu a:last-child {
+  border-bottom: none;
+}
+
+.tb-submenu a:hover,
+.tb-submenu a:active {
+  background: rgba(255,255,255,0.06);
+  color: #fff;
+}
+
+/* Bottom CTA in mobile menu */
+.tb-menu-cta {
+  padding: 16px 20px 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.tb-cta-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 14px;
+  border-radius: 10px;
+  font-size: 15px;
+  font-weight: 700;
+  text-decoration: none;
+  min-height: 52px;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.tb-cta-wa {
+  background: #25d366;
+  color: #fff;
+}
+
+.tb-cta-wa:hover { background: #1ebe5d; color: #fff; }
+
+.tb-cta-secondary {
+  background: rgba(255,255,255,0.1);
+  color: rgba(255,255,255,0.85);
+  border: 1px solid rgba(255,255,255,0.2);
+}
+
+/* Prevent body scroll when menu open */
+body.tb-no-scroll {
+  overflow: hidden;
+  position: fixed;
+  width: 100%;
+}
+</style>
+
   {% block head_extra %}{% endblock %}
 </head>
 <body>
+<!-- MOBILE FULL-SCREEN MENU -->
+<div id="tb-mobile-menu" role="dialog" aria-modal="true" aria-label="Navigation Menu">
+  <div class="tb-menu-header">
+    <div class="tb-menu-logo">Tax<em>Buddy</em> Umair</div>
+    <button class="tb-close-btn" id="tb-close" aria-label="Close menu">×</button>
+  </div>
+
+  <div class="tb-menu-body">
+
+    <!-- Home -->
+    <a href="/" class="tb-menu-item">
+      🏠 Home
+    </a>
+
+    <!-- Tax Guides dropdown -->
+    <div class="tb-menu-item" id="toggle-guides" onclick="tbToggle('guides')">
+      <span>📚 Tax Guides</span>
+      <span class="tb-arrow">›</span>
+    </div>
+    <div class="tb-submenu" id="sub-guides">
+      <a href="/income-tax-guides/">📋 Income Tax Guide</a>
+      <a href="/sales-tax-guides/">📊 Sales Tax Guide</a>
+      <a href="/income-tax-rates/">📈 Income Tax Rates</a>
+      <a href="/withholding-tax-rates/">📉 Withholding Tax Rates</a>
+    </div>
+
+    <!-- Calculators dropdown -->
+    <div class="tb-menu-item" id="toggle-calc" onclick="tbToggle('calc')">
+      <span>🧮 Calculators</span>
+      <span class="tb-arrow">›</span>
+    </div>
+    <div class="tb-submenu" id="sub-calc">
+      <a href="/SalaryCalculator/">💼 Salary Tax Calculator</a>
+      <a href="/BusinessCalculator/">🏢 Business Tax Calculator</a>
+      <a href="/AOPCalculator/">🤝 AOP Calculator</a>
+      <a href="/PropertyCalculator/">🏠 Property Calculator</a>
+      <a href="/TaxCalculator4C/">⚡ Super Tax 4C</a>
+    </div>
+
+    <!-- MCQs -->
+    <a href="/income-tax-mcqs-pakistan/" class="tb-menu-item">
+      📝 Tax MCQs
+    </a>
+
+    <!-- Blog dropdown -->
+    <div class="tb-menu-item" id="toggle-blog" onclick="tbToggle('blog')">
+      <span>📰 Blog</span>
+      <span class="tb-arrow">›</span>
+    </div>
+    <div class="tb-submenu" id="sub-blog">
+      <a href="/blog/income-tax/">📝 Income Tax Blog</a>
+      <a href="/blog/sales-tax/">📝 Sales Tax Blog</a>
+      <a href="/blog/">📝 All Posts</a>
+    </div>
+
+    <!-- Services -->
+    <a href="/online-services/" class="tb-menu-item">
+      🛎 Services
+    </a>
+
+    <!-- Contact -->
+    <a href="/#contact" class="tb-menu-item">
+      📞 Contact Us
+    </a>
+
+  </div>
+
+  <div class="tb-menu-cta">
+    <a href="https://wa.me/923332482742" class="tb-cta-btn tb-cta-wa" target="_blank" rel="noopener noreferrer">
+      💬 Book Consultation on WhatsApp
+    </a>
+    <a href="/online-services/" class="tb-cta-btn tb-cta-secondary">
+      View All Services
+    </a>
+  </div>
+</div>
 
   <!-- ── TOP AD STRIP ──────────────────────────────────── -->
   {% block top_ad %}
@@ -158,8 +450,109 @@
   </a>
 
   <!-- ── SCRIPTS ─────────────────────────────────────────── -->
-  <script src="{% static 'js/main.js' %}"></script>
+  <script src="{% static 'dist/js/main.js' %}"></script>
   {% block extra_js %}{% endblock %}
+
+<script>
+(function () {
+  'use strict';
+
+  var menu = document.getElementById('tb-mobile-menu');
+  var closeBtn = document.getElementById('tb-close');
+
+  /* ── Find the hamburger button ──
+     Works with ANY of these: #hamburger, .hamburger,
+     .navbar-toggler, .menu-toggle, [data-toggle="collapse"]  */
+  var hamburger =
+    document.getElementById('hamburger') ||
+    document.querySelector('.hamburger') ||
+    document.querySelector('.navbar-toggler') ||
+    document.querySelector('.menu-toggle') ||
+    document.querySelector('[data-toggle="collapse"]') ||
+    document.querySelector('.mobile-toggle');
+
+  function openMenu() {
+    menu.classList.add('tb-open');
+    document.body.classList.add('tb-no-scroll');
+    if (hamburger) hamburger.setAttribute('aria-expanded', 'true');
+    // Focus trap: move focus into menu
+    var firstLink = menu.querySelector('a, button');
+    if (firstLink) firstLink.focus();
+  }
+
+  function closeMenu() {
+    menu.classList.remove('tb-open');
+    document.body.classList.remove('tb-no-scroll');
+    if (hamburger) hamburger.setAttribute('aria-expanded', 'false');
+  }
+
+  /* Open on hamburger click */
+  if (hamburger) {
+    hamburger.addEventListener('click', function (e) {
+      e.stopPropagation();
+      if (menu.classList.contains('tb-open')) {
+        closeMenu();
+      } else {
+        openMenu();
+      }
+    });
+  }
+
+  /* Close on X button */
+  if (closeBtn) {
+    closeBtn.addEventListener('click', closeMenu);
+  }
+
+  /* Close on backdrop click (outside menu content) */
+  menu.addEventListener('click', function (e) {
+    if (e.target === menu) closeMenu();
+  });
+
+  /* Close on Escape key */
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape' && menu.classList.contains('tb-open')) {
+      closeMenu();
+      if (hamburger) hamburger.focus();
+    }
+  });
+
+  /* Close when any menu link is clicked */
+  menu.querySelectorAll('a').forEach(function (link) {
+    link.addEventListener('click', closeMenu);
+  });
+
+  /* Submenu accordion toggle */
+  window.tbToggle = function (id) {
+    var sub = document.getElementById('sub-' + id);
+    var btn = document.getElementById('toggle-' + id);
+    if (!sub) return;
+    var isOpen = sub.classList.contains('tb-show');
+    // Close all submenus first
+    document.querySelectorAll('.tb-submenu').forEach(function (s) {
+      s.classList.remove('tb-show');
+    });
+    document.querySelectorAll('.tb-menu-item').forEach(function (b) {
+      b.classList.remove('tb-expanded');
+    });
+    // Toggle clicked one
+    if (!isOpen) {
+      sub.classList.add('tb-show');
+      if (btn) btn.classList.add('tb-expanded');
+    }
+  };
+
+  /* Swipe left to close */
+  var touchStartX = 0;
+  menu.addEventListener('touchstart', function (e) {
+    touchStartX = e.touches[0].clientX;
+  }, { passive: true });
+  menu.addEventListener('touchend', function (e) {
+    var diff = touchStartX - e.changedTouches[0].clientX;
+    if (diff > 60) closeMenu(); // swipe left 60px = close
+  }, { passive: true });
+
+})();
+</script>
 
 </body>
 </html>
