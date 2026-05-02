@@ -149,19 +149,6 @@ def BlogDetails(request, slug=None):
 
 def viewBlogs(request, slug=None):
     try:
-        # No slug = show all published blogs
-        if not slug:
-            from django.core.paginator import Paginator
-            blogs = Blog.objects.filter(
-                status='published', is_deleted=False
-            ).order_by('-created_at')
-            paginator = Paginator(blogs, 12)
-            page_obj = paginator.get_page(request.GET.get('page'))
-            return render(request, "clone.html", {
-                "page_obj": page_obj,
-                "blogs": page_obj,
-                "category_name": "All Posts",
-            })
         category_name = slug.replace('-', ' ')
 
         blogs = Blog.objects.filter(
@@ -422,7 +409,8 @@ def AOPCalculator(request):
         ],
     }
 
-    context = {'content': content, 'title': 'AOP', 'url': '/AOPCalculator'}
+    years = list(TaxBracket.objects.values_list("year", flat=True).distinct().order_by("-year"))
+    context = {'content': content, 'title': 'AOP', 'url': '/AOPCalculator', 'years': years}
 
     if request.method == 'POST':
         # FIX: validate income before processing
@@ -476,7 +464,8 @@ def BusinessCalculator(request):
         ],
     }
 
-    context = {'content': content, 'title': 'Business Individual', 'url': '/BusinessCalculator'}
+    years = list(TaxBracket.objects.values_list("year", flat=True).distinct().order_by("-year"))
+    context = {'content': content, 'title': 'Business Individual', 'url': '/BusinessCalculator', 'years': years}
 
     if request.method == 'POST':
         income_amount, error = validate_income(request.POST)
@@ -529,7 +518,8 @@ def SalaryCalculator(request):
         ],
     }
 
-    context = {'content': content, 'title': 'Salary Individual', 'url': '/SalaryCalculator'}
+    years = list(TaxBracket.objects.values_list("year", flat=True).distinct().order_by("-year"))
+    context = {'content': content, 'title': 'Salary Individual', 'url': '/SalaryCalculator', 'years': years}
 
     if request.method == 'POST':
         income_amount, error = validate_income(request.POST)
@@ -562,7 +552,7 @@ def PropertyCalculator(request):
             gross_rent = to_int(request.POST.get('gross_rent', 0))
             if gross_rent <= 0:
                 messages.error(request, "Please enter a valid gross rent amount.")
-                return render(request, 'partials/property_rent.html')
+                return render(request, 'partials/property_rent.html', {'years': list(TaxBracket.objects.values_list("year", flat=True).distinct().order_by("-year"))})
 
             repairs_allowance   = to_int(request.POST.get('repairs_allowance'))
             insurance_premium   = to_int(request.POST.get('insurance_premium'))
@@ -590,10 +580,11 @@ def PropertyCalculator(request):
                 'net_income_rental': net_rental_income,
                 'total_deductions': total_deductions,
                 'yearly_income': yearly_income,
+                'years': list(TaxBracket.objects.values_list('year', flat=True).distinct().order_by('-year')),
             })
             return render(request, 'partials/property_rent.html', context)
 
-        return render(request, 'partials/property_rent.html')
+        return render(request, 'partials/property_rent.html', {'years': list(TaxBracket.objects.values_list('year', flat=True).distinct().order_by('-year'))})
 
     except Exception as e:
         return HttpResponse(f"Error: {str(e)}")
@@ -731,55 +722,65 @@ def tax_knowledge_quiz(request):
 
 def question_list(request, category_slug=None):
     try:
+        questions = Question.objects.prefetch_related("options").order_by("id")
         selected_category = None
         category_not_found = False
 
-        # Category model has its own slug field — use it directly
-        all_categories = Category.objects.all().order_by('order', 'name')
-
         if category_slug:
-            # Match URL slug against Category.slug field
-            try:
-                matched_cat = Category.objects.get(slug=category_slug)
-                selected_category = matched_cat.name
-            except Category.DoesNotExist:
-                # Fallback: slugify Category.name and compare
-                matched_cat = None
-                for cat in all_categories:
-                    if slugify(cat.name) == category_slug:
-                        matched_cat = cat
-                        selected_category = cat.name
+            all_categories = (
+                Question.objects
+                .exclude(category__isnull=True)
+                .exclude(category='')
+                .values_list("category", flat=True)
+                .distinct()
+            )
+            # Exact slug match first
+            for c in all_categories:
+                if slugify(c.strip()) == category_slug:
+                    selected_category = c.strip()
+                    break
+
+            if selected_category:
+                questions = questions.filter(category=selected_category)
+            else:
+                # Partial match fallback
+                slug_words = category_slug.replace('-', ' ').lower()
+                for c in all_categories:
+                    if slug_words in c.lower() or c.lower() in slug_words:
+                        selected_category = c.strip()
+                        questions = questions.filter(category=selected_category)
                         break
-                if not matched_cat:
+                else:
+                    # No match — show all questions, flag for template
                     category_not_found = True
 
-        # Filter questions — Question.category is a CharField
-        questions = Question.objects.filter(
-            is_active=True
-        ).prefetch_related('options').order_by('id')
-
-        if selected_category:
-            questions = questions.filter(category__iexact=selected_category)
-
         paginator = Paginator(questions, 10)
-        page_obj = paginator.get_page(request.GET.get('page'))
+        page_obj = paginator.get_page(request.GET.get("page"))
 
+        raw_categories = (
+            Question.objects
+            .exclude(category__isnull=True)
+            .exclude(category='')
+            .values_list("category", flat=True)
+            .distinct()
+        )
         categories = [
-            {'name': cat.name, 'slug': cat.slug}
-            for cat in all_categories
+            {"name": c.strip(), "slug": slugify(c.strip())}
+            for c in sorted(set(raw_categories))
         ]
 
-        return render(request, 'partials/mcq-layout.html', {
-            'page_obj': page_obj,
-            'categories': categories,
-            'selected_category': selected_category,
-            'seo_category': selected_category,
-            'category_slug': category_slug,
-            'category_not_found': category_not_found,
+        return render(request, "partials/mcq-layout.html", {
+            "page_obj": page_obj,
+            "categories": categories,
+            "selected_category": selected_category,
+            "seo_category": selected_category,
+            "category_slug": category_slug,
+            "category_not_found": category_not_found,
         })
 
     except Exception as e:
-        return HttpResponse('Exception at MCQ: ' + str(e))
+        return HttpResponse("Exception: " + str(e))
+
 
 def TaxCalculator4C(request):
     try:
