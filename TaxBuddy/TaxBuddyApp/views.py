@@ -722,7 +722,9 @@ def tax_knowledge_quiz(request):
 
 def question_list(request, category_slug=None):
     try:
+        print(category_slug)
         questions = Question.objects.prefetch_related("options").order_by("id")
+        print(questions)
         selected_category = None
         category_not_found = False
 
@@ -734,6 +736,8 @@ def question_list(request, category_slug=None):
                 .values_list("category", flat=True)
                 .distinct()
             )
+
+            print(all_categories)
             # Exact slug match first
             for c in all_categories:
                 if slugify(c.strip()) == category_slug:
