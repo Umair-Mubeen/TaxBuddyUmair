@@ -7,345 +7,205 @@
 {% block extra_css %}
 <link rel="stylesheet" href="{% static 'css/mcq.css' %}">
 <style>
-/* ── MCQ PAGE ENHANCEMENTS ─────────────────────────────── */
-.mcq-hero-stats {
-  display: flex; gap: 20px; flex-wrap: wrap; margin-top: 16px;
-}
-.mcq-hero-stat {
-  display: flex; align-items: center; gap: 8px;
-  background: rgba(255,255,255,0.08);
-  border: 1px solid rgba(255,255,255,0.12);
-  border-radius: 8px; padding: 8px 14px;
-}
-.mcq-hero-stat-num {
-  font-family: var(--font-head); font-size: 18px;
-  font-weight: 700; color: #4ee8b0;
-}
-.mcq-hero-stat-lbl { font-size: 11px; color: rgba(255,255,255,0.55); }
+/* ═══════════════════════════════════════════════════════════
+   ENHANCED MCQ LEARNING PLATFORM — TaxBuddy Umair
+   Premium EdTech Style
+═══════════════════════════════════════════════════════════ */
 
-/* Progress bar */
-.mcq-progress-wrap {
-  background: var(--white); border: 1px solid var(--border);
-  border-radius: var(--radius-lg); padding: 16px 20px;
-  margin-bottom: 16px;
-}
-.mcq-progress-header {
-  display: flex; justify-content: space-between;
-  align-items: center; margin-bottom: 10px;
-}
-.mcq-progress-title { font-size: 13px; font-weight: 600; color: var(--navy); }
-.mcq-progress-pct   { font-size: 13px; font-weight: 700; color: var(--green); }
-.mcq-progress-bar-bg {
-  height: 8px; background: var(--bg);
-  border-radius: 4px; overflow: hidden;
-}
-.mcq-progress-bar-fill {
-  height: 100%; background: linear-gradient(90deg, var(--green), #4ee8b0);
-  border-radius: 4px; transition: width 0.4s ease;
-  width: 0%;
-}
+/* ── HERO STATS ── */
+.mcq-hero-stats{display:flex;gap:12px;flex-wrap:wrap;margin-top:16px}
+.mcq-hero-stat{display:flex;align-items:center;gap:8px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.12);border-radius:8px;padding:8px 14px}
+.mcq-hero-stat-num{font-family:var(--font-head);font-size:18px;font-weight:700;color:#4ee8b0}
+.mcq-hero-stat-lbl{font-size:11px;color:rgba(255,255,255,.55)}
 
-/* Enhanced score panel */
-.mcq-score-panel {
-  display: grid; grid-template-columns: repeat(4,1fr);
-  gap: 10px; margin-bottom: 16px;
-}
-.score-item {
-  background: var(--white);
-  border: 1px solid var(--border);
-  border-radius: var(--radius-lg);
-  padding: 14px 10px; text-align: center;
-  transition: transform 0.2s, box-shadow 0.2s;
-}
-.score-item:hover { transform: translateY(-2px); box-shadow: var(--shadow-sm); }
-.score-val {
-  font-family: var(--font-head);
-  font-size: 22px; font-weight: 700;
-  color: var(--navy); line-height: 1;
-  margin-bottom: 4px;
-}
-.score-lbl {
-  font-size: 10px; color: var(--text-light);
-  text-transform: uppercase; letter-spacing: .08em;
-}
-.score-correct { color: var(--green) !important; }
-.score-wrong   { color: var(--red)   !important; }
+/* ── MODE SWITCHER ── */
+.mode-bar{display:flex;align-items:center;justify-content:space-between;gap:12px;background:var(--white);border:1px solid var(--border);border-radius:var(--radius-lg);padding:12px 16px;margin-bottom:16px;flex-wrap:wrap}
+.mode-pills{display:flex;gap:6px}
+.mode-pill{padding:6px 14px;border-radius:20px;border:1.5px solid var(--border);background:var(--bg);color:var(--text-mid);font-size:12.5px;font-weight:600;cursor:pointer;font-family:var(--font-body);transition:all .15s}
+.mode-pill:hover{border-color:var(--navy);color:var(--navy)}
+.mode-pill.active{background:var(--navy);border-color:var(--navy);color:#fff}
+.mode-info{font-size:12px;color:var(--text-light)}
 
-/* Category pills improved */
-.mcq-filter-bar {
-  background: var(--white); border: 1px solid var(--border);
-  border-radius: var(--radius-lg); padding: 14px 16px;
-  margin-bottom: 20px; display: flex; gap: 8px;
-  flex-wrap: wrap; align-items: center;
-}
-.mcq-filter-label {
-  font-size: 12px; font-weight: 700; color: var(--text-mid);
-  text-transform: uppercase; letter-spacing: .08em; flex-shrink: 0;
-}
-.mcq-filter-btn {
-  padding: 6px 14px; border-radius: 20px;
-  border: 1.5px solid var(--border);
-  background: var(--bg); color: var(--text-mid);
-  font-size: 12.5px; font-weight: 500;
-  cursor: pointer; font-family: var(--font-body);
-  text-decoration: none;
-  transition: all .15s;
-}
-.mcq-filter-btn:hover { border-color: var(--green); color: var(--green); background: var(--green-light); }
-.mcq-filter-btn.active {
-  background: var(--navy); border-color: var(--navy);
-  color: #fff; font-weight: 600;
-}
-.mcq-filter-count {
-  margin-left: auto; font-size: 12px;
-  color: var(--text-light); flex-shrink: 0;
-}
+/* ── SCORE PANEL ── */
+.mcq-score-panel{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:14px}
+.score-item{background:var(--white);border:1px solid var(--border);border-radius:var(--radius-lg);padding:14px 10px;text-align:center;transition:transform .2s,box-shadow .2s}
+.score-item:hover{transform:translateY(-2px);box-shadow:var(--shadow-sm)}
+.score-val{font-family:var(--font-head);font-size:22px;font-weight:700;color:var(--navy);line-height:1;margin-bottom:4px}
+.score-lbl{font-size:10px;color:var(--text-light);text-transform:uppercase;letter-spacing:.08em}
+.score-correct{color:var(--green)!important}
+.score-wrong{color:var(--red)!important}
 
-/* Enhanced MCQ Card */
-.mcq-card {
-  background: var(--white); border: 1px solid var(--border);
-  border-radius: var(--radius-xl); overflow: hidden;
-  margin-bottom: 20px;
-  box-shadow: var(--shadow-sm);
-  transition: box-shadow 0.2s;
-}
-.mcq-card:hover { box-shadow: var(--shadow-md); }
-.mcq-card.answered { border-left: 4px solid var(--green); }
-.mcq-card.answered-wrong { border-left: 4px solid var(--red); }
+/* ── PROGRESS ── */
+.mcq-progress-wrap{background:var(--white);border:1px solid var(--border);border-radius:var(--radius-lg);padding:14px 18px;margin-bottom:14px}
+.mcq-progress-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}
+.mcq-progress-title{font-size:13px;font-weight:600;color:var(--navy)}
+.mcq-progress-pct{font-size:13px;font-weight:700;color:var(--green)}
+.mcq-progress-bar-bg{height:8px;background:var(--bg);border-radius:4px;overflow:hidden}
+.mcq-progress-bar-fill{height:100%;background:linear-gradient(90deg,var(--green),#4ee8b0);border-radius:4px;transition:width .4s ease;width:0%}
 
-.mcq-header {
-  background: var(--navy);
-  padding: 14px 20px;
-  display: flex; align-items: center;
-  justify-content: space-between; gap: 12px;
-}
-.mcq-q-badge {
-  display: flex; align-items: center; gap: 10px;
-}
-.mcq-q-number {
-  width: 32px; height: 32px; border-radius: 50%;
-  background: rgba(255,255,255,0.12);
-  display: flex; align-items: center; justify-content: center;
-  font-size: 13px; font-weight: 700; color: #fff;
-  flex-shrink: 0;
-}
-.mcq-q-meta { display: flex; flex-direction: column; gap: 2px; }
-.mcq-q-num  { font-size: 12px; color: rgba(255,255,255,0.5); }
-.mcq-q-cat  { font-size: 13px; font-weight: 600; color: rgba(255,255,255,0.9); }
+/* ── MOTIVATION ── */
+.mcq-motivation-bar{display:none;align-items:center;justify-content:space-between;padding:10px 16px;border-radius:var(--radius-lg);background:var(--green-light);border:1px solid rgba(13,158,114,.2);margin-bottom:14px;flex-wrap:wrap;gap:8px}
+.mcq-motivation-bar.show{display:flex}
+.mcq-motivation-text{font-size:13px;font-weight:600;color:var(--green-mid)}
+.mcq-reset-btn{display:flex;align-items:center;gap:5px;background:var(--white);border:1px solid var(--border);color:var(--text-mid);border-radius:8px;padding:6px 12px;font-size:12px;font-weight:600;cursor:pointer;font-family:var(--font-body);transition:all .15s}
+.mcq-reset-btn:hover{border-color:var(--red);color:var(--red);background:var(--red-light)}
 
-.mcq-difficulty {
-  font-size: 11px; padding: 4px 12px;
-  border-radius: 20px; font-weight: 600;
-  flex-shrink: 0;
-}
-.diff-basic    { background: rgba(13,158,114,.2); color: #4ee8b0; }
-.diff-medium   { background: rgba(232,160,32,.2); color: #f5c561; }
-.diff-advanced { background: rgba(229,62,62,.2);  color: #fc8181; }
+/* ── MCQ CARD ── */
+.mcq-card{background:var(--white);border:1px solid var(--border);border-radius:var(--radius-xl);overflow:hidden;margin-bottom:24px;box-shadow:var(--shadow-sm);transition:box-shadow .2s,border-left .3s}
+.mcq-card.answered{border-left:4px solid var(--green)}
+.mcq-card.answered-wrong{border-left:4px solid var(--red)}
 
-.mcq-body { padding: 22px 20px 18px; }
-.mcq-question {
-  font-size: 15.5px; font-weight: 500;
-  color: var(--text); line-height: 1.6;
-  margin-bottom: 18px;
-  font-family: var(--font-body);
-}
+/* Card header */
+.mcq-header{background:var(--navy);padding:14px 20px;display:flex;align-items:center;justify-content:space-between;gap:12px}
+.mcq-q-badge{display:flex;align-items:center;gap:10px}
+.mcq-q-number{width:32px;height:32px;border-radius:50%;background:rgba(255,255,255,.12);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;color:#fff;flex-shrink:0}
+.mcq-q-meta{display:flex;flex-direction:column;gap:2px}
+.mcq-q-num{font-size:12px;color:rgba(255,255,255,.5)}
+.mcq-q-cat{font-size:13px;font-weight:600;color:rgba(255,255,255,.9)}
+.mcq-header-right{display:flex;align-items:center;gap:10px}
+.mcq-difficulty{font-size:11px;padding:4px 12px;border-radius:20px;font-weight:600;flex-shrink:0}
+.diff-basic{background:rgba(13,158,114,.2);color:#4ee8b0}
+.diff-medium{background:rgba(232,160,32,.2);color:#f5c561}
+.diff-advanced{background:rgba(229,62,62,.2);color:#fc8181}
+.mcq-status-dot{width:10px;height:10px;border-radius:50%;background:rgba(255,255,255,.2);flex-shrink:0;transition:all .3s}
+.mcq-status-dot.correct{background:#4ee8b0;box-shadow:0 0 8px rgba(78,232,176,.5)}
+.mcq-status-dot.wrong{background:#fc8181;box-shadow:0 0 8px rgba(252,129,129,.5)}
 
-/* Enhanced Options */
-.mcq-options { display: flex; flex-direction: column; gap: 10px; }
-.mcq-option {
-  display: flex; align-items: flex-start; gap: 12px;
-  padding: 13px 16px;
-  border: 1.5px solid var(--border);
-  border-radius: var(--radius-lg);
-  cursor: pointer;
-  transition: border-color .15s, background .15s, transform .1s;
-  font-size: 14.5px; line-height: 1.5;
-  color: var(--text); background: var(--white);
-  position: relative;
-}
-.mcq-option:hover:not(.disabled) {
-  border-color: var(--navy-mid);
-  background: rgba(10,38,71,0.03);
-  transform: translateX(3px);
-}
-.mcq-option:active:not(.disabled) { transform: translateX(1px); }
+/* Bookmark button */
+.mcq-bookmark{background:none;border:none;cursor:pointer;font-size:16px;color:rgba(255,255,255,.4);padding:4px;transition:all .2s;line-height:1}
+.mcq-bookmark:hover,.mcq-bookmark.active{color:#f5c561;transform:scale(1.15)}
 
-.mcq-option.selected-correct {
-  border-color: var(--green);
-  background: linear-gradient(135deg, rgba(13,158,114,0.08) 0%, rgba(13,158,114,0.03) 100%);
-  color: var(--navy);
-  pointer-events: none;
-}
-.mcq-option.selected-wrong {
-  border-color: var(--red);
-  background: linear-gradient(135deg, rgba(229,62,62,0.08) 0%, rgba(229,62,62,0.03) 100%);
-  color: var(--navy);
-  pointer-events: none;
-}
-.mcq-option.disabled { pointer-events: none; opacity: .75; }
-.mcq-option.correct-highlight:not(.selected-correct) {
-  border-color: var(--green) !important;
-  background: rgba(13,158,114,0.05) !important;
-  opacity: 1 !important;
-}
+/* Card body */
+.mcq-body{padding:22px 20px 18px}
 
-.mcq-opt-key {
-  min-width: 30px; height: 30px;
-  border-radius: 50%;
-  background: var(--bg); border: 1.5px solid var(--border-mid);
-  display: flex; align-items: center; justify-content: center;
-  font-size: 12px; font-weight: 700; color: var(--text-mid);
-  flex-shrink: 0; transition: all .15s;
-}
-.mcq-option:hover:not(.disabled) .mcq-opt-key {
-  background: var(--navy); color: #fff; border-color: var(--navy);
-}
-.mcq-option.selected-correct .mcq-opt-key {
-  background: var(--green); color: #fff; border-color: var(--green);
-}
-.mcq-option.selected-wrong .mcq-opt-key {
-  background: var(--red); color: #fff; border-color: var(--red);
-}
-.mcq-option.correct-highlight .mcq-opt-key {
-  background: var(--green) !important; color: #fff !important;
-  border-color: var(--green) !important;
-}
+/* Section ref badge */
+.mcq-section-ref{display:inline-flex;align-items:center;gap:6px;background:rgba(10,38,71,.06);border:1px solid rgba(10,38,71,.1);border-radius:6px;padding:4px 10px;font-size:11.5px;font-weight:600;color:var(--navy-mid);margin-bottom:14px}
 
-/* Result icon on option */
-.mcq-opt-result {
-  margin-left: auto; font-size: 16px; flex-shrink: 0;
-  display: none;
-}
-.mcq-option.selected-correct .mcq-opt-result { display: block; }
-.mcq-option.selected-wrong   .mcq-opt-result { display: block; }
+.mcq-question{font-size:15.5px;font-weight:500;color:var(--text);line-height:1.65;margin-bottom:20px}
 
-/* Enhanced Explanation */
-.mcq-explanation {
-  margin-top: 16px;
-  border-radius: var(--radius-lg);
-  padding: 0; overflow: hidden;
-  display: none;
-  animation: slideDown 0.3s ease;
-}
-@keyframes slideDown {
-  from { opacity: 0; transform: translateY(-8px); }
-  to   { opacity: 1; transform: translateY(0); }
-}
-.mcq-explanation.show { display: block; }
+/* ── OPTIONS ── */
+.mcq-options{display:flex;flex-direction:column;gap:10px;margin-bottom:0}
+.mcq-option{display:flex;align-items:flex-start;gap:12px;padding:13px 16px;border:1.5px solid var(--border);border-radius:var(--radius-lg);cursor:pointer;transition:border-color .15s,background .15s,transform .1s;font-size:14px;line-height:1.55;color:var(--text);background:var(--white);position:relative;user-select:none}
+.mcq-option:hover:not(.disabled){border-color:var(--navy-mid);background:rgba(10,38,71,.03);transform:translateX(3px)}
+.mcq-option:active:not(.disabled){transform:translateX(1px)}
 
-.mcq-exp-inner {
-  border-left: 4px solid var(--green);
-  background: linear-gradient(135deg, #f0fdf4 0%, #f7fef9 100%);
-  padding: 16px 18px;
-  border-radius: 0 var(--radius-lg) var(--radius-lg) 0;
-}
-.mcq-exp-inner.wrong-bg {
-  border-left-color: var(--red);
-  background: linear-gradient(135deg, #fff5f5 0%, #fffafa 100%);
-}
-.mcq-exp-header {
-  display: flex; align-items: center; gap: 8px;
-  font-size: 13px; font-weight: 700;
-  color: var(--green); margin-bottom: 8px;
-}
-.mcq-exp-header.wrong { color: var(--red); }
-.mcq-exp-text {
-  font-size: 13.5px; color: var(--navy-mid);
-  line-height: 1.65;
-}
-.mcq-exp-ref {
-  display: inline-flex; align-items: center; gap: 6px;
-  margin-top: 10px; padding: 5px 12px;
-  background: rgba(10,38,71,0.06);
-  border-radius: 20px; font-size: 12px;
-  color: var(--navy-mid); font-weight: 500;
-}
+/* Correct selected */
+.mcq-option.selected-correct{border-color:var(--green);background:linear-gradient(135deg,rgba(13,158,114,.1),rgba(13,158,114,.04));pointer-events:none}
+/* Wrong selected */
+.mcq-option.selected-wrong{border-color:var(--red);background:linear-gradient(135deg,rgba(229,62,62,.1),rgba(229,62,62,.04));pointer-events:none}
+/* Show correct answer when wrong */
+.mcq-option.correct-highlight:not(.selected-correct){border-color:var(--green)!important;background:rgba(13,158,114,.06)!important;opacity:1!important}
+/* All disabled after answer */
+.mcq-option.disabled{pointer-events:none;opacity:.65}
+.mcq-option.selected-correct.disabled,.mcq-option.selected-wrong.disabled,.mcq-option.correct-highlight.disabled{opacity:1!important}
 
-/* Answered indicator on card header */
-.mcq-status-dot {
-  width: 8px; height: 8px; border-radius: 50%;
-  background: rgba(255,255,255,0.2);
-  flex-shrink: 0;
-  transition: background 0.3s;
-}
-.mcq-status-dot.correct { background: #4ee8b0; }
-.mcq-status-dot.wrong   { background: #fc8181; }
+/* Option key bubble */
+.mcq-opt-key{min-width:30px;height:30px;border-radius:50%;background:var(--bg);border:1.5px solid var(--border-mid);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:var(--text-mid);flex-shrink:0;transition:all .2s}
+.mcq-option:hover:not(.disabled) .mcq-opt-key{background:var(--navy);color:#fff;border-color:var(--navy)}
+.mcq-option.selected-correct .mcq-opt-key{background:var(--green);color:#fff;border-color:var(--green)}
+.mcq-option.selected-wrong .mcq-opt-key{background:var(--red);color:#fff;border-color:var(--red)}
+.mcq-option.correct-highlight .mcq-opt-key{background:var(--green)!important;color:#fff!important;border-color:var(--green)!important}
 
-/* Email capture widget improved */
-.mcq-email-widget {
-  background: linear-gradient(135deg, var(--navy) 0%, var(--navy-mid) 100%);
-  border-radius: var(--radius-xl); padding: 22px 18px;
-  text-align: center; margin-bottom: 20px;
-  position: relative; overflow: hidden;
-}
-.mcq-email-widget::before {
-  content: '';
-  position: absolute; top: -30px; right: -30px;
-  width: 100px; height: 100px; border-radius: 50%;
-  background: rgba(13,158,114,0.15);
-}
-.mcq-email-widget h4 {
-  font-family: var(--font-head); font-size: 16px;
-  color: #fff; margin-bottom: 6px; position: relative;
-}
-.mcq-email-widget p {
-  font-size: 12.5px; color: rgba(255,255,255,0.65);
-  margin-bottom: 14px; line-height: 1.5; position: relative;
-}
-.mcq-email-form {
-  display: flex; gap: 6px; position: relative;
-}
-.mcq-email-form input {
-  flex: 1; padding: 10px 12px;
-  border: none; border-radius: 8px;
-  font-size: 13px; font-family: var(--font-body);
-  outline: none; min-width: 0;
-}
-.mcq-email-form button {
-  background: var(--green); color: #fff;
-  border: none; border-radius: 8px;
-  padding: 10px 14px; font-size: 12px;
-  font-weight: 600; cursor: pointer;
-  font-family: var(--font-body); white-space: nowrap;
-}
+/* Result icon */
+.mcq-opt-result{margin-left:auto;font-size:16px;flex-shrink:0;display:none;animation:popIn .25s cubic-bezier(.34,1.56,.64,1)}
+@keyframes popIn{from{transform:scale(0)}to{transform:scale(1)}}
+.mcq-option.selected-correct .mcq-opt-result,
+.mcq-option.selected-wrong .mcq-opt-result{display:block}
+.mcq-option.correct-highlight .mcq-opt-result{display:block}
 
-/* Motivation bar */
-.mcq-motivation-bar {
-  display: none; align-items: center; justify-content: space-between;
-  padding: 10px 16px; border-radius: var(--radius-lg);
-  background: var(--green-light); border: 1px solid rgba(13,158,114,0.2);
-  margin-bottom: 16px; flex-wrap: wrap; gap: 8px;
-}
-.mcq-motivation-bar.show { display: flex; }
-.mcq-motivation-text {
-  font-size: 13px; font-weight: 600; color: var(--green-mid);
-}
-.mcq-reset-btn {
-  display: flex; align-items: center; gap: 5px;
-  background: var(--white); border: 1px solid var(--border);
-  color: var(--text-mid); border-radius: 8px;
-  padding: 6px 12px; font-size: 12px; font-weight: 600;
-  cursor: pointer; font-family: var(--font-body);
-  transition: all .15s;
-}
-.mcq-reset-btn:hover { border-color: var(--red); color: var(--red); background: var(--red-light); }
+/* ── ANSWER FEEDBACK BANNER ── */
+.mcq-feedback-banner{display:none;align-items:center;gap:10px;padding:12px 16px;border-radius:var(--radius-lg);margin-top:14px;font-size:13.5px;font-weight:600;animation:slideDown .3s ease}
+.mcq-feedback-banner.show{display:flex}
+.mcq-feedback-banner.correct{background:linear-gradient(135deg,#f0fdf4,#dcfce7);border:1.5px solid var(--green);color:#166534}
+.mcq-feedback-banner.wrong{background:linear-gradient(135deg,#fff5f5,#fee2e2);border:1.5px solid var(--red);color:#991b1b}
+.mcq-feedback-icon{font-size:22px;flex-shrink:0}
+.mcq-feedback-text{flex:1}
+.mcq-feedback-text strong{display:block;font-size:14px;margin-bottom:2px}
+.mcq-feedback-text span{font-size:12.5px;font-weight:500;opacity:.85}
 
-/* Mobile */
-@media (max-width: 640px) {
-  .mcq-score-panel { grid-template-columns: repeat(2,1fr); }
-  .mcq-body { padding: 16px 14px 14px; }
-  .mcq-question { font-size: 14.5px; }
-  .mcq-option { padding: 11px 12px; font-size: 13.5px; gap: 10px; }
-  .mcq-opt-key { min-width: 26px; height: 26px; font-size: 11px; }
-  .mcq-header { padding: 12px 14px; }
-  .mcq-hero-stats { gap: 10px; }
+/* ── EXPLANATION CARD ── */
+@keyframes slideDown{from{opacity:0;transform:translateY(-10px)}to{opacity:1;transform:translateY(0)}}
+
+.mcq-explanation{display:none;margin-top:14px;border-radius:var(--radius-xl);overflow:hidden;animation:slideDown .35s ease}
+.mcq-explanation.show{display:block}
+
+.mcq-exp-card{border:1.5px solid var(--green);background:#f8fffc;border-radius:var(--radius-xl);overflow:hidden}
+.mcq-exp-card.wrong-card{border-color:var(--red);background:#fff8f8}
+
+/* Exp header */
+.mcq-exp-header{display:flex;align-items:center;justify-content:space-between;padding:12px 18px;border-bottom:1px solid rgba(13,158,114,.15)}
+.mcq-exp-card.wrong-card .mcq-exp-header{border-bottom-color:rgba(229,62,62,.15)}
+.mcq-exp-header-left{display:flex;align-items:center;gap:8px}
+.mcq-exp-status-icon{font-size:20px}
+.mcq-exp-status-text{font-size:14px;font-weight:700;color:#166534}
+.mcq-exp-card.wrong-card .mcq-exp-status-text{color:#991b1b}
+.mcq-exp-toggle{background:none;border:1px solid rgba(13,158,114,.25);color:var(--green-mid);border-radius:6px;padding:4px 10px;font-size:12px;font-weight:600;cursor:pointer;font-family:var(--font-body);transition:all .15s;display:flex;align-items:center;gap:4px}
+.mcq-exp-toggle:hover{background:var(--green-light)}
+.mcq-exp-card.wrong-card .mcq-exp-toggle{border-color:rgba(229,62,62,.25);color:var(--red)}
+
+/* Exp body */
+.mcq-exp-body{padding:16px 18px;display:flex;flex-direction:column;gap:14px}
+
+/* Correct answer highlight */
+.mcq-exp-correct-ans{display:flex;align-items:flex-start;gap:10px;background:#dcfce7;border:1px solid #86efac;border-radius:10px;padding:12px 14px}
+.mcq-exp-card.wrong-card .mcq-exp-correct-ans{background:#dcfce7;border-color:#86efac}
+.mcq-exp-correct-ans-icon{font-size:18px;flex-shrink:0;margin-top:1px}
+.mcq-exp-correct-ans-text{flex:1}
+.mcq-exp-correct-ans-label{font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:#166534;margin-bottom:3px}
+.mcq-exp-correct-ans-val{font-size:13.5px;font-weight:600;color:#14532d}
+
+/* Wrong answer comparison (only shown when wrong) */
+.mcq-exp-wrong-ans{display:flex;align-items:flex-start;gap:10px;background:#fee2e2;border:1px solid #fca5a5;border-radius:10px;padding:12px 14px}
+.mcq-exp-wrong-ans-label{font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:#991b1b;margin-bottom:3px}
+.mcq-exp-wrong-ans-val{font-size:13.5px;font-weight:600;color:#7f1d1d}
+
+/* Explanation section */
+.mcq-exp-section{display:flex;flex-direction:column;gap:6px}
+.mcq-exp-section-title{display:flex;align-items:center;gap:6px;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.09em;color:var(--text-light)}
+.mcq-exp-section-body{font-size:13.5px;color:var(--navy-mid);line-height:1.7;background:rgba(10,38,71,.02);border-radius:8px;padding:10px 14px;border-left:3px solid var(--border)}
+
+/* Law reference pill */
+.mcq-exp-ref-pill{display:inline-flex;align-items:center;gap:7px;padding:8px 14px;background:rgba(10,38,71,.06);border:1px solid rgba(10,38,71,.12);border-radius:8px;font-size:12.5px;color:var(--navy-mid);font-weight:600}
+.mcq-exp-ref-pill-icon{font-size:15px}
+
+/* Why it matters */
+.mcq-exp-why{background:linear-gradient(135deg,#fffbeb,#fef9ec);border:1px solid #fde68a;border-radius:10px;padding:12px 14px}
+.mcq-exp-why-title{display:flex;align-items:center;gap:6px;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:#92400e;margin-bottom:6px}
+.mcq-exp-why-text{font-size:13px;color:#78350f;line-height:1.65}
+
+/* ── NEXT QUESTION BTN ── */
+.mcq-next-wrap{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-top:16px;padding-top:14px;border-top:1px solid var(--border);flex-wrap:wrap}
+.mcq-next-btn{display:inline-flex;align-items:center;gap:8px;background:var(--navy);color:#fff;border:none;border-radius:10px;padding:10px 20px;font-size:13.5px;font-weight:700;cursor:pointer;font-family:var(--font-body);transition:all .2s;min-height:44px;text-decoration:none;animation:none}
+.mcq-next-btn:hover{background:var(--navy-mid);transform:translateX(3px)}
+.mcq-next-btn.pulse{animation:btnPulse .6s ease infinite alternate}
+@keyframes btnPulse{from{box-shadow:0 0 0 0 rgba(10,38,71,.4)}to{box-shadow:0 0 0 8px rgba(10,38,71,0)}}
+.mcq-share-btn{display:inline-flex;align-items:center;gap:6px;background:var(--bg);color:var(--text-mid);border:1px solid var(--border);border-radius:10px;padding:10px 16px;font-size:12.5px;font-weight:600;cursor:pointer;font-family:var(--font-body);transition:all .15s;min-height:44px}
+.mcq-share-btn:hover{border-color:var(--navy);color:var(--navy)}
+
+/* ── EXAM MODE ── */
+.exam-mode .mcq-option:not(.selected-correct):not(.selected-wrong):not(.disabled):not(.correct-highlight){opacity:1}
+.exam-mode .mcq-explanation{display:none!important}
+.exam-mode .mcq-explanation.show{display:none!important}
+
+/* ── MOBILE ── */
+@media(max-width:640px){
+  .mcq-score-panel{grid-template-columns:repeat(2,1fr)}
+  .mcq-body{padding:16px 14px 14px}
+  .mcq-question{font-size:14.5px}
+  .mcq-option{padding:11px 12px;font-size:13.5px;gap:10px}
+  .mcq-opt-key{min-width:26px;height:26px;font-size:11px}
+  .mcq-header{padding:12px 14px}
+  .mcq-exp-body{padding:14px}
+  .mode-bar{flex-direction:column;align-items:flex-start}
+  .mcq-next-wrap{flex-direction:column}
+  .mcq-next-btn,.mcq-share-btn{width:100%;justify-content:center}
 }
 </style>
 {% endblock %}
 
 {% block content %}
 
-<!-- ── HERO ──────────────────────────────────────────────── -->
+<!-- ── HERO ── -->
 <div class="article-hero">
   <div class="article-hero-inner">
     <div class="breadcrumb">
@@ -357,64 +217,39 @@
       <span>{{ selected_category }}</span>
       {% endif %}
     </div>
-
-    <h1>
-      {% if selected_category %}
-        {{ selected_category }} — MCQ Practice
-      {% else %}
-        Income Tax MCQs Pakistan — 200+ Practice Questions
-      {% endif %}
-    </h1>
-
+    <h1>{% if selected_category %}{{ selected_category }} — MCQ Practice{% else %}Income Tax MCQs Pakistan — 200+ Practice Questions{% endif %}</h1>
     <div class="mcq-hero-stats">
-      <div class="mcq-hero-stat">
-        <div class="mcq-hero-stat-num">{{ page_obj.paginator.count }}</div>
-        <div class="mcq-hero-stat-lbl">Questions</div>
-      </div>
-      <div class="mcq-hero-stat">
-        <div class="mcq-hero-stat-num">{{ categories|length }}</div>
-        <div class="mcq-hero-stat-lbl">Topics</div>
-      </div>
-      <div class="mcq-hero-stat">
-        <div class="mcq-hero-stat-num">ITO</div>
-        <div class="mcq-hero-stat-lbl">2001 Based</div>
-      </div>
-      <div class="mcq-hero-stat">
-        <div class="mcq-hero-stat-num">Free</div>
-        <div class="mcq-hero-stat-lbl">No Sign-up</div>
-      </div>
+      <div class="mcq-hero-stat"><div class="mcq-hero-stat-num">{{ page_obj.paginator.count }}</div><div class="mcq-hero-stat-lbl">Questions</div></div>
+      <div class="mcq-hero-stat"><div class="mcq-hero-stat-num">{{ categories|length }}</div><div class="mcq-hero-stat-lbl">Topics</div></div>
+      <div class="mcq-hero-stat"><div class="mcq-hero-stat-num">ITO</div><div class="mcq-hero-stat-lbl">2001 Based</div></div>
+      <div class="mcq-hero-stat"><div class="mcq-hero-stat-num">Free</div><div class="mcq-hero-stat-lbl">No Sign-up</div></div>
     </div>
-
-    <!-- exam tags -->
-    <div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:14px;">
-  {% for tag in "CA ICMAP ACCA CSS FBR Exam"|split:" " %}
-      <span style="background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.15);
-                   color:rgba(255,255,255,0.75);padding:3px 10px;border-radius:20px;font-size:11.5px;">
-        🎯 {{ tag }}
-      </span>
-      {% endfor %}
+    <div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:14px">
+      <span style="background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.15);color:rgba(255,255,255,.75);padding:3px 10px;border-radius:20px;font-size:11.5px">🎯 CA</span>
+      <span style="background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.15);color:rgba(255,255,255,.75);padding:3px 10px;border-radius:20px;font-size:11.5px">🎯 ICMAP</span>
+      <span style="background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.15);color:rgba(255,255,255,.75);padding:3px 10px;border-radius:20px;font-size:11.5px">🎯 ACCA</span>
+      <span style="background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.15);color:rgba(255,255,255,.75);padding:3px 10px;border-radius:20px;font-size:11.5px">🎯 CSS</span>
+      <span style="background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.15);color:rgba(255,255,255,.75);padding:3px 10px;border-radius:20px;font-size:11.5px">🎯 FBR Exam</span>
     </div>
   </div>
 </div>
 
-<!-- ── TOP AD ─────────────────────────────────────────────── -->
-<!--<div class="container">-->
-<!--  <div class="ad-wrapper">-->
-<!--    <div class="ad-wrapper-label">Advertisement</div>-->
-<!--    <div class="ad-zone ad-leaderboard">-->
-<!--      <div class="ad-zone-label">AdSense — MCQ Top</div>-->
-<!--      <div class="ad-zone-size">728×90 / Responsive</div>-->
-<!--    </div>-->
-<!--  </div>-->
-<!--</div>-->
-
 <div class="content-grid">
-  <main class="content-main">
+  <main class="content-main" id="mcq-main">
 
-    <!-- ── SCORE PANEL ─────────────────────────────────────── -->
+    <!-- ── MODE SWITCHER ── -->
+    <div class="mode-bar">
+      <div class="mode-pills" role="group" aria-label="Quiz mode">
+        <button class="mode-pill active" id="mode-practice" onclick="setMode('practice')">📚 Practice Mode</button>
+        <button class="mode-pill" id="mode-exam" onclick="setMode('exam')">📝 Exam Mode</button>
+      </div>
+      <span class="mode-info" id="mode-desc">Explanations shown after each answer · Learn as you go</span>
+    </div>
+
+    <!-- ── SCORE PANEL ── -->
     <div class="mcq-score-panel" id="score-panel" aria-label="Quiz score">
       <div class="score-item">
-        <div class="score-val" id="score-answered">0<span style="font-size:13px;color:var(--text-light);font-weight:400;"> / 0</span></div>
+        <div class="score-val" id="score-answered">0<span style="font-size:13px;color:var(--text-light);font-weight:400"> / 0</span></div>
         <div class="score-lbl">Answered</div>
       </div>
       <div class="score-item">
@@ -431,44 +266,25 @@
       </div>
     </div>
 
-    <!-- ── PROGRESS BAR ────────────────────────────────────── -->
+    <!-- ── PROGRESS ── -->
     <div class="mcq-progress-wrap">
       <div class="mcq-progress-header">
         <span class="mcq-progress-title">Session Progress</span>
-        <span class="mcq-progress-pct" id="progress-pct-text">0%</span>
+        <span class="mcq-progress-pct" id="progress-pct-text">0% complete</span>
       </div>
       <div class="mcq-progress-bar-bg">
         <div class="mcq-progress-bar-fill" id="progress-bar"></div>
       </div>
     </div>
 
-    <!-- ── MOTIVATION + RESET ──────────────────────────────── -->
+    <!-- ── MOTIVATION ── -->
     <div class="mcq-motivation-bar" id="mcq-motivation-bar">
       <span class="mcq-motivation-text" id="mcq-motivation"></span>
-      <button class="mcq-reset-btn" id="mcq-reset-btn" onclick="resetState()">
-        🔄 Reset Score
-      </button>
+      <button class="mcq-reset-btn" id="mcq-reset-btn" style="display:none" onclick="resetState()">🔄 Reset Score</button>
     </div>
 
-    <!-- ── CATEGORY FILTER ─────────────────────────────────── -->
-<!--    <div class="mcq-filter-bar">-->
-<!--      <span class="mcq-filter-label">Topic:</span>-->
-<!--      <a href="{% url 'question_list' %}"-->
-<!--         class="mcq-filter-btn {% if not selected_category %}active{% endif %}">-->
-<!--        All Topics-->
-<!--      </a>-->
-<!--      {% for cat in categories %}-->
-<!--      <a href="{% url 'question_list_category' category_slug=cat.slug %}"-->
-<!--         class="mcq-filter-btn {% if selected_category == cat.name %}active{% endif %}">-->
-<!--        {{ cat.name }}-->
-<!--      </a>-->
-<!--      {% endfor %}-->
-<!--      <span class="mcq-filter-count">{{ page_obj.paginator.count }} Qs</span>-->
-<!--    </div>-->
-
-    <!-- ── MCQ CARDS ───────────────────────────────────────── -->
+    <!-- ══ MCQ CARDS ══ -->
     {% for question in page_obj %}
-
     <div class="mcq-card" id="mcq-card-{{ question.pk }}" data-pk="{{ question.pk }}">
 
       <!-- Card Header -->
@@ -480,123 +296,171 @@
             <span class="mcq-q-cat">{{ question.category|default:"Income Tax" }}</span>
           </div>
         </div>
-        <div style="display:flex;align-items:center;gap:8px;">
-          <span class="mcq-difficulty diff-{{ question.difficulty|default:'medium' }}">
-            {{ question.difficulty|default:"Medium"|title }}
-          </span>
+        <div class="mcq-header-right">
+          <span class="mcq-difficulty diff-{{ question.difficulty|default:'medium' }}">{{ question.difficulty|default:"Medium"|title }}</span>
+          <button class="mcq-bookmark" id="bm-{{ question.pk }}" onclick="toggleBookmark({{ question.pk }})" aria-label="Bookmark this question" title="Bookmark">🔖</button>
           <span class="mcq-status-dot" id="dot-{{ question.pk }}"></span>
         </div>
       </div>
 
       <!-- Card Body -->
       <div class="mcq-body">
+        {% if question.section_ref %}
+        <div class="mcq-section-ref">📖 {{ question.section_ref }}</div>
+        {% endif %}
+
         <div class="mcq-question">{{ question.question_text }}</div>
 
+        <!-- Options -->
         <div class="mcq-options" id="opts-{{ question.pk }}">
           {% for option in question.options.all %}
           <div class="mcq-option"
                data-correct="{{ option.is_correct|lower }}"
                data-exp="exp-{{ question.pk }}"
                data-qpk="{{ question.pk }}"
+               data-opt-text="{{ option.option_text }}"
                onclick="selectMCQOption(this)"
                role="button" tabindex="0"
                aria-label="Option {{ forloop.counter }}: {{ option.option_text }}">
-            <span class="mcq-opt-key">{{ option_labels|slice:forloop.counter0|slice:"-1" }}</span>
-            <span style="flex:1;">{{ option.option_text }}</span>
-            <span class="mcq-opt-result">
-              {% if option.is_correct %}✅{% else %}❌{% endif %}
-            </span>
+            <span class="mcq-opt-key">{{ forloop.counter }}</span>
+            <span style="flex:1">{{ option.option_text }}</span>
+            <span class="mcq-opt-result">{% if option.is_correct %}✅{% else %}❌{% endif %}</span>
           </div>
           {% endfor %}
         </div>
 
-        <!-- Explanation -->
-        <div class="mcq-explanation" id="exp-{{ question.pk }}">
-          <div class="mcq-exp-inner" id="exp-inner-{{ question.pk }}">
-            <div class="mcq-exp-header" id="exp-header-{{ question.pk }}">
-              <span id="exp-icon-{{ question.pk }}">✅</span>
-              <span id="exp-title-{{ question.pk }}">Correct Answer!</span>
-            </div>
-            <div class="mcq-exp-text">{{ question.explanation }}</div>
-            {% if question.section_ref %}
-            <div style="margin-top:10px;">
-              <span class="mcq-exp-ref">📖 {{ question.section_ref }}</span>
-            </div>
-            {% endif %}
+        <!-- Feedback Banner -->
+        <div class="mcq-feedback-banner" id="fb-{{ question.pk }}">
+          <span class="mcq-feedback-icon" id="fb-icon-{{ question.pk }}"></span>
+          <div class="mcq-feedback-text">
+            <strong id="fb-title-{{ question.pk }}"></strong>
+            <span id="fb-sub-{{ question.pk }}"></span>
           </div>
         </div>
-      </div>
-    </div><!-- end mcq-card -->
 
-    {# Ad after every 4th question #}
+        <!-- ── EXPLANATION CARD ── -->
+        <div class="mcq-explanation" id="exp-{{ question.pk }}">
+          <div class="mcq-exp-card" id="exp-inner-{{ question.pk }}">
+
+            <!-- Exp Header -->
+            <div class="mcq-exp-header">
+              <div class="mcq-exp-header-left">
+                <span class="mcq-exp-status-icon" id="exp-icon-{{ question.pk }}">✅</span>
+                <span class="mcq-exp-status-text" id="exp-title-{{ question.pk }}">Correct Answer!</span>
+              </div>
+              <button class="mcq-exp-toggle" onclick="toggleExp('exp-body-{{ question.pk }}', this)" aria-expanded="true">
+                <span>▲</span> Hide
+              </button>
+            </div>
+
+            <!-- Exp Body (collapsible) -->
+            <div class="mcq-exp-body" id="exp-body-{{ question.pk }}">
+
+              <!-- Correct answer -->
+              <div class="mcq-exp-correct-ans" id="exp-correct-ans-{{ question.pk }}">
+                <span class="mcq-exp-correct-ans-icon">✅</span>
+                <div class="mcq-exp-correct-ans-text">
+                  <div class="mcq-exp-correct-ans-label">Correct Answer</div>
+                  <div class="mcq-exp-correct-ans-val" id="exp-correct-val-{{ question.pk }}"></div>
+                </div>
+              </div>
+
+              <!-- Wrong answer comparison (hidden by default, shown when wrong) -->
+              <div class="mcq-exp-wrong-ans" id="exp-wrong-ans-{{ question.pk }}" style="display:none">
+                <span style="font-size:18px;flex-shrink:0;margin-top:1px">❌</span>
+                <div>
+                  <div class="mcq-exp-wrong-ans-label">Your Answer (Incorrect)</div>
+                  <div class="mcq-exp-wrong-ans-val" id="exp-wrong-val-{{ question.pk }}"></div>
+                </div>
+              </div>
+
+              <!-- Explanation -->
+              {% if question.explanation %}
+              <div class="mcq-exp-section">
+                <div class="mcq-exp-section-title">📝 <span>Explanation</span></div>
+                <div class="mcq-exp-section-body">{{ question.explanation }}</div>
+              </div>
+              {% endif %}
+
+              <!-- Law Reference -->
+              {% if question.section_ref %}
+              <div class="mcq-exp-section">
+                <div class="mcq-exp-section-title">⚖️ <span>Legal Reference</span></div>
+                <div class="mcq-exp-ref-pill">
+                  <span class="mcq-exp-ref-pill-icon">📖</span>
+                  Income Tax Ordinance, 2001 — {{ question.section_ref }}
+                </div>
+              </div>
+              {% endif %}
+
+              <!-- Why it matters -->
+              <div class="mcq-exp-why">
+                <div class="mcq-exp-why-title">💡 <span>Why This Matters</span></div>
+                <div class="mcq-exp-why-text" id="exp-why-{{ question.pk }}">
+                  {% if question.explanation %}
+                  Understanding this provision is essential for tax compliance and frequently tested in CA, ICMAP &amp; ACCA Pakistan exams.
+                  {% else %}
+                  This concept is fundamental to income tax law in Pakistan and commonly tested in professional exams.
+                  {% endif %}
+                </div>
+              </div>
+
+            </div><!-- /exp-body -->
+          </div><!-- /exp-card -->
+        </div><!-- /explanation -->
+
+        <!-- Next Question Row -->
+        <div class="mcq-next-wrap" id="next-wrap-{{ question.pk }}" style="display:none">
+          {% if not forloop.last %}
+          <button class="mcq-next-btn pulse" onclick="scrollToNext('mcq-card-{{ question.pk }}')">
+            Next Question →
+          </button>
+          {% else %}
+          <a href="?page={{ page_obj.next_page_number }}{% if selected_category %}&cat={{ selected_category }}{% endif %}"
+             class="mcq-next-btn pulse {% if not page_obj.has_next %}disabled{% endif %}">
+            {% if page_obj.has_next %}Next Page →{% else %}🏁 Quiz Complete{% endif %}
+          </a>
+          {% endif %}
+          <button class="mcq-share-btn" onclick="shareQuestion({{ question.pk }})">📤 Share</button>
+        </div>
+
+      </div><!-- /mcq-body -->
+    </div><!-- /mcq-card -->
+
     {% if forloop.counter|divisibleby:4 %}
-<!--    <div class="ad-wrapper">-->
-<!--      <div class="ad-wrapper-label">Advertisement</div>-->
-<!--      <div class="ad-zone ad-incontent">-->
-<!--        <div class="ad-zone-label">AdSense — Between MCQs</div>-->
-<!--        <div class="ad-zone-size">468×60 / Responsive</div>-->
-<!--      </div>-->
-<!--    </div>-->
+    <!-- Ad slot -->
     {% endif %}
 
     {% empty %}
-    <div style="text-align:center;padding:60px 20px;">
-      <div style="font-size:48px;margin-bottom:16px;">📭</div>
-      <h3 style="font-family:var(--font-head);color:var(--navy);margin-bottom:8px;">No MCQs found</h3>
-      <p style="color:var(--text-light);margin-bottom:20px;">No questions in this category yet.</p>
-      <a href="{% url 'question_list' %}" class="btn-primary" style="text-decoration:none;">
-        View All MCQs
-      </a>
+    <div style="text-align:center;padding:60px 20px">
+      <div style="font-size:48px;margin-bottom:16px">📭</div>
+      <h3 style="font-family:var(--font-head);color:var(--navy);margin-bottom:8px">No MCQs found</h3>
+      <p style="color:var(--text-light);margin-bottom:20px">No questions in this category yet.</p>
+      <a href="{% url 'question_list' %}" style="text-decoration:none;background:var(--navy);color:#fff;padding:12px 24px;border-radius:10px;font-weight:600">View All MCQs</a>
     </div>
     {% endfor %}
 
-    <!-- ── PAGINATION ──────────────────────────────────────── -->
+    <!-- ── PAGINATION ── -->
     {% if page_obj.has_other_pages %}
-    <nav class="pagination" aria-label="MCQ pagination" style="margin-top:28px;">
-      {% if page_obj.has_previous %}
-      <a href="?page={{ page_obj.previous_page_number }}{% if selected_category %}&cat={{ selected_category }}{% endif %}">
-        ← Prev
-      </a>
-      {% else %}
-      <span class="disabled">← Prev</span>
-      {% endif %}
-
+    <nav class="pagination" aria-label="MCQ pagination" style="margin-top:28px">
+      {% if page_obj.has_previous %}<a href="?page={{ page_obj.previous_page_number }}{% if selected_category %}&cat={{ selected_category }}{% endif %}">← Prev</a>
+      {% else %}<span class="disabled">← Prev</span>{% endif %}
       {% for num in page_obj.paginator.page_range %}
-        {% if page_obj.number == num %}
-        <span class="current">{{ num }}</span>
+        {% if page_obj.number == num %}<span class="current">{{ num }}</span>
         {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
         <a href="?page={{ num }}{% if selected_category %}&cat={{ selected_category }}{% endif %}">{{ num }}</a>
         {% endif %}
       {% endfor %}
-
-      {% if page_obj.has_next %}
-      <a href="?page={{ page_obj.next_page_number }}{% if selected_category %}&cat={{ selected_category }}{% endif %}">
-        Next →
-      </a>
-      {% else %}
-      <span class="disabled">Next →</span>
-      {% endif %}
+      {% if page_obj.has_next %}<a href="?page={{ page_obj.next_page_number }}{% if selected_category %}&cat={{ selected_category }}{% endif %}">Next →</a>
+      {% else %}<span class="disabled">Next →</span>{% endif %}
     </nav>
-    <p style="text-align:center;font-size:12px;color:var(--text-light);margin-top:8px;">
-      Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }} · Score persists across pages
-    </p>
+    <p style="text-align:center;font-size:12px;color:var(--text-light);margin-top:8px">Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }} · Score persists across pages</p>
     {% endif %}
-
-    <!-- ── BOTTOM AD ───────────────────────────────────────── -->
-<!--    <div class="ad-wrapper" style="margin-top:24px;">-->
-<!--      <div class="ad-wrapper-label">Advertisement</div>-->
-<!--      <div class="ad-zone ad-leaderboard">-->
-<!--        <div class="ad-zone-label">AdSense — Bottom MCQ</div>-->
-<!--        <div class="ad-zone-size">728×90 / Responsive</div>-->
-<!--      </div>-->
-<!--    </div>-->
 
   </main>
 
-  <!-- ── SIDEBAR ─────────────────────────────────────────── -->
+  <!-- ── SIDEBAR ── -->
   <aside class="content-sidebar">
-
-    <!-- Email Capture -->
     <div class="mcq-email-widget">
       <h4>📥 Free MCQ PDF</h4>
       <p>Get 200+ Tax MCQs as a free PDF — perfect for CA, ICMAP &amp; ACCA prep.</p>
@@ -606,20 +470,23 @@
       </div>
     </div>
 
-    <!-- Category Links -->
+    <!-- Bookmarks widget -->
+    <div class="sidebar-widget" id="bm-widget" style="display:none">
+      <div class="sidebar-widget-header">🔖 Bookmarked Questions</div>
+      <div class="sidebar-widget-body">
+        <div id="bm-list" style="font-size:13px;color:var(--text-mid);padding:8px 0"></div>
+      </div>
+    </div>
+
     <div class="sidebar-widget">
       <div class="sidebar-widget-header">📚 MCQ Topics</div>
       <div class="sidebar-widget-body">
         <div class="sidebar-links">
-          <a class="sidebar-link {% if not selected_category %}active{% endif %}"
-             href="{% url 'question_list' %}"
-             style="{% if not selected_category %}color:var(--green);background:var(--green-light);{% endif %}">
+          <a class="sidebar-link {% if not selected_category %}active{% endif %}" href="{% url 'question_list' %}" style="{% if not selected_category %}color:var(--green);background:var(--green-light);{% endif %}">
             <span class="sidebar-link-dot"></span>All Topics
           </a>
           {% for cat in categories %}
-          <a class="sidebar-link {% if selected_category == cat.name %}active{% endif %}"
-             href="{% url 'question_list_category' category_slug=cat.slug %}"
-             style="{% if selected_category == cat.name %}color:var(--green);background:var(--green-light);{% endif %}">
+          <a class="sidebar-link {% if selected_category == cat.name %}active{% endif %}" href="{% url 'question_list_category' category_slug=cat.slug %}" style="{% if selected_category == cat.name %}color:var(--green);background:var(--green-light);{% endif %}">
             <span class="sidebar-link-dot"></span>{{ cat.name }}
           </a>
           {% endfor %}
@@ -627,21 +494,281 @@
       </div>
     </div>
 
-    <!-- Sidebar Ad -->
-<!--    <div class="ad-wrapper">-->
-<!--      <div class="ad-wrapper-label">Advertisement</div>-->
-<!--      <div class="ad-zone ad-rectangle">-->
-<!--        <div class="ad-zone-label">AdSense — Sidebar</div>-->
-<!--        <div class="ad-zone-size">300×250</div>-->
-<!--      </div>-->
-<!--    </div>-->
-
     {% include 'partials/sidebar.html' %}
   </aside>
 </div>
-
 {% endblock %}
 
 {% block extra_js %}
-<script src="{% static 'js/mcq.js' %}"></script>
+<script>
+/* ═══════════════════════════════════════════════════════════
+   TaxBuddy Umair — Enhanced MCQ Engine v2.0
+   Practice Mode + Exam Mode + Bookmarks + Score Tracking
+═══════════════════════════════════════════════════════════ */
+'use strict';
+
+/* ── STATE ── */
+var MCQ_KEY = 'taxbuddy_mcq_v2';
+var BM_KEY  = 'taxbuddy_bm';
+var totalOnPage = 0;
+var currentMode = 'practice';
+var state = loadState();
+var bookmarks = loadBookmarks();
+
+function loadState(){
+  try{ var r=sessionStorage.getItem(MCQ_KEY); if(r) return JSON.parse(r); }catch(e){}
+  return {answered:0,correct:0,wrong:0};
+}
+function saveState(){ try{ sessionStorage.setItem(MCQ_KEY,JSON.stringify(state)); }catch(e){} }
+
+function loadBookmarks(){ try{ var r=localStorage.getItem(BM_KEY); return r?JSON.parse(r):[]; }catch(e){ return []; } }
+function saveBookmarks(){ try{ localStorage.setItem(BM_KEY,JSON.stringify(bookmarks)); }catch(e){} }
+
+/* ── MODE SWITCH ── */
+function setMode(m){
+  currentMode = m;
+  var main = document.getElementById('mcq-main');
+  document.getElementById('mode-practice').classList.toggle('active', m==='practice');
+  document.getElementById('mode-exam').classList.toggle('active', m==='exam');
+  var desc = document.getElementById('mode-desc');
+  if(m==='practice'){
+    desc.textContent = 'Explanations shown after each answer · Learn as you go';
+    main.classList.remove('exam-mode');
+  } else {
+    desc.textContent = 'Exam simulation · No explanations until you finish';
+    main.classList.add('exam-mode');
+  }
+}
+
+/* ── SELECT OPTION ── */
+function selectMCQOption(el){
+  var opts = el.closest('.mcq-options');
+  if(opts.querySelector('.selected-correct,.selected-wrong')) return; /* already answered */
+
+  var isCorrect = el.dataset.correct === 'true';
+  var qpk       = el.dataset.qpk;
+  var selectedText = el.dataset.optText || el.querySelector('span:nth-child(2)').textContent.trim();
+
+  /* 1. Find correct option text */
+  var correctText = '';
+  opts.querySelectorAll('.mcq-option').forEach(function(o){
+    if(o.dataset.correct === 'true') correctText = o.dataset.optText || o.querySelector('span:nth-child(2)').textContent.trim();
+  });
+
+  /* 2. Mark options */
+  opts.querySelectorAll('.mcq-option').forEach(function(o){
+    o.classList.add('disabled');
+    if(o.dataset.correct === 'true' && o !== el) o.classList.add('correct-highlight');
+  });
+  el.classList.add(isCorrect ? 'selected-correct' : 'selected-wrong');
+
+  /* 3. Feedback banner */
+  var fb     = document.getElementById('fb-'+qpk);
+  var fbIcon = document.getElementById('fb-icon-'+qpk);
+  var fbTitle= document.getElementById('fb-title-'+qpk);
+  var fbSub  = document.getElementById('fb-sub-'+qpk);
+  if(fb){
+    fb.classList.add('show', isCorrect ? 'correct' : 'wrong');
+    fbIcon.textContent  = isCorrect ? '🎉' : '😔';
+    fbTitle.textContent = isCorrect ? 'Correct! Well done.' : 'Incorrect — but you can still learn from it.';
+    fbSub.textContent   = isCorrect ? 'You understood this concept correctly.' : 'Review the explanation below to strengthen your understanding.';
+  }
+
+  /* 4. Explanation card */
+  var exp      = document.getElementById('exp-'+qpk);
+  var expInner = document.getElementById('exp-inner-'+qpk);
+  var expIcon  = document.getElementById('exp-icon-'+qpk);
+  var expTitle = document.getElementById('exp-title-'+qpk);
+  var expCVal  = document.getElementById('exp-correct-val-'+qpk);
+  var expWAns  = document.getElementById('exp-wrong-ans-'+qpk);
+  var expWVal  = document.getElementById('exp-wrong-val-'+qpk);
+
+  if(exp && currentMode === 'practice'){
+    exp.classList.add('show');
+    if(!isCorrect){
+      expInner.classList.add('wrong-card');
+      expIcon.textContent  = '❌';
+      expTitle.textContent = 'Incorrect — See Explanation';
+      if(expWAns){ expWAns.style.display='flex'; }
+      if(expWVal){ expWVal.textContent = selectedText; }
+    } else {
+      expIcon.textContent  = '✅';
+      expTitle.textContent = 'Correct Answer!';
+    }
+    if(expCVal) expCVal.textContent = correctText;
+  }
+
+  /* 5. Status dot */
+  var dot = document.getElementById('dot-'+qpk);
+  if(dot){ dot.classList.add(isCorrect ? 'correct' : 'wrong'); }
+
+  /* 6. Card border */
+  var card = document.getElementById('mcq-card-'+qpk);
+  if(card){ card.classList.add(isCorrect ? 'answered' : 'answered-wrong'); }
+
+  /* 7. Show next button */
+  var nw = document.getElementById('next-wrap-'+qpk);
+  if(nw){ nw.style.display='flex'; }
+
+  /* 8. Update state */
+  state.answered++;
+  if(isCorrect) state.correct++; else state.wrong++;
+  saveState();
+  updateAllUI();
+}
+
+/* ── TOGGLE EXPLANATION ── */
+function toggleExp(bodyId, btn){
+  var body = document.getElementById(bodyId);
+  if(!body) return;
+  var isOpen = body.style.display !== 'none';
+  body.style.display = isOpen ? 'none' : '';
+  btn.innerHTML = isOpen ? '<span>▼</span> Show' : '<span>▲</span> Hide';
+  btn.setAttribute('aria-expanded', String(!isOpen));
+}
+
+/* ── SCROLL TO NEXT ── */
+function scrollToNext(currentCardId){
+  var card = document.getElementById(currentCardId);
+  if(!card) return;
+  var next = card.nextElementSibling;
+  while(next && !next.classList.contains('mcq-card')) next = next.nextElementSibling;
+  if(next){
+    var navH = document.querySelector('nav') ? document.querySelector('nav').offsetHeight : 70;
+    window.scrollTo({ top: next.getBoundingClientRect().top + window.scrollY - navH - 16, behavior: 'smooth' });
+  }
+}
+
+/* ── BOOKMARK ── */
+function toggleBookmark(pk){
+  var btn = document.getElementById('bm-'+pk);
+  var idx = bookmarks.indexOf(pk);
+  if(idx > -1){
+    bookmarks.splice(idx,1);
+    if(btn){ btn.classList.remove('active'); btn.title='Bookmark'; }
+  } else {
+    bookmarks.push(pk);
+    if(btn){ btn.classList.add('active'); btn.title='Bookmarked'; }
+  }
+  saveBookmarks();
+  updateBookmarkWidget();
+}
+
+function updateBookmarkWidget(){
+  var w = document.getElementById('bm-widget');
+  var list = document.getElementById('bm-list');
+  if(!w||!list) return;
+  w.style.display = bookmarks.length ? 'block' : 'none';
+  list.innerHTML = bookmarks.length
+    ? bookmarks.map(function(pk){ return '<div style="padding:6px 0;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between"><span>Question #'+pk+'</span><a href="#mcq-card-'+pk+'" style="font-size:12px;color:var(--green);font-weight:600">Go ↓</a></div>'; }).join('')
+    : '<p style="color:var(--text-light);font-size:12.5px;padding:8px 0">No bookmarks yet</p>';
+}
+
+/* ── SHARE ── */
+function shareQuestion(pk){
+  var url = window.location.href.split('#')[0] + '#mcq-card-' + pk;
+  if(navigator.share){
+    navigator.share({ title:'Tax MCQ — TaxBuddy Umair', url: url });
+  } else {
+    navigator.clipboard.writeText(url).then(function(){
+      alert('Link copied to clipboard!');
+    }).catch(function(){
+      prompt('Copy this link:', url);
+    });
+  }
+}
+
+/* ── SCORE UI ── */
+function updateAllUI(){ updateScorePanel(); updateProgressBar(); updateMotivationBar(); }
+
+function updateScorePanel(){
+  var a = document.getElementById('score-answered');
+  var c = document.getElementById('score-correct');
+  var w = document.getElementById('score-wrong');
+  var p = document.getElementById('score-pct');
+  if(a) a.innerHTML = state.answered + '<span style="font-size:13px;color:var(--text-light);font-weight:400"> / ' + totalOnPage + '</span>';
+  if(c) c.textContent = state.correct;
+  if(w) w.textContent = state.wrong;
+  if(p){
+    if(state.answered === 0){ p.textContent='—'; p.style.color=''; }
+    else{
+      var pct = Math.round((state.correct/state.answered)*100);
+      p.textContent = pct+'%';
+      p.style.color = pct>=70 ? 'var(--green)' : pct>=50 ? 'var(--gold)' : 'var(--red)';
+    }
+  }
+}
+
+function updateProgressBar(){
+  var bar  = document.getElementById('progress-bar');
+  var txt  = document.getElementById('progress-pct-text');
+  if(!bar) return;
+  var pct  = totalOnPage > 0 ? Math.round((state.answered/totalOnPage)*100) : 0;
+  bar.style.width = pct+'%';
+  if(txt) txt.textContent = pct+'% complete';
+  if(pct===100) bar.style.background = 'linear-gradient(90deg,var(--green),#4ee8b0)';
+}
+
+function updateMotivationBar(){
+  var bar  = document.getElementById('mcq-motivation-bar');
+  var msg  = document.getElementById('mcq-motivation');
+  var rst  = document.getElementById('mcq-reset-btn');
+  if(!bar||!msg) return;
+  if(state.answered===0) return;
+  var pct  = Math.round((state.correct/state.answered)*100);
+  var text = '';
+  if(state.answered < 3)   text='🎯 Keep going!';
+  else if(pct===100)        text='🏆 Perfect score! Outstanding knowledge!';
+  else if(pct>=80)          text='🌟 Excellent! You\'re very well prepared.';
+  else if(pct>=60)          text='📚 Good effort! Review explanations to improve.';
+  else if(pct>=40)          text='💪 Keep practising — you\'ll get better!';
+  else                      text='📖 Focus on the ITO 2001 references in explanations.';
+  msg.textContent = text;
+  bar.classList.add('show');
+  if(rst) rst.style.display='flex';
+}
+
+/* ── RESET ── */
+function resetState(){
+  state = {answered:0,correct:0,wrong:0};
+  try{ sessionStorage.removeItem(MCQ_KEY); }catch(e){}
+  updateAllUI();
+  var bar = document.getElementById('mcq-motivation-bar');
+  if(bar) bar.classList.remove('show');
+  var rst = document.getElementById('mcq-reset-btn');
+  if(rst) rst.style.display='none';
+}
+
+/* ── KEYBOARD NAV ── */
+document.addEventListener('keydown', function(e){
+  if(e.key==='Enter'||e.key===' '){
+    var focused = document.activeElement;
+    if(focused && focused.classList.contains('mcq-option')){
+      e.preventDefault();
+      selectMCQOption(focused);
+    }
+  }
+});
+
+/* ── INIT ── */
+document.addEventListener('DOMContentLoaded', function(){
+  totalOnPage = document.querySelectorAll('.mcq-card').length;
+  updateAllUI();
+
+  /* Restore bookmarks */
+  bookmarks.forEach(function(pk){
+    var btn = document.getElementById('bm-'+pk);
+    if(btn) btn.classList.add('active');
+  });
+  updateBookmarkWidget();
+
+  /* Show reset if prior score */
+  if(state.answered > 0){
+    var bar = document.getElementById('mcq-motivation-bar');
+    if(bar) bar.classList.add('show');
+    var rst = document.getElementById('mcq-reset-btn');
+    if(rst) rst.style.display='flex';
+  }
+});
+</script>
 {% endblock %}
