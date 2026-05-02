@@ -470,11 +470,24 @@
     {% endif %}
 
     {% empty %}
-    <div style="text-align:center;padding:60px 20px">
+    <div style="text-align:center;padding:60px 20px;background:var(--white);border:1px solid var(--border);border-radius:var(--radius-xl)">
       <div style="font-size:48px;margin-bottom:16px">📭</div>
-      <h3 style="font-family:var(--font-head);color:var(--navy);margin-bottom:8px">No MCQs found</h3>
-      <p style="color:var(--text-light);margin-bottom:20px">No questions in this category yet.</p>
-      <a href="{% url 'question_list' %}" style="text-decoration:none;background:var(--navy);color:#fff;padding:12px 24px;border-radius:10px;font-weight:600">View All MCQs</a>
+      <h3 style="font-family:var(--font-head);color:var(--navy);margin-bottom:8px">
+        {% if category_not_found %}Category Not Found{% else %}No MCQs Found{% endif %}
+      </h3>
+      <p style="color:var(--text-light);margin-bottom:6px;max-width:400px;margin-left:auto;margin-right:auto">
+        {% if category_not_found %}
+          The category <strong>"{{ category_slug|title }}"</strong> doesn't exist yet in our database. Browse all available topics below.
+        {% else %}
+          No questions in this category yet. Check back soon!
+        {% endif %}
+      </p>
+      <div style="margin-top:20px;display:flex;gap:10px;justify-content:center;flex-wrap:wrap">
+        <a href="{% url 'question_list' %}" style="text-decoration:none;background:var(--navy);color:#fff;padding:12px 24px;border-radius:10px;font-weight:600;display:inline-flex;align-items:center;gap:6px">📝 View All MCQs</a>
+        {% for cat in categories|slice:":3" %}
+        <a href="{% url 'question_list_category' category_slug=cat.slug %}" style="text-decoration:none;background:var(--bg);color:var(--navy);border:1px solid var(--border);padding:12px 20px;border-radius:10px;font-weight:600;font-size:13px">{{ cat.name }}</a>
+        {% endfor %}
+      </div>
     </div>
     {% endfor %}
 
