@@ -718,51 +718,52 @@ def tax_knowledge_quiz(request):
 
 def question_list(request, category_slug=None):
     try:
-        questions = Question.objects.prefetch_related("options").order_by("id")
+        # Question.category is a ForeignKey to Category model
         selected_category = None
         category_not_found = False
 
+        # Base queryset
+        questions = (
+            Question.objects
+            .filter(is_active=True)
+            .select_related("category")
+            .prefetch_related("options")
+            .order_by("category__order", "id")
+        )
+
         if category_slug:
-            all_categories = (
-                Question.objects
-                .exclude(category__isnull=True)
-                .exclude(category='')
-                .values_list("category", flat=True)
-                .distinct()
-            )
-            # Exact slug match first
-            for c in all_categories:
-                if slugify(c.strip()) == category_slug:
-                    selected_category = c.strip()
+            # Match slug against Category.name (slugified)
+            all_cats = Category.objects.all()
+            matched_cat = None
+
+            # Exact slug match
+            for cat in all_cats:
+                if slugify(cat.name) == category_slug:
+                    matched_cat = cat
                     break
 
-            if selected_category:
-                questions = questions.filter(category=selected_category)
-            else:
-                # Partial match fallback
+            # Partial fallback
+            if not matched_cat:
                 slug_words = category_slug.replace('-', ' ').lower()
-                for c in all_categories:
-                    if slug_words in c.lower() or c.lower() in slug_words:
-                        selected_category = c.strip()
-                        questions = questions.filter(category=selected_category)
+                for cat in all_cats:
+                    if slug_words in cat.name.lower() or cat.name.lower() in slug_words:
+                        matched_cat = cat
                         break
-                else:
-                    # No match — show all questions, flag for template
-                    category_not_found = True
+
+            if matched_cat:
+                selected_category = matched_cat.name
+                questions = questions.filter(category=matched_cat)
+            else:
+                category_not_found = True
+                # Show all questions when category not found
 
         paginator = Paginator(questions, 10)
         page_obj = paginator.get_page(request.GET.get("page"))
 
-        raw_categories = (
-            Question.objects
-            .exclude(category__isnull=True)
-            .exclude(category='')
-            .values_list("category", flat=True)
-            .distinct()
-        )
+        # Build category list from Category model
         categories = [
-            {"name": c.strip(), "slug": slugify(c.strip())}
-            for c in sorted(set(raw_categories))
+            {"name": cat.name, "slug": slugify(cat.name)}
+            for cat in Category.objects.all().order_by("order", "name")
         ]
 
         return render(request, "partials/mcq-layout.html", {
@@ -775,7 +776,7 @@ def question_list(request, category_slug=None):
         })
 
     except Exception as e:
-        return HttpResponse("Exception: " + str(e))
+        return HttpResponse("Exception at MCQ: " + str(e))
 
 
 def TaxCalculator4C(request):
