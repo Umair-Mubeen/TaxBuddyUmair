@@ -51,6 +51,8 @@ urlpatterns = [
     # ── POLICY PAGES ─────────────────────────────────────────
     path('privacy-policy/', views.privacy_policy, name='privacy_policy'),
     path('terms-and-conditions/', views.terms_and_conditions, name='terms_and_conditions'),
+    path('disclaimer/', views.disclaimer, name='disclaimer'),
+    path('terms-and-conditions/', views.terms_and_conditions, name='terms_and_conditions'),
 
     # ── MISC ──────────────────────────────────────────────────
     path('online-services/', views.online_services, name='online_services'),
@@ -72,8 +74,9 @@ urlpatterns = [
     path('questions/delete/<int:pk>/', views.delete_question, name='questions-delete'),
 
     # ── BLOG (MUST BE LAST — slug patterns are greedy) ────────
-    path('blog/', views.viewBlogs, name='viewBlogs'),
-    path('blog/<slug:slug>/', views.viewBlogs, name='viewBlogs_category'),
+    path('blog/', views.blog_index, name='blog_index'),
+    path('blog/<slug:slug>/', views.viewBlogs, name='viewBlogs'),
+    path('blog/category/<slug:slug>/', views.viewBlogs, name='viewBlogs_category'),
 
     # Blog detail — clean /articles/ prefix avoids slug collisions
     path('articles/<slug:slug>/', views.BlogDetails, name='BlogDetails'),
