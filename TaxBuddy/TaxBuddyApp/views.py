@@ -149,6 +149,19 @@ def BlogDetails(request, slug=None):
 
 def viewBlogs(request, slug=None):
     try:
+        # No slug = show all published blogs
+        if not slug:
+            from django.core.paginator import Paginator
+            blogs = Blog.objects.filter(
+                status='published', is_deleted=False
+            ).order_by('-created_at')
+            paginator = Paginator(blogs, 12)
+            page_obj = paginator.get_page(request.GET.get('page'))
+            return render(request, "clone.html", {
+                "page_obj": page_obj,
+                "blogs": page_obj,
+                "category_name": "All Posts",
+            })
         category_name = slug.replace('-', ' ')
 
         blogs = Blog.objects.filter(
@@ -718,52 +731,51 @@ def tax_knowledge_quiz(request):
 
 def question_list(request, category_slug=None):
     try:
-        # Question.category is a ForeignKey to Category model
+        questions = Question.objects.prefetch_related("options").order_by("id")
         selected_category = None
         category_not_found = False
 
-        # Base queryset
-        questions = (
-            Question.objects
-            .filter(is_active=True)
-            .select_related("category")
-            .prefetch_related("options")
-            .order_by("category__order", "id")
-        )
-
         if category_slug:
-            # Match slug against Category.name (slugified)
-            all_cats = Category.objects.all()
-            matched_cat = None
-
-            # Exact slug match
-            for cat in all_cats:
-                if slugify(cat.name) == category_slug:
-                    matched_cat = cat
+            all_categories = (
+                Question.objects
+                .exclude(category__isnull=True)
+                .exclude(category='')
+                .values_list("category", flat=True)
+                .distinct()
+            )
+            # Exact slug match first
+            for c in all_categories:
+                if slugify(c.strip()) == category_slug:
+                    selected_category = c.strip()
                     break
 
-            # Partial fallback
-            if not matched_cat:
-                slug_words = category_slug.replace('-', ' ').lower()
-                for cat in all_cats:
-                    if slug_words in cat.name.lower() or cat.name.lower() in slug_words:
-                        matched_cat = cat
-                        break
-
-            if matched_cat:
-                selected_category = matched_cat.name
-                questions = questions.filter(category=matched_cat)
+            if selected_category:
+                questions = questions.filter(category=selected_category)
             else:
-                category_not_found = True
-                # Show all questions when category not found
+                # Partial match fallback
+                slug_words = category_slug.replace('-', ' ').lower()
+                for c in all_categories:
+                    if slug_words in c.lower() or c.lower() in slug_words:
+                        selected_category = c.strip()
+                        questions = questions.filter(category=selected_category)
+                        break
+                else:
+                    # No match — show all questions, flag for template
+                    category_not_found = True
 
         paginator = Paginator(questions, 10)
         page_obj = paginator.get_page(request.GET.get("page"))
 
-        # Build category list from Category model
+        raw_categories = (
+            Question.objects
+            .exclude(category__isnull=True)
+            .exclude(category='')
+            .values_list("category", flat=True)
+            .distinct()
+        )
         categories = [
-            {"name": cat.name, "slug": slugify(cat.name)}
-            for cat in Category.objects.all().order_by("order", "name")
+            {"name": c.strip(), "slug": slugify(c.strip())}
+            for c in sorted(set(raw_categories))
         ]
 
         return render(request, "partials/mcq-layout.html", {
@@ -776,7 +788,7 @@ def question_list(request, category_slug=None):
         })
 
     except Exception as e:
-        return HttpResponse("Exception at MCQ: " + str(e))
+        return HttpResponse("Exception: " + str(e))
 
 
 def TaxCalculator4C(request):
