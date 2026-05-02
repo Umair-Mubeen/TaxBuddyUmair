@@ -729,83 +729,57 @@ def tax_knowledge_quiz(request):
     return render(request, "tax-knowledge-quizz.html", {"questions": questions})
 
 
-
-def debug_mcq_categories(request):
-    """Temporary debug view — remove after fixing. Visit /debug-mcq/"""
-    from django.utils.text import slugify
-    rows = (
-        Question.objects
-        .exclude(category__isnull=True)
-        .exclude(category='')
-        .values_list("category", flat=True)
-        .distinct()
-    )
-    lines = []
-    for r in sorted(set(rows)):
-        lines.append(f"{repr(r)} → slug: {slugify(r.strip())}")
-    return HttpResponse("\n".join(lines), content_type="text/plain")
-
 def question_list(request, category_slug=None):
     try:
-        questions = Question.objects.prefetch_related("options").order_by("id")
         selected_category = None
         category_not_found = False
 
-        if category_slug:
-            all_categories = (
-                Question.objects
-                .exclude(category__isnull=True)
-                .exclude(category='')
-                .values_list("category", flat=True)
-                .distinct()
-            )
-            # Exact slug match first
-            for c in all_categories:
-                if slugify(c.strip()) == category_slug:
-                    selected_category = c.strip()
-                    break
+        # Category model has its own slug field — use it directly
+        all_categories = Category.objects.all().order_by('order', 'name')
 
-            if selected_category:
-                questions = questions.filter(category=selected_category)
-            else:
-                # Partial match fallback
-                slug_words = category_slug.replace('-', ' ').lower()
-                for c in all_categories:
-                    if slug_words in c.lower() or c.lower() in slug_words:
-                        selected_category = c.strip()
-                        questions = questions.filter(category=selected_category)
+        if category_slug:
+            # Match URL slug against Category.slug field
+            try:
+                matched_cat = Category.objects.get(slug=category_slug)
+                selected_category = matched_cat.name
+            except Category.DoesNotExist:
+                # Fallback: slugify Category.name and compare
+                matched_cat = None
+                for cat in all_categories:
+                    if slugify(cat.name) == category_slug:
+                        matched_cat = cat
+                        selected_category = cat.name
                         break
-                else:
-                    # No match — show all questions, flag for template
+                if not matched_cat:
                     category_not_found = True
 
-        paginator = Paginator(questions, 10)
-        page_obj = paginator.get_page(request.GET.get("page"))
+        # Filter questions — Question.category is a CharField
+        questions = Question.objects.filter(
+            is_active=True
+        ).prefetch_related('options').order_by('id')
 
-        raw_categories = (
-            Question.objects
-            .exclude(category__isnull=True)
-            .exclude(category='')
-            .values_list("category", flat=True)
-            .distinct()
-        )
+        if selected_category:
+            questions = questions.filter(category__iexact=selected_category)
+
+        paginator = Paginator(questions, 10)
+        page_obj = paginator.get_page(request.GET.get('page'))
+
         categories = [
-            {"name": c.strip(), "slug": slugify(c.strip())}
-            for c in sorted(set(raw_categories))
+            {'name': cat.name, 'slug': cat.slug}
+            for cat in all_categories
         ]
 
-        return render(request, "partials/mcq-layout.html", {
-            "page_obj": page_obj,
-            "categories": categories,
-            "selected_category": selected_category,
-            "seo_category": selected_category,
-            "category_slug": category_slug,
-            "category_not_found": category_not_found,
+        return render(request, 'partials/mcq-layout.html', {
+            'page_obj': page_obj,
+            'categories': categories,
+            'selected_category': selected_category,
+            'seo_category': selected_category,
+            'category_slug': category_slug,
+            'category_not_found': category_not_found,
         })
 
     except Exception as e:
-        return HttpResponse("Exception: " + str(e))
-
+        return HttpResponse('Exception at MCQ: ' + str(e))
 
 def TaxCalculator4C(request):
     try:

@@ -57,7 +57,6 @@ urlpatterns = [
     path('online-services/', views.online_services, name='online_services'),
     path('layout/', views.layout, name='layout'),
     path('test/', views.test, name='test'),
-    path('debug-mcq/', views.debug_mcq_categories, name='debug_mcq'),
 
     # ── ADMIN / CPANEL ────────────────────────────────────────
     path('dashboard/', views.Dashboard, name='Dashboard'),
