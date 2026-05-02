@@ -729,6 +729,22 @@ def tax_knowledge_quiz(request):
     return render(request, "tax-knowledge-quizz.html", {"questions": questions})
 
 
+
+def debug_mcq_categories(request):
+    """Temporary debug view — remove after fixing. Visit /debug-mcq/"""
+    from django.utils.text import slugify
+    rows = (
+        Question.objects
+        .exclude(category__isnull=True)
+        .exclude(category='')
+        .values_list("category", flat=True)
+        .distinct()
+    )
+    lines = []
+    for r in sorted(set(rows)):
+        lines.append(f"{repr(r)} → slug: {slugify(r.strip())}")
+    return HttpResponse("\n".join(lines), content_type="text/plain")
+
 def question_list(request, category_slug=None):
     try:
         questions = Question.objects.prefetch_related("options").order_by("id")
