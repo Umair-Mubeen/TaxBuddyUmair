@@ -1,10 +1,259 @@
 {% extends 'base.html' %}
 {% load static %}
 
-{% block title %}AOP Income Tax Calculator Pakistan 2025-26 | TaxBuddy Umair{% endblock %}
+{% block title %}AOP Income Tax Calculator Pakistan 2025-26 | TaxBuddy Umair
+<script>
+(function(){
+  'use strict';
+  var form     = document.getElementById('calc-form');
+  var incomeId = form.querySelector('[name="income_amount"],[name="gross_rent"]');
+  var yr1      = document.getElementById('tax_year_1');
+  var yr2      = document.getElementById('tax_year_2');
+  var conflict = document.getElementById('year-conflict');
+  var btn      = document.getElementById('calc-submit');
+  var preview  = document.getElementById('live-preview');
+
+  function fmt(n){ return 'Annual: ₨' + Math.round(n).toLocaleString('en-PK'); }
+  function incomeType(){ var r=document.querySelector('input[name="income_type"]:checked'); return r?r.value:'Monthly'; }
+
+  function updatePreview(){
+    if(!incomeId||!preview) return;
+    var val=parseFloat(incomeId.value)||0;
+    if(val>0){
+      var annual=incomeType()==='Monthly'?val*12:val;
+      preview.textContent=fmt(annual);
+      preview.style.display='block';
+    } else { preview.style.display='none'; }
+  }
+
+  if(incomeId){
+    incomeId.addEventListener('input', updatePreview);
+    document.querySelectorAll('input[name="income_type"]').forEach(function(r){
+      r.addEventListener('change', updatePreview);
+    });
+  }
+
+  function showErr(id,show){ var el=document.getElementById(id); if(el) el.classList.toggle('show',show); }
+  function mark(el,err){ if(!el) return; el.classList.toggle('is-error',err); el.classList.toggle('is-valid',!err&&el.value!==''); }
+  function checkYears(){ var bad=yr1&&yr2&&yr1.value&&yr2.value&&yr1.value===yr2.value; if(conflict) conflict.classList.toggle('show',!!bad); if(btn) btn.disabled=!!bad; return !bad; }
+  function valIncome(){ var ok=incomeId&&parseFloat(incomeId.value)>0; mark(incomeId,!ok); showErr('err-income',!ok&&incomeId&&incomeId.value!==''); return ok; }
+  function valY1(){ var ok=yr1&&yr1.value!==''; mark(yr1,!ok); showErr('err-year1',!ok); return ok; }
+  function valY2(){ var ok=yr2&&yr2.value!==''; mark(yr2,!ok); showErr('err-year2',!ok); return ok; }
+
+  if(incomeId){ incomeId.addEventListener('blur',valIncome); incomeId.addEventListener('input',function(){ if(incomeId.classList.contains('is-error')) valIncome(); }); }
+  if(yr1) yr1.addEventListener('change',function(){ valY1(); checkYears(); });
+  if(yr2) yr2.addEventListener('change',function(){ valY2(); checkYears(); });
+
+  if(form) form.addEventListener('submit',function(e){
+    var ok=valIncome()&valY1()&valY2()&checkYears();
+    if(!ok){ e.preventDefault(); return; }
+    btn.innerHTML='⏳ Calculating…'; btn.disabled=true;
+  });
+
+  var res=document.getElementById('calc-results');
+  if(res) setTimeout(function(){ res.scrollIntoView({behavior:'smooth',block:'start'}); },250);
+})();
+</script>
+{% endblock %}
 
 {% block extra_css %}
 <link rel="stylesheet" href="{% static 'css/calculators.css' %}">
+<style>
+.calc-result-title{font-size:16px;font-weight:700;color:#fff;text-align:center;margin-bottom:16px}
+.calc-result-subtitle{font-size:12px;color:rgba(255,255,255,.45);text-align:center;margin-top:-10px;margin-bottom:16px}
+.cmp-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.cmp-card{background:#fff;border-radius:12px;overflow:hidden;box-shadow:0 2px 12px rgba(10,38,71,.1)}
+.cmp-head{background:#0A2647;padding:12px 16px;font-size:12px;font-weight:600;color:rgba(255,255,255,.7)}
+.cmp-table{width:100%;border-collapse:collapse}
+.cmp-table tr{border-bottom:1px solid #E2E8F0}
+.cmp-table tr:last-child{border-bottom:none}
+.cmp-table td{padding:11px 16px;font-size:13px}
+.cmp-table td:first-child{color:#4A5568}
+.cmp-table td:last-child{text-align:right;font-weight:600;color:#0A2647}
+.cmp-table tr.hl{background:#E8A020}
+.cmp-table tr.hl td{color:#fff!important;font-weight:700}
+.field-err{display:none;font-size:12px;color:#E53E3E;margin-top:4px;font-weight:500}
+.field-err.show{display:block}
+.form-input.is-error,.form-select.is-error{border-color:#E53E3E!important;background:#FFF5F5!important;box-shadow:0 0 0 3px rgba(229,62,62,.08)!important}
+.form-input.is-valid,.form-select.is-valid{border-color:#38A169!important}
+.year-conflict{display:none;background:#FFFBEB;border:1px solid #F59E0B;border-radius:8px;padding:10px 14px;font-size:13px;color:#92400E;margin-bottom:12px;align-items:center;gap:8px}
+.year-conflict.show{display:flex}
+@media(max-width:640px){.cmp-grid{grid-template-columns:1fr!important}.result-inner-grid{grid-template-columns:1fr!important}}
+
+/* ── UPDATED SUBMIT BUTTON ── */
+.calc-submit {
+  width: 100%;
+  padding: 15px 24px;
+  background: linear-gradient(135deg, #0D9E72, #0B8A64);
+  color: #fff;
+  font-size: 15px;
+  font-weight: 700;
+  font-family: inherit;
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  margin-top: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  min-height: 54px;
+  letter-spacing: .01em;
+  box-shadow: 0 4px 14px rgba(13,158,114,.35);
+  transition: all .2s;
+}
+.calc-submit:hover {
+  background: linear-gradient(135deg, #0B8A64, #097554);
+  box-shadow: 0 6px 20px rgba(13,158,114,.45);
+  transform: translateY(-1px);
+}
+.calc-submit:active { transform: translateY(0); box-shadow: none; }
+.calc-submit:disabled { opacity:.6; cursor:not-allowed; transform:none; box-shadow:none; }
+/* ── PRE-CALC INFO CARDS ── */
+.precalc-cards {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 12px;
+  margin-top: 20px;
+}
+.precalc-card {
+  background: #fff;
+  border: 1px solid #E2E8F0;
+  border-radius: 12px;
+  padding: 16px;
+  transition: box-shadow .2s;
+}
+.precalc-card:hover { box-shadow: 0 4px 16px rgba(10,38,71,.08); }
+.precalc-card-icon {
+  width: 36px; height: 36px;
+  border-radius: 8px;
+  display: flex; align-items: center;
+  justify-content: center;
+  font-size: 18px; margin-bottom: 10px;
+}
+.pc-warn { background: #FEF3DC; }
+.pc-blue { background: #EBF8FF; }
+.pc-navy { background: #EEF2FF; }
+.precalc-card h5 { font-size: 13px; font-weight: 700; color: #0A2647; margin-bottom: 10px; }
+.precalc-card ul { list-style: none; display: flex; flex-direction: column; gap: 6px; }
+.precalc-card ul li { display: flex; align-items: flex-start; gap: 7px; font-size: 12.5px; color: #4A5568; line-height: 1.5; }
+.pc-dot { width: 5px; height: 5px; border-radius: 50%; flex-shrink: 0; margin-top: 5px; }
+.pc-dot-warn  { background: #E8A020; }
+.pc-dot-green { background: #0D9E72; }
+.pc-dot-navy  { background: #0A2647; }
+@media(max-width:768px){ .precalc-cards { grid-template-columns: 1fr 1fr !important; } }
+@media(max-width:480px){ .precalc-cards { grid-template-columns: 1fr !important; } }
+
+
+/* ── UPDATED FORM HEADER & FIELDS ── */
+.calc-header {
+  background: var(--navy, #0A2647);
+  padding: 24px 28px;
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+}
+.calc-header-icon {
+  width: 48px; height: 48px;
+  background: rgba(255,255,255,.12);
+  border-radius: 12px;
+  display: flex; align-items: center;
+  justify-content: center;
+  font-size: 24px; flex-shrink: 0;
+}
+.calc-header h2 { font-size: 20px; font-weight: 700; color: #fff; margin-bottom: 4px; }
+.calc-header p  { font-size: 13px; color: rgba(255,255,255,.55); margin-bottom: 10px; }
+.calc-badges { display: flex; gap: 6px; flex-wrap: wrap; }
+.calc-badge {
+  font-size: 10px; font-weight: 700; letter-spacing: .06em;
+  text-transform: uppercase; padding: 3px 10px;
+  border-radius: 20px; border: 1px solid rgba(255,255,255,.2);
+  color: rgba(255,255,255,.65); background: rgba(255,255,255,.08);
+}
+/* Income toggle */
+.income-toggle {
+  display: flex; gap: 0;
+  border-radius: 10px; overflow: hidden;
+  border: 1.5px solid var(--border, #E2E8F0);
+  background: var(--bg, #F7F9FC);
+  margin-bottom: 20px;
+}
+.income-toggle input[type="radio"] { display: none; }
+.income-toggle label {
+  flex: 1; text-align: center;
+  padding: 10px 16px;
+  font-size: 13.5px; font-weight: 600;
+  cursor: pointer; color: var(--text-mid, #4A5568);
+  transition: all .2s; user-select: none;
+  display: flex; align-items: center;
+  justify-content: center; gap: 6px;
+}
+.income-toggle input[type="radio"]:checked + label {
+  background: var(--navy, #0A2647);
+  color: #fff;
+}
+/* Field wrapper */
+.field-wrap { margin-bottom: 18px; }
+.field-top {
+  display: flex; align-items: center;
+  justify-content: space-between; margin-bottom: 6px;
+}
+.field-label-text {
+  font-size: 12px; font-weight: 700;
+  text-transform: uppercase; letter-spacing: .08em;
+  color: var(--text-light, #718096);
+}
+.field-required { color: #E53E3E; margin-left: 2px; }
+.field-live-preview {
+  font-size: 11.5px; font-weight: 600;
+  color: var(--green, #0D9E72);
+  display: none;
+}
+/* Input with prefix */
+.field-input-wrap { position: relative; }
+.field-prefix {
+  position: absolute; left: 14px; top: 50%;
+  transform: translateY(-50%);
+  font-size: 13px; font-weight: 700;
+  color: var(--text-light, #718096);
+  pointer-events: none; user-select: none;
+}
+.form-input.has-prefix { padding-left: 40px; }
+.form-input {
+  width: 100%;
+  padding: 12px 14px;
+  font-size: 14px; font-family: inherit;
+  border: 1.5px solid var(--border, #E2E8F0);
+  border-radius: 10px; outline: none;
+  background: var(--bg, #F7F9FC);
+  color: var(--text, #1A202C);
+  transition: border-color .2s, box-shadow .2s, background .2s;
+}
+.form-input:focus {
+  border-color: var(--navy, #0A2647);
+  background: #fff;
+  box-shadow: 0 0 0 3px rgba(10,38,71,.08);
+}
+.form-input.is-error {
+  border-color: #E53E3E;
+  background: #FFF5F5;
+  box-shadow: 0 0 0 3px rgba(229,62,62,.08);
+}
+.form-input.is-valid { border-color: #38A169; background: #F0FFF4; }
+.form-select { appearance: none; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23718096' stroke-width='2.5'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 14px center; padding-right: 36px; }
+.field-hint { font-size: 11.5px; color: var(--text-light, #718096); margin-top: 5px; }
+.field-err { display: none; font-size: 12px; color: #E53E3E; margin-top: 5px; font-weight: 500; }
+.field-err.show { display: flex; align-items: center; gap: 4px; }
+/* Year selectors */
+.year-selectors { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 16px; }
+.year-select-label { font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: .08em; color: var(--text-light, #718096); margin-bottom: 6px; }
+.year-badge { display: inline-block; background: rgba(13,158,114,.1); color: var(--green, #0D9E72); font-size: 10px; font-weight: 600; padding: 2px 7px; border-radius: 4px; margin-left: 4px; }
+/* Year conflict */
+.year-conflict { display: none; background: #FFFBEB; border: 1px solid #F59E0B; border-radius: 8px; padding: 10px 14px; font-size: 13px; color: #92400E; margin-bottom: 14px; align-items: center; gap: 8px; }
+.year-conflict.show { display: flex; }
+@media(max-width:640px){ .year-selectors { grid-template-columns: 1fr !important; } }
+
+</style>
 {% endblock %}
 
 {% block content %}
@@ -25,16 +274,6 @@
   </div>
 </div>
 
-<!--<div class="container">-->
-<!--  <div class="ad-wrapper">-->
-<!--    <div class="ad-wrapper-label">Advertisement</div>-->
-<!--    <div class="ad-zone ad-leaderboard">-->
-<!--      <div class="ad-zone-label">AdSense — Calculator Top</div>-->
-<!--      <div class="ad-zone-size">728×90 / Responsive</div>-->
-<!--    </div>-->
-<!--  </div>-->
-<!--</div>-->
-
 <div class="content-grid">
   <main class="content-main">
     <div class="calc-container">
@@ -43,86 +282,162 @@
         <div>
           <h2>AOP Tax Calculator</h2>
           <p>Association of Persons · Partnership Firms · ITO 2001</p>
+          <div class="calc-badges"><span class="calc-badge">Partnership Firms</span><span class="calc-badge">ITO 2001</span><span class="calc-badge">FBR 2025-26</span></div>
         </div>
       </div>
-      <div class="calc-body">
-        <form method="POST" action="{% url 'AOPCalculator' %}">
+            <div class="calc-body">
+        <form method="POST" action="{% url 'AOPCalculator' %}" id="calc-form" novalidate>
           {% csrf_token %}
+
+          <!-- INCOME TYPE TOGGLE -->
           <div class="income-toggle">
-            <input type="radio" name="income_type" id="monthly" value="Monthly" {% if income_type == 'Monthly' %}checked{% endif %}>
-            <label for="monthly">Monthly Income</label>
-            <input type="radio" name="income_type" id="yearly" value="Yearly" {% if income_type != 'Monthly' %}checked{% endif %}>
-            <label for="yearly">Annual Income</label>
+            <input type="radio" name="income_type" id="tog-monthly" value="Monthly"
+                   {% if income_type == 'Monthly' or not income_type %}checked{% endif %}>
+            <label for="tog-monthly">📅 Monthly Income</label>
+            <input type="radio" name="income_type" id="tog-yearly" value="Yearly"
+                   {% if income_type == 'Yearly' %}checked{% endif %}>
+            <label for="tog-yearly">📆 Annual Income</label>
           </div>
-          <div class="form-group">
-            <label class="form-label">AOP Net Income (PKR) *</label>
-            <input type="number" name="income_amount" class="form-input number-only"
-                   placeholder="e.g. 4800000" min="0" required
-                   value="{{ request.POST.income_amount|default:'' }}">
+
+          <!-- INCOME FIELD -->
+          <div class="field-wrap">
+            <div class="field-top">
+              <span class="field-label-text">AOP Net Income (PKR)<span class="field-required">*</span></span>
+              <span class="field-live-preview" id="live-preview"></span>
+            </div>
+            <div class="field-input-wrap">
+              <span class="field-prefix">₨</span>
+              <input type="number" id="income_amount" name="income_amount"
+                     class="form-input number-only has-prefix"
+                     placeholder="e.g. 4,800,000"
+                     min="1" required
+                     value="{% if request.POST.income_amount %}{{ request.POST.income_amount }}{% endif %}">
+            </div>
+            <div class="field-hint">Total net income of the Association of Persons</div>
+            <div class="field-err" id="err-income">⚠ Please enter a valid amount greater than 0</div>
           </div>
+          <!-- TAX YEAR SELECTORS -->
           <div class="year-selectors">
             <div>
-              <div class="year-select-label">Tax Year 1</div>
-              <select name="tax_year_1" class="form-select" required>
-                <option value="">Select Year</option>
+              <div class="year-select-label">Tax Year 1 <span class="year-badge">Compare</span></div>
+              <select name="tax_year_1" id="tax_year_1" class="form-input form-select" required>
+                <option value="">— Select Year —</option>
                 {% for y in years %}<option value="{{ y }}" {% if tax_year_1 == y %}selected{% endif %}>{{ y }}</option>{% endfor %}
               </select>
+              <div class="field-err" id="err-year1">⚠ Please select Tax Year 1</div>
             </div>
             <div>
-              <div class="year-select-label">Tax Year 2</div>
-              <select name="tax_year_2" class="form-select" required>
-                <option value="">Select Year</option>
+              <div class="year-select-label">Tax Year 2 <span class="year-badge">Compare</span></div>
+              <select name="tax_year_2" id="tax_year_2" class="form-input form-select" required>
+                <option value="">— Select Year —</option>
                 {% for y in years %}<option value="{{ y }}" {% if tax_year_2 == y %}selected{% endif %}>{{ y }}</option>{% endfor %}
               </select>
+              <div class="field-err" id="err-year2">⚠ Please select Tax Year 2</div>
             </div>
           </div>
-          <button type="submit" class="calc-submit">🧮 Calculate AOP Tax</button>
+
+          <div class="year-conflict" id="year-conflict">
+            ⚠️ Please select <strong>two different tax years</strong> to compare results.
+          </div>
+
+          <button type="submit" class="calc-submit" id="calc-submit">
+            🧮 Calculate AOP Tax
+          </button>
         </form>
+        {%  if not tax_year_1_result %}
+        <div class="precalc-cards">
+          <div class="precalc-card">
+            <div class="precalc-card-icon pc-warn">⚠️</div>
+            <h5>Disclaimer</h5>
+            <ul>
+              <li><span class="pc-dot pc-dot-warn"></span>Actual AOP tax liability may vary. Partnership income is shared between members.</li>
+              <li><span class="pc-dot pc-dot-warn"></span>Results are estimates. Consult a tax professional for final assessment.</li>
+            </ul>
+          </div>
+          <div class="precalc-card">
+            <div class="precalc-card-icon pc-blue">🤝</div>
+            <h5>Who is this for?</h5>
+            <ul>{% for item in content.who %}<li><span class="pc-dot pc-dot-green"></span>{{ item }}</li>{% endfor %}</ul>
+          </div>
+          <div class="precalc-card">
+            <div class="precalc-card-icon pc-navy">📌</div>
+            <h5>Important Notes</h5>
+            <ul>{% for note in content.notes %}<li><span class="pc-dot pc-dot-navy"></span>{{ note }}</li>{% endfor %}</ul>
+          </div>
+        </div>
+        {%  endif %}
 
         {% if tax_year_1_result and tax_year_2_result %}
-        <div class="calc-result">
-          <div class="calc-result-header">
-            <span style="font-size:13px;font-weight:600;color:rgba(255,255,255,0.7);">Annual Income: <strong style="color:#4ee8b0;">PKR {{ yearly_income|floatformat:0 }}</strong></span>
-          </div>
-          <div class="calc-compare-grid">
-            <div class="calc-compare-card">
-              <div class="calc-compare-year">{{ tax_year_1 }}</div>
-              <div class="calc-compare-row"><span class="calc-compare-lbl">Tax Rate</span><span class="calc-compare-val">{{ tax_year_1_result.rate|floatformat:1 }}%</span></div>
-              <div class="calc-compare-row"><span class="calc-compare-lbl">Annual Tax</span><span class="calc-compare-val calc-compare-highlight">PKR {{ tax_year_1_result.total_tax|floatformat:0 }}</span></div>
-              <div class="calc-compare-row"><span class="calc-compare-lbl">Monthly Tax</span><span class="calc-compare-val">PKR {{ tax_year_1_result.per_month|floatformat:0 }}</span></div>
+        <div class="calc-result" id="calc-results">
+          <div class="calc-result-title">Tax Calculation Comparison: {{ tax_year_1 }} VS {{ tax_year_2 }}</div>
+          <div class="calc-result-subtitle">Monthly: PKR {{ monthly_income|floatformat:0 }} &nbsp;|&nbsp; Annual: PKR {{ yearly_income|floatformat:0 }}</div>
+          <div class="cmp-grid">
+            <div class="cmp-card">
+              <div class="cmp-head">Tax Calculation for Tax Year : {{ tax_year_1 }}</div>
+              <table class="cmp-table">
+                <tr><td>Monthly Income</td><td>Rs. {{ monthly_income|floatformat:0 }}</td></tr>
+                <tr><td>Yearly Income</td><td>Rs. {{ yearly_income|floatformat:0 }}</td></tr>
+                <tr class="hl"><td>Applicable Tax Bracket</td><td>Rs. {{ tax_year_1_result.lower|floatformat:0 }} to Rs. {% if tax_year_1_result.upper >= 999999999 %}inf{% else %}{{ tax_year_1_result.upper|floatformat:0 }}{% endif %}</td></tr>
+                <tr><td>Base Tax</td><td>Rs. {{ tax_year_1_result.fixed_tax|floatformat:0 }}</td></tr>
+                <tr><td>Amount Exceeding Bracket</td><td>Rs. {{ tax_year_1_result.amount_exceeding|floatformat:0 }}</td></tr>
+                <tr class="hl"><td>Rate Applied</td><td>{{ tax_year_1_result.rate|floatformat:0 }} %</td></tr>
+                <tr><td>Tax on Amount Exceeding</td><td>Rs. {{ tax_year_1_result.tax_on_exceeding|floatformat:0 }}</td></tr>
+                <tr><td>Total Tax Chargeable</td><td>Rs. {{ tax_year_1_result.total_tax|floatformat:0 }}</td></tr>
+                {% if tax_year_1_result.surcharge > 0 %}<tr><td>{{ surcharge_label_1 }}</td><td>Rs. {{ tax_year_1_result.surcharge|floatformat:0 }}</td></tr>{% endif %}
+                <tr class="hl"><td>Monthly Tax</td><td>Rs. {{ tax_year_1_result.per_month|floatformat:0 }}</td></tr>
+              </table>
             </div>
-            <div class="calc-compare-card">
-              <div class="calc-compare-year">{{ tax_year_2 }}</div>
-              <div class="calc-compare-row"><span class="calc-compare-lbl">Tax Rate</span><span class="calc-compare-val">{{ tax_year_2_result.rate|floatformat:1 }}%</span></div>
-              <div class="calc-compare-row"><span class="calc-compare-lbl">Annual Tax</span><span class="calc-compare-val calc-compare-highlight">PKR {{ tax_year_2_result.total_tax|floatformat:0 }}</span></div>
-              <div class="calc-compare-row"><span class="calc-compare-lbl">Monthly Tax</span><span class="calc-compare-val">PKR {{ tax_year_2_result.per_month|floatformat:0 }}</span></div>
+            <div class="cmp-card">
+              <div class="cmp-head">Tax Calculation for Tax Year : {{ tax_year_2 }}</div>
+              <table class="cmp-table">
+                <tr><td>Monthly Income</td><td>Rs. {{ monthly_income|floatformat:0 }}</td></tr>
+                <tr><td>Yearly Income</td><td>Rs. {{ yearly_income|floatformat:0 }}</td></tr>
+                <tr class="hl"><td>Applicable Tax Bracket</td><td>Rs. {{ tax_year_2_result.lower|floatformat:0 }} to Rs. {% if tax_year_2_result.upper >= 999999999 %}inf{% else %}{{ tax_year_2_result.upper|floatformat:0 }}{% endif %}</td></tr>
+                <tr><td>Base Tax</td><td>Rs. {{ tax_year_2_result.fixed_tax|floatformat:0 }}</td></tr>
+                <tr><td>Amount Exceeding Bracket</td><td>Rs. {{ tax_year_2_result.amount_exceeding|floatformat:0 }}</td></tr>
+                <tr class="hl"><td>Rate Applied</td><td>{{ tax_year_2_result.rate|floatformat:0 }} %</td></tr>
+                <tr><td>Tax on Amount Exceeding</td><td>Rs. {{ tax_year_2_result.tax_on_exceeding|floatformat:0 }}</td></tr>
+                <tr><td>Total Tax Chargeable</td><td>Rs. {{ tax_year_2_result.total_tax|floatformat:0 }}</td></tr>
+                {% if tax_year_2_result.surcharge > 0 %}<tr><td>{{ surcharge_label_2 }}</td><td>Rs. {{ tax_year_2_result.surcharge|floatformat:0 }}</td></tr>{% endif %}
+                <tr class="hl"><td>Monthly Tax</td><td>Rs. {{ tax_year_2_result.per_month|floatformat:0 }}</td></tr>
+              </table>
             </div>
           </div>
-          <div class="calc-cta">
+          <div class="calc-cta" style="margin-top:14px">
             <div class="calc-cta-text">Need AOP return filing? <strong>Starting PKR 5,000</strong></div>
             <a href="https://wa.me/923332482742" class="btn-wa-sm" target="_blank" rel="noopener">💬 Get Help</a>
           </div>
+          <!-- disclaimer + who + notes inside result -->
+          <div style="margin-top:16px;background:rgba(255,255,255,.06);border-radius:10px;padding:14px 16px;font-size:13px;color:rgba(255,255,255,.75);line-height:1.65;border-left:3px solid #F59E0B">
+            ⚠️ These results are for <strong style="color:#fff">estimation purposes only</strong>. Actual tax may vary based on deductions, credits, and withholding tax already deducted. Consult a tax professional for accurate assessment.
+          </div>
+          <div class="result-inner-grid" style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:14px">
+            <div style="background:#fff;border-radius:10px;padding:14px 16px">
+              <div style="font-size:12px;font-weight:700;color:#0A2647;margin-bottom:10px">👤 Who should use this?</div>
+              <ul style="list-style:none;display:flex;flex-direction:column;gap:6px">
+                {% for item in content.who %}<li style="display:flex;align-items:flex-start;gap:7px;font-size:12.5px;color:#4A5568"><span style="width:5px;height:5px;border-radius:50%;background:#0D9E72;flex-shrink:0;margin-top:5px"></span>{{ item }}</li>{% endfor %}
+              </ul>
+            </div>
+            <div style="background:#fff;border-radius:10px;padding:14px 16px">
+              <div style="font-size:12px;font-weight:700;color:#0A2647;margin-bottom:10px">📌 Important Notes</div>
+              <ul style="list-style:none;display:flex;flex-direction:column;gap:6px">
+                {% for note in content.notes %}<li style="display:flex;align-items:flex-start;gap:7px;font-size:12.5px;color:#4A5568"><span style="width:5px;height:5px;border-radius:50%;background:#E8A020;flex-shrink:0;margin-top:5px"></span>{{ note }}</li>{% endfor %}
+              </ul>
+            </div>
+          </div>
         </div>
         {% endif %}
-
-        <div class="calc-disclaimer">⚠️ Estimation only. Actual tax liability may vary. Consult a tax professional.</div>
       </div>
     </div>
 
-<!--    <div class="ad-wrapper"><div class="ad-wrapper-label">Advertisement</div>-->
-<!--      <div class="ad-zone ad-large-rect"><div class="ad-zone-label">AdSense — Below Calculator</div><div class="ad-zone-size">336×280</div></div>-->
-<!--    </div>-->
-
-    <div class="info-cards">
-      <div class="info-card"><h4>👥 Who is this for?</h4><ul>{% for item in content.who %}<li>{{ item }}</li>{% endfor %}</ul></div>
-      <div class="info-card"><h4>📌 Notes</h4><ul>{% for note in content.notes %}<li>{{ note }}</li>{% endfor %}</ul></div>
-    </div>
-
+    
     {% include 'partials/cta_banner.html' %}
   </main>
-
   <aside class="content-sidebar">{% include 'partials/sidebar.html' %}</aside>
 </div>
 {% endblock %}
 
-{% block extra_js %}<script src="{% static 'js/calculators.js' %}"></script>{% endblock %}
+{% block extra_js %}
+<script src="{% static 'js/calculators.js' %}"></script>
+
+{% endblock %}
