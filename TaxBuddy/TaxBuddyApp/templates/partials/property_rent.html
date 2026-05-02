@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 {% load static %}
+{% load humanize %}
 {% block title %}Property / Rental Income Tax Calculator Pakistan | TaxBuddy Umair
 <script>
 (function(){
@@ -255,6 +256,18 @@
 .year-conflict.show { display: flex; }
 @media(max-width:640px){ .year-selectors { grid-template-columns: 1fr !important; } }
 
+
+/* ── RESULT SECTION FIXES ── */
+.calc-result { margin-top: 32px !important; border-top: 3px solid var(--green, #0D9E72); }
+.calc-result-title {
+  font-size: 16px; font-weight: 700;
+  color: #fff; text-align: center;
+  margin-bottom: 4px; letter-spacing: -.01em;
+}
+.calc-result-subtitle {
+  font-size: 12px; color: rgba(255,255,255,.5);
+  text-align: center; margin: 0 0 14px;
+}
 </style>
 {% endblock %}
 {% block content %}
@@ -378,41 +391,41 @@
         <div class="calc-result" id="calc-results">
           <div class="calc-result-title">Tax Calculation Comparison: {{ tax_year_1 }} VS {{ tax_year_2 }}</div>
           <div class="prop-summary">
-            <span>Gross Rent: <strong>PKR {{ yearly_income|floatformat:0 }}</strong></span>
-            <span>Deductions: <strong style="color:#fbbf24">PKR {{ total_deductions|floatformat:0 }}</strong></span>
-            <span>Net Taxable: <strong>PKR {{ net_income_rental|floatformat:0 }}</strong></span>
+            <span>Gross Rent: <strong>PKR {{ yearly_income|floatformat:0|intcomma }}</strong></span>
+            <span>Deductions: <strong style="color:#fbbf24">PKR {{ total_deductions|floatformat:0|intcomma }}</strong></span>
+            <span>Net Taxable: <strong>PKR {{ net_income_rental|floatformat:0|intcomma }}</strong></span>
           </div>
           <div class="cmp-grid">
             <div class="cmp-card">
               <div class="cmp-head">Tax Calculation for Tax Year : {{ tax_year_1 }}</div>
               <table class="cmp-table">
-                <tr><td>Monthly Rent</td><td>Rs. {{ monthly_income|floatformat:0 }}</td></tr>
-                <tr><td>Annual Rent</td><td>Rs. {{ yearly_income|floatformat:0 }}</td></tr>
-                <tr><td>Total Deductions</td><td>Rs. {{ total_deductions|floatformat:0 }}</td></tr>
-                <tr><td>Net Taxable Rent</td><td>Rs. {{ net_income_rental|floatformat:0 }}</td></tr>
-                <tr class="hl"><td>Applicable Tax Bracket</td><td>Rs. {{ tax_year_1_result.lower|floatformat:0 }} to Rs. {% if tax_year_1_result.upper >= 999999999 %}inf{% else %}{{ tax_year_1_result.upper|floatformat:0 }}{% endif %}</td></tr>
-                <tr><td>Base Tax</td><td>Rs. {{ tax_year_1_result.fixed_tax|floatformat:0 }}</td></tr>
-                <tr><td>Amount Exceeding Bracket</td><td>Rs. {{ tax_year_1_result.amount_exceeding|floatformat:0 }}</td></tr>
-                <tr class="hl"><td>Rate Applied</td><td>{{ tax_year_1_result.rate|floatformat:0 }} %</td></tr>
-                <tr><td>Tax on Amount Exceeding</td><td>Rs. {{ tax_year_1_result.tax_on_exceeding|floatformat:0 }}</td></tr>
-                <tr><td>Total Tax Chargeable</td><td>Rs. {{ tax_year_1_result.total_tax|floatformat:0 }}</td></tr>
-                <tr class="hl"><td>Monthly Tax</td><td>Rs. {{ tax_year_1_result.per_month|floatformat:0 }}</td></tr>
+                <tr><td>Monthly Rent</td><td>Rs. {{ monthly_income|floatformat:0|intcomma }}</td></tr>
+                <tr><td>Annual Rent</td><td>Rs. {{ yearly_income|floatformat:0|intcomma }}</td></tr>
+                <tr><td>Total Deductions</td><td>Rs. {{ total_deductions|floatformat:0|intcomma }}</td></tr>
+                <tr><td>Net Taxable Rent</td><td>Rs. {{ net_income_rental|floatformat:0|intcomma }}</td></tr>
+                <tr class="hl"><td>Applicable Tax Bracket</td><td>Rs. {{ tax_year_1_result.lower|floatformat:0|intcomma }} to Rs. {% if tax_year_1_result.upper >= 999999999 %}inf{% else %}{{ tax_year_1_result.upper|floatformat:0|intcomma }}{% endif %}</td></tr>
+                <tr><td>Base Tax</td><td>Rs. {{ tax_year_1_result.fixed_tax|floatformat:0|intcomma }}</td></tr>
+                <tr><td>Amount Exceeding Bracket</td><td>Rs. {{ tax_year_1_result.amount_exceeding|floatformat:0|intcomma }}</td></tr>
+                <tr class="hl"><td>Rate Applied</td><td>{{ tax_year_1_result.rate|floatformat:0|intcomma }} %</td></tr>
+                <tr><td>Tax on Amount Exceeding</td><td>Rs. {{ tax_year_1_result.tax_on_exceeding|floatformat:0|intcomma }}</td></tr>
+                <tr><td>Total Tax Chargeable</td><td>Rs. {{ tax_year_1_result.total_tax|floatformat:0|intcomma }}</td></tr>
+                <tr class="hl"><td>Monthly Tax</td><td>Rs. {{ tax_year_1_result.per_month|floatformat:0|intcomma }}</td></tr>
               </table>
             </div>
             <div class="cmp-card">
               <div class="cmp-head">Tax Calculation for Tax Year : {{ tax_year_2 }}</div>
               <table class="cmp-table">
-                <tr><td>Monthly Rent</td><td>Rs. {{ monthly_income|floatformat:0 }}</td></tr>
-                <tr><td>Annual Rent</td><td>Rs. {{ yearly_income|floatformat:0 }}</td></tr>
-                <tr><td>Total Deductions</td><td>Rs. {{ total_deductions|floatformat:0 }}</td></tr>
-                <tr><td>Net Taxable Rent</td><td>Rs. {{ net_income_rental|floatformat:0 }}</td></tr>
-                <tr class="hl"><td>Applicable Tax Bracket</td><td>Rs. {{ tax_year_2_result.lower|floatformat:0 }} to Rs. {% if tax_year_2_result.upper >= 999999999 %}inf{% else %}{{ tax_year_2_result.upper|floatformat:0 }}{% endif %}</td></tr>
-                <tr><td>Base Tax</td><td>Rs. {{ tax_year_2_result.fixed_tax|floatformat:0 }}</td></tr>
-                <tr><td>Amount Exceeding Bracket</td><td>Rs. {{ tax_year_2_result.amount_exceeding|floatformat:0 }}</td></tr>
-                <tr class="hl"><td>Rate Applied</td><td>{{ tax_year_2_result.rate|floatformat:0 }} %</td></tr>
-                <tr><td>Tax on Amount Exceeding</td><td>Rs. {{ tax_year_2_result.tax_on_exceeding|floatformat:0 }}</td></tr>
-                <tr><td>Total Tax Chargeable</td><td>Rs. {{ tax_year_2_result.total_tax|floatformat:0 }}</td></tr>
-                <tr class="hl"><td>Monthly Tax</td><td>Rs. {{ tax_year_2_result.per_month|floatformat:0 }}</td></tr>
+                <tr><td>Monthly Rent</td><td>Rs. {{ monthly_income|floatformat:0|intcomma }}</td></tr>
+                <tr><td>Annual Rent</td><td>Rs. {{ yearly_income|floatformat:0|intcomma }}</td></tr>
+                <tr><td>Total Deductions</td><td>Rs. {{ total_deductions|floatformat:0|intcomma }}</td></tr>
+                <tr><td>Net Taxable Rent</td><td>Rs. {{ net_income_rental|floatformat:0|intcomma }}</td></tr>
+                <tr class="hl"><td>Applicable Tax Bracket</td><td>Rs. {{ tax_year_2_result.lower|floatformat:0|intcomma }} to Rs. {% if tax_year_2_result.upper >= 999999999 %}inf{% else %}{{ tax_year_2_result.upper|floatformat:0|intcomma }}{% endif %}</td></tr>
+                <tr><td>Base Tax</td><td>Rs. {{ tax_year_2_result.fixed_tax|floatformat:0|intcomma }}</td></tr>
+                <tr><td>Amount Exceeding Bracket</td><td>Rs. {{ tax_year_2_result.amount_exceeding|floatformat:0|intcomma }}</td></tr>
+                <tr class="hl"><td>Rate Applied</td><td>{{ tax_year_2_result.rate|floatformat:0|intcomma }} %</td></tr>
+                <tr><td>Tax on Amount Exceeding</td><td>Rs. {{ tax_year_2_result.tax_on_exceeding|floatformat:0|intcomma }}</td></tr>
+                <tr><td>Total Tax Chargeable</td><td>Rs. {{ tax_year_2_result.total_tax|floatformat:0|intcomma }}</td></tr>
+                <tr class="hl"><td>Monthly Tax</td><td>Rs. {{ tax_year_2_result.per_month|floatformat:0|intcomma }}</td></tr>
               </table>
             </div>
           </div>
@@ -421,8 +434,8 @@
             <a href="https://wa.me/923332482742" class="btn-wa-sm" target="_blank" rel="noopener">💬 WhatsApp</a>
           </div>
           <!-- disclaimer + who + notes inside result -->
-          <div style="margin-top:16px;background:rgba(255,255,255,.06);border-radius:10px;padding:14px 16px;font-size:13px;color:rgba(255,255,255,.75);line-height:1.65;border-left:3px solid #F59E0B">
-            ⚠️ These results are for <strong style="color:#fff">estimation purposes only</strong>. Actual tax may vary based on deductions, credits, and withholding tax already deducted. Consult a tax professional for accurate assessment.
+          <div style="margin-top:16px;background:#FFFBEB;border-radius:10px;padding:14px 16px;font-size:13px;color:#92400E;line-height:1.65;border-left:3px solid #F59E0B">
+            ⚠️ These results are for <strong style="color:#78350F">estimation purposes only</strong>. Actual tax may vary based on deductions, credits, and withholding tax already deducted. Consult a tax professional for accurate assessment.
           </div>
           <div class="result-inner-grid" style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:14px">
             <div style="background:#fff;border-radius:10px;padding:14px 16px">

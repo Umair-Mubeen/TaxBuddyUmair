@@ -187,6 +187,44 @@
 .exam-mode .mcq-explanation{display:none!important}
 .exam-mode .mcq-explanation.show{display:none!important}
 
+/* ── EMAIL WIDGET (original) ── */
+.mcq-email-widget {
+  background: linear-gradient(135deg, var(--navy) 0%, var(--navy-mid) 100%);
+  border-radius: var(--radius-xl); padding: 22px 18px;
+  text-align: center; margin-bottom: 20px;
+  position: relative; overflow: hidden;
+}
+.mcq-email-widget::before {
+  content: '';
+  position: absolute; top: -30px; right: -30px;
+  width: 100px; height: 100px; border-radius: 50%;
+  background: rgba(13,158,114,0.15);
+}
+.mcq-email-widget h4 {
+  font-family: var(--font-head); font-size: 16px;
+  color: #fff; margin-bottom: 6px; position: relative;
+}
+.mcq-email-widget p {
+  font-size: 12.5px; color: rgba(255,255,255,0.65);
+  margin-bottom: 14px; line-height: 1.5; position: relative;
+}
+.mcq-email-form {
+  display: flex; gap: 6px; position: relative;
+}
+.mcq-email-form input {
+  flex: 1; padding: 10px 12px;
+  border: none; border-radius: 8px;
+  font-size: 13px; font-family: var(--font-body);
+  outline: none; min-width: 0;
+}
+.mcq-email-form button {
+  background: var(--green); color: #fff;
+  border: none; border-radius: 8px;
+  padding: 10px 14px; font-size: 12px;
+  font-weight: 600; cursor: pointer;
+  font-family: var(--font-body); white-space: nowrap;
+}
+
 /* ── MOBILE ── */
 @media(max-width:640px){
   .mcq-score-panel{grid-template-columns:repeat(2,1fr)}
@@ -461,6 +499,7 @@
 
   <!-- ── SIDEBAR ── -->
   <aside class="content-sidebar">
+    <!-- Email Capture -->
     <div class="mcq-email-widget">
       <h4>📥 Free MCQ PDF</h4>
       <p>Get 200+ Tax MCQs as a free PDF — perfect for CA, ICMAP &amp; ACCA prep.</p>
