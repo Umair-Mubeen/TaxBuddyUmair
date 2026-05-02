@@ -538,9 +538,9 @@
             <span class="sidebar-link-dot"></span>All Topics
           </a>
           {% for cat in categories %}
-          <a class="sidebar-link {% if selected_category == cat.name %}active{% endif %}" href="{% url 'question_list_category' category_slug=cat.slug %}" style="{% if selected_category == cat.name %}color:var(--green);background:var(--green-light);{% endif %}">
-            <span class="sidebar-link-dot"></span>{{ cat.name }}
-          </a>
+<!--          <a class="sidebar-link {% if selected_category == cat.name %}active{% endif %}" href="{% url 'question_list_category' category_slug=cat.slug %}" style="{% if selected_category == cat.name %}color:var(&#45;&#45;green);background:var(&#45;&#45;green-light);{% endif %}">-->
+<!--            <span class="sidebar-link-dot"></span>{{ cat.name }}-->
+<!--          </a>-->
           {% endfor %}
         </div>
       </div>
