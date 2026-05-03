@@ -51,7 +51,13 @@
   });
 
   var res=document.getElementById('calc-results');
-  if(res) setTimeout(function(){ res.scrollIntoView({behavior:'smooth',block:'start'}); },250);
+  if(res){
+    setTimeout(function(){
+      var navH = document.querySelector('nav') ? document.querySelector('nav').offsetHeight : 70;
+      var top = res.getBoundingClientRect().top + window.scrollY - navH - 16;
+      window.scrollTo({top: top, behavior: 'smooth'});
+    }, 100);
+  }
 })();
 </script>
 {% endblock %}
@@ -268,6 +274,80 @@
   font-size: 12px; color: rgba(255,255,255,.5);
   text-align: center; margin: 0 0 14px;
 }
+
+/* ── TAX DIFFERENCE SUMMARY ── */
+.tax-diff-bar{
+  margin-top:16px;
+  border-radius:12px;
+  overflow:hidden;
+  border:1.5px solid rgba(255,255,255,.15);
+}
+.tax-diff-header{
+  background:rgba(255,255,255,.08);
+  padding:10px 16px;
+  font-size:11px;font-weight:700;
+  text-transform:uppercase;letter-spacing:.09em;
+  color:rgba(255,255,255,.6);
+  text-align:center;
+}
+.tax-diff-grid{
+  display:grid;
+  grid-template-columns:1fr auto 1fr;
+  gap:0;
+  background:rgba(255,255,255,.04);
+}
+.tax-diff-year{
+  padding:14px 16px;
+  text-align:center;
+}
+.tax-diff-year-label{
+  font-size:11px;color:rgba(255,255,255,.5);
+  text-transform:uppercase;letter-spacing:.07em;margin-bottom:4px;
+}
+.tax-diff-year-amount{
+  font-size:22px;font-weight:700;color:#fff;
+  font-family:var(--font-head,serif);
+}
+.tax-diff-year-sub{
+  font-size:11px;color:rgba(255,255,255,.4);margin-top:2px;
+}
+.tax-diff-middle{
+  display:flex;flex-direction:column;
+  align-items:center;justify-content:center;
+  padding:14px 12px;
+  border-left:1px solid rgba(255,255,255,.08);
+  border-right:1px solid rgba(255,255,255,.08);
+  min-width:90px;
+}
+.tax-diff-vs{
+  font-size:10px;font-weight:700;
+  color:rgba(255,255,255,.3);
+  text-transform:uppercase;letter-spacing:.1em;
+  margin-bottom:6px;
+}
+.tax-diff-badge{
+  font-size:13px;font-weight:700;
+  padding:5px 12px;border-radius:var(--radius-pill,99px);
+  text-align:center;line-height:1.3;
+}
+.diff-save{background:rgba(34,201,122,.2);color:#4ee8b0;border:1px solid rgba(34,201,122,.3)}
+.diff-more{background:rgba(229,62,62,.2);color:#fc8181;border:1px solid rgba(229,62,62,.3)}
+.diff-same{background:rgba(255,255,255,.1);color:rgba(255,255,255,.6);border:1px solid rgba(255,255,255,.15)}
+.tax-diff-verdict{
+  padding:10px 16px;
+  font-size:12.5px;
+  color:rgba(255,255,255,.65);
+  text-align:center;
+  border-top:1px solid rgba(255,255,255,.08);
+  line-height:1.55;
+}
+.tax-diff-verdict strong{color:#fff}
+@media(max-width:480px){
+  .tax-diff-year-amount{font-size:18px}
+  .tax-diff-middle{min-width:70px;padding:10px 8px}
+  .tax-diff-badge{font-size:12px;padding:4px 9px}
+}
+
 </style>
 {% endblock %}
 {% block content %}
@@ -290,7 +370,7 @@
         </div>
       </div>
             <div class="calc-body">
-        <form method="POST" action="{% url 'PropertyCalculator' %}" id="calc-form" novalidate>
+        <form method="POST" action="{% url 'PropertyCalculator' %}#calc-results" id="calc-form" novalidate>
           {% csrf_token %}
 
           <!-- INCOME TYPE TOGGLE -->
@@ -429,6 +509,45 @@
               </table>
             </div>
           </div>
+
+          <!-- ── TAX DIFFERENCE SUMMARY ── -->
+          {% with diff=tax_year_1_result.per_month|add:0 %}
+          <div class="tax-diff-bar">
+            <div class="tax-diff-header">📊 Monthly Tax Comparison at a Glance</div>
+            <div class="tax-diff-grid">
+              <div class="tax-diff-year">
+                <div class="tax-diff-year-label">{{ tax_year_1 }}</div>
+                <div class="tax-diff-year-amount">Rs. {{ tax_year_1_result.per_month|floatformat:0|intcomma }}</div>
+                <div class="tax-diff-year-sub">per month</div>
+              </div>
+              <div class="tax-diff-middle">
+                <div class="tax-diff-vs">vs</div>
+                {% if tax_year_1_result.per_month > tax_year_2_result.per_month %}
+                  <div class="tax-diff-badge diff-more">▲ Higher<br>in {{ tax_year_1 }}</div>
+                {% elif tax_year_1_result.per_month < tax_year_2_result.per_month %}
+                  <div class="tax-diff-badge diff-save">▼ Lower<br>in {{ tax_year_1 }}</div>
+                {% else %}
+                  <div class="tax-diff-badge diff-same">= Same<br>both years</div>
+                {% endif %}
+              </div>
+              <div class="tax-diff-year">
+                <div class="tax-diff-year-label">{{ tax_year_2 }}</div>
+                <div class="tax-diff-year-amount">Rs. {{ tax_year_2_result.per_month|floatformat:0|intcomma }}</div>
+                <div class="tax-diff-year-sub">per month</div>
+              </div>
+            </div>
+            <div class="tax-diff-verdict">
+              {% if tax_year_1_result.total_tax > tax_year_2_result.total_tax %}
+                You pay <strong>Rs. {{ tax_year_1_result.total_tax|add:tax_year_2_result.total_tax|floatformat:0|intcomma }} more annually</strong> in {{ tax_year_1 }} compared to {{ tax_year_2 }}.
+              {% elif tax_year_1_result.total_tax < tax_year_2_result.total_tax %}
+                You pay <strong>less tax in {{ tax_year_1 }}</strong> — a saving compared to {{ tax_year_2 }}.
+              {% else %}
+                <strong>No change</strong> — your tax liability is the same in both years for this income.
+              {% endif %}
+            </div>
+          </div>
+          {% endwith %}
+
           <div class="calc-cta" style="margin-top:14px">
             <div class="calc-cta-text">Need property tax filing help?</div>
             <a href="https://wa.me/923332482742" class="btn-wa-sm" target="_blank" rel="noopener">💬 WhatsApp</a>
