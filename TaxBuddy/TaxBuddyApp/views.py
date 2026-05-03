@@ -149,6 +149,20 @@ def BlogDetails(request, slug=None):
 
 def viewBlogs(request, slug=None):
     try:
+        # No slug = show all published blogs
+        if not slug:
+            blogs = Blog.objects.filter(
+                status='published',
+                is_deleted=False
+            ).order_by('-created_at')
+            paginator = Paginator(blogs, 12)
+            page_obj = paginator.get_page(request.GET.get('page'))
+            return render(request, "clone.html", {
+                "blogs": page_obj,
+                "page_obj": page_obj,
+                "category_name": "All Posts",
+            })
+
         category_name = slug.replace('-', ' ')
 
         blogs = Blog.objects.filter(
@@ -157,10 +171,32 @@ def viewBlogs(request, slug=None):
             is_deleted=False
         ).order_by('-created_at')
 
+        # Fallback: filter by Blog.type field
         if not blogs.exists():
-            raise Http404("Category not found")
+            type_map = {
+                'income-tax': 'income_tax',
+                'sales-tax':  'sales_tax',
+                'freelancer': 'freelancer',
+                'general':    'general',
+            }
+            blog_type = type_map.get(slug)
+            if blog_type:
+                blogs = Blog.objects.filter(
+                    type=blog_type,
+                    status='published',
+                    is_deleted=False
+                ).order_by('-created_at')
 
-        return render(request, "clone.html", {"blogs": blogs})
+        if not blogs.exists():
+            raise Http404("No blogs found for this category")
+
+        paginator = Paginator(blogs, 12)
+        page_obj = paginator.get_page(request.GET.get('page'))
+        return render(request, "clone.html", {
+            "blogs": page_obj,
+            "page_obj": page_obj,
+            "category_name": category_name.title(),
+        })
 
     except Http404:
         raise
