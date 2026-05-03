@@ -3,6 +3,18 @@
 
 {% block title %}TaxBuddy Umair | Income & Sales Tax Consultant Pakistan{% endblock %}
 
+{% block extra_css %}
+<style>
+.contact-grid{display:grid;grid-template-columns:1fr 1fr;gap:28px;align-items:start}
+.name-row-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:0}
+@media(max-width:768px){
+  .contact-grid{grid-template-columns:1fr!important;gap:20px}
+}
+@media(max-width:480px){
+  .name-row-grid{grid-template-columns:1fr!important}
+}
+</style>
+{% endblock %}
 {% block content %}
 
 <!-- Countdown included via base.html block -->
@@ -338,7 +350,7 @@
         <h2 class="section-title">Need help with tax filing?</h2>
       </div>
     </div>
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:28px;align-items:start;" class="contact-grid">
+    <div class="contact-grid">
 
       <!-- Info -->
       <div>
@@ -378,39 +390,65 @@
       <!-- Form -->
       <div style="background:var(--white);border:1px solid var(--border);border-radius:var(--radius-xl);padding:24px;">
         <form method="POST" action="{% url 'contact' %}">
-                    {# Honeypot — hidden from humans, bots will fill this #}
+          {% csrf_token %}
+          {# Honeypot #}
           <input type="text" name="website_url" value="" autocomplete="off"
                  style="display:none !important;position:absolute;left:-9999px;"
                  tabindex="-1" aria-hidden="true">
-{% csrf_token %}
-          <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;">
+
+          <div class="name-row-grid">
             <div class="form-group">
-              <label class="form-label">First Name *</label>
-              {{ contact_form.first_name }}
+              <label class="form-label" for="cf-fname">First Name *</label>
+              <input type="text" id="cf-fname" name="first_name"
+                     class="form-input" placeholder="Muhammad"
+                     required autocomplete="given-name">
             </div>
             <div class="form-group">
-              <label class="form-label">Last Name</label>
-              {{ contact_form.last_name }}
+              <label class="form-label" for="cf-lname">Last Name</label>
+              <input type="text" id="cf-lname" name="last_name"
+                     class="form-input" placeholder="Ahmed"
+                     autocomplete="family-name">
             </div>
           </div>
+
           <div class="form-group">
-            <label class="form-label">Phone / WhatsApp</label>
-            {{ contact_form.phone_number }}
+            <label class="form-label" for="cf-phone">Phone / WhatsApp</label>
+            <input type="tel" id="cf-phone" name="phone_number"
+                   class="form-input" placeholder="+92 3XX XXXXXXX"
+                   autocomplete="tel">
           </div>
+
           <div class="form-group">
-            <label class="form-label">Email Address *</label>
-            {{ contact_form.email_address }}
+            <label class="form-label" for="cf-email">Email Address *</label>
+            <input type="email" id="cf-email" name="email_address"
+                   class="form-input" placeholder="you@example.com"
+                   required autocomplete="email">
           </div>
+
           <div class="form-group">
-            <label class="form-label">Service Required</label>
-            {{ contact_form.subject }}
+            <label class="form-label" for="cf-subject">Service Required</label>
+            <select id="cf-subject" name="subject" class="form-select">
+              <option value="">Select a service</option>
+              <option value="NTN Registration">NTN Registration – PKR 1,000</option>
+              <option value="Salary Return Filing">Salary Return Filing – PKR 2,000</option>
+              <option value="Business Return Filing">Business Return Filing – PKR 5,000+</option>
+              <option value="Sales Tax Registration">Sales Tax Registration – PKR 3,000</option>
+              <option value="FBR Notice Response">FBR Notice Response – PKR 5,000+</option>
+              <option value="Tax Consultation">Tax Consultation (30 min) – PKR 1,500</option>
+              <option value="Other">Other</option>
+            </select>
           </div>
+
           <div class="form-group">
-            <label class="form-label">Message</label>
-            {{ contact_form.additional_details }}
+            <label class="form-label" for="cf-message">Message</label>
+            <textarea id="cf-message" name="additional_details"
+                      class="form-input" rows="4"
+                      placeholder="Describe your tax situation or query…"></textarea>
           </div>
+
           <button type="submit" name="contact_submit" class="btn-primary"
-                  style="width:100%;border:none;padding:12px;font-size:15px;cursor:pointer;">
+                  style="width:100%;border:none;padding:14px;font-size:15px;
+                         cursor:pointer;font-family:inherit;border-radius:var(--radius);">
             📨 Send Message
           </button>
         </form>
