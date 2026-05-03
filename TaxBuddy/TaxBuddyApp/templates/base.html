@@ -72,16 +72,23 @@
   <!-- Fonts: preload then async-load to prevent render-blocking -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="dns-prefetch" href="//pagead2.googlesyndication.com">
+  <link rel="dns-prefetch" href="//www.googletagmanager.com">
   <link rel="preload" as="style"
-        href="https://fonts.googleapis.com/css2?family=Literata:wght@400;500;600;700&family=DM+Sans:wght@300;400;500;600&display=swap"
+        href="https://fonts.googleapis.com/css2?family=Literata:wght@400;700&family=DM+Sans:wght@400;600&display=swap"
         onload="this.rel='stylesheet'">
   <noscript>
-    <link href="https://fonts.googleapis.com/css2?family=Literata:wght@400;500;600;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Literata:wght@400;700&family=DM+Sans:wght@400;600&display=swap" rel="stylesheet">
   </noscript>
 
   <!-- Stylesheets -->
-  <link rel="stylesheet" href="{% static 'dist/css/main.css' %}">
-  <link rel="stylesheet" href="{% static 'dist/css/mobile-nav.css' %}">
+  <!-- Non-blocking CSS load — eliminates render-blocking FCP penalty -->
+  <link rel="preload" as="style" href="{% static 'dist/css/main.css' %}" onload="this.rel='stylesheet'" fetchpriority="high">
+  <link rel="preload" as="style" href="{% static 'dist/css/mobile-nav.css' %}" onload="this.rel='stylesheet'">
+  <noscript>
+    <link rel="stylesheet" href="{% static 'dist/css/main.css' %}">
+    <link rel="stylesheet" href="{% static 'dist/css/mobile-nav.css' %}">
+  </noscript>
   {% block extra_css %}{% endblock %}
 
   <!-- Prevent horizontal scroll -->
@@ -91,7 +98,17 @@
   <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-XXXXXXXXXXXXXXXX" crossorigin="anonymous"></script>
 
   <!-- Google Analytics -->
-  <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+  <!-- GA4 loaded after page paint — zero TBT impact -->
+  <script>
+  window.addEventListener('load',function(){
+    var s=document.createElement('script');
+    s.src='https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX';
+    s.async=true;document.head.appendChild(s);
+  });
+  window.dataLayer=window.dataLayer||[];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js',new Date());gtag('config','G-XXXXXXXXXX',{anonymize_ip:true});
+  </script>
   <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-XXXXXXXXXX');</script>
 
   <!-- Favicon -->
@@ -450,7 +467,7 @@ body.tb-no-scroll {
   </a>
 
   <!-- ── SCRIPTS ─────────────────────────────────────────── -->
-  <script src="{% static 'dist/js/main.js' %}"></script>
+  <script src="{% static 'dist/js/main.js' %}" defer></script>
   {% block extra_js %}{% endblock %}
 
 <script>
