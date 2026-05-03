@@ -3,6 +3,23 @@ from decimal import Decimal
 import random
 
 from django.contrib.auth.decorators import login_required
+
+def staff_required(view_func):
+    """Decorator: requires user to be logged in AND is_staff=True."""
+    @login_required(login_url='Login')
+    def wrapped(request, *args, **kwargs):
+        if not request.user.is_staff:
+            from django.http import HttpResponseForbidden
+            return HttpResponseForbidden(
+                '<h2 style="font-family:sans-serif;text-align:center;margin-top:100px;color:#0A2647">'
+                '403 — Access Denied</h2>'
+                '<p style="text-align:center;color:#666">You do not have permission to access this page.</p>'
+                '<p style="text-align:center"><a href="/" style="color:#0D9E72">← Back to Home</a></p>'
+            )
+        return view_func(request, *args, **kwargs)
+    return wrapped
+
+
 from django.conf import settings
 import requests
 from django.http import HttpResponse, Http404
@@ -17,7 +34,7 @@ from django.urls import reverse
 from .models import (
     Blog, Comment, Contact, TaxBracket, Business_AOP_Slab,
     Property_Business_AOP_Slab, Question, Option,
-    SuperTax4CRate, Category, Tag
+    SuperTax4CRate, Category, Tag, WithholdingTaxRate
 )
 from django.core.paginator import Paginator
 
@@ -87,11 +104,18 @@ def index(request):
 
 def Login(request):
     try:
+        # Already logged in staff — redirect to dashboard
+        if request.user.is_authenticated and request.user.is_staff:
+            return redirect('Dashboard')
+
         if request.method == 'POST':
             username = request.POST.get('username', '').strip()
             pwd = request.POST.get('password', '')
             user = authenticate(request, username=username, password=pwd)
             if user:
+                if not user.is_staff:
+                    messages.error(request, "You do not have admin access.")
+                    return render(request, 'Login.html')
                 login(request, user)
                 request.session['username'] = username
                 return redirect('Dashboard')
@@ -216,6 +240,7 @@ def blog_index(request):
     except Exception as e:
         return HttpResponse('Exception at Blog Index: ' + str(e))
 
+@staff_required
 def userComments(request):
     try:
         if request.method == 'POST':
@@ -384,9 +409,36 @@ def income_tax_rates(request):
 
 def withholding_tax_rates(request):
     try:
-        active_section = request.GET.get('section', 'sale')
+        active_section = request.GET.get('section', 'property')
+        tax_year       = request.GET.get('year', '2025-2026')
+
+        all_rates = WithholdingTaxRate.objects.filter(
+            is_active=True, tax_year=tax_year
+        )
+
+        categories = {
+            'property': all_rates.filter(category='property').order_by('order'),
+            'banking':  all_rates.filter(category='banking').order_by('order'),
+            'salary':   all_rates.filter(category='salary').order_by('order'),
+            'business': all_rates.filter(category='business').order_by('order'),
+            'advance':  all_rates.filter(category='advance').order_by('order'),
+            'other':    all_rates.filter(category='other').order_by('order'),
+        }
+
+        categories_meta = [
+            ('property', 'Property Sale & Purchase',   'WHT on sale/purchase of immovable property under Section 236C/236K.'),
+            ('banking',  'Banking & Finance',           'WHT on cash withdrawals, profit on debt, dividends and foreign card payments.'),
+            ('salary',   'Salary & Employment',         'Monthly salary deduction under Section 149 and vehicle registration under 231B.'),
+            ('business', 'Business & Contracts',        'WHT on payments for goods, services and contracts under Section 153.'),
+            ('advance',  'Advance Tax',                 'Advance tax collected at source on various transactions.'),
+            ('other',    'Other Payments',              'WHT on prizes, imports, educational remittances and more.'),
+        ]
+
         return render(request, 'partials/withholding-tax-rates.html', {
-            'active_section': active_section
+            'active_section':  active_section,
+            'categories':      categories,
+            'categories_meta': categories_meta,
+            'tax_year':        tax_year,
         })
     except Exception as e:
         return HttpResponse("Exception: " + str(e))
@@ -756,6 +808,83 @@ def tax_knowledge_quiz(request):
     return render(request, "tax-knowledge-quizz.html", {"questions": questions})
 
 
+
+@staff_required
+def manage_wht_rates(request):
+    try:
+        active_cat = request.GET.get('cat', 'all')
+        tax_year   = request.GET.get('year', '2025-2026')
+        rates = WithholdingTaxRate.objects.all().order_by('category', 'order')
+        if active_cat and active_cat != 'all':
+            rates = rates.filter(category=active_cat)
+        rates = rates.filter(tax_year=tax_year)
+        return render(request, 'Cpanel/manage_wht.html', {
+            'rates': rates, 'active_cat': active_cat, 'tax_year': tax_year,
+        })
+    except Exception as e:
+        return HttpResponse("Exception: " + str(e))
+
+
+@staff_required
+def add_wht_rate(request):
+    try:
+        if request.method == 'POST':
+            WithholdingTaxRate.objects.create(
+                category       = request.POST.get('category'),
+                section        = request.POST.get('section', '').strip(),
+                description    = request.POST.get('description', '').strip(),
+                filer_rate     = request.POST.get('filer_rate', '').strip(),
+                non_filer_rate = request.POST.get('non_filer_rate', '').strip(),
+                who_deducts    = request.POST.get('who_deducts', '').strip(),
+                threshold      = request.POST.get('threshold', '').strip(),
+                notes          = request.POST.get('notes', '').strip(),
+                order          = int(request.POST.get('order', 0) or 0),
+                is_active      = bool(request.POST.get('is_active')),
+                tax_year       = request.POST.get('tax_year', '2025-2026'),
+            )
+            messages.success(request, 'Rate added successfully!')
+            return redirect('manage_wht_rates')
+        return render(request, 'Cpanel/add_wht_rate.html', {'rate': None})
+    except Exception as e:
+        messages.error(request, f'Error: {str(e)}')
+        return render(request, 'Cpanel/add_wht_rate.html', {'rate': None})
+
+
+@staff_required
+def edit_wht_rate(request, pk):
+    try:
+        rate = get_object_or_404(WithholdingTaxRate, pk=pk)
+        if request.method == 'POST':
+            rate.category       = request.POST.get('category')
+            rate.section        = request.POST.get('section', '').strip()
+            rate.description    = request.POST.get('description', '').strip()
+            rate.filer_rate     = request.POST.get('filer_rate', '').strip()
+            rate.non_filer_rate = request.POST.get('non_filer_rate', '').strip()
+            rate.who_deducts    = request.POST.get('who_deducts', '').strip()
+            rate.threshold      = request.POST.get('threshold', '').strip()
+            rate.notes          = request.POST.get('notes', '').strip()
+            rate.order          = int(request.POST.get('order', 0) or 0)
+            rate.is_active      = bool(request.POST.get('is_active'))
+            rate.tax_year       = request.POST.get('tax_year', '2025-2026')
+            rate.save()
+            messages.success(request, 'Rate updated successfully!')
+            return redirect('manage_wht_rates')
+        return render(request, 'Cpanel/add_wht_rate.html', {'rate': rate})
+    except Exception as e:
+        messages.error(request, f'Error: {str(e)}')
+        return redirect('manage_wht_rates')
+
+
+@staff_required
+def delete_wht_rate(request, pk):
+    try:
+        rate = get_object_or_404(WithholdingTaxRate, pk=pk)
+        rate.delete()
+        messages.success(request, 'Rate deleted.')
+    except Exception as e:
+        messages.error(request, f'Error: {str(e)}')
+    return redirect('manage_wht_rates')
+
 def question_list(request, category_slug=None):
     try:
         print(category_slug)
@@ -857,15 +986,16 @@ def section_4c_rate_view(request):
 # ADMIN / CPANEL VIEWS
 # ─────────────────────────────────────────────────────────────
 
-@login_required(login_url='Login')
+@staff_required
 def Dashboard(request):
     try:
+        total_wht_rates = WithholdingTaxRate.objects.filter(is_active=True).count()
         return render(request, 'Cpanel/Dashboard.html')
     except Exception as e:
         return HttpResponse(str(e))
 
 
-@login_required
+@staff_required
 def AddEditBlog(request, slug=None):
     blog = None
     if slug:
@@ -906,7 +1036,7 @@ def AddEditBlog(request, slug=None):
     return render(request, "Cpanel/AddEditBlog.html", {"blog": blog})
 
 
-@login_required(login_url='Login')
+@staff_required
 def deleteBlog(request, slug=None):
     """
     FIX: soft delete using is_deleted flag instead of hard delete.
@@ -923,7 +1053,7 @@ def deleteBlog(request, slug=None):
         return HttpResponse('Exception at Delete Blog: ' + str(e))
 
 
-@login_required(login_url='Login')
+@staff_required
 def ManageBlogs(request):
     try:
         result = Blog.objects.filter(is_deleted=False).order_by('-id')
@@ -932,7 +1062,7 @@ def ManageBlogs(request):
         return HttpResponse('Exception at Manage Blog Page: ' + str(e))
 
 
-@login_required(login_url='Login')
+@staff_required
 def add_salary_tax_brackets(request):
     try:
         if request.method == 'POST':
@@ -972,7 +1102,7 @@ def add_salary_tax_brackets(request):
         return HttpResponse(f"Error: {str(e)}")
 
 
-@login_required(login_url='Login')
+@staff_required
 def add_question(request):
     if request.method == "POST":
         question_text = request.POST.get("question_text", "").strip()
@@ -1024,13 +1154,13 @@ def add_question(request):
     })
 
 
-@login_required(login_url='Login')
+@staff_required
 def view_questions(request):
     questions = Question.objects.all().order_by("category", "id")
     return render(request, "Cpanel/view_questions.html", {"questions": questions})
 
 
-@login_required(login_url='Login')
+@staff_required
 def edit_question(request, pk):
     question = get_object_or_404(Question, pk=pk)
     options = list(question.options.all())
@@ -1064,7 +1194,7 @@ def edit_question(request, pk):
     })
 
 
-@login_required(login_url='Login')
+@staff_required
 def delete_question(request, pk):
     question = get_object_or_404(Question, pk=pk)
     question.delete()
