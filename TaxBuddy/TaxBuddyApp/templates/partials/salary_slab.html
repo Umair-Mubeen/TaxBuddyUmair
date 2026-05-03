@@ -268,12 +268,16 @@
 .calc-result { margin-top: 32px !important; border-top: 3px solid var(--green, #0D9E72); }
 .calc-result-title {
   font-size: 16px; font-weight: 700;
-  color: #fff; text-align: center;
+  color: var(--navy, #0A2647); text-align: center;
   margin-bottom: 4px; letter-spacing: -.01em;
+  background: var(--bg, #f7f9fc);
+  padding: 14px 16px 0;
+  margin: 0 -20px 14px;
 }
 .calc-result-subtitle {
-  font-size: 12px; color: rgba(255,255,255,.5);
+  font-size: 12px; color: var(--text-mid, #4A5568);
   text-align: center; margin: 0 0 14px;
+  padding: 0 16px;
 }
 
 /* ── TAX DIFFERENCE SUMMARY ── */
@@ -468,25 +472,6 @@
           </button>
         </form>
 
-        <!-- PRE-CALC INFO CARDS -->
-            </div>
-            <div class="tax-diff-col">
-              <div class="tax-diff-lbl">{{ tax_year_2 }}</div>
-              <div class="tax-diff-amt">Rs. {{ tax_year_2_result.per_month|floatformat:0 }}</div>
-              <div class="tax-diff-sub">per month</div>
-            </div>
-          </div>
-          <div class="tax-diff-note">
-            {% if tax_year_1_result.per_month > tax_year_2_result.per_month %}
-            💡 You pay <strong>more tax in {{ tax_year_1 }}</strong> than {{ tax_year_2 }} for this income level.
-            {% elif tax_year_1_result.per_month < tax_year_2_result.per_month %}
-            💡 You pay <strong>less tax in {{ tax_year_1 }}</strong> — a saving compared to {{ tax_year_2 }}.
-            {% else %}
-            💡 <strong>No change</strong> — your monthly tax is the same in both years for this income.
-            {% endif %}
-          </div>
-        </div>
-        {% endif %}
         {% if not tax_year_1_result %}
         <div class="precalc-cards">
           <div class="precalc-card">
@@ -556,9 +541,6 @@
           </div>
 
 
-          <!-- ── TAX DIFFERENCE SUMMARY ── -->
-
-
           <div class="calc-cta" style="margin-top:14px">
             <div class="calc-cta-text">Want us to file this return? <strong>Starting PKR 2,000</strong></div>
             <a href="https://wa.me/923332482742" class="btn-wa-sm" target="_blank" rel="noopener">💬 WhatsApp to File</a>
@@ -624,7 +606,7 @@
         </div>
         {% endif %}
 
-    
+
 
     {% include 'partials/cta_banner.html' %}
 
