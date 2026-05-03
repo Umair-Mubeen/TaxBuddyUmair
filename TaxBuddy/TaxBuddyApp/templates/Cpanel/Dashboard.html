@@ -36,6 +36,11 @@
     <div class="stat-card-num">{{ total_questions|default:"0" }}</div>
     <div class="stat-card-label">MCQ Questions</div>
   </div>
+  <div class="stat-card">
+    <div style="font-size:28px;margin-bottom:8px;">⚖️</div>
+    <div class="stat-card-num" style="color:var(--green);">{{ total_wht_rates|default:"0" }}</div>
+    <div class="stat-card-label">WHT Rates</div>
+  </div>
 </div>
 
 <!-- Quick Actions -->
@@ -46,6 +51,8 @@
     <a href="{% url 'questions-add' %}" class="btn-primary" style="text-decoration:none;font-size:13px;padding:9px 18px;">➕ Add MCQ</a>
     <a href="{% url 'add_salary_tax_brackets' %}" class="btn-outline" style="text-decoration:none;font-size:13px;padding:9px 18px;border-color:var(--navy);color:var(--navy);">📊 Add Tax Bracket</a>
     <a href="{% url 'ManageBlogs' %}" class="btn-outline" style="text-decoration:none;font-size:13px;padding:9px 18px;border-color:var(--navy);color:var(--navy);">📝 Manage Blogs</a>
+    <a href="{% url 'manage_wht_rates' %}" class="btn-outline" style="text-decoration:none;font-size:13px;padding:9px 18px;border-color:var(--navy);color:var(--navy);">⚖️ WHT Rates</a>
+    <a href="{% url 'add_wht_rate' %}" class="btn-outline" style="text-decoration:none;font-size:13px;padding:9px 18px;border-color:var(--navy);color:var(--navy);">➕ Add WHT Rate</a>
   </div>
 </div>
 
