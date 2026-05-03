@@ -344,6 +344,30 @@
   .tax-diff-badge{font-size:12px;padding:4px 9px}
 }
 
+
+/* ── TAX DIFFERENCE SUMMARY (white card outside dark result) ── */
+.tax-diff-wrap{margin-top:16px;background:var(--white);border:1.5px solid var(--border);border-radius:var(--radius-lg);overflow:hidden;box-shadow:var(--shadow-sm)}
+.tax-diff-inner{padding:0}
+.tax-diff-header-txt{background:var(--navy);color:rgba(255,255,255,.85);font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.09em;padding:10px 16px;text-align:center}
+.tax-diff-row{display:grid;grid-template-columns:1fr auto 1fr;align-items:center}
+.tax-diff-col{padding:16px;text-align:center}
+.tax-diff-lbl{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--text-light);margin-bottom:5px}
+.tax-diff-amt{font-size:22px;font-weight:700;color:var(--navy);font-family:var(--font-head)}
+.tax-diff-sub{font-size:11px;color:var(--text-light);margin-top:2px}
+.tax-diff-center{padding:16px 12px;text-align:center;border-left:1px solid var(--border);border-right:1px solid var(--border)}
+.tax-diff-vs-txt{font-size:10px;font-weight:700;color:var(--text-light);text-transform:uppercase;letter-spacing:.1em;margin-bottom:8px}
+.tax-diff-pill{font-size:12.5px;font-weight:700;padding:6px 12px;border-radius:var(--radius-pill);white-space:nowrap}
+.pill-save{background:rgba(34,201,122,.12);color:var(--green-dark);border:1px solid rgba(34,201,122,.25)}
+.pill-more{background:rgba(229,62,62,.1);color:#dc2626;border:1px solid rgba(229,62,62,.2)}
+.pill-same{background:var(--bg);color:var(--text-mid);border:1px solid var(--border)}
+.tax-diff-note{padding:10px 16px;font-size:13px;color:var(--text-mid);text-align:center;border-top:1px solid var(--border);background:var(--bg);line-height:1.55}
+.tax-diff-note strong{color:var(--navy)}
+@media(max-width:480px){
+  .tax-diff-amt{font-size:18px}
+  .tax-diff-center{padding:12px 8px}
+  .tax-diff-pill{font-size:11.5px;padding:5px 9px}
+}
+
 </style>
 {% endblock %}
 {% block content %}
@@ -485,42 +509,7 @@
           </div>
 
           <!-- ── TAX DIFFERENCE SUMMARY ── -->
-          {% with diff=tax_year_1_result.per_month|add:0 %}
-          <div class="tax-diff-bar">
-            <div class="tax-diff-header">📊 Monthly Tax Comparison at a Glance</div>
-            <div class="tax-diff-grid">
-              <div class="tax-diff-year">
-                <div class="tax-diff-year-label">{{ tax_year_1 }}</div>
-                <div class="tax-diff-year-amount">Rs. {{ tax_year_1_result.per_month|floatformat:0|intcomma }}</div>
-                <div class="tax-diff-year-sub">per month</div>
-              </div>
-              <div class="tax-diff-middle">
-                <div class="tax-diff-vs">vs</div>
-                {% if tax_year_1_result.per_month > tax_year_2_result.per_month %}
-                  <div class="tax-diff-badge diff-more">▲ Higher<br>in {{ tax_year_1 }}</div>
-                {% elif tax_year_1_result.per_month < tax_year_2_result.per_month %}
-                  <div class="tax-diff-badge diff-save">▼ Lower<br>in {{ tax_year_1 }}</div>
-                {% else %}
-                  <div class="tax-diff-badge diff-same">= Same<br>both years</div>
-                {% endif %}
-              </div>
-              <div class="tax-diff-year">
-                <div class="tax-diff-year-label">{{ tax_year_2 }}</div>
-                <div class="tax-diff-year-amount">Rs. {{ tax_year_2_result.per_month|floatformat:0|intcomma }}</div>
-                <div class="tax-diff-year-sub">per month</div>
-              </div>
-            </div>
-            <div class="tax-diff-verdict">
-              {% if tax_year_1_result.total_tax > tax_year_2_result.total_tax %}
-                You pay <strong>Rs. {{ tax_year_1_result.total_tax|add:tax_year_2_result.total_tax|floatformat:0|intcomma }} more annually</strong> in {{ tax_year_1 }} compared to {{ tax_year_2 }}.
-              {% elif tax_year_1_result.total_tax < tax_year_2_result.total_tax %}
-                You pay <strong>less tax in {{ tax_year_1 }}</strong> — a saving compared to {{ tax_year_2 }}.
-              {% else %}
-                <strong>No change</strong> — your tax liability is the same in both years for this income.
-              {% endif %}
-            </div>
-          </div>
-          {% endwith %}
+
 
           <div class="calc-cta" style="margin-top:14px">
             <div class="calc-cta-text">Need business return filing? <strong>Starting PKR 5,000</strong></div>
@@ -548,6 +537,44 @@
         {% endif %}
       </div>
     </div>
+
+        <!-- ── TAX DIFFERENCE SUMMARY ── -->
+        {% if tax_year_1_result and tax_year_2_result %}
+        <div class="tax-diff-wrap">
+          <div class="tax-diff-header-txt">📊 Monthly Tax Comparison at a Glance</div>
+          <div class="tax-diff-row">
+            <div class="tax-diff-col">
+              <div class="tax-diff-lbl">{{ tax_year_1 }}</div>
+              <div class="tax-diff-amt">Rs. {{ tax_year_1_result.per_month|floatformat:0 }}</div>
+              <div class="tax-diff-sub">per month</div>
+            </div>
+            <div class="tax-diff-center">
+              <div class="tax-diff-vs-txt">vs</div>
+              {% if tax_year_1_result.per_month > tax_year_2_result.per_month %}
+              <div class="tax-diff-pill pill-more">▲ Higher in {{ tax_year_1 }}</div>
+              {% elif tax_year_1_result.per_month < tax_year_2_result.per_month %}
+              <div class="tax-diff-pill pill-save">▼ Lower in {{ tax_year_1 }}</div>
+              {% else %}
+              <div class="tax-diff-pill pill-same">= Same both years</div>
+              {% endif %}
+            </div>
+            <div class="tax-diff-col">
+              <div class="tax-diff-lbl">{{ tax_year_2 }}</div>
+              <div class="tax-diff-amt">Rs. {{ tax_year_2_result.per_month|floatformat:0 }}</div>
+              <div class="tax-diff-sub">per month</div>
+            </div>
+          </div>
+          <div class="tax-diff-note">
+            {% if tax_year_1_result.per_month > tax_year_2_result.per_month %}
+            💡 You pay <strong>more tax in {{ tax_year_1 }}</strong> than {{ tax_year_2 }} for this income level.
+            {% elif tax_year_1_result.per_month < tax_year_2_result.per_month %}
+            💡 You pay <strong>less tax in {{ tax_year_1 }}</strong> — a saving compared to {{ tax_year_2 }}.
+            {% else %}
+            💡 <strong>No change</strong> — your monthly tax is the same in both years for this income.
+            {% endif %}
+          </div>
+        </div>
+        {% endif %}
     
     {% include 'partials/cta_banner.html' %}
   </main>
