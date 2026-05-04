@@ -82,14 +82,9 @@
     <link href="https://fonts.googleapis.com/css2?family=Literata:wght@400;700&family=DM+Sans:wght@400;600&display=swap&font-display=swap" rel="stylesheet">
   </noscript>
 
-  <!-- Stylesheets -->
-  <!-- Non-blocking CSS load — eliminates render-blocking FCP penalty -->
-  <link rel="preload" as="style" href="{% static 'dist/css/main.css' %}" onload="this.rel='stylesheet'" fetchpriority="high">
-  <link rel="preload" as="style" href="{% static 'dist/css/mobile-nav.css' %}" onload="this.rel='stylesheet'">
-  <noscript>
-    <link rel="stylesheet" href="{% static 'dist/css/main.css' %}">
-    <link rel="stylesheet" href="{% static 'dist/css/mobile-nav.css' %}">
-  </noscript>
+  <!-- Stylesheets — blocking load prevents FOUC blank frames -->
+  <link rel="stylesheet" href="{% static 'dist/css/main.css' %}" fetchpriority="high">
+  <link rel="stylesheet" href="{% static 'dist/css/mobile-nav.css' %}">
   {% block extra_css %}{% endblock %}
 
 
