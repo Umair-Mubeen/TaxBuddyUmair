@@ -385,10 +385,10 @@
         ⏱ <span id="read-time">Reading…</span>
       </div>
       {% if blog.author %}
-      <span class="blog-meta-divider"></span>
-      <div class="blog-meta-item">
-        👤 <span>{{ blog.author.get_full_name|default:blog.author.username }}</span>
-      </div>
+<!--      <span class="blog-meta-divider"></span>-->
+<!--      <div class="blog-meta-item">-->
+<!--        👤 <span>{{ blog.author.get_full_name|default:blog.author.username }}</span>-->
+<!--      </div>-->
       {% endif %}
       {% if blog.view_count %}
       <span class="blog-meta-divider"></span>
@@ -407,8 +407,8 @@
 </div>
 
 {% if blog.featured_image %}
-<img src="{{ blog.featured_image.url }}" loading="eager"
-     alt="{{ blog.title }}" class="blog-featured-img">
+<!--<img src="{{ blog.featured_image.url }}" loading="eager"-->
+<!--     alt="{{ blog.title }}" class="blog-featured-img">-->
 {% endif %}
 
 <!-- ── TOP AD ─────────────────────────────────────────────── -->
