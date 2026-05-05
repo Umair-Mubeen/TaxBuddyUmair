@@ -7,7 +7,7 @@
 
   <!-- SEO Meta -->
   <title>{% block title %}{{ meta_title|default:"TaxBuddy Umair | Pakistan Tax Education Platform" }}{% endblock %}</title>
-  <meta name="description" content="{% block meta_desc %}{{ meta_description|default:'Expert income tax and sales tax guides, calculators and MCQs for Pakistan. Updated for FBR 2025-26.' }}{% endblock %}">
+  <meta name="description" content="{% block meta_desc %}{{ meta_description|default:"Pakistan's #1 tax education platform. Free income tax & sales tax guides, calculators and MCQs — explained simply by TaxBuddy Umair. FBR 2025-26." }}{% endblock %}">
   <meta name="robots" content="index, follow">
   <meta name="theme-color" content="#0A2647">
   <meta name="author" content="Umair Mubeen">
@@ -15,7 +15,7 @@
 
   <!-- Open Graph -->
   <meta property="og:title"       content="{% block og_title %}{{ meta_title|default:'TaxBuddy Umair' }}{% endblock %}">
-  <meta property="og:description" content="{{ meta_description|default:'Pakistan Tax Education Platform — Free income tax guides, calculators & MCQs.' }}">
+  <meta property="og:description" content="{% block og_desc %}{{ meta_description|default:"Pakistan's #1 tax education platform. Free income tax & sales tax guides, calculators & MCQs by TaxBuddy Umair." }}{% endblock %}">
   <meta property="og:type"        content="{% block og_type %}website{% endblock %}">
   <meta property="og:url"         content="https://www.taxbuddyumair.com{{ request.path }}">
   <meta property="og:image"       content="{% block og_image %}{% static 'images/og-image.png' %}{% endblock %}">
@@ -23,9 +23,9 @@
 
   <!-- Twitter Card -->
   <meta name="twitter:card"        content="summary_large_image">
-  <meta name="twitter:title"       content="{{ meta_title|default:'TaxBuddy Umair' }}">
-  <meta name="twitter:description" content="{{ meta_description|default:'Pakistan Tax Education Platform' }}">
-  <meta name="twitter:image"       content="{% static 'images/og-image.png' %}">
+  <meta name="twitter:title"       content="{% block tw_title %}{{ meta_title|default:'TaxBuddy Umair | Pakistan Tax Education Platform' }}{% endblock %}">
+  <meta name="twitter:description" content="{% block tw_desc %}{{ meta_description|default:"Pakistan's #1 tax education platform. Free income tax & sales tax guides explained simply by TaxBuddy Umair." }}{% endblock %}">
+  <meta name="twitter:image"       content="{% block tw_image %}{% static 'images/og-image.png' %}{% endblock %}">
 
   <!-- Schema.org: Website -->
   <script type="application/ld+json">
@@ -34,7 +34,7 @@
     "@type": "WebSite",
     "name": "TaxBuddy Umair",
     "url": "https://www.taxbuddyumair.com",
-    "description": "Pakistan tax education platform with income tax guides, calculators, and MCQs.",
+    "description": "Pakistan's #1 tax education platform. Free income tax guides, calculators, and MCQs explained simply by TaxBuddy Umair.",
     "potentialAction": {
       "@type": "SearchAction",
       "target": "https://www.taxbuddyumair.com/blog/?q={search_term_string}",
@@ -69,6 +69,9 @@
   </script>
 
   {% block schema_extra %}{% endblock %}
+
+  <!-- Font Awesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
   <!-- Fonts: preload then async-load to prevent render-blocking -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
