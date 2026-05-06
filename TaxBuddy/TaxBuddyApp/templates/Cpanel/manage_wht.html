@@ -72,6 +72,7 @@
           <th>Description</th>
           <th>Category</th>
           <th>Filer Rate</th>
+          <th>Late Filer Rate</th>
           <th>Non-Filer Rate</th>
           <th>Who Deducts</th>
           <th>Year</th>
@@ -86,6 +87,7 @@
           <td style="max-width:220px;white-space:normal">{{ rate.description }}</td>
           <td><span class="cat-badge">{{ rate.get_category_display }}</span></td>
           <td class="rate-filer">{{ rate.filer_rate }}</td>
+          <td style="color:#E8A020;font-weight:600;">{{ rate.late_filer_rate|default:"—" }}</td>
           <td class="rate-nonfiler">{{ rate.non_filer_rate|default:"—" }}</td>
           <td style="font-size:12px;color:var(--text-muted)">{{ rate.who_deducts|default:"—"|truncatechars:30 }}</td>
           <td>{{ rate.tax_year }}</td>
@@ -98,7 +100,7 @@
           </td>
         </tr>
         {% empty %}
-        <tr><td colspan="9" style="text-align:center;padding:40px;color:var(--text-muted)">No rates found. <a href="{% url 'add_wht_rate' %}" style="color:var(--green-dark);font-weight:600">Add your first rate →</a></td></tr>
+        <tr><td colspan="10" style="text-align:center;padding:40px;color:var(--text-muted)">No rates found. <a href="{% url 'add_wht_rate' %}" style="color:var(--green-dark);font-weight:600">Add your first rate →</a></td></tr>
         {% endfor %}
       </tbody>
     </table>
