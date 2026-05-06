@@ -92,6 +92,7 @@
             <th>Description</th>
             <th>Section</th>
             <th>Filer Rate</th>
+            <th>Late Rate</th>
             <th>Non-Filer Rate</th>
             <th>Who Deducts</th>
             {% if rates.0.threshold %}
@@ -105,6 +106,8 @@
             <td>{{ rate.description }}</td>
             <td><span class="td-section">{{ rate.section }}</span></td>
             <td class="td-filer">{{ rate.filer_rate }}</td>
+            <td class="td-filer">{{ rate.late_filer_rate }}</td>
+
             <td class="td-nonfiler">{{ rate.non_filer_rate|default:"—" }}</td>
             <td style="font-size:12.5px">{{ rate.who_deducts|default:"—" }}</td>
             {% if rates.0.threshold %}
