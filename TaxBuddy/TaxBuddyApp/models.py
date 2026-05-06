@@ -250,15 +250,31 @@ class Testimonial(models.Model):
 
 
 class FAQ(models.Model):
+    CATEGORY_CHOICES = [
+        ('filer',    'Filer Status'),
+        ('property', 'Property Tax'),
+        ('salary',   'Salary Tax'),
+        ('banking',  'Banking & Investments'),
+        ('sales',    'Sales Tax'),
+        ('general',  'General'),
+    ]
+
     question = models.CharField(max_length=300)
-    answer = models.TextField()
-    page = models.CharField(max_length=50, default='home', help_text="home, calculator, mcq …")
-    order = models.PositiveIntegerField(default=0)
-    is_active = models.BooleanField(default=True)
+    answer   = models.TextField()
+    category = models.CharField(
+        max_length=20,
+        choices=CATEGORY_CHOICES,
+        default='general',
+        help_text="Used for filtering on homepage"
+    )
+    order      = models.PositiveIntegerField(default=0)
+    is_active  = models.BooleanField(default=True)
     created_at = models.DateTimeField(auto_now_add=True)
 
     class Meta:
-        ordering = ['page', 'order']
+        ordering = ['category', 'order']
+        verbose_name = 'FAQ'
+        verbose_name_plural = 'FAQs'
 
     def __str__(self):
         return self.question[:80]
@@ -281,8 +297,9 @@ class WithholdingTaxRate(models.Model):
     category = models.CharField(max_length=50, choices=CATEGORY_CHOICES)
     section = models.CharField(max_length=100, help_text="e.g. Section 153(1)(b)")
     description = models.CharField(max_length=300, help_text="e.g. Payments for services")
-    filer_rate = models.CharField(max_length=50, help_text="e.g. 8% or PKR 10,000")
-    non_filer_rate = models.CharField(max_length=50, blank=True, help_text="e.g. 16%")
+    filer_rate = models.CharField(max_length=50, help_text="e.g. 4.5% or PKR 10,000")
+    late_filer_rate = models.CharField(max_length=50, blank=True, help_text="e.g. 7.5%")
+    non_filer_rate = models.CharField(max_length=50, blank=True, help_text="e.g. 11.5%")
     who_deducts = models.CharField(max_length=200, blank=True, help_text="e.g. Prescribed persons")
     threshold = models.CharField(max_length=200, blank=True, help_text="e.g. Above PKR 50,000")
     tax_year = models.CharField(max_length=20, default='2025-2026')

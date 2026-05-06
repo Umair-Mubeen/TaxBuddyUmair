@@ -82,17 +82,23 @@ textarea.field-input{resize:vertical;min-height:80px;line-height:1.6}
 
       <div class="form-section-title">Tax Rates</div>
 
-      <div class="form-row-2">
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px;margin-bottom:16px;">
         <div class="form-group">
           <label class="field-label">Filer Rate *</label>
           <input type="text" name="filer_rate" class="field-input" required
-                 placeholder="e.g. 8% or PKR 10,000"
+                 placeholder="e.g. 4.5%"
                  value="{{ rate.filer_rate|default:'' }}">
+        </div>
+        <div class="form-group">
+          <label class="field-label">Late Filer Rate</label>
+          <input type="text" name="late_filer_rate" class="field-input"
+                 placeholder="e.g. 7.5%"
+                 value="{{ rate.late_filer_rate|default:'' }}">
         </div>
         <div class="form-group">
           <label class="field-label">Non-Filer Rate</label>
           <input type="text" name="non_filer_rate" class="field-input"
-                 placeholder="e.g. 16% or N/A"
+                 placeholder="e.g. 11.5%"
                  value="{{ rate.non_filer_rate|default:'' }}">
         </div>
       </div>
