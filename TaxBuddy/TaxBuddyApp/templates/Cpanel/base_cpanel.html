@@ -109,6 +109,10 @@
       <a href="{% url 'manage_wht_rates' %}" class="cpanel-nav-link {% block nav_wht %}{% endblock %}"><span class="nav-icon">⚖️</span> WHT Rates</a>
       <a href="{% url 'add_wht_rate' %}" class="cpanel-nav-link {% block nav_wht_add %}{% endblock %}"><span class="nav-icon">➕</span> Add WHT Rate</a>
 
+      <div class="cpanel-nav-label" style="margin-top:8px;">Content</div>
+      <a href="{% url 'manage_faqs' %}" class="cpanel-nav-link {% block nav_faq %}{% endblock %}"><span class="nav-icon">❓</span> FAQs</a>
+      <a href="{% url 'add_faq' %}" class="cpanel-nav-link {% block nav_faq_add %}{% endblock %}"><span class="nav-icon">➕</span> Add FAQ</a>
+
       <div class="cpanel-nav-label" style="margin-top:8px;">Account</div>
       <a href="{% url 'Logout' %}" class="cpanel-nav-link"><span class="nav-icon">🚪</span> Logout</a>
     </nav>

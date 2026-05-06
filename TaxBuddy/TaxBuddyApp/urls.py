@@ -78,6 +78,12 @@ urlpatterns = [
     path('edit-wht-rate/<int:pk>/',   views.edit_wht_rate,    name='edit_wht_rate'),
     path('delete-wht-rate/<int:pk>/', views.delete_wht_rate,  name='delete_wht_rate'),
 
+    # FAQ Management
+    path('manage-faqs/',            views.manage_faqs, name='manage_faqs'),
+    path('add-faq/',                views.add_faq,     name='add_faq'),
+    path('edit-faq/<int:pk>/',      views.edit_faq,    name='edit_faq'),
+    path('delete-faq/<int:pk>/',    views.delete_faq,  name='delete_faq'),
+
     # ── BLOG (MUST BE LAST — slug patterns are greedy) ────────
     path('blog/', views.viewBlogs, name='viewBlogs'),
     path('blog/<slug:slug>/', views.viewBlogs, name='viewBlogs_category'),
