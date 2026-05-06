@@ -111,55 +111,12 @@ def index(request):
         except Exception:
             faqs = []
 
-        default_faqs = [
-            (
-                "What is the advance tax rate on property sale for filers in 2025-26?",
-                "Under Section 236C, filers pay 4.5%, late filers pay 7.5%, and non-filers pay 11.5% advance tax on the sale of immovable property."
-            ),
-            (
-                "What is the advance tax rate on property purchase for filers in 2025-26?",
-                "Under Section 236K, filers pay 1.5%, late filers pay 4.5%, and non-filers pay 10.5% advance tax on the purchase of immovable property."
-            ),
-            (
-                "What is the withholding tax rate on bank profit (Section 151)?",
-                "Under Section 151, filers pay 20% and non-filers pay 40% withholding tax on profit on debt, including bank savings accounts and term deposits."
-            ),
-            (
-                "What is the withholding tax rate on dividends (Section 150)?",
-                "Under Section 150, filers pay 15% and non-filers pay 30% withholding tax on dividend income from companies and mutual funds."
-            ),
-            (
-                "What are the salary income tax slabs for 2025-26?",
-                "For tax year 2025-26: Up to Rs.600,000 = 0%, Rs.600,001-1,200,000 = 1%, Rs.1,200,001-2,200,000 = Rs.6,000 + 11%, Rs.2,200,001-3,200,000 = Rs.116,000 + 23%, Rs.3,200,001-4,100,000 = Rs.346,000 + 30%, Above Rs.4,100,000 = Rs.616,000 + 35%."
-            ),
-            (
-                "What is the advance tax rate on international card payments (Section 236Y)?",
-                "Under Section 236Y, filers pay 5% and non-filers pay 10% advance tax on international payments made through Pakistani credit, debit, or prepaid cards."
-            ),
-            (
-                "What is the withholding tax rate for goods and services (Section 153)?",
-                "Under Section 153, for supply of goods: filers pay 4%, non-filers pay 8%. For services: filers pay 8%, non-filers pay 16%. For contracts: filers pay 7%, non-filers pay 14%."
-            ),
-            (
-                "What is the advance tax on cash withdrawal (Section 231A)?",
-                "Under Section 231A, filers pay 0% (completely exempt) while non-filers pay 0.6% on cash withdrawals exceeding Rs.50,000 per day from a bank."
-            ),
-            (
-                "What is the standard GST rate in Pakistan under Sales Tax Act 1990?",
-                "The standard General Sales Tax (GST) rate in Pakistan is 18% under Section 3 of the Sales Tax Act, 1990. Zero-rated supplies (exports) are taxed at 0%, and exempt supplies listed in the Sixth Schedule carry no GST."
-            ),
-            (
-                "How do I check my ATL (Active Taxpayer List) status?",
-                "You can check your ATL status by visiting FBR's website at www.fbr.gov.pk or by sending your CNIC number (without dashes) as an SMS to 9966. The ATL is updated every Monday."
-            ),
-        ]
 
         return render(request, 'index.html', {
             'result': all_blogs,
             'latest_blogs': latest_blogs,
             'preview_questions': preview_questions,
             'faqs': faqs,
-            'default_faqs': default_faqs,
         })
     except Exception as e:
         return HttpResponse(str(e))
