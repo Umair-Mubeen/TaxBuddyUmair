@@ -1,0 +1,60 @@
+{% extends 'Cpanel/base_cpanel.html' %}
+{% load static %}
+{% block title %}{% if faq %}Edit{% else %}Add{% endif %} FAQ{% endblock %}
+{% block nav_faq_add %}{% if not faq %}active{% endif %}{% endblock %}
+
+{% block content %}
+<div class="cpanel-header">
+  <h1>{% if faq %}Edit FAQ{% else %}Add New FAQ{% endif %}</h1>
+  <a href="{% url 'manage_faqs' %}" style="font-size:13px;color:var(--text-light);text-decoration:none;">← Back to FAQs</a>
+</div>
+
+{% if messages %}
+  {% for msg in messages %}
+  <div style="padding:10px 14px;border-radius:8px;font-size:13.5px;margin-bottom:14px;{% if msg.tags == 'success' %}background:#f0fdf4;border:1px solid #bbf7d0;color:#15803d{% else %}background:#fef2f2;border:1px solid #fca5a5;color:#dc2626{% endif %}">{{ msg }}</div>
+  {% endfor %}
+{% endif %}
+
+<div style="max-width:700px;">
+  <div style="background:var(--white);border:1px solid var(--border);border-radius:var(--radius-lg);padding:28px;">
+    <form method="POST">
+      {% csrf_token %}
+
+      <div class="form-group">
+        <label class="form-label">Question *</label>
+        <input type="text" name="question" class="form-input" required maxlength="300"
+               placeholder="e.g. What is the advance tax rate on property sale?"
+               value="{{ faq.question|default:'' }}">
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Answer *</label>
+        <textarea name="answer" class="form-input" rows="5" required
+                  placeholder="Write the answer here...">{{ faq.answer|default:'' }}</textarea>
+      </div>
+
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">
+        <div class="form-group">
+          <label class="form-label">Display Order</label>
+          <input type="number" name="order" class="form-input" min="0"
+                 placeholder="0" value="{{ faq.order|default:'0' }}">
+          <div style="font-size:11.5px;color:var(--text-light);margin-top:4px;">Lower = shown first</div>
+        </div>
+        <div class="form-group" style="display:flex;align-items:center;padding-top:28px;">
+          <label style="display:flex;align-items:center;gap:10px;font-size:14px;color:var(--text-mid);cursor:pointer;">
+            <input type="checkbox" name="is_active" value="1"
+                   {% if faq.is_active or not faq %}checked{% endif %}
+                   style="width:18px;height:18px;accent-color:var(--green);">
+            Active (show on homepage)
+          </label>
+        </div>
+      </div>
+
+      <button type="submit" class="btn-primary"
+              style="width:100%;border:none;padding:12px;font-size:14px;cursor:pointer;margin-top:8px;">
+        {% if faq %}Update FAQ{% else %}Add FAQ{% endif %}
+      </button>
+    </form>
+  </div>
+</div>
+{% endblock %}
