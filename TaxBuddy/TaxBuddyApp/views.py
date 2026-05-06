@@ -81,12 +81,23 @@ def index(request):
         questions_list = list(questions)
         preview_questions = random.sample(questions_list, min(len(questions_list), 3))
 
-        # FIX: removed redundant `result` query that was never used properly
-        latest_blogs = Blog.objects.filter(
+        # 3 random income tax blogs
+        income_tax_blogs = list(Blog.objects.filter(
             status='published',
             is_deleted=False,
-            created_at__gte=now().date() - timedelta(days=3)
-        ).order_by('-updated_at')[:3]
+            type='income_tax'
+        ).order_by('?')[:3])
+
+        # 3 random sales tax blogs
+        sales_tax_blogs = list(Blog.objects.filter(
+            status='published',
+            is_deleted=False,
+            type='sales_tax'
+        ).order_by('?')[:3])
+
+        # Combined — 6 blogs for homepage (3 income + 3 sales)
+        latest_blogs = income_tax_blogs + sales_tax_blogs
+        random.shuffle(latest_blogs)
 
         all_blogs = Blog.objects.filter(
             status='published',
@@ -97,8 +108,6 @@ def index(request):
             'result': all_blogs,
             'latest_blogs': latest_blogs,
             'preview_questions': preview_questions,
-            'meta_title': "TaxBuddy Umair | Pakistan Tax Education Platform",
-            'meta_description': "Pakistan's #1 tax education platform. Free income tax & sales tax guides, calculators and MCQs — explained simply by TaxBuddy Umair. FBR 2025-26.",
         })
     except Exception as e:
         return HttpResponse(str(e))
@@ -170,8 +179,6 @@ def BlogDetails(request, slug=None):
         'length': blog_comments.count(),
         'blogList': related_blogs,
         'tags_list': tags_list,
-        'meta_title': blog.meta_title or blog.title,
-        'meta_description': blog.meta_description or blog.title,
     })
 
 
@@ -189,8 +196,6 @@ def viewBlogs(request, slug=None):
                 "blogs": page_obj,
                 "page_obj": page_obj,
                 "category_name": "All Posts",
-                "meta_title": "All Tax Articles | TaxBuddy Umair",
-                "meta_description": "Browse all tax education articles by TaxBuddy Umair — income tax, sales tax, FBR circulars and guides explained simply for every Pakistani.",
             })
 
         category_name = slug.replace('-', ' ')
@@ -226,8 +231,6 @@ def viewBlogs(request, slug=None):
             "blogs": page_obj,
             "page_obj": page_obj,
             "category_name": category_name.title(),
-            "meta_title": f"{category_name.title()} Articles | TaxBuddy Umair",
-            "meta_description": f"Read TaxBuddy Umair's latest {category_name.title()} articles — explained simply for every Pakistani. Updated for FBR 2025-26.",
         })
 
     except Http404:
@@ -244,10 +247,7 @@ def blog_index(request):
             status='published',
             is_deleted=False
         ).order_by('-created_at')
-        return render(request, "clone.html", {"blogs": blogs, "category_name": "All Posts",
-            "meta_title": "All Tax Articles | TaxBuddy Umair",
-            "meta_description": "Browse all tax education articles by TaxBuddy Umair — income tax, sales tax, FBR circulars and guides explained simply for every Pakistani.",
-        })
+        return render(request, "clone.html", {"blogs": blogs, "category_name": "All Posts"})
     except Exception as e:
         return HttpResponse('Exception at Blog Index: ' + str(e))
 
@@ -324,20 +324,14 @@ def contact(request):
 
 def privacy_policy(request):
     try:
-        return render(request, 'partials/privacy_policy.html', {
-            'meta_title': "Privacy Policy | TaxBuddy Umair",
-            'meta_description': "Read TaxBuddy Umair's privacy policy. Learn how we collect, use and protect your information on Pakistan's trusted tax education platform.",
-        })
+        return render(request, 'partials/privacy_policy.html')
     except Exception as e:
         return HttpResponse("Exception: " + str(e))
 
 
 def terms_and_conditions(request):
     try:
-        return render(request, 'partials/terms_conditions.html', {
-            'meta_title': "Terms & Conditions | TaxBuddy Umair",
-            'meta_description': "Read the terms and conditions for using TaxBuddy Umair — Pakistan's free tax education platform with guides, calculators and MCQs.",
-        })
+        return render(request, 'partials/terms_conditions.html')
     except Exception as e:
         return HttpResponse("Exception: " + str(e))
 
@@ -352,29 +346,20 @@ def legacy_blog_redirect(request, slug):
 
 def disclaimer(request):
     try:
-        return render(request, 'partials/disclaimer.html', {
-            'meta_title': "Disclaimer | TaxBuddy Umair",
-            'meta_description': "TaxBuddy Umair provides free tax education content for Pakistan. Read our disclaimer — all information is for educational purposes only.",
-        })
+        return render(request, 'partials/disclaimer.html')
     except Exception as e:
         return HttpResponse("Exception: " + str(e))
 
 def income_tax_guides(request):
     try:
-        return render(request, 'income-tax-guides.html', {
-            'meta_title': "Income Tax Guide Pakistan 2025-26 | TaxBuddy Umair",
-            'meta_description': "Understand income tax in Pakistan the simple way. TaxBuddy Umair breaks down tax slabs, filer benefits, NTN registration and return filing for everyone.",
-        })
+        return render(request, 'income-tax-guides.html')
     except Exception as e:
         return HttpResponse(str(e))
 
 
 def sales_tax_guides(request):
     try:
-        return render(request, 'sales-tax-guides.html', {
-            'meta_title': "Sales Tax Guide Pakistan 2025-26 | TaxBuddy Umair",
-            'meta_description': "Sales tax explained simply — GST registration, monthly filing, input/output tax and compliance under Sales Tax Act 1990. Free guide by TaxBuddy Umair.",
-        })
+        return render(request, 'sales-tax-guides.html')
     except Exception as e:
         return HttpResponse(str(e))
 
@@ -427,8 +412,6 @@ def income_tax_rates(request):
             "selected_year": selected_year,
             "active_section": active_section,
             "company_tax_rates": company_tax_rates,
-            "meta_title": "Income Tax Rates Pakistan 2025-26 | TaxBuddy Umair",
-            "meta_description": "Pakistan income tax slabs 2025-26 explained simply. Filer vs non-filer rates for salaried persons, businesses and AOPs — by TaxBuddy Umair.",
         })
 
     except Exception as e:
@@ -467,8 +450,6 @@ def withholding_tax_rates(request):
             'categories':      categories,
             'categories_meta': categories_meta,
             'tax_year':        tax_year,
-            'meta_title': "Withholding Tax Rates Pakistan 2025-26 | TaxBuddy Umair",
-            'meta_description': "Withholding tax rates Pakistan 2025-26 explained in plain language. Complete Division I, II and III rates for filers and non-filers by TaxBuddy Umair.",
         })
     except Exception as e:
         return HttpResponse("Exception: " + str(e))
@@ -476,10 +457,7 @@ def withholding_tax_rates(request):
 
 def online_services(request):
     try:
-        return render(request, "partials/online_services.html", {
-            'meta_title': "Tax Services Pakistan | TaxBuddy Umair",
-            'meta_description': "Need hands-on help? TaxBuddy Umair offers NTN registration, return filing and FBR notice help starting from PKR 1,000. Based in Karachi.",
-        })
+        return render(request, "partials/online_services.html")
     except Exception as e:
         return HttpResponse("Exception: " + str(e))
 
@@ -531,9 +509,7 @@ def AOPCalculator(request):
     }
 
     years = list(TaxBracket.objects.values_list("year", flat=True).distinct().order_by("-year"))
-    context = {'content': content, 'title': 'AOP', 'url': '/AOPCalculator', 'years': years,
-               'meta_title': "AOP Tax Calculator Pakistan 2025-26 | TaxBuddy Umair",
-               'meta_description': "Calculate AOP and partnership firm tax liability in seconds. Free tool by TaxBuddy Umair based on latest FBR Tax Year 2025-26 rates.",}
+    context = {'content': content, 'title': 'AOP', 'url': '/AOPCalculator', 'years': years}
 
     if request.method == 'POST':
         # FIX: validate income before processing
@@ -588,9 +564,7 @@ def BusinessCalculator(request):
     }
 
     years = list(TaxBracket.objects.values_list("year", flat=True).distinct().order_by("-year"))
-    context = {'content': content, 'title': 'Business Individual', 'url': '/BusinessCalculator', 'years': years,
-               'meta_title': "Business Tax Calculator Pakistan 2025-26 | TaxBuddy Umair",
-               'meta_description': "Confused about business income tax? Calculate your exact tax liability for free using TaxBuddy Umair's business tax calculator — FBR 2025-26.",}
+    context = {'content': content, 'title': 'Business Individual', 'url': '/BusinessCalculator', 'years': years}
 
     if request.method == 'POST':
         income_amount, error = validate_income(request.POST)
@@ -644,9 +618,7 @@ def SalaryCalculator(request):
     }
 
     years = list(TaxBracket.objects.values_list("year", flat=True).distinct().order_by("-year"))
-    context = {'content': content, 'title': 'Salary Individual', 'url': '/SalaryCalculator', 'years': years,
-               'meta_title': "Salary Tax Calculator Pakistan 2025-26 | TaxBuddy Umair",
-               'meta_description': "How much tax will you pay on your salary? Use TaxBuddy Umair's free calculator based on FBR 2025-26 slabs and find out instantly.",}
+    context = {'content': content, 'title': 'Salary Individual', 'url': '/SalaryCalculator', 'years': years}
 
     if request.method == 'POST':
         income_amount, error = validate_income(request.POST)
@@ -984,8 +956,6 @@ def question_list(request, category_slug=None):
             "seo_category": selected_category,
             "category_slug": category_slug,
             "category_not_found": category_not_found,
-            "meta_title": f"{'Income Tax' if not selected_category else selected_category} MCQs Pakistan | TaxBuddy Umair",
-            "meta_description": "Test your tax knowledge with 200+ free MCQs on Pakistan income tax. Perfect for CA, ICMAP, ACCA and CSS students — by TaxBuddy Umair.",
         })
 
     except Exception as e:
@@ -994,10 +964,7 @@ def question_list(request, category_slug=None):
 
 def TaxCalculator4C(request):
     try:
-        return render(request, 'TaxCalculator4C.html', {
-            'meta_title': "Super Tax Calculator Section 4C Pakistan | TaxBuddy Umair",
-            'meta_description': "Understand and calculate Super Tax under Section 4C ITO 2001. Free educational tool by TaxBuddy Umair for Tax Year 2025-26.",
-        })
+        return render(request, 'TaxCalculator4C.html')
     except Exception as e:
         return HttpResponse("Exception: " + str(e))
 
