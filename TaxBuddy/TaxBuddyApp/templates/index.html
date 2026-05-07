@@ -369,14 +369,6 @@
 <!--  </div>-->
 <!--</section>-->
 
-<!-- ══════════════════════════════════════════════
-     CTA BANNER
-══════════════════════════════════════════════ -->
-<section class="section section-alt">
-  <div class="container">
-    {% include 'partials/cta_banner.html' %}
-  </div>
-</section>
 
 <!-- ══════════════════════════════════════════════
      AD — Before FAQ
@@ -405,15 +397,6 @@
     </div>
 
     <!-- Category Filter Tabs -->
-    <div style="display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin-bottom:28px;" id="faq-tabs">
-      <button class="faq-tab active" onclick="filterFAQ('all', this)">All</button>
-      <button class="faq-tab" onclick="filterFAQ('filer', this)">Filer Status</button>
-      <button class="faq-tab" onclick="filterFAQ('property', this)">Property Tax</button>
-      <button class="faq-tab" onclick="filterFAQ('salary', this)">Salary Tax</button>
-      <button class="faq-tab" onclick="filterFAQ('banking', this)">Banking</button>
-      <button class="faq-tab" onclick="filterFAQ('sales', this)">Sales Tax</button>
-      <button class="faq-tab" onclick="filterFAQ('general', this)">General</button>
-    </div>
 
 
     <!-- FAQ Items -->
@@ -441,6 +424,15 @@
   </div>
 </section>
 
+
+<!-- ══════════════════════════════════════════════
+     CTA BANNER
+══════════════════════════════════════════════ -->
+<section class="section section-alt">
+  <div class="container">
+    {% include 'partials/cta_banner.html' %}
+  </div>
+</section>
 <script>
 function toggleFAQ(btn) {
   var item = btn.closest('.faq-item-new');
@@ -457,24 +449,6 @@ function toggleFAQ(btn) {
   }
 }
 
-function filterFAQ(cat, btn) {
-  // Update tab styles
-  document.querySelectorAll('.faq-tab').forEach(function(b) { b.classList.remove('active'); });
-  btn.classList.add('active');
-  // Filter items
-  document.querySelectorAll('.faq-item-new').forEach(function(item) {
-    item.style.display = (cat === 'all' || item.dataset.cat === cat) ? '' : 'none';
-  });
-  // Close all open ones when switching
-  document.querySelectorAll('.faq-item-new.open').forEach(function(el) { el.classList.remove('open'); });
-}
-
-// Keyboard accessibility
-document.querySelectorAll('.faq-q-new').forEach(function(btn) {
-  btn.addEventListener('keydown', function(e) {
-    if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); toggleFAQ(btn); }
-  });
-});
 </script>
 
 <!-- ══════════════════════════════════════════════
