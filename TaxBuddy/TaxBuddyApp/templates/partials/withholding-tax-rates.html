@@ -45,7 +45,8 @@
   .tab-btn{font-size:12px;padding:8px 10px}
   .wht-table-wrap{border:none;background:transparent;overflow:visible}
   .wht-table thead{display:none}
-  .wht-table,.wht-table tbody{display:block;width:100%}
+  .wht-table,.wht-table tbody{display:block;width:100%;min-width:0}
+  .wht-table-wrap{overflow:visible!important}
   .wht-table thead{display:none}
   .wht-table tbody tr{
     display:block;
@@ -53,8 +54,10 @@
     border:1px solid var(--border);
     border-radius:12px;
     margin-bottom:12px;
-    padding:14px;
+    padding:12px 10px;
     box-sizing:border-box;
+    width:100%;
+    overflow:hidden;
   }
   .wht-table tbody tr:hover{background:var(--white)}
   /* Description cell — full width */
@@ -73,16 +76,18 @@
   /* Pills container row */
   .wht-table tbody tr .pills-row{
     display:grid;
-    grid-template-columns:1fr 1fr 1fr;
-    gap:6px;
+    grid-template-columns:repeat(3,1fr);
+    gap:5px;
     margin-top:4px;
+    width:100%;
+    box-sizing:border-box;
   }
   .rate-pill-m{
     display:flex;flex-direction:column;align-items:center;
-    padding:8px 4px;border-radius:10px;font-weight:700;font-size:15px;
-    box-sizing:border-box;text-align:center;
+    padding:7px 2px;border-radius:8px;font-weight:700;font-size:14px;
+    box-sizing:border-box;text-align:center;min-width:0;
   }
-  .rate-pill-m span:first-child{font-size:10px;font-weight:600;text-transform:uppercase;opacity:.8;margin-bottom:3px}
+  .rate-pill-m span:first-child{font-size:9px;font-weight:600;text-transform:uppercase;opacity:.8;margin-bottom:3px;white-space:nowrap}
   .pill-m-filer{background:#f0fdf4;border:1px solid #bbf7d0;color:#15803d}
   .pill-m-late{background:#fffbeb;border:1px solid #fde68a;color:#B45309}
   .pill-m-nonfiler{background:#fef2f2;border:1px solid #fca5a5;color:#dc2626}
