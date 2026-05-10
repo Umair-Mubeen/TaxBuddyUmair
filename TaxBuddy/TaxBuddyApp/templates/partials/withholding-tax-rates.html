@@ -33,11 +33,85 @@
 .year-tab{padding:7px 16px;border-radius:20px;border:1.5px solid var(--border);background:var(--bg);color:var(--text-mid);font-size:13px;font-weight:600;text-decoration:none;transition:all .15s}
 .year-tab:hover{border-color:var(--navy);color:var(--navy)}
 .year-tab.active{background:var(--green);border-color:var(--green);color:#fff}
+/* ── Late filer amber color ── */
+.td-late{color:#B45309;font-weight:700}
+
+/* ── Mobile card layout ── */
 @media(max-width:640px){
   .wht-layout{padding:20px 0 60px}
   .tab-btn{font-size:12px;padding:8px 10px}
-  .wht-table{font-size:12.5px;min-width:460px}
-  .wht-table td,.wht-table th{padding:9px 10px}
+
+  /* Hide table, show cards */
+  .wht-table-wrap{border:none;background:transparent;overflow:visible}
+  .wht-table thead{display:none}
+  .wht-table,.wht-table tbody,.wht-table tr,.wht-table td{display:block;width:100%}
+  .wht-table tbody tr{
+    background:var(--white);
+    border:1px solid var(--border);
+    border-radius:10px;
+    margin-bottom:10px;
+    padding:12px 14px;
+    position:relative;
+  }
+  .wht-table tbody tr:hover{background:var(--white)}
+  .wht-table td{
+    padding:4px 0;
+    border:none;
+    font-size:13px;
+    display:flex;
+    align-items:flex-start;
+    gap:8px;
+    color:var(--text-mid);
+  }
+  .wht-table td::before{
+    content:attr(data-label);
+    font-size:10.5px;
+    font-weight:600;
+    text-transform:uppercase;
+    letter-spacing:.05em;
+    color:var(--text-muted);
+    min-width:82px;
+    flex-shrink:0;
+    padding-top:1px;
+  }
+  /* Description — bigger, navy, no label */
+  .wht-table td.td-desc{
+    font-weight:600;
+    font-size:14px;
+    color:var(--navy);
+    margin-bottom:6px;
+    flex-direction:column;
+    gap:4px;
+  }
+  .wht-table td.td-desc::before{display:none}
+  /* Hide threshold + who deducts on mobile to save space */
+  .wht-table td.td-hide{display:none}
+  /* Rate row — inline pill layout */
+  .rate-row{
+    display:flex;
+    flex-wrap:wrap;
+    gap:6px;
+    padding:6px 0 4px;
+    border-top:1px solid var(--border);
+    margin-top:4px;
+  }
+  .rate-row::before{display:none}
+  .rate-pill{
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    padding:5px 10px;
+    border-radius:8px;
+    min-width:72px;
+  }
+  .rate-pill span:first-child{font-size:10px;color:var(--text-muted);margin-bottom:2px}
+  .rate-pill span:last-child{font-size:15px;font-weight:700}
+  .pill-filer{background:#f0fdf4;border:1px solid #bbf7d0}
+  .pill-filer span:last-child{color:#15803d}
+  .pill-late{background:#fffbeb;border:1px solid #fde68a}
+  .pill-late span:last-child{color:#B45309}
+  .pill-nonfiler{background:#fef2f2;border:1px solid #fca5a5}
+  .pill-nonfiler span:last-child{color:#dc2626}
 }
 </style>
 {% endblock %}
@@ -91,9 +165,9 @@
           <tr>
             <th>Description</th>
             <th>Section</th>
-            <th>Filer Rate</th>
-            <th>Late Filer</th>
-            <th>Non-Filer Rate</th>
+            <th style="color:#86efac">Filer Rate</th>
+            <th style="color:#fde68a">Late Filer</th>
+            <th style="color:#fca5a5">Non-Filer Rate</th>
             <th>Who Deducts</th>
             {% if rates.0.threshold %}
             <th>Threshold</th>
@@ -103,15 +177,31 @@
         <tbody>
           {% for rate in rates %}
           <tr>
-            <td>{{ rate.description }}</td>
-            <td><span class="td-section">{{ rate.section }}</span></td>
-            <td class="td-filer">{{ rate.filer_rate }}</td>
-            <td class="td-filer">{{ rate.late_filer_rate }}</td>
-
-            <td class="td-nonfiler">{{ rate.non_filer_rate|default:"—" }}</td>
-            <td style="font-size:12.5px">{{ rate.who_deducts|default:"—" }}</td>
+            <td class="td-desc">
+              {{ rate.description }}
+              <span class="td-section">{{ rate.section }}</span>
+            </td>
+            <td class="rate-row" colspan="4">
+              <div class="rate-pill pill-filer">
+                <span>Filer</span>
+                <span>{{ rate.filer_rate }}</span>
+              </div>
+              <div class="rate-pill pill-late">
+                <span>Late Filer</span>
+                <span>{{ rate.late_filer_rate|default:"—" }}</span>
+              </div>
+              <div class="rate-pill pill-nonfiler">
+                <span>Non-Filer</span>
+                <span>{{ rate.non_filer_rate|default:"—" }}</span>
+              </div>
+            </td>
+            <td data-label="Section" style="display:none" class="td-section-mobile"></td>
+            <td class="td-filer" data-label="Filer" style="display:none">{{ rate.filer_rate }}</td>
+            <td class="td-late" data-label="Late Filer" style="display:none">{{ rate.late_filer_rate|default:"—" }}</td>
+            <td class="td-nonfiler" data-label="Non-Filer" style="display:none">{{ rate.non_filer_rate|default:"—" }}</td>
+            <td class="td-hide" data-label="Who Deducts" style="font-size:12.5px">{{ rate.who_deducts|default:"—" }}</td>
             {% if rates.0.threshold %}
-            <td style="font-size:12px;color:var(--text-muted)">{{ rate.threshold|default:"—" }}</td>
+            <td class="td-hide" data-label="Threshold" style="font-size:12px;color:var(--text-muted)">{{ rate.threshold|default:"—" }}</td>
             {% endif %}
           </tr>
           {% endfor %}
