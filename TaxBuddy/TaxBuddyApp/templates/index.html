@@ -491,6 +491,8 @@ function toggleFAQ(btn) {
 <!--              <span style="font-size:14px;color:var(&#45;&#45;text-mid);">Gulshan-e-Iqbal, Karachi</span>-->
 <!--            </div>-->
 <!--          </div>-->
+
+
         </div>
         <a href="https://wa.me/923332482742" class="btn-wa" target="_blank" rel="noopener"
            style="margin-top:24px;display:inline-flex;">
@@ -556,6 +558,13 @@ function toggleFAQ(btn) {
                       class="form-input" rows="4"
                       placeholder="Describe your tax situation or query…"></textarea>
           </div>
+
+{% if RECAPTCHA_SITE_KEY %}
+<div class="form-group">
+  <div class="g-recaptcha" data-sitekey="{{ RECAPTCHA_SITE_KEY }}"></div>
+</div>
+{% endif %}
+
 
           <button type="submit" name="contact_submit" class="btn-primary"
                   style="width:100%;border:none;padding:14px;font-size:15px;
