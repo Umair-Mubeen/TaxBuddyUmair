@@ -111,55 +111,12 @@ def index(request):
         except Exception:
             faqs = []
 
-        default_faqs = [
-            (
-                "What is the advance tax rate on property sale for filers in 2025-26?",
-                "Under Section 236C, filers pay 4.5%, late filers pay 7.5%, and non-filers pay 11.5% advance tax on the sale of immovable property."
-            ),
-            (
-                "What is the advance tax rate on property purchase for filers in 2025-26?",
-                "Under Section 236K, filers pay 1.5%, late filers pay 4.5%, and non-filers pay 10.5% advance tax on the purchase of immovable property."
-            ),
-            (
-                "What is the withholding tax rate on bank profit (Section 151)?",
-                "Under Section 151, filers pay 20% and non-filers pay 40% withholding tax on profit on debt, including bank savings accounts and term deposits."
-            ),
-            (
-                "What is the withholding tax rate on dividends (Section 150)?",
-                "Under Section 150, filers pay 15% and non-filers pay 30% withholding tax on dividend income from companies and mutual funds."
-            ),
-            (
-                "What are the salary income tax slabs for 2025-26?",
-                "For tax year 2025-26: Up to Rs.600,000 = 0%, Rs.600,001-1,200,000 = 1%, Rs.1,200,001-2,200,000 = Rs.6,000 + 11%, Rs.2,200,001-3,200,000 = Rs.116,000 + 23%, Rs.3,200,001-4,100,000 = Rs.346,000 + 30%, Above Rs.4,100,000 = Rs.616,000 + 35%."
-            ),
-            (
-                "What is the advance tax rate on international card payments (Section 236Y)?",
-                "Under Section 236Y, filers pay 5% and non-filers pay 10% advance tax on international payments made through Pakistani credit, debit, or prepaid cards."
-            ),
-            (
-                "What is the withholding tax rate for goods and services (Section 153)?",
-                "Under Section 153, for supply of goods: filers pay 4%, non-filers pay 8%. For services: filers pay 8%, non-filers pay 16%. For contracts: filers pay 7%, non-filers pay 14%."
-            ),
-            (
-                "What is the advance tax on cash withdrawal (Section 231A)?",
-                "Under Section 231A, filers pay 0% (completely exempt) while non-filers pay 0.6% on cash withdrawals exceeding Rs.50,000 per day from a bank."
-            ),
-            (
-                "What is the standard GST rate in Pakistan under Sales Tax Act 1990?",
-                "The standard General Sales Tax (GST) rate in Pakistan is 18% under Section 3 of the Sales Tax Act, 1990. Zero-rated supplies (exports) are taxed at 0%, and exempt supplies listed in the Sixth Schedule carry no GST."
-            ),
-            (
-                "How do I check my ATL (Active Taxpayer List) status?",
-                "You can check your ATL status by visiting FBR's website at www.fbr.gov.pk or by sending your CNIC number (without dashes) as an SMS to 9966. The ATL is updated every Monday."
-            ),
-        ]
-
         return render(request, 'index.html', {
             'result': all_blogs,
             'latest_blogs': latest_blogs,
             'preview_questions': preview_questions,
             'faqs': faqs,
-            'default_faqs': default_faqs,
+            'RECAPTCHA_SITE_KEY': getattr(settings, 'RECAPTCHA_SITE_KEY', '6LehL-MsAAAAADfoVkVYimdV2tc7uEj7vC6jssqK'),
         })
     except Exception as e:
         return HttpResponse(str(e))
@@ -334,22 +291,34 @@ def userComments(request):
 def contact(request):
     if request.method == "POST":
         try:
-            token = request.POST.get('g-recaptcha-response', '')
+            # Honeypot — bots fill this hidden field
+            if request.POST.get('website_url', ''):
+                return redirect('/')
 
-            # FIX: secret key must be in settings.py / .env — NEVER hardcoded
-            # Add to settings.py: RECAPTCHA_SECRET_KEY = env('RECAPTCHA_SECRET_KEY')
+            token = request.POST.get('g-recaptcha-response', '')
             recaptcha_secret = getattr(settings, 'RECAPTCHA_SECRET_KEY', '')
 
-            r = requests.post(
-                'https://www.google.com/recaptcha/api/siteverify',
-                data={'secret': recaptcha_secret, 'response': token},
-                timeout=5  # FIX: add timeout to prevent hanging
-            )
-            result = r.json()
+            if recaptcha_secret and token:
+                try:
+                    r = requests.post(
+                        'https://www.google.com/recaptcha/api/siteverify',
+                        data={'secret': recaptcha_secret, 'response': token},
+                        timeout=5
+                    )
+                    result = r.json()
 
-            if not result.get('success') or result.get('score', 0) < 0.5:
-                messages.error(request, "Captcha verification failed. Please try again.")
-                return redirect('/#contact')
+                    if not result.get('success'):
+                        messages.error(request, "Captcha verification failed. Please try again.")
+                        return redirect('/#contact')
+
+                    # v3 has score, v2 does not — handle both
+                    score = result.get('score')
+                    if score is not None and score < 0.3:
+                        messages.error(request, "Captcha verification failed. Please try again.")
+                        return redirect('/#contact')
+
+                except requests.RequestException:
+                    pass  # reCAPTCHA API down — allow form
 
             Contact.objects.create(
                 first_name=request.POST.get('first_name', '').strip(),
@@ -489,9 +458,9 @@ def withholding_tax_rates(request):
         }
 
         categories_meta = [
-            ('property', 'Property Sale & Purchase',   'Advance tax collected on Sale/ Purchase of immovable property under Section 236C/236K.'),
-            ('banking',  'Banking & Finance',           'Advance tax collected on Cash withdrawals, profit on debt, dividends and foreign card payments.'),
-            ('salary',   'Salary & Employment',         'Monthly salary deduction under Section 149'),
+            ('property', 'Property Sale & Purchase',   'WHT on sale/purchase of immovable property under Section 236C/236K.'),
+            ('banking',  'Banking & Finance',           'WHT on cash withdrawals, profit on debt, dividends and foreign card payments.'),
+            ('salary',   'Salary & Employment',         'Monthly salary deduction under Section 149 and vehicle registration under 231B.'),
             ('business', 'Business & Contracts',        'WHT on payments for goods, services and contracts under Section 153.'),
             ('advance',  'Advance Tax',                 'Advance tax collected at source on various transactions.'),
             ('other',    'Other Payments',              'WHT on prizes, imports, educational remittances and more.'),
@@ -897,7 +866,6 @@ def add_wht_rate(request):
                 section        = request.POST.get('section', '').strip(),
                 description    = request.POST.get('description', '').strip(),
                 filer_rate     = request.POST.get('filer_rate', '').strip(),
-                late_filer_rate =request.POST.get('late_filer_rate', '').strip(),
                 non_filer_rate = request.POST.get('non_filer_rate', '').strip(),
                 who_deducts    = request.POST.get('who_deducts', '').strip(),
                 threshold      = request.POST.get('threshold', '').strip(),
@@ -923,7 +891,6 @@ def edit_wht_rate(request, pk):
             rate.section        = request.POST.get('section', '').strip()
             rate.description    = request.POST.get('description', '').strip()
             rate.filer_rate     = request.POST.get('filer_rate', '').strip()
-            rate.late_filer_rate     = request.POST.get('late_filer_rate', '').strip()
             rate.non_filer_rate = request.POST.get('non_filer_rate', '').strip()
             rate.who_deducts    = request.POST.get('who_deducts', '').strip()
             rate.threshold      = request.POST.get('threshold', '').strip()
