@@ -43,59 +43,38 @@
       </div>
     </div>
 
-    <div class="cards-grid-2" style="margin-bottom:28px;">
-      {% for guide in guide_items %}
-      <a href="{{ guide.url }}" class="card" style="text-decoration:none;">
-        <div class="card-img" style="background:{{ guide.bg|default:'linear-gradient(135deg,#0A2647,#1E5F8E)' }};">{{ guide.icon }}</div>
-        <div class="card-body">
-          <div class="card-tag">{{ guide.tag }}</div>
-          <div class="card-title">{{ guide.title }}</div>
-          <div class="card-excerpt">{{ guide.excerpt }}</div>
-          <div class="card-footer"><span>{{ guide.read_time }}</span><span class="card-read-more">Read →</span></div>
+    <div style="display:flex;flex-direction:column;gap:16px;margin-bottom:28px;">
+      {% for guide in guides %}
+      <div style="background:var(--white);border:1px solid var(--border);border-radius:var(--radius-lg);overflow:hidden;">
+        <div style="display:flex;align-items:stretch;">
+          <div style="width:5px;background:linear-gradient(180deg,var(--green),var(--navy));flex-shrink:0;"></div>
+          <div style="padding:20px 22px;flex:1;">
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;">
+              <span style="background:var(--green-light);color:var(--green);font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.08em;padding:3px 10px;border-radius:4px;">Income Tax Guide</span>
+              <span style="font-size:12px;color:var(--text-light);">Guide #{{ forloop.counter }}</span>
+            </div>
+            <h3 style="font-family:var(--font-head);font-size:18px;font-weight:700;color:var(--navy);margin:0 0 10px;">{{ guide.title }}</h3>
+            <p style="font-size:14px;color:var(--text-mid);line-height:1.7;margin:0 0 16px;">{{ guide.summary|striptags|truncatewords:45 }}</p>
+            <div style="display:flex;align-items:center;justify-content:space-between;padding-top:12px;border-top:1px solid var(--border);">
+              {% if guide.related_blog %}
+              <a href="{% url 'BlogDetails' slug=guide.related_blog.slug %}"
+                 style="display:inline-flex;align-items:center;gap:6px;background:var(--green);color:#fff;padding:7px 16px;border-radius:6px;font-size:13px;font-weight:600;text-decoration:none;">
+                📖 Read Full Article
+              </a>
+              {% else %}<span></span>{% endif %}
+              <span style="font-size:12px;color:var(--text-light);">{{ guide.summary|striptags|wordcount }} words</span>
+            </div>
+          </div>
         </div>
-      </a>
+      </div>
       {% empty %}
-      <!-- Default static cards if no dynamic data -->
-      <a href="{% url 'income_tax_rates' %}" class="card" style="text-decoration:none;">
-        <div class="card-img" style="background:linear-gradient(135deg,#0A2647,#1E5F8E);">📊</div>
-        <div class="card-body">
-          <div class="card-tag">Tax Rates</div>
-          <div class="card-title">Income Tax Slabs &amp; Rates 2025–26</div>
-          <div class="card-excerpt">Complete salary, business, AOP and company tax slabs updated for FBR Tax Year 2025–26.</div>
-          <div class="card-footer"><span>8 min read</span><span class="card-read-more">Read →</span></div>
-        </div>
-      </a>
-      <a href="{% url 'SalaryCalculator' %}" class="card" style="text-decoration:none;">
-        <div class="card-img" style="background:linear-gradient(135deg,#0D9E72,#0A7558);">💼</div>
-        <div class="card-body">
-          <div class="card-tag">Calculator</div>
-          <div class="card-title">Salary Tax Calculator — FBR 2025–26</div>
-          <div class="card-excerpt">Calculate your exact monthly and annual income tax liability using our free salary tax calculator.</div>
-          <div class="card-footer"><span>Tool</span><span class="card-read-more">Use Tool →</span></div>
-        </div>
-      </a>
-      <a href="{% url 'withholding_tax_rates' %}" class="card" style="text-decoration:none;">
-        <div class="card-img" style="background:linear-gradient(135deg,#2D3748,#4A5568);">📉</div>
-        <div class="card-body">
-          <div class="card-tag">Withholding Tax</div>
-          <div class="card-title">Withholding Tax Rates Pakistan 2025–26</div>
-          <div class="card-excerpt">Complete withholding tax rates under Division I, II, and III of ITO 2001 for filers and non-filers.</div>
-          <div class="card-footer"><span>10 min read</span><span class="card-read-more">Read →</span></div>
-        </div>
-      </a>
-      <a href="{% url 'question_list' %}" class="card" style="text-decoration:none;">
-        <div class="card-img" style="background:linear-gradient(135deg,#744210,#975A16);">📝</div>
-        <div class="card-body">
-          <div class="card-tag">MCQ Practice</div>
-          <div class="card-title">Income Tax MCQs — 200+ Questions</div>
-          <div class="card-excerpt">Practice income tax MCQs for CA, ICMAP, ACCA, and CSS exam preparation with detailed explanations.</div>
-          <div class="card-footer"><span>Practice</span><span class="card-read-more">Start →</span></div>
-        </div>
-      </a>
+      <div style="text-align:center;padding:40px;color:var(--text-light);background:var(--white);border:1px solid var(--border);border-radius:var(--radius-lg);">
+        <p>Guides coming soon.</p>
+      </div>
       {% endfor %}
     </div>
 
-    <!-- Mid Ad -->
+    <!-- Mid Ad --><!-- Mid Ad -->
 <!--    <div class="ad-wrapper">-->
 <!--      <div class="ad-wrapper-label">Advertisement</div>-->
 <!--      <div class="ad-zone ad-large-rect">-->
