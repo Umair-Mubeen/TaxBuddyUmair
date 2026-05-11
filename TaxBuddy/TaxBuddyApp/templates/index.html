@@ -660,10 +660,10 @@ document.querySelectorAll('.faq-q-new').forEach(function(btn) {
                  style="display:none !important;position:absolute;left:-9999px;"
                  tabindex="-1" aria-hidden="true">
 
-               <!-- Messages — show above button -->
+             <!-- Messages — show above button -->
           {% if messages %}
           {% for message in messages %}
-          <div style="
+          <div class="contact-msg" style="
             padding:12px 16px;
             border-radius:8px;
             font-size:14px;
@@ -683,7 +683,6 @@ document.querySelectorAll('.faq-q-new').forEach(function(btn) {
           </div>
           {% endfor %}
           {% endif %}
-
 
           <div class="name-row-grid">
             <div class="form-group">
@@ -751,8 +750,21 @@ document.querySelectorAll('.faq-q-new').forEach(function(btn) {
 {% if messages %}
 <script>
   document.addEventListener('DOMContentLoaded', function() {
+    // Scroll to contact section
     var el = document.getElementById('contact');
     if(el){ el.scrollIntoView({behavior:'smooth', block:'start'}); }
+
+    // Fade out messages after 5 seconds
+    var msgs = document.querySelectorAll('.contact-msg');
+    if(msgs.length){
+      setTimeout(function(){
+        msgs.forEach(function(m){
+          m.style.transition = 'opacity 0.8s ease';
+          m.style.opacity = '0';
+          setTimeout(function(){ m.style.display = 'none'; }, 800);
+        });
+      }, 5000);
+    }
   });
 </script>
 {% endif %}
