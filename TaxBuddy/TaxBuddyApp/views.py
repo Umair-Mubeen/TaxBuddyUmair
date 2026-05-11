@@ -111,12 +111,55 @@ def index(request):
         except Exception:
             faqs = []
 
+        default_faqs = [
+            (
+                "What is the advance tax rate on property sale for filers in 2025-26?",
+                "Under Section 236C, filers pay 4.5%, late filers pay 7.5%, and non-filers pay 11.5% advance tax on the sale of immovable property."
+            ),
+            (
+                "What is the advance tax rate on property purchase for filers in 2025-26?",
+                "Under Section 236K, filers pay 1.5%, late filers pay 4.5%, and non-filers pay 10.5% advance tax on the purchase of immovable property."
+            ),
+            (
+                "What is the withholding tax rate on bank profit (Section 151)?",
+                "Under Section 151, filers pay 20% and non-filers pay 40% withholding tax on profit on debt, including bank savings accounts and term deposits."
+            ),
+            (
+                "What is the withholding tax rate on dividends (Section 150)?",
+                "Under Section 150, filers pay 15% and non-filers pay 30% withholding tax on dividend income from companies and mutual funds."
+            ),
+            (
+                "What are the salary income tax slabs for 2025-26?",
+                "For tax year 2025-26: Up to Rs.600,000 = 0%, Rs.600,001-1,200,000 = 1%, Rs.1,200,001-2,200,000 = Rs.6,000 + 11%, Rs.2,200,001-3,200,000 = Rs.116,000 + 23%, Rs.3,200,001-4,100,000 = Rs.346,000 + 30%, Above Rs.4,100,000 = Rs.616,000 + 35%."
+            ),
+            (
+                "What is the advance tax rate on international card payments (Section 236Y)?",
+                "Under Section 236Y, filers pay 5% and non-filers pay 10% advance tax on international payments made through Pakistani credit, debit, or prepaid cards."
+            ),
+            (
+                "What is the withholding tax rate for goods and services (Section 153)?",
+                "Under Section 153, for supply of goods: filers pay 4%, non-filers pay 8%. For services: filers pay 8%, non-filers pay 16%. For contracts: filers pay 7%, non-filers pay 14%."
+            ),
+            (
+                "What is the advance tax on cash withdrawal (Section 231A)?",
+                "Under Section 231A, filers pay 0% (completely exempt) while non-filers pay 0.6% on cash withdrawals exceeding Rs.50,000 per day from a bank."
+            ),
+            (
+                "What is the standard GST rate in Pakistan under Sales Tax Act 1990?",
+                "The standard General Sales Tax (GST) rate in Pakistan is 18% under Section 3 of the Sales Tax Act, 1990. Zero-rated supplies (exports) are taxed at 0%, and exempt supplies listed in the Sixth Schedule carry no GST."
+            ),
+            (
+                "How do I check my ATL (Active Taxpayer List) status?",
+                "You can check your ATL status by visiting FBR's website at www.fbr.gov.pk or by sending your CNIC number (without dashes) as an SMS to 9966. The ATL is updated every Monday."
+            ),
+        ]
+
         return render(request, 'index.html', {
             'result': all_blogs,
             'latest_blogs': latest_blogs,
             'preview_questions': preview_questions,
             'faqs': faqs,
-            'RECAPTCHA_SITE_KEY': getattr(settings, 'RECAPTCHA_SITE_KEY', '6LehL-MsAAAAADfoVkVYimdV2tc7uEj7vC6jssqK'),
+            'default_faqs': default_faqs,
         })
     except Exception as e:
         return HttpResponse(str(e))
@@ -373,14 +416,18 @@ def disclaimer(request):
 
 def income_tax_guides(request):
     try:
-        return render(request, 'income-tax-guides.html')
+        return render(request, 'income-tax-guides.html', {
+            'meta_description': 'Complete income tax guides for Pakistan — Section 12 salary, Section 153 withholding, property tax, capital gains, filer vs non-filer rates. Updated per Finance Act 2025.',
+        })
     except Exception as e:
         return HttpResponse(str(e))
 
 
 def sales_tax_guides(request):
     try:
-        return render(request, 'sales-tax-guides.html')
+        return render(request, 'sales-tax-guides.html', {
+            'meta_description': 'Complete sales tax guides for Pakistan — GST 18%, zero-rated goods, exempt goods, input/output tax, Tier-1 retailers, SRO 350/2024. Updated per Sales Tax Act 1990.',
+        })
     except Exception as e:
         return HttpResponse(str(e))
 
@@ -426,6 +473,7 @@ def income_tax_rates(request):
         }
 
         return render(request, "partials/income_tax_rates.html", {
+            "meta_description": f"Income tax rates Pakistan {selected_year} — salary slabs, business tax, AOP and company rates. FBR notified slabs updated per Finance Act 2025.",
             "salary_brackets": salary_brackets,
             "business_brackets": business_aop_brackets,
             "aop_brackets": business_aop_brackets,
@@ -458,10 +506,10 @@ def withholding_tax_rates(request):
         }
 
         categories_meta = [
-            ('property', 'Property Sale & Purchase',   'Advance Tax on sale/purchase of immovable property under Section 236C/236K.'),
-            ('banking',  'Banking & Finance',           'Withholding Tax / Advance Tax on cash withdrawals, profit on debt, dividends and foreign card payments.'),
-            ('salary',   'Salary & Employment',         'Monthly salary deduction under Section 149'),
-            ('business', 'Business & Contracts',        'Withholding Tax on payments for goods, services and contracts under Section 153.'),
+            ('property', 'Property Sale & Purchase',   'WHT on sale/purchase of immovable property under Section 236C/236K.'),
+            ('banking',  'Banking & Finance',           'WHT on cash withdrawals, profit on debt, dividends and foreign card payments.'),
+            ('salary',   'Salary & Employment',         'Monthly salary deduction under Section 149 and vehicle registration under 231B.'),
+            ('business', 'Business & Contracts',        'WHT on payments for goods, services and contracts under Section 153.'),
             ('advance',  'Advance Tax',                 'Advance tax collected at source on various transactions.'),
             ('other',    'Other Payments',              'WHT on prizes, imports, educational remittances and more.'),
         ]
@@ -672,7 +720,10 @@ def PropertyCalculator(request):
             gross_rent = to_int(request.POST.get('gross_rent', 0))
             if gross_rent <= 0:
                 messages.error(request, "Please enter a valid gross rent amount.")
-                return render(request, 'partials/property_rent.html', {'years': list(TaxBracket.objects.values_list("year", flat=True).distinct().order_by("-year"))})
+                return render(request, 'partials/property_rent.html', {
+            'meta_description': 'Free AOP income tax calculator Pakistan 2025-26. Calculate tax liability for Association of Persons, partnership firms and joint ventures based on FBR notified slabs.',
+            'meta_description': 'Free business income tax calculator Pakistan 2025-26. Calculate net business tax for sole proprietors, freelancers and traders based on FBR notified slabs.',
+            'meta_description': 'Free salary income tax calculator Pakistan 2025-26. Calculate monthly and yearly salary tax based on FBR notified slabs. Compare tax across multiple tax years.','years': list(TaxBracket.objects.values_list("year", flat=True).distinct().order_by("-year"))})
 
             repairs_allowance   = to_int(request.POST.get('repairs_allowance'))
             insurance_premium   = to_int(request.POST.get('insurance_premium'))
@@ -971,6 +1022,7 @@ def question_list(request, category_slug=None):
         ]
 
         return render(request, "partials/mcq-layout.html", {
+            "meta_description": "Practice free income tax and sales tax MCQs for Pakistan. Test your knowledge of ITO 2001, Sales Tax Act 1990, FBR procedures and withholding tax sections. Updated 2025-26.",
             "page_obj": page_obj,
             "categories": categories,
             "selected_category": selected_category,
@@ -1065,7 +1117,8 @@ def AddEditBlog(request, slug=None):
         messages.success(request, "Blog saved successfully.")
         return redirect("ManageBlogs")
 
-    return render(request, "Cpanel/AddEditBlog.html", {"blog": blog})
+    return render(request, "Cpanel/AddEditBlog.html", {
+            'meta_description': 'Free Super Tax calculator Pakistan 2025-26. Calculate Section 4C super tax for companies and individuals with income above Rs. 150 million.',"blog": blog})
 
 
 @staff_required
