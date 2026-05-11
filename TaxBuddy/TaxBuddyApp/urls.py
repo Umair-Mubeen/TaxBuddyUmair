@@ -78,6 +78,12 @@ urlpatterns = [
     path('edit-wht-rate/<int:pk>/',   views.edit_wht_rate,    name='edit_wht_rate'),
     path('delete-wht-rate/<int:pk>/', views.delete_wht_rate,  name='delete_wht_rate'),
 
+    # Guide Management
+    path('manage-guides/',          views.manage_guides, name='manage_guides'),
+    path('add-guide/',              views.add_guide,     name='add_guide'),
+    path('edit-guide/<int:pk>/',    views.edit_guide,    name='edit_guide'),
+    path('delete-guide/<int:pk>/',  views.delete_guide,  name='delete_guide'),
+
     # FAQ Management
     path('manage-faqs/',            views.manage_faqs, name='manage_faqs'),
     path('add-faq/',                views.add_faq,     name='add_faq'),
