@@ -35,46 +35,38 @@
       <div><div class="section-tag">Sales Tax Act 1990</div><h2 class="section-title">Sales Tax Topics</h2></div>
     </div>
 
-    <div class="cards-grid-2" style="margin-bottom:28px;">
-      <div class="card">
-        <div class="card-img" style="background:linear-gradient(135deg,#0D9E72,#0A7558);">📊</div>
-        <div class="card-body">
-          <div class="card-tag">Registration</div>
-          <div class="card-title">Sales Tax Registration (STRN) — Step by Step Guide</div>
-          <div class="card-excerpt">How to register for GST/sales tax with FBR. Includes STRN issuance, required documents, and IRIS portal walkthrough.</div>
-          <div class="card-footer"><span>8 min read</span><span class="card-read-more">Read →</span></div>
+    <div style="display:flex;flex-direction:column;gap:16px;margin-bottom:28px;">
+      {% for guide in guides %}
+      <div style="background:var(--white);border:1px solid var(--border);border-radius:var(--radius-lg);overflow:hidden;">
+        <div style="display:flex;align-items:stretch;">
+          <div style="width:5px;background:linear-gradient(180deg,#0D9E72,#0A2647);flex-shrink:0;"></div>
+          <div style="padding:20px 22px;flex:1;">
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;">
+              <span style="background:#E6F7F2;color:#0B8A64;font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.08em;padding:3px 10px;border-radius:4px;">Sales Tax Guide</span>
+              <span style="font-size:12px;color:var(--text-light);">Guide #{{ forloop.counter }}</span>
+            </div>
+            <h3 style="font-family:var(--font-head);font-size:18px;font-weight:700;color:var(--navy);margin:0 0 10px;">{{ guide.title }}</h3>
+            <p style="font-size:14px;color:var(--text-mid);line-height:1.7;margin:0 0 16px;">{{ guide.summary|striptags|truncatewords:45 }}</p>
+            <div style="display:flex;align-items:center;justify-content:space-between;padding-top:12px;border-top:1px solid var(--border);">
+              {% if guide.related_blog %}
+              <a href="{% url 'BlogDetails' slug=guide.related_blog.slug %}"
+                 style="display:inline-flex;align-items:center;gap:6px;background:#0D9E72;color:#fff;padding:7px 16px;border-radius:6px;font-size:13px;font-weight:600;text-decoration:none;">
+                📖 Read Full Article
+              </a>
+              {% else %}<span></span>{% endif %}
+              <span style="font-size:12px;color:var(--text-light);">{{ guide.summary|striptags|wordcount }} words</span>
+            </div>
+          </div>
         </div>
       </div>
-      <div class="card">
-        <div class="card-img" style="background:linear-gradient(135deg,#0A2647,#1E5F8E);">📋</div>
-        <div class="card-body">
-          <div class="card-tag">Filing</div>
-          <div class="card-title">Monthly Sales Tax Return Filing on IRIS</div>
-          <div class="card-excerpt">Complete guide to filing monthly GST return on FBR IRIS portal. Due dates, annexures, and common mistakes to avoid.</div>
-          <div class="card-footer"><span>10 min read</span><span class="card-read-more">Read →</span></div>
-        </div>
+      {% empty %}
+      <div style="text-align:center;padding:40px;color:var(--text-light);background:var(--white);border:1px solid var(--border);border-radius:var(--radius-lg);">
+        <p>Guides coming soon.</p>
       </div>
-      <div class="card">
-        <div class="card-img" style="background:linear-gradient(135deg,#744210,#975A16);">🏭</div>
-        <div class="card-body">
-          <div class="card-tag">Withholding</div>
-          <div class="card-title">Sales Tax Withholding — Who Must Deduct?</div>
-          <div class="card-excerpt">Understand who is a withholding agent under STA 1990, what rate applies, and how to deposit deducted tax.</div>
-          <div class="card-footer"><span>7 min read</span><span class="card-read-more">Read →</span></div>
-        </div>
-      </div>
-      <div class="card">
-        <div class="card-img" style="background:linear-gradient(135deg,#2D3748,#4A5568);">📜</div>
-        <div class="card-body">
-          <div class="card-tag">Exemptions</div>
-          <div class="card-title">Goods &amp; Services Exempt from Sales Tax in Pakistan</div>
-          <div class="card-excerpt">Complete list of zero-rated and exempt goods and services under the Sales Tax Act 1990 and Finance Acts.</div>
-          <div class="card-footer"><span>9 min read</span><span class="card-read-more">Read →</span></div>
-        </div>
-      </div>
+      {% endfor %}
     </div>
 
-<!--    <div class="ad-wrapper">-->
+    <!--    <div class="ad-wrapper">-->
 <!--      <div class="ad-wrapper-label">Advertisement</div>-->
 <!--      <div class="ad-zone ad-large-rect"><div class="ad-zone-label">AdSense — In-Content</div><div class="ad-zone-size">336×280</div></div>-->
 <!--    </div>-->
