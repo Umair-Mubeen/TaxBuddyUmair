@@ -459,8 +459,8 @@ def withholding_tax_rates(request):
 
         categories_meta = [
             ('property', 'Property Sale & Purchase',   'Advance Tax on sale/purchase of immovable property under Section 236C/236K.'),
-            ('banking',  'Banking & Finance',           'Advance Tax on cash withdrawals, profit on debt, dividends and foreign card payments.'),
-            ('salary',   'Salary & Employment',         'Monthly salary deduction under Section 149 and vehicle registration under 231B.'),
+            ('banking',  'Banking & Finance',           'Withholding Tax / Advance Tax on cash withdrawals, profit on debt, dividends and foreign card payments.'),
+            ('salary',   'Salary & Employment',         'Monthly salary deduction under Section 149'),
             ('business', 'Business & Contracts',        'Withholding Tax on payments for goods, services and contracts under Section 153.'),
             ('advance',  'Advance Tax',                 'Advance tax collected at source on various transactions.'),
             ('other',    'Other Payments',              'WHT on prizes, imports, educational remittances and more.'),
