@@ -416,8 +416,14 @@ def disclaimer(request):
 
 def income_tax_guides(request):
     try:
+        from .models import TaxGuide
+        guides = TaxGuide.objects.filter(
+            category='income_tax',
+            is_active=True
+        ).order_by('order')
         return render(request, 'income-tax-guides.html', {
-            'meta_description': 'Complete income tax guides for Pakistan — Section 12 salary, Section 153 withholding, property tax, capital gains, filer vs non-filer rates. Updated per Finance Act 2025.',
+            'guides': guides,
+            'meta_description': 'Complete income tax guides for Pakistan — salary tax, property tax, business income, withholding tax and filer vs non-filer rates. Updated per Finance Act 2025.',
         })
     except Exception as e:
         return HttpResponse(str(e))
@@ -425,8 +431,14 @@ def income_tax_guides(request):
 
 def sales_tax_guides(request):
     try:
+        from .models import TaxGuide
+        guides = TaxGuide.objects.filter(
+            category='sales_tax',
+            is_active=True
+        ).order_by('order')
         return render(request, 'sales-tax-guides.html', {
-            'meta_description': 'Complete sales tax guides for Pakistan — GST 18%, zero-rated goods, exempt goods, input/output tax, Tier-1 retailers, SRO 350/2024. Updated per Sales Tax Act 1990.',
+            'guides': guides,
+            'meta_description': 'Complete sales tax guides for Pakistan — GST 18%, zero-rated goods, exempt goods, input tax, output tax, Tier-1 retailers and SRO 350/2024. Updated per Sales Tax Act 1990.',
         })
     except Exception as e:
         return HttpResponse(str(e))
@@ -1373,3 +1385,82 @@ def delete_faq(request, pk):
     faq.delete()
     messages.success(request, 'FAQ deleted.')
     return redirect('manage_faqs')
+
+
+# ─── TAX GUIDE MANAGEMENT ─────────────────────────────────────────────────────
+
+@staff_required
+def manage_guides(request):
+    from .models import TaxGuide
+    income_guides = TaxGuide.objects.filter(category='income_tax').order_by('order')
+    sales_guides  = TaxGuide.objects.filter(category='sales_tax').order_by('order')
+    return render(request, 'Cpanel/manage_guides.html', {
+        'income_guides': income_guides,
+        'sales_guides': sales_guides,
+    })
+
+
+@staff_required
+def add_guide(request):
+    from .models import TaxGuide, Blog
+    blogs = Blog.objects.filter(status='published', is_deleted=False).order_by('title')
+    if request.method == 'POST':
+        title       = request.POST.get('title', '').strip()
+        summary     = request.POST.get('summary', '').strip()
+        category    = request.POST.get('category', 'income_tax')
+        order       = int(request.POST.get('order', 0))
+        is_active   = request.POST.get('is_active') == '1'
+        related_id  = request.POST.get('related_blog', '')
+        if title and summary:
+            guide = TaxGuide.objects.create(
+                title=title,
+                summary=summary,
+                category=category,
+                order=order,
+                is_active=is_active,
+            )
+            if related_id:
+                try:
+                    guide.related_blog = Blog.objects.get(pk=related_id)
+                    guide.save()
+                except Blog.DoesNotExist:
+                    pass
+            messages.success(request, 'Guide added successfully.')
+            return redirect('manage_guides')
+        else:
+            messages.error(request, 'Title and Summary are required.')
+    return render(request, 'Cpanel/add_guide.html', {'guide': None, 'blogs': blogs})
+
+
+@staff_required
+def edit_guide(request, pk):
+    from .models import TaxGuide, Blog
+    guide = get_object_or_404(TaxGuide, pk=pk)
+    blogs = Blog.objects.filter(status='published', is_deleted=False).order_by('title')
+    if request.method == 'POST':
+        guide.title     = request.POST.get('title', '').strip()
+        guide.summary   = request.POST.get('summary', '').strip()
+        guide.category  = request.POST.get('category', 'income_tax')
+        guide.order     = int(request.POST.get('order', 0))
+        guide.is_active = request.POST.get('is_active') == '1'
+        related_id      = request.POST.get('related_blog', '')
+        if related_id:
+            try:
+                guide.related_blog = Blog.objects.get(pk=related_id)
+            except Blog.DoesNotExist:
+                guide.related_blog = None
+        else:
+            guide.related_blog = None
+        guide.save()
+        messages.success(request, 'Guide updated successfully.')
+        return redirect('manage_guides')
+    return render(request, 'Cpanel/add_guide.html', {'guide': guide, 'blogs': blogs})
+
+
+@staff_required
+def delete_guide(request, pk):
+    from .models import TaxGuide
+    guide = get_object_or_404(TaxGuide, pk=pk)
+    guide.delete()
+    messages.success(request, 'Guide deleted.')
+    return redirect('manage_guides')

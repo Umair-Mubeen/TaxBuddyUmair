@@ -316,3 +316,21 @@ class WithholdingTaxRate(models.Model):
 
     def __str__(self):
         return f"{self.section} — {self.description[:50]}"
+
+
+
+class TaxGuide(models.Model):
+    CATEGORY = [
+        ('income_tax', 'Income Tax'),
+        ('sales_tax', 'Sales Tax'),
+    ]
+    title       = models.CharField(max_length=300)
+    slug        = models.SlugField(unique=True)
+    summary     = models.TextField()        # 300-500 words
+    category    = models.CharField(max_length=20, choices=CATEGORY)
+    related_blog = models.ForeignKey(      # Blog post ka link
+        'Blog', null=True, blank=True,
+        on_delete=models.SET_NULL
+    )
+    order       = models.PositiveIntegerField(default=0)
+    is_active   = models.BooleanField(default=True)

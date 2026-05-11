@@ -9,70 +9,40 @@
   <link href="https://fonts.googleapis.com/css2?family=Literata:wght@700&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="{% static 'dist/css/main.css' %}">
   <style>
-    /* ── CPANEL RESET — isolate from main.css ── */
-    body { margin: 0; background: var(--bg, #F7F9FC); }
-    .cpanel-layout {
-      display: grid !important;
-      grid-template-columns: 240px 1fr !important;
-      min-height: 100vh;
+    /* Override main.css cpanel styles — all hardcoded, no CSS variables */
+    body{margin:0;background:#F7F9FC}
+    .cpanel-layout{display:grid!important;grid-template-columns:220px 1fr!important;min-height:100vh}
+    /* Sidebar — fully hardcoded */
+    .cpanel-sidebar{background:#0A2647!important;position:sticky;top:0;height:100vh;overflow-y:auto;padding:0;width:220px!important;min-width:220px!important;flex-shrink:0}
+    .cpanel-brand{padding:20px 16px;border-bottom:1px solid rgba(255,255,255,.08);display:flex;align-items:center;gap:10px}
+    .cpanel-brand-icon{width:34px;height:34px;background:#0D9E72;border-radius:8px;display:flex;align-items:center;justify-content:center;color:#FFFFFF;font-weight:700;font-size:15px;flex-shrink:0}
+    .cpanel-brand-text h2{font-size:14px;color:#FFFFFF;line-height:1.2;margin:0}
+    .cpanel-brand-text p{font-size:11px;color:rgba(255,255,255,.4);margin:0}
+    .cpanel-nav{padding:12px 8px}
+    .cpanel-nav-label{font-size:10px;color:rgba(255,255,255,.4)!important;text-transform:uppercase;letter-spacing:.1em;padding:10px 8px 4px;display:block}
+    /* Nav links — hardcoded white text, no var() */
+    .cpanel-sidebar .cpanel-nav-link{
+      display:flex!important;align-items:center!important;gap:10px;
+      padding:9px 12px;border-radius:8px;font-size:13px;
+      color:#FFFFFF!important;opacity:.75;
+      margin-bottom:2px;transition:background .15s,opacity .15s;
+      text-decoration:none!important;white-space:nowrap;
+      width:100%;box-sizing:border-box;
     }
-    .cpanel-sidebar {
-      background: #0A2647 !important;
-      position: sticky; top: 0;
-      height: 100vh; overflow-y: auto; padding: 0;
-      width: 240px !important;
-      min-width: 240px !important;
+    .cpanel-sidebar .cpanel-nav-link:hover,
+    .cpanel-sidebar .cpanel-nav-link.active{
+      background:rgba(255,255,255,.12)!important;
+      opacity:1!important;color:#FFFFFF!important;
     }
-    .cpanel-brand {
-      padding: 20px 16px; border-bottom: 1px solid rgba(255,255,255,.08);
-      display: flex !important; align-items: center; gap: 10px;
-    }
-    .cpanel-brand-icon {
-      width: 34px; height: 34px; background: #0D9E72;
-      border-radius: 8px; display: flex !important; align-items: center;
-      justify-content: center; color: #fff;
-      font-weight: 700; font-size: 15px; flex-shrink: 0;
-    }
-    .cpanel-brand-text h2 { font-size: 14px; color: #fff !important; line-height: 1.2; margin: 0; }
-    .cpanel-brand-text p  { font-size: 11px; color: rgba(255,255,255,.4) !important; margin: 0; }
-    .cpanel-nav { padding: 12px 8px; }
-    .cpanel-nav-label {
-      font-size: 10px !important; color: rgba(255,255,255,.35) !important;
-      text-transform: uppercase; letter-spacing: .1em;
-      padding: 10px 8px 4px; display: block !important;
-    }
-    .cpanel-nav-link {
-      display: flex !important; align-items: center !important;
-      gap: 10px; padding: 9px 12px;
-      border-radius: 8px; font-size: 13px !important;
-      color: rgba(255,255,255,.65) !important;
-      margin-bottom: 2px;
-      transition: background .15s, color .15s;
-      text-decoration: none !important;
-      white-space: nowrap !important;
-      width: 100% !important;
-      box-sizing: border-box;
-    }
-    .cpanel-nav-link:hover,
-    .cpanel-nav-link.active {
-      background: rgba(255,255,255,.12) !important;
-      color: #fff !important;
-    }
-    .cpanel-nav-link .nav-icon {
-      font-size: 16px; flex-shrink: 0;
-      display: inline-flex !important;
-    }
-    .cpanel-main { padding: 28px; overflow-x: hidden; }
-    .cpanel-header {
-      margin-bottom: 24px; display: flex;
-      justify-content: space-between; align-items: center;
-      flex-wrap: wrap; gap: 12px;
-    }
-    .cpanel-header h1 { font-size: 22px; font-weight: 700; color: var(--navy, #0A2647); }
-    @media (max-width: 768px) {
-      .cpanel-layout { grid-template-columns: 1fr !important; }
-      .cpanel-sidebar { display: none !important; }
-      .cpanel-main { padding: 16px; }
+    .cpanel-sidebar .cpanel-nav-link .nav-icon{font-size:16px;flex-shrink:0}
+    /* Main area */
+    .cpanel-main{padding:28px;overflow-x:hidden;background:#F7F9FC}
+    .cpanel-header{margin-bottom:24px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px}
+    .cpanel-header h1{font-size:22px;font-weight:700;color:#0A2647}
+    @media(max-width:768px){
+      .cpanel-layout{grid-template-columns:1fr!important}
+      .cpanel-sidebar{display:none!important}
+      .cpanel-main{padding:16px}
     }
   </style>
   {% block extra_css %}{% endblock %}
@@ -110,6 +80,8 @@
       <a href="{% url 'add_wht_rate' %}" class="cpanel-nav-link {% block nav_wht_add %}{% endblock %}"><span class="nav-icon">➕</span> Add WHT Rate</a>
 
       <div class="cpanel-nav-label" style="margin-top:8px;">Content</div>
+      <a href="{% url 'manage_guides' %}" class="cpanel-nav-link"><span class="nav-icon">📚</span> Tax Guides</a>
+      <a href="{% url 'add_guide' %}" class="cpanel-nav-link"><span class="nav-icon">➕</span> Add Guide</a>
       <a href="{% url 'manage_faqs' %}" class="cpanel-nav-link {% block nav_faq %}{% endblock %}"><span class="nav-icon">❓</span> FAQs</a>
       <a href="{% url 'add_faq' %}" class="cpanel-nav-link {% block nav_faq_add %}{% endblock %}"><span class="nav-icon">➕</span> Add FAQ</a>
 
@@ -130,7 +102,7 @@
 
 </div>
 
-<script src="{% static 'js/main.js' %}"></script>
+<script src="{% static 'dist/js/main.js' %}"></script>
 {% block extra_js %}{% endblock %}
 </body>
 </html>
