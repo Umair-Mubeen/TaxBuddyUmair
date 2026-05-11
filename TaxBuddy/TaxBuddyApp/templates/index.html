@@ -14,94 +14,6 @@
   .name-row-grid{grid-template-columns:1fr!important}
 }
 </style>
-   <style>
-    .faq-tab {
-      padding: 7px 16px;
-      border-radius: 20px;
-      border: 1.5px solid var(--border);
-      background: var(--white);
-      color: var(--text-mid);
-      font-size: 13px;
-      font-weight: 600;
-      cursor: pointer;
-      font-family: var(--font-body);
-      transition: all .15s;
-    }
-    .faq-tab:hover, .faq-tab.active {
-      background: var(--navy);
-      border-color: var(--navy);
-      color: #fff;
-    }
-    .faq-item-new {
-      background: var(--white);
-      border: 1px solid var(--border);
-      border-radius: var(--radius-lg);
-      margin-bottom: 10px;
-      overflow: hidden;
-      transition: box-shadow .2s;
-    }
-    .faq-item-new:hover {
-      box-shadow: var(--shadow-sm);
-    }
-    .faq-q-new {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 16px;
-      padding: 16px 20px;
-      cursor: pointer;
-      font-size: 15px;
-      font-weight: 600;
-      color: var(--navy);
-      user-select: none;
-      -webkit-tap-highlight-color: transparent;
-    }
-    .faq-q-new:hover { background: var(--bg); }
-    .faq-icon {
-      width: 28px;
-      height: 28px;
-      border-radius: 50%;
-      background: var(--bg);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 16px;
-      flex-shrink: 0;
-      transition: transform .25s, background .15s;
-      color: var(--navy);
-      font-weight: 700;
-    }
-    .faq-item-new.open .faq-icon {
-      transform: rotate(45deg);
-      background: var(--navy);
-      color: #fff;
-    }
-    .faq-a-new {
-      max-height: 0;
-      overflow: hidden;
-      transition: max-height .3s ease, padding .2s;
-      font-size: 14.5px;
-      color: var(--text-mid);
-      line-height: 1.75;
-      padding: 0 20px;
-      border-top: 0px solid var(--border);
-    }
-    .faq-item-new.open .faq-a-new {
-      max-height: 500px;
-      padding: 14px 20px 18px;
-      border-top: 1px solid var(--border);
-    }
-    .faq-cat-badge {
-      font-size: 10px;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: .07em;
-      padding: 2px 8px;
-      border-radius: 4px;
-      flex-shrink: 0;
-    }
-    </style>
-
 {% endblock %}
 {% block content %}
 
@@ -369,6 +281,14 @@
 <!--  </div>-->
 <!--</section>-->
 
+<!-- ══════════════════════════════════════════════
+     CTA BANNER
+══════════════════════════════════════════════ -->
+<section class="section section-alt">
+  <div class="container">
+    {% include 'partials/cta_banner.html' %}
+  </div>
+</section>
 
 <!-- ══════════════════════════════════════════════
      AD — Before FAQ
@@ -397,23 +317,247 @@
     </div>
 
     <!-- Category Filter Tabs -->
+    <div style="display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin-bottom:28px;" id="faq-tabs">
+      <button class="faq-tab active" onclick="filterFAQ('all', this)">All</button>
+      <button class="faq-tab" onclick="filterFAQ('filer', this)">Filer Status</button>
+      <button class="faq-tab" onclick="filterFAQ('property', this)">Property Tax</button>
+      <button class="faq-tab" onclick="filterFAQ('salary', this)">Salary Tax</button>
+      <button class="faq-tab" onclick="filterFAQ('banking', this)">Banking</button>
+      <button class="faq-tab" onclick="filterFAQ('sales', this)">Sales Tax</button>
+      <button class="faq-tab" onclick="filterFAQ('general', this)">General</button>
+    </div>
 
+    <style>
+    .faq-tab {
+      padding: 7px 16px;
+      border-radius: 20px;
+      border: 1.5px solid var(--border);
+      background: var(--white);
+      color: var(--text-mid);
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      font-family: var(--font-body);
+      transition: all .15s;
+    }
+    .faq-tab:hover, .faq-tab.active {
+      background: var(--navy);
+      border-color: var(--navy);
+      color: #fff;
+    }
+    .faq-item-new {
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      margin-bottom: 10px;
+      overflow: hidden;
+      transition: box-shadow .2s;
+    }
+    .faq-item-new:hover {
+      box-shadow: var(--shadow-sm);
+    }
+    .faq-q-new {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      padding: 16px 20px;
+      cursor: pointer;
+      font-size: 15px;
+      font-weight: 600;
+      color: var(--navy);
+      user-select: none;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .faq-q-new:hover { background: var(--bg); }
+    .faq-icon {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      background: var(--bg);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 16px;
+      flex-shrink: 0;
+      transition: transform .25s, background .15s;
+      color: var(--navy);
+      font-weight: 700;
+    }
+    .faq-item-new.open .faq-icon {
+      transform: rotate(45deg);
+      background: var(--navy);
+      color: #fff;
+    }
+    .faq-a-new {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height .3s ease, padding .2s;
+      font-size: 14.5px;
+      color: var(--text-mid);
+      line-height: 1.75;
+      padding: 0 20px;
+      border-top: 0px solid var(--border);
+    }
+    .faq-item-new.open .faq-a-new {
+      max-height: 500px;
+      padding: 14px 20px 18px;
+      border-top: 1px solid var(--border);
+    }
+    .faq-cat-badge {
+      font-size: 10px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: .07em;
+      padding: 2px 8px;
+      border-radius: 4px;
+      flex-shrink: 0;
+    }
+    </style>
 
     <!-- FAQ Items -->
     <div id="faq-list">
 
-      {% if faqs %}
-        {% for faq in faqs %}
-        <div class="faq-item-new" data-cat="{{ faq.page|default:'general' }}">
-          <div class="faq-q-new" onclick="toggleFAQ(this)" role="button" tabindex="0" aria-expanded="false">
-            <span>{{ faq.question }}</span>
-            <span class="faq-icon">+</span>
-          </div>
-          <div class="faq-a-new">{{ faq.answer|safe }}</div>
+    {% if faqs %}
+      {% for faq in faqs %}
+      <div class="faq-item-new" data-cat="{{ faq.page|default:'general' }}">
+        <div class="faq-q-new" onclick="toggleFAQ(this)" role="button" tabindex="0" aria-expanded="false">
+          <span>{{ faq.question }}</span>
+          <span class="faq-icon">+</span>
         </div>
-        {% endfor %}
+        <div class="faq-a-new">{{ faq.answer }}</div>
+      </div>
+      {% endfor %}
+    {% else %}
+      <!-- Default FAQs -->
 
-      {% endif %}
+      <!-- Filer Status -->
+      <div class="faq-item-new" data-cat="filer">
+        <div class="faq-q-new" onclick="toggleFAQ(this)" role="button" tabindex="0">
+          <span>How do I check my ATL (Active Taxpayer List) status?</span>
+          <span class="faq-icon">+</span>
+        </div>
+        <div class="faq-a-new">Visit <strong>www.fbr.gov.pk</strong> and search the ATL section, or send your CNIC number (without dashes) as an SMS to <strong>9966</strong>. You will receive an instant reply. The ATL is updated every Monday by FBR.</div>
+      </div>
+
+      <div class="faq-item-new" data-cat="filer">
+        <div class="faq-q-new" onclick="toggleFAQ(this)" role="button" tabindex="0">
+          <span>What is the deadline to file an income tax return in Pakistan?</span>
+          <span class="faq-icon">+</span>
+        </div>
+        <div class="faq-a-new">For salaried individuals and AOPs, the return filing deadline is <strong>September 30</strong> of each year for the tax year ending June 30. Late filing attracts a penalty of Rs. 1,000 under Section 182 of the Income Tax Ordinance, 2001.</div>
+      </div>
+
+      <div class="faq-item-new" data-cat="filer">
+        <div class="faq-q-new" onclick="toggleFAQ(this)" role="button" tabindex="0">
+          <span>What is the penalty for not filing an income tax return?</span>
+          <span class="faq-icon">+</span>
+        </div>
+        <div class="faq-a-new">A minimum penalty of <strong>Rs. 1,000</strong> applies under Section 182. However the bigger cost is losing filer status — non-filers pay double withholding tax on property, bank profits, dividends, and card payments — costing hundreds of thousands of rupees annually.</div>
+      </div>
+
+      <!-- Property -->
+      <div class="faq-item-new" data-cat="property">
+        <div class="faq-q-new" onclick="toggleFAQ(this)" role="button" tabindex="0">
+          <span>What is advance tax on property sale (Section 236C) in 2025-26?</span>
+          <span class="faq-icon">+</span>
+        </div>
+        <div class="faq-a-new">Under Section 236C, advance tax on property sale is: <strong>Filer = 4.5%</strong>, Late Filer = 7.5%, <strong>Non-Filer = 11.5%</strong>. On a Rs. 10 million sale, a filer pays Rs. 450,000 while a non-filer pays Rs. 1,150,000 — saving Rs. 700,000 by being a filer.</div>
+      </div>
+
+      <div class="faq-item-new" data-cat="property">
+        <div class="faq-q-new" onclick="toggleFAQ(this)" role="button" tabindex="0">
+          <span>What is advance tax on property purchase (Section 236K) in 2025-26?</span>
+          <span class="faq-icon">+</span>
+        </div>
+        <div class="faq-a-new">Under Section 236K, advance tax on property purchase is: <strong>Filer = 1.5%</strong>, Late Filer = 4.5%, <strong>Non-Filer = 10.5%</strong>. On a Rs. 10 million purchase, a filer pays Rs. 150,000 while a non-filer pays Rs. 1,050,000 — a saving of Rs. 900,000.</div>
+      </div>
+
+      <div class="faq-item-new" data-cat="property">
+        <div class="faq-q-new" onclick="toggleFAQ(this)" role="button" tabindex="0">
+          <span>What is Section 7E — tax on deemed income from property?</span>
+          <span class="faq-icon">+</span>
+        </div>
+        <div class="faq-a-new">Section 7E treats property as generating deemed income of 5% of its fair market value and taxes it. However, 9 categories are exempt including: persons owning only one property, self-used business premises (filers), agricultural land, Shaheed family properties, rented properties with tax paid, and all properties with aggregate FBR value below <strong>Rs. 25 million</strong>.</div>
+      </div>
+
+      <!-- Salary -->
+      <div class="faq-item-new" data-cat="salary">
+        <div class="faq-q-new" onclick="toggleFAQ(this)" role="button" tabindex="0">
+          <span>What are the salary income tax slabs for Tax Year 2025-26?</span>
+          <span class="faq-icon">+</span>
+        </div>
+        <div class="faq-a-new">
+          Salary tax slabs for 2025-26:<br>
+          Up to Rs. 600,000 = <strong>0%</strong><br>
+          Rs. 600,001 – 1,200,000 = <strong>1%</strong> of amount exceeding Rs. 600,000<br>
+          Rs. 1,200,001 – 2,200,000 = Rs. 6,000 + <strong>11%</strong><br>
+          Rs. 2,200,001 – 3,200,000 = Rs. 116,000 + <strong>23%</strong><br>
+          Rs. 3,200,001 – 4,100,000 = Rs. 346,000 + <strong>30%</strong><br>
+          Above Rs. 4,100,000 = Rs. 616,000 + <strong>35%</strong>
+        </div>
+      </div>
+
+      <div class="faq-item-new" data-cat="salary">
+        <div class="faq-q-new" onclick="toggleFAQ(this)" role="button" tabindex="0">
+          <span>Is House Rent Allowance (HRA) taxable in Pakistan?</span>
+          <span class="faq-icon">+</span>
+        </div>
+        <div class="faq-a-new">Yes. Cash House Rent Allowance is <strong>fully taxable</strong> as salary under Section 12 of the ITO 2001. There is no exemption for cash HRA. However, if your employer directly provides accommodation (a perquisite), it is valued at 45% of basic salary or actual rent — whichever is lower.</div>
+      </div>
+
+      <!-- Banking -->
+      <div class="faq-item-new" data-cat="banking">
+        <div class="faq-q-new" onclick="toggleFAQ(this)" role="button" tabindex="0">
+          <span>What is withholding tax on bank profit (Section 151)?</span>
+          <span class="faq-icon">+</span>
+        </div>
+        <div class="faq-a-new">Under Section 151, banks deduct withholding tax on profit from savings accounts, term deposits, and PLS accounts. Rates: <strong>Filer = 20%</strong>, <strong>Non-Filer = 40%</strong>. This tax is adjustable in your annual return. On Rs. 500,000 bank profit, a filer pays Rs. 100,000 while a non-filer pays Rs. 200,000.</div>
+      </div>
+
+      <div class="faq-item-new" data-cat="banking">
+        <div class="faq-q-new" onclick="toggleFAQ(this)" role="button" tabindex="0">
+          <span>What is advance tax on international card payments (Section 236Y)?</span>
+          <span class="faq-icon">+</span>
+        </div>
+        <div class="faq-a-new">Under Section 236Y, banks collect advance tax on international payments via Pakistani credit, debit, and prepaid cards. Rates: <strong>Filer = 5%</strong>, <strong>Non-Filer = 10%</strong>. This applies to online shopping, travel bookings, Netflix, Amazon, university fees, and all foreign transactions. Tax is adjustable in annual return.</div>
+      </div>
+
+      <!-- Sales Tax -->
+      <div class="faq-item-new" data-cat="sales">
+        <div class="faq-q-new" onclick="toggleFAQ(this)" role="button" tabindex="0">
+          <span>What is the GST rate in Pakistan?</span>
+          <span class="faq-icon">+</span>
+        </div>
+        <div class="faq-a-new">The standard <strong>General Sales Tax (GST) rate is 18%</strong> under Section 3 of the Sales Tax Act, 1990. Three types of goods exist: Taxable (18%), Zero-Rated (0% — mainly exports, input tax refundable), and Exempt (Sixth Schedule — no GST, no input tax claim).</div>
+      </div>
+
+      <div class="faq-item-new" data-cat="sales">
+        <div class="faq-q-new" onclick="toggleFAQ(this)" role="button" tabindex="0">
+          <span>What is Further Tax (4%) under the Sales Tax Act, 1990?</span>
+          <span class="faq-icon">+</span>
+        </div>
+        <div class="faq-a-new">Under Section 3(1A), registered persons making taxable supplies to <strong>unregistered buyers</strong> must charge an additional 4% Further Tax. This makes the total tax rate <strong>22%</strong> (18% + 4%). Its purpose is to encourage buyers to register for sales tax.</div>
+      </div>
+
+      <!-- General -->
+      <div class="faq-item-new" data-cat="general">
+        <div class="faq-q-new" onclick="toggleFAQ(this)" role="button" tabindex="0">
+          <span>What is the difference between a filer and a non-filer in Pakistan?</span>
+          <span class="faq-icon">+</span>
+        </div>
+        <div class="faq-a-new">A <strong>filer</strong> appears on FBR's Active Taxpayer List (ATL) by filing their annual income tax return. A <strong>non-filer</strong> has not filed and faces double or higher withholding tax rates on property (11.5% vs 4.5%), bank profits (40% vs 20%), dividends (30% vs 15%), and card payments (10% vs 5%). Filing a return — even a Nil Return — gives full filer status.</div>
+      </div>
+
+      <div class="faq-item-new" data-cat="general">
+        <div class="faq-q-new" onclick="toggleFAQ(this)" role="button" tabindex="0">
+          <span>What is withholding tax in Pakistan?</span>
+          <span class="faq-icon">+</span>
+        </div>
+        <div class="faq-a-new">Withholding tax is income tax deducted by the payer at the time of making a payment and deposited with FBR on behalf of the recipient. The recipient receives the net amount. At year-end, the withheld amount is credited against the recipient's annual tax liability. Key sections: 149 (salary), 150 (dividends), 151 (bank profit), 236C (property sale), 236K (property purchase).</div>
+      </div>
+
+    {% endif %}
     </div><!-- end faq-list -->
 
     <!-- View All FAQs link -->
@@ -424,15 +568,6 @@
   </div>
 </section>
 
-
-<!-- ══════════════════════════════════════════════
-     CTA BANNER
-══════════════════════════════════════════════ -->
-<section class="section section-alt">
-  <div class="container">
-    {% include 'partials/cta_banner.html' %}
-  </div>
-</section>
 <script>
 function toggleFAQ(btn) {
   var item = btn.closest('.faq-item-new');
@@ -449,6 +584,24 @@ function toggleFAQ(btn) {
   }
 }
 
+function filterFAQ(cat, btn) {
+  // Update tab styles
+  document.querySelectorAll('.faq-tab').forEach(function(b) { b.classList.remove('active'); });
+  btn.classList.add('active');
+  // Filter items
+  document.querySelectorAll('.faq-item-new').forEach(function(item) {
+    item.style.display = (cat === 'all' || item.dataset.cat === cat) ? '' : 'none';
+  });
+  // Close all open ones when switching
+  document.querySelectorAll('.faq-item-new.open').forEach(function(el) { el.classList.remove('open'); });
+}
+
+// Keyboard accessibility
+document.querySelectorAll('.faq-q-new').forEach(function(btn) {
+  btn.addEventListener('keydown', function(e) {
+    if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); toggleFAQ(btn); }
+  });
+});
 </script>
 
 <!-- ══════════════════════════════════════════════
@@ -491,8 +644,6 @@ function toggleFAQ(btn) {
 <!--              <span style="font-size:14px;color:var(&#45;&#45;text-mid);">Gulshan-e-Iqbal, Karachi</span>-->
 <!--            </div>-->
 <!--          </div>-->
-
-
         </div>
         <a href="https://wa.me/923332482742" class="btn-wa" target="_blank" rel="noopener"
            style="margin-top:24px;display:inline-flex;">
@@ -508,6 +659,31 @@ function toggleFAQ(btn) {
           <input type="text" name="website_url" value="" autocomplete="off"
                  style="display:none !important;position:absolute;left:-9999px;"
                  tabindex="-1" aria-hidden="true">
+
+               <!-- Messages — show above button -->
+          {% if messages %}
+          {% for message in messages %}
+          <div style="
+            padding:12px 16px;
+            border-radius:8px;
+            font-size:14px;
+            font-weight:500;
+            margin-bottom:14px;
+            display:flex;
+            align-items:center;
+            gap:10px;
+            {% if message.tags == 'success' %}
+            background:#f0fdf4;border:1px solid #bbf7d0;color:#15803d;
+            {% else %}
+            background:#fef2f2;border:1px solid #fca5a5;color:#dc2626;
+            {% endif %}
+          ">
+            {% if message.tags == 'success' %}✅{% else %}❌{% endif %}
+            {{ message }}
+          </div>
+          {% endfor %}
+          {% endif %}
+
 
           <div class="name-row-grid">
             <div class="form-group">
@@ -559,12 +735,6 @@ function toggleFAQ(btn) {
                       placeholder="Describe your tax situation or query…"></textarea>
           </div>
 
-<!--{% if RECAPTCHA_SITE_KEY %}-->
-<!--<div class="form-group">-->
-<!--  <div class="g-recaptcha" data-sitekey="{{ RECAPTCHA_SITE_KEY }}"></div>-->
-<!--</div>-->
-<!--{% endif %}-->
-
 
           <button type="submit" name="contact_submit" class="btn-primary"
                   style="width:100%;border:none;padding:14px;font-size:15px;
@@ -578,4 +748,12 @@ function toggleFAQ(btn) {
   </div>
 </section>
 
+{% if messages %}
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    var el = document.getElementById('contact');
+    if(el){ el.scrollIntoView({behavior:'smooth', block:'start'}); }
+  });
+</script>
+{% endif %}
 {% endblock %}
