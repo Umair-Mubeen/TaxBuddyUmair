@@ -253,13 +253,6 @@ body.tb-no-scroll{overflow:hidden;position:fixed;width:100%}
   {% include 'partials/navbar.html' %}
 
   <!-- ── DJANGO MESSAGES ───────────────────────────────── -->
-  {% if messages %}
-  <div class="container" style="padding-top:12px;">
-    {% for message in messages %}
-    <div class="alert alert-{{ message.tags|default:'success' }}">{{ message }}</div>
-    {% endfor %}
-  </div>
-  {% endif %}
 
   <!-- ── TAX FILING COUNTDOWN ──────────────────────────── -->
   {% block filing_countdown %}{% endblock %}
