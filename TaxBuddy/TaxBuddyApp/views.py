@@ -1,7 +1,7 @@
 from datetime import timedelta
 from decimal import Decimal
 import random
-
+from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.decorators import login_required
 
 def staff_required(view_func):
@@ -1464,3 +1464,75 @@ def delete_guide(request, pk):
     guide.delete()
     messages.success(request, 'Guide deleted.')
     return redirect('manage_guides')
+
+
+# ── Paste this entire block at the END of views.py ────────────
+
+import json
+import requests as http_requests
+
+@csrf_exempt
+def ai_chat(request):
+    if request.method != 'POST':
+        return JsonResponse({'reply': 'Invalid request.'}, status=405)
+    try:
+        data = json.loads(request.body)
+        user_message = data.get('message', '').strip()
+        history = data.get('history', [])
+
+        if not user_message:
+            return JsonResponse({'reply': 'Koi sawaal poochein.'})
+
+        gemini_key = 'AIzaSyDhG5duRuW9mVELrvnAurne8PVysQYewM8'
+
+        if not gemini_key:
+            return JsonResponse({'reply': 'AI service abhi setup ho rahi hai. Thori der mein try karein.'})
+
+        system_prompt = """You are an expert Pakistan tax educator assistant for TaxBuddy Umair (taxbuddyumair.com).
+Answer ONLY Pakistan tax questions (income tax, sales tax, property tax, FBR, ITO 2001).
+Reply in same language as user (Urdu Roman or English). Keep answers concise — 3-5 sentences.
+Always mention relevant section numbers. Current tax year is 2025-26.
+
+KEY RATES:
+- Salary: 0% upto 600K, 1% upto 1.2M, 11%+6K upto 2.2M, 23%+116K upto 3.2M, 30%+346K upto 4.1M, 35%+616K above
+- Property sale 236C: Filer 4.5%, Non-Filer 11.5%
+- Property purchase 236K: Filer 1.5%, Non-Filer 10.5%
+- Bank profit 151: Filer 20%, Non-Filer 40%
+- GST: 18% standard rate
+End response with: Aur koi sawaal? / Any other question?"""
+
+        messages = []
+        for msg in history[-6:]:
+            role = "model" if msg.get("role") == "assistant" else "user"
+            messages.append({"role": role, "parts": [{"text": msg["content"]}]})
+        messages.append({"role": "user", "parts": [{"text": user_message}]})
+
+        # url = f"https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key={gemini_key}"
+        # url = f"https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key={gemini_key}"
+        url = f"https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-lite:generateContent?key={gemini_key}"
+
+        payload = {
+            "system_instruction": {"parts": [{"text": system_prompt}]},
+            "contents": messages,
+            "generationConfig": {"temperature": 0.7, "maxOutputTokens": 400}
+        }
+
+        response = http_requests.post(url, json=payload, timeout=15)
+        result = response.json()
+
+        # Debug — log response if error
+        if response.status_code != 200:
+            import logging
+            logging.error(f"Gemini error: {result}")
+            return JsonResponse({'reply': f'API error: {result.get("error", {}).get("message", "Unknown error")}'})
+
+        reply = result.get('candidates', [{}])[0].get('content', {}).get('parts', [{}])[0].get('text', '')
+        if not reply:
+            reply = "Maafi chahta hoon, jawab nahi mil saka. Dobara try karein."
+
+        return JsonResponse({'reply': reply})
+
+    except http_requests.Timeout:
+        return JsonResponse({'reply': 'Request timeout. Dobara try karein.'})
+    except Exception as e:
+        return JsonResponse({'reply': f'Error: {str(e)}'})

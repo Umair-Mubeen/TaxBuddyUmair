@@ -90,6 +90,9 @@ urlpatterns = [
     path('edit-faq/<int:pk>/',      views.edit_faq,    name='edit_faq'),
     path('delete-faq/<int:pk>/',    views.delete_faq,  name='delete_faq'),
 
+    # ── AI CHAT ──────────────────────────────────────────────
+    path('ai-chat/', views.ai_chat, name='ai_chat'),
+
     # ── BLOG (MUST BE LAST — slug patterns are greedy) ────────
     path('blog/', views.viewBlogs, name='viewBlogs'),
     path('blog/<slug:slug>/', views.viewBlogs, name='viewBlogs_category'),
