@@ -23,6 +23,7 @@ STATIC_ROOT = BASE_DIR / 'staticfiles'
 RECAPTCHA_SITE_KEY = '6LehL-MsAAAAADfoVkVYimdV2tc7uEj7vC6jssqK'
 RECAPTCHA_SECRET_KEY = '6LehL-MsAAAAALpn42zv_jG6gkFzGE0dTw_wmrm8'
 
+
 STATICFILES_DIRS = [
     BASE_DIR / 'static',   # 👈 Your actual static folder
 ]
