@@ -1472,6 +1472,62 @@ import json
 import requests as http_requests
 
 @csrf_exempt
+def search_knowledge_base(query):
+    print(query)
+    """RAG — Search aap ke DB se relevant content"""
+    from .models import Blog, WithholdingTaxRate, TaxGuide, FAQ
+    from django.db.models import Q
+    results = []
+    query_lower = query.lower()
+
+    # ── 1. WHT Rates — exact match ──────────────────────────
+    rates = WithholdingTaxRate.objects.filter(
+        is_active=True, tax_year='2025-2026'
+    ).filter(
+        Q(section__icontains=query) |
+        Q(description__icontains=query)
+    )[:5]
+    for r in rates:
+        results.append(
+            f"[WHT Rate] {r.section} — {r.description} | "
+            f"Filer: {r.filer_rate} | Late Filer: {r.late_filer_rate or 'Same'} | "
+            f"Non-Filer: {r.non_filer_rate} | Who deducts: {r.who_deducts}"
+        )
+
+    # ── 2. FAQs ──────────────────────────────────────────────
+    faqs = FAQ.objects.filter(is_active=True).filter(
+        Q(question__icontains=query) |
+        Q(answer__icontains=query)
+    )[:3]
+    for f in faqs:
+        results.append("[FAQ] Q: " + str(f.question) + "\nA: " + str(f.answer))
+
+    # ── 3. Tax Guides ────────────────────────────────────────
+    guides = TaxGuide.objects.filter(is_active=True).filter(
+        Q(title__icontains=query) |
+        Q(summary__icontains=query)
+    )[:2]
+    for g in guides:
+        import re
+        clean = re.sub(r'<[^>]+>', '', g.summary)
+        results.append(f"[Guide] {g.title}: {clean[:600]}")
+
+    # ── 4. Blog posts ────────────────────────────────────────
+    blogs = Blog.objects.filter(
+        status='published', is_deleted=False
+    ).filter(
+        Q(title__icontains=query) |
+        Q(content__icontains=query) |
+        Q(meta_description__icontains=query)
+    )[:2]
+    for b in blogs:
+        import re
+        clean = re.sub(r'<[^>]+>', '', b.content)
+        results.append(f"[Blog] {b.title}: {clean[:800]}")
+
+    return results
+
+
 def ai_chat(request):
     if request.method != 'POST':
         return JsonResponse({'reply': 'Invalid request.'}, status=405)
@@ -1484,53 +1540,81 @@ def ai_chat(request):
             return JsonResponse({'reply': 'Koi sawaal poochein.'})
 
         gemini_key = 'AIzaSyDhG5duRuW9mVELrvnAurne8PVysQYewM8'
-
         if not gemini_key:
-            return JsonResponse({'reply': 'AI service abhi setup ho rahi hai. Thori der mein try karein.'})
+            return JsonResponse({'reply': 'AI service abhi setup ho rahi hai.'})
 
-        system_prompt = """You are an expert Pakistan tax educator assistant for TaxBuddy Umair (taxbuddyumair.com).
-Answer ONLY Pakistan tax questions (income tax, sales tax, property tax, FBR, ITO 2001).
-Reply in same language as user (Urdu Roman or English). Keep answers concise — 3-5 sentences.
-Always mention relevant section numbers. Current tax year is 2025-26.
+        # ── RAG — DB se relevant content fetch karo ─────────
+        kb_results = search_knowledge_base(user_message)
+        knowledge_context = ""
+        if kb_results:
+            knowledge_context = "\n\nRELEVANT TAXBUDDY DATABASE CONTENT:\n" + "\n\n".join(kb_results)
 
-KEY RATES:
-- Salary: 0% upto 600K, 1% upto 1.2M, 11%+6K upto 2.2M, 23%+116K upto 3.2M, 30%+346K upto 4.1M, 35%+616K above
-- Property sale 236C: Filer 4.5%, Non-Filer 11.5%
-- Property purchase 236K: Filer 1.5%, Non-Filer 10.5%
+        # ── System Prompt ────────────────────────────────────
+        system_prompt = f"""You are TaxBuddy AI — an expert Pakistan tax educator assistant for taxbuddyumair.com.
+
+STRICT RULES:
+1. Answer ONLY Pakistan tax questions (ITO 2001, Sales Tax Act 1990, FBR rules)
+2. Reply in SAME language as user (Urdu Roman or English)
+3. ALWAYS prefer the database content below over your own knowledge
+4. If database has the answer — use it EXACTLY, do not guess
+5. If database does NOT have the answer — say "Please verify from FBR portal: fbr.gov.pk"
+6. Keep answers concise — 3-5 sentences max
+7. Always cite correct Section numbers
+8. NEVER give wrong section numbers — if unsure, say "verify from FBR"
+
+CORRECT SECTIONS (ITO 2001):
+- Section 114: Who must file return
+- Section 118: Due date 30 September
+- Section 149: Salary withholding
+- Section 150: Dividends (15%/30%)
+- Section 151: Bank profit (20%/40%)
+- Section 153: Goods/Services/Contracts WHT
+- Section 155: Rent
+- Section 236C: Property sale advance tax
+- Section 236K: Property purchase advance tax
+- Section 7B: Profit on debt
+- Section 7E: Deemed income from property
+- Section 4C: Super Tax
+- Section 182: Penalty for non-filing
+
+KEY RATES 2025-26:
+- Salary: 0% upto 600K | 1% upto 1.2M | Rs.6K+11% upto 2.2M | Rs.116K+23% upto 3.2M | Rs.346K+30% upto 4.1M | Rs.616K+35% above
+- Property sale 236C: Filer 4.5%, Late Filer 7.5%, Non-Filer 11.5%
+- Property purchase 236K: Filer 1.5%, Late Filer 4.5%, Non-Filer 10.5%
 - Bank profit 151: Filer 20%, Non-Filer 40%
-- GST: 18% standard rate
-End response with: Aur koi sawaal? / Any other question?"""
+- Dividends 150: Filer 15%, Non-Filer 30%
+- GST: 18% standard, Further Tax 4%
+- ATL surcharge: Rs.1,000
+- Return deadline: 30 September (Section 118){knowledge_context}"""
 
+        # ── Build messages ───────────────────────────────────
         messages = []
         for msg in history[-6:]:
             role = "model" if msg.get("role") == "assistant" else "user"
             messages.append({"role": role, "parts": [{"text": msg["content"]}]})
         messages.append({"role": "user", "parts": [{"text": user_message}]})
 
-        # url = f"https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key={gemini_key}"
-        # url = f"https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key={gemini_key}"
         url = f"https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-lite:generateContent?key={gemini_key}"
-
         payload = {
             "system_instruction": {"parts": [{"text": system_prompt}]},
             "contents": messages,
-            "generationConfig": {"temperature": 0.7, "maxOutputTokens": 400}
+            "generationConfig": {"temperature": 0.3, "maxOutputTokens": 500}
         }
 
         response = http_requests.post(url, json=payload, timeout=15)
         result = response.json()
 
-        # Debug — log response if error
         if response.status_code != 200:
-            import logging
-            logging.error(f"Gemini error: {result}")
-            return JsonResponse({'reply': f'API error: {result.get("error", {}).get("message", "Unknown error")}'})
+            err = result.get('error', {}).get('message', 'Unknown error')
+            return JsonResponse({'reply': f'API error: {err}'})
 
         reply = result.get('candidates', [{}])[0].get('content', {}).get('parts', [{}])[0].get('text', '')
         if not reply:
             reply = "Maafi chahta hoon, jawab nahi mil saka. Dobara try karein."
 
-        return JsonResponse({'reply': reply})
+        # Return KB source info too
+        source = "DB" if kb_results else "General"
+        return JsonResponse({'reply': reply, 'source': source})
 
     except http_requests.Timeout:
         return JsonResponse({'reply': 'Request timeout. Dobara try karein.'})
