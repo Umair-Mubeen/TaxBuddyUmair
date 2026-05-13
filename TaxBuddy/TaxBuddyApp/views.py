@@ -1473,7 +1473,6 @@ import requests as http_requests
 
 @csrf_exempt
 def search_knowledge_base(query):
-    print(query)
     """RAG — Search aap ke DB se relevant content"""
     from .models import Blog, WithholdingTaxRate, TaxGuide, FAQ
     from django.db.models import Q
@@ -1539,9 +1538,13 @@ def ai_chat(request):
         if not user_message:
             return JsonResponse({'reply': 'Koi sawaal poochein.'})
 
-        gemini_key = 'AIzaSyDhG5duRuW9mVELrvnAurne8PVysQYewM8'
+        gemini_key = "AIzaSyDhG5duRuW9mVELrvnAurne8PVysQYewM8"
+        # Fallback: check environment variable directly
         if not gemini_key:
-            return JsonResponse({'reply': 'AI service abhi setup ho rahi hai.'})
+            import os
+            gemini_key = os.environ.get('GEMINI_API_KEY', '').strip()
+        if not gemini_key:
+            return JsonResponse({'reply': 'AI service abhi setup ho rahi hai. Settings mein GEMINI_API_KEY add karein.'})
 
         # ── RAG — DB se relevant content fetch karo ─────────
         kb_results = search_knowledge_base(user_message)
@@ -1604,9 +1607,11 @@ KEY RATES 2025-26:
         response = http_requests.post(url, json=payload, timeout=15)
         result = response.json()
 
+        if response.status_code == 429:
+            return JsonResponse({'reply': 'AI thori der mein available ho jayega. 30 seconds baad try karein. Ya WhatsApp karein: +92 333 248 2742'})
         if response.status_code != 200:
             err = result.get('error', {}).get('message', 'Unknown error')
-            return JsonResponse({'reply': f'API error: {err}'})
+            return JsonResponse({'reply': f'Kuch masla hua. Dobara try karein.'})
 
         reply = result.get('candidates', [{}])[0].get('content', {}).get('parts', [{}])[0].get('text', '')
         if not reply:
