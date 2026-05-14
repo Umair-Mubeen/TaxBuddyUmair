@@ -1581,7 +1581,9 @@ def ai_chat(request):
         # Fallback: check environment variable directly
         if not gemini_key:
             import os
-            gemini_key = os.environ.get('GEMINI_API_KEY', '').strip()
+            #gemini_key = os.environ.get('GEMINI_API_KEY', '').strip()
+            gemini_key = "AIzaSyDhG5duRuW9mVELrvnAurne8PVysQYewM8"
+
         if not gemini_key:
             return JsonResponse({'reply': 'AI service abhi setup ho rahi hai. Settings mein GEMINI_API_KEY add karein.'})
 
@@ -1647,7 +1649,8 @@ KEY RATES 2025-26:
         result = response.json()
 
         if response.status_code == 429:
-            return JsonResponse({'reply': 'AI thori der mein available ho jayega. 30 seconds baad try karein. Ya WhatsApp karein: +92 333 248 2742'})
+            print(response)
+            return JsonResponse({'reply': 'AI thori der mein available ho jayega. 30 seconds baad try karein. Ya WhatsApp karein: +92 3332482742'})
         if response.status_code != 200:
             err = result.get('error', {}).get('message', 'Unknown error')
             return JsonResponse({'reply': f'Kuch masla hua. Dobara try karein.'})
