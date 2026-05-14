@@ -1493,7 +1493,26 @@ def search_knowledge_base(query):
             f"Non-Filer: {r.non_filer_rate} | Who deducts: {r.who_deducts}"
         )
 
-    # ── 2. FAQs ──────────────────────────────────────────────
+    # ── 2. MCQs ──────────────────────────────────────────────
+    from .models import Question, Option
+    questions = Question.objects.filter(is_active=True).filter(
+        Q(question_text__icontains=query) |
+        Q(explanation__icontains=query) |
+        Q(section_ref__icontains=query)
+    )[:4]
+    for q in questions:
+        correct = q.options.filter(is_correct=True).first()
+        correct_text = correct.option_text if correct else ''
+        mcq_text = "[MCQ] Q: " + str(q.question_text)
+        if correct_text:
+            mcq_text += " | Correct Answer: " + correct_text
+        if q.explanation:
+            mcq_text += " | Explanation: " + str(q.explanation[:300])
+        if q.section_ref:
+            mcq_text += " | Section: " + str(q.section_ref)
+        results.append(mcq_text)
+
+    # ── 3. FAQs ──────────────────────────────────────────────
     faqs = FAQ.objects.filter(is_active=True).filter(
         Q(question__icontains=query) |
         Q(answer__icontains=query)
@@ -1522,7 +1541,26 @@ def search_knowledge_base(query):
     for b in blogs:
         import re
         clean = re.sub(r'<[^>]+>', '', b.content)
-        results.append(f"[Blog] {b.title}: {clean[:800]}")
+        results.append("[Blog] " + b.title + ": " + clean[:800])
+
+    # ── 5. MCQs ──────────────────────────────────────────────
+    from .models import Question, Option
+    questions = Question.objects.filter(is_active=True).filter(
+        Q(question_text__icontains=query) |
+        Q(explanation__icontains=query) |
+        Q(section_ref__icontains=query) |
+        Q(category__icontains=query)
+    )[:5]
+    for q in questions:
+        correct = q.options.filter(is_correct=True).first()
+        correct_text = correct.option_text if correct else "N/A"
+        mcq_entry = "[MCQ] Q: " + q.question_text
+        mcq_entry += " | Correct Answer: " + correct_text
+        if q.explanation:
+            mcq_entry += " | Explanation: " + q.explanation[:200]
+        if q.section_ref:
+            mcq_entry += " | Section: " + q.section_ref
+        results.append(mcq_entry)
 
     return results
 
@@ -1538,6 +1576,7 @@ def ai_chat(request):
         if not user_message:
             return JsonResponse({'reply': 'Koi sawaal poochein.'})
 
+        #gemini_key = getattr(settings, 'GEMINI_API_KEY', '').strip()
         gemini_key = "AIzaSyDhG5duRuW9mVELrvnAurne8PVysQYewM8"
         # Fallback: check environment variable directly
         if not gemini_key:
