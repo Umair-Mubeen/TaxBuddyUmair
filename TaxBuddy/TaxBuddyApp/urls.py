@@ -3,13 +3,14 @@ from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib.sitemaps.views import sitemap
 
-from .sitemaps import BlogSitemap, StaticSitemap, CalculatorSitemap
+from .sitemaps import BlogSitemap, StaticSitemap, CalculatorSitemap, TaxGuideSitemap
 from . import views
 
 sitemaps = {
     'static':      StaticSitemap(),
     'calculators': CalculatorSitemap(),
     'blog':        BlogSitemap(),
+    'guides':      TaxGuideSitemap(),
 }
 
 urlpatterns = [
@@ -32,7 +33,7 @@ urlpatterns = [
     # ── MCQ / QUIZ ────────────────────────────────────────────
     path('income-tax-mcqs-pakistan/', views.question_list, name='question_list'),
     path('income-tax-mcqs-pakistan/<slug:category_slug>/', views.question_list, name='question_list_category'),
-    path('tax-quiz/', views.tax_knowledge_quiz, name='tax_knowledge_quiz'),
+    #path('tax-quiz/', views.tax_knowledge_quiz, name='tax_knowledge_quiz'),
 
     # ── CALCULATORS ───────────────────────────────────────────
     path('SalaryCalculator/', views.SalaryCalculator, name='SalaryCalculator'),
