@@ -929,6 +929,7 @@ def add_wht_rate(request):
                 section        = request.POST.get('section', '').strip(),
                 description    = request.POST.get('description', '').strip(),
                 filer_rate     = request.POST.get('filer_rate', '').strip(),
+                late_filer_rate = request.POST.get('late_filer_rate', '').strip(),
                 non_filer_rate = request.POST.get('non_filer_rate', '').strip(),
                 who_deducts    = request.POST.get('who_deducts', '').strip(),
                 threshold      = request.POST.get('threshold', '').strip(),
@@ -954,6 +955,7 @@ def edit_wht_rate(request, pk):
             rate.section        = request.POST.get('section', '').strip()
             rate.description    = request.POST.get('description', '').strip()
             rate.filer_rate     = request.POST.get('filer_rate', '').strip()
+            rate.late_filer_rate = request.POST.get('late_filer_rate', '').strip()
             rate.non_filer_rate = request.POST.get('non_filer_rate', '').strip()
             rate.who_deducts    = request.POST.get('who_deducts', '').strip()
             rate.threshold      = request.POST.get('threshold', '').strip()
