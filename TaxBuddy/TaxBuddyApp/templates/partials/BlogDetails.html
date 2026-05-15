@@ -445,7 +445,7 @@
     <div class="tag-cloud">
       <span style="font-size:13px;font-weight:600;color:var(--text-mid);align-self:center;">🏷 Tags:</span>
       {% for tag in tags_list %}
-      <a href="{% url 'viewBlogs' %}?q={{ tag }}" class="tag-chip">{{ tag }}</a>
+      <span class="tag-chip">{{ tag }}</span>
       {% endfor %}
     </div>
     {% endif %}
