@@ -769,318 +769,318 @@ document.querySelectorAll('.faq-q-new').forEach(function(btn) {
 </script>
 {% endif %}
 
-<!-- ── AI TAX ASSISTANT ─────────────────────────────────────── -->
-<style>
-/* ── Floating Button ── */
-.ai-fab{
-  position:fixed;bottom:160px;right:28px;z-index:998;
-  width:54px;height:54px;border-radius:50%;border:none;cursor:pointer;
-  background:linear-gradient(135deg,#0A2647 0%,#0D9E72 100%);
-  box-shadow:0 4px 24px rgba(10,38,71,.35);
-  display:flex;align-items:center;justify-content:center;
-  transition:transform .25s,box-shadow .25s;
-}
-.ai-fab:hover{transform:scale(1.1);box-shadow:0 6px 32px rgba(10,38,71,.45)}
-.ai-fab svg{width:26px;height:26px;fill:#fff}
-.ai-fab-badge{
-  position:absolute;top:-3px;right:-3px;
-  width:20px;height:20px;border-radius:50%;
-  background:#E53E3E;border:2px solid #fff;
-  font-size:10px;font-weight:700;color:#fff;
-  display:none;align-items:center;justify-content:center;
-}
-/* ── Chat Window ── */
-.ai-win{
-  position:fixed;bottom:224px;right:28px;
-  width:380px;max-height:560px;
-  background:#fff;border-radius:20px;
-  box-shadow:0 12px 48px rgba(10,38,71,.18);
-  display:none;flex-direction:column;
-  z-index:997;overflow:hidden;
-  border:1px solid rgba(10,38,71,.08);
-  transform:translateY(16px) scale(.97);
-  opacity:0;
-  transition:transform .25s ease,opacity .25s ease;
-}
-.ai-win.open{
-  display:flex;
-  transform:translateY(0) scale(1);
-  opacity:1;
-}
-/* Header */
-.ai-hdr{
-  background:linear-gradient(135deg,#0A2647 0%,#144272 100%);
-  padding:14px 16px;display:flex;align-items:center;gap:12px;
-  flex-shrink:0;
-}
-.ai-hdr-avatar{
-  width:40px;height:40px;border-radius:50%;
-  background:rgba(13,158,114,.25);border:2px solid rgba(13,158,114,.4);
-  display:flex;align-items:center;justify-content:center;font-size:20px;
-  flex-shrink:0;
-}
-.ai-hdr-info{flex:1}
-.ai-hdr-info h4{font-size:14px;font-weight:600;color:#fff;margin:0 0 2px}
-.ai-hdr-info p{font-size:11px;color:rgba(255,255,255,.55);margin:0;display:flex;align-items:center;gap:5px}
-.ai-online-dot{width:7px;height:7px;border-radius:50%;background:#0D9E72;display:inline-block;animation:pulse 2s infinite}
-@keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
-.ai-hdr-close{background:rgba(255,255,255,.1);border:none;color:rgba(255,255,255,.7);cursor:pointer;width:28px;height:28px;border-radius:8px;font-size:16px;display:flex;align-items:center;justify-content:center;transition:background .15s}
-.ai-hdr-close:hover{background:rgba(255,255,255,.2);color:#fff}
-/* Messages */
-.ai-msgs{
-  flex:1;overflow-y:auto;padding:16px;
-  display:flex;flex-direction:column;gap:12px;
-  background:#F7F9FC;scroll-behavior:smooth;
-}
-.ai-msgs::-webkit-scrollbar{width:4px}
-.ai-msgs::-webkit-scrollbar-track{background:transparent}
-.ai-msgs::-webkit-scrollbar-thumb{background:#CBD5E0;border-radius:2px}
-/* Message bubbles */
-.ai-bubble{
-  max-width:82%;padding:10px 14px;
-  font-size:13.5px;line-height:1.6;
-  animation:bubbleIn .2s ease;
-}
-@keyframes bubbleIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
-.ai-bubble.bot{
-  background:#fff;color:#1A202C;
-  border:1px solid #E2E8F0;
-  border-radius:4px 16px 16px 16px;
-  align-self:flex-start;
-  box-shadow:0 1px 4px rgba(0,0,0,.06);
-}
-.ai-bubble.user{
-  background:linear-gradient(135deg,#0A2647,#144272);
-  color:#fff;
-  border-radius:16px 4px 16px 16px;
-  align-self:flex-end;
-}
-.ai-bubble.typing{
-  background:#fff;border:1px solid #E2E8F0;
-  border-radius:4px 16px 16px 16px;
-  align-self:flex-start;padding:12px 16px;
-  display:flex;gap:5px;align-items:center;
-}
-.ai-dot{width:8px;height:8px;border-radius:50%;background:#0D9E72;animation:dotBounce 1.2s infinite}
-.ai-dot:nth-child(2){animation-delay:.2s}
-.ai-dot:nth-child(3){animation-delay:.4s}
-@keyframes dotBounce{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
-/* Source badge */
-.ai-source{font-size:10px;color:rgba(255,255,255,.0);margin-top:4px;text-align:right}
-.ai-source.db{color:#0D9E72;font-size:10.5px;margin-top:5px;align-self:flex-start;background:#E6F7F2;padding:2px 8px;border-radius:10px}
-/* Quick buttons */
-.ai-quick{padding:8px 12px 4px;display:flex;flex-wrap:wrap;gap:6px;background:#F7F9FC;flex-shrink:0;border-top:1px solid #E2E8F0}
-.ai-qbtn{
-  background:#fff;border:1.5px solid #E2E8F0;
-  border-radius:20px;padding:5px 12px;
-  font-size:12px;color:#0A2647;cursor:pointer;
-  transition:all .15s;white-space:nowrap;font-family:inherit;
-}
-.ai-qbtn:hover{background:#0A2647;color:#fff;border-color:#0A2647}
-/* Input area */
-.ai-input-area{
-  padding:10px 12px;background:#fff;
-  border-top:1px solid #E2E8F0;
-  display:flex;align-items:flex-end;gap:8px;flex-shrink:0;
-}
-.ai-input{
-  flex:1;border:1.5px solid #E2E8F0;border-radius:12px;
-  padding:9px 14px;font-size:13.5px;font-family:inherit;
-  resize:none;outline:none;max-height:100px;
-  line-height:1.5;transition:border-color .15s;
-  background:#F7F9FC;color:#1A202C;
-}
-.ai-input:focus{border-color:#0D9E72;background:#fff}
-.ai-input::placeholder{color:#A0AEC0}
-.ai-send{
-  background:#0D9E72;border:none;border-radius:10px;
-  width:38px;height:38px;cursor:pointer;flex-shrink:0;
-  display:flex;align-items:center;justify-content:center;
-  transition:background .15s,transform .1s;
-}
-.ai-send:hover{background:#0B8A64;transform:scale(1.05)}
-.ai-send:disabled{background:#CBD5E0;cursor:default;transform:none}
-.ai-send svg{width:17px;height:17px;fill:#fff}
-/* Footer note */
-.ai-footer{text-align:center;padding:6px 0 8px;font-size:10.5px;color:#A0AEC0;background:#fff;flex-shrink:0}
-@media(max-width:640px){
-  .ai-win{width:calc(100vw - 20px);right:10px;bottom:200px;max-height:70vh}
-  .ai-fab{right:10px;bottom:140px}
-}
-</style>
+<!--&lt;!&ndash; ── AI TAX ASSISTANT ─────────────────────────────────────── &ndash;&gt;-->
+<!--<style>-->
+<!--/* ── Floating Button ── */-->
+<!--.ai-fab{-->
+<!--  position:fixed;bottom:160px;right:28px;z-index:998;-->
+<!--  width:54px;height:54px;border-radius:50%;border:none;cursor:pointer;-->
+<!--  background:linear-gradient(135deg,#0A2647 0%,#0D9E72 100%);-->
+<!--  box-shadow:0 4px 24px rgba(10,38,71,.35);-->
+<!--  display:flex;align-items:center;justify-content:center;-->
+<!--  transition:transform .25s,box-shadow .25s;-->
+<!--}-->
+<!--.ai-fab:hover{transform:scale(1.1);box-shadow:0 6px 32px rgba(10,38,71,.45)}-->
+<!--.ai-fab svg{width:26px;height:26px;fill:#fff}-->
+<!--.ai-fab-badge{-->
+<!--  position:absolute;top:-3px;right:-3px;-->
+<!--  width:20px;height:20px;border-radius:50%;-->
+<!--  background:#E53E3E;border:2px solid #fff;-->
+<!--  font-size:10px;font-weight:700;color:#fff;-->
+<!--  display:none;align-items:center;justify-content:center;-->
+<!--}-->
+<!--/* ── Chat Window ── */-->
+<!--.ai-win{-->
+<!--  position:fixed;bottom:224px;right:28px;-->
+<!--  width:380px;max-height:560px;-->
+<!--  background:#fff;border-radius:20px;-->
+<!--  box-shadow:0 12px 48px rgba(10,38,71,.18);-->
+<!--  display:none;flex-direction:column;-->
+<!--  z-index:997;overflow:hidden;-->
+<!--  border:1px solid rgba(10,38,71,.08);-->
+<!--  transform:translateY(16px) scale(.97);-->
+<!--  opacity:0;-->
+<!--  transition:transform .25s ease,opacity .25s ease;-->
+<!--}-->
+<!--.ai-win.open{-->
+<!--  display:flex;-->
+<!--  transform:translateY(0) scale(1);-->
+<!--  opacity:1;-->
+<!--}-->
+<!--/* Header */-->
+<!--.ai-hdr{-->
+<!--  background:linear-gradient(135deg,#0A2647 0%,#144272 100%);-->
+<!--  padding:14px 16px;display:flex;align-items:center;gap:12px;-->
+<!--  flex-shrink:0;-->
+<!--}-->
+<!--.ai-hdr-avatar{-->
+<!--  width:40px;height:40px;border-radius:50%;-->
+<!--  background:rgba(13,158,114,.25);border:2px solid rgba(13,158,114,.4);-->
+<!--  display:flex;align-items:center;justify-content:center;font-size:20px;-->
+<!--  flex-shrink:0;-->
+<!--}-->
+<!--.ai-hdr-info{flex:1}-->
+<!--.ai-hdr-info h4{font-size:14px;font-weight:600;color:#fff;margin:0 0 2px}-->
+<!--.ai-hdr-info p{font-size:11px;color:rgba(255,255,255,.55);margin:0;display:flex;align-items:center;gap:5px}-->
+<!--.ai-online-dot{width:7px;height:7px;border-radius:50%;background:#0D9E72;display:inline-block;animation:pulse 2s infinite}-->
+<!--@keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}-->
+<!--.ai-hdr-close{background:rgba(255,255,255,.1);border:none;color:rgba(255,255,255,.7);cursor:pointer;width:28px;height:28px;border-radius:8px;font-size:16px;display:flex;align-items:center;justify-content:center;transition:background .15s}-->
+<!--.ai-hdr-close:hover{background:rgba(255,255,255,.2);color:#fff}-->
+<!--/* Messages */-->
+<!--.ai-msgs{-->
+<!--  flex:1;overflow-y:auto;padding:16px;-->
+<!--  display:flex;flex-direction:column;gap:12px;-->
+<!--  background:#F7F9FC;scroll-behavior:smooth;-->
+<!--}-->
+<!--.ai-msgs::-webkit-scrollbar{width:4px}-->
+<!--.ai-msgs::-webkit-scrollbar-track{background:transparent}-->
+<!--.ai-msgs::-webkit-scrollbar-thumb{background:#CBD5E0;border-radius:2px}-->
+<!--/* Message bubbles */-->
+<!--.ai-bubble{-->
+<!--  max-width:82%;padding:10px 14px;-->
+<!--  font-size:13.5px;line-height:1.6;-->
+<!--  animation:bubbleIn .2s ease;-->
+<!--}-->
+<!--@keyframes bubbleIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}-->
+<!--.ai-bubble.bot{-->
+<!--  background:#fff;color:#1A202C;-->
+<!--  border:1px solid #E2E8F0;-->
+<!--  border-radius:4px 16px 16px 16px;-->
+<!--  align-self:flex-start;-->
+<!--  box-shadow:0 1px 4px rgba(0,0,0,.06);-->
+<!--}-->
+<!--.ai-bubble.user{-->
+<!--  background:linear-gradient(135deg,#0A2647,#144272);-->
+<!--  color:#fff;-->
+<!--  border-radius:16px 4px 16px 16px;-->
+<!--  align-self:flex-end;-->
+<!--}-->
+<!--.ai-bubble.typing{-->
+<!--  background:#fff;border:1px solid #E2E8F0;-->
+<!--  border-radius:4px 16px 16px 16px;-->
+<!--  align-self:flex-start;padding:12px 16px;-->
+<!--  display:flex;gap:5px;align-items:center;-->
+<!--}-->
+<!--.ai-dot{width:8px;height:8px;border-radius:50%;background:#0D9E72;animation:dotBounce 1.2s infinite}-->
+<!--.ai-dot:nth-child(2){animation-delay:.2s}-->
+<!--.ai-dot:nth-child(3){animation-delay:.4s}-->
+<!--@keyframes dotBounce{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}-->
+<!--/* Source badge */-->
+<!--.ai-source{font-size:10px;color:rgba(255,255,255,.0);margin-top:4px;text-align:right}-->
+<!--.ai-source.db{color:#0D9E72;font-size:10.5px;margin-top:5px;align-self:flex-start;background:#E6F7F2;padding:2px 8px;border-radius:10px}-->
+<!--/* Quick buttons */-->
+<!--.ai-quick{padding:8px 12px 4px;display:flex;flex-wrap:wrap;gap:6px;background:#F7F9FC;flex-shrink:0;border-top:1px solid #E2E8F0}-->
+<!--.ai-qbtn{-->
+<!--  background:#fff;border:1.5px solid #E2E8F0;-->
+<!--  border-radius:20px;padding:5px 12px;-->
+<!--  font-size:12px;color:#0A2647;cursor:pointer;-->
+<!--  transition:all .15s;white-space:nowrap;font-family:inherit;-->
+<!--}-->
+<!--.ai-qbtn:hover{background:#0A2647;color:#fff;border-color:#0A2647}-->
+<!--/* Input area */-->
+<!--.ai-input-area{-->
+<!--  padding:10px 12px;background:#fff;-->
+<!--  border-top:1px solid #E2E8F0;-->
+<!--  display:flex;align-items:flex-end;gap:8px;flex-shrink:0;-->
+<!--}-->
+<!--.ai-input{-->
+<!--  flex:1;border:1.5px solid #E2E8F0;border-radius:12px;-->
+<!--  padding:9px 14px;font-size:13.5px;font-family:inherit;-->
+<!--  resize:none;outline:none;max-height:100px;-->
+<!--  line-height:1.5;transition:border-color .15s;-->
+<!--  background:#F7F9FC;color:#1A202C;-->
+<!--}-->
+<!--.ai-input:focus{border-color:#0D9E72;background:#fff}-->
+<!--.ai-input::placeholder{color:#A0AEC0}-->
+<!--.ai-send{-->
+<!--  background:#0D9E72;border:none;border-radius:10px;-->
+<!--  width:38px;height:38px;cursor:pointer;flex-shrink:0;-->
+<!--  display:flex;align-items:center;justify-content:center;-->
+<!--  transition:background .15s,transform .1s;-->
+<!--}-->
+<!--.ai-send:hover{background:#0B8A64;transform:scale(1.05)}-->
+<!--.ai-send:disabled{background:#CBD5E0;cursor:default;transform:none}-->
+<!--.ai-send svg{width:17px;height:17px;fill:#fff}-->
+<!--/* Footer note */-->
+<!--.ai-footer{text-align:center;padding:6px 0 8px;font-size:10.5px;color:#A0AEC0;background:#fff;flex-shrink:0}-->
+<!--@media(max-width:640px){-->
+<!--  .ai-win{width:calc(100vw - 20px);right:10px;bottom:200px;max-height:70vh}-->
+<!--  .ai-fab{right:10px;bottom:140px}-->
+<!--}-->
+<!--</style>-->
 
-<!-- FAB Button -->
-<button class="ai-fab" id="aiFab" title="AI Tax Assistant">
-  <div class="ai-fab-badge" id="aiBadge">1</div>
-  <svg viewBox="0 0 24 24"><path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm-2 12H6v-2h12v2zm0-3H6V9h12v2zm0-3H6V6h12v2z"/></svg>
-</button>
+<!--&lt;!&ndash; FAB Button &ndash;&gt;-->
+<!--<button class="ai-fab" id="aiFab" title="AI Tax Assistant">-->
+<!--  <div class="ai-fab-badge" id="aiBadge">1</div>-->
+<!--  <svg viewBox="0 0 24 24"><path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm-2 12H6v-2h12v2zm0-3H6V9h12v2zm0-3H6V6h12v2z"/></svg>-->
+<!--</button>-->
 
-<!-- Chat Window -->
-<div class="ai-win" id="aiWin">
-  <!-- Header -->
-  <div class="ai-hdr">
-    <div class="ai-hdr-avatar">🤖</div>
-    <div class="ai-hdr-info">
-      <h4>TaxBuddy AI Assistant</h4>
-      <p><span class="ai-online-dot"></span> Online · Pakistan Tax Expert</p>
-    </div>
-    <button class="ai-hdr-close" id="aiClose">✕</button>
-  </div>
+<!--&lt;!&ndash; Chat Window &ndash;&gt;-->
+<!--<div class="ai-win" id="aiWin">-->
+<!--  &lt;!&ndash; Header &ndash;&gt;-->
+<!--  <div class="ai-hdr">-->
+<!--    <div class="ai-hdr-avatar">🤖</div>-->
+<!--    <div class="ai-hdr-info">-->
+<!--      <h4>TaxBuddy AI Assistant</h4>-->
+<!--      <p><span class="ai-online-dot"></span> Online · Pakistan Tax Expert</p>-->
+<!--    </div>-->
+<!--    <button class="ai-hdr-close" id="aiClose">✕</button>-->
+<!--  </div>-->
 
-  <!-- Messages -->
-  <div class="ai-msgs" id="aiMsgs">
-    <div class="ai-bubble bot">
-      👋 Assalam o Alaikum! Main <strong>TaxBuddy AI</strong> hoon.<br><br>
-      Pakistan ke <strong>Income Tax</strong>, <strong>Sales Tax</strong>, ya <strong>Property Tax</strong> ke baare mein koi bhi sawaal poochh saktay hain — Urdu ya English mein!
-    </div>
-  </div>
+<!--  &lt;!&ndash; Messages &ndash;&gt;-->
+<!--  <div class="ai-msgs" id="aiMsgs">-->
+<!--    <div class="ai-bubble bot">-->
+<!--      👋 Assalam o Alaikum! Main <strong>TaxBuddy AI</strong> hoon.<br><br>-->
+<!--      Pakistan ke <strong>Income Tax</strong>, <strong>Sales Tax</strong>, ya <strong>Property Tax</strong> ke baare mein koi bhi sawaal poochh saktay hain — Urdu ya English mein!-->
+<!--    </div>-->
+<!--  </div>-->
 
-  <!-- Quick Questions -->
-  <div class="ai-quick" id="aiQuick">
-<!--    <button class="ai-qbtn" onclick="quickAsk('Filer kaise banein?')">🎯 Filer kaise banein?</button>-->
-<!--    <button class="ai-qbtn" onclick="quickAsk('Property tax rate kya hai?')">🏠 Property tax?</button>-->
-<!--    <button class="ai-qbtn" onclick="quickAsk('NTN kaise banwayein?')">📋 NTN registration?</button>-->
-<!--    <button class="ai-qbtn" onclick="quickAsk('Return filing ka section kya hai?')">📝 Return filing?</button>-->
-  </div>
+<!--  &lt;!&ndash; Quick Questions &ndash;&gt;-->
+<!--  <div class="ai-quick" id="aiQuick">-->
+<!--&lt;!&ndash;    <button class="ai-qbtn" onclick="quickAsk('Filer kaise banein?')">🎯 Filer kaise banein?</button>&ndash;&gt;-->
+<!--&lt;!&ndash;    <button class="ai-qbtn" onclick="quickAsk('Property tax rate kya hai?')">🏠 Property tax?</button>&ndash;&gt;-->
+<!--&lt;!&ndash;    <button class="ai-qbtn" onclick="quickAsk('NTN kaise banwayein?')">📋 NTN registration?</button>&ndash;&gt;-->
+<!--&lt;!&ndash;    <button class="ai-qbtn" onclick="quickAsk('Return filing ka section kya hai?')">📝 Return filing?</button>&ndash;&gt;-->
+<!--  </div>-->
 
-  <!-- Input -->
-  <div class="ai-input-area">
-    <textarea class="ai-input" id="aiInput"
-      placeholder="Tax ka koi sawaal poochein..."
-      rows="1"
-      onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();sendMsg()}"
-      oninput="autoResize(this)"></textarea>
-    <button class="ai-send" id="aiSend" onclick="sendMsg()">
-      <svg viewBox="0 0 24 24"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/></svg>
-    </button>
-  </div>
-  <div class="ai-footer">Powered by TaxBuddy Knowledge Base · Verify rates at fbr.gov.pk</div>
-</div>
+<!--  &lt;!&ndash; Input &ndash;&gt;-->
+<!--  <div class="ai-input-area">-->
+<!--    <textarea class="ai-input" id="aiInput"-->
+<!--      placeholder="Tax ka koi sawaal poochein..."-->
+<!--      rows="1"-->
+<!--      onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();sendMsg()}"-->
+<!--      oninput="autoResize(this)"></textarea>-->
+<!--    <button class="ai-send" id="aiSend" onclick="sendMsg()">-->
+<!--      <svg viewBox="0 0 24 24"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/></svg>-->
+<!--    </button>-->
+<!--  </div>-->
+<!--  <div class="ai-footer">Powered by TaxBuddy Knowledge Base · Verify rates at fbr.gov.pk</div>-->
+<!--</div>-->
 
-<script>
-(function(){
-  const fab    = document.getElementById('aiFab');
-  const win    = document.getElementById('aiWin');
-  const close  = document.getElementById('aiClose');
-  const msgs   = document.getElementById('aiMsgs');
-  const input  = document.getElementById('aiInput');
-  const send   = document.getElementById('aiSend');
-  const badge  = document.getElementById('aiBadge');
-  const quick  = document.getElementById('aiQuick');
-  let history  = [];
-  let isOpen   = false;
+<!--<script>-->
+<!--(function(){-->
+<!--  const fab    = document.getElementById('aiFab');-->
+<!--  const win    = document.getElementById('aiWin');-->
+<!--  const close  = document.getElementById('aiClose');-->
+<!--  const msgs   = document.getElementById('aiMsgs');-->
+<!--  const input  = document.getElementById('aiInput');-->
+<!--  const send   = document.getElementById('aiSend');-->
+<!--  const badge  = document.getElementById('aiBadge');-->
+<!--  const quick  = document.getElementById('aiQuick');-->
+<!--  let history  = [];-->
+<!--  let isOpen   = false;-->
 
-  // Show badge after 10s
-  setTimeout(()=>{ if(!isOpen) badge.style.display='flex'; }, 10000);
+<!--  // Show badge after 10s-->
+<!--  setTimeout(()=>{ if(!isOpen) badge.style.display='flex'; }, 10000);-->
 
-  fab.addEventListener('click', ()=>{
-    isOpen = !isOpen;
-    if(isOpen){
-      win.style.display='flex';
-      setTimeout(()=>win.classList.add('open'), 10);
-      badge.style.display='none';
-      input.focus();
-    } else {
-      win.classList.remove('open');
-      setTimeout(()=>win.style.display='none', 250);
-    }
-  });
+<!--  fab.addEventListener('click', ()=>{-->
+<!--    isOpen = !isOpen;-->
+<!--    if(isOpen){-->
+<!--      win.style.display='flex';-->
+<!--      setTimeout(()=>win.classList.add('open'), 10);-->
+<!--      badge.style.display='none';-->
+<!--      input.focus();-->
+<!--    } else {-->
+<!--      win.classList.remove('open');-->
+<!--      setTimeout(()=>win.style.display='none', 250);-->
+<!--    }-->
+<!--  });-->
 
-  close.addEventListener('click', ()=>{
-    isOpen = false;
-    win.classList.remove('open');
-    setTimeout(()=>win.style.display='none', 250);
-  });
+<!--  close.addEventListener('click', ()=>{-->
+<!--    isOpen = false;-->
+<!--    win.classList.remove('open');-->
+<!--    setTimeout(()=>win.style.display='none', 250);-->
+<!--  });-->
 
-  function autoResize(el){
-    el.style.height='auto';
-    el.style.height=Math.min(el.scrollHeight,100)+'px';
-  }
+<!--  function autoResize(el){-->
+<!--    el.style.height='auto';-->
+<!--    el.style.height=Math.min(el.scrollHeight,100)+'px';-->
+<!--  }-->
 
-  function addBubble(text, type){
-    const d=document.createElement('div');
-    d.className='ai-bubble '+type;
-    d.innerHTML=text;
-    msgs.appendChild(d);
-    msgs.scrollTop=msgs.scrollHeight;
-    return d;
-  }
+<!--  function addBubble(text, type){-->
+<!--    const d=document.createElement('div');-->
+<!--    d.className='ai-bubble '+type;-->
+<!--    d.innerHTML=text;-->
+<!--    msgs.appendChild(d);-->
+<!--    msgs.scrollTop=msgs.scrollHeight;-->
+<!--    return d;-->
+<!--  }-->
 
-  function showTyping(){
-    const d=document.createElement('div');
-    d.className='ai-bubble typing';
-    d.id='aiTyping';
-    d.innerHTML='<div class="ai-dot"></div><div class="ai-dot"></div><div class="ai-dot"></div>';
-    msgs.appendChild(d);
-    msgs.scrollTop=msgs.scrollHeight;
-  }
+<!--  function showTyping(){-->
+<!--    const d=document.createElement('div');-->
+<!--    d.className='ai-bubble typing';-->
+<!--    d.id='aiTyping';-->
+<!--    d.innerHTML='<div class="ai-dot"></div><div class="ai-dot"></div><div class="ai-dot"></div>';-->
+<!--    msgs.appendChild(d);-->
+<!--    msgs.scrollTop=msgs.scrollHeight;-->
+<!--  }-->
 
-  function removeTyping(){
-    const t=document.getElementById('aiTyping');
-    if(t) t.remove();
-  }
+<!--  function removeTyping(){-->
+<!--    const t=document.getElementById('aiTyping');-->
+<!--    if(t) t.remove();-->
+<!--  }-->
 
-  function quickAsk(q){
-    quick.style.display='none';
-    input.value=q;
-    sendMsg();
-  }
-  window.quickAsk=quickAsk;
+<!--  function quickAsk(q){-->
+<!--    quick.style.display='none';-->
+<!--    input.value=q;-->
+<!--    sendMsg();-->
+<!--  }-->
+<!--  window.quickAsk=quickAsk;-->
 
-  async function sendMsg(){
-    const text=input.value.trim();
-    if(!text||send.disabled) return;
-    input.value='';
-    input.style.height='auto';
-    quick.style.display='none';
-    send.disabled=true;
+<!--  async function sendMsg(){-->
+<!--    const text=input.value.trim();-->
+<!--    if(!text||send.disabled) return;-->
+<!--    input.value='';-->
+<!--    input.style.height='auto';-->
+<!--    quick.style.display='none';-->
+<!--    send.disabled=true;-->
 
-    addBubble(text,'user');
-    history.push({role:'user',content:text});
-    showTyping();
+<!--    addBubble(text,'user');-->
+<!--    history.push({role:'user',content:text});-->
+<!--    showTyping();-->
 
-    try{
-      const res=await fetch('/ai-chat/',{
-        method:'POST',
-        headers:{
-          'Content-Type':'application/json',
-          'X-CSRFToken':getCsrf()
-        },
-        body:JSON.stringify({message:text, history:history.slice(-6)})
-      });
-      const data=await res.json();
-      removeTyping();
+<!--    try{-->
+<!--      const res=await fetch('/ai-chat/',{-->
+<!--        method:'POST',-->
+<!--        headers:{-->
+<!--          'Content-Type':'application/json',-->
+<!--          'X-CSRFToken':getCsrf()-->
+<!--        },-->
+<!--        body:JSON.stringify({message:text, history:history.slice(-6)})-->
+<!--      });-->
+<!--      const data=await res.json();-->
+<!--      removeTyping();-->
 
-      const reply=data.reply||'Jawab nahi mil saka.';
-      // Format reply — convert **bold** and newlines
-      const formatted = reply.split('**').map((s,i) => i%2?'<strong>'+s+'</strong>':s).join('').replace(/\n/g,'<br>');
-      addBubble(formatted,'bot');
+<!--      const reply=data.reply||'Jawab nahi mil saka.';-->
+<!--      // Format reply — convert **bold** and newlines-->
+<!--      const formatted = reply.split('**').map((s,i) => i%2?'<strong>'+s+'</strong>':s).join('').replace(/\n/g,'<br>');-->
+<!--      addBubble(formatted,'bot');-->
 
-      // Show DB source badge
-      if(data.source==='DB'){
-        const src=document.createElement('div');
-        src.className='ai-source db';
-        src.textContent='✓ TaxBuddy DB se verified';
-        msgs.appendChild(src);
-        msgs.scrollTop=msgs.scrollHeight;
-      }
+<!--      // Show DB source badge-->
+<!--      if(data.source==='DB'){-->
+<!--        const src=document.createElement('div');-->
+<!--        src.className='ai-source db';-->
+<!--        src.textContent='✓ TaxBuddy DB se verified';-->
+<!--        msgs.appendChild(src);-->
+<!--        msgs.scrollTop=msgs.scrollHeight;-->
+<!--      }-->
 
-      history.push({role:'assistant',content:reply});
-    }catch(e){
-      removeTyping();
-      addBubble('Connection error. Dobara try karein.','bot');
-    }
-    send.disabled=false;
-    input.focus();
-  }
-  window.sendMsg=sendMsg;
+<!--      history.push({role:'assistant',content:reply});-->
+<!--    }catch(e){-->
+<!--      removeTyping();-->
+<!--      addBubble('Connection error. Dobara try karein.','bot');-->
+<!--    }-->
+<!--    send.disabled=false;-->
+<!--    input.focus();-->
+<!--  }-->
+<!--  window.sendMsg=sendMsg;-->
 
-  function getCsrf(){
-    const m=document.cookie.match(/csrftoken=([^;]+)/);
-    return m?m[1]:'';
-  }
-})();
-</script>
-<!-- ── END AI TAX ASSISTANT ──────────────────────────────────── -->
+<!--  function getCsrf(){-->
+<!--    const m=document.cookie.match(/csrftoken=([^;]+)/);-->
+<!--    return m?m[1]:'';-->
+<!--  }-->
+<!--})();-->
+<!--</script>-->
+<!--&lt;!&ndash; ── END AI TAX ASSISTANT ──────────────────────────────────── &ndash;&gt;-->
 
 {% endblock %}
