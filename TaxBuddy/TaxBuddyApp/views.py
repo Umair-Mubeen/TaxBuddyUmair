@@ -913,14 +913,32 @@ def manage_wht_rates(request):
         if active_cat and active_cat != 'all':
             rates = rates.filter(category=active_cat)
         rates = rates.filter(tax_year=tax_year)
+
+        # Category stats for dashboard
+        from django.db.models import Count
+        cat_counts = WithholdingTaxRate.objects.filter(
+            tax_year=tax_year, is_active=True
+        ).values('category').annotate(count=Count('id'))
+        cat_map = {c['category']: c['count'] for c in cat_counts}
+        categories_stats = [
+            ('property', {'name': '🏠 Property', 'count': cat_map.get('property', 0)}),
+            ('banking',  {'name': '🏦 Banking',  'count': cat_map.get('banking',  0)}),
+            ('salary',   {'name': '💼 Salary',   'count': cat_map.get('salary',   0)}),
+            ('business', {'name': '🏢 Business', 'count': cat_map.get('business', 0)}),
+            ('advance',  {'name': '📊 Advance',  'count': cat_map.get('advance',  0)}),
+            ('other',    {'name': '📋 Other',    'count': cat_map.get('other',    0)}),
+        ]
+
         return render(request, 'Cpanel/manage_wht.html', {
-            'rates': rates, 'active_cat': active_cat, 'tax_year': tax_year,
+            'rates': rates,
+            'active_cat': active_cat,
+            'tax_year': tax_year,
+            'categories_stats': categories_stats,
         })
     except Exception as e:
-        return HttpResponse("Exception: " + str(e))
+        return HttpResponse(str(e))
 
 
-@staff_required
 def add_wht_rate(request):
     try:
         if request.method == 'POST':
@@ -929,8 +947,8 @@ def add_wht_rate(request):
                 section        = request.POST.get('section', '').strip(),
                 description    = request.POST.get('description', '').strip(),
                 filer_rate     = request.POST.get('filer_rate', '').strip(),
+                non_filer_rate=request.POST.get('non_filer_rate', '').strip(),
                 late_filer_rate = request.POST.get('late_filer_rate', '').strip(),
-                non_filer_rate = request.POST.get('non_filer_rate', '').strip(),
                 who_deducts    = request.POST.get('who_deducts', '').strip(),
                 threshold      = request.POST.get('threshold', '').strip(),
                 notes          = request.POST.get('notes', '').strip(),
@@ -1578,14 +1596,11 @@ def ai_chat(request):
         if not user_message:
             return JsonResponse({'reply': 'Koi sawaal poochein.'})
 
-        #gemini_key = getattr(settings, 'GEMINI_API_KEY', '').strip()
-        gemini_key = "AIzaSyDhG5duRuW9mVELrvnAurne8PVysQYewM8"
+        gemini_key = getattr(settings, 'GEMINI_API_KEY', '').strip()
         # Fallback: check environment variable directly
         if not gemini_key:
             import os
-            #gemini_key = os.environ.get('GEMINI_API_KEY', '').strip()
-            gemini_key = "AIzaSyDhG5duRuW9mVELrvnAurne8PVysQYewM8"
-
+            gemini_key = os.environ.get('GEMINI_API_KEY', '').strip()
         if not gemini_key:
             return JsonResponse({'reply': 'AI service abhi setup ho rahi hai. Settings mein GEMINI_API_KEY add karein.'})
 
@@ -1647,15 +1662,23 @@ KEY RATES 2025-26:
             "generationConfig": {"temperature": 0.3, "maxOutputTokens": 500}
         }
 
-        response = http_requests.post(url, json=payload, timeout=15)
-        result = response.json()
+        # Retry logic — 3 attempts with backoff
+        import time
+        response = None
+        for attempt in range(3):
+            response = http_requests.post(url, json=payload, timeout=15)
+            if response.status_code == 429:
+                if attempt < 2:
+                    time.sleep(35)  # wait 35 seconds and retry
+                    continue
+                else:
+                    return JsonResponse({'reply': 'AI abhi bohat busy hai. Thori der baad try karein ya WhatsApp karein: +92 333 248 2742'})
+            break
 
-        if response.status_code == 429:
-            print(response)
-            return JsonResponse({'reply': 'AI thori der mein available ho jayega. 30 seconds baad try karein. Ya WhatsApp karein: +92 3332482742'})
+        result = response.json()
         if response.status_code != 200:
             err = result.get('error', {}).get('message', 'Unknown error')
-            return JsonResponse({'reply': f'Kuch masla hua. Dobara try karein.'})
+            return JsonResponse({'reply': 'Kuch masla hua. Dobara try karein.'})
 
         reply = result.get('candidates', [{}])[0].get('content', {}).get('parts', [{}])[0].get('text', '')
         if not reply:
