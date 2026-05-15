@@ -47,6 +47,20 @@
     <a href="{% url 'add_wht_rate' %}" class="btn-add">+ Add New Rate</a>
   </div>
 
+  <!-- Stats -->
+  <div style="display:grid;grid-template-columns:repeat(6,1fr);gap:10px;margin-bottom:20px;">
+    {% for cat_key, cat_label in categories_stats %}
+    <div style="background:var(--white);border:1px solid var(--border);border-radius:8px;padding:12px;text-align:center;">
+      <div style="font-size:18px;font-weight:700;color:var(--navy);">{{ cat_label.count }}</div>
+      <div style="font-size:11px;color:var(--text-muted);margin-top:2px;">{{ cat_label.name }}</div>
+    </div>
+    {% empty %}
+    <div style="grid-column:1/-1;background:var(--white);border:1px solid var(--border);border-radius:8px;padding:16px;text-align:center;color:var(--text-muted);font-size:13px;">
+      No rates added yet. <a href="{% url 'add_wht_rate' %}" style="color:var(--green);font-weight:600;">Add first rate →</a>
+    </div>
+    {% endfor %}
+  </div>
+
   {% if messages %}
   {% for msg in messages %}
   <div style="padding:10px 14px;border-radius:8px;font-size:13.5px;margin-bottom:14px;{% if msg.tags == 'success' %}background:#f0fdf4;border:1px solid #bbf7d0;color:#15803d{% else %}background:#fef2f2;border:1px solid #fca5a5;color:#dc2626{% endif %}">{{ msg }}</div>

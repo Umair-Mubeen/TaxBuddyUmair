@@ -47,12 +47,12 @@ textarea.field-input{resize:vertical;min-height:80px;line-height:1.6}
           <label class="field-label">Category *</label>
           <select name="category" class="field-select" required>
             <option value="">Select category</option>
-            <option value="property"  {% if rate.category == 'property'  %}selected{% endif %}>Property Sale / Purchase</option>
-            <option value="banking"   {% if rate.category == 'banking'   %}selected{% endif %}>Banking & Finance</option>
-            <option value="salary"    {% if rate.category == 'salary'    %}selected{% endif %}>Salary & Employment</option>
-            <option value="business"  {% if rate.category == 'business'  %}selected{% endif %}>Business / Contracts</option>
-            <option value="advance"   {% if rate.category == 'advance'   %}selected{% endif %}>Advance Tax</option>
-            <option value="other"     {% if rate.category == 'other'     %}selected{% endif %}>Other Payments</option>
+            <option value="property"  {% if rate.category == 'property'  %}selected{% endif %}>🏠 Property Sale / Purchase (236C, 236K)</option>
+            <option value="banking"   {% if rate.category == 'banking'   %}selected{% endif %}>🏦 Banking & Finance (151, 150, 236Y)</option>
+            <option value="salary"    {% if rate.category == 'salary'    %}selected{% endif %}>💼 Salary & Employment (149, 231B)</option>
+            <option value="business"  {% if rate.category == 'business'  %}selected{% endif %}>🏢 Business / Contracts (153, 155)</option>
+            <option value="advance"   {% if rate.category == 'advance'   %}selected{% endif %}>📊 Advance Tax (231AB, 234, 235, 236)</option>
+            <option value="other"     {% if rate.category == 'other'     %}selected{% endif %}>📋 Other (148, 152, 154, 156, 233)</option>
           </select>
         </div>
         <div class="form-group">
@@ -146,6 +146,30 @@ textarea.field-input{resize:vertical;min-height:80px;line-height:1.6}
         {% if rate %}💾 Update Rate{% else %}✅ Add Rate{% endif %}
       </button>
     </form>
+  </div>
+
+  <!-- Quick Reference -->
+  <div style="background:var(--white);border:1px solid var(--border);border-radius:var(--radius);padding:20px;margin-top:20px;">
+    <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.09em;color:var(--text-muted);margin-bottom:12px;">Quick Reference — FBR WHT Rate Card 2025-26</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;font-size:12.5px;color:var(--text-mid);">
+      <div>🏠 <strong>236C</strong> Property Sale: 4.5/7.5/11.5%</div>
+      <div>🏠 <strong>236K</strong> Property Buy: 1.5/4.5/10.5%</div>
+      <div>🏦 <strong>151</strong> Bank Profit: 20/—/40%</div>
+      <div>🏦 <strong>150</strong> Dividend: 15/—/30%</div>
+      <div>💼 <strong>149</strong> Salary: Per slabs</div>
+      <div>🏢 <strong>153(1)(b)</strong> Services: 6/—/12%</div>
+      <div>🏢 <strong>153(1)(a)</strong> Goods: 5/—/10%</div>
+      <div>🏢 <strong>153(1)(c)</strong> Contracts: 7.5/—/15%</div>
+      <div>📊 <strong>231AB</strong> Cash Withdrawal: —/—/0.80%</div>
+      <div>📊 <strong>236Y</strong> Int'l Cards: 5/—/10%</div>
+      <div>📋 <strong>156</strong> Prize Bond: 15/—/30%</div>
+      <div>📋 <strong>233</strong> Commission: 10/—/20%</div>
+    </div>
+    <div style="margin-top:12px;font-size:12px;color:var(--text-muted);">
+      Source:
+      <a href="https://download1.fbr.gov.pk/Docs/20258181281745641WHT-RateCard.pdf"
+         target="_blank" style="color:var(--green);font-weight:600;">FBR Official WHT Rate Card 2025-26 →</a>
+    </div>
   </div>
 </div>
 {% endblock %}
