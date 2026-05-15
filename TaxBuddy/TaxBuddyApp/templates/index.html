@@ -282,6 +282,218 @@
 <!--</section>-->
 
 <!-- ══════════════════════════════════════════════
+     WHT RATES CARDS
+══════════════════════════════════════════════ -->
+<section class="section" style="background:var(--bg);">
+  <div class="container">
+
+    <div class="section-header" style="margin-bottom:24px;">
+      <div>
+        <div class="section-tag">FBR 2025-26</div>
+        <h2 class="section-title">Key Withholding Tax Rates</h2>
+        <p style="font-size:14px;color:var(--text-light);margin-top:6px;">Most searched WHT rates — Filer vs Late Filer vs Non-Filer</p>
+      </div>
+      <a href="{% url 'withholding_tax_rates' %}" class="section-link">Full Rate Card →</a>
+    </div>
+
+    <!-- WHT Rate Cards — DB driven -->
+    {% if wht_rates %}
+
+    <!-- Define card config -->
+    {% with cards=wht_rates %}
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:24px;">
+
+      <!-- 236C Property Sale -->
+      {% with r=wht_rates.236C %}
+      {% if r %}
+      <div style="background:var(--white);border:1px solid var(--border);border-radius:14px;overflow:hidden;box-shadow:var(--shadow-sm);">
+        <div style="background:linear-gradient(135deg,#0A2647,#144272);padding:14px 16px;">
+          <div style="font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.08em;color:rgba(255,255,255,.5);margin-bottom:4px;">{{ r.section }}</div>
+          <div style="font-size:15px;font-weight:700;color:#fff;">🏠 Property Sale</div>
+          <div style="font-size:11.5px;color:rgba(255,255,255,.55);margin-top:2px;">{{ r.description|truncatechars:50 }}</div>
+        </div>
+        <div style="padding:14px 16px;">
+          <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:14px;">
+            <div style="text-align:center;background:#f0fdf4;border-radius:8px;padding:8px 4px;">
+              <div style="font-size:9px;font-weight:600;text-transform:uppercase;color:#15803d;margin-bottom:3px;">Filer</div>
+              <div style="font-size:16px;font-weight:700;color:#15803d;">{{ r.filer_rate }}</div>
+            </div>
+            <div style="text-align:center;background:#fffbeb;border-radius:8px;padding:8px 4px;">
+              <div style="font-size:9px;font-weight:600;text-transform:uppercase;color:#B45309;margin-bottom:3px;">Late</div>
+              <div style="font-size:16px;font-weight:700;color:#B45309;">{{ r.late_filer_rate|default:"—" }}</div>
+            </div>
+            <div style="text-align:center;background:#fef2f2;border-radius:8px;padding:8px 4px;">
+              <div style="font-size:9px;font-weight:600;text-transform:uppercase;color:#dc2626;margin-bottom:3px;">Non</div>
+              <div style="font-size:16px;font-weight:700;color:#dc2626;">{{ r.non_filer_rate|default:"—" }}</div>
+            </div>
+          </div>
+          {% if r.threshold %}<div style="font-size:11px;color:var(--text-light);background:var(--bg);padding:6px 10px;border-radius:6px;margin-bottom:10px;">📌 {{ r.threshold }}</div>{% endif %}
+          <a href="{% url 'withholding_tax_rates' %}?section=property" style="display:block;text-align:center;font-size:12.5px;font-weight:600;color:var(--green);text-decoration:none;">View all property rates →</a>
+        </div>
+      </div>
+      {% endif %}
+      {% endwith %}
+
+      <!-- 236K Property Purchase -->
+      {% with r=wht_rates.236K %}
+      {% if r %}
+      <div style="background:var(--white);border:1px solid var(--border);border-radius:14px;overflow:hidden;box-shadow:var(--shadow-sm);">
+        <div style="background:linear-gradient(135deg,#0A2647,#1E5F8E);padding:14px 16px;">
+          <div style="font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.08em;color:rgba(255,255,255,.5);margin-bottom:4px;">{{ r.section }}</div>
+          <div style="font-size:15px;font-weight:700;color:#fff;">🏡 Property Purchase</div>
+          <div style="font-size:11.5px;color:rgba(255,255,255,.55);margin-top:2px;">{{ r.description|truncatechars:50 }}</div>
+        </div>
+        <div style="padding:14px 16px;">
+          <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:14px;">
+            <div style="text-align:center;background:#f0fdf4;border-radius:8px;padding:8px 4px;">
+              <div style="font-size:9px;font-weight:600;text-transform:uppercase;color:#15803d;margin-bottom:3px;">Filer</div>
+              <div style="font-size:16px;font-weight:700;color:#15803d;">{{ r.filer_rate }}</div>
+            </div>
+            <div style="text-align:center;background:#fffbeb;border-radius:8px;padding:8px 4px;">
+              <div style="font-size:9px;font-weight:600;text-transform:uppercase;color:#B45309;margin-bottom:3px;">Late</div>
+              <div style="font-size:16px;font-weight:700;color:#B45309;">{{ r.late_filer_rate|default:"—" }}</div>
+            </div>
+            <div style="text-align:center;background:#fef2f2;border-radius:8px;padding:8px 4px;">
+              <div style="font-size:9px;font-weight:600;text-transform:uppercase;color:#dc2626;margin-bottom:3px;">Non</div>
+              <div style="font-size:16px;font-weight:700;color:#dc2626;">{{ r.non_filer_rate|default:"—" }}</div>
+            </div>
+          </div>
+          {% if r.threshold %}<div style="font-size:11px;color:var(--text-light);background:var(--bg);padding:6px 10px;border-radius:6px;margin-bottom:10px;">📌 {{ r.threshold }}</div>{% endif %}
+          <a href="{% url 'withholding_tax_rates' %}?section=property" style="display:block;text-align:center;font-size:12.5px;font-weight:600;color:var(--green);text-decoration:none;">View all property rates →</a>
+        </div>
+      </div>
+      {% endif %}
+      {% endwith %}
+
+      <!-- 151 Bank Profit -->
+      {% with r=wht_rates.151 %}
+      {% if r %}
+      <div style="background:var(--white);border:1px solid var(--border);border-radius:14px;overflow:hidden;box-shadow:var(--shadow-sm);">
+        <div style="background:linear-gradient(135deg,#0D9E72,#0A7558);padding:14px 16px;">
+          <div style="font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.08em;color:rgba(255,255,255,.5);margin-bottom:4px;">{{ r.section }}</div>
+          <div style="font-size:15px;font-weight:700;color:#fff;">🏦 Bank Profit</div>
+          <div style="font-size:11.5px;color:rgba(255,255,255,.55);margin-top:2px;">{{ r.description|truncatechars:50 }}</div>
+        </div>
+        <div style="padding:14px 16px;">
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:14px;">
+            <div style="text-align:center;background:#f0fdf4;border-radius:8px;padding:8px 4px;">
+              <div style="font-size:9px;font-weight:600;text-transform:uppercase;color:#15803d;margin-bottom:3px;">Filer</div>
+              <div style="font-size:16px;font-weight:700;color:#15803d;">{{ r.filer_rate }}</div>
+            </div>
+            <div style="text-align:center;background:#fef2f2;border-radius:8px;padding:8px 4px;">
+              <div style="font-size:9px;font-weight:600;text-transform:uppercase;color:#dc2626;margin-bottom:3px;">Non-Filer</div>
+              <div style="font-size:16px;font-weight:700;color:#dc2626;">{{ r.non_filer_rate|default:"—" }}</div>
+            </div>
+          </div>
+          {% if r.threshold %}<div style="font-size:11px;color:var(--text-light);background:var(--bg);padding:6px 10px;border-radius:6px;margin-bottom:10px;">📌 {{ r.threshold }}</div>{% endif %}
+          <a href="{% url 'withholding_tax_rates' %}?section=banking" style="display:block;text-align:center;font-size:12.5px;font-weight:600;color:var(--green);text-decoration:none;">View all banking rates →</a>
+        </div>
+      </div>
+      {% endif %}
+      {% endwith %}
+
+    </div>
+
+    <!-- Second row -->
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:28px;">
+
+      <!-- 153 Services -->
+      {% with r=wht_rates.153 %}
+      {% if r %}
+      <div style="background:var(--white);border:1px solid var(--border);border-radius:14px;overflow:hidden;box-shadow:var(--shadow-sm);">
+        <div style="background:linear-gradient(135deg,#744210,#975A16);padding:14px 16px;">
+          <div style="font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.08em;color:rgba(255,255,255,.5);margin-bottom:4px;">{{ r.section }}</div>
+          <div style="font-size:15px;font-weight:700;color:#fff;">🏢 Services / Contracts</div>
+          <div style="font-size:11.5px;color:rgba(255,255,255,.55);margin-top:2px;">{{ r.description|truncatechars:50 }}</div>
+        </div>
+        <div style="padding:14px 16px;">
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:14px;">
+            <div style="text-align:center;background:#f0fdf4;border-radius:8px;padding:8px 4px;">
+              <div style="font-size:9px;font-weight:600;text-transform:uppercase;color:#15803d;margin-bottom:3px;">Filer</div>
+              <div style="font-size:16px;font-weight:700;color:#15803d;">{{ r.filer_rate }}</div>
+            </div>
+            <div style="text-align:center;background:#fef2f2;border-radius:8px;padding:8px 4px;">
+              <div style="font-size:9px;font-weight:600;text-transform:uppercase;color:#dc2626;margin-bottom:3px;">Non-Filer</div>
+              <div style="font-size:16px;font-weight:700;color:#dc2626;">{{ r.non_filer_rate|default:"—" }}</div>
+            </div>
+          </div>
+          <a href="{% url 'withholding_tax_rates' %}?section=business" style="display:block;text-align:center;font-size:12.5px;font-weight:600;color:var(--green);text-decoration:none;">View all business rates →</a>
+        </div>
+      </div>
+      {% endif %}
+      {% endwith %}
+
+      <!-- 150 Dividends -->
+      {% with r=wht_rates.150 %}
+      {% if r %}
+      <div style="background:var(--white);border:1px solid var(--border);border-radius:14px;overflow:hidden;box-shadow:var(--shadow-sm);">
+        <div style="background:linear-gradient(135deg,#2D3748,#4A5568);padding:14px 16px;">
+          <div style="font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.08em;color:rgba(255,255,255,.5);margin-bottom:4px;">{{ r.section }}</div>
+          <div style="font-size:15px;font-weight:700;color:#fff;">💰 Dividends</div>
+          <div style="font-size:11.5px;color:rgba(255,255,255,.55);margin-top:2px;">{{ r.description|truncatechars:50 }}</div>
+        </div>
+        <div style="padding:14px 16px;">
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:14px;">
+            <div style="text-align:center;background:#f0fdf4;border-radius:8px;padding:8px 4px;">
+              <div style="font-size:9px;font-weight:600;text-transform:uppercase;color:#15803d;margin-bottom:3px;">Filer</div>
+              <div style="font-size:16px;font-weight:700;color:#15803d;">{{ r.filer_rate }}</div>
+            </div>
+            <div style="text-align:center;background:#fef2f2;border-radius:8px;padding:8px 4px;">
+              <div style="font-size:9px;font-weight:600;text-transform:uppercase;color:#dc2626;margin-bottom:3px;">Non-Filer</div>
+              <div style="font-size:16px;font-weight:700;color:#dc2626;">{{ r.non_filer_rate|default:"—" }}</div>
+            </div>
+          </div>
+          <a href="{% url 'withholding_tax_rates' %}?section=banking" style="display:block;text-align:center;font-size:12.5px;font-weight:600;color:var(--green);text-decoration:none;">View all banking rates →</a>
+        </div>
+      </div>
+      {% endif %}
+      {% endwith %}
+
+      <!-- 236Y Int'l Cards -->
+      {% with r=wht_rates.236Y %}
+      {% if r %}
+      <div style="background:var(--white);border:1px solid var(--border);border-radius:14px;overflow:hidden;box-shadow:var(--shadow-sm);">
+        <div style="background:linear-gradient(135deg,#1a1a2e,#16213e);padding:14px 16px;">
+          <div style="font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.08em;color:rgba(255,255,255,.5);margin-bottom:4px;">{{ r.section }}</div>
+          <div style="font-size:15px;font-weight:700;color:#fff;">💳 Int'l Card Payments</div>
+          <div style="font-size:11.5px;color:rgba(255,255,255,.55);margin-top:2px;">{{ r.description|truncatechars:50 }}</div>
+        </div>
+        <div style="padding:14px 16px;">
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:14px;">
+            <div style="text-align:center;background:#f0fdf4;border-radius:8px;padding:8px 4px;">
+              <div style="font-size:9px;font-weight:600;text-transform:uppercase;color:#15803d;margin-bottom:3px;">Filer</div>
+              <div style="font-size:16px;font-weight:700;color:#15803d;">{{ r.filer_rate }}</div>
+            </div>
+            <div style="text-align:center;background:#fef2f2;border-radius:8px;padding:8px 4px;">
+              <div style="font-size:9px;font-weight:600;text-transform:uppercase;color:#dc2626;margin-bottom:3px;">Non-Filer</div>
+              <div style="font-size:16px;font-weight:700;color:#dc2626;">{{ r.non_filer_rate|default:"—" }}</div>
+            </div>
+          </div>
+          <a href="{% url 'withholding_tax_rates' %}?section=advance" style="display:block;text-align:center;font-size:12.5px;font-weight:600;color:var(--green);text-decoration:none;">View all advance rates →</a>
+        </div>
+      </div>
+      {% endif %}
+      {% endwith %}
+
+    </div>
+    {% endwith %}
+    {% endif %}
+
+    <!-- View All Button -->
+    <div style="text-align:center;">
+      <a href="{% url 'withholding_tax_rates' %}"
+         style="display:inline-flex;align-items:center;gap:10px;background:var(--navy);color:#fff;padding:13px 28px;border-radius:10px;font-weight:600;font-size:14px;text-decoration:none;box-shadow:var(--shadow-md);">
+        📊 View Complete FBR WHT Rate Card 2025-26
+      </a>
+      <div style="font-size:12px;color:var(--text-light);margin-top:10px;">
+        Updated per Finance Act 2025 · Source: FBR Official WHT Rate Card
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════
      CTA BANNER
 ══════════════════════════════════════════════ -->
 <section class="section section-alt">
