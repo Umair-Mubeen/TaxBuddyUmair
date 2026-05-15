@@ -281,6 +281,14 @@
 <!--  </div>-->
 <!--</section>-->
 
+<style>
+@media(max-width:768px){
+  .wht-cards-grid{grid-template-columns:1fr!important}
+}
+@media(min-width:769px) and (max-width:1024px){
+  .wht-cards-grid{grid-template-columns:repeat(2,1fr)!important}
+}
+</style>
 <!-- ══════════════════════════════════════════════
      WHT RATES CARDS
 ══════════════════════════════════════════════ -->
@@ -301,7 +309,7 @@
 
     <!-- Define card config -->
     {% with cards=wht_rates %}
-    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:24px;">
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:24px;" class="wht-cards-grid">
 
       <!-- 236C Property Sale -->
       {% with r=wht_rates.236C %}
@@ -395,7 +403,7 @@
     </div>
 
     <!-- Second row -->
-    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:28px;">
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:28px;" class="wht-cards-grid">
 
       <!-- 153 Services -->
       {% with r=wht_rates.153 %}
