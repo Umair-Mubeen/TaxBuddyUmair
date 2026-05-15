@@ -154,12 +154,23 @@ def index(request):
             ),
         ]
 
+        # WHT Rates for homepage cards — top 6 sections
+        wht_sections = ['236C', '236K', '151', '153', '150', '236Y']
+        wht_rates = {}
+        for section in wht_sections:
+            wht_rates[section] = WithholdingTaxRate.objects.filter(
+                section__icontains=section,
+                tax_year='2025-2026',
+                is_active=True
+            ).order_by('order').first()
+
         return render(request, 'index.html', {
             'result': all_blogs,
             'latest_blogs': latest_blogs,
             'preview_questions': preview_questions,
             'faqs': faqs,
             'default_faqs': default_faqs,
+            'wht_rates': wht_rates,
         })
     except Exception as e:
         return HttpResponse(str(e))
@@ -913,32 +924,14 @@ def manage_wht_rates(request):
         if active_cat and active_cat != 'all':
             rates = rates.filter(category=active_cat)
         rates = rates.filter(tax_year=tax_year)
-
-        # Category stats for dashboard
-        from django.db.models import Count
-        cat_counts = WithholdingTaxRate.objects.filter(
-            tax_year=tax_year, is_active=True
-        ).values('category').annotate(count=Count('id'))
-        cat_map = {c['category']: c['count'] for c in cat_counts}
-        categories_stats = [
-            ('property', {'name': '🏠 Property', 'count': cat_map.get('property', 0)}),
-            ('banking',  {'name': '🏦 Banking',  'count': cat_map.get('banking',  0)}),
-            ('salary',   {'name': '💼 Salary',   'count': cat_map.get('salary',   0)}),
-            ('business', {'name': '🏢 Business', 'count': cat_map.get('business', 0)}),
-            ('advance',  {'name': '📊 Advance',  'count': cat_map.get('advance',  0)}),
-            ('other',    {'name': '📋 Other',    'count': cat_map.get('other',    0)}),
-        ]
-
         return render(request, 'Cpanel/manage_wht.html', {
-            'rates': rates,
-            'active_cat': active_cat,
-            'tax_year': tax_year,
-            'categories_stats': categories_stats,
+            'rates': rates, 'active_cat': active_cat, 'tax_year': tax_year,
         })
     except Exception as e:
-        return HttpResponse(str(e))
+        return HttpResponse("Exception: " + str(e))
 
 
+@staff_required
 def add_wht_rate(request):
     try:
         if request.method == 'POST':
@@ -947,8 +940,8 @@ def add_wht_rate(request):
                 section        = request.POST.get('section', '').strip(),
                 description    = request.POST.get('description', '').strip(),
                 filer_rate     = request.POST.get('filer_rate', '').strip(),
-                non_filer_rate=request.POST.get('non_filer_rate', '').strip(),
-                late_filer_rate = request.POST.get('late_filer_rate', '').strip(),
+                late_filer_rate=request.POST.get('late_filer_rate', '').strip(),
+                non_filer_rate = request.POST.get('non_filer_rate', '').strip(),
                 who_deducts    = request.POST.get('who_deducts', '').strip(),
                 threshold      = request.POST.get('threshold', '').strip(),
                 notes          = request.POST.get('notes', '').strip(),
@@ -1492,99 +1485,6 @@ import json
 import requests as http_requests
 
 @csrf_exempt
-def search_knowledge_base(query):
-    """RAG — Search aap ke DB se relevant content"""
-    from .models import Blog, WithholdingTaxRate, TaxGuide, FAQ
-    from django.db.models import Q
-    results = []
-    query_lower = query.lower()
-
-    # ── 1. WHT Rates — exact match ──────────────────────────
-    rates = WithholdingTaxRate.objects.filter(
-        is_active=True, tax_year='2025-2026'
-    ).filter(
-        Q(section__icontains=query) |
-        Q(description__icontains=query)
-    )[:5]
-    for r in rates:
-        results.append(
-            f"[WHT Rate] {r.section} — {r.description} | "
-            f"Filer: {r.filer_rate} | Late Filer: {r.late_filer_rate or 'Same'} | "
-            f"Non-Filer: {r.non_filer_rate} | Who deducts: {r.who_deducts}"
-        )
-
-    # ── 2. MCQs ──────────────────────────────────────────────
-    from .models import Question, Option
-    questions = Question.objects.filter(is_active=True).filter(
-        Q(question_text__icontains=query) |
-        Q(explanation__icontains=query) |
-        Q(section_ref__icontains=query)
-    )[:4]
-    for q in questions:
-        correct = q.options.filter(is_correct=True).first()
-        correct_text = correct.option_text if correct else ''
-        mcq_text = "[MCQ] Q: " + str(q.question_text)
-        if correct_text:
-            mcq_text += " | Correct Answer: " + correct_text
-        if q.explanation:
-            mcq_text += " | Explanation: " + str(q.explanation[:300])
-        if q.section_ref:
-            mcq_text += " | Section: " + str(q.section_ref)
-        results.append(mcq_text)
-
-    # ── 3. FAQs ──────────────────────────────────────────────
-    faqs = FAQ.objects.filter(is_active=True).filter(
-        Q(question__icontains=query) |
-        Q(answer__icontains=query)
-    )[:3]
-    for f in faqs:
-        results.append("[FAQ] Q: " + str(f.question) + "\nA: " + str(f.answer))
-
-    # ── 3. Tax Guides ────────────────────────────────────────
-    guides = TaxGuide.objects.filter(is_active=True).filter(
-        Q(title__icontains=query) |
-        Q(summary__icontains=query)
-    )[:2]
-    for g in guides:
-        import re
-        clean = re.sub(r'<[^>]+>', '', g.summary)
-        results.append(f"[Guide] {g.title}: {clean[:600]}")
-
-    # ── 4. Blog posts ────────────────────────────────────────
-    blogs = Blog.objects.filter(
-        status='published', is_deleted=False
-    ).filter(
-        Q(title__icontains=query) |
-        Q(content__icontains=query) |
-        Q(meta_description__icontains=query)
-    )[:2]
-    for b in blogs:
-        import re
-        clean = re.sub(r'<[^>]+>', '', b.content)
-        results.append("[Blog] " + b.title + ": " + clean[:800])
-
-    # ── 5. MCQs ──────────────────────────────────────────────
-    from .models import Question, Option
-    questions = Question.objects.filter(is_active=True).filter(
-        Q(question_text__icontains=query) |
-        Q(explanation__icontains=query) |
-        Q(section_ref__icontains=query) |
-        Q(category__icontains=query)
-    )[:5]
-    for q in questions:
-        correct = q.options.filter(is_correct=True).first()
-        correct_text = correct.option_text if correct else "N/A"
-        mcq_entry = "[MCQ] Q: " + q.question_text
-        mcq_entry += " | Correct Answer: " + correct_text
-        if q.explanation:
-            mcq_entry += " | Explanation: " + q.explanation[:200]
-        if q.section_ref:
-            mcq_entry += " | Section: " + q.section_ref
-        results.append(mcq_entry)
-
-    return results
-
-
 def ai_chat(request):
     if request.method != 'POST':
         return JsonResponse({'reply': 'Invalid request.'}, status=405)
@@ -1596,97 +1496,54 @@ def ai_chat(request):
         if not user_message:
             return JsonResponse({'reply': 'Koi sawaal poochein.'})
 
-        gemini_key = getattr(settings, 'GEMINI_API_KEY', '').strip()
-        # Fallback: check environment variable directly
+        gemini_key = 'AIzaSyDhG5duRuW9mVELrvnAurne8PVysQYewM8'
+
         if not gemini_key:
-            import os
-            gemini_key = os.environ.get('GEMINI_API_KEY', '').strip()
-        if not gemini_key:
-            return JsonResponse({'reply': 'AI service abhi setup ho rahi hai. Settings mein GEMINI_API_KEY add karein.'})
+            return JsonResponse({'reply': 'AI service abhi setup ho rahi hai. Thori der mein try karein.'})
 
-        # ── RAG — DB se relevant content fetch karo ─────────
-        kb_results = search_knowledge_base(user_message)
-        knowledge_context = ""
-        if kb_results:
-            knowledge_context = "\n\nRELEVANT TAXBUDDY DATABASE CONTENT:\n" + "\n\n".join(kb_results)
+        system_prompt = """You are an expert Pakistan tax educator assistant for TaxBuddy Umair (taxbuddyumair.com).
+Answer ONLY Pakistan tax questions (income tax, sales tax, property tax, FBR, ITO 2001).
+Reply in same language as user (Urdu Roman or English). Keep answers concise — 3-5 sentences.
+Always mention relevant section numbers. Current tax year is 2025-26.
 
-        # ── System Prompt ────────────────────────────────────
-        system_prompt = f"""You are TaxBuddy AI — an expert Pakistan tax educator assistant for taxbuddyumair.com.
-
-STRICT RULES:
-1. Answer ONLY Pakistan tax questions (ITO 2001, Sales Tax Act 1990, FBR rules)
-2. Reply in SAME language as user (Urdu Roman or English)
-3. ALWAYS prefer the database content below over your own knowledge
-4. If database has the answer — use it EXACTLY, do not guess
-5. If database does NOT have the answer — say "Please verify from FBR portal: fbr.gov.pk"
-6. Keep answers concise — 3-5 sentences max
-7. Always cite correct Section numbers
-8. NEVER give wrong section numbers — if unsure, say "verify from FBR"
-
-CORRECT SECTIONS (ITO 2001):
-- Section 114: Who must file return
-- Section 118: Due date 30 September
-- Section 149: Salary withholding
-- Section 150: Dividends (15%/30%)
-- Section 151: Bank profit (20%/40%)
-- Section 153: Goods/Services/Contracts WHT
-- Section 155: Rent
-- Section 236C: Property sale advance tax
-- Section 236K: Property purchase advance tax
-- Section 7B: Profit on debt
-- Section 7E: Deemed income from property
-- Section 4C: Super Tax
-- Section 182: Penalty for non-filing
-
-KEY RATES 2025-26:
-- Salary: 0% upto 600K | 1% upto 1.2M | Rs.6K+11% upto 2.2M | Rs.116K+23% upto 3.2M | Rs.346K+30% upto 4.1M | Rs.616K+35% above
-- Property sale 236C: Filer 4.5%, Late Filer 7.5%, Non-Filer 11.5%
-- Property purchase 236K: Filer 1.5%, Late Filer 4.5%, Non-Filer 10.5%
+KEY RATES:
+- Salary: 0% upto 600K, 1% upto 1.2M, 11%+6K upto 2.2M, 23%+116K upto 3.2M, 30%+346K upto 4.1M, 35%+616K above
+- Property sale 236C: Filer 4.5%, Non-Filer 11.5%
+- Property purchase 236K: Filer 1.5%, Non-Filer 10.5%
 - Bank profit 151: Filer 20%, Non-Filer 40%
-- Dividends 150: Filer 15%, Non-Filer 30%
-- GST: 18% standard, Further Tax 4%
-- ATL surcharge: Rs.1,000
-- Return deadline: 30 September (Section 118){knowledge_context}"""
+- GST: 18% standard rate
+End response with: Aur koi sawaal? / Any other question?"""
 
-        # ── Build messages ───────────────────────────────────
         messages = []
         for msg in history[-6:]:
             role = "model" if msg.get("role") == "assistant" else "user"
             messages.append({"role": role, "parts": [{"text": msg["content"]}]})
         messages.append({"role": "user", "parts": [{"text": user_message}]})
 
+        # url = f"https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key={gemini_key}"
+        # url = f"https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key={gemini_key}"
         url = f"https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-lite:generateContent?key={gemini_key}"
+
         payload = {
             "system_instruction": {"parts": [{"text": system_prompt}]},
             "contents": messages,
-            "generationConfig": {"temperature": 0.3, "maxOutputTokens": 500}
+            "generationConfig": {"temperature": 0.7, "maxOutputTokens": 400}
         }
 
-        # Retry logic — 3 attempts with backoff
-        import time
-        response = None
-        for attempt in range(3):
-            response = http_requests.post(url, json=payload, timeout=15)
-            if response.status_code == 429:
-                if attempt < 2:
-                    time.sleep(35)  # wait 35 seconds and retry
-                    continue
-                else:
-                    return JsonResponse({'reply': 'AI abhi bohat busy hai. Thori der baad try karein ya WhatsApp karein: +92 333 248 2742'})
-            break
-
+        response = http_requests.post(url, json=payload, timeout=15)
         result = response.json()
+
+        # Debug — log response if error
         if response.status_code != 200:
-            err = result.get('error', {}).get('message', 'Unknown error')
-            return JsonResponse({'reply': 'Kuch masla hua. Dobara try karein.'})
+            import logging
+            logging.error(f"Gemini error: {result}")
+            return JsonResponse({'reply': f'API error: {result.get("error", {}).get("message", "Unknown error")}'})
 
         reply = result.get('candidates', [{}])[0].get('content', {}).get('parts', [{}])[0].get('text', '')
         if not reply:
             reply = "Maafi chahta hoon, jawab nahi mil saka. Dobara try karein."
 
-        # Return KB source info too
-        source = "DB" if kb_results else "General"
-        return JsonResponse({'reply': reply, 'source': source})
+        return JsonResponse({'reply': reply})
 
     except http_requests.Timeout:
         return JsonResponse({'reply': 'Request timeout. Dobara try karein.'})
