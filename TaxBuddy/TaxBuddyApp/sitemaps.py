@@ -4,7 +4,6 @@ from .models import Blog, TaxGuide
 
 
 class BlogSitemap(Sitemap):
-    """Sitemap for all published blog posts."""
     changefreq = 'weekly'
     priority    = 0.8
     protocol    = 'https'
@@ -23,7 +22,6 @@ class BlogSitemap(Sitemap):
 
 
 class TaxGuideSitemap(Sitemap):
-    """Sitemap for Tax Guides."""
     changefreq = 'monthly'
     priority    = 0.85
     protocol    = 'https'
@@ -32,11 +30,12 @@ class TaxGuideSitemap(Sitemap):
         return TaxGuide.objects.filter(is_active=True)
 
     def location(self, obj):
-        return f'/income-tax-guides/' if obj.category == 'income_tax' else f'/sales-tax-guides/'
+        if obj.category == 'income_tax':
+            return '/income-tax-guides/'
+        return '/sales-tax-guides/'
 
 
 class StaticSitemap(Sitemap):
-    """Sitemap for all static/tool pages."""
     changefreq = 'monthly'
     priority    = 0.9
     protocol    = 'https'
@@ -44,6 +43,10 @@ class StaticSitemap(Sitemap):
     def items(self):
         return [
             'index',
+            'about_us',
+            'atl_check',
+            'tax_calendar',
+            'fbr_iris_guide',
             'income_tax_guides',
             'sales_tax_guides',
             'income_tax_rates',
@@ -65,7 +68,6 @@ class StaticSitemap(Sitemap):
 
 
 class CalculatorSitemap(Sitemap):
-    """Calculators get highest priority."""
     changefreq = 'monthly'
     priority    = 1.0
     protocol    = 'https'

@@ -58,6 +58,12 @@ urlpatterns = [
     path('layout/', views.layout, name='layout'),
     path('test/', views.test, name='test'),
 
+    # ── NEW PAGES ─────────────────────────────────────────────
+    path('about-us/', views.about_us, name='about_us'),
+    path('atl-check/', views.atl_check, name='atl_check'),
+    path('tax-calendar/', views.tax_calendar, name='tax_calendar'),
+    path('fbr-iris-guide/', views.fbr_iris_guide, name='fbr_iris_guide'),
+
     # ── ADMIN / CPANEL ────────────────────────────────────────
     path('dashboard/', views.Dashboard, name='Dashboard'),
     path('manage-blogs/', views.ManageBlogs, name='ManageBlogs'),

@@ -1,0 +1,205 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}FBR IRIS Portal Guide 2025 — Registration & Filing | TaxBuddy Umair{% endblock %}
+{% block meta_desc %}Complete FBR IRIS portal guide 2025. Step by step — NTN registration, income tax return filing, sales tax registration, ATL verification, CPR payment on iris.fbr.gov.pk.{% endblock %}
+
+{% block extra_css %}
+<style>
+.iris-step{background:var(--white);border:1px solid var(--border);border-radius:var(--radius-lg);padding:20px;margin-bottom:14px;display:flex;gap:16px;}
+.iris-step-num{width:40px;height:40px;border-radius:10px;background:linear-gradient(135deg,#0A2647,#0D9E72);color:#fff;font-weight:700;font-size:18px;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.iris-feature{background:var(--white);border:1px solid var(--border);border-radius:var(--radius-lg);padding:16px;display:flex;gap:12px;align-items:flex-start;}
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="article-hero">
+  <div class="article-hero-inner">
+    <div class="breadcrumb">
+      <a href="{% url 'index' %}">Home</a>
+      <span class="breadcrumb-sep">›</span>
+      <span>FBR IRIS Guide</span>
+    </div>
+    <h1>FBR IRIS Portal — Complete Guide 2025</h1>
+    <div class="article-meta">
+      <span>🏛️ iris.fbr.gov.pk</span>
+      <span>📋 NTN & Tax Filing</span>
+      <span>🔄 Updated 2025</span>
+    </div>
+  </div>
+</div>
+
+<div class="content-grid">
+  <main class="content-main">
+
+    <!-- What is IRIS -->
+    <div style="background:linear-gradient(135deg,#0A2647,#144272);border-radius:var(--radius-lg);padding:24px;margin-bottom:24px;color:#fff;">
+      <h2 style="font-size:20px;font-weight:700;color:#fff;margin:0 0 10px;">What is FBR IRIS?</h2>
+      <p style="font-size:14px;color:rgba(255,255,255,.8);line-height:1.75;margin:0 0 16px;">
+        <strong>IRIS (Integrated Revenue Information System)</strong> is FBR's official online portal for all tax-related services in Pakistan. It is the central platform where taxpayers register, file returns, pay taxes, and manage their tax profile.
+      </p>
+      <a href="https://iris.fbr.gov.pk" target="_blank" rel="noopener noreferrer"
+         style="display:inline-flex;align-items:center;gap:8px;background:#0D9E72;color:#fff;padding:11px 22px;border-radius:8px;font-weight:700;font-size:14px;text-decoration:none;">
+        🌐 Visit IRIS Portal →
+      </a>
+    </div>
+
+    <!-- What you can do on IRIS -->
+    <h2 style="font-size:20px;font-weight:700;color:var(--navy);margin:0 0 16px;">What You Can Do on IRIS</h2>
+    <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin-bottom:24px;">
+      <div class="iris-feature">
+        <span style="font-size:22px;">📝</span>
+        <div>
+          <div style="font-weight:700;color:var(--navy);margin-bottom:3px;">NTN Registration</div>
+          <div style="font-size:12.5px;color:var(--text-mid);">Register as a taxpayer and get your National Tax Number — free of cost</div>
+        </div>
+      </div>
+      <div class="iris-feature">
+        <span style="font-size:22px;">📊</span>
+        <div>
+          <div style="font-weight:700;color:var(--navy);margin-bottom:3px;">Income Tax Return</div>
+          <div style="font-size:12.5px;color:var(--text-mid);">File annual income tax return and wealth statement online</div>
+        </div>
+      </div>
+      <div class="iris-feature">
+        <span style="font-size:22px;">🏪</span>
+        <div>
+          <div style="font-weight:700;color:var(--navy);margin-bottom:3px;">Sales Tax Registration</div>
+          <div style="font-size:12.5px;color:var(--text-mid);">Register for GST/Sales Tax and get STRN (Sales Tax Registration Number)</div>
+        </div>
+      </div>
+      <div class="iris-feature">
+        <span style="font-size:22px;">💳</span>
+        <div>
+          <div style="font-weight:700;color:var(--navy);margin-bottom:3px;">Tax Payment (CPR)</div>
+          <div style="font-size:12.5px;color:var(--text-mid);">Generate Computerized Payment Receipt and pay taxes online</div>
+        </div>
+      </div>
+      <div class="iris-feature">
+        <span style="font-size:22px;">⚖️</span>
+        <div>
+          <div style="font-weight:700;color:var(--navy);margin-bottom:3px;">WHT Statements</div>
+          <div style="font-size:12.5px;color:var(--text-mid);">Submit monthly and annual withholding tax statements</div>
+        </div>
+      </div>
+      <div class="iris-feature">
+        <span style="font-size:22px;">📋</span>
+        <div>
+          <div style="font-weight:700;color:var(--navy);margin-bottom:3px;">ATL Verification</div>
+          <div style="font-size:12.5px;color:var(--text-mid);">Check your Active Taxpayer List status and ATL surcharge payment</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- How to Register NTN -->
+    <h2 style="font-size:20px;font-weight:700;color:var(--navy);margin:0 0 16px;">📝 How to Register NTN on IRIS</h2>
+
+    <div class="iris-step">
+      <div class="iris-step-num">1</div>
+      <div>
+        <div style="font-weight:700;color:var(--navy);margin-bottom:6px;">Go to IRIS Portal</div>
+        <div style="font-size:13.5px;color:var(--text-mid);">Visit <a href="https://iris.fbr.gov.pk" target="_blank" style="color:var(--green);font-weight:600;">iris.fbr.gov.pk</a> → Click <strong>"Registration for Unregistered Person"</strong> on the login page</div>
+      </div>
+    </div>
+
+    <div class="iris-step">
+      <div class="iris-step-num">2</div>
+      <div>
+        <div style="font-weight:700;color:var(--navy);margin-bottom:6px;">Enter CNIC & Mobile Number</div>
+        <div style="font-size:13.5px;color:var(--text-mid);">Enter your 13-digit CNIC and registered mobile number. An OTP will be sent to your mobile for verification.</div>
+      </div>
+    </div>
+
+    <div class="iris-step">
+      <div class="iris-step-num">3</div>
+      <div>
+        <div style="font-weight:700;color:var(--navy);margin-bottom:6px;">Fill Registration Form</div>
+        <div style="font-size:13.5px;color:var(--text-mid);">Enter your personal details — name, address, business type (Individual/Company/AOP), source of income, and bank account details.</div>
+      </div>
+    </div>
+
+    <div class="iris-step">
+      <div class="iris-step-num">4</div>
+      <div>
+        <div style="font-weight:700;color:var(--navy);margin-bottom:6px;">Submit & Get NTN</div>
+        <div style="font-size:13.5px;color:var(--text-mid);">Submit the form. Your NTN is generated instantly. Login credentials are sent to your email. NTN for individuals = your CNIC number.</div>
+      </div>
+    </div>
+
+    <!-- How to File Return -->
+    <h2 style="font-size:20px;font-weight:700;color:var(--navy);margin:24px 0 16px;">📊 How to File Income Tax Return on IRIS</h2>
+
+    <div class="iris-step">
+      <div class="iris-step-num">1</div>
+      <div>
+        <div style="font-weight:700;color:var(--navy);margin-bottom:6px;">Login to IRIS</div>
+        <div style="font-size:13.5px;color:var(--text-mid);">Login with your CNIC/NTN and password at iris.fbr.gov.pk. First time? Use the password sent to your registered email.</div>
+      </div>
+    </div>
+
+    <div class="iris-step">
+      <div class="iris-step-num">2</div>
+      <div>
+        <div style="font-weight:700;color:var(--navy);margin-bottom:6px;">Select Return Type</div>
+        <div style="font-size:13.5px;color:var(--text-mid);">Go to <strong>Declaration → Income Tax Return</strong>. Select the correct tax year (e.g., 2025-26). Choose return type based on your income source — Salary, Business, or Both.</div>
+      </div>
+    </div>
+
+    <div class="iris-step">
+      <div class="iris-step-num">3</div>
+      <div>
+        <div style="font-weight:700;color:var(--navy);margin-bottom:6px;">Fill Income Details</div>
+        <div style="font-size:13.5px;color:var(--text-mid);">Enter all income — salary (from employer's certificate), business income, property income, bank profit, foreign income. Declare all withholding taxes already deducted.</div>
+      </div>
+    </div>
+
+    <div class="iris-step">
+      <div class="iris-step-num">4</div>
+      <div>
+        <div style="font-weight:700;color:var(--navy);margin-bottom:6px;">File Wealth Statement</div>
+        <div style="font-size:13.5px;color:var(--text-mid);">Mandatory alongside return. Declare all assets (property, vehicles, investments, cash, foreign assets) and all liabilities (loans, mortgages).</div>
+      </div>
+    </div>
+
+    <div class="iris-step">
+      <div class="iris-step-num">5</div>
+      <div>
+        <div style="font-weight:700;color:var(--navy);margin-bottom:6px;">Submit Return</div>
+        <div style="font-size:13.5px;color:var(--text-mid);">Review all entries and submit. You will receive an acknowledgment receipt. Your name appears on ATL within 2-3 working days. Deadline: <strong>30 September</strong>.</div>
+      </div>
+    </div>
+
+    <!-- Required Documents -->
+    <div style="background:#f0fdf4;border:1px solid #bbf7d0;border-radius:var(--radius-lg);padding:20px;margin:20px 0;">
+      <h3 style="font-size:16px;font-weight:700;color:#15803d;margin:0 0 12px;">📁 Documents Required for Filing</h3>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;font-size:13.5px;color:var(--text-mid);">
+        <div>✅ CNIC copy</div>
+        <div>✅ Salary certificate (Form 16) from employer</div>
+        <div>✅ Bank statements / Profit certificates</div>
+        <div>✅ Property purchase/sale documents</div>
+        <div>✅ WHT deduction certificates</div>
+        <div>✅ Business income records</div>
+        <div>✅ Foreign remittance bank receipts</div>
+        <div>✅ Investment / Mutual fund statements</div>
+      </div>
+    </div>
+
+    <!-- Common Issues -->
+    <div style="background:#fffbeb;border:1px solid #fde68a;border-radius:var(--radius-lg);padding:20px;margin-bottom:16px;">
+      <h3 style="font-size:15px;font-weight:700;color:#92400e;margin:0 0 12px;">⚠️ Common IRIS Issues & Solutions</h3>
+      <div style="font-size:13.5px;color:#92400e;line-height:1.9;">
+        <div><strong>Password forgotten:</strong> Use "Forgot Password" on login page — OTP sent to registered mobile</div>
+        <div><strong>CNIC not found:</strong> Register as new taxpayer if first time using IRIS</div>
+        <div><strong>Return not submitted:</strong> Check all mandatory fields — wealth statement is mandatory</div>
+        <div><strong>ATL not updated:</strong> Wait 2-3 working days after filing — ATL updates weekly on Mondays</div>
+        <div><strong>Portal slow:</strong> Use during off-peak hours — early morning or late night</div>
+      </div>
+    </div>
+
+    {% include 'partials/cta_banner.html' %}
+
+  </main>
+  <aside class="content-sidebar">
+    {% include 'partials/sidebar.html' %}
+  </aside>
+</div>
+{% endblock %}

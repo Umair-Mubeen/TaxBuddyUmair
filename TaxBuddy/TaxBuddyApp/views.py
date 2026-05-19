@@ -1549,3 +1549,19 @@ End response with: Aur koi sawaal? / Any other question?"""
         return JsonResponse({'reply': 'Request timeout. Dobara try karein.'})
     except Exception as e:
         return JsonResponse({'reply': f'Error: {str(e)}'})
+
+# ── ABOUT US ─────────────────────────────────────────────────
+def about_us(request):
+    return render(request, 'about-us.html')
+
+# ── ATL CHECK ────────────────────────────────────────────────
+def atl_check(request):
+    return render(request, 'atl-check.html')
+
+# ── TAX CALENDAR ─────────────────────────────────────────────
+def tax_calendar(request):
+    return render(request, 'tax-calendar.html')
+
+# ── FBR IRIS GUIDE ───────────────────────────────────────────
+def fbr_iris_guide(request):
+    return render(request, 'fbr-iris-guide.html')

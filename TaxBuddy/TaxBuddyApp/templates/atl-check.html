@@ -1,0 +1,150 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}ATL Check — Active Taxpayer List Pakistan 2025 | TaxBuddy Umair{% endblock %}
+{% block meta_desc %}Check your ATL status on FBR Active Taxpayers List Pakistan 2025. Verify filer status by CNIC, NTN or registration number. Updated ATL surcharge and filer benefits guide.{% endblock %}
+
+{% block extra_css %}
+<style>
+.atl-hero-card{background:linear-gradient(135deg,#0A2647,#144272);border-radius:var(--radius-lg);padding:32px;color:#fff;margin-bottom:24px;text-align:center;}
+.atl-step{display:flex;gap:16px;align-items:flex-start;padding:16px;background:var(--white);border:1px solid var(--border);border-radius:var(--radius-lg);margin-bottom:12px;}
+.atl-step-num{width:36px;height:36px;border-radius:50%;background:var(--navy);color:#fff;font-weight:700;font-size:16px;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.rate-compare{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:16px 0;}
+.rate-card-filer{background:#f0fdf4;border:1px solid #bbf7d0;border-radius:var(--radius-lg);padding:18px;text-align:center;}
+.rate-card-nonfiler{background:#fef2f2;border:1px solid #fca5a5;border-radius:var(--radius-lg);padding:18px;text-align:center;}
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="article-hero">
+  <div class="article-hero-inner">
+    <div class="breadcrumb">
+      <a href="{% url 'index' %}">Home</a>
+      <span class="breadcrumb-sep">›</span>
+      <span>ATL Check</span>
+    </div>
+    <h1>ATL Check — Active Taxpayer List Pakistan</h1>
+    <div class="article-meta">
+      <span>📋 FBR ATL 2025</span>
+      <span>🔄 Updated Weekly</span>
+      <span>✅ Free Check</span>
+    </div>
+  </div>
+</div>
+
+<div class="content-grid">
+  <main class="content-main">
+
+    <!-- Hero Card -->
+    <div class="atl-hero-card">
+      <div style="font-size:48px;margin-bottom:12px;">📋</div>
+      <h2 style="font-size:22px;font-weight:700;color:#fff;margin:0 0 10px;">Check Your ATL Status Now</h2>
+      <p style="font-size:14px;color:rgba(255,255,255,.75);margin:0 0 20px;">FBR updates the Active Taxpayers List every week. Check if your name appears on ATL.</p>
+      <a href="https://atl.fbr.gov.pk/atl/online/" target="_blank" rel="noopener noreferrer"
+         style="display:inline-flex;align-items:center;gap:8px;background:#0D9E72;color:#fff;padding:13px 28px;border-radius:8px;font-weight:700;font-size:15px;text-decoration:none;">
+        🔍 Check ATL on FBR Portal →
+      </a>
+      <p style="font-size:12px;color:rgba(255,255,255,.5);margin:12px 0 0;">You will be redirected to FBR's official ATL portal</p>
+    </div>
+
+    <!-- How to Check -->
+    <h2 style="font-size:20px;font-weight:700;color:var(--navy);margin:0 0 16px;">How to Check ATL Status</h2>
+
+    <div class="atl-step">
+      <div class="atl-step-num">1</div>
+      <div>
+        <div style="font-weight:700;color:var(--navy);margin-bottom:4px;">Visit FBR ATL Portal</div>
+        <div style="font-size:13.5px;color:var(--text-mid);">Go to <a href="https://atl.fbr.gov.pk/atl/online/" target="_blank" style="color:var(--green);font-weight:600;">atl.fbr.gov.pk</a> — FBR's official Active Taxpayers List portal</div>
+      </div>
+    </div>
+
+    <div class="atl-step">
+      <div class="atl-step-num">2</div>
+      <div>
+        <div style="font-weight:700;color:var(--navy);margin-bottom:4px;">Select Search Type</div>
+        <div style="font-size:13.5px;color:var(--text-mid);">Choose from: <strong>CNIC</strong> (for individuals), <strong>NTN</strong> (for businesses/companies), or <strong>Registration No.</strong></div>
+      </div>
+    </div>
+
+    <div class="atl-step">
+      <div class="atl-step-num">3</div>
+      <div>
+        <div style="font-weight:700;color:var(--navy);margin-bottom:4px;">Enter Your Number</div>
+        <div style="font-size:13.5px;color:var(--text-mid);">Enter your 13-digit CNIC (without dashes) or NTN number and click Search</div>
+      </div>
+    </div>
+
+    <div class="atl-step">
+      <div class="atl-step-num">4</div>
+      <div>
+        <div style="font-weight:700;color:var(--navy);margin-bottom:4px;">Check Result</div>
+        <div style="font-size:13.5px;color:var(--text-mid);">If your name appears — you are an <strong style="color:#15803d;">Active Filer ✅</strong>. If not — you are a <strong style="color:#dc2626;">Non-Filer ❌</strong></div>
+      </div>
+    </div>
+
+    <!-- Also check via SMS -->
+    <div style="background:#f0fdf4;border:1px solid #bbf7d0;border-radius:var(--radius-lg);padding:20px;margin:20px 0;">
+      <h3 style="font-size:16px;font-weight:700;color:#15803d;margin:0 0 10px;">📱 Check ATL via SMS</h3>
+      <p style="font-size:13.5px;color:var(--text-mid);margin:0 0 10px;">Send SMS to <strong>9966</strong>:</p>
+      <div style="background:#fff;border:1px solid #bbf7d0;border-radius:8px;padding:12px 16px;font-family:monospace;font-size:14px;color:var(--navy);">
+        ATL &lt;space&gt; CNIC<br>
+        <span style="font-size:12px;color:var(--text-light);">Example: ATL 3520112345671</span>
+      </div>
+    </div>
+
+    <!-- Filer vs Non-Filer Rates -->
+    <h2 style="font-size:20px;font-weight:700;color:var(--navy);margin:24px 0 16px;">Why Being a Filer Matters</h2>
+
+    <div class="rate-compare">
+      <div class="rate-card-filer">
+        <div style="font-size:32px;margin-bottom:8px;">✅</div>
+        <div style="font-size:16px;font-weight:700;color:#15803d;margin-bottom:12px;">Active Filer</div>
+        <div style="font-size:13px;color:#166534;text-align:left;">
+          <div style="padding:5px 0;border-bottom:1px solid #bbf7d0;">🏠 Property Sale: <strong>4.5%</strong></div>
+          <div style="padding:5px 0;border-bottom:1px solid #bbf7d0;">🏡 Property Buy: <strong>1.5%</strong></div>
+          <div style="padding:5px 0;border-bottom:1px solid #bbf7d0;">🏦 Bank Profit: <strong>20%</strong></div>
+          <div style="padding:5px 0;">🚗 Vehicle Reg: <strong>Lower rate</strong></div>
+        </div>
+      </div>
+      <div class="rate-card-nonfiler">
+        <div style="font-size:32px;margin-bottom:8px;">❌</div>
+        <div style="font-size:16px;font-weight:700;color:#dc2626;margin-bottom:12px;">Non-Filer</div>
+        <div style="font-size:13px;color:#991b1b;text-align:left;">
+          <div style="padding:5px 0;border-bottom:1px solid #fca5a5;">🏠 Property Sale: <strong>11.5%</strong></div>
+          <div style="padding:5px 0;border-bottom:1px solid #fca5a5;">🏡 Property Buy: <strong>10.5%</strong></div>
+          <div style="padding:5px 0;border-bottom:1px solid #fca5a5;">🏦 Bank Profit: <strong>40%</strong></div>
+          <div style="padding:5px 0;">🚗 Vehicle Reg: <strong>Higher rate</strong></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- How to become filer -->
+    <div style="background:var(--white);border:1px solid var(--border);border-radius:var(--radius-lg);padding:20px;margin-top:20px;">
+      <h3 style="font-size:16px;font-weight:700;color:var(--navy);margin:0 0 12px;">📝 How to Become a Filer</h3>
+      <ol style="font-size:13.5px;color:var(--text-mid);line-height:2;margin:0;padding-left:20px;">
+        <li>Register on IRIS portal — <a href="https://iris.fbr.gov.pk" target="_blank" style="color:var(--green);font-weight:600;">iris.fbr.gov.pk</a></li>
+        <li>Obtain your NTN (National Tax Number)</li>
+        <li>File your income tax return for the latest tax year</li>
+        <li>Your name appears on ATL within 2-3 days of filing</li>
+      </ol>
+      <div style="margin-top:12px;padding-top:12px;border-top:1px solid var(--border);">
+        <span style="font-size:13px;color:var(--text-light);">Return filing deadline: </span>
+        <strong style="color:var(--navy);">30 September (Section 118, ITO 2001)</strong>
+      </div>
+    </div>
+
+    <!-- ATL Surcharge -->
+    <div style="background:#fffbeb;border:1px solid #fde68a;border-radius:var(--radius-lg);padding:20px;margin-top:16px;">
+      <h3 style="font-size:15px;font-weight:700;color:#92400e;margin:0 0 8px;">⚠️ Late Filer ATL Surcharge</h3>
+      <p style="font-size:13.5px;color:#92400e;line-height:1.65;margin:0;">
+        If you file your return after the due date (30 September), you can still appear on ATL as a <strong>Late Filer</strong> by paying an ATL surcharge of <strong>Rs. 1,000</strong>. Late filers pay intermediate rates — higher than active filers but lower than non-filers.
+      </p>
+    </div>
+
+    {% include 'partials/cta_banner.html' %}
+
+  </main>
+  <aside class="content-sidebar">
+    {% include 'partials/sidebar.html' %}
+  </aside>
+</div>
+{% endblock %}
