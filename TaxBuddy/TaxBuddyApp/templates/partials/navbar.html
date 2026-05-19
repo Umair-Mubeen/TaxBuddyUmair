@@ -30,6 +30,9 @@
           <a href="{% url 'sales_tax_guides' %}"  role="menuitem">📊 Sales Tax Guide</a>
           <a href="{% url 'income_tax_rates' %}"  role="menuitem">📈 Income Tax Rates</a>
           <a href="{% url 'withholding_tax_rates' %}" role="menuitem">📉 Withholding Tax Rates</a>
+          <a href="{% url 'atl_check' %}"         role="menuitem">✅ ATL Check</a>
+          <a href="{% url 'tax_calendar' %}"       role="menuitem">📅 Tax Calendar</a>
+          <a href="{% url 'fbr_iris_guide' %}"     role="menuitem">🏛️ FBR IRIS Guide</a>
         </div>
       </li>
 
@@ -71,6 +74,13 @@
         </a>
       </li>
 
+      <li>
+        <a href="{% url 'about_us' %}"
+           class="{% if request.resolver_match.url_name == 'about_us' %}active{% endif %}">
+          About
+        </a>
+      </li>
+
     </ul><!-- end nav-links -->
 
     <!-- CTA button -->
@@ -101,6 +111,9 @@
         <a href="{% url 'sales_tax_guides' %}">Sales Tax Guide</a>
         <a href="{% url 'income_tax_rates' %}">Income Tax Rates</a>
         <a href="{% url 'withholding_tax_rates' %}">Withholding Tax Rates</a>
+        <a href="{% url 'atl_check' %}">✅ ATL Check</a>
+        <a href="{% url 'tax_calendar' %}">📅 Tax Calendar</a>
+        <a href="{% url 'fbr_iris_guide' %}">🏛️ FBR IRIS Guide</a>
       </div>
     </div>
 
@@ -131,6 +144,8 @@
     </div>
 
     <a href="{% url 'online_services' %}">🛎 Services</a>
+
+    <a href="{% url 'about_us' %}">👤 About Us</a>
 
     <a href="https://wa.me/923332482742" target="_blank" rel="noopener"
        style="background:var(--green);color:#fff;border-radius:8px;text-align:center;margin-top:4px;">

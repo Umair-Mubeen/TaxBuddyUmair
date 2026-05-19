@@ -1,0 +1,197 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Pakistan Tax Calendar 2025-26 — FBR Due Dates | TaxBuddy Umair{% endblock %}
+{% block meta_desc %}Complete Pakistan tax calendar 2025-26. All FBR due dates — income tax return (30 Sep), sales tax (15th monthly), withholding statements, advance tax quarters. Never miss a deadline.{% endblock %}
+
+{% block extra_css %}
+<style>
+.cal-month{background:var(--white);border:1px solid var(--border);border-radius:var(--radius-lg);margin-bottom:16px;overflow:hidden;}
+.cal-month-header{background:var(--navy);color:#fff;padding:14px 20px;display:flex;align-items:center;gap:10px;}
+.cal-month-header h3{font-size:16px;font-weight:700;margin:0;color:#fff;}
+.cal-event{display:flex;align-items:flex-start;gap:14px;padding:14px 20px;border-bottom:1px solid var(--border);}
+.cal-event:last-child{border:none;}
+.cal-date{background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:6px 10px;text-align:center;flex-shrink:0;min-width:52px;}
+.cal-date-day{font-size:20px;font-weight:700;color:var(--navy);line-height:1;}
+.cal-date-label{font-size:10px;color:var(--text-light);text-transform:uppercase;letter-spacing:.05em;}
+.badge-critical{background:#fef2f2;border:1px solid #fca5a5;color:#dc2626;font-size:10.5px;font-weight:700;padding:2px 8px;border-radius:20px;}
+.badge-monthly{background:#eff6ff;border:1px solid #bfdbfe;color:#1d4ed8;font-size:10.5px;font-weight:700;padding:2px 8px;border-radius:20px;}
+.badge-quarterly{background:#fdf4ff;border:1px solid #e9d5ff;color:#7e22ce;font-size:10.5px;font-weight:700;padding:2px 8px;border-radius:20px;}
+.badge-annual{background:#f0fdf4;border:1px solid #bbf7d0;color:#15803d;font-size:10.5px;font-weight:700;padding:2px 8px;border-radius:20px;}
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="article-hero">
+  <div class="article-hero-inner">
+    <div class="breadcrumb">
+      <a href="{% url 'index' %}">Home</a>
+      <span class="breadcrumb-sep">›</span>
+      <span>Tax Calendar</span>
+    </div>
+    <h1>Pakistan Tax Calendar 2025–26</h1>
+    <div class="article-meta">
+      <span>📅 All FBR Due Dates</span>
+      <span>🔄 Tax Year 2025-26</span>
+      <span>⚠️ Never Miss a Deadline</span>
+    </div>
+  </div>
+</div>
+
+<div class="content-grid">
+  <main class="content-main">
+
+    <!-- Legend -->
+    <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:20px;">
+      <span class="badge-critical">🔴 Critical Annual</span>
+      <span class="badge-monthly">🔵 Monthly</span>
+      <span class="badge-quarterly">🟣 Quarterly</span>
+      <span class="badge-annual">🟢 Annual</span>
+    </div>
+
+    <!-- Most Important -->
+    <div style="background:linear-gradient(135deg,#0A2647,#144272);border-radius:var(--radius-lg);padding:20px;margin-bottom:24px;color:#fff;">
+      <h2 style="font-size:16px;font-weight:700;color:#fff;margin:0 0 14px;">⚡ Most Important Deadlines</h2>
+      <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:10px;">
+        <div style="background:rgba(255,255,255,.08);border-radius:8px;padding:12px;">
+          <div style="font-size:22px;font-weight:700;color:#0D9E72;">30 Sep</div>
+          <div style="font-size:13px;color:rgba(255,255,255,.8);">Income Tax Return</div>
+          <div style="font-size:11px;color:rgba(255,255,255,.5);">Section 118, ITO 2001</div>
+        </div>
+        <div style="background:rgba(255,255,255,.08);border-radius:8px;padding:12px;">
+          <div style="font-size:22px;font-weight:700;color:#0D9E72;">15th Monthly</div>
+          <div style="font-size:13px;color:rgba(255,255,255,.8);">Sales Tax Return</div>
+          <div style="font-size:11px;color:rgba(255,255,255,.5);">Sales Tax Act 1990</div>
+        </div>
+        <div style="background:rgba(255,255,255,.08);border-radius:8px;padding:12px;">
+          <div style="font-size:22px;font-weight:700;color:#0D9E72;">15th Monthly</div>
+          <div style="font-size:13px;color:rgba(255,255,255,.8);">WHT Deposit</div>
+          <div style="font-size:11px;color:rgba(255,255,255,.5);">Section 160, ITO 2001</div>
+        </div>
+        <div style="background:rgba(255,255,255,.08);border-radius:8px;padding:12px;">
+          <div style="font-size:22px;font-weight:700;color:#0D9E72;">Quarterly</div>
+          <div style="font-size:13px;color:rgba(255,255,255,.8);">Advance Tax</div>
+          <div style="font-size:11px;color:rgba(255,255,255,.5);">Section 147, ITO 2001</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Monthly Recurring -->
+    <div class="cal-month">
+      <div class="cal-month-header">
+        <span style="font-size:20px;">🔄</span>
+        <h3>Monthly Recurring Deadlines</h3>
+      </div>
+      <div class="cal-event">
+        <div class="cal-date"><div class="cal-date-day">15</div><div class="cal-date-label">Every Month</div></div>
+        <div>
+          <div style="font-weight:600;color:var(--navy);margin-bottom:4px;">Sales Tax Return Filing <span class="badge-monthly">Monthly</span></div>
+          <div style="font-size:13px;color:var(--text-mid);">File monthly GST return on FBR IRIS for previous month's transactions. Applies to all registered sales tax persons.</div>
+        </div>
+      </div>
+      <div class="cal-event">
+        <div class="cal-date"><div class="cal-date-day">15</div><div class="cal-date-label">Every Month</div></div>
+        <div>
+          <div style="font-weight:600;color:var(--navy);margin-bottom:4px;">WHT Deposit — Section 160 <span class="badge-monthly">Monthly</span></div>
+          <div style="font-size:13px;color:var(--text-mid);">Withholding agents must deposit all tax withheld during previous month. Submit via CPR (Computerized Payment Receipt).</div>
+        </div>
+      </div>
+      <div class="cal-event">
+        <div class="cal-date"><div class="cal-date-day">15</div><div class="cal-date-label">Every Month</div></div>
+        <div>
+          <div style="font-weight:600;color:var(--navy);margin-bottom:4px;">Income Tax Withholding Statement <span class="badge-monthly">Monthly</span></div>
+          <div style="font-size:13px;color:var(--text-mid);">Submit monthly withholding tax statement on IRIS portal for taxes deducted under various sections.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Quarterly -->
+    <div class="cal-month">
+      <div class="cal-month-header" style="background:#4C1D95;">
+        <span style="font-size:20px;">📊</span>
+        <h3>Quarterly Deadlines — Advance Tax (Section 147)</h3>
+      </div>
+      <div class="cal-event">
+        <div class="cal-date"><div class="cal-date-day">25</div><div class="cal-date-label">Sep 2025</div></div>
+        <div>
+          <div style="font-weight:600;color:var(--navy);margin-bottom:4px;">Q1 Advance Tax <span class="badge-quarterly">Quarter 1</span></div>
+          <div style="font-size:13px;color:var(--text-mid);">First quarter advance tax payment — July to September 2025</div>
+        </div>
+      </div>
+      <div class="cal-event">
+        <div class="cal-date"><div class="cal-date-day">25</div><div class="cal-date-label">Dec 2025</div></div>
+        <div>
+          <div style="font-weight:600;color:var(--navy);margin-bottom:4px;">Q2 Advance Tax <span class="badge-quarterly">Quarter 2</span></div>
+          <div style="font-size:13px;color:var(--text-mid);">Second quarter advance tax payment — October to December 2025</div>
+        </div>
+      </div>
+      <div class="cal-event">
+        <div class="cal-date"><div class="cal-date-day">25</div><div class="cal-date-label">Mar 2026</div></div>
+        <div>
+          <div style="font-weight:600;color:var(--navy);margin-bottom:4px;">Q3 Advance Tax <span class="badge-quarterly">Quarter 3</span></div>
+          <div style="font-size:13px;color:var(--text-mid);">Third quarter advance tax payment — January to March 2026</div>
+        </div>
+      </div>
+      <div class="cal-event">
+        <div class="cal-date"><div class="cal-date-day">15</div><div class="cal-date-label">Jun 2026</div></div>
+        <div>
+          <div style="font-weight:600;color:var(--navy);margin-bottom:4px;">Q4 Advance Tax <span class="badge-quarterly">Quarter 4</span></div>
+          <div style="font-size:13px;color:var(--text-mid);">Fourth quarter advance tax payment — April to June 2026</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Annual -->
+    <div class="cal-month">
+      <div class="cal-month-header" style="background:#065F46;">
+        <span style="font-size:20px;">📅</span>
+        <h3>Annual Deadlines — Tax Year 2025-26</h3>
+      </div>
+      <div class="cal-event">
+        <div class="cal-date"><div class="cal-date-day">30</div><div class="cal-date-label">Sep 2026</div></div>
+        <div>
+          <div style="font-weight:600;color:var(--navy);margin-bottom:4px;">Income Tax Return — Individuals <span class="badge-critical">Critical</span></div>
+          <div style="font-size:13px;color:var(--text-mid);">Deadline to file income tax return for Tax Year 2025-26 (July 2025 – June 2026). Section 118, ITO 2001. Penalty: Rs. 40,000 minimum under Section 182.</div>
+        </div>
+      </div>
+      <div class="cal-event">
+        <div class="cal-date"><div class="cal-date-day">31</div><div class="cal-date-label">Dec 2026</div></div>
+        <div>
+          <div style="font-weight:600;color:var(--navy);margin-bottom:4px;">Income Tax Return — Companies <span class="badge-annual">Annual</span></div>
+          <div style="font-size:13px;color:var(--text-mid);">Companies with special tax year ending December 31. Section 118, ITO 2001.</div>
+        </div>
+      </div>
+      <div class="cal-event">
+        <div class="cal-date"><div class="cal-date-day">30</div><div class="cal-date-label">Sep 2026</div></div>
+        <div>
+          <div style="font-weight:600;color:var(--navy);margin-bottom:4px;">Wealth Statement Filing <span class="badge-critical">Critical</span></div>
+          <div style="font-size:13px;color:var(--text-mid);">Mandatory wealth statement with annual return. Declare all assets, liabilities, and foreign assets. Filed alongside income tax return.</div>
+        </div>
+      </div>
+      <div class="cal-event">
+        <div class="cal-date"><div class="cal-date-day">31</div><div class="cal-date-label">Jan 2026</div></div>
+        <div>
+          <div style="font-weight:600;color:var(--navy);margin-bottom:4px;">Annual WHT Statement <span class="badge-annual">Annual</span></div>
+          <div style="font-size:13px;color:var(--text-mid);">Annual withholding tax statement for Tax Year 2025. Submit on IRIS portal under Section 165.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Penalties -->
+    <div style="background:#fef2f2;border:1px solid #fca5a5;border-radius:var(--radius-lg);padding:20px;">
+      <h3 style="font-size:15px;font-weight:700;color:#dc2626;margin:0 0 12px;">⚠️ Penalties for Late Filing — Section 182</h3>
+      <div style="font-size:13.5px;color:#991b1b;line-height:1.8;">
+        <div>• Late return filing: <strong>Rs. 1,000 per day</strong> (minimum Rs. 10,000, maximum Rs. 50,000)</div>
+        <div>• Late WHT deposit: <strong>12% per annum</strong> default surcharge</div>
+        <div>• Non-filing: <strong>Minimum Rs. 40,000</strong> penalty</div>
+        <div>• Late sales tax return: <strong>Rs. 10,000</strong> per return</div>
+      </div>
+    </div>
+
+    {% include 'partials/cta_banner.html' %}
+
+  </main>
+  <aside class="content-sidebar">
+    {% include 'partials/sidebar.html' %}
+  </aside>
+</div>
+{% endblock %}

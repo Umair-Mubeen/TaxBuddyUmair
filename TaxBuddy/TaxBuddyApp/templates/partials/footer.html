@@ -1,4 +1,3 @@
-
 {% load static %}
 
 <footer>
@@ -49,6 +48,8 @@
         <a href="{% url 'sales_tax_guides' %}">Sales Tax Guide</a>
         <a href="{% url 'income_tax_rates' %}">Income Tax Rates 2025–26</a>
         <a href="{% url 'withholding_tax_rates' %}">Withholding Tax Rates</a>
+        <a href="{% url 'atl_check' %}">ATL Check</a>
+        <a href="{% url 'fbr_iris_guide' %}">FBR IRIS Guide</a>
         <a href="{% url 'question_list' %}">Tax MCQs</a>
       </div>
     </div>
@@ -69,8 +70,12 @@
     <div>
       <div class="footer-col-title">Company</div>
       <div class="footer-links">
+        <a href="{% url 'about_us' %}">About Us</a>
         <a href="{% url 'online_services' %}">Services &amp; Pricing</a>
         <a href="{% url 'viewBlogs' %}">Blog</a>
+        <a href="{% url 'atl_check' %}">ATL Check</a>
+        <a href="{% url 'tax_calendar' %}">Tax Calendar</a>
+        <a href="{% url 'fbr_iris_guide' %}">FBR IRIS Guide</a>
         <a href="{% url 'privacy_policy' %}">Privacy Policy</a>
         <a href="{% url 'terms_and_conditions' %}">Terms &amp; Conditions</a>
       </div>
