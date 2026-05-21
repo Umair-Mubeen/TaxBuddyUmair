@@ -34,17 +34,104 @@
 <div class="content-grid">
   <main class="content-main">
 
-    <!-- Hero Card -->
-    <div class="atl-hero-card">
-      <div style="font-size:48px;margin-bottom:12px;">📋</div>
-      <h2 style="font-size:22px;font-weight:700;color:#fff;margin:0 0 10px;">Check Your ATL Status Now</h2>
-      <p style="font-size:14px;color:rgba(255,255,255,.75);margin:0 0 20px;">FBR updates the Active Taxpayers List every week. Check if your name appears on ATL.</p>
-      <a href="https://atl.fbr.gov.pk/atl/online/" target="_blank" rel="noopener noreferrer"
-         style="display:inline-flex;align-items:center;gap:8px;background:#0D9E72;color:#fff;padding:13px 28px;border-radius:8px;font-weight:700;font-size:15px;text-decoration:none;">
-        🔍 Check ATL on FBR Portal →
-      </a>
-      <p style="font-size:12px;color:rgba(255,255,255,.5);margin:12px 0 0;">You will be redirected to FBR's official ATL portal</p>
+    <!-- ATL Check Widget — DB Search -->
+    <div class="atl-hero-card" style="padding:28px;">
+      <div style="font-size:40px;margin-bottom:10px;">🔍</div>
+      <h2 style="font-size:22px;font-weight:700;color:#fff;margin:0 0 8px;">Check Your ATL Status</h2>
+      <p style="font-size:14px;color:rgba(255,255,255,.7);margin:0 0 6px;">Search directly from FBR Active Taxpayers List — No Captcha!</p>
+      {% if atl_total %}
+      <div style="font-size:12px;color:rgba(255,255,255,.45);margin-bottom:18px;">📋 {{ atl_total|floatformat:"0" }} active taxpayers in database</div>
+      {% endif %}
+
+      <!-- DB Search Form -->
+      <div style="background:rgba(255,255,255,.08);border-radius:12px;padding:20px;max-width:480px;margin:0 auto;">
+
+        <div style="margin-bottom:14px;text-align:left;">
+          <label style="font-size:12px;font-weight:600;color:rgba(255,255,255,.6);text-transform:uppercase;letter-spacing:.06em;display:block;margin-bottom:6px;">Enter CNIC or NTN</label>
+          <input type="text" id="atlInput"
+            placeholder="e.g. 3520112345671 or 1234567"
+            maxlength="15"
+            style="width:100%;padding:12px 14px;border-radius:8px;border:2px solid transparent;font-size:15px;font-family:inherit;background:#fff;color:#0A2647;box-sizing:border-box;outline:none;letter-spacing:.05em;transition:border-color .15s;"
+            oninput="this.value=this.value.replace(/[^0-9]/g,'').slice(0,13)"
+            onkeydown="if(event.key==='Enter') searchATL()"
+          >
+          <div style="font-size:11px;color:rgba(255,255,255,.4);margin-top:5px;">CNIC: 13 digits without dashes · NTN: 7 digits</div>
+        </div>
+
+        <button onclick="searchATL()" id="atlBtn"
+          style="width:100%;background:#0D9E72;color:#fff;border:none;padding:13px;border-radius:8px;font-size:15px;font-weight:700;font-family:inherit;cursor:pointer;transition:background .15s;">
+          🔍 Check ATL Status
+        </button>
+
+        <!-- Result -->
+        <div id="atlResult" style="display:none;margin-top:16px;border-radius:10px;padding:16px;text-align:left;"></div>
+      </div>
+
+      <p style="font-size:11px;color:rgba(255,255,255,.35);margin:14px 0 0;">
+        Data sourced from FBR ATL — updated weekly
+      </p>
     </div>
+
+    <script>
+    function searchATL(){
+      var q = document.getElementById('atlInput').value.trim().replace(/-/g,'').replace(/ /g,'');
+      var btn = document.getElementById('atlBtn');
+      var result = document.getElementById('atlResult');
+
+      if(!q || q.length < 7){
+        showResult('⚠️ Please enter at least 7 digits', '#fffbeb', '#92400e', false);
+        return;
+      }
+
+      // Loading state
+      btn.textContent = '⏳ Searching...';
+      btn.disabled = true;
+      result.style.display = 'none';
+
+      fetch('/api/atl-search/?q=' + encodeURIComponent(q))
+        .then(function(r){ return r.json(); })
+        .then(function(data){
+          btn.textContent = '🔍 Check ATL Status';
+          btn.disabled = false;
+
+          if(data.found){
+            result.style.display = 'block';
+            result.style.background = '#f0fdf4';
+            result.style.border = '1px solid #bbf7d0';
+            result.innerHTML =
+              '<div style="font-size:16px;font-weight:700;color:#15803d;margin-bottom:8px;">✅ Active Filer</div>' +
+              '<div style="font-size:13px;color:#166534;line-height:1.8;">' +
+              '<div><strong>Name:</strong> ' + (data.name||'—') + '</div>' +
+              '<div><strong>NTN:</strong> ' + data.ntn + '</div>' +
+              '<div><strong>Tax Year:</strong> ATL ' + data.tax_year + '</div>' +
+              '</div>' +
+              '<div style="margin-top:10px;font-size:12px;color:#15803d;background:#dcfce7;padding:6px 10px;border-radius:6px;">This person pays lower WHT rates on property, banking & vehicles</div>';
+          } else {
+            result.style.display = 'block';
+            result.style.background = '#fef2f2';
+            result.style.border = '1px solid #fca5a5';
+            result.innerHTML =
+              '<div style="font-size:16px;font-weight:700;color:#dc2626;margin-bottom:8px;">❌ Not on ATL</div>' +
+              '<div style="font-size:13px;color:#991b1b;line-height:1.7;">' + data.message + '</div>' +
+              '<div style="margin-top:10px;font-size:12px;color:#dc2626;background:#fee2e2;padding:6px 10px;border-radius:6px;">File your return at <a href="https://iris.fbr.gov.pk" target="_blank" style="color:#dc2626;font-weight:700;">iris.fbr.gov.pk</a> to become a filer</div>';
+          }
+        })
+        .catch(function(){
+          btn.textContent = '🔍 Check ATL Status';
+          btn.disabled = false;
+          showResult('❌ Connection error. Please try again.', '#fef2f2', '#dc2626', false);
+        });
+    }
+
+    function showResult(msg, bg, color, found){
+      var result = document.getElementById('atlResult');
+      result.style.display = 'block';
+      result.style.background = bg;
+      result.style.border = '1px solid ' + color;
+      result.style.color = color;
+      result.innerHTML = '<div style="font-weight:600;">' + msg + '</div>';
+    }
+    </script>
 
     <!-- How to Check -->
     <h2 style="font-size:20px;font-weight:700;color:var(--navy);margin:0 0 16px;">How to Check ATL Status</h2>
@@ -52,42 +139,50 @@
     <div class="atl-step">
       <div class="atl-step-num">1</div>
       <div>
-        <div style="font-weight:700;color:var(--navy);margin-bottom:4px;">Visit FBR ATL Portal</div>
-        <div style="font-size:13.5px;color:var(--text-mid);">Go to <a href="https://atl.fbr.gov.pk/atl/online/" target="_blank" style="color:var(--green);font-weight:600;">atl.fbr.gov.pk</a> — FBR's official Active Taxpayers List portal</div>
+        <div style="font-weight:700;color:var(--navy);margin-bottom:4px;">Visit FBR IRIS Portal</div>
+        <div style="font-size:13.5px;color:var(--text-mid);">Go to <a href="https://iris.fbr.gov.pk/" target="_blank" style="color:var(--green);font-weight:600;">iris.fbr.gov.pk</a> — FBR's official IRIS portal</div>
       </div>
     </div>
 
     <div class="atl-step">
       <div class="atl-step-num">2</div>
       <div>
-        <div style="font-weight:700;color:var(--navy);margin-bottom:4px;">Select Search Type</div>
-        <div style="font-size:13.5px;color:var(--text-mid);">Choose from: <strong>CNIC</strong> (for individuals), <strong>NTN</strong> (for businesses/companies), or <strong>Registration No.</strong></div>
+        <div style="font-weight:700;color:var(--navy);margin-bottom:4px;">Click "Online Verifications"</div>
+        <div style="font-size:13.5px;color:var(--text-mid);">On the IRIS homepage scroll down to <strong>Online Verifications</strong> section — no login required</div>
       </div>
     </div>
 
     <div class="atl-step">
       <div class="atl-step-num">3</div>
       <div>
-        <div style="font-weight:700;color:var(--navy);margin-bottom:4px;">Enter Your Number</div>
-        <div style="font-size:13.5px;color:var(--text-mid);">Enter your 13-digit CNIC (without dashes) or NTN number and click Search</div>
+        <div style="font-weight:700;color:var(--navy);margin-bottom:4px;">Click "Active Taxpayer List (Income Tax)"</div>
+        <div style="font-size:13.5px;color:var(--text-mid);">From the left panel select <strong>Active Taxpayer List (Income Tax)</strong> — the verification form will open on the right</div>
       </div>
     </div>
 
     <div class="atl-step">
       <div class="atl-step-num">4</div>
       <div>
-        <div style="font-weight:700;color:var(--navy);margin-bottom:4px;">Check Result</div>
-        <div style="font-size:13.5px;color:var(--text-mid);">If your name appears — you are an <strong style="color:#15803d;">Active Filer ✅</strong>. If not — you are a <strong style="color:#dc2626;">Non-Filer ❌</strong></div>
+        <div style="font-weight:700;color:var(--navy);margin-bottom:4px;">Select Parameter Type</div>
+        <div style="font-size:13.5px;color:var(--text-mid);">Select from dropdown: <strong>NTN</strong>, <strong>CNIC</strong>, <strong>Passport No.</strong>, or <strong>Reg/Inc. No.</strong> — then enter your Registration No.</div>
+      </div>
+    </div>
+
+    <div class="atl-step">
+      <div class="atl-step-num">5</div>
+      <div>
+        <div style="font-weight:700;color:var(--navy);margin-bottom:4px;">Enter Captcha & Click Verify</div>
+        <div style="font-size:13.5px;color:var(--text-mid);">Enter the Captcha code shown on screen and click <strong>Verify</strong>. Result will show immediately — Active Filer ✅ or Non-Filer ❌</div>
       </div>
     </div>
 
     <!-- Also check via SMS -->
     <div style="background:#f0fdf4;border:1px solid #bbf7d0;border-radius:var(--radius-lg);padding:20px;margin:20px 0;">
-      <h3 style="font-size:16px;font-weight:700;color:#15803d;margin:0 0 10px;">📱 Check ATL via SMS</h3>
-      <p style="font-size:13.5px;color:var(--text-mid);margin:0 0 10px;">Send SMS to <strong>9966</strong>:</p>
-      <div style="background:#fff;border:1px solid #bbf7d0;border-radius:8px;padding:12px 16px;font-family:monospace;font-size:14px;color:var(--navy);">
-        ATL &lt;space&gt; CNIC<br>
-        <span style="font-size:12px;color:var(--text-light);">Example: ATL 3520112345671</span>
+      <h3 style="font-size:16px;font-weight:700;color:#15803d;margin:0 0 10px;">📱 Also Check via ATL Portal (Alternative)</h3>
+      <p style="font-size:13.5px;color:var(--text-mid);margin:0 0 10px;">You can also check directly at FBR's ATL portal:</p>
+      <div style="background:#fff;border:1px solid #bbf7d0;border-radius:8px;padding:12px 16px;font-size:14px;color:var(--navy);">
+        <a href="https://atl.fbr.gov.pk/atl/online/" target="_blank" style="color:var(--green);font-weight:600;">atl.fbr.gov.pk/atl/online/</a>
+        <div style="font-size:12px;color:var(--text-light);margin-top:4px;">Enter CNIC or NTN directly — no captcha required on this portal</div>
       </div>
     </div>
 

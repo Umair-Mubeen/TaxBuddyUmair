@@ -99,6 +99,7 @@ urlpatterns = [
 
     # ── AI CHAT ──────────────────────────────────────────────
     path('ai-chat/', views.ai_chat, name='ai_chat'),
+    path('api/atl-search/', views.atl_search_api, name='atl_search_api'),
 
     # ── BLOG (MUST BE LAST — slug patterns are greedy) ────────
     path('blog/', views.viewBlogs, name='viewBlogs'),

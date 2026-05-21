@@ -1556,7 +1556,42 @@ def about_us(request):
 
 # ── ATL CHECK ────────────────────────────────────────────────
 def atl_check(request):
-    return render(request, 'atl-check.html')
+    from .models import ATLRecord
+    from django.http import JsonResponse
+    atl_total = ATLRecord.objects.count()
+    atl_updated = ATLRecord.objects.order_by('-updated_at').first()
+    return render(request, 'atl-check.html', {
+        'atl_total': atl_total,
+        'atl_updated': atl_updated,
+    })
+
+
+def atl_search_api(request):
+    from .models import ATLRecord
+    from django.http import JsonResponse
+    from django.db.models import Q
+
+    query = request.GET.get('q', '').strip().replace('-', '').replace(' ', '')
+
+    if not query or len(query) < 7:
+        return JsonResponse({'found': False, 'error': 'Enter at least 7 digits'})
+
+    record = ATLRecord.objects.filter(ntn__icontains=query).first()
+
+    if record:
+        return JsonResponse({
+            'found': True,
+            'ntn': record.ntn,
+            'name': record.business_name or record.name or 'N/A',
+            'tax_year': record.tax_year,
+            'message': f'{record.business_name or record.name} is an Active Filer',
+        })
+    else:
+        return JsonResponse({
+            'found': False,
+            'status': 'Not Found',
+            'message': f'No record found for {query} in ATL. This person/entity may be a Non-Filer or data may not be updated yet.',
+        })
 
 # ── TAX CALENDAR ─────────────────────────────────────────────
 def tax_calendar(request):

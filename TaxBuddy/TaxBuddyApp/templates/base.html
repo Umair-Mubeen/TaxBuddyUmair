@@ -404,5 +404,95 @@ body.tb-no-scroll{overflow:hidden;position:fixed;width:100%}
 })();
 </script>
 
+
+<style>
+/* ── SCROLL ANIMATIONS ──────────────────────────────────── */
+.fade-up{opacity:0;transform:translateY(28px);transition:opacity .6s ease,transform .6s ease}
+.fade-up.visible{opacity:1;transform:translateY(0)}
+.fade-left{opacity:0;transform:translateX(-28px);transition:opacity .6s ease,transform .6s ease}
+.fade-left.visible{opacity:1;transform:translateX(0)}
+.fade-right{opacity:0;transform:translateX(28px);transition:opacity .6s ease,transform .6s ease}
+.fade-right.visible{opacity:1;transform:translateX(0)}
+.scale-in{opacity:0;transform:scale(.94);transition:opacity .5s ease,transform .5s ease}
+.scale-in.visible{opacity:1;transform:scale(1)}
+
+/* ── HOVER LIFT ──────────────────────────────────────────── */
+.card,.wht-cards-grid>div,.calc-card{
+  transition:transform .2s ease,box-shadow .2s ease!important;
+}
+.card:hover,.wht-cards-grid>div:hover,.calc-card:hover{
+  transform:translateY(-4px)!important;
+  box-shadow:0 12px 32px rgba(10,38,71,.12)!important;
+}
+
+/* ── STAGGER delay helpers ───────────────────────────────── */
+.delay-1{transition-delay:.1s}
+.delay-2{transition-delay:.2s}
+.delay-3{transition-delay:.3s}
+.delay-4{transition-delay:.4s}
+.delay-5{transition-delay:.5s}
+</style>
+
+<script>
+/* Scroll observer — fade in elements */
+(function(){
+  var io = new IntersectionObserver(function(entries){
+    entries.forEach(function(e){
+      if(e.isIntersecting){
+        e.target.classList.add('visible');
+        io.unobserve(e.target);
+      }
+    });
+  },{threshold:0.12});
+
+  function observe(){
+    document.querySelectorAll('.fade-up,.fade-left,.fade-right,.scale-in')
+      .forEach(function(el){ io.observe(el); });
+  }
+  if(document.readyState==='loading'){
+    document.addEventListener('DOMContentLoaded', observe);
+  } else {
+    observe();
+  }
+})();
+
+/* Counter animation */
+function animateCounter(el){
+  var target = parseInt(el.dataset.count);
+  var duration = 1800;
+  var start = null;
+  function step(ts){
+    if(!start) start = ts;
+    var progress = Math.min((ts-start)/duration, 1);
+    var ease = 1 - Math.pow(1-progress, 3);
+    el.textContent = Math.floor(ease * target).toLocaleString();
+    if(progress < 1) requestAnimationFrame(step);
+    else el.textContent = target.toLocaleString() + (el.dataset.suffix||'');
+  }
+  requestAnimationFrame(step);
+}
+
+/* Counter observer */
+(function(){
+  var cio = new IntersectionObserver(function(entries){
+    entries.forEach(function(e){
+      if(e.isIntersecting){
+        animateCounter(e.target);
+        cio.unobserve(e.target);
+      }
+    });
+  },{threshold:0.5});
+  function observeCounters(){
+    document.querySelectorAll('[data-count]').forEach(function(el){
+      cio.observe(el);
+    });
+  }
+  if(document.readyState==='loading'){
+    document.addEventListener('DOMContentLoaded', observeCounters);
+  } else {
+    observeCounters();
+  }
+})();
+</script>
 </body>
 </html>

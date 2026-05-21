@@ -58,14 +58,14 @@
           <div style="font-size:11px;color:rgba(255,255,255,.5);">Section 118, ITO 2001</div>
         </div>
         <div style="background:rgba(255,255,255,.08);border-radius:8px;padding:12px;">
-          <div style="font-size:22px;font-weight:700;color:#0D9E72;">15th Monthly</div>
+          <div style="font-size:22px;font-weight:700;color:#0D9E72;">18th Monthly</div>
           <div style="font-size:13px;color:rgba(255,255,255,.8);">Sales Tax Return</div>
           <div style="font-size:11px;color:rgba(255,255,255,.5);">Sales Tax Act 1990</div>
         </div>
         <div style="background:rgba(255,255,255,.08);border-radius:8px;padding:12px;">
-          <div style="font-size:22px;font-weight:700;color:#0D9E72;">15th Monthly</div>
+          <div style="font-size:22px;font-weight:700;color:#0D9E72;">Prescribed</div>
           <div style="font-size:13px;color:rgba(255,255,255,.8);">WHT Deposit</div>
-          <div style="font-size:11px;color:rgba(255,255,255,.5);">Section 160, ITO 2001</div>
+          <div style="font-size:11px;color:rgba(255,255,255,.5);">Section 160 — per IT Rules</div>
         </div>
         <div style="background:rgba(255,255,255,.08);border-radius:8px;padding:12px;">
           <div style="font-size:22px;font-weight:700;color:#0D9E72;">Quarterly</div>
@@ -81,61 +81,111 @@
         <span style="font-size:20px;">🔄</span>
         <h3>Monthly Recurring Deadlines</h3>
       </div>
+      <!-- Sales Tax -->
       <div class="cal-event">
-        <div class="cal-date"><div class="cal-date-day">15</div><div class="cal-date-label">Every Month</div></div>
+        <div class="cal-date"><div class="cal-date-day">10th</div><div class="cal-date-label">Every Month</div></div>
+        <div>
+          <div style="font-weight:600;color:var(--navy);margin-bottom:4px;">Sales Tax — Annexure Submission <span class="badge-monthly">Monthly</span></div>
+          <div style="font-size:13px;color:var(--text-mid);">Submit sales tax annexures (purchase/sales data) on FBR IRIS for the previous month. Prescribed sales tax persons must submit by 10th of each month.</div>
+        </div>
+      </div>
+      <div class="cal-event">
+        <div class="cal-date"><div class="cal-date-day">15th</div><div class="cal-date-label">Every Month</div></div>
+        <div>
+          <div style="font-weight:600;color:var(--navy);margin-bottom:4px;">Sales Tax Payment (GST) <span class="badge-monthly">Monthly</span></div>
+          <div style="font-size:13px;color:var(--text-mid);">Pay sales tax liability for previous month via CPR by 15th of each month. Applies to all registered sales tax persons.</div>
+        </div>
+      </div>
+
+      <div class="cal-event">
+        <div class="cal-date"><div class="cal-date-day">18th</div><div class="cal-date-label">Every Month</div></div>
         <div>
           <div style="font-weight:600;color:var(--navy);margin-bottom:4px;">Sales Tax Return Filing <span class="badge-monthly">Monthly</span></div>
-          <div style="font-size:13px;color:var(--text-mid);">File monthly GST return on FBR IRIS for previous month's transactions. Applies to all registered sales tax persons.</div>
+          <div style="font-size:13px;color:var(--text-mid);">Submit monthly sales tax return on FBR IRIS by 18th of each month. Return must be filed after annexure submission (10th) and payment (15th).</div>
         </div>
       </div>
-      <div class="cal-event">
-        <div class="cal-date"><div class="cal-date-day">15</div><div class="cal-date-label">Every Month</div></div>
+
+      <!-- WHT Deposit Section 160 -->
+      <div class="cal-event" style="background:#fffbeb;">
+        <div class="cal-date" style="background:#fffbeb;"><div class="cal-date-day" style="font-size:14px;color:#92400e;">Rules</div><div class="cal-date-label">Prescribed</div></div>
         <div>
           <div style="font-weight:600;color:var(--navy);margin-bottom:4px;">WHT Deposit — Section 160 <span class="badge-monthly">Monthly</span></div>
-          <div style="font-size:13px;color:var(--text-mid);">Withholding agents must deposit all tax withheld during previous month. Submit via CPR (Computerized Payment Receipt).</div>
+          <div style="font-size:13px;color:var(--text-mid);">Section 160 requires WHT to be deposited <strong>"within the time and manner as may be prescribed"</strong> — exact date is specified in Income Tax Rules 2002, not the statute itself. Salary WHT (Sec 149): by 7th of following month. Other WHT: within 7 days of deduction.</div>
         </div>
       </div>
-      <div class="cal-event">
-        <div class="cal-date"><div class="cal-date-day">15</div><div class="cal-date-label">Every Month</div></div>
-        <div>
-          <div style="font-weight:600;color:var(--navy);margin-bottom:4px;">Income Tax Withholding Statement <span class="badge-monthly">Monthly</span></div>
-          <div style="font-size:13px;color:var(--text-mid);">Submit monthly withholding tax statement on IRIS portal for taxes deducted under various sections.</div>
-        </div>
-      </div>
+
     </div>
 
     <!-- Quarterly -->
     <div class="cal-month">
       <div class="cal-month-header" style="background:#4C1D95;">
         <span style="font-size:20px;">📊</span>
-        <h3>Quarterly Deadlines — Advance Tax (Section 147)</h3>
+        <h3>Quarterly Deadlines — Advance Tax & WHT Statement</h3>
+      </div>
+
+      <!-- WHT Statement Section 165(2) -->
+      <div style="background:#ede9fe;padding:10px 20px;border-bottom:1px solid var(--border);">
+        <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:#4C1D95;">WHT Statement — Section 165(2) — Quarterly</div>
+      </div>
+      <div class="cal-event">
+        <div class="cal-date"><div class="cal-date-day">20</div><div class="cal-date-label">April</div></div>
+        <div>
+          <div style="font-weight:600;color:var(--navy);margin-bottom:4px;">WHT Statement — Q3 (Jan–Mar) <span class="badge-quarterly">Sec 165(2)(a)</span></div>
+          <div style="font-size:13px;color:var(--text-mid);">Quarter ending 31st March — WHT statement due on or before 20th April. Prescribed persons deducting/collecting tax under Division II, III or Chapter XII or Tenth Schedule.</div>
+        </div>
+      </div>
+      <div class="cal-event">
+        <div class="cal-date"><div class="cal-date-day">20</div><div class="cal-date-label">July</div></div>
+        <div>
+          <div style="font-weight:600;color:var(--navy);margin-bottom:4px;">WHT Statement — Q4 (Apr–Jun) <span class="badge-quarterly">Sec 165(2)(b)</span></div>
+          <div style="font-size:13px;color:var(--text-mid);">Quarter ending 30th June — WHT statement due on or before 20th July.</div>
+        </div>
+      </div>
+      <div class="cal-event">
+        <div class="cal-date"><div class="cal-date-day">20</div><div class="cal-date-label">October</div></div>
+        <div>
+          <div style="font-weight:600;color:var(--navy);margin-bottom:4px;">WHT Statement — Q1 (Jul–Sep) <span class="badge-quarterly">Sec 165(2)(c)</span></div>
+          <div style="font-size:13px;color:var(--text-mid);">Quarter ending 30th September — WHT statement due on or before 20th October.</div>
+        </div>
+      </div>
+      <div class="cal-event">
+        <div class="cal-date"><div class="cal-date-day">20</div><div class="cal-date-label">January</div></div>
+        <div>
+          <div style="font-weight:600;color:var(--navy);margin-bottom:4px;">WHT Statement — Q2 (Oct–Dec) <span class="badge-quarterly">Sec 165(2)(d)</span></div>
+          <div style="font-size:13px;color:var(--text-mid);">Quarter ending 31st December — WHT statement due on or before 20th January.</div>
+        </div>
+      </div>
+
+      <!-- Advance Tax Section 147 -->
+      <div style="background:#ede9fe;padding:10px 20px;border-bottom:1px solid var(--border);border-top:1px solid var(--border);margin-top:8px;">
+        <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:#4C1D95;">Advance Tax — Section 147 — Quarterly</div>
       </div>
       <div class="cal-event">
         <div class="cal-date"><div class="cal-date-day">25</div><div class="cal-date-label">Sep 2025</div></div>
         <div>
           <div style="font-weight:600;color:var(--navy);margin-bottom:4px;">Q1 Advance Tax <span class="badge-quarterly">Quarter 1</span></div>
-          <div style="font-size:13px;color:var(--text-mid);">First quarter advance tax payment — July to September 2025</div>
+          <div style="font-size:13px;color:var(--text-mid);">First quarter advance tax — July to September 2025</div>
         </div>
       </div>
       <div class="cal-event">
         <div class="cal-date"><div class="cal-date-day">25</div><div class="cal-date-label">Dec 2025</div></div>
         <div>
           <div style="font-weight:600;color:var(--navy);margin-bottom:4px;">Q2 Advance Tax <span class="badge-quarterly">Quarter 2</span></div>
-          <div style="font-size:13px;color:var(--text-mid);">Second quarter advance tax payment — October to December 2025</div>
+          <div style="font-size:13px;color:var(--text-mid);">Second quarter advance tax — October to December 2025</div>
         </div>
       </div>
       <div class="cal-event">
         <div class="cal-date"><div class="cal-date-day">25</div><div class="cal-date-label">Mar 2026</div></div>
         <div>
           <div style="font-weight:600;color:var(--navy);margin-bottom:4px;">Q3 Advance Tax <span class="badge-quarterly">Quarter 3</span></div>
-          <div style="font-size:13px;color:var(--text-mid);">Third quarter advance tax payment — January to March 2026</div>
+          <div style="font-size:13px;color:var(--text-mid);">Third quarter advance tax — January to March 2026</div>
         </div>
       </div>
       <div class="cal-event">
         <div class="cal-date"><div class="cal-date-day">15</div><div class="cal-date-label">Jun 2026</div></div>
         <div>
           <div style="font-weight:600;color:var(--navy);margin-bottom:4px;">Q4 Advance Tax <span class="badge-quarterly">Quarter 4</span></div>
-          <div style="font-size:13px;color:var(--text-mid);">Fourth quarter advance tax payment — April to June 2026</div>
+          <div style="font-size:13px;color:var(--text-mid);">Fourth quarter advance tax — April to June 2026</div>
         </div>
       </div>
     </div>
@@ -181,7 +231,8 @@
       <h3 style="font-size:15px;font-weight:700;color:#dc2626;margin:0 0 12px;">⚠️ Penalties for Late Filing — Section 182</h3>
       <div style="font-size:13.5px;color:#991b1b;line-height:1.8;">
         <div>• Late return filing: <strong>Rs. 1,000 per day</strong> (minimum Rs. 10,000, maximum Rs. 50,000)</div>
-        <div>• Late WHT deposit: <strong>12% per annum</strong> default surcharge</div>
+        <div>• Late WHT deposit (Sec 160): <strong>12% per annum</strong> default surcharge — per Income Tax Rules</div>
+        <div>• Late WHT statement (Sec 165): <strong>Rs. 2,500 per day</strong> of default</div>
         <div>• Non-filing: <strong>Minimum Rs. 40,000</strong> penalty</div>
         <div>• Late sales tax return: <strong>Rs. 10,000</strong> per return</div>
       </div>

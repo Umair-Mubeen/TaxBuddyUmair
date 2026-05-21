@@ -25,12 +25,12 @@
   <div class="hero-grid">
 
     <div class="hero-left">
-      <div class="hero-badge">
+      <div class="hero-badge fade-up">
         <span aria-hidden="true"></span>
         Trusted Pakistan Tax Platform
       </div>
-      <h1>Understand Pakistan<br>Tax Laws <em>Simply</em></h1>
-      <p class="hero-sub">
+      <h1 class="fade-up">Understand Pakistan<br>Tax Laws <em>Simply</em></h1>
+      <p class="hero-sub fade-up delay-1">
         Expert income tax &amp; sales tax guides, calculators, and tutorials for salaried
         individuals, freelancers, and businesses — updated per FBR 2025–26.
       </p>
@@ -40,8 +40,8 @@
       </div>
       <div class="hero-stats">
         <div><div class="hero-stat-num">500+</div><div class="hero-stat-lbl">Clients Helped</div></div>
-        <div><div class="hero-stat-num">50+</div><div class="hero-stat-lbl">Tax Guides</div></div>
-        <div><div class="hero-stat-num">200+</div><div class="hero-stat-lbl">MCQs Available</div></div>
+        <div><div class="hero-stat-num"><span data-count="50" data-suffix="+">50+</span></div><div class="hero-stat-lbl">Tax Guides</div></div>
+        <div><div class="hero-stat-num"><span data-count="200" data-suffix="+">200+</span></div><div class="hero-stat-lbl">MCQs Available</div></div>
         <div><div class="hero-stat-num">5+</div><div class="hero-stat-lbl">Years Experience</div></div>
       </div>
     </div>
@@ -104,10 +104,10 @@
 ══════════════════════════════════════════════ -->
 <section class="section section-alt">
   <div class="container">
-    <div class="section-header">
+    <div class="section-header fade-up">
       <div>
-        <div class="section-tag">Tax Guides</div>
-        <h2 class="section-title">Featured Tax Guides</h2>
+        <div class="section-tag fade-up">Tax Guides</div>
+        <h2 class="section-title fade-up">Featured Tax Guides</h2>
       </div>
       <a href="{% url 'income_tax_guides' %}" class="section-link">View All →</a>
     </div>
@@ -148,10 +148,10 @@
 ══════════════════════════════════════════════ -->
 <section class="section">
   <div class="container">
-    <div class="section-header">
+    <div class="section-header fade-up">
       <div>
-        <div class="section-tag">Tools</div>
-        <h2 class="section-title">Free Tax Calculators</h2>
+        <div class="section-tag fade-up">Tools</div>
+        <h2 class="section-title fade-up">Free Tax Calculators</h2>
       </div>
     </div>
     <div class="cards-grid">
@@ -195,10 +195,10 @@
 ══════════════════════════════════════════════ -->
 <section class="section section-alt">
   <div class="container">
-    <div class="section-header">
+    <div class="section-header fade-up">
       <div>
-        <div class="section-tag">Latest Articles</div>
-        <h2 class="section-title">Recent Tax Blog Posts</h2>
+        <div class="section-tag fade-up">Latest Articles</div>
+        <h2 class="section-title fade-up">Recent Tax Blog Posts</h2>
       </div>
       <a href="{% url 'viewBlogs' %}" class="section-link">View All →</a>
     </div>
@@ -206,7 +206,7 @@
     {% if latest_blogs %}
     <div class="cards-grid">
       {% for blog in latest_blogs %}
-      <a href="{% url 'BlogDetails' slug=blog.slug %}" class="card" style="text-decoration:none;">
+      <a href="{% url 'BlogDetails' slug=blog.slug %}" class="card fade-up" style="text-decoration:none;">
         {% if blog.featured_image %}
         <div class="card-img" style="background:linear-gradient(135deg,#0A2647,#1E5F8E);">
           <img src="{{ blog.featured_image.url }}" alt="{{ blog.title }}" loading="lazy" style="width:100%;height:100%;object-fit:cover;position:absolute;inset:0;">
@@ -239,10 +239,10 @@
 ══════════════════════════════════════════════ -->
 <!--<section class="section">-->
 <!--  <div class="container">-->
-<!--    <div class="section-header">-->
+<!--    <div class="section-header fade-up">-->
 <!--      <div>-->
-<!--        <div class="section-tag">Reviews</div>-->
-<!--        <h2 class="section-title">What Clients Say</h2>-->
+<!--        <div class="section-tag fade-up">Reviews</div>-->
+<!--        <h2 class="section-title fade-up">What Clients Say</h2>-->
 <!--      </div>-->
 <!--    </div>-->
 <!--    <div class="testi-grid">-->
@@ -295,10 +295,10 @@
 <section class="section" style="background:var(--bg);">
   <div class="container">
 
-    <div class="section-header" style="margin-bottom:24px;">
+    <div class="section-header fade-up" style="margin-bottom:24px;">
       <div>
-        <div class="section-tag">FBR 2025-26</div>
-        <h2 class="section-title">Key Withholding Tax Rates</h2>
+        <div class="section-tag fade-up">FBR 2025-26</div>
+        <h2 class="section-title fade-up">Key Withholding Tax Rates</h2>
         <p style="font-size:14px;color:var(--text-light);margin-top:6px;">Most searched WHT rates — Filer vs Late Filer vs Non-Filer</p>
       </div>
       <a href="{% url 'withholding_tax_rates' %}" class="section-link">Full Rate Card →</a>
@@ -314,7 +314,7 @@
       <!-- 236C Property Sale -->
       {% with r=wht_rates.236C %}
       {% if r %}
-      <div style="background:var(--white);border:1px solid var(--border);border-radius:14px;overflow:hidden;box-shadow:var(--shadow-sm);">
+      <div class="scale-in" style="background:var(--white);border:1px solid var(--border);border-radius:14px;overflow:hidden;box-shadow:var(--shadow-sm);">
         <div style="background:linear-gradient(135deg,#0A2647,#144272);padding:14px 16px;">
           <div style="font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.08em;color:rgba(255,255,255,.5);margin-bottom:4px;">{{ r.section }}</div>
           <div style="font-size:15px;font-weight:700;color:#fff;">🏠 Property Sale</div>
@@ -345,7 +345,7 @@
       <!-- 236K Property Purchase -->
       {% with r=wht_rates.236K %}
       {% if r %}
-      <div style="background:var(--white);border:1px solid var(--border);border-radius:14px;overflow:hidden;box-shadow:var(--shadow-sm);">
+      <div class="scale-in" style="background:var(--white);border:1px solid var(--border);border-radius:14px;overflow:hidden;box-shadow:var(--shadow-sm);">
         <div style="background:linear-gradient(135deg,#0A2647,#1E5F8E);padding:14px 16px;">
           <div style="font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.08em;color:rgba(255,255,255,.5);margin-bottom:4px;">{{ r.section }}</div>
           <div style="font-size:15px;font-weight:700;color:#fff;">🏡 Property Purchase</div>
@@ -376,7 +376,7 @@
       <!-- 151 Bank Profit -->
       {% with r=wht_rates.151 %}
       {% if r %}
-      <div style="background:var(--white);border:1px solid var(--border);border-radius:14px;overflow:hidden;box-shadow:var(--shadow-sm);">
+      <div class="scale-in" style="background:var(--white);border:1px solid var(--border);border-radius:14px;overflow:hidden;box-shadow:var(--shadow-sm);">
         <div style="background:linear-gradient(135deg,#0D9E72,#0A7558);padding:14px 16px;">
           <div style="font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.08em;color:rgba(255,255,255,.5);margin-bottom:4px;">{{ r.section }}</div>
           <div style="font-size:15px;font-weight:700;color:#fff;">🏦 Bank Profit</div>
@@ -408,7 +408,7 @@
       <!-- 153 Services -->
       {% with r=wht_rates.153 %}
       {% if r %}
-      <div style="background:var(--white);border:1px solid var(--border);border-radius:14px;overflow:hidden;box-shadow:var(--shadow-sm);">
+      <div class="scale-in" style="background:var(--white);border:1px solid var(--border);border-radius:14px;overflow:hidden;box-shadow:var(--shadow-sm);">
         <div style="background:linear-gradient(135deg,#744210,#975A16);padding:14px 16px;">
           <div style="font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.08em;color:rgba(255,255,255,.5);margin-bottom:4px;">{{ r.section }}</div>
           <div style="font-size:15px;font-weight:700;color:#fff;">🏢 Services / Contracts</div>
@@ -434,7 +434,7 @@
       <!-- 150 Dividends -->
       {% with r=wht_rates.150 %}
       {% if r %}
-      <div style="background:var(--white);border:1px solid var(--border);border-radius:14px;overflow:hidden;box-shadow:var(--shadow-sm);">
+      <div class="scale-in" style="background:var(--white);border:1px solid var(--border);border-radius:14px;overflow:hidden;box-shadow:var(--shadow-sm);">
         <div style="background:linear-gradient(135deg,#2D3748,#4A5568);padding:14px 16px;">
           <div style="font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.08em;color:rgba(255,255,255,.5);margin-bottom:4px;">{{ r.section }}</div>
           <div style="font-size:15px;font-weight:700;color:#fff;">💰 Dividends</div>
@@ -460,7 +460,7 @@
       <!-- 236Y Int'l Cards -->
       {% with r=wht_rates.236Y %}
       {% if r %}
-      <div style="background:var(--white);border:1px solid var(--border);border-radius:14px;overflow:hidden;box-shadow:var(--shadow-sm);">
+      <div class="scale-in" style="background:var(--white);border:1px solid var(--border);border-radius:14px;overflow:hidden;box-shadow:var(--shadow-sm);">
         <div style="background:linear-gradient(135deg,#1a1a2e,#16213e);padding:14px 16px;">
           <div style="font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.08em;color:rgba(255,255,255,.5);margin-bottom:4px;">{{ r.section }}</div>
           <div style="font-size:15px;font-weight:700;color:#fff;">💳 Int'l Card Payments</div>
@@ -829,10 +829,10 @@ document.querySelectorAll('.faq-q-new').forEach(function(btn) {
 ══════════════════════════════════════════════ -->
 <section class="section section-alt" id="contact">
   <div class="container">
-    <div class="section-header">
+    <div class="section-header fade-up">
       <div>
-        <div class="section-tag">Contact</div>
-        <h2 class="section-title">Need help with tax filing?</h2>
+        <div class="section-tag fade-up">Contact</div>
+        <h2 class="section-title fade-up">Need help with tax filing?</h2>
       </div>
     </div>
     <div class="contact-grid">
