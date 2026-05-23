@@ -132,14 +132,17 @@ class Command(BaseCommand):
         self.stdout.write('📊 Parsing file...')
         rows = []
 
-        # Try XLSX
+        # Try XLSX — all sheets
         try:
             wb = openpyxl.load_workbook(BytesIO(data), read_only=True)
-            ws = wb.active
-            rows = list(ws.iter_rows(min_row=2, values_only=True))
-            self.stdout.write('✓ XLSX format')
-        except Exception:
-            pass
+            self.stdout.write(f'✓ XLSX format — {len(wb.sheetnames)} sheet(s): {wb.sheetnames}')
+            for sheet_name in wb.sheetnames:
+                ws = wb[sheet_name]
+                sheet_rows = list(ws.iter_rows(min_row=2, values_only=True))
+                rows.extend(sheet_rows)
+                self.stdout.write(f'  ↳ Sheet "{sheet_name}": {len(sheet_rows):,} rows')
+        except Exception as e:
+            self.stdout.write(f'XLSX failed: {e}')
 
         # Try XLS
         if not rows:
