@@ -645,7 +645,7 @@
           <span>{{ faq.question }}</span>
           <span class="faq-icon">+</span>
         </div>
-        <div class="faq-a-new">{{ faq.answer }}</div>
+        <div class="faq-a-new">{{ faq.answer|safe}}</div>
       </div>
       {% endfor %}
     {% else %}

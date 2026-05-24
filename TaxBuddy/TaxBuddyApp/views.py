@@ -1550,53 +1550,51 @@ End response with: Aur koi sawaal? / Any other question?"""
     except Exception as e:
         return JsonResponse({'reply': f'Error: {str(e)}'})
 
-# ── ABOUT US ─────────────────────────────────────────────────
+# ── NEW PAGES ─────────────────────────────────────────────────
 def about_us(request):
     return render(request, 'about-us.html')
 
-# ── ATL CHECK ────────────────────────────────────────────────
 def atl_check(request):
-    from .models import ATLRecord
-    from django.http import JsonResponse
-    atl_total = ATLRecord.objects.count()
-    atl_updated = ATLRecord.objects.order_by('-updated_at').first()
+    try:
+        from .models import ATLRecord
+        atl_total   = ATLRecord.objects.count()
+        atl_updated = ATLRecord.objects.order_by('-updated_at').first()
+    except Exception:
+        atl_total   = 0
+        atl_updated = None
     return render(request, 'atl-check.html', {
-        'atl_total': atl_total,
+        'atl_total':   atl_total,
         'atl_updated': atl_updated,
     })
 
-
 def atl_search_api(request):
-    from .models import ATLRecord
     from django.http import JsonResponse
-    from django.db.models import Q
-
-    query = request.GET.get('q', '').strip().replace('-', '').replace(' ', '')
-
-    if not query or len(query) < 7:
-        return JsonResponse({'found': False, 'error': 'Enter at least 7 digits'})
-
-    record = ATLRecord.objects.filter(ntn__icontains=query).first()
-
-    if record:
+    try:
+        from .models import ATLRecord
+        query    = request.GET.get('q', '').strip().replace('-', '').replace(' ', '')
+        atl_type = request.GET.get('type', 'income')
+        if not query or len(query) < 7:
+            return JsonResponse({'found': False, 'error': 'Enter at least 7 digits'})
+        record = ATLRecord.objects.filter(ntn__icontains=query, atl_type=atl_type).first()
+        if not record:
+            record = ATLRecord.objects.filter(ntn__icontains=query).first()
+        if record:
+            return JsonResponse({
+                'found':    True,
+                'ntn':      record.ntn,
+                'name':     record.business_name or record.name or 'N/A',
+                'tax_year': record.tax_year,
+                'atl_type': record.get_atl_type_display(),
+            })
         return JsonResponse({
-            'found': True,
-            'ntn': record.ntn,
-            'name': record.business_name or record.name or 'N/A',
-            'tax_year': record.tax_year,
-            'message': f'{record.business_name or record.name} is an Active Filer',
+            'found':   False,
+            'message': f'No record found for {query}. May be Non-Filer or ATL not updated yet.',
         })
-    else:
-        return JsonResponse({
-            'found': False,
-            'status': 'Not Found',
-            'message': f'No record found for {query} in ATL. This person/entity may be a Non-Filer or data may not be updated yet.',
-        })
+    except Exception as e:
+        return JsonResponse({'found': False, 'error': str(e)})
 
-# ── TAX CALENDAR ─────────────────────────────────────────────
 def tax_calendar(request):
     return render(request, 'tax-calendar.html')
 
-# ── FBR IRIS GUIDE ───────────────────────────────────────────
 def fbr_iris_guide(request):
     return render(request, 'fbr-iris-guide.html')
