@@ -1554,6 +1554,7 @@ End response with: Aur koi sawaal? / Any other question?"""
 def about_us(request):
     return render(request, 'about-us.html')
 
+
 def atl_check(request):
     try:
         from .models import ATLRecord
@@ -1566,6 +1567,7 @@ def atl_check(request):
         'atl_total':   atl_total,
         'atl_updated': atl_updated,
     })
+
 
 def atl_search_api(request):
     from django.http import JsonResponse
@@ -1593,8 +1595,10 @@ def atl_search_api(request):
     except Exception as e:
         return JsonResponse({'found': False, 'error': str(e)})
 
+
 def tax_calendar(request):
     return render(request, 'tax-calendar.html')
+
 
 def fbr_iris_guide(request):
     return render(request, 'fbr-iris-guide.html')
