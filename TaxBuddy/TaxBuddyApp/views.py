@@ -1573,21 +1573,49 @@ def atl_search_api(request):
     from django.http import JsonResponse
     try:
         from .models import ATLRecord
-        query    = request.GET.get('q', '').strip().replace('-', '').replace(' ', '')
-        atl_type = request.GET.get('type', 'income')
-        if not query or len(query) < 7:
-            return JsonResponse({'found': False, 'error': 'Enter at least 7 digits'})
-        record = ATLRecord.objects.filter(ntn__icontains=query, atl_type=atl_type).first()
+        query = request.GET.get('q', '').strip().replace('-', '').replace(' ', '')
+
+        if not query or len(query) < 4:
+            return JsonResponse({'found': False, 'error': 'Enter at least 4 digits'})
+
+        record = None
+
+        # 1. Exact match
+        record = ATLRecord.objects.filter(ntn=query).first()
+
+        # 2. Zero-padded — try 7,8,9,10 digit padding
+        if not record:
+            for pad in [7, 8, 9, 10]:
+                padded = query.zfill(pad)
+                record = ATLRecord.objects.filter(ntn=padded).first()
+                if record:
+                    break
+
+        # 3. Strip leading zeros
+        if not record:
+            stripped = query.lstrip('0')
+            if stripped:
+                record = ATLRecord.objects.filter(ntn=stripped).first()
+
+        # 4. Contains
         if not record:
             record = ATLRecord.objects.filter(ntn__icontains=query).first()
+
         if record:
+            # Safe atl_type — field may not exist in old DB
+            try:
+                atl_type_display = record.get_atl_type_display()
+            except Exception:
+                atl_type_display = 'Income Tax'
+
             return JsonResponse({
                 'found':    True,
                 'ntn':      record.ntn,
                 'name':     record.business_name or record.name or 'N/A',
                 'tax_year': record.tax_year,
-                'atl_type': record.get_atl_type_display(),
+                'atl_type': atl_type_display,
             })
+
         return JsonResponse({
             'found':   False,
             'message': f'No record found for {query}. May be Non-Filer or ATL not updated yet.',

@@ -38,7 +38,21 @@
     <div class="atl-hero-card" style="padding:28px;">
       <div style="font-size:40px;margin-bottom:10px;">🔍</div>
       <h2 style="font-size:22px;font-weight:700;color:#fff;margin:0 0 8px;">Check Your ATL Status</h2>
-      <p style="font-size:14px;color:rgba(255,255,255,.7);margin:0 0 6px;">Search directly from FBR Active Taxpayers List — No Captcha!</p>
+      <p style="font-size:14px;color:rgba(255,255,255,.7);margin:0 0 12px;">Search directly from FBR Active Taxpayers List — No Captcha!</p>
+
+      <!-- ATL Type Toggle -->
+      <div style="display:flex;gap:8px;justify-content:center;margin-bottom:6px;">
+        <button onclick="setATLType('income',this)"
+          id="btnIncome"
+          style="padding:7px 20px;border-radius:20px;border:2px solid #0D9E72;background:#0D9E72;color:#fff;font-size:13px;font-weight:600;cursor:pointer;font-family:inherit;">
+          📋 Income Tax ATL
+        </button>
+        <button onclick="setATLType('sales',this)"
+          id="btnSales"
+          style="padding:7px 20px;border-radius:20px;border:2px solid rgba(255,255,255,.3);background:transparent;color:rgba(255,255,255,.7);font-size:13px;font-weight:600;cursor:pointer;font-family:inherit;">
+          🏪 Sales Tax ATL
+        </button>
+      </div>
       {% if atl_total %}
       <div style="font-size:12px;color:rgba(255,255,255,.45);margin-bottom:18px;">📋 {{ atl_total|floatformat:"0" }} active taxpayers in database</div>
       {% endif %}
@@ -88,7 +102,7 @@
       btn.disabled = true;
       result.style.display = 'none';
 
-      fetch('/api/atl-search/?q=' + encodeURIComponent(q))
+      fetch('/api/atl-search/?q=' + encodeURIComponent(q) + '&type=income')
         .then(function(r){ return r.json(); })
         .then(function(data){
           btn.textContent = '🔍 Check ATL Status';
@@ -96,23 +110,28 @@
 
           if(data.found){
             result.style.display = 'block';
-            result.style.background = '#f0fdf4';
-            result.style.border = '1px solid #bbf7d0';
+            result.style.background = 'rgba(13,158,114,.15)';
+            result.style.border = '1.5px solid #0D9E72';
             result.innerHTML =
-              '<div style="font-size:16px;font-weight:700;color:#15803d;margin-bottom:8px;">✅ Active Filer</div>' +
-              '<div style="font-size:13px;color:#166534;line-height:1.8;">' +
-              '<div><strong>Name:</strong> ' + (data.name||'—') + '</div>' +
-              '<div><strong>NTN:</strong> ' + data.ntn + '</div>' +
-              '<div><strong>Tax Year:</strong> ATL ' + data.tax_year + '</div>' +
+              '<div style="display:flex;align-items:center;gap:10px;margin-bottom:12px;">' +
+                '<div style="width:40px;height:40px;border-radius:50%;background:#0D9E72;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0;">✅</div>' +
+                '<div><div style="font-size:16px;font-weight:700;color:#fff;">Active Filer</div>' +
+                '<div style="font-size:12px;color:rgba(255,255,255,.6);">Appears on FBR Active Taxpayers List</div></div>' +
               '</div>' +
-              '<div style="margin-top:10px;font-size:12px;color:#15803d;background:#dcfce7;padding:6px 10px;border-radius:6px;">This person pays lower WHT rates on property, banking & vehicles</div>';
+              '<div style="background:rgba(255,255,255,.08);border-radius:8px;padding:12px;font-size:13px;color:rgba(255,255,255,.9);line-height:2;">' +
+              '<div><span style="color:rgba(255,255,255,.5);width:80px;display:inline-block;">Name</span><strong>' + (data.name||'—') + '</strong></div>' +
+              '<div><span style="color:rgba(255,255,255,.5);width:80px;display:inline-block;">NTN</span><strong>' + data.ntn + '</strong></div>' +
+              '<div><span style="color:rgba(255,255,255,.5);width:80px;display:inline-block;">Tax Year</span><strong>ATL ' + data.tax_year + '</strong></div>' +
+              '<div><span style="color:rgba(255,255,255,.5);width:80px;display:inline-block;">Type</span><strong>' + (data.atl_type||'Income Tax') + '</strong></div>' +
+              '</div>' +
+              '<div style="margin-top:10px;font-size:12px;color:#0D9E72;background:rgba(13,158,114,.1);padding:8px 12px;border-radius:6px;border:1px solid rgba(13,158,114,.3);">💚 This person pays lower WHT rates on property, banking & vehicles</div>';
           } else {
             result.style.display = 'block';
             result.style.background = '#fef2f2';
             result.style.border = '1px solid #fca5a5';
             result.innerHTML =
               '<div style="font-size:16px;font-weight:700;color:#dc2626;margin-bottom:8px;">❌ Not on ATL</div>' +
-              '<div style="font-size:13px;color:#991b1b;line-height:1.7;">' + data.message + '</div>' +
+              '<div style="font-size:13px;color:#991b1b;line-height:1.7;">' + (data.message || 'No record found. This person may be a Non-Filer or ATL not updated yet.') + '</div>' +
               '<div style="margin-top:10px;font-size:12px;color:#dc2626;background:#fee2e2;padding:6px 10px;border-radius:6px;">File your return at <a href="https://iris.fbr.gov.pk" target="_blank" style="color:#dc2626;font-weight:700;">iris.fbr.gov.pk</a> to become a filer</div>';
           }
         })
