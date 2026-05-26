@@ -59,10 +59,16 @@ urlpatterns = [
     path('test/', views.test, name='test'),
 
     # ── NEW PAGES ─────────────────────────────────────────────
-    path('about-us/', views.about_us, name='about_us'),
-    path('atl-check/', views.atl_check, name='atl_check'),
-    path('tax-calendar/', views.tax_calendar, name='tax_calendar'),
+    path('about-us/',       views.about_us,       name='about_us'),
+    path('atl-check/',      views.atl_check,      name='atl_check'),
+    path('tax-calendar/',   views.tax_calendar,   name='tax_calendar'),
     path('fbr-iris-guide/', views.fbr_iris_guide, name='fbr_iris_guide'),
+
+    # ── 301 REDIRECTS — Fix Soft 404 MCQ category pages ───────
+    path('income-tax-mcqs-pakistan/exemptions-and-tax-concessions/', views.redirect_to_mcqs),
+    path('income-tax-mcqs-pakistan/deductible-allowances/',          views.redirect_to_mcqs),
+    path('income-tax-mcqs-pakistan/types-of-income/',                views.redirect_to_mcqs),
+    path('income-tax-mcqs-pakistan/computation-of-taxable-income/', views.redirect_to_mcqs),
 
     # ── ADMIN / CPANEL ────────────────────────────────────────
     path('dashboard/', views.Dashboard, name='Dashboard'),
