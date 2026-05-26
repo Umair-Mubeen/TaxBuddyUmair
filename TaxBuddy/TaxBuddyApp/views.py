@@ -1641,3 +1641,8 @@ def tax_calendar(request):
 
 def fbr_iris_guide(request):
     return render(request, 'fbr-iris-guide.html')
+
+
+def redirect_to_mcqs(request, **kwargs):
+    from django.http import HttpResponsePermanentRedirect
+    return HttpResponsePermanentRedirect('/income-tax-mcqs-pakistan/')
