@@ -247,7 +247,6 @@ def BlogDetails(request, slug=None):
 
 def viewBlogs(request, slug=None):
     try:
-        #return HttpResponse(str(slug))
         # No slug = show all published blogs
         if not slug:
             blogs = Blog.objects.filter(
@@ -994,7 +993,6 @@ def delete_wht_rate(request, pk):
         messages.error(request, f'Error: {str(e)}')
     return redirect('manage_wht_rates')
 
-
 def question_list(request, category_slug=None):
     try:
         print(category_slug)
@@ -1034,7 +1032,7 @@ def question_list(request, category_slug=None):
                     category_not_found = True
 
         paginator = Paginator(questions, 10)
-        page_obj = paginator.get_page(request.GET.get("page"))
+        page_obj = paginator.get_page(request.GET.get("page", 1))
 
         raw_categories = (
             Question.objects
