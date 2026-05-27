@@ -56,6 +56,29 @@
 <!--      {% endfor %}-->
 <!--    </div>-->
 
+    <!-- SEO Intro based on category -->
+    {% if category_name == 'Income Tax' or category_slug == 'income-tax' %}
+    <div style="background:var(--white);border:1px solid var(--border);border-radius:var(--radius-lg);padding:16px 20px;margin-bottom:20px;">
+      <p style="font-size:14px;color:var(--text-mid);line-height:1.75;margin:0;">
+        Browse all <strong>income tax articles for Pakistan</strong> — covering ITO 2001 sections, filer vs non-filer rates, property tax, withholding tax, advance tax, and FBR compliance. Updated per Finance Act 2025-26.
+        <a href="{% url 'income_tax_guides' %}" style="color:var(--green);font-weight:600;"> View Income Tax Guides →</a>
+      </p>
+    </div>
+    {% elif category_name == 'Sales Tax' or category_slug == 'sales-tax' %}
+    <div style="background:var(--white);border:1px solid var(--border);border-radius:var(--radius-lg);padding:16px 20px;margin-bottom:20px;">
+      <p style="font-size:14px;color:var(--text-mid);line-height:1.75;margin:0;">
+        Browse all <strong>sales tax articles for Pakistan</strong> — covering GST 18%, input/output tax, zero-rated goods, Tier-1 retailers, monthly return filing, and SRO updates under Sales Tax Act 1990.
+        <a href="{% url 'sales_tax_guides' %}" style="color:var(--green);font-weight:600;"> View Sales Tax Guides →</a>
+      </p>
+    </div>
+    {% else %}
+    <div style="background:var(--white);border:1px solid var(--border);border-radius:var(--radius-lg);padding:16px 20px;margin-bottom:20px;">
+      <p style="font-size:14px;color:var(--text-mid);line-height:1.75;margin:0;">
+        Free Pakistan tax education articles by <strong>Umair Mubeen</strong> — income tax, sales tax, FBR compliance, and withholding tax guides. Updated per Finance Act 2025-26.
+      </p>
+    </div>
+    {% endif %}
+
     <!-- Blog Cards -->
     {% if page_obj.object_list %}
     <div class="cards-grid" style="margin-bottom:24px;">

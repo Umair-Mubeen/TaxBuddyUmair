@@ -12,7 +12,7 @@
       <span class="breadcrumb-sep">›</span>
       <span>Income Tax Guides</span>
     </div>
-    <h1>Income Tax Guides — Pakistan 2025–26</h1>
+    <h1>Income Tax Guides Pakistan 2025-26 — Free FBR Educational Guides</h1>
     <div class="article-meta">
       <span>📋 ITO 2001</span>
       <span>🔄 Updated for FBR Tax Year 2025–26</span>
@@ -34,6 +34,19 @@
 
 <div class="content-grid">
   <main class="content-main">
+
+    <!-- SEO Intro -->
+    <div style="background:var(--white);border:1px solid var(--border);border-radius:var(--radius-lg);padding:20px 24px;margin-bottom:24px;">
+      <p style="font-size:15px;color:var(--text-mid);line-height:1.8;margin:0;">
+        Welcome to TaxBuddy Umair's comprehensive <strong>income tax guides for Pakistan</strong>. These free guides cover everything you need to know about the <strong>Income Tax Ordinance, 2001 (ITO 2001)</strong> — from understanding tax slabs and filing returns to withholding tax sections, property tax, and filer vs non-filer rate differences. All guides are updated per <strong>Finance Act 2025-26</strong> and FBR notifications.
+      </p>
+      <div style="display:flex;gap:12px;flex-wrap:wrap;margin-top:14px;">
+        <a href="{% url 'SalaryCalculator' %}" style="font-size:13px;color:var(--green);font-weight:600;text-decoration:none;">💼 Salary Calculator →</a>
+        <a href="{% url 'withholding_tax_rates' %}" style="font-size:13px;color:var(--green);font-weight:600;text-decoration:none;">📊 WHT Rates →</a>
+        <a href="{% url 'atl_check' %}" style="font-size:13px;color:var(--green);font-weight:600;text-decoration:none;">✅ ATL Check →</a>
+        <a href="{% url 'tax_calendar' %}" style="font-size:13px;color:var(--green);font-weight:600;text-decoration:none;">📅 Tax Calendar →</a>
+      </div>
+    </div>
 
     <!-- Static guide cards -->
     <div class="section-header" style="margin-bottom:20px;">
@@ -119,7 +132,7 @@
         <div class="faq-question" role="button" tabindex="0" aria-expanded="false">
           {{ faq.question }}<span class="faq-arrow" aria-hidden="true">+</span>
         </div>
-        <div class="faq-answer">{{ faq.answer }}</div>
+        <div class="faq-answer">{{ faq.answer|safe }}</div>
       </div>
       {% endfor %}
     </div>

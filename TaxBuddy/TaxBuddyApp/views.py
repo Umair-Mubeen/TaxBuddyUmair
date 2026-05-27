@@ -1646,3 +1646,74 @@ def fbr_iris_guide(request):
 def redirect_to_mcqs(request, **kwargs):
     from django.http import HttpResponsePermanentRedirect
     return HttpResponsePermanentRedirect('/income-tax-mcqs-pakistan/')
+
+# ── NEW PAGES ─────────────────────────────────────────────────
+def about_us(request):
+    return render(request, 'about-us.html')
+
+
+def atl_check(request):
+    try:
+        from .models import ATLRecord
+        atl_total   = ATLRecord.objects.count()
+        atl_updated = ATLRecord.objects.order_by('-updated_at').first()
+    except Exception:
+        atl_total   = 0
+        atl_updated = None
+    return render(request, 'atl-check.html', {
+        'atl_total':   atl_total,
+        'atl_updated': atl_updated,
+    })
+
+
+def atl_search_api(request):
+    from django.http import JsonResponse
+    try:
+        from .models import ATLRecord
+        query = request.GET.get('q', '').strip().replace('-', '').replace(' ', '')
+        if not query or len(query) < 4:
+            return JsonResponse({'found': False, 'error': 'Enter at least 4 digits'})
+        record = ATLRecord.objects.filter(ntn=query).first()
+        if not record:
+            for pad in [7, 8, 9, 10]:
+                r = ATLRecord.objects.filter(ntn=query.zfill(pad)).first()
+                if r:
+                    record = r
+                    break
+        if not record:
+            stripped = query.lstrip('0')
+            if stripped:
+                record = ATLRecord.objects.filter(ntn=stripped).first()
+        if not record:
+            record = ATLRecord.objects.filter(ntn__icontains=query).first()
+        if record:
+            try:
+                atl_type_display = record.get_atl_type_display()
+            except Exception:
+                atl_type_display = 'Income Tax'
+            return JsonResponse({
+                'found':    True,
+                'ntn':      record.ntn,
+                'name':     record.business_name or record.name or 'N/A',
+                'tax_year': record.tax_year,
+                'atl_type': atl_type_display,
+            })
+        return JsonResponse({
+            'found':   False,
+            'message': f'No record found for {query}. May be Non-Filer or ATL not updated yet.',
+        })
+    except Exception as e:
+        return JsonResponse({'found': False, 'error': str(e)})
+
+
+def tax_calendar(request):
+    return render(request, 'tax-calendar.html')
+
+
+def fbr_iris_guide(request):
+    return render(request, 'fbr-iris-guide.html')
+
+
+def redirect_to_mcqs(request, **kwargs):
+    from django.http import HttpResponsePermanentRedirect
+    return HttpResponsePermanentRedirect('/income-tax-mcqs-pakistan/')

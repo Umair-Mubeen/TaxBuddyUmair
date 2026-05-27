@@ -12,7 +12,7 @@
       <span class="breadcrumb-sep">›</span>
       <span>Sales Tax Guides</span>
     </div>
-    <h1>Sales Tax Guides — Pakistan 2025–26</h1>
+    <h1>Sales Tax Guides Pakistan 2025-26 — GST, Input Tax & Filing Help</h1>
     <div class="article-meta">
       <span>📊 Sales Tax Act 1990</span>
       <span>🔄 Updated 2025–26</span>
@@ -30,6 +30,18 @@
 
 <div class="content-grid">
   <main class="content-main">
+
+    <!-- SEO Intro -->
+    <div style="background:var(--white);border:1px solid var(--border);border-radius:var(--radius-lg);padding:20px 24px;margin-bottom:24px;">
+      <p style="font-size:15px;color:var(--text-mid);line-height:1.8;margin:0;">
+        Pakistan's <strong>Sales Tax Act 1990</strong> governs GST at the standard rate of <strong>18%</strong> on taxable supplies. These free guides explain input tax, output tax, zero-rated and exempt goods, Tier-1 retailer obligations, monthly return filing on FBR IRIS, and withholding obligations for registered persons. Updated per <strong>Finance Act 2025-26</strong> and latest SROs.
+      </p>
+      <div style="display:flex;gap:12px;flex-wrap:wrap;margin-top:14px;">
+        <a href="{% url 'withholding_tax_rates' %}" style="font-size:13px;color:var(--green);font-weight:600;text-decoration:none;">📊 WHT Rates →</a>
+        <a href="{% url 'tax_calendar' %}" style="font-size:13px;color:var(--green);font-weight:600;text-decoration:none;">📅 Sales Tax Deadlines →</a>
+        <a href="{% url 'fbr_iris_guide' %}" style="font-size:13px;color:var(--green);font-weight:600;text-decoration:none;">🏛️ FBR IRIS Guide →</a>
+      </div>
+    </div>
 
     <div class="section-header" style="margin-bottom:20px;">
       <div><div class="section-tag">Sales Tax Act 1990</div><h2 class="section-title">Sales Tax Topics</h2></div>
@@ -97,7 +109,7 @@
       {% for faq in faqs %}
       <div class="faq-item">
         <div class="faq-question" role="button" tabindex="0" aria-expanded="false">{{ faq.question }}<span class="faq-arrow" aria-hidden="true">+</span></div>
-        <div class="faq-answer">{{ faq.answer }}</div>
+        <div class="faq-answer">{{ faq.answer|safe }}</div>
       </div>
       {% endfor %}
     </div>
