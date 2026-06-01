@@ -1,0 +1,794 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Withholding Tax Calculator Pakistan 2025-26 | TaxBuddy Umair{% endblock %}
+{% block meta_desc %}Free withholding tax calculator Pakistan 2025-26. Calculate WHT & advance tax for 80+ transactions — property, banking, services, imports, exports, rent, prizes and more. Filer, Late Filer & Non-Filer rates per FBR Finance Act 2025.{% endblock %}
+
+{% block schema_extra %}
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"WebApplication","name":"Withholding Tax Calculator Pakistan 2025-26","url":"https://www.taxbuddyumair.com/Withholding-Tax-Card/","description":"Calculate withholding tax and advance tax for 80+ FBR sections — Finance Act 2025.","applicationCategory":"FinanceApplication","operatingSystem":"Any"}
+</script>
+{% endblock %}
+
+{% block extra_css %}
+<style>
+/* ── HERO ── */
+.wht-hero{background:var(--navy);color:#fff;padding:52px 0 40px}
+.wht-hero h1{font-family:var(--font-head);font-size:clamp(1.6rem,4vw,2.2rem);font-weight:700;margin-bottom:10px}
+.wht-hero p{color:rgba(255,255,255,.72);font-size:15px;max-width:620px}
+.wht-act-badge{display:inline-flex;align-items:center;gap:6px;background:rgba(13,158,114,.18);
+  border:1px solid rgba(13,158,114,.35);color:#4ecca0;font-size:12px;font-weight:600;
+  padding:4px 12px;border-radius:20px;margin-bottom:16px}
+.wht-wrap{max-width:1100px;margin:0 auto;padding:32px 20px 80px}
+
+/* ── PANEL ── */
+.wht-panel{background:#fff;border:1px solid var(--border);border-radius:var(--radius-lg);overflow:hidden;margin-bottom:24px}
+.wht-panel-head{background:linear-gradient(135deg,#0A2647 0%,#144272 100%);padding:16px 24px;display:flex;align-items:center;justify-content:space-between;gap:10px}
+.wht-panel-head h2{color:#fff;font-size:15px;font-weight:700;margin:0;display:flex;align-items:center;gap:8px}
+.wht-panel-body{padding:24px}
+
+/* ── SEARCH ── */
+.wht-search{position:relative;margin-bottom:20px}
+.wht-search input{width:100%;padding:12px 16px 12px 44px;border:1.5px solid var(--border);
+  border-radius:var(--radius);font-size:14px;outline:none;background:#fff;
+  color:var(--text);transition:border-color .2s;box-sizing:border-box}
+.wht-search input:focus{border-color:var(--green)}
+.wht-search-icon{position:absolute;left:14px;top:50%;transform:translateY(-50%);color:var(--text-light);font-size:16px;pointer-events:none}
+.wht-search-clear{position:absolute;right:12px;top:50%;transform:translateY(-50%);
+  background:none;border:none;cursor:pointer;color:var(--text-light);font-size:18px;
+  display:none;line-height:1;padding:0}
+.wht-search-clear.show{display:block}
+
+/* ── TABS ── */
+.wht-tabs{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:20px}
+.wht-tab{padding:7px 14px;border-radius:20px;font-size:12.5px;font-weight:600;
+  border:1.5px solid var(--border);background:#fff;color:var(--text-mid);
+  cursor:pointer;transition:all .18s;white-space:nowrap}
+.wht-tab:hover{border-color:var(--navy);color:var(--navy)}
+.wht-tab.active{background:var(--navy);border-color:var(--navy);color:#fff}
+
+/* ── TX LIST ── */
+#whtTxGrid{max-height:420px !important;overflow-y:auto !important;overflow-x:hidden !important;padding-right:4px}
+#whtTxGrid::-webkit-scrollbar{width:4px}
+#whtTxGrid::-webkit-scrollbar-track{background:#f1f1f1;border-radius:4px}
+#whtTxGrid::-webkit-scrollbar-thumb{background:#ccc;border-radius:4px}
+
+.wht-tx-row{display:flex !important;flex-direction:row !important;align-items:flex-start !important;
+  gap:10px !important;padding:11px 13px !important;border:1.5px solid var(--border) !important;
+  border-radius:8px !important;cursor:pointer !important;background:#fff !important;
+  margin-bottom:7px !important;width:100% !important;box-sizing:border-box !important;
+  transition:border-color .18s,background .18s !important}
+.wht-tx-row:last-child{margin-bottom:0 !important}
+.wht-tx-row:hover,.wht-tx-row.sel{border-color:var(--green) !important;background:var(--green-light) !important}
+.wht-tx-sec{flex-shrink:0 !important;width:60px !important;font-size:10.5px !important;
+  font-weight:700 !important;color:#fff !important;background:var(--navy) !important;
+  padding:3px 5px !important;border-radius:6px !important;text-align:center !important;
+  line-height:1.35 !important;margin-top:2px !important;word-break:break-all !important}
+.wht-tx-info{flex:1 1 0% !important;min-width:0 !important;overflow:hidden !important}
+.wht-tx-name{font-size:13px !important;font-weight:600 !important;color:var(--text) !important;line-height:1.35 !important;word-break:break-word !important}
+.wht-tx-sub{font-size:11.5px !important;color:var(--text-light) !important;margin-top:2px !important;word-break:break-word !important}
+.wht-tx-badge{flex-shrink:0 !important;font-size:10px !important;font-weight:700 !important;
+  padding:2px 8px !important;border-radius:10px !important;white-space:nowrap !important;
+  align-self:flex-start !important;margin-top:2px !important}
+.wht-tx-badge.b-wht{background:#EBF8FF !important;color:#1A6EA8 !important}
+.wht-tx-badge.b-adv{background:#FFF3E0 !important;color:#B45309 !important}
+.wht-tx-badge.b-fin{background:#F0FDF4 !important;color:#166534 !important}
+
+.wht-msg{text-align:center;padding:36px 20px;color:var(--text-light)}
+.wht-spinner{display:inline-block;width:30px;height:30px;border:3px solid var(--border);
+  border-top-color:var(--green);border-radius:50%;animation:wht-spin .8s linear infinite;margin-bottom:10px}
+@keyframes wht-spin{to{transform:rotate(360deg)}}
+.wht-count{font-size:12px;color:var(--text-light);margin-top:10px;text-align:right}
+
+/* ── STEP 2 ── */
+.wht-input-row{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:20px}
+.wht-fg label{display:block;font-size:13px;font-weight:600;color:var(--text-mid);margin-bottom:6px}
+.wht-pfx-wrap{position:relative}
+.wht-pfx{position:absolute;left:12px;top:50%;transform:translateY(-50%);font-size:13px;font-weight:600;color:var(--text-mid);pointer-events:none}
+.wht-pfx-wrap input{padding-left:38px}
+.wht-fg input,.wht-fg select{width:100%;padding:11px 14px;border:1.5px solid var(--border);border-radius:var(--radius);font-size:14px;color:var(--text);background:#fff;outline:none;transition:border-color .2s;box-sizing:border-box}
+.wht-fg input:focus,.wht-fg select:focus{border-color:var(--green)}
+.wht-slab-notice{background:#EBF8FF;border:1px solid #BEE3F8;border-radius:var(--radius);padding:12px 16px;font-size:13px;color:#1A6EA8;margin-bottom:16px;display:none}
+.wht-calc-btn{width:100%;padding:14px;background:var(--green);color:#fff;border:none;border-radius:var(--radius);font-size:15px;font-weight:700;cursor:pointer;transition:background .2s;display:flex;align-items:center;justify-content:center;gap:8px}
+.wht-calc-btn:hover{background:var(--green-mid)}
+.wht-calc-btn:disabled{background:#a0aec0;cursor:not-allowed}
+
+/* ── RESULT ── */
+.wht-result{display:none;background:#fff;border:1px solid var(--border);border-radius:var(--radius-lg);overflow:hidden;margin-bottom:24px}
+.wht-result.show{display:block}
+.wht-result-head{background:var(--green);padding:16px 24px}
+.wht-result-head h3{color:#fff;font-size:15px;font-weight:700;margin:0}
+.wht-result-head p{color:rgba(255,255,255,.8);font-size:13px;margin:4px 0 0}
+.wht-result-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--border)}
+.wht-rc{background:#fff;padding:18px 20px;text-align:center}
+.wht-rc .lbl{font-size:11px;color:var(--text-light);font-weight:600;text-transform:uppercase;letter-spacing:.04em;margin-bottom:6px}
+.wht-rc .val{font-size:1.35rem;font-weight:700;color:var(--navy)}
+.wht-rc .val.red{color:#E53E3E}
+.wht-rc .val.grn{color:var(--green)}
+.wht-details{padding:20px 24px}
+.wht-drow{display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid var(--border);font-size:14px;gap:12px}
+.wht-drow:last-child{border-bottom:none}
+.wht-dk{color:var(--text-mid);flex-shrink:0}
+.wht-dv{font-weight:600;color:var(--text);text-align:right}
+.wht-dtag{display:inline-flex;padding:3px 10px;border-radius:10px;font-size:12px;font-weight:700}
+.wht-dtag.wht{background:#EBF8FF;color:#1A6EA8}
+.wht-dtag.adv{background:#FFF3E0;color:#B45309}
+.wht-dtag.fin{background:#F0FDF4;color:#166534}
+.wht-dtag.min{background:#FFF3E0;color:#B45309}
+.wht-dtag.adj{background:#EBF8FF;color:#1A6EA8}
+.wht-note{background:#FFF8E1;border:1px solid #F6CC57;border-radius:var(--radius);padding:12px 16px;font-size:13px;color:#7A5700;margin:12px 24px 20px;display:flex;gap:10px;align-items:flex-start}
+
+/* ── RATE TABLE ── */
+.wht-tbl-search-wrap{padding:16px 20px;border-bottom:1px solid var(--border);background:#F7F9FC;display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.wht-tbl-search{position:relative;flex:1;min-width:200px}
+.wht-tbl-search input{width:100%;padding:9px 14px 9px 36px;border:1.5px solid var(--border);border-radius:var(--radius);font-size:13px;outline:none;background:#fff;color:var(--text);transition:border-color .2s;box-sizing:border-box}
+.wht-tbl-search input:focus{border-color:var(--green)}
+.wht-tbl-search-icon{position:absolute;left:10px;top:50%;transform:translateY(-50%);font-size:14px;pointer-events:none;color:var(--text-light)}
+.wht-tbl-filter{display:flex;gap:6px;flex-wrap:wrap}
+.wht-tbl-filter select{padding:8px 12px;border:1.5px solid var(--border);border-radius:var(--radius);font-size:12.5px;color:var(--text);background:#fff;outline:none;cursor:pointer}
+.wht-tbl-filter select:focus{border-color:var(--green)}
+.wht-tbl-count{font-size:12px;color:var(--text-light);white-space:nowrap;align-self:center}
+.wht-tbl-wrap{overflow-x:auto}
+.wht-tbl{width:100%;border-collapse:collapse;font-size:13px}
+.wht-tbl th{background:#F7F9FC;padding:10px 14px;text-align:left;font-weight:700;color:var(--text-mid);border-bottom:2px solid var(--border);white-space:nowrap;cursor:pointer;user-select:none}
+.wht-tbl th:hover{color:var(--navy)}
+.wht-tbl th .sort-icon{margin-left:4px;opacity:.4;font-size:11px}
+.wht-tbl th.sort-asc .sort-icon::after{content:'▲';opacity:1}
+.wht-tbl th.sort-desc .sort-icon::after{content:'▼';opacity:1}
+.wht-tbl th .sort-icon::after{content:'↕'}
+.wht-tbl td{padding:10px 14px;border-bottom:1px solid var(--border);color:var(--text)}
+.wht-tbl tr:hover td{background:#F7F9FC}
+.wht-tbl tbody tr.tbl-hidden{display:none}
+.wht-sec-badge{font-size:11px;font-weight:700;background:var(--navy);color:#fff;padding:2px 8px;border-radius:4px;white-space:nowrap}
+.wht-tbl-empty{text-align:center;padding:32px;color:var(--text-light);font-size:14px}
+
+/* ── RESPONSIVE ── */
+@media(max-width:768px){
+  .wht-input-row{grid-template-columns:1fr}
+  .wht-result-grid{grid-template-columns:1fr 1fr}
+  .wht-hero{padding:36px 0 28px}
+  .wht-tbl-search-wrap{flex-direction:column;align-items:stretch}
+  .wht-tbl-search{min-width:unset}
+}
+@media(max-width:480px){
+  .wht-result-grid{grid-template-columns:1fr}
+  .wht-panel-body{padding:16px}
+  .wht-hero h1{font-size:1.4rem}
+  .wht-details{padding:14px 16px}
+}
+</style>
+{% endblock %}
+
+{% block content %}
+
+<section class="wht-hero">
+  <div class="container">
+    <div class="wht-act-badge">📋 Finance Act 2025 — Tax Year 2025-26</div>
+    <h1>Withholding &amp; Advance Tax Calculator</h1>
+    <p>80+ transactions covered — property, banking, services, imports, exports, rent, prizes and more. Filer, Late Filer &amp; Non-Filer rates per FBR WHT Rate Card 2025-26.</p>
+  </div>
+</section>
+
+<div class="wht-wrap">
+
+  <!-- ① SELECT TRANSACTION -->
+  <div class="wht-panel">
+    <div class="wht-panel-head">
+      <h2><span>①</span> Select Transaction Type</h2>
+    </div>
+    <div class="wht-panel-body">
+
+      <div class="wht-search">
+        <span class="wht-search-icon">🔍</span>
+        <input type="text" id="whtSearch"
+          placeholder="Search by section or description... e.g. 236C, bank profit, salary, property"
+          oninput="whtFilterTx()">
+        <button class="wht-search-clear" id="whtSearchClear" onclick="whtClearSearch()">×</button>
+      </div>
+
+      <div class="wht-tabs" id="whtTabs">
+        <button class="wht-tab active" onclick="whtSetCat('all',this)">All</button>
+        {% for cat in categories %}
+        <button class="wht-tab" onclick="whtSetCat('{{ cat.key }}',this)">{{ cat.label }}</button>
+        {% endfor %}
+      </div>
+
+      <div id="whtTxCount" class="wht-count"></div>
+      <div id="whtTxGrid">
+        <div class="wht-msg">
+          <div class="wht-spinner"></div>
+          <p>Loading rates from database...</p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ② AMOUNT + FILER -->
+  <div class="wht-panel" id="whtStep2" style="opacity:.5;pointer-events:none">
+    <div class="wht-panel-head">
+      <h2><span>②</span> Enter Amount &amp; Filer Status</h2>
+    </div>
+    <div class="wht-panel-body">
+
+      <div id="whtSelInfo"
+        style="background:#F0FDF4;border:1px solid #A7F3D0;border-radius:var(--radius);
+               padding:12px 16px;margin-bottom:18px;font-size:14px;color:var(--text);display:none">
+        <strong>Selected:</strong> <span id="whtSelLabel">—</span>
+      </div>
+
+      <div class="wht-slab-notice" id="whtSlabNotice">
+        ℹ️ This uses <strong>graduated slab rates</strong> — correct slab will be auto-detected from your amount. Enter the full annual amount for accurate calculation.
+      </div>
+
+      <div class="wht-input-row">
+        <div class="wht-fg">
+          <label>Transaction Amount (Rs.)</label>
+          <div class="wht-pfx-wrap">
+            <span class="wht-pfx">₨</span>
+            <input type="number" id="whtAmount" placeholder="0" min="0" oninput="whtValidate()">
+          </div>
+          <div id="whtAmtErr" style="font-size:12px;color:#E53E3E;margin-top:4px;display:none">
+            Please enter a valid positive amount.
+          </div>
+        </div>
+        <div class="wht-fg">
+          <label>Filer Status</label>
+          <select id="whtFilerStatus">
+            <option value="filer">✅ Filer (ATL Active)</option>
+            <option value="late_filer">⚠️ Late Filer</option>
+            <option value="non_filer">❌ Non-Filer</option>
+          </select>
+        </div>
+      </div>
+
+      <button class="wht-calc-btn" id="whtCalcBtn" onclick="whtCalculate()" disabled>
+        🧮 Calculate Withholding Tax
+      </button>
+
+    </div>
+  </div>
+
+  <!-- RESULT -->
+  <div class="wht-result" id="whtResult">
+    <div class="wht-result-head">
+      <h3 id="whtResTitle">WHT Calculation Result</h3>
+      <p id="whtResSub"></p>
+    </div>
+    <div class="wht-result-grid">
+      <div class="wht-rc">
+        <div class="lbl">Transaction Amount</div>
+        <div class="val" id="whtResAmt">—</div>
+      </div>
+      <div class="wht-rc">
+        <div class="lbl">Tax Amount</div>
+        <div class="val red" id="whtResTax">—</div>
+      </div>
+      <div class="wht-rc">
+        <div class="lbl" id="whtResNetLbl">Net Amount</div>
+        <div class="val grn" id="whtResNet">—</div>
+      </div>
+    </div>
+    <div class="wht-details" id="whtResDetails"></div>
+    <div class="wht-note" id="whtResNote" style="display:none">
+      <span>ℹ️</span><span id="whtResNoteText"></span>
+    </div>
+  </div>
+
+  <!-- RATE REFERENCE TABLE -->
+  <div class="wht-panel">
+    <div class="wht-panel-head">
+      <h2><span>📊</span> Complete WHT Rate Reference — Finance Act 2025</h2>
+      <span id="whtTblCountBadge" style="background:rgba(255,255,255,.2);color:#fff;font-size:11px;font-weight:700;padding:3px 10px;border-radius:12px"></span>
+    </div>
+
+    <!-- TABLE SEARCH + FILTERS -->
+    <div class="wht-tbl-search-wrap">
+      <div class="wht-tbl-search">
+        <span class="wht-tbl-search-icon">🔍</span>
+        <input type="text" id="tblSearch" placeholder="Search section, description, rate..." oninput="tblFilter()">
+      </div>
+      <div class="wht-tbl-filter">
+        <select id="tblCatFilter" onchange="tblFilter()">
+          <option value="">All Categories</option>
+          {% for cat in categories %}
+          <option value="{{ cat.key }}">{{ cat.label }}</option>
+          {% endfor %}
+        </select>
+        <select id="tblNatureFilter" onchange="tblFilter()">
+          <option value="">All Nature</option>
+          <option value="WHT">WHT</option>
+          <option value="Advance Tax">Advance Tax</option>
+        </select>
+        <select id="tblTypeFilter" onchange="tblFilter()">
+          <option value="">All Types</option>
+          <option value="Final Tax">Final Tax</option>
+          <option value="Adjustable">Adjustable</option>
+          <option value="Minimum Tax">Minimum Tax</option>
+          <option value="Fixed Amount">Fixed Amount</option>
+        </select>
+      </div>
+      <span class="wht-tbl-count" id="tblCount"></span>
+    </div>
+
+    <div class="wht-tbl-wrap">
+      <table class="wht-tbl" id="whtTbl">
+        <thead>
+          <tr>
+            <th onclick="tblSort('section')" data-col="section">Section <span class="sort-icon"></span></th>
+            <th onclick="tblSort('name')" data-col="name">Description <span class="sort-icon"></span></th>
+            <th onclick="tblSort('filer')" data-col="filer" style="color:var(--green)">Filer <span class="sort-icon"></span></th>
+            <th onclick="tblSort('late_filer')" data-col="late_filer" style="color:#B45309">Late Filer <span class="sort-icon"></span></th>
+            <th onclick="tblSort('non_filer')" data-col="non_filer" style="color:#E53E3E">Non-Filer <span class="sort-icon"></span></th>
+            <th>Nature</th>
+            <th>Type</th>
+          </tr>
+        </thead>
+        <tbody id="whtTblBody">
+          <tr><td colspan="7" style="text-align:center;padding:24px;color:var(--text-light)">Loading...</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+// ═══════════════════════════════════
+// CONFIG & STATE
+// ═══════════════════════════════════
+const WHT_API = '/api/wht-rates/?year=2025-26';
+let WHT_DATA  = [];
+let whtSel    = null;
+let whtCat    = 'all';
+let whtQ      = '';
+
+// Table state
+let tblSortCol = 'section';
+let tblSortDir = 'asc';
+
+// ═══════════════════════════════════
+// BOOT
+// ═══════════════════════════════════
+async function whtBoot(){
+  try {
+    const res  = await fetch(WHT_API);
+    const json = await res.json();
+    if(json.status !== 'ok' || !json.rates.length){
+      document.getElementById('whtTxGrid').innerHTML =
+        '<div class="wht-msg"><p>⚠️ No rates found. Please add via admin panel.</p></div>';
+      return;
+    }
+    WHT_DATA = json.rates;
+    whtRenderGrid();
+    whtRenderTable();
+  } catch(e){
+    document.getElementById('whtTxGrid').innerHTML =
+      '<div class="wht-msg"><p>❌ Could not load rates. Please refresh.</p></div>';
+  }
+}
+
+// ═══════════════════════════════════
+// HELPERS
+// ═══════════════════════════════════
+function whtFmt(n){
+  if(n == null || isNaN(n)) return '—';
+  return 'Rs.\u00a0' + Math.round(n).toLocaleString('en-PK');
+}
+
+function whtFmtRate(tx, status){
+  if(tx.isFixed) return tx[status+'_raw'] || 'Fixed';
+  const v = parseFloat(tx[status]);
+  if(isNaN(v)) return '—';
+  return v === 0 ? 'Nil (0%)' : v + '%';
+}
+
+function whtBadgeCls(nature){
+  if(nature === 'Advance Tax') return 'b-adv';
+  if(nature === 'WHT')         return 'b-wht';
+  return 'b-fin';
+}
+
+function whtTagCls(val, type){
+  if(type === 'nature'){
+    if(val === 'Advance Tax') return 'adv';
+    if(val === 'WHT')         return 'wht';
+    return 'fin';
+  }
+  if(type === 'type'){
+    if(val === 'Final Tax')   return 'fin';
+    if(val === 'Minimum Tax') return 'min';
+    return 'adj';
+  }
+  return 'adj';
+}
+
+// Get all slabs for a section
+function whtGetSlabs(section, cat){
+  return WHT_DATA
+    .filter(tx => tx.section === section && tx.cat === cat && tx.rate_kind === 'slab')
+    .sort((a,b) => parseFloat(a.slab_min||0) - parseFloat(b.slab_min||0));
+}
+
+// Auto-match slab — FIXED: parseFloat ensures string values work
+function whtMatchSlab(slabs, amount){
+  for(const s of slabs){
+    const min = s.slab_min != null ? parseFloat(s.slab_min) : 0;
+    const max = s.slab_max != null ? parseFloat(s.slab_max) : Infinity;
+    if(amount >= min && amount <= max) return s;
+  }
+  // If amount exceeds all slabs, return last slab (highest bracket)
+  if(slabs.length > 0 && amount > parseFloat(slabs[slabs.length-1].slab_min||0)){
+    return slabs[slabs.length-1];
+  }
+  return null;
+}
+
+// ═══════════════════════════════════
+// RENDER TX GRID
+// ═══════════════════════════════════
+function whtRenderGrid(){
+  const grid = document.getElementById('whtTxGrid');
+  const q    = whtQ.toLowerCase().trim();
+
+  // Deduplicate slab sections — show one entry per section+cat
+  const seen     = new Set();
+  const filtered = [];
+  for(const tx of WHT_DATA){
+    const matchCat = whtCat === 'all' || tx.cat === whtCat;
+    const matchQ   = !q ||
+      (tx.section||'').toLowerCase().includes(q) ||
+      (tx.name   ||'').toLowerCase().includes(q) ||
+      (tx.sub    ||'').toLowerCase().includes(q) ||
+      (tx.cat    ||'').toLowerCase().includes(q) ||
+      (tx.nature ||'').toLowerCase().includes(q);
+    if(!matchCat || !matchQ) continue;
+    if(tx.rate_kind === 'slab'){
+      const key = tx.section+'|'+tx.cat;
+      if(seen.has(key)) continue;
+      seen.add(key);
+    }
+    filtered.push(tx);
+  }
+
+  // Count badge
+  document.getElementById('whtTxCount').textContent =
+    filtered.length ? `${filtered.length} transaction${filtered.length>1?'s':''} found` : '';
+
+  if(!filtered.length){
+    grid.innerHTML = '<div class="wht-msg"><p>🔍 No transactions found. Try different keywords.</p></div>';
+    return;
+  }
+
+  grid.innerHTML = '';
+  filtered.forEach(tx => {
+    const isSlab  = tx.rate_kind === 'slab';
+    const label   = isSlab ? tx.name.replace(/ — .+$/, '') : tx.name;
+    const subTxt  = isSlab ? 'Graduated slab rates — auto-matched to your amount' : (tx.sub||'');
+
+    const div = document.createElement('div');
+    div.className = 'wht-tx-row' + (whtSel && whtSel.id === tx.id ? ' sel' : '');
+    div.setAttribute('onclick', `whtSelect('${tx.id}')`);
+    div.innerHTML =
+      `<div class="wht-tx-sec">${tx.section}</div>` +
+      `<div class="wht-tx-info">` +
+        `<div class="wht-tx-name">${label}</div>` +
+        `<div class="wht-tx-sub">${subTxt}</div>` +
+      `</div>` +
+      `<span class="wht-tx-badge ${whtBadgeCls(tx.nature)}">${tx.nature||''}</span>`;
+    grid.appendChild(div);
+  });
+}
+
+// ═══════════════════════════════════
+// CATEGORY + SEARCH
+// ═══════════════════════════════════
+function whtSetCat(cat, btn){
+  whtCat = cat;
+  document.querySelectorAll('.wht-tab').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  whtRenderGrid();
+}
+
+function whtFilterTx(){
+  whtQ = document.getElementById('whtSearch').value;
+  const clearBtn = document.getElementById('whtSearchClear');
+  clearBtn.classList.toggle('show', whtQ.length > 0);
+  whtRenderGrid();
+}
+
+function whtClearSearch(){
+  document.getElementById('whtSearch').value = '';
+  whtQ = '';
+  document.getElementById('whtSearchClear').classList.remove('show');
+  whtRenderGrid();
+}
+
+// ═══════════════════════════════════
+// SELECT TRANSACTION
+// ═══════════════════════════════════
+function whtSelect(id){
+  whtSel = WHT_DATA.find(tx => tx.id === id);
+  if(!whtSel) return;
+  whtRenderGrid();
+
+  const step2 = document.getElementById('whtStep2');
+  step2.style.opacity       = '1';
+  step2.style.pointerEvents = 'auto';
+
+  const isSlab    = whtSel.rate_kind === 'slab';
+  const cleanName = isSlab ? whtSel.name.replace(/ — .+$/, '') : whtSel.name;
+  document.getElementById('whtSelInfo').style.display  = 'block';
+  document.getElementById('whtSelLabel').textContent   = `Section ${whtSel.section} — ${cleanName}`;
+  document.getElementById('whtSlabNotice').style.display = isSlab ? 'block' : 'none';
+  document.getElementById('whtResult').classList.remove('show');
+  document.getElementById('whtAmount').value = '';
+  whtValidate();
+  step2.scrollIntoView({behavior:'smooth', block:'nearest'});
+}
+
+// ═══════════════════════════════════
+// VALIDATION
+// ═══════════════════════════════════
+function whtValidate(){
+  const val = parseFloat(document.getElementById('whtAmount').value);
+  const btn = document.getElementById('whtCalcBtn');
+  const err = document.getElementById('whtAmtErr');
+  if(!whtSel){ btn.disabled = true; return; }
+  if(whtSel.isFixed){ err.style.display='none'; btn.disabled=false; return; }
+  if(!val || val <= 0){
+    err.style.display = (val < 0) ? 'block' : 'none';
+    btn.disabled = true;
+  } else {
+    err.style.display = 'none';
+    btn.disabled = false;
+  }
+}
+
+// ═══════════════════════════════════
+// CALCULATE
+// ═══════════════════════════════════
+function whtCalculate(){
+  if(!whtSel) return;
+
+  const filerStatus = document.getElementById('whtFilerStatus').value;
+  const amount      = parseFloat(document.getElementById('whtAmount').value) || 0;
+  const isFixed     = whtSel.isFixed || false;
+  const isAdvance   = whtSel.nature === 'Advance Tax';
+  const isSlab      = whtSel.rate_kind === 'slab';
+
+  let taxAmt=0, netAmt=0, rateDisplay='', slabInfo='', matchedSlab=null;
+
+  const filerLabels = {
+    filer:      '✅ Filer (ATL Active)',
+    late_filer: '⚠️ Late Filer',
+    non_filer:  '❌ Non-Filer',
+  };
+
+  // ── 1. FIXED AMOUNT ──
+  if(isFixed){
+    taxAmt      = parseFloat(whtSel[filerStatus]) || 0;
+    netAmt      = 0;
+    rateDisplay = whtSel[filerStatus+'_raw'] || 'Fixed Amount';
+
+  // ── 2. SLAB-BASED ──
+  } else if(isSlab){
+    const slabs = whtGetSlabs(whtSel.section, whtSel.cat);
+    matchedSlab = whtMatchSlab(slabs, amount);
+
+    if(!matchedSlab || parseFloat(matchedSlab[filerStatus]) === 0){
+      // Nil slab or below threshold
+      const lowestMin = slabs.length ? parseFloat(slabs[0].slab_min||0) : 0;
+      taxAmt      = 0;
+      netAmt      = amount;
+      rateDisplay = 'Nil (0%)';
+      if(!matchedSlab){
+        slabInfo = `Amount Rs. ${amount.toLocaleString('en-PK')} is below minimum threshold of Rs. ${lowestMin.toLocaleString('en-PK')} — Nil tax`;
+      } else {
+        slabInfo = 'Amount falls within exempt slab — Nil tax';
+      }
+    } else {
+      const slabRate = parseFloat(matchedSlab[filerStatus]) || 0;
+      const slabMin  = parseFloat(matchedSlab.slab_min) || 0;
+      const baseTax  = parseFloat(matchedSlab.base_tax) || 0;
+      const excess   = amount - slabMin;
+
+      taxAmt      = baseTax + (excess * slabRate / 100);
+      netAmt      = amount - taxAmt;
+      rateDisplay = `${slabRate}% on excess over Rs. ${slabMin.toLocaleString('en-PK')}`;
+      slabInfo    = baseTax > 0
+        ? `Rs. ${baseTax.toLocaleString('en-PK')} + ${slabRate}% × Rs. ${excess.toLocaleString('en-PK')} (excess over Rs. ${slabMin.toLocaleString('en-PK')})`
+        : `${slabRate}% × Rs. ${excess.toLocaleString('en-PK')} (excess over Rs. ${slabMin.toLocaleString('en-PK')})`;
+    }
+
+  // ── 3. FLAT PERCENTAGE ──
+  } else {
+    const rate  = parseFloat(whtSel[filerStatus]) || 0;
+    taxAmt      = amount * rate / 100;
+    netAmt      = isAdvance ? amount + taxAmt : amount - taxAmt;
+    rateDisplay = rate === 0 ? 'Exempt (0%)' : rate + '%';
+  }
+
+  // Net label — Advance Tax: collect (add), WHT: deduct (minus)
+  const netLabel = isFixed   ? '—'
+    : isAdvance              ? 'Total Payable (incl. Tax)'
+    : 'Net Receivable (after WHT)';
+
+  // ── DISPLAY ──
+  const resPanelEl = document.getElementById('whtResult');
+  resPanelEl.classList.add('show');
+
+  const displayName = isSlab
+    ? (matchedSlab ? matchedSlab.name : whtSel.name.replace(/ — .+$/, ''))
+    : whtSel.name;
+
+  document.getElementById('whtResTitle').textContent  = `Section ${whtSel.section} — ${whtSel.nature} Result`;
+  document.getElementById('whtResSub').textContent    = `${displayName} | ${filerLabels[filerStatus]}`;
+  document.getElementById('whtResAmt').textContent    = isFixed ? '—' : whtFmt(amount);
+  document.getElementById('whtResTax').textContent    = isFixed ? (whtSel[filerStatus+'_raw']||whtFmt(taxAmt)) : whtFmt(taxAmt);
+  document.getElementById('whtResNet').textContent    = (isFixed||amount===0) ? '—' : whtFmt(netAmt);
+  document.getElementById('whtResNetLbl').textContent = netLabel;
+
+  // Rates reference — use matched slab for slab sections
+  const ratesRef = matchedSlab || whtSel;
+
+  const slabRangeRow = matchedSlab
+    ? `<div class="wht-drow"><span class="wht-dk">Applicable Slab</span><span class="wht-dv">${matchedSlab.name}</span></div>` : '';
+  const slabCalcRow  = slabInfo
+    ? `<div class="wht-drow"><span class="wht-dk">Calculation Breakdown</span><span class="wht-dv" style="font-size:13px;color:var(--text-mid)">${slabInfo}</span></div>` : '';
+
+  document.getElementById('whtResDetails').innerHTML = `
+    <div class="wht-drow"><span class="wht-dk">Section</span><span class="wht-dv"><strong>${whtSel.section}</strong></span></div>
+    <div class="wht-drow"><span class="wht-dk">Transaction</span><span class="wht-dv">${displayName}</span></div>
+    <div class="wht-drow"><span class="wht-dk">Filer Status</span><span class="wht-dv">${filerLabels[filerStatus]}</span></div>
+    <div class="wht-drow"><span class="wht-dk">Applied Rate</span><span class="wht-dv" style="font-size:16px;color:var(--navy);font-weight:700">${rateDisplay}</span></div>
+    ${slabRangeRow}${slabCalcRow}
+    <div class="wht-drow">
+      <span class="wht-dk">${isAdvance ? 'Advance Tax Collected' : 'WHT Deducted'}</span>
+      <span class="wht-dv" style="color:#E53E3E">${isFixed?(whtSel[filerStatus+'_raw']||whtFmt(taxAmt)):whtFmt(taxAmt)}</span>
+    </div>
+    ${!isFixed && amount>0 ? `
+    <div class="wht-drow">
+      <span class="wht-dk">${isAdvance?'Total Payable (incl. Tax)':'Net Receivable (after WHT)'}</span>
+      <span class="wht-dv" style="color:${isAdvance?'#E53E3E':'var(--green)'}">
+        ${whtFmt(netAmt)}
+      </span>
+    </div>` : ''}
+    <div class="wht-drow"><span class="wht-dk">Nature</span><span class="wht-dtag ${whtTagCls(whtSel.nature,'nature')}">${whtSel.nature}</span></div>
+    <div class="wht-drow"><span class="wht-dk">Tax Type</span><span class="wht-dtag ${whtTagCls(whtSel.type,'type')}">${whtSel.type||'—'}</span></div>
+    <div class="wht-drow">
+      <span class="wht-dk">Rates (Filer / Late / Non-Filer)</span>
+      <span class="wht-dv">${whtFmtRate(ratesRef,'filer')} / ${whtFmtRate(ratesRef,'late_filer')} / ${whtFmtRate(ratesRef,'non_filer')}</span>
+    </div>
+  `;
+
+  const noteEl = document.getElementById('whtResNote');
+  if(whtSel.notes){
+    noteEl.style.display = 'flex';
+    document.getElementById('whtResNoteText').textContent = whtSel.notes;
+  } else {
+    noteEl.style.display = 'none';
+  }
+
+  resPanelEl.scrollIntoView({behavior:'smooth', block:'start'});
+}
+
+// ═══════════════════════════════════
+// RATE TABLE — RENDER
+// ═══════════════════════════════════
+function whtRenderTable(){
+  const tbody = document.getElementById('whtTblBody');
+  tbody.innerHTML = '';
+
+  const sorted = [...WHT_DATA].sort((a,b) => {
+    let av = a[tblSortCol]||'', bv = b[tblSortCol]||'';
+    // Numeric sort for rate columns
+    if(['filer','late_filer','non_filer'].includes(tblSortCol)){
+      av = parseFloat(av)||0; bv = parseFloat(bv)||0;
+      return tblSortDir==='asc' ? av-bv : bv-av;
+    }
+    return tblSortDir==='asc'
+      ? String(av).localeCompare(String(bv))
+      : String(bv).localeCompare(String(av));
+  });
+
+  if(!sorted.length){
+    tbody.innerHTML = '<tr><td colspan="7" class="wht-tbl-empty">No data.</td></tr>';
+    return;
+  }
+
+  sorted.forEach(tx => {
+    const tr = document.createElement('tr');
+    tr.setAttribute('data-section', (tx.section||'').toLowerCase());
+    tr.setAttribute('data-name',    (tx.name||'').toLowerCase());
+    tr.setAttribute('data-sub',     (tx.sub||'').toLowerCase());
+    tr.setAttribute('data-cat',     (tx.cat||'').toLowerCase());
+    tr.setAttribute('data-nature',  (tx.nature||'').toLowerCase());
+    tr.setAttribute('data-type',    (tx.type||'').toLowerCase());
+    tr.setAttribute('data-filer',   String(tx.filer||''));
+    tr.setAttribute('data-nonf',    String(tx.non_filer||''));
+
+    tr.innerHTML =
+      `<td><span class="wht-sec-badge">${tx.section||''}</span></td>` +
+      `<td><div style="font-weight:600;font-size:13px">${tx.name||''}</div>` +
+         `<div style="font-size:11.5px;color:var(--text-light)">${tx.sub||''}</div></td>` +
+      `<td style="color:var(--green);font-weight:700">${whtFmtRate(tx,'filer')}</td>` +
+      `<td style="color:#B45309;font-weight:700">${whtFmtRate(tx,'late_filer')}</td>` +
+      `<td style="color:#E53E3E;font-weight:700">${whtFmtRate(tx,'non_filer')}</td>` +
+      `<td><span class="wht-tx-badge ${whtBadgeCls(tx.nature)}">${tx.nature||''}</span></td>` +
+      `<td><span class="wht-dtag ${whtTagCls(tx.type,'type')}">${tx.type||''}</span></td>`;
+    tbody.appendChild(tr);
+  });
+
+  tblUpdateCount();
+  tblUpdateSortHeaders();
+}
+
+// ═══════════════════════════════════
+// TABLE SEARCH + FILTER
+// ═══════════════════════════════════
+function tblFilter(){
+  const q      = (document.getElementById('tblSearch').value||'').toLowerCase().trim();
+  const cat    = (document.getElementById('tblCatFilter').value||'').toLowerCase();
+  const nature = (document.getElementById('tblNatureFilter').value||'').toLowerCase();
+  const type   = (document.getElementById('tblTypeFilter').value||'').toLowerCase();
+
+  const rows = document.querySelectorAll('#whtTblBody tr');
+  rows.forEach(tr => {
+    if(tr.cells.length < 2){ tr.classList.remove('tbl-hidden'); return; }
+
+    const matchQ = !q ||
+      tr.dataset.section.includes(q) ||
+      tr.dataset.name.includes(q)    ||
+      tr.dataset.sub.includes(q)     ||
+      tr.dataset.filer.includes(q)   ||
+      tr.dataset.nonf.includes(q);
+
+    const matchCat    = !cat    || tr.dataset.cat === cat;
+    const matchNature = !nature || tr.dataset.nature === nature;
+    const matchType   = !type   || tr.dataset.type === type;
+
+    tr.classList.toggle('tbl-hidden', !(matchQ && matchCat && matchNature && matchType));
+  });
+
+  tblUpdateCount();
+}
+
+function tblUpdateCount(){
+  const total   = document.querySelectorAll('#whtTblBody tr').length;
+  const visible = document.querySelectorAll('#whtTblBody tr:not(.tbl-hidden)').length;
+  document.getElementById('tblCount').textContent =
+    `${visible} of ${total} entries`;
+  document.getElementById('whtTblCountBadge').textContent =
+    `${visible} entries`;
+}
+
+// ═══════════════════════════════════
+// TABLE SORT
+// ═══════════════════════════════════
+function tblSort(col){
+  if(tblSortCol === col){
+    tblSortDir = tblSortDir === 'asc' ? 'desc' : 'asc';
+  } else {
+    tblSortCol = col;
+    tblSortDir = 'asc';
+  }
+  whtRenderTable();
+  // Re-apply current filters after re-render
+  tblFilter();
+}
+
+function tblUpdateSortHeaders(){
+  document.querySelectorAll('.wht-tbl th[data-col]').forEach(th => {
+    th.classList.remove('sort-asc','sort-desc');
+    if(th.dataset.col === tblSortCol){
+      th.classList.add(tblSortDir === 'asc' ? 'sort-asc' : 'sort-desc');
+    }
+  });
+}
+
+document.addEventListener('DOMContentLoaded', whtBoot);
+</script>
+{% endblock %}

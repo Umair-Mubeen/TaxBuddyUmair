@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
+from django.shortcuts import render
 from django.utils.text import slugify
 from django.utils import timezone
 
@@ -495,3 +496,100 @@ def atl_search_api(request):
             'status': 'Not Found ❌',
             'message': f'No record found for {query} in ATL. This person may be a Non-Filer or the ATL may not be updated yet.',
         })
+
+
+
+
+class WHTRate(models.Model):
+    """
+    Withholding Tax Rate Card — Finance Act 2025 / Tax Year 2025-26
+    Source: FBR Official WHT Rate Card (Updated up to June 30, 2025)
+    """
+
+    NATURE_CHOICES = [
+        ('WHT', 'Withholding Tax'),
+        ('Advance Tax', 'Advance Tax'),
+    ]
+
+    TYPE_CHOICES = [
+        ('Final Tax', 'Final Tax'),
+        ('Adjustable', 'Adjustable'),
+        ('Minimum Tax', 'Minimum Tax'),
+        ('Separate Block', 'Separate Block'),
+        ('Fixed Amount', 'Fixed Amount'),
+    ]
+
+    RATE_KIND_CHOICES = [
+        ('percentage', 'Percentage'),   # normal % rate
+        ('fixed',      'Fixed Amount'), # Rs. fixed amount (vehicles, etc.)
+        ('slab',       'Slab-Based'),   # graduated slabs (salary, rent)
+        ('per_unit',   'Per Unit'),     # Rs. per kg / per seat
+    ]
+
+    CAT_CHOICES = [
+        ('property',   'Property'),
+        ('banking',    'Banking & Finance'),
+        ('dividends',  'Dividends'),
+        ('imports',    'Imports'),
+        ('goods',      'Goods / Supplies'),
+        ('services',   'Services'),
+        ('contracts',  'Contracts'),
+        ('exports',    'Exports'),
+        ('rent',       'Rent'),
+        ('prizes',     'Prizes & Winnings'),
+        ('vehicles',   'Vehicles'),
+        ('salary',     'Salary'),
+        ('other',      'Other'),
+    ]
+
+    # ── Identity ────────────────────────────────────────────────
+    uid         = models.CharField(max_length=40, unique=True,
+                                   help_text="Unique slug e.g. 236C_upto50m")
+    section     = models.CharField(max_length=30,
+                                   help_text="ITO section e.g. 236C, 153(1)(b)")
+    cat         = models.CharField(max_length=20, choices=CAT_CHOICES)
+    name        = models.CharField(max_length=250)
+    sub         = models.CharField(max_length=400, blank=True)
+
+    # ── Rates ────────────────────────────────────────────────────
+    rate_kind   = models.CharField(max_length=12, choices=RATE_KIND_CHOICES,
+                                   default='percentage')
+    filer       = models.DecimalField(max_digits=12, decimal_places=4,
+                                      help_text="ATL / Filer rate (% or Rs.)")
+    late_filer  = models.DecimalField(max_digits=12, decimal_places=4,
+                                      help_text="Late Filer rate (% or Rs.)")
+    non_filer   = models.DecimalField(max_digits=12, decimal_places=4,
+                                      help_text="Non-ATL rate (% or Rs.)")
+
+    # ── Classification ───────────────────────────────────────────
+    nature      = models.CharField(max_length=20, choices=NATURE_CHOICES)
+    tax_type    = models.CharField(max_length=20, choices=TYPE_CHOICES,
+                                   db_column='type')
+
+    # ── Meta ─────────────────────────────────────────────────────
+    notes       = models.TextField(blank=True)
+    tax_year    = models.CharField(max_length=10, default='2025-26',
+                                   db_index=True)
+    schedule_ref = models.CharField(max_length=200, blank=True,
+                                    help_text="FBR Schedule reference")
+    is_active   = models.BooleanField(default=True)
+    sort_order  = models.PositiveSmallIntegerField(default=0)
+
+    slab_min = models.BigIntegerField(null=True, blank=True,
+                                      help_text="Lower bound of slab e.g. 600001")
+    slab_max = models.BigIntegerField(null=True, blank=True,
+                                      help_text="Upper bound of slab, NULL = no limit")
+    base_tax = models.DecimalField(max_digits=12, decimal_places=2,
+                                   null=True, blank=True,
+                                   help_text="Fixed tax before applying rate e.g. 6000")
+
+    class Meta:
+        db_table  = 'wht_rates'
+        ordering  = ['sort_order', 'section', 'uid']
+        indexes   = [
+            models.Index(fields=['tax_year', 'cat']),
+            models.Index(fields=['section']),
+        ]
+
+    def __str__(self):
+        return f"[{self.section}] {self.name} ({self.tax_year})"

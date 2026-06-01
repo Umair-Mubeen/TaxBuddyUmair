@@ -34,7 +34,7 @@ from django.urls import reverse
 from .models import (
     Blog, Comment, Contact, TaxBracket, Business_AOP_Slab,
     Property_Business_AOP_Slab, Question, Option,
-    SuperTax4CRate, Category, Tag, WithholdingTaxRate
+    SuperTax4CRate, Category, Tag, WithholdingTaxRate,WHTRate
 )
 from django.core.paginator import Paginator
 
@@ -1561,6 +1561,8 @@ End response with: Aur koi sawaal? / Any other question?"""
     except Exception as e:
         return JsonResponse({'reply': f'Error: {str(e)}'})
 
+
+
 # ── NEW PAGES ─────────────────────────────────────────────────
 def about_us(request):
     return render(request, 'about-us.html')
@@ -1717,3 +1719,96 @@ def fbr_iris_guide(request):
 def redirect_to_mcqs(request, **kwargs):
     from django.http import HttpResponsePermanentRedirect
     return HttpResponsePermanentRedirect('/income-tax-mcqs-pakistan/')
+
+
+def Withholding_Tax_Card(request):
+    """
+    WHT Calculator page.
+    Passes categories list to template for tab rendering.
+    Actual rate data is loaded via /api/wht-rates/ JSON API.
+    """
+    try:
+        tax_year = request.GET.get('year', '2025-2026')
+
+        # Category list for tab buttons (static — matches DB cat values)
+        categories = [
+            {'key': 'property', 'label': '🏠 Property'},
+            {'key': 'banking', 'label': '🏦 Banking'},
+            {'key': 'dividends', 'label': '📈 Dividends'},
+            {'key': 'imports', 'label': '📦 Imports'},
+            {'key': 'goods', 'label': '🛒 Goods'},
+            {'key': 'services', 'label': '💼 Services'},
+            {'key': 'contracts', 'label': '📝 Contracts'},
+            {'key': 'exports', 'label': '✈️ Exports'},
+            {'key': 'rent', 'label': '🏢 Rent'},
+            {'key': 'prizes', 'label': '🎁 Prizes'},
+            {'key': 'vehicles', 'label': '🚗 Vehicles'},
+            {'key': 'salary', 'label': '💰 Salary'},
+            {'key': 'other', 'label': '📋 Other'},
+        ]
+
+        return render(request, 'partials/wht_calculator.html', {
+            'categories': categories,
+            'tax_year': tax_year,
+            'meta_title': 'Withholding Tax Calculator Pakistan 2025-26 | TaxBuddy Umair',
+            'meta_description': (
+                'Free withholding tax & advance tax calculator Pakistan 2025-26. '
+                'Calculate WHT for 80+ FBR sections — property, banking, services, '
+                'imports, exports. Filer vs non-filer rates per Finance Act 2025.'
+            ),
+        })
+    except Exception as e:
+        return HttpResponse("Exception: " + str(e))
+
+
+def wht_rates_api(request):
+    try:
+        tax_year = request.GET.get('year', '2025-26')
+
+        rates_qs = WHTRate.objects.filter(
+            is_active=True,
+            tax_year=tax_year,
+        ).order_by('sort_order', 'section')
+
+        # Sections jahan late filer rate ALAG hoti hai
+        LATE_FILER_DIFF_SECTIONS = {'236C', '236K'}
+
+        data = []
+        for r in rates_qs:
+            # Late filer rate logic
+            if r.section in LATE_FILER_DIFF_SECTIONS:
+                late_filer_rate = float(r.late_filer)
+            else:
+                late_filer_rate = float(r.filer)  # Same as filer
+
+            data.append({
+                'id':         r.uid,
+                'section':    r.section,
+                'cat':        r.cat,
+                'name':       r.name,
+                'sub':        r.sub or '',
+                'filer':      float(r.filer),
+                'late_filer': late_filer_rate,   # ← corrected
+                'non_filer':  float(r.non_filer),
+                'filer_raw':  str(r.filer),
+                'late_raw':   str(r.late_filer),
+                'non_raw':    str(r.non_filer),
+                'nature':     r.nature,
+                'type':       r.tax_type,
+                'notes':      r.notes or '',
+                'threshold':  '',
+                'isFixed':    r.rate_kind == 'fixed',
+                'slab_min': r.slab_min,
+                'slab_max': r.slab_max,
+                'base_tax': float(r.base_tax) if r.base_tax else 0,
+                'rate_kind': r.rate_kind,
+            })
+
+        return JsonResponse({
+            'status':   'ok',
+            'tax_year': tax_year,
+            'rates':    data
+        })
+
+    except Exception as e:
+        return JsonResponse({'status': 'error', 'message': str(e)}, status=500)

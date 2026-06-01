@@ -41,6 +41,7 @@ urlpatterns = [
     path('AOPCalculator/', views.AOPCalculator, name='AOPCalculator'),
     path('PropertyCalculator/', views.PropertyCalculator, name='PropertyCalculator'),
     path('TaxCalculator4C/', views.TaxCalculator4C, name='TaxCalculator4C'),
+    path('Withholding-Tax-Card/', views.Withholding_Tax_Card, name='Withholding_Tax_Card'),
 
     # ── API ───────────────────────────────────────────────────
     path('api/section-4c-rate/', views.section_4c_rate_view, name='section_4c_rate'),
@@ -110,6 +111,7 @@ urlpatterns = [
     # ── BLOG (MUST BE LAST — slug patterns are greedy) ────────
     path('blog/', views.viewBlogs, name='viewBlogs'),
     path('blog/<slug:slug>/', views.viewBlogs, name='viewBlogs_category'),
+    path('api/wht-rates/',       views.wht_rates_api,        name='wht_rates_api'),  # ← YEH ADD KARO
 
     # Blog detail — clean /articles/ prefix avoids slug collisions
     path('articles/<slug:slug>/', views.BlogDetails, name='BlogDetails'),
