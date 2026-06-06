@@ -444,7 +444,7 @@
               <div class="year-select-label">Tax Year 1 <span class="year-badge">Compare</span></div>
               <select name="tax_year_1" id="tax_year_1" class="form-input form-select" required>
                 <option value="">— Select Year —</option>
-                {% for y in years %}<option value="{{ y }}" {% if tax_year_1 == y %}selected{% endif %}>{{ y }}</option>{% endfor %}
+                {% for y in years %}<option value="{{ y }}" {% if tax_year_1 == y %}selected{% endif %}>{{ y }}</option>{% empty %}<option value="2025-2026"{% if tax_year_1 == "2025-2026" %} selected{% endif %}>2025-2026</option><option value="2024-2025"{% if tax_year_1 == "2024-2025" %} selected{% endif %}>2024-2025</option><option value="2023-2024"{% if tax_year_1 == "2023-2024" %} selected{% endif %}>2023-2024</option>{% endfor %}
               </select>
               <div class="field-err" id="err-year1">⚠ Please select Tax Year 1</div>
             </div>
@@ -452,7 +452,7 @@
               <div class="year-select-label">Tax Year 2 <span class="year-badge">Compare</span></div>
               <select name="tax_year_2" id="tax_year_2" class="form-input form-select" required>
                 <option value="">— Select Year —</option>
-                {% for y in years %}<option value="{{ y }}" {% if tax_year_2 == y %}selected{% endif %}>{{ y }}</option>{% endfor %}
+                {% for y in years %}<option value="{{ y }}" {% if tax_year_2 == y %}selected{% endif %}>{{ y }}</option>{% empty %}<option value="2025-2026"{% if tax_year_2 == "2025-2026" %} selected{% endif %}>2025-2026</option><option value="2024-2025"{% if tax_year_2 == "2024-2025" %} selected{% endif %}>2024-2025</option><option value="2023-2024"{% if tax_year_2 == "2023-2024" %} selected{% endif %}>2023-2024</option>{% endfor %}
               </select>
               <div class="field-err" id="err-year2">⚠ Please select Tax Year 2</div>
             </div>
@@ -594,7 +594,40 @@
         </div>
         {% endif %}
 
-    
+
+<!-- ── EDITORIAL CONTENT (SEO + value) ── -->
+    <article style="background:var(--white);border:1px solid var(--border);border-radius:var(--radius-lg);padding:28px;margin-top:24px;line-height:1.75;color:var(--text-mid);font-size:15px;">
+      <h2 style="font-size:21px;font-weight:700;color:var(--navy);margin:0 0 12px;">How AOP Income Tax Is Calculated in Pakistan (2025–26)</h2>
+      <p style="margin:0 0 16px;">
+        An <strong>Association of Persons (AOP)</strong> — partnership firms, joint ventures, and any two or more people carrying on business together — is taxed as a single entity on its <strong>net income</strong>. AOPs use the same slab rates as non-salaried individuals under the Income Tax Ordinance, 2001, with a top marginal rate of 45%. Tax is charged on the AOP's profit after allowable business expenses, before distribution to members.
+      </p>
+      <h3 style="font-size:17px;font-weight:700;color:var(--navy);margin:20px 0 10px;">AOP Tax Slabs — Tax Year 2025–26</h3>
+      <div style="overflow-x:auto;margin-bottom:16px;">
+        <table style="width:100%;border-collapse:collapse;font-size:14px;">
+          <thead><tr style="background:var(--navy);color:#fff;"><th style="text-align:left;padding:10px 12px;">Annual Taxable Income</th><th style="text-align:left;padding:10px 12px;">Tax</th></tr></thead>
+          <tbody>
+            <tr style="border-bottom:1px solid var(--border);"><td style="padding:10px 12px;">Up to Rs. 600,000</td><td style="padding:10px 12px;">0%</td></tr>
+            <tr style="border-bottom:1px solid var(--border);"><td style="padding:10px 12px;">600,001 – 1,200,000</td><td style="padding:10px 12px;">15% of amount over 600,000</td></tr>
+            <tr style="border-bottom:1px solid var(--border);"><td style="padding:10px 12px;">1,200,001 – 1,600,000</td><td style="padding:10px 12px;">Rs. 90,000 + 20% of amount over 1,200,000</td></tr>
+            <tr style="border-bottom:1px solid var(--border);"><td style="padding:10px 12px;">1,600,001 – 3,200,000</td><td style="padding:10px 12px;">Rs. 170,000 + 30% of amount over 1,600,000</td></tr>
+            <tr style="border-bottom:1px solid var(--border);"><td style="padding:10px 12px;">3,200,001 – 5,600,000</td><td style="padding:10px 12px;">Rs. 650,000 + 40% of amount over 3,200,000</td></tr>
+            <tr><td style="padding:10px 12px;">Above 5,600,000</td><td style="padding:10px 12px;">Rs. 1,610,000 + 45% of amount over 5,600,000</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <h3 style="font-size:17px;font-weight:700;color:var(--navy);margin:20px 0 10px;">Worked Example</h3>
+      <p style="margin:0 0 16px;">
+        If a partnership firm earns a net profit of <strong>Rs. 4,000,000</strong>, it falls in the 3,200,001 – 5,600,000 slab: tax = Rs. 650,000 base + 40% of (4,000,000 − 3,200,000) = Rs. 650,000 + Rs. 320,000 = <strong>Rs. 970,000</strong> for the year.
+      </p>
+      <h3 style="font-size:17px;font-weight:700;color:var(--navy);margin:20px 0 10px;">Frequently Asked Questions</h3>
+      <p style="margin:0 0 10px;"><strong>Are individual partners taxed again on their share?</strong><br>
+        Generally no. Once the AOP pays tax on its income, each member's share of profit is exempt in their personal return — though it may be added back for rate purposes if a partner has other taxable income. This avoids double taxation.</p>
+      <p style="margin:0 0 10px;"><strong>Do AOP slabs differ from salaried slabs?</strong><br>
+        Yes, substantially. AOPs start at 15% above Rs. 600,000 and reach 45% above Rs. 5.6 million, whereas salaried individuals start at 1% and top out at 35%.</p>
+      <p style="margin:0;"><strong>Does an AOP need to register separately?</strong><br>
+        Yes. An AOP gets its own NTN on the FBR IRIS portal and files its own annual return, separate from the members' personal returns.</p>
+    </article>
+
     {% include 'partials/cta_banner.html' %}
   </main>
   <aside class="content-sidebar">{% include 'partials/sidebar.html' %}</aside>

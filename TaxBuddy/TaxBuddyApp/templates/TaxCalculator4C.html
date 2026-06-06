@@ -1,8 +1,65 @@
 {% extends 'base.html' %}
 {% load static %}
 {% block title %}Super Tax Section 4C Calculator Pakistan | TaxBuddy Umair{% endblock %}
-{% block meta_desc %}Free Super Tax calculator Pakistan 2025-26. Calculate Section 4C super tax for companies and individuals with income above Rs. 150 million.{% endblock %}
-{% block extra_css %}<link rel="stylesheet" href="{% static 'css/calculators.css' %}">{% endblock %}
+{% block meta_desc %}Free Super Tax calculator Pakistan 2025-26. Calculate Section 4C super tax for companies and individuals with income above Rs. 150 million. Compare across tax years.{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/calculators.css' %}">
+<style>
+/* ── FORM HEADER & FIELDS (matched to Salary calculator) ── */
+.calc-header{background:var(--navy,#0A2647);padding:24px 28px;display:flex;align-items:flex-start;gap:16px}
+.calc-header-icon{width:48px;height:48px;background:rgba(255,255,255,.12);border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:24px;flex-shrink:0}
+.calc-header h2{font-size:20px;font-weight:700;color:#fff;margin-bottom:4px}
+.calc-header p{font-size:13px;color:rgba(255,255,255,.55);margin-bottom:10px}
+.calc-badges{display:flex;gap:6px;flex-wrap:wrap}
+.calc-badge{font-size:10px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;padding:3px 10px;border-radius:20px;border:1px solid rgba(255,255,255,.2);color:rgba(255,255,255,.65);background:rgba(255,255,255,.08)}
+.income-toggle{display:flex;gap:0;border-radius:10px;overflow:hidden;border:1.5px solid var(--border,#E2E8F0);background:var(--bg,#F7F9FC);margin-bottom:20px}
+.income-toggle input[type="radio"]{display:none}
+.income-toggle label{flex:1;text-align:center;padding:10px 16px;font-size:13.5px;font-weight:600;cursor:pointer;color:var(--text-mid,#4A5568);transition:all .2s;user-select:none;display:flex;align-items:center;justify-content:center;gap:6px}
+.income-toggle input[type="radio"]:checked + label{background:var(--navy,#0A2647);color:#fff}
+.field-wrap{margin-bottom:18px}
+.field-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:6px}
+.field-label-text{font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--text-light,#718096)}
+.field-required{color:#E53E3E;margin-left:2px}
+.field-live-preview{font-size:11.5px;font-weight:600;color:var(--green,#0D9E72);display:none}
+.field-input-wrap{position:relative}
+.field-prefix{position:absolute;left:14px;top:50%;transform:translateY(-50%);font-size:13px;font-weight:700;color:var(--text-light,#718096);pointer-events:none;user-select:none}
+.form-input{width:100%;padding:12px 14px;font-size:14px;font-family:inherit;border:1.5px solid var(--border,#E2E8F0);border-radius:10px;outline:none;background:var(--bg,#F7F9FC);color:var(--text,#1A202C);transition:border-color .2s,box-shadow .2s,background .2s}
+.form-input.has-prefix{padding-left:40px}
+.form-input:focus{border-color:var(--navy,#0A2647);background:#fff;box-shadow:0 0 0 3px rgba(10,38,71,.08)}
+.form-input.is-error{border-color:#E53E3E;background:#FFF5F5;box-shadow:0 0 0 3px rgba(229,62,62,.08)}
+.form-input.is-valid{border-color:#38A169;background:#F0FFF4}
+.form-select{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23718096' stroke-width='2.5'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 14px center;padding-right:36px}
+.field-hint{font-size:11.5px;color:var(--text-light,#718096);margin-top:5px}
+.field-err{display:none;font-size:12px;color:#E53E3E;margin-top:5px;font-weight:500}
+.field-err.show{display:flex;align-items:center;gap:4px}
+.year-selectors{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px}
+.year-select-label{font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--text-light,#718096);margin-bottom:6px}
+.year-badge{display:inline-block;background:rgba(13,158,114,.1);color:var(--green,#0D9E72);font-size:10px;font-weight:600;padding:2px 7px;border-radius:4px;margin-left:4px}
+.year-conflict{display:none;background:#FFFBEB;border:1px solid #F59E0B;border-radius:8px;padding:10px 14px;font-size:13px;color:#92400E;margin-bottom:14px;align-items:center;gap:8px}
+.year-conflict.show{display:flex}
+.calc-submit{width:100%;padding:15px 24px;background:linear-gradient(135deg,#0D9E72,#0B8A64);color:#fff;font-size:15px;font-weight:700;font-family:inherit;border:none;border-radius:12px;cursor:pointer;margin-top:8px;display:flex;align-items:center;justify-content:center;gap:10px;min-height:54px;letter-spacing:.01em;box-shadow:0 4px 14px rgba(13,158,114,.35);transition:all .2s}
+.calc-submit:hover{background:linear-gradient(135deg,#0B8A64,#097554);box-shadow:0 6px 20px rgba(13,158,114,.45);transform:translateY(-1px)}
+.calc-submit:active{transform:translateY(0);box-shadow:none}
+.calc-submit:disabled{opacity:.6;cursor:not-allowed;transform:none;box-shadow:none}
+/* ── RESULT (matched to Salary calculator) ── */
+.calc-result{margin-top:32px;border-top:3px solid var(--green,#0D9E72);padding-top:20px}
+.calc-result-title{font-size:16px;font-weight:700;color:var(--navy,#0A2647);text-align:center;margin-bottom:4px;letter-spacing:-.01em}
+.calc-result-subtitle{font-size:12px;color:var(--text-light,#718096);text-align:center;margin-bottom:16px}
+.cmp-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.cmp-card{background:#fff;border:1px solid var(--border,#E2E8F0);border-radius:12px;overflow:hidden;box-shadow:0 2px 12px rgba(10,38,71,.1)}
+.cmp-head{background:#0A2647;padding:12px 16px;font-size:12px;font-weight:600;color:rgba(255,255,255,.7);letter-spacing:.03em}
+.cmp-table{width:100%;border-collapse:collapse}
+.cmp-table tr{border-bottom:1px solid #E2E8F0}
+.cmp-table tr:last-child{border-bottom:none}
+.cmp-table td{padding:11px 16px;font-size:13px}
+.cmp-table td:first-child{color:#4A5568}
+.cmp-table td:last-child{text-align:right;font-weight:600;color:#0A2647}
+.cmp-table tr.hl{background:#E8A020}
+.cmp-table tr.hl td{color:#fff!important;font-weight:700}
+@media(max-width:640px){.year-selectors{grid-template-columns:1fr!important}.cmp-grid{grid-template-columns:1fr!important}}
+</style>
+{% endblock %}
 
 {% block content %}
 
@@ -16,17 +73,11 @@
     <h1>Super Tax — Section 4C Calculator</h1>
     <div class="article-meta">
       <span>⚡ ITO 2001, Section 4C</span>
-      <span>🔄 Tax Years 2022–2026</span>
+      <span>🔄 Tax Years 2024–2026</span>
       <span>🏢 For High-Income Persons &amp; Companies</span>
     </div>
   </div>
 </div>
-
-<!--<div class="container">-->
-<!--  <div class="ad-wrapper"><div class="ad-wrapper-label">Advertisement</div>-->
-<!--    <div class="ad-zone ad-leaderboard"><div class="ad-zone-label">AdSense — Top</div><div class="ad-zone-size">728×90</div></div>-->
-<!--  </div>-->
-<!--</div>-->
 
 <div class="content-grid">
   <main class="content-main">
@@ -42,67 +93,81 @@
         <div class="calc-header-icon">⚡</div>
         <div>
           <h2>Super Tax 4C Calculator</h2>
-          <p>Section 4C · ITO 2001 — Live Rate Lookup via API</p>
+          <p>Compare Section 4C super tax across FBR tax years · ITO 2001</p>
+          <div class="calc-badges"><span class="calc-badge">FBR 2025-26</span><span class="calc-badge">Section 4C</span><span class="calc-badge">Free</span></div>
         </div>
       </div>
       <div class="calc-body">
+        <form id="calc-form" novalidate>
 
-        <div class="year-selectors">
-          <div>
-            <div class="year-select-label">Tax Year</div>
-            <select id="tax-year-4c" class="form-select">
-              <option value="2023">Tax Year 2023</option>
-              <option value="2024">Tax Year 2024</option>
-              <option value="2025" selected>Tax Year 2025</option>
-              <option value="2026">Tax Year 2026</option>
-            </select>
+          <!-- INCOME TYPE TOGGLE -->
+          <div class="income-toggle">
+            <input type="radio" name="income_type" id="tog-monthly" value="Monthly">
+            <label for="tog-monthly">📅 Monthly Income</label>
+            <input type="radio" name="income_type" id="tog-yearly" value="Yearly" checked>
+            <label for="tog-yearly">📆 Annual Income</label>
           </div>
-          <div>
-            <div class="year-select-label">Income Type</div>
-            <select id="income-type-4c" class="form-select" onchange="updateAnnual4C()">
-              <option value="annual">Annual</option>
-              <option value="monthly">Monthly</option>
-            </select>
-          </div>
-        </div>
 
-        <div class="form-group" style="margin-top:16px;">
-          <label class="form-label" for="income-4c">Taxable Income (PKR) *</label>
-          <input type="number" id="income-4c" class="form-input number-only"
-                 placeholder="e.g. 200000000"
-                 oninput="updateAnnual4C()">
-        </div>
-
-        <!-- Live Result -->
-        <div id="result-4c" class="calc-result" style="display:none;">
-          <div class="calc-result-grid">
-            <div class="calc-result-item">
-              <div class="calc-result-val" id="r4c-income">—</div>
-              <div class="calc-result-lbl">Annual Income</div>
+          <!-- INCOME FIELD -->
+          <div class="field-wrap">
+            <div class="field-top">
+              <span class="field-label-text">Monthly / Annual Income (PKR)<span class="field-required">*</span></span>
+              <span class="field-live-preview" id="live-preview"></span>
             </div>
-            <div class="calc-result-item">
-              <div class="calc-result-val" id="r4c-rate">—</div>
-              <div class="calc-result-lbl">Super Tax Rate</div>
+            <div class="field-input-wrap">
+              <span class="field-prefix">₨</span>
+              <input type="number" id="income_amount" name="income_amount"
+                     class="form-input number-only has-prefix"
+                     placeholder="e.g. 200,000,000"
+                     min="1" required>
             </div>
-            <div class="calc-result-item">
-              <div class="calc-result-val" id="r4c-tax">—</div>
-              <div class="calc-result-lbl">Super Tax</div>
+            <div class="field-hint">Super tax applies only to income above Rs. 150 million</div>
+            <div class="field-err" id="err-income">⚠ Please enter a valid amount greater than 0</div>
+          </div>
+
+          <!-- TAX YEAR SELECTORS -->
+          <div class="year-selectors">
+            <div>
+              <div class="year-select-label">Tax Year 1 <span class="year-badge">Compare</span></div>
+              <select name="tax_year_1" id="tax_year_1" class="form-input form-select" required>
+                <option value="">— Select Year —</option>
+                <option value="2025-2026" selected>2025-2026</option>
+                <option value="2024-2025">2024-2025</option>
+                <option value="2023-2024">2023-2024</option>
+              </select>
+              <div class="field-err" id="err-year1">⚠ Please select Tax Year 1</div>
+            </div>
+            <div>
+              <div class="year-select-label">Tax Year 2 <span class="year-badge">Compare</span></div>
+              <select name="tax_year_2" id="tax_year_2" class="form-input form-select" required>
+                <option value="">— Select Year —</option>
+                <option value="2025-2026">2025-2026</option>
+                <option value="2024-2025" selected>2024-2025</option>
+                <option value="2023-2024">2023-2024</option>
+              </select>
+              <div class="field-err" id="err-year2">⚠ Please select Tax Year 2</div>
             </div>
           </div>
-          <div class="calc-cta">
-            <div class="calc-cta-text">Need help with your super tax filing? <strong>Contact us</strong></div>
-            <a href="https://wa.me/923332482742" class="btn-wa-sm" target="_blank" rel="noopener">💬 WhatsApp</a>
+
+          <div class="year-conflict" id="year-conflict">
+            ⚠️ Please select <strong>two different tax years</strong> to compare results.
+          </div>
+
+          <button type="submit" class="calc-submit" id="calc-submit">
+            ⚡ Calculate Super Tax
+          </button>
+        </form>
+
+        <!-- RESULTS (rendered client-side) -->
+        <div id="calc-results" class="calc-result" style="display:none;">
+          <div class="calc-result-title" id="res-title"></div>
+          <div class="calc-result-subtitle" id="res-subtitle"></div>
+          <div class="cmp-grid" id="res-grid"></div>
+          <div class="calc-disclaimer" style="margin-top:14px;">
+            ⚠️ Super tax applies to persons with income exceeding PKR 150 million. Marginal relief provisions in the law may apply near tier boundaries. Verify final rates with FBR.
           </div>
         </div>
 
-        <div id="loading-4c" style="display:none;text-align:center;padding:16px;color:rgba(255,255,255,0.6);font-size:13px;">
-          ⏳ Fetching rate…
-        </div>
-
-        <div class="calc-disclaimer">
-          ⚠️ Super Tax applies to persons with income exceeding PKR 150 million.
-          This calculator fetches live rates from our API. Rates may be amended by Finance Acts.
-        </div>
       </div>
     </div>
 
@@ -114,22 +179,44 @@
       <div style="overflow-x:auto;">
         <table class="rates-table">
           <thead>
-            <tr><th>Income Tier (PKR)</th><th>Tax Year 2022</th><th>Tax Year 2023</th><th>Tax Year 2024+</th></tr>
+            <tr><th>Income Tier (PKR)</th><th>TY 2023–2025</th><th>TY 2026</th></tr>
           </thead>
           <tbody>
-            <tr><td>150M – 200M</td><td><span class="rate-badge">1%</span></td><td><span class="rate-badge">1%</span></td><td><span class="rate-badge">1%</span></td></tr>
-            <tr><td>200M – 250M</td><td><span class="rate-badge">2%</span></td><td><span class="rate-badge">2%</span></td><td><span class="rate-badge">2%</span></td></tr>
-            <tr><td>250M – 300M</td><td><span class="rate-badge">3%</span></td><td><span class="rate-badge">3%</span></td><td><span class="rate-badge">3%</span></td></tr>
-            <tr><td>300M – 350M</td><td><span class="rate-badge">4%</span></td><td><span class="rate-badge">4%</span></td><td><span class="rate-badge">4%</span></td></tr>
-            <tr><td>Above 500M (Banking)</td><td><span class="rate-badge">10%</span></td><td><span class="rate-badge">10%</span></td><td><span class="rate-badge">10%</span></td></tr>
+            <tr><td>Up to 150M</td><td><span class="rate-badge">0%</span></td><td><span class="rate-badge">0%</span></td></tr>
+            <tr><td>150M &ndash; 200M</td><td><span class="rate-badge">1%</span></td><td><span class="rate-badge">1%</span></td></tr>
+            <tr><td>200M &ndash; 250M</td><td><span class="rate-badge">2%</span></td><td><span class="rate-badge">2%</span></td></tr>
+            <tr><td>250M &ndash; 300M</td><td><span class="rate-badge">3%</span></td><td><span class="rate-badge">2.5%</span></td></tr>
+            <tr><td>300M &ndash; 350M</td><td><span class="rate-badge">4%</span></td><td><span class="rate-badge">3.5%</span></td></tr>
+            <tr><td>350M &ndash; 400M</td><td><span class="rate-badge">6%</span></td><td><span class="rate-badge">5.5%</span></td></tr>
+            <tr><td>400M &ndash; 500M</td><td><span class="rate-badge">8%</span></td><td><span class="rate-badge">7.5%</span></td></tr>
+            <tr><td>Above 500M</td><td><span class="rate-badge">10%</span></td><td><span class="rate-badge">10%</span></td></tr>
           </tbody>
         </table>
       </div>
     </div>
 
-<!--    <div class="ad-wrapper"><div class="ad-wrapper-label">Advertisement</div>-->
-<!--      <div class="ad-zone ad-large-rect"><div class="ad-zone-label">AdSense — Below Calculator</div><div class="ad-zone-size">336×280</div></div>-->
-<!--    </div>-->
+    <!-- ── EDITORIAL CONTENT (SEO + value) ── -->
+    <article style="background:var(--white);border:1px solid var(--border);border-radius:var(--radius-lg);padding:28px;margin-top:24px;line-height:1.75;color:var(--text-mid);font-size:15px;">
+      <h2 style="font-size:21px;font-weight:700;color:var(--navy);margin:0 0 12px;">Understanding Super Tax Under Section 4C (Pakistan)</h2>
+      <p style="margin:0 0 16px;">
+        Super Tax is an <strong>additional income tax</strong> introduced under Section 4C of the Income Tax Ordinance, 2001, to raise extra revenue from the highest earners. It applies to individuals, Associations of Persons (AOPs), and companies whose income for the year exceeds <strong>Rs. 150 million</strong>. It is charged on top of your normal income tax — not instead of it. The rate that applies to you depends on which income tier you fall into, ranging from 1% up to 10%.
+      </p>
+      <h3 style="font-size:17px;font-weight:700;color:var(--navy);margin:20px 0 10px;">Who Has to Pay It?</h3>
+      <p style="margin:0 0 16px;">
+        Only persons with income above Rs. 150 million in the tax year. If your income is below that threshold, Section 4C super tax does not apply to you at all. The top rate of 10% applies to all sectors with income above Rs. 500 million (the earlier sector-based discrimination was removed by the Finance Act, 2023). The Finance Act, 2025 reduced the rates by 0.5% for income between Rs. 250 million and Rs. 500 million, effective tax year 2026.
+      </p>
+      <h3 style="font-size:17px;font-weight:700;color:var(--navy);margin:20px 0 10px;">How It Is Calculated</h3>
+      <p style="margin:0 0 16px;">
+        The super tax rate for your income tier is applied to your income for the year. For example, a person with income of Rs. 220 million falls in the 200M–250M tier (2%), so super tax ≈ Rs. 4.4 million, payable in addition to normal income tax. Marginal relief provisions in the law soften the jump where income only just crosses a tier boundary.
+      </p>
+      <h3 style="font-size:17px;font-weight:700;color:var(--navy);margin:20px 0 10px;">Frequently Asked Questions</h3>
+      <p style="margin:0 0 10px;"><strong>Is super tax separate from the high-income surcharge?</strong><br>
+        Yes. The surcharge for high-earning salaried individuals is a different levy under a different provision. Super tax under Section 4C only starts at Rs. 150 million and is calculated separately.</p>
+      <p style="margin:0 0 10px;"><strong>Does it apply to salaried individuals?</strong><br>
+        Only if total income exceeds Rs. 150 million — which is rare for salaried earners. It most commonly affects large companies and high-income businesses.</p>
+      <p style="margin:0;"><strong>Are these rates final?</strong><br>
+        Super tax rates are set by each year's Finance Act and can change. Always confirm the current rate on the <a href="https://www.fbr.gov.pk" target="_blank" rel="noopener" style="color:var(--green);font-weight:600;">FBR portal</a> or with a tax professional before filing.</p>
+    </article>
 
     {% include 'partials/cta_banner.html' %}
   </main>
@@ -141,52 +228,82 @@
 {% endblock %}
 
 {% block extra_js %}
-<script src="{% static 'js/calculators.js' %}"></script>
 <script>
-let debounceTimer;
+(function(){
+  'use strict';
+  var form    = document.getElementById('calc-form');
+  var income  = document.getElementById('income_amount');
+  var yr1      = document.getElementById('tax_year_1');
+  var yr2      = document.getElementById('tax_year_2');
+  var conflict = document.getElementById('year-conflict');
+  var btn      = document.getElementById('calc-submit');
+  var preview  = document.getElementById('live-preview');
+  var results  = document.getElementById('calc-results');
 
-function updateAnnual4C() {
-  clearTimeout(debounceTimer);
-  debounceTimer = setTimeout(fetch4CRate, 400);
-}
+  function incomeType(){ var r=document.querySelector('input[name="income_type"]:checked'); return r?r.value:'Yearly'; }
+  function annualOf(val){ return incomeType()==='Monthly' ? val*12 : val; }
+  function pkr(n){ return 'Rs. ' + Math.round(n).toLocaleString('en-PK'); }
 
-async function fetch4CRate() {
-  const raw       = document.getElementById('income-4c').value;
-  const type      = document.getElementById('income-type-4c').value;
-  const taxYear   = document.getElementById('tax-year-4c').value;
-  const resultEl  = document.getElementById('result-4c');
-  const loadingEl = document.getElementById('loading-4c');
-
-  if (!raw) { resultEl.style.display = 'none'; return; }
-
-  let income = parseFloat(raw) || 0;
-  if (type === 'monthly') income = income * 12;
-  if (income <= 0) { resultEl.style.display = 'none'; return; }
-
-  loadingEl.style.display = 'block';
-  resultEl.style.display  = 'none';
-
-  try {
-    const res  = await fetch(`/api/section-4c-rate/?income=${Math.round(income)}&tax_year=${taxYear}`);
-    const data = await res.json();
-
-    if (data.error) { loadingEl.style.display = 'none'; return; }
-
-    const superTax = income * data.rate;
-
-    document.getElementById('r4c-income').textContent = formatPKR(income);
-    document.getElementById('r4c-rate').textContent   = data.rate_percent + '%';
-    document.getElementById('r4c-tax').textContent    = formatPKR(superTax);
-
-    loadingEl.style.display = 'none';
-    resultEl.style.display  = 'block';
-  } catch (e) {
-    loadingEl.style.display = 'none';
-    console.error('4C API error:', e);
+  function updatePreview(){
+    var val=parseFloat(income.value)||0;
+    if(val>0){ preview.textContent='Annual: ₨'+Math.round(annualOf(val)).toLocaleString('en-PK'); preview.style.display='block'; }
+    else { preview.style.display='none'; }
   }
-}
+  income.addEventListener('input', updatePreview);
+  document.querySelectorAll('input[name="income_type"]').forEach(function(r){ r.addEventListener('change', updatePreview); });
 
-// Trigger on year change too
-document.getElementById('tax-year-4c').addEventListener('change', fetch4CRate);
+  // Section 4C tiers. reduced=true => Finance Act 2025 rates (TY 2025-2026)
+  function tierFor(annual, year){
+    var reduced = (year === '2025-2026');
+    if(annual <= 150000000) return {rate:0,    label:'Up to Rs. 150M — no super tax'};
+    if(annual <= 200000000) return {rate:1,    label:'Rs. 150M – 200M'};
+    if(annual <= 250000000) return {rate:2,    label:'Rs. 200M – 250M'};
+    if(annual <= 300000000) return {rate:reduced?2.5:3, label:'Rs. 250M – 300M'};
+    if(annual <= 350000000) return {rate:reduced?3.5:4, label:'Rs. 300M – 350M'};
+    if(annual <= 400000000) return {rate:reduced?5.5:6, label:'Rs. 350M – 400M'};
+    if(annual <= 500000000) return {rate:reduced?7.5:8, label:'Rs. 400M – 500M'};
+    return {rate:10, label:'Above Rs. 500M'};
+  }
+
+  function card(year, annual){
+    var t = tierFor(annual, year);
+    var tax = annual * t.rate / 100;
+    return ''
+      + '<div class="cmp-card">'
+      +   '<div class="cmp-head">Super Tax for Tax Year : ' + year + '</div>'
+      +   '<table class="cmp-table">'
+      +     '<tr><td>Annual Income</td><td>' + pkr(annual) + '</td></tr>'
+      +     '<tr class="hl"><td>Applicable Income Tier</td><td>' + t.label + '</td></tr>'
+      +     '<tr><td>Super Tax Rate</td><td>' + t.rate + ' %</td></tr>'
+      +     '<tr class="hl"><td>Super Tax Payable</td><td>' + pkr(tax) + '</td></tr>'
+      +   '</table>'
+      + '</div>';
+  }
+
+  function showErr(id,show){ var el=document.getElementById(id); if(el) el.classList.toggle('show',show); }
+  function mark(el,err){ if(!el) return; el.classList.toggle('is-error',err); el.classList.toggle('is-valid',!err && el.value!==''); }
+  function checkYears(){ var bad = yr1.value && yr2.value && yr1.value===yr2.value; conflict.classList.toggle('show',!!bad); btn.disabled=!!bad; return !bad; }
+  function valIncome(){ var ok=parseFloat(income.value)>0; mark(income,!ok); showErr('err-income',!ok && income.value!==''); return ok; }
+  function valY1(){ var ok=yr1.value!==''; mark(yr1,!ok); showErr('err-year1',!ok); return ok; }
+  function valY2(){ var ok=yr2.value!==''; mark(yr2,!ok); showErr('err-year2',!ok); return ok; }
+
+  income.addEventListener('blur',valIncome);
+  yr1.addEventListener('change',function(){ valY1(); checkYears(); });
+  yr2.addEventListener('change',function(){ valY2(); checkYears(); });
+
+  form.addEventListener('submit',function(e){
+    e.preventDefault();
+    var ok = valIncome() & valY1() & valY2() & checkYears();
+    if(!ok) return;
+    var annual = annualOf(parseFloat(income.value)||0);
+    document.getElementById('res-title').textContent = 'Super Tax Comparison: ' + yr1.value + ' VS ' + yr2.value;
+    document.getElementById('res-subtitle').textContent = 'Annual Income: ' + pkr(annual);
+    document.getElementById('res-grid').innerHTML = card(yr1.value, annual) + card(yr2.value, annual);
+    results.style.display = 'block';
+    var navH = document.querySelector('nav') ? document.querySelector('nav').offsetHeight : 70;
+    var top = results.getBoundingClientRect().top + window.scrollY - navH - 16;
+    window.scrollTo({top: top, behavior: 'smooth'});
+  });
+})();
 </script>
 {% endblock %}

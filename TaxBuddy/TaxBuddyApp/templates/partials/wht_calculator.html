@@ -156,6 +156,19 @@
   .wht-hero h1{font-size:1.4rem}
   .wht-details{padding:14px 16px}
 }
+/* ── UX UPGRADES: quick-pick, filer pills, step-2 hint ── */
+.wht-quick{display:flex;gap:6px;flex-wrap:wrap;align-items:center;margin-bottom:14px}
+.wht-quick-lbl{font-size:12px;font-weight:700;color:var(--text-light);margin-right:2px}
+.wht-quick-btn{padding:6px 12px;border-radius:20px;font-size:12.5px;font-weight:600;border:1.5px solid var(--border);background:#F0FDF4;color:var(--navy);cursor:pointer;transition:all .18s;display:inline-flex;align-items:center;gap:5px}
+.wht-quick-btn:hover{border-color:var(--green);color:var(--green)}
+.wht-filer-pills{display:grid;grid-template-columns:repeat(3,1fr);gap:6px}
+.wht-filer-pill{padding:11px 8px;border-radius:var(--radius,8px);font-size:12.5px;font-weight:700;border:1.5px solid var(--border);background:#fff;color:var(--text-mid);cursor:pointer;transition:all .18s;text-align:center;line-height:1.2}
+.wht-filer-pill:hover{border-color:var(--navy)}
+.wht-filer-pill.fp-filer.active{background:#F0FDF4;border-color:#16a34a;color:#166534}
+.wht-filer-pill.fp-late.active{background:#FFF8E1;border-color:#d97706;color:#B45309}
+.wht-filer-pill.fp-non.active{background:#FEF2F2;border-color:#dc2626;color:#b91c1c}
+.wht-step2-hint{background:#FFFBEB;border:1px solid #FDE68A;border-radius:var(--radius,8px);padding:10px 14px;font-size:13px;color:#92400E;margin-bottom:16px}
+@media(max-width:480px){.wht-filer-pills{grid-template-columns:1fr}}
 </style>
 {% endblock %}
 
@@ -184,6 +197,16 @@
           placeholder="Search by section or description... e.g. 236C, bank profit, salary, property"
           oninput="whtFilterTx()">
         <button class="wht-search-clear" id="whtSearchClear" onclick="whtClearSearch()">×</button>
+      </div>
+
+      <div class="wht-quick" id="whtQuick">
+        <span class="wht-quick-lbl">Popular:</span>
+        <button type="button" class="wht-quick-btn" onclick="whtQuickPick('236C')">🏠 Property Sale</button>
+        <button type="button" class="wht-quick-btn" onclick="whtQuickPick('236K')">🏡 Property Purchase</button>
+        <button type="button" class="wht-quick-btn" onclick="whtQuickPick('155')">🏢 Rent</button>
+        <button type="button" class="wht-quick-btn" onclick="whtQuickPick('151')">🏦 Bank Profit</button>
+        <button type="button" class="wht-quick-btn" onclick="whtQuickPick('149')">💼 Salary</button>
+        <button type="button" class="wht-quick-btn" onclick="whtQuickPick('231AB')">💵 Cash Withdrawal</button>
       </div>
 
       <div class="wht-tabs" id="whtTabs">
@@ -217,6 +240,8 @@
         <strong>Selected:</strong> <span id="whtSelLabel">—</span>
       </div>
 
+      <div class="wht-step2-hint" id="whtStep2Hint">👆 Choose a transaction in Step ① above to unlock this step.</div>
+
       <div class="wht-slab-notice" id="whtSlabNotice">
         ℹ️ This uses <strong>graduated slab rates</strong> — correct slab will be auto-detected from your amount. Enter the full annual amount for accurate calculation.
       </div>
@@ -226,7 +251,7 @@
           <label>Transaction Amount (Rs.)</label>
           <div class="wht-pfx-wrap">
             <span class="wht-pfx"></span>
-            <input type="number" id="whtAmount" placeholder="0" min="0" oninput="whtValidate()">
+            <input type="number" id="whtAmount" placeholder="0" min="0" oninput="whtLive()">
           </div>
           <div id="whtAmtErr" style="font-size:12px;color:#E53E3E;margin-top:4px;display:none">
             Please enter a valid positive amount.
@@ -234,11 +259,12 @@
         </div>
         <div class="wht-fg">
           <label>Filer Status</label>
-          <select id="whtFilerStatus">
-            <option value="filer">✅ Filer (ATL Active)</option>
-            <option value="late_filer">⚠️ Late Filer</option>
-            <option value="non_filer">❌ Non-Filer</option>
-          </select>
+          <div class="wht-filer-pills" id="whtFilerPills">
+            <button type="button" class="wht-filer-pill fp-filer active" onclick="whtSetFiler('filer',this)">✅ Filer</button>
+            <button type="button" class="wht-filer-pill fp-late" onclick="whtSetFiler('late_filer',this)">⚠️ Late Filer</button>
+            <button type="button" class="wht-filer-pill fp-non" onclick="whtSetFiler('non_filer',this)">❌ Non-Filer</button>
+          </div>
+          <input type="hidden" id="whtFilerStatus" value="filer">
         </div>
       </div>
 
@@ -526,7 +552,10 @@ function whtSelect(id){
   document.getElementById('whtResult').classList.remove('show');
   document.getElementById('whtAmount').value = '';
   whtValidate();
-  step2.scrollIntoView({behavior:'smooth', block:'nearest'});
+  var _h=document.getElementById('whtStep2Hint'); if(_h) _h.style.display='none';
+  step2.scrollIntoView({behavior:'smooth', block:'start'});
+  if(whtSel.isFixed){ whtCalculate({noScroll:true}); }
+  else { setTimeout(function(){ var a=document.getElementById('whtAmount'); if(a) a.focus(); }, 350); }
 }
 
 // ═══════════════════════════════════
@@ -550,7 +579,35 @@ function whtValidate(){
 // ═══════════════════════════════════
 // CALCULATE
 // ═══════════════════════════════════
-function whtCalculate(){
+// ═══════════════════════════════════
+// LIVE PREVIEW HELPERS
+// ═══════════════════════════════════
+function whtLive(){
+  whtValidate();
+  const btn = document.getElementById('whtCalcBtn');
+  if(whtSel && !btn.disabled){ whtCalculate({noScroll:true}); }
+  else { document.getElementById('whtResult').classList.remove('show'); }
+}
+function whtSetFiler(status, btn){
+  document.getElementById('whtFilerStatus').value = status;
+  document.querySelectorAll('.wht-filer-pill').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  whtLive();
+}
+function whtQuickPick(term){
+  term = String(term).toLowerCase();
+  let tx = WHT_DATA.find(t => (t.section||'').toLowerCase() === term);
+  if(!tx) tx = WHT_DATA.find(t => (t.section||'').toLowerCase().indexOf(term) >= 0);
+  if(tx){ whtSelect(tx.id); }
+  else {
+    const sb = document.getElementById('whtSearch');
+    sb.value = term; whtFilterTx();
+    sb.scrollIntoView({behavior:'smooth', block:'nearest'});
+  }
+}
+
+function whtCalculate(opts){
+  opts = opts || {};
   if(!whtSel) return;
 
   const filerStatus = document.getElementById('whtFilerStatus').value;
@@ -672,7 +729,7 @@ function whtCalculate(){
     noteEl.style.display = 'none';
   }
 
-  resPanelEl.scrollIntoView({behavior:'smooth', block:'start'});
+  if(!opts.noScroll){ resPanelEl.scrollIntoView({behavior:'smooth', block:'start'}); }
 }
 
 // ═══════════════════════════════════

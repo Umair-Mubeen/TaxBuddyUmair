@@ -21,27 +21,27 @@
 
   <!-- SEO Meta -->
   <title>{% block title %}{{ meta_title|default:"TaxBuddy Umair | Pakistan Tax Education Platform" }}{% endblock %}</title>
-  <meta name="description" content="{% block meta_desc %}{{ meta_description|default:"Pakistan's #1 tax education platform. Free income tax & sales tax guides, calculators and MCQs — explained simply by TaxBuddy Umair. FBR 2025-26." }}{% endblock %}">
+  <meta name="description" content="{% block meta_desc %}{{ meta_description|default:"Pakistan's free tax education platform. Free income tax & sales tax guides, calculators and MCQs — explained simply by TaxBuddy Umair. FBR 2025-26." }}{% endblock %}">
   <meta name="robots" content="index, follow">
   <meta name="theme-color" content="#0A2647">
   <meta name="author" content="Umair Mubeen">
-  <link rel="canonical" href="{{ request.scheme }}://{{ request.get_host }}{{ request.path }}">
+  <link rel="canonical" href="https://taxbuddyumair.com{{ request.path }}">
   {% if request.GET %}
   <meta name="robots" content="noindex, follow">
   {% endif %}
 
   <!-- Open Graph -->
   <meta property="og:title"       content="{% block og_title %}{{ meta_title|default:'TaxBuddy Umair' }}{% endblock %}">
-  <meta property="og:description" content="{% block og_desc %}{{ meta_description|default:"Pakistan's #1 tax education platform. Free income tax & sales tax guides, calculators & MCQs by TaxBuddy Umair." }}{% endblock %}">
+  <meta property="og:description" content="{% block og_desc %}{{ meta_description|default:"Pakistan's free tax education platform. Free income tax & sales tax guides, calculators & MCQs by TaxBuddy Umair." }}{% endblock %}">
   <meta property="og:type"        content="{% block og_type %}website{% endblock %}">
-  <meta property="og:url"         content="https://www.taxbuddyumair.com{{ request.path }}">
+  <meta property="og:url"         content="https://taxbuddyumair.com{{ request.path }}">
   <meta property="og:image"       content="{% block og_image %}{% static 'images/og-image.png' %}{% endblock %}">
   <meta property="og:site_name"   content="TaxBuddy Umair">
 
   <!-- Twitter Card -->
   <meta name="twitter:card"        content="summary_large_image">
   <meta name="twitter:title"       content="{% block tw_title %}{{ meta_title|default:'TaxBuddy Umair | Pakistan Tax Education Platform' }}{% endblock %}">
-  <meta name="twitter:description" content="{% block tw_desc %}{{ meta_description|default:"Pakistan's #1 tax education platform. Free income tax & sales tax guides explained simply by TaxBuddy Umair." }}{% endblock %}">
+  <meta name="twitter:description" content="{% block tw_desc %}{{ meta_description|default:"Pakistan's free tax education platform. Free income tax & sales tax guides explained simply by TaxBuddy Umair." }}{% endblock %}">
   <meta name="twitter:image"       content="{% block tw_image %}{% static 'images/og-image.png' %}{% endblock %}">
 
   <!-- Schema.org: Website -->
@@ -51,7 +51,7 @@
     "@type": "WebSite",
     "name": "TaxBuddy Umair",
     "url": "https://www.taxbuddyumair.com",
-    "description": "Pakistan's #1 tax education platform. Free income tax guides, calculators, and MCQs explained simply by TaxBuddy Umair.",
+    "description": "Pakistan's free tax education platform. Free income tax guides, calculators, and MCQs explained simply by TaxBuddy Umair.",
     "potentialAction": {
       "@type": "SearchAction",
       "target": "https://www.taxbuddyumair.com/blog/?q={search_term_string}",
@@ -66,7 +66,7 @@
     "@context": "https://schema.org",
     "@type": "LocalBusiness",
     "name": "TaxBuddy Umair",
-  "description": "Pakistan's #1 tax content creator simplifying income tax & sales tax for everyone. Free guides, calculators and MCQs on taxbuddyumair.com.",
+  "description": "Pakistan's trusted tax content creator simplifying income tax & sales tax for everyone. Free guides, calculators and MCQs on taxbuddyumair.com.",
     "url": "https://www.taxbuddyumair.com",
     "telephone": "+923332482742",
     "email": "umair.mubeenir@gmail.com",

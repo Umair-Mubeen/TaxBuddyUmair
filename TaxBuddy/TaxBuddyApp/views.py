@@ -710,10 +710,12 @@ def SalaryCalculator(request):
     }
 
     years = list(TaxBracket.objects.values_list("year", flat=True).distinct().order_by("-year"))
+    print(years)
     context = {'content': content, 'title': 'Salary Individual', 'url': '/SalaryCalculator', 'years': years}
 
     if request.method == 'POST':
         income_amount, error = validate_income(request.POST)
+        print('income_amount', income_amount)
         if error:
             messages.error(request, error)
             return render(request, 'partials/salary_slab.html', context)
@@ -734,54 +736,88 @@ def SalaryCalculator(request):
 
 
 def PropertyCalculator(request):
-    try:
-        if request.method == 'POST':
-            tax_year_1 = request.POST.get('tax_year_1')
-            tax_year_2 = request.POST.get('tax_year_2')
-            income_type = request.POST.get('income_type', 'Yearly')
+    content = {
+        "title": "Property / Rental Income Tax Calculator – Pakistan",
+        "badge": "Section 15 · ITO 2001",
+        "intro": "Calculate tax on rental income after Section 15A deductions, and compare across tax years.",
+        "who": [
+            "Individuals earning rental income from property",
+            "Landlords with residential or commercial property",
+            "Owners letting out buildings or shops",
+            "Anyone declaring income from property under Section 15",
+        ],
+        "how": "Enter gross annual rent, claim allowable Section 15A deductions, and select two tax years.",
+        "features": [
+            "Net rental income after Section 15A deductions",
+            "20% repair allowance applied automatically",
+            "Compare rental tax across tax years",
+            "Slab-based computation",
+        ],
+        "example": [
+            "Gross annual rent: PKR 1,200,000",
+            "Less 20% repair allowance: PKR 240,000",
+            "Net taxable rent: PKR 960,000",
+        ],
+        "notes": [
+            "Repair allowance is 1/5 (20%) of rent chargeable to tax — applied automatically",
+            "Other Section 15A deductions are optional and require records",
+            "Section 155 tax withheld by the tenant is adjustable against final liability",
+        ],
+    }
 
-            gross_rent = to_int(request.POST.get('gross_rent', 0))
-            if gross_rent <= 0:
-                messages.error(request, "Please enter a valid gross rent amount.")
-                return render(request, 'partials/property_rent.html', {
-            'meta_description': 'Free AOP income tax calculator Pakistan 2025-26. Calculate tax liability for Association of Persons, partnership firms and joint ventures based on FBR notified slabs.',
-            'meta_description': 'Free business income tax calculator Pakistan 2025-26. Calculate net business tax for sole proprietors, freelancers and traders based on FBR notified slabs.',
-            'meta_description': 'Free salary income tax calculator Pakistan 2025-26. Calculate monthly and yearly salary tax based on FBR notified slabs. Compare tax across multiple tax years.','years': list(TaxBracket.objects.values_list("year", flat=True).distinct().order_by("-year"))})
+    years = list(TaxBracket.objects.values_list("year", flat=True).distinct().order_by("-year"))
+    context = {'content': content, 'title': 'Rental Income', 'url': '/PropertyCalculator', 'years': years}
 
-            repairs_allowance   = to_int(request.POST.get('repairs_allowance'))
-            insurance_premium   = to_int(request.POST.get('insurance_premium'))
-            local_taxes         = to_int(request.POST.get('local_taxes'))
-            ground_rent         = to_int(request.POST.get('ground_rent'))
-            borrowed_interest   = to_int(request.POST.get('borrowed_interest'))
-            hbfc_payments       = to_int(request.POST.get('hbfc_payments'))
-            mortgage_interest   = to_int(request.POST.get('mortgage_interest'))
-            admin_expenses      = to_int(request.POST.get('admin_expenses'))
-            legal_expenses      = to_int(request.POST.get('legal_expenses'))
-            irrecoverable_rent  = to_int(request.POST.get('irrecoverable_rent'))
-
-            total_deductions = (
-                repairs_allowance + insurance_premium + local_taxes +
-                ground_rent + borrowed_interest + hbfc_payments +
-                mortgage_interest + admin_expenses + legal_expenses +
-                irrecoverable_rent
-            )
-
-            yearly_income = gross_rent * 12 if income_type == 'Monthly' else gross_rent
-            net_rental_income = max(0, yearly_income - total_deductions)
-
-            context = FetchResult(tax_year_1, tax_year_2, 'Rental Income', net_rental_income)
-            context.update({
-                'net_income_rental': net_rental_income,
-                'total_deductions': total_deductions,
-                'yearly_income': yearly_income,
-                'years': list(TaxBracket.objects.values_list('year', flat=True).distinct().order_by('-year')),
-            })
+    if request.method == 'POST':
+        gross_rent = to_int(request.POST.get('gross_rent', 0))
+        if gross_rent <= 0:
+            messages.error(request, "Please enter a valid gross rent amount.")
             return render(request, 'partials/property_rent.html', context)
 
-        return render(request, 'partials/property_rent.html', {'years': list(TaxBracket.objects.values_list('year', flat=True).distinct().order_by('-year'))})
+        income_type = request.POST.get('income_type', 'Yearly')
+        tax_year_1 = request.POST.get('tax_year_1')
+        tax_year_2 = request.POST.get('tax_year_2')
+        yearly_rent = gross_rent * 12 if income_type == 'Monthly' else gross_rent
 
-    except Exception as e:
-        return HttpResponse(f"Error: {str(e)}")
+        # ── Section 15A allowable deductions ──
+        insurance_premium  = to_int(request.POST.get('insurance_premium'))
+        local_taxes        = to_int(request.POST.get('local_taxes'))
+        ground_rent        = to_int(request.POST.get('ground_rent'))
+        borrowed_interest  = to_int(request.POST.get('borrowed_interest'))
+        hbfc_payments      = to_int(request.POST.get('hbfc_payments'))
+        mortgage_interest  = to_int(request.POST.get('mortgage_interest'))
+        admin_expenses     = to_int(request.POST.get('admin_expenses'))
+        legal_expenses     = to_int(request.POST.get('legal_expenses'))
+        irrecoverable_rent = to_int(request.POST.get('irrecoverable_rent'))
+
+        # Statutory repair allowance = 1/5 (20%) of rent chargeable.
+        # Auto-apply when the user leaves it blank (it is allowed without proof).
+        repairs_allowance = to_int(request.POST.get('repairs_allowance'))
+        if repairs_allowance <= 0:
+            repairs_allowance = round(yearly_rent * 0.20)
+
+        total_deductions = (
+            repairs_allowance + insurance_premium + local_taxes +
+            ground_rent + borrowed_interest + hbfc_payments +
+            mortgage_interest + admin_expenses + legal_expenses +
+            irrecoverable_rent
+        )
+        net_rental_income = max(0, yearly_rent - total_deductions)
+
+        try:
+            result_context = FetchResult(tax_year_1, tax_year_2, 'Rental Income', net_rental_income)
+            context.update(result_context)
+            context.update({
+                'income_type': income_type,
+                'gross_rent': yearly_rent,
+                'repairs_allowance': repairs_allowance,
+                'total_deductions': total_deductions,
+                'net_income_rental': net_rental_income,
+            })
+        except Exception:
+            messages.error(request, "Could not calculate tax. Please check your inputs.")
+
+    return render(request, 'partials/property_rent.html', context)
 
 
 # ─────────────────────────────────────────────────────────────

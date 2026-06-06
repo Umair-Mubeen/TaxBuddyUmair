@@ -24,16 +24,6 @@
   </div>
 </div>
 
-<!-- Top Ad -->
-<!--<div class="container">-->
-<!--  <div class="ad-wrapper">-->
-<!--    <div class="ad-wrapper-label">Advertisement</div>-->
-<!--    <div class="ad-zone ad-leaderboard">-->
-<!--      <div class="ad-zone-label">AdSense — Blog List Top</div>-->
-<!--      <div class="ad-zone-size">728×90 / Responsive</div>-->
-<!--    </div>-->
-<!--  </div>-->
-<!--</div>-->
 
 <div class="content-grid">
   <main class="content-main">
@@ -103,18 +93,6 @@
         </div>
       </a>
 
-      {# Insert ad after every 6th card #}
-      {% if forloop.counter|divisibleby:6 %}
-      </div>
-      <div class="ad-wrapper">
-        <div class="ad-wrapper-label">Advertisement</div>
-        <div class="ad-zone ad-leaderboard">
-          <div class="ad-zone-label">AdSense — In-List</div>
-          <div class="ad-zone-size">728×90 / Responsive</div>
-        </div>
-      </div>
-      <div class="cards-grid" style="margin-bottom:24px;">
-      {% endif %}
 
       {% endfor %}
     </div>
