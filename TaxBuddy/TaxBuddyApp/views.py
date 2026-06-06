@@ -159,7 +159,7 @@ def index(request):
         wht_rates = {}
         for section in wht_sections:
             wht_rates[section] = WithholdingTaxRate.objects.filter(
-                section__icontains=section,
+                section__iexact=section,
                 tax_year='2025-2026',
                 is_active=True
             ).order_by('order').first()
