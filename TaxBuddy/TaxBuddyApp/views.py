@@ -159,8 +159,10 @@ def index(request):
         PREFERRED_WHT_YEAR = '2025-2026'
         wht_rates = {}
         for section in wht_sections:
+            # DB stores sections as "Section 236C" etc. Match exactly with the
+            # "Section " prefix so '236C' does NOT also match 'Section 236CB'.
             base = WithholdingTaxRate.objects.filter(
-                section__iexact=section,   # exact code: '236C' will NOT match '236CB'
+                section__iexact='Section ' + section,
                 is_active=True,
             )
             r = base.filter(tax_year=PREFERRED_WHT_YEAR).order_by('order').first()
