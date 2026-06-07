@@ -156,13 +156,17 @@ def index(request):
 
         # WHT Rates for homepage cards — top 6 sections
         wht_sections = ['236C', '236K', '151', '153', '150', '236Y']
+        PREFERRED_WHT_YEAR = '2025-2026'
         wht_rates = {}
         for section in wht_sections:
-            wht_rates[section] = WithholdingTaxRate.objects.filter(
-                section__iexact=section,
-                tax_year='2025-2026',
-                is_active=True
-            ).order_by('order').first()
+            base = WithholdingTaxRate.objects.filter(
+                section__iexact=section,   # exact code: '236C' will NOT match '236CB'
+                is_active=True,
+            )
+            r = base.filter(tax_year=PREFERRED_WHT_YEAR).order_by('order').first()
+            if r is None:                  # fall back to most recent active year
+                r = base.order_by('-tax_year', 'order').first()
+            wht_rates[section] = r
 
         return render(request, 'index.html', {
             'result': all_blogs,
