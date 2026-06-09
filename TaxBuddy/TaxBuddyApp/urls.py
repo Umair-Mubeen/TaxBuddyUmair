@@ -7,10 +7,9 @@ from .sitemaps import BlogSitemap, StaticSitemap, CalculatorSitemap, TaxGuideSit
 from . import views
 
 sitemaps = {
-    'static':      StaticSitemap(),
-    'calculators': CalculatorSitemap(),
-    'blog':        BlogSitemap(),
-    'guides':      TaxGuideSitemap(),
+    'static': StaticSitemap,
+    'calculators': CalculatorSitemap,
+    'blog': BlogSitemap,
 }
 
 urlpatterns = [

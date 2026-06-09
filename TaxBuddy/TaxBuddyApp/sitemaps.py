@@ -1,6 +1,6 @@
 from django.contrib.sitemaps import Sitemap
 from django.urls import reverse
-from .models import Blog, TaxGuide
+from .models import Blog
 
 
 class BlogSitemap(Sitemap):
@@ -21,20 +21,6 @@ class BlogSitemap(Sitemap):
         return f'/articles/{obj.slug}/'
 
 
-class TaxGuideSitemap(Sitemap):
-    changefreq = 'monthly'
-    priority    = 0.85
-    protocol    = 'https'
-
-    def items(self):
-        return TaxGuide.objects.filter(is_active=True)
-
-    def location(self, obj):
-        if obj.category == 'income_tax':
-            return '/income-tax-guides/'
-        return '/sales-tax-guides/'
-
-
 class StaticSitemap(Sitemap):
     changefreq = 'monthly'
     priority    = 0.9
@@ -51,11 +37,6 @@ class StaticSitemap(Sitemap):
             'sales_tax_guides',
             'income_tax_rates',
             'withholding_tax_rates',
-            'SalaryCalculator',
-            'BusinessCalculator',
-            'AOPCalculator',
-            'PropertyCalculator',
-            'TaxCalculator4C',
             'question_list',
             'online_services',
             'privacy_policy',
