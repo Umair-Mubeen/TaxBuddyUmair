@@ -3,7 +3,7 @@ from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib.sitemaps.views import sitemap
 
-from .sitemaps import BlogSitemap, StaticSitemap, CalculatorSitemap, TaxGuideSitemap
+from .sitemaps import BlogSitemap, StaticSitemap, CalculatorSitemap
 from . import views
 
 sitemaps = {
