@@ -118,7 +118,7 @@
         <div class="card-img" style="background:linear-gradient(135deg,#0A2647 0%,#1E5F8E 100%);">📋</div>
         <div class="card-body">
           <div class="card-tag">Income Tax</div>
-          <div class="card-title">Income Tax Basics for Salaried Individuals</div>
+          <div class="card-title">Income Tax Guides</div>
           <div class="card-excerpt">Learn about income tax slabs, filer status, ATL benefits, and how to file your return with FBR IRIS portal.</div>
           <div class="card-footer"><span>10 min read · Updated 2025</span><span class="card-read-more">Read More →</span></div>
         </div>
@@ -127,7 +127,7 @@
         <div class="card-img" style="background:linear-gradient(135deg,#0D9E72 0%,#0A7558 100%);">📊</div>
         <div class="card-body">
           <div class="card-tag">Sales Tax</div>
-          <div class="card-title">Sales Tax Registration &amp; Filing Guide Pakistan</div>
+          <div class="card-title">Sales Tax Guides</div>
           <div class="card-excerpt">Complete guide to GST registration, monthly filing on IRIS, and withholding obligations for businesses.</div>
           <div class="card-footer"><span>12 min read · Updated 2025</span><span class="card-read-more">Read More →</span></div>
         </div>
@@ -136,7 +136,7 @@
         <div class="card-img" style="background:linear-gradient(135deg,#2D3748 0%,#4A5568 100%);">👨‍💻</div>
         <div class="card-body">
           <div class="card-tag">Freelancers</div>
-          <div class="card-title">Freelancer Tax Guide: How to File Tax in Pakistan</div>
+          <div class="card-title">Freelancer Tax Guide</div>
           <div class="card-excerpt">Upwork, Fiverr earners — understand your tax obligations, exemptions, and how to file with FBR.</div>
           <div class="card-footer"><span>8 min read · Updated 2025</span><span class="card-read-more">Read More →</span></div>
         </div>
@@ -784,7 +784,7 @@
 
     <!-- View All FAQs link -->
     <div style="text-align:center;margin-top:24px;">
-      <p style="font-size:14px;color:var(--text-light);">Have more questions? <a href="https://wa.me/923332482742" target="_blank" rel="noopener" style="color:var(--green);font-weight:600;">Ask on WhatsApp →</a></p>
+      <p style="font-size:14px;color:var(--text-light);">Have more questions? Browse the <a href="{% url 'income_tax_guides' %}" style="color:var(--green);font-weight:600;">free tax guides →</a></p>
     </div>
 
   </div>
@@ -867,10 +867,6 @@ document.querySelectorAll('.faq-q-new').forEach(function(btn) {
 <!--            </div>-->
 <!--          </div>-->
         </div>
-        <a href="https://wa.me/923332482742" class="btn-wa" target="_blank" rel="noopener"
-           style="margin-top:24px;display:inline-flex;">
-          💬 Message on WhatsApp
-        </a>
       </div>
 
       <!-- Form -->
@@ -939,12 +935,12 @@ document.querySelectorAll('.faq-q-new').forEach(function(btn) {
             <label class="form-label" for="cf-subject">Service Required</label>
             <select id="cf-subject" name="subject" class="form-select">
               <option value="">Select a service</option>
-              <option value="NTN Registration">NTN Registration – PKR 1,000</option>
-              <option value="Salary Return Filing">Salary Return Filing – PKR 2,000</option>
-              <option value="Business Return Filing">Business Return Filing – PKR 5,000+</option>
-              <option value="Sales Tax Registration">Sales Tax Registration – PKR 3,000</option>
-              <option value="FBR Notice Response">FBR Notice Response – PKR 5,000+</option>
-              <option value="Tax Consultation">Tax Consultation (30 min) – PKR 1,500</option>
+              <option value="NTN Registration">NTN Registration</option>
+              <option value="Salary Return Filing">Salary Return Filing</option>
+              <option value="Business Return Filing">Business Return Filing</option>
+              <option value="Sales Tax Registration">Sales Tax Registration</option>
+              <option value="FBR Notice Response">FBR Notice Response</option>
+              <option value="Tax Consultation">Tax Consultation (30 min)</option>
               <option value="Other">Other</option>
             </select>
           </div>
