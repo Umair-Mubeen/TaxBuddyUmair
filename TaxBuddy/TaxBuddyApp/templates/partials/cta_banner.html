@@ -1,17 +1,13 @@
 {% load static %}
 <div class="cta-banner">
   <div>
-    <div class="cta-banner-title">Need help filing your tax return?</div>
+    <div class="cta-banner-title">Keep exploring — free tax tools &amp; guides</div>
     <div class="cta-banner-sub">
-      Expert assistance — NTN Registration · Return Filing · FBR Notice Handling · Sales Tax Registration
+      Try the free calculators, browse FBR-based income &amp; sales tax guides, or practice with tax MCQs — all free, no sign-up required.
     </div>
   </div>
   <div class="cta-banner-btns">
-    <a href="https://wa.me/923332482742" class="btn-wa" target="_blank" rel="noopener">
-      💬 WhatsApp Now
-    </a>
-    <a href="{% url 'online_services' %}" class="btn-secondary">
-      View Services
-    </a>
+    <a href="{% url 'income_tax_guides' %}" class="btn-primary">📚 Free Tax Guides</a>
+    <a href="{% url 'SalaryCalculator' %}" class="btn-secondary">🧮 Tax Calculators</a>
   </div>
 </div>

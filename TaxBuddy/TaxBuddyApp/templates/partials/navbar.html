@@ -83,9 +83,9 @@
 
     </ul><!-- end nav-links -->
 
-    <!-- CTA button -->
-    <a href="https://wa.me/923332482742" class="nav-cta" target="_blank" rel="noopener" aria-label="Book a consultation on WhatsApp">
-      📋 Book Consultation
+    <!-- CTA button — points to internal Services page; sales pitch isolated to /online-services/ for AdSense -->
+    <a href="{% url 'online_services' %}" class="nav-cta" aria-label="View services and pricing">
+      Services &amp; Pricing
     </a>
 
     <!-- Hamburger -->
@@ -146,11 +146,6 @@
     <a href="{% url 'online_services' %}">🛎 Services</a>
 
     <a href="{% url 'about_us' %}">👤 About Us</a>
-
-    <a href="https://wa.me/923332482742" target="_blank" rel="noopener"
-       style="background:var(--green);color:#fff;border-radius:8px;text-align:center;margin-top:4px;">
-      💬 Book Consultation (WhatsApp)
-    </a>
 
   </div><!-- end mobile-nav -->
 
