@@ -2,6 +2,7 @@ from django.urls import path
 from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib.sitemaps.views import sitemap
+from django.views.generic import TemplateView
 
 from .sitemaps import BlogSitemap, StaticSitemap, CalculatorSitemap
 from . import views
@@ -114,6 +115,7 @@ urlpatterns = [
 
     # Blog detail — clean /articles/ prefix avoids slug collisions
     path('articles/<slug:slug>/', views.BlogDetails, name='BlogDetails'),
+    path('salary-tax-calculator-2026-27/', views.SalaryCalculator2027, name='SalaryCalculator2027'),
 
     # Legacy 301 redirect: old /<slug>/ → /articles/<slug>/
     # Keeps old Google-indexed URLs working

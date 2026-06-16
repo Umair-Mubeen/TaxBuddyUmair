@@ -1854,3 +1854,7 @@ def wht_rates_api(request):
 
     except Exception as e:
         return JsonResponse({'status': 'error', 'message': str(e)}, status=500)
+
+
+def SalaryCalculator2027(request):
+    return render(request, 'salary-tax-calculator-2026-27.html')

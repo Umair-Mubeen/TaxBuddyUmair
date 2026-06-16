@@ -1,0 +1,316 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Salary Tax Calculator 2026-27 Pakistan — Proposed Budget Slabs | TaxBuddy Umair{% endblock %}
+{% block meta_desc %}Free salary tax calculator for Pakistan 2026-27 based on the proposed Finance Bill 2026 budget slabs. Instantly check your monthly tax deduction, take-home pay, and how much you save vs 2025-26.{% endblock %}
+
+{% block extra_css %}
+<style>
+.stc26{padding:0}
+.stc26 .notice{display:flex;gap:10px;align-items:flex-start;background:#fffbeb;border:1px solid #fde68a;border-radius:12px;padding:14px 16px;margin-bottom:22px}
+.stc26 .notice p{font-size:13px;color:#92400e;margin:0;line-height:1.6}
+.stc26 .card{background:var(--white);border:1px solid var(--border);border-radius:var(--radius-lg,14px);padding:22px;margin-bottom:22px}
+.stc26 h2{font-size:21px;font-weight:700;color:var(--navy);margin:0 0 6px;letter-spacing:-.01em}
+.stc26 h2 + .sub{font-size:13.5px;color:var(--text-mid);margin:0 0 16px;line-height:1.6}
+.stc26 .calc-head{background:linear-gradient(135deg,#0A2647,#0D9E72);border-radius:var(--radius-lg,14px) var(--radius-lg,14px) 0 0;padding:22px;color:#fff;margin:-22px -22px 20px}
+.stc26 .calc-head h2{color:#fff;margin:0 0 4px}
+.stc26 .calc-head p{font-size:13px;color:rgba(255,255,255,.7);margin:0}
+.stc26 .field{margin-bottom:16px}
+.stc26 label{display:block;font-size:13px;font-weight:600;color:var(--navy);margin-bottom:7px}
+.stc26 .seg{display:inline-flex;background:var(--bg);border:1px solid var(--border);border-radius:10px;padding:3px;margin-bottom:16px}
+.stc26 .seg button{border:none;background:transparent;font:inherit;font-size:13px;font-weight:600;color:var(--text-mid);padding:7px 16px;border-radius:8px;cursor:pointer;min-height:40px}
+.stc26 .seg button.on{background:var(--green);color:#fff}
+.stc26 input[type=number]{width:100%;font:inherit;font-size:16px;padding:13px 15px;border:1.5px solid var(--border);border-radius:10px;color:var(--navy);background:var(--white);box-sizing:border-box}
+.stc26 input[type=number]:focus{outline:none;border-color:var(--green);box-shadow:0 0 0 3px rgba(13,158,114,.12)}
+.stc26 .hint{font-size:12px;color:var(--text-light);margin-top:6px}
+.stc26 .go{width:100%;font:inherit;font-size:15px;font-weight:700;color:#fff;background:var(--green);border:none;border-radius:10px;padding:14px;cursor:pointer;min-height:48px;margin-top:4px}
+.stc26 .go:hover{filter:brightness(.96)}
+.stc26 .result{margin-top:22px;display:none}
+.stc26 .result.show{display:block}
+.stc26 .breakdown{border:1px solid var(--border);border-radius:14px;overflow:hidden}
+.stc26 .bd-head{background:var(--navy);color:#fff;font-weight:700;font-size:15px;padding:16px 20px;line-height:1.3}
+.stc26 .bd-row{display:flex;justify-content:space-between;align-items:center;gap:14px;padding:14px 20px;background:var(--white);border-top:1px solid var(--border);font-size:14.5px}
+.stc26 .bd-row span{color:var(--text-mid)}
+.stc26 .bd-row strong{color:var(--navy);font-weight:700;text-align:right;white-space:nowrap}
+.stc26 .bd-row.hl{background:var(--gold,#E8A020)}
+.stc26 .bd-row.hl span,.stc26 .bd-row.hl strong{color:#fff}
+.stc26 .saveline{margin-top:14px;background:#f0fdf4;border:1px solid #bbf7d0;border-radius:10px;padding:13px 16px;font-size:13.5px;color:#166534;line-height:1.55;text-align:center}
+.stc26 .saveline strong{color:#15803d}
+.stc26 .tbl-wrap{overflow-x:auto;border:1px solid var(--border);border-radius:12px}
+.stc26 table{width:100%;border-collapse:collapse;font-size:13.5px;min-width:560px;background:var(--white)}
+.stc26 thead tr{background:var(--navy)}
+.stc26 th{color:rgba(255,255,255,.85);font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.05em;padding:11px 14px;text-align:left;white-space:nowrap}
+.stc26 td{padding:10px 14px;color:var(--text-mid);border-bottom:1px solid var(--border);vertical-align:top}
+.stc26 tbody tr:last-child td{border-bottom:none}
+.stc26 td:first-child{font-weight:600;color:var(--navy);white-space:nowrap}
+.stc26 tr.changed td{background:#f0fdf4}
+.stc26 .cut{color:#15803d;font-weight:700}
+.stc26 .ex-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
+.stc26 .ex{background:var(--bg);border:1px solid var(--border);border-radius:12px;padding:16px}
+.stc26 .ex .sal{font-size:15px;font-weight:700;color:var(--navy);margin-bottom:8px}
+.stc26 .ex .row{display:flex;justify-content:space-between;font-size:13px;color:var(--text-mid);padding:3px 0}
+.stc26 .ex .row strong{color:var(--navy)}
+.stc26 .ex .save{margin-top:8px;font-size:12.5px;font-weight:700;color:#15803d}
+.stc26 details{border:1px solid var(--border);border-radius:10px;padding:0;margin-bottom:10px;background:var(--white)}
+.stc26 summary{padding:14px 16px;font-size:14px;font-weight:600;color:var(--navy);cursor:pointer;list-style:none}
+.stc26 summary::-webkit-details-marker{display:none}
+.stc26 summary::after{content:"+";float:right;color:var(--green);font-weight:700}
+.stc26 details[open] summary::after{content:"–"}
+.stc26 details .ans{padding:0 16px 14px;font-size:13.5px;color:var(--text-mid);line-height:1.7}
+@media(max-width:560px){.stc26 .ex-grid{grid-template-columns:1fr}}
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="article-hero">
+  <div class="article-hero-inner">
+    <div class="breadcrumb">
+      <a href="{% url 'index' %}">Home</a>
+      <span class="breadcrumb-sep">›</span>
+      <span>Salary Tax Calculator 2026-27</span>
+    </div>
+    <h1>Salary Tax Calculator Pakistan 2026-27</h1>
+    <div class="article-meta">
+      <span>🧾 Proposed Budget 2026-27</span>
+      <span>📅 Effective 1 July 2026 (if passed)</span>
+      <span>👤 Salaried Individuals</span>
+    </div>
+  </div>
+</div>
+
+<div class="content-grid">
+  <main class="content-main">
+<div class="stc26">
+
+  <!-- Proposed status notice -->
+  <div class="notice">
+    <span style="font-size:16px;line-height:1.3;flex-shrink:0;">⚠️</span>
+    <p><strong>These are proposed rates.</strong> The slabs below come from the <strong>Finance Bill 2026</strong> presented in the National Assembly on 12 June 2026. They are <strong>not yet law</strong> and may change before the Finance Act is passed. They are intended to take effect from <strong>1 July 2026 (Tax Year 2027)</strong>. This tool gives an estimate for educational use only — always verify the final slabs on the <a href="https://www.fbr.gov.pk" target="_blank" rel="noopener" style="color:#92400e;text-decoration:underline;font-weight:600;">FBR portal</a> once notified.</p>
+  </div>
+
+  <!-- Calculator -->
+  <div class="card">
+    <div class="calc-head">
+      <h2>Calculate your 2026-27 salary tax</h2>
+      <p>Enter your salary to see your tax, take-home pay, and how much you save vs 2025-26.</p>
+    </div>
+
+    <div class="seg" role="tablist" aria-label="Salary period">
+      <button type="button" id="seg-month" class="on" onclick="stcSetMode('month')">Monthly salary</button>
+      <button type="button" id="seg-year" onclick="stcSetMode('year')">Annual salary</button>
+    </div>
+
+    <div class="field">
+      <label for="stc-amount" id="stc-label">Monthly gross salary (Rs.)</label>
+      <input type="number" id="stc-amount" inputmode="numeric" min="0" step="1000" placeholder="e.g. 200000">
+      <div class="hint" id="stc-hint">Enter your total monthly salary before tax.</div>
+    </div>
+
+    <button type="button" class="go" onclick="stcCalc()">Calculate Tax →</button>
+
+    <div class="result" id="stc-result" aria-live="polite">
+      <div class="breakdown">
+        <div class="bd-head">Tax Calculation for Tax Year : 2026-2027 (Proposed)</div>
+        <div class="bd-row"><span>Monthly Income</span><strong id="b-monthly">—</strong></div>
+        <div class="bd-row"><span>Yearly Income</span><strong id="b-yearly">—</strong></div>
+        <div class="bd-row hl"><span>Applicable Tax Bracket</span><strong id="b-bracket">—</strong></div>
+        <div class="bd-row"><span>Base Tax</span><strong id="b-base">—</strong></div>
+        <div class="bd-row"><span>Amount Exceeding Bracket</span><strong id="b-exceed">—</strong></div>
+        <div class="bd-row hl"><span>Rate Applied</span><strong id="b-rate">—</strong></div>
+        <div class="bd-row"><span>Tax on Amount Exceeding</span><strong id="b-taxexc">—</strong></div>
+        <div class="bd-row"><span>Total Tax Chargeable</span><strong id="b-total">—</strong></div>
+        <div class="bd-row hl"><span>Monthly Tax</span><strong id="b-monthlytax">—</strong></div>
+      </div>
+      <div class="saveline" id="r-save"></div>
+    </div>
+  </div>
+
+  <!-- Full slab table -->
+  <div class="card">
+    <h2>Proposed salary tax slabs 2026-27</h2>
+    <p class="sub">Complete slab structure for salaried individuals under the Finance Bill 2026. Changed slabs are highlighted; the four middle slabs were cut and the high-earner surcharge was abolished.</p>
+    <div class="tbl-wrap">
+      <table>
+        <thead>
+          <tr><th>Annual Income (Rs.)</th><th>Monthly</th><th>2025-26</th><th>2026-27</th><th>Tax on this slab (2026-27)</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Up to 600,000</td><td>Up to 50,000</td><td>0%</td><td>0%</td><td>No tax</td></tr>
+          <tr><td>600,001 – 1,200,000</td><td>50,001 – 100,000</td><td>1%</td><td>1%</td><td>1% of amount above 600,000</td></tr>
+          <tr><td>1,200,001 – 2,200,000</td><td>100,001 – 183,333</td><td>11%</td><td>11%</td><td>6,000 + 11% above 1,200,000</td></tr>
+          <tr class="changed"><td>2,200,001 – 3,200,000</td><td>183,334 – 266,667</td><td>23%</td><td class="cut">20%</td><td>116,000 + 20% above 2,200,000</td></tr>
+          <tr class="changed"><td>3,200,001 – 4,100,000</td><td>266,668 – 341,667</td><td>30%</td><td class="cut">25%</td><td>316,000 + 25% above 3,200,000</td></tr>
+          <tr class="changed"><td>4,100,001 – 5,600,000</td><td>341,668 – 466,667</td><td>35%</td><td class="cut">29%</td><td>541,000 + 29% above 4,100,000</td></tr>
+          <tr class="changed"><td>5,600,001 – 7,000,000</td><td>466,668 – 583,333</td><td>35%</td><td class="cut">32%</td><td>976,000 + 32% above 5,600,000</td></tr>
+          <tr><td>Above 7,000,000</td><td>Above 583,333</td><td>35%</td><td>35%</td><td>1,424,000 + 35% above 7,000,000</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="sub" style="margin:14px 0 0">The 9% surcharge that applied to salaried income above Rs 10 million in 2025-26 has been <strong>abolished</strong> for 2026-27. Source: Finance Bill 2026, presented 12 June 2026.</p>
+  </div>
+
+  <!-- Worked examples -->
+  <div class="card">
+    <h2>What you actually pay — examples</h2>
+    <p class="sub">Monthly figures on gross salary, using the proposed 2026-27 rates and comparing against 2025-26.</p>
+    <div class="ex-grid">
+      <div class="ex">
+        <div class="sal">Rs 100,000 / month</div>
+        <div class="row"><span>Annual income</span><strong>Rs 1,200,000</strong></div>
+        <div class="row"><span>Slab</span><strong>1%</strong></div>
+        <div class="row"><span>Annual tax</span><strong>Rs 6,000</strong></div>
+        <div class="row"><span>Monthly tax</span><strong>Rs 500</strong></div>
+        <div class="save">No change vs 2025-26 (low slabs unchanged)</div>
+      </div>
+      <div class="ex">
+        <div class="sal">Rs 200,000 / month</div>
+        <div class="row"><span>Annual income</span><strong>Rs 2,400,000</strong></div>
+        <div class="row"><span>Slab</span><strong>20% (was 23%)</strong></div>
+        <div class="row"><span>Annual tax</span><strong>Rs 156,000</strong></div>
+        <div class="row"><span>Monthly tax</span><strong>Rs 13,000</strong></div>
+        <div class="save">Saves about Rs 500 / month</div>
+      </div>
+      <div class="ex">
+        <div class="sal">Rs 300,000 / month</div>
+        <div class="row"><span>Annual income</span><strong>Rs 3,600,000</strong></div>
+        <div class="row"><span>Slab</span><strong>25% (was 30%)</strong></div>
+        <div class="row"><span>Annual tax</span><strong>Rs 416,000</strong></div>
+        <div class="row"><span>Monthly tax</span><strong>Rs 34,667</strong></div>
+        <div class="save">Saves about Rs 4,167 / month</div>
+      </div>
+      <div class="ex">
+        <div class="sal">Rs 400,000 / month</div>
+        <div class="row"><span>Annual income</span><strong>Rs 4,800,000</strong></div>
+        <div class="row"><span>Slab</span><strong>29% (was 35%)</strong></div>
+        <div class="row"><span>Annual tax</span><strong>Rs 744,000</strong></div>
+        <div class="row"><span>Monthly tax</span><strong>Rs 62,000</strong></div>
+        <div class="save">Saves about Rs 9,750 / month</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- FAQ -->
+  <div class="card">
+    <h2>Frequently asked questions</h2>
+    <details>
+      <summary>Are these 2026-27 tax rates final?</summary>
+      <div class="ans">No. They are proposed in the Finance Bill 2026 presented on 12 June 2026 and become law only after the National Assembly passes the Finance Act. They are intended to apply from 1 July 2026 (Tax Year 2027). Verify the final notified slabs on the FBR portal before relying on them.</div>
+    </details>
+    <details>
+      <summary>What is the tax-free salary limit for 2026-27?</summary>
+      <div class="ans">Annual income up to Rs 600,000 (Rs 50,000 per month) remains fully tax-free for salaried individuals under the proposed slabs. Income above that is taxed progressively from 1% up to 35%.</div>
+    </details>
+    <details>
+      <summary>Who benefits most from the proposed changes?</summary>
+      <div class="ans">The rate cuts apply to the four slabs covering annual income from Rs 2.2 million to Rs 7 million (roughly Rs 183,000 to Rs 583,000 per month). Earners below Rs 183,000 per month see no change in their slab rate. The largest percentage-point cut is in the Rs 3.2–4.1 million band (30% to 25%), and high earners also benefit from the abolished surcharge.</div>
+    </details>
+    <details>
+      <summary>Has the surcharge been removed?</summary>
+      <div class="ans">Yes. The 9% surcharge that applied to salaried income above Rs 10 million has been abolished in the proposed 2026-27 budget.</div>
+    </details>
+    <details>
+      <summary>Does this calculator include allowances or tax credits?</summary>
+      <div class="ans">No. It estimates tax on gross salary using the proposed slabs only. It does not account for provident fund, medical allowance, bonuses, tax credits, or other adjustments, which can change your final liability. Treat the result as an estimate.</div>
+    </details>
+  </div>
+
+  <!-- Disclaimer -->
+  <div class="notice" style="margin-bottom:0">
+    <span style="font-size:16px;line-height:1.3;flex-shrink:0;">📌</span>
+    <p>TaxBuddy Umair is an independent tax education platform and is not affiliated with the FBR. This calculator is for educational purposes only and does not constitute tax, legal, or financial advice. Proposed slabs may change before they become law — always confirm with official FBR notifications or a qualified tax practitioner.</p>
+  </div>
+
+</div>
+  </main>
+
+  <aside class="content-sidebar">
+    {% include 'partials/sidebar.html' %}
+  </aside>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+(function(){
+  var mode = 'month';
+  window.stcSetMode = function(m){
+    mode = m;
+    document.getElementById('seg-month').classList.toggle('on', m==='month');
+    document.getElementById('seg-year').classList.toggle('on', m==='year');
+    document.getElementById('stc-label').textContent = m==='month' ? 'Monthly gross salary (Rs.)' : 'Annual gross salary (Rs.)';
+    document.getElementById('stc-hint').textContent = m==='month' ? 'Enter your total monthly salary before tax.' : 'Enter your total annual salary before tax.';
+    document.getElementById('stc-amount').placeholder = m==='month' ? 'e.g. 200000' : 'e.g. 2400000';
+  };
+
+  // Proposed FY 2026-27 (Tax Year 2027) — slab definition for the breakdown
+  function slabFY27(I){
+    if(I<=600000)  return {lower:0,       upper:600000,    base:0,       rate:0};
+    if(I<=1200000) return {lower:600000,  upper:1200000,   base:0,       rate:0.01};
+    if(I<=2200000) return {lower:1200000, upper:2200000,   base:6000,    rate:0.11};
+    if(I<=3200000) return {lower:2200000, upper:3200000,   base:116000,  rate:0.20};
+    if(I<=4100000) return {lower:3200000, upper:4100000,   base:316000,  rate:0.25};
+    if(I<=5600000) return {lower:4100000, upper:5600000,   base:541000,  rate:0.29};
+    if(I<=7000000) return {lower:5600000, upper:7000000,   base:976000,  rate:0.32};
+    return            {lower:7000000, upper:Infinity,  base:1424000, rate:0.35};
+  }
+  // Current FY 2025-26 (Tax Year 2026) total tax — for the savings line
+  function taxFY26(I){
+    var t;
+    if(I<=600000) t=0;
+    else if(I<=1200000) t=(I-600000)*0.01;
+    else if(I<=2200000) t=6000+(I-1200000)*0.11;
+    else if(I<=3200000) t=116000+(I-2200000)*0.23;
+    else if(I<=4100000) t=346000+(I-3200000)*0.30;
+    else t=616000+(I-4100000)*0.35;
+    if(I>10000000) t=t*1.09; // 9% surcharge (abolished in FY27)
+    return t;
+  }
+  function fmt(n){ return 'Rs. ' + Math.round(n).toLocaleString('en-PK'); }
+
+  window.stcCalc = function(){
+    var raw = parseFloat(document.getElementById('stc-amount').value);
+    var res = document.getElementById('stc-result');
+    if(isNaN(raw) || raw < 0){
+      res.classList.remove('show');
+      document.getElementById('stc-amount').focus();
+      return;
+    }
+    var annual  = mode==='month' ? raw*12 : raw;
+    var monthly = annual/12;
+    var s = slabFY27(annual);
+    var exceeding = annual - s.lower;
+    var taxExc    = exceeding * s.rate;
+    var total     = s.base + taxExc;
+
+    var bracket;
+    if(s.upper === Infinity){
+      bracket = 'Rs. 7,000,001 and above';
+    } else {
+      var low = s.lower === 0 ? 0 : s.lower + 1;
+      bracket = 'Rs. ' + low.toLocaleString('en-PK') + ' to Rs. ' + s.upper.toLocaleString('en-PK');
+    }
+
+    document.getElementById('b-monthly').textContent    = fmt(monthly);
+    document.getElementById('b-yearly').textContent     = fmt(annual);
+    document.getElementById('b-bracket').textContent    = bracket;
+    document.getElementById('b-base').textContent       = fmt(s.base);
+    document.getElementById('b-exceed').textContent     = fmt(exceeding);
+    document.getElementById('b-rate').textContent       = (s.rate*100) + ' %';
+    document.getElementById('b-taxexc').textContent     = fmt(taxExc);
+    document.getElementById('b-total').textContent      = fmt(total);
+    document.getElementById('b-monthlytax').textContent = fmt(total/12);
+
+    // savings vs 2025-26
+    var t26 = taxFY26(annual);
+    var saving = t26 - total;
+    var sEl = document.getElementById('r-save');
+    if(saving > 0.5){
+      sEl.innerHTML = 'Under the proposed 2026-27 slabs you pay <strong>'+fmt(saving)+' less per year</strong> (about <strong>'+fmt(saving/12)+'/month</strong>) than under 2025-26.';
+    } else {
+      sEl.innerHTML = 'Your slab rate is unchanged between 2025-26 and 2026-27, so your tax stays about the same.';
+    }
+    res.classList.add('show');
+  };
+})();
+</script>
+{% endblock %}

@@ -60,6 +60,7 @@ class CalculatorSitemap(Sitemap):
             'AOPCalculator',
             'PropertyCalculator',
             'TaxCalculator4C',
+            'SalaryCalculator2027'
         ]
 
     def location(self, item):
