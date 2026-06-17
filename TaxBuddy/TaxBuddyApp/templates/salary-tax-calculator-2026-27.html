@@ -14,19 +14,28 @@
 .stc26 h2 + .sub{font-size:13.5px;color:var(--text-mid);margin:0 0 16px;line-height:1.6}
 .stc26 .calc-head{background:linear-gradient(135deg,#0A2647,#0D9E72);border-radius:var(--radius-lg,14px) var(--radius-lg,14px) 0 0;padding:22px;color:#fff;margin:-22px -22px 20px}
 .stc26 .calc-head h2{color:#fff;margin:0 0 4px}
-.stc26 .calc-head p{font-size:13px;color:rgba(255,255,255,.7);margin:0}
-.stc26 .field{margin-bottom:16px}
+.stc26 .calc-head p{font-size:13px;color:rgba(255,255,255,.72);margin:0}
+.stc26 .field{margin-bottom:14px}
 .stc26 label{display:block;font-size:13px;font-weight:600;color:var(--navy);margin-bottom:7px}
 .stc26 .seg{display:inline-flex;background:var(--bg);border:1px solid var(--border);border-radius:10px;padding:3px;margin-bottom:16px}
-.stc26 .seg button{border:none;background:transparent;font:inherit;font-size:13px;font-weight:600;color:var(--text-mid);padding:7px 16px;border-radius:8px;cursor:pointer;min-height:40px}
+.stc26 .seg button{border:none;background:transparent;font:inherit;font-size:13px;font-weight:600;color:var(--text-mid);padding:7px 16px;border-radius:8px;cursor:pointer;min-height:40px;transition:background .15s,color .15s}
 .stc26 .seg button.on{background:var(--green);color:#fff}
-.stc26 input[type=number]{width:100%;font:inherit;font-size:16px;padding:13px 15px;border:1.5px solid var(--border);border-radius:10px;color:var(--navy);background:var(--white);box-sizing:border-box}
+.stc26 input[type=number]{width:100%;font:inherit;font-size:18px;font-weight:600;padding:13px 15px;border:1.5px solid var(--border);border-radius:10px;color:var(--navy);background:var(--white);box-sizing:border-box}
 .stc26 input[type=number]:focus{outline:none;border-color:var(--green);box-shadow:0 0 0 3px rgba(13,158,114,.12)}
 .stc26 .hint{font-size:12px;color:var(--text-light);margin-top:6px}
-.stc26 .go{width:100%;font:inherit;font-size:15px;font-weight:700;color:#fff;background:var(--green);border:none;border-radius:10px;padding:14px;cursor:pointer;min-height:48px;margin-top:4px}
-.stc26 .go:hover{filter:brightness(.96)}
-.stc26 .result{margin-top:22px;display:none}
+/* slider */
+.stc26 .slider-wrap{margin:8px 0 4px}
+.stc26 input[type=range]{-webkit-appearance:none;appearance:none;width:100%;height:8px;border-radius:6px;background:var(--bg);outline:none;cursor:pointer}
+.stc26 input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;appearance:none;width:24px;height:24px;border-radius:50%;background:var(--green);border:3px solid #fff;box-shadow:0 1px 4px rgba(0,0,0,.25);cursor:pointer}
+.stc26 input[type=range]::-moz-range-thumb{width:22px;height:22px;border-radius:50%;background:var(--green);border:3px solid #fff;box-shadow:0 1px 4px rgba(0,0,0,.25);cursor:pointer}
+.stc26 .slider-ends{display:flex;justify-content:space-between;font-size:11px;color:var(--text-light);margin-top:6px}
+.stc26 .go{width:100%;font:inherit;font-size:15px;font-weight:700;color:#fff;background:var(--green);border:none;border-radius:10px;padding:14px;cursor:pointer;min-height:48px;margin-top:10px;transition:filter .15s}
+.stc26 .go:hover{filter:brightness(.95)}
+.stc26 .go:active{transform:translateY(1px)}
+/* result */
+.stc26 .result{margin-top:22px;display:none;animation:stcFade .35s ease}
 .stc26 .result.show{display:block}
+@keyframes stcFade{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
 .stc26 .breakdown{border:1px solid var(--border);border-radius:14px;overflow:hidden}
 .stc26 .bd-head{background:var(--navy);color:#fff;font-weight:700;font-size:15px;padding:16px 20px;line-height:1.3}
 .stc26 .bd-row{display:flex;justify-content:space-between;align-items:center;gap:14px;padding:14px 20px;background:var(--white);border-top:1px solid var(--border);font-size:14.5px}
@@ -34,8 +43,17 @@
 .stc26 .bd-row strong{color:var(--navy);font-weight:700;text-align:right;white-space:nowrap}
 .stc26 .bd-row.hl{background:var(--gold,#E8A020)}
 .stc26 .bd-row.hl span,.stc26 .bd-row.hl strong{color:#fff}
+/* take-home bar */
+.stc26 .takebar-wrap{margin-top:16px}
+.stc26 .takebar-lab{display:flex;justify-content:space-between;font-size:12px;font-weight:600;margin-bottom:7px}
+.stc26 .takebar-lab .t-tax{color:#dc2626}
+.stc26 .takebar-lab .t-net{color:#15803d}
+.stc26 .takebar{display:flex;height:26px;border-radius:8px;overflow:hidden;background:var(--bg)}
+.stc26 .takebar .seg-tax{background:#fca5a5;transition:width .5s ease}
+.stc26 .takebar .seg-net{background:#34d399;transition:width .5s ease}
 .stc26 .saveline{margin-top:14px;background:#f0fdf4;border:1px solid #bbf7d0;border-radius:10px;padding:13px 16px;font-size:13.5px;color:#166534;line-height:1.55;text-align:center}
 .stc26 .saveline strong{color:#15803d}
+/* slab table */
 .stc26 .tbl-wrap{overflow-x:auto;border:1px solid var(--border);border-radius:12px}
 .stc26 table{width:100%;border-collapse:collapse;font-size:13.5px;min-width:560px;background:var(--white)}
 .stc26 thead tr{background:var(--navy)}
@@ -44,14 +62,22 @@
 .stc26 tbody tr:last-child td{border-bottom:none}
 .stc26 td:first-child{font-weight:600;color:var(--navy);white-space:nowrap}
 .stc26 tr.changed td{background:#f0fdf4}
+.stc26 tr.active td{background:#fff7ed!important;box-shadow:inset 3px 0 0 var(--gold,#E8A020)}
 .stc26 .cut{color:#15803d;font-weight:700}
+/* examples (clickable) */
 .stc26 .ex-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
-.stc26 .ex{background:var(--bg);border:1px solid var(--border);border-radius:12px;padding:16px}
-.stc26 .ex .sal{font-size:15px;font-weight:700;color:var(--navy);margin-bottom:8px}
+.stc26 .ex{background:var(--bg);border:1px solid var(--border);border-radius:12px;padding:16px;cursor:pointer;transition:transform .15s,box-shadow .15s,border-color .15s;position:relative}
+.stc26 .ex:hover{transform:translateY(-3px);box-shadow:0 6px 18px rgba(10,38,71,.10);border-color:var(--green)}
+.stc26 .ex:focus-visible{outline:2px solid var(--green);outline-offset:2px}
+.stc26 .ex .sal{font-size:15px;font-weight:700;color:var(--navy);margin-bottom:8px;display:flex;justify-content:space-between;align-items:center}
+.stc26 .ex .pill{font-size:10.5px;font-weight:700;color:#fff;background:var(--green);padding:2px 8px;border-radius:20px}
 .stc26 .ex .row{display:flex;justify-content:space-between;font-size:13px;color:var(--text-mid);padding:3px 0}
 .stc26 .ex .row strong{color:var(--navy)}
 .stc26 .ex .save{margin-top:8px;font-size:12.5px;font-weight:700;color:#15803d}
-.stc26 details{border:1px solid var(--border);border-radius:10px;padding:0;margin-bottom:10px;background:var(--white)}
+.stc26 .ex .try{margin-top:8px;font-size:11.5px;font-weight:600;color:var(--green);opacity:0;transition:opacity .15s}
+.stc26 .ex:hover .try{opacity:1}
+/* faq */
+.stc26 details{border:1px solid var(--border);border-radius:10px;margin-bottom:10px;background:var(--white)}
 .stc26 summary{padding:14px 16px;font-size:14px;font-weight:600;color:var(--navy);cursor:pointer;list-style:none}
 .stc26 summary::-webkit-details-marker{display:none}
 .stc26 summary::after{content:"+";float:right;color:var(--green);font-weight:700}
@@ -92,7 +118,7 @@
   <div class="card">
     <div class="calc-head">
       <h2>Calculate your 2026-27 salary tax</h2>
-      <p>Enter your salary to see your tax, take-home pay, and how much you save vs 2025-26.</p>
+      <p>Type or drag the slider — your tax, take-home pay and savings update instantly.</p>
     </div>
 
     <div class="seg" role="tablist" aria-label="Salary period">
@@ -102,11 +128,15 @@
 
     <div class="field">
       <label for="stc-amount" id="stc-label">Monthly gross salary (Rs.)</label>
-      <input type="number" id="stc-amount" inputmode="numeric" min="0" step="1000" placeholder="e.g. 200000">
+      <input type="number" id="stc-amount" inputmode="numeric" min="0" step="1000" placeholder="e.g. 200000" oninput="stcLive()">
+      <div class="slider-wrap">
+        <input type="range" id="stc-slider" min="0" max="1500000" step="5000" value="0" oninput="stcFromSlider()" aria-label="Salary slider">
+        <div class="slider-ends"><span>Rs. 0</span><span id="slider-max">Rs. 15,00,000 / mo</span></div>
+      </div>
       <div class="hint" id="stc-hint">Enter your total monthly salary before tax.</div>
     </div>
 
-    <button type="button" class="go" onclick="stcCalc()">Calculate Tax →</button>
+    <button type="button" class="go" onclick="stcCalc(true)">Calculate Tax →</button>
 
     <div class="result" id="stc-result" aria-live="polite">
       <div class="breakdown">
@@ -121,6 +151,12 @@
         <div class="bd-row"><span>Total Tax Chargeable</span><strong id="b-total">—</strong></div>
         <div class="bd-row hl"><span>Monthly Tax</span><strong id="b-monthlytax">—</strong></div>
       </div>
+
+      <div class="takebar-wrap">
+        <div class="takebar-lab"><span class="t-tax">Tax <span id="bar-tax-pct"></span></span><span class="t-net">Take-home <span id="bar-net-pct"></span></span></div>
+        <div class="takebar"><div class="seg-tax" id="bar-tax" style="width:0"></div><div class="seg-net" id="bar-net" style="width:100%"></div></div>
+      </div>
+
       <div class="saveline" id="r-save"></div>
     </div>
   </div>
@@ -128,64 +164,105 @@
   <!-- Full slab table -->
   <div class="card">
     <h2>Proposed salary tax slabs 2026-27</h2>
-    <p class="sub">Complete slab structure for salaried individuals under the Finance Bill 2026. Changed slabs are highlighted; the four middle slabs were cut and the high-earner surcharge was abolished.</p>
+    <p class="sub">Complete slab structure for salaried individuals under the Finance Bill 2026. Changed slabs are highlighted; the four middle slabs were cut and the high-earner surcharge was abolished. Your current slab is highlighted when you calculate.</p>
     <div class="tbl-wrap">
       <table>
         <thead>
           <tr><th>Annual Income (Rs.)</th><th>Monthly</th><th>2025-26</th><th>2026-27</th><th>Tax on this slab (2026-27)</th></tr>
         </thead>
-        <tbody>
-          <tr><td>Up to 600,000</td><td>Up to 50,000</td><td>0%</td><td>0%</td><td>No tax</td></tr>
-          <tr><td>600,001 – 1,200,000</td><td>50,001 – 100,000</td><td>1%</td><td>1%</td><td>1% of amount above 600,000</td></tr>
-          <tr><td>1,200,001 – 2,200,000</td><td>100,001 – 183,333</td><td>11%</td><td>11%</td><td>6,000 + 11% above 1,200,000</td></tr>
-          <tr class="changed"><td>2,200,001 – 3,200,000</td><td>183,334 – 266,667</td><td>23%</td><td class="cut">20%</td><td>116,000 + 20% above 2,200,000</td></tr>
-          <tr class="changed"><td>3,200,001 – 4,100,000</td><td>266,668 – 341,667</td><td>30%</td><td class="cut">25%</td><td>316,000 + 25% above 3,200,000</td></tr>
-          <tr class="changed"><td>4,100,001 – 5,600,000</td><td>341,668 – 466,667</td><td>35%</td><td class="cut">29%</td><td>541,000 + 29% above 4,100,000</td></tr>
-          <tr class="changed"><td>5,600,001 – 7,000,000</td><td>466,668 – 583,333</td><td>35%</td><td class="cut">32%</td><td>976,000 + 32% above 5,600,000</td></tr>
-          <tr><td>Above 7,000,000</td><td>Above 583,333</td><td>35%</td><td>35%</td><td>1,424,000 + 35% above 7,000,000</td></tr>
+        <tbody id="slab-body">
+          <tr data-lo="0" data-hi="600000"><td>Up to 600,000</td><td>Up to 50,000</td><td>0%</td><td>0%</td><td>No tax</td></tr>
+          <tr data-lo="600001" data-hi="1200000"><td>600,001 – 1,200,000</td><td>50,001 – 100,000</td><td>1%</td><td>1%</td><td>1% of amount above 600,000</td></tr>
+          <tr data-lo="1200001" data-hi="2200000"><td>1,200,001 – 2,200,000</td><td>100,001 – 183,333</td><td>11%</td><td>11%</td><td>6,000 + 11% above 1,200,000</td></tr>
+          <tr class="changed" data-lo="2200001" data-hi="3200000"><td>2,200,001 – 3,200,000</td><td>183,334 – 266,667</td><td>23%</td><td class="cut">20%</td><td>116,000 + 20% above 2,200,000</td></tr>
+          <tr class="changed" data-lo="3200001" data-hi="4100000"><td>3,200,001 – 4,100,000</td><td>266,668 – 341,667</td><td>30%</td><td class="cut">25%</td><td>316,000 + 25% above 3,200,000</td></tr>
+          <tr class="changed" data-lo="4100001" data-hi="5600000"><td>4,100,001 – 5,600,000</td><td>341,668 – 466,667</td><td>35%</td><td class="cut">29%</td><td>541,000 + 29% above 4,100,000</td></tr>
+          <tr class="changed" data-lo="5600001" data-hi="7000000"><td>5,600,001 – 7,000,000</td><td>466,668 – 583,333</td><td>35%</td><td class="cut">32%</td><td>976,000 + 32% above 5,600,000</td></tr>
+          <tr data-lo="7000001" data-hi="999999999999"><td>Above 7,000,000</td><td>Above 583,333</td><td>35%</td><td>35%</td><td>1,424,000 + 35% above 7,000,000</td></tr>
         </tbody>
       </table>
     </div>
     <p class="sub" style="margin:14px 0 0">The 9% surcharge that applied to salaried income above Rs 10 million in 2025-26 has been <strong>abolished</strong> for 2026-27. Source: Finance Bill 2026, presented 12 June 2026.</p>
   </div>
 
-  <!-- Worked examples -->
+  <!-- Worked examples (clickable, every slab) -->
   <div class="card">
     <h2>What you actually pay — examples</h2>
-    <p class="sub">Monthly figures on gross salary, using the proposed 2026-27 rates and comparing against 2025-26.</p>
+    <p class="sub">One example per slab, on monthly gross salary, using the proposed 2026-27 rates. <strong>Tap any card</strong> to load it into the calculator.</p>
     <div class="ex-grid">
-      <div class="ex">
-        <div class="sal">Rs 100,000 / month</div>
-        <div class="row"><span>Annual income</span><strong>Rs 1,200,000</strong></div>
-        <div class="row"><span>Slab</span><strong>1%</strong></div>
-        <div class="row"><span>Annual tax</span><strong>Rs 6,000</strong></div>
-        <div class="row"><span>Monthly tax</span><strong>Rs 500</strong></div>
-        <div class="save">No change vs 2025-26 (low slabs unchanged)</div>
+
+      <div class="ex" tabindex="0" role="button" onclick="stcLoad(50000)" onkeypress="if(event.key==='Enter')stcLoad(50000)">
+        <div class="sal">Rs 50,000 / mo <span class="pill">0%</span></div>
+        <div class="row"><span>Annual income</span><strong>Rs 600,000</strong></div>
+        <div class="row"><span>Annual tax</span><strong>Rs 0</strong></div>
+        <div class="row"><span>Monthly tax</span><strong>Rs 0</strong></div>
+        <div class="save">Fully tax-free</div>
+        <div class="try">Tap to calculate →</div>
       </div>
-      <div class="ex">
-        <div class="sal">Rs 200,000 / month</div>
-        <div class="row"><span>Annual income</span><strong>Rs 2,400,000</strong></div>
-        <div class="row"><span>Slab</span><strong>20% (was 23%)</strong></div>
-        <div class="row"><span>Annual tax</span><strong>Rs 156,000</strong></div>
-        <div class="row"><span>Monthly tax</span><strong>Rs 13,000</strong></div>
-        <div class="save">Saves about Rs 500 / month</div>
+
+      <div class="ex" tabindex="0" role="button" onclick="stcLoad(90000)" onkeypress="if(event.key==='Enter')stcLoad(90000)">
+        <div class="sal">Rs 90,000 / mo <span class="pill">1%</span></div>
+        <div class="row"><span>Annual income</span><strong>Rs 1,080,000</strong></div>
+        <div class="row"><span>Annual tax</span><strong>Rs 4,800</strong></div>
+        <div class="row"><span>Monthly tax</span><strong>Rs 400</strong></div>
+        <div class="save">No change vs 2025-26</div>
+        <div class="try">Tap to calculate →</div>
       </div>
-      <div class="ex">
-        <div class="sal">Rs 300,000 / month</div>
-        <div class="row"><span>Annual income</span><strong>Rs 3,600,000</strong></div>
-        <div class="row"><span>Slab</span><strong>25% (was 30%)</strong></div>
-        <div class="row"><span>Annual tax</span><strong>Rs 416,000</strong></div>
-        <div class="row"><span>Monthly tax</span><strong>Rs 34,667</strong></div>
-        <div class="save">Saves about Rs 4,167 / month</div>
+
+      <div class="ex" tabindex="0" role="button" onclick="stcLoad(150000)" onkeypress="if(event.key==='Enter')stcLoad(150000)">
+        <div class="sal">Rs 150,000 / mo <span class="pill">11%</span></div>
+        <div class="row"><span>Annual income</span><strong>Rs 1,800,000</strong></div>
+        <div class="row"><span>Annual tax</span><strong>Rs 72,000</strong></div>
+        <div class="row"><span>Monthly tax</span><strong>Rs 6,000</strong></div>
+        <div class="save">No change vs 2025-26</div>
+        <div class="try">Tap to calculate →</div>
       </div>
-      <div class="ex">
-        <div class="sal">Rs 400,000 / month</div>
-        <div class="row"><span>Annual income</span><strong>Rs 4,800,000</strong></div>
-        <div class="row"><span>Slab</span><strong>29% (was 35%)</strong></div>
-        <div class="row"><span>Annual tax</span><strong>Rs 744,000</strong></div>
-        <div class="row"><span>Monthly tax</span><strong>Rs 62,000</strong></div>
-        <div class="save">Saves about Rs 9,750 / month</div>
+
+      <div class="ex" tabindex="0" role="button" onclick="stcLoad(250000)" onkeypress="if(event.key==='Enter')stcLoad(250000)">
+        <div class="sal">Rs 250,000 / mo <span class="pill">20%</span></div>
+        <div class="row"><span>Annual income</span><strong>Rs 3,000,000</strong></div>
+        <div class="row"><span>Annual tax</span><strong>Rs 276,000</strong></div>
+        <div class="row"><span>Monthly tax</span><strong>Rs 23,000</strong></div>
+        <div class="save">Saves about Rs 2,000 / month</div>
+        <div class="try">Tap to calculate →</div>
       </div>
+
+      <div class="ex" tabindex="0" role="button" onclick="stcLoad(320000)" onkeypress="if(event.key==='Enter')stcLoad(320000)">
+        <div class="sal">Rs 320,000 / mo <span class="pill">25%</span></div>
+        <div class="row"><span>Annual income</span><strong>Rs 3,840,000</strong></div>
+        <div class="row"><span>Annual tax</span><strong>Rs 476,000</strong></div>
+        <div class="row"><span>Monthly tax</span><strong>Rs 39,667</strong></div>
+        <div class="save">Saves about Rs 5,167 / month</div>
+        <div class="try">Tap to calculate →</div>
+      </div>
+
+      <div class="ex" tabindex="0" role="button" onclick="stcLoad(420000)" onkeypress="if(event.key==='Enter')stcLoad(420000)">
+        <div class="sal">Rs 420,000 / mo <span class="pill">29%</span></div>
+        <div class="row"><span>Annual income</span><strong>Rs 5,040,000</strong></div>
+        <div class="row"><span>Annual tax</span><strong>Rs 813,600</strong></div>
+        <div class="row"><span>Monthly tax</span><strong>Rs 67,800</strong></div>
+        <div class="save">Saves about Rs 10,950 / month</div>
+        <div class="try">Tap to calculate →</div>
+      </div>
+
+      <div class="ex" tabindex="0" role="button" onclick="stcLoad(550000)" onkeypress="if(event.key==='Enter')stcLoad(550000)">
+        <div class="sal">Rs 550,000 / mo <span class="pill">32%</span></div>
+        <div class="row"><span>Annual income</span><strong>Rs 6,600,000</strong></div>
+        <div class="row"><span>Annual tax</span><strong>Rs 1,296,000</strong></div>
+        <div class="row"><span>Monthly tax</span><strong>Rs 108,000</strong></div>
+        <div class="save">Saves about Rs 16,250 / month</div>
+        <div class="try">Tap to calculate →</div>
+      </div>
+
+      <div class="ex" tabindex="0" role="button" onclick="stcLoad(700000)" onkeypress="if(event.key==='Enter')stcLoad(700000)">
+        <div class="sal">Rs 700,000 / mo <span class="pill">35%</span></div>
+        <div class="row"><span>Annual income</span><strong>Rs 8,400,000</strong></div>
+        <div class="row"><span>Annual tax</span><strong>Rs 1,914,000</strong></div>
+        <div class="row"><span>Monthly tax</span><strong>Rs 159,500</strong></div>
+        <div class="save">Saves about Rs 17,250 / month</div>
+        <div class="try">Tap to calculate →</div>
+      </div>
+
     </div>
   </div>
 
@@ -233,27 +310,54 @@
 <script>
 (function(){
   var mode = 'month';
+  var amount = document.getElementById('stc-amount');
+  var slider = document.getElementById('stc-slider');
+
   window.stcSetMode = function(m){
     mode = m;
     document.getElementById('seg-month').classList.toggle('on', m==='month');
     document.getElementById('seg-year').classList.toggle('on', m==='year');
     document.getElementById('stc-label').textContent = m==='month' ? 'Monthly gross salary (Rs.)' : 'Annual gross salary (Rs.)';
     document.getElementById('stc-hint').textContent = m==='month' ? 'Enter your total monthly salary before tax.' : 'Enter your total annual salary before tax.';
-    document.getElementById('stc-amount').placeholder = m==='month' ? 'e.g. 200000' : 'e.g. 2400000';
+    amount.placeholder = m==='month' ? 'e.g. 200000' : 'e.g. 2400000';
+    if(m==='month'){ slider.max=1500000; slider.step=5000; document.getElementById('slider-max').textContent='Rs. 15,00,000 / mo'; }
+    else { slider.max=18000000; slider.step=50000; document.getElementById('slider-max').textContent='Rs. 1.8 crore / yr'; }
+    syncSliderFromInput();
+    stcLive();
   };
 
-  // Proposed FY 2026-27 (Tax Year 2027) — slab definition for the breakdown
-  function slabFY27(I){
-    if(I<=600000)  return {lower:0,       upper:600000,    base:0,       rate:0};
-    if(I<=1200000) return {lower:600000,  upper:1200000,   base:0,       rate:0.01};
-    if(I<=2200000) return {lower:1200000, upper:2200000,   base:6000,    rate:0.11};
-    if(I<=3200000) return {lower:2200000, upper:3200000,   base:116000,  rate:0.20};
-    if(I<=4100000) return {lower:3200000, upper:4100000,   base:316000,  rate:0.25};
-    if(I<=5600000) return {lower:4100000, upper:5600000,   base:541000,  rate:0.29};
-    if(I<=7000000) return {lower:5600000, upper:7000000,   base:976000,  rate:0.32};
-    return            {lower:7000000, upper:Infinity,  base:1424000, rate:0.35};
+  function syncSliderFromInput(){
+    var v = parseFloat(amount.value)||0;
+    if(v > +slider.max) v = +slider.max;
+    slider.value = v;
   }
-  // Current FY 2025-26 (Tax Year 2026) total tax — for the savings line
+  window.stcFromSlider = function(){
+    amount.value = slider.value;
+    stcCalc(false);
+  };
+  window.stcLive = function(){
+    syncSliderFromInput();
+    stcCalc(false);
+  };
+  window.stcLoad = function(monthly){
+    stcSetMode('month');
+    amount.value = monthly;
+    syncSliderFromInput();
+    stcCalc(true);
+  };
+
+  // Proposed FY 2026-27 (Tax Year 2027) slabs
+  function slabFY27(I){
+    if(I<=600000)  return {lower:0,       upper:600000,   base:0,       rate:0};
+    if(I<=1200000) return {lower:600000,  upper:1200000,  base:0,       rate:0.01};
+    if(I<=2200000) return {lower:1200000, upper:2200000,  base:6000,    rate:0.11};
+    if(I<=3200000) return {lower:2200000, upper:3200000,  base:116000,  rate:0.20};
+    if(I<=4100000) return {lower:3200000, upper:4100000,  base:316000,  rate:0.25};
+    if(I<=5600000) return {lower:4100000, upper:5600000,  base:541000,  rate:0.29};
+    if(I<=7000000) return {lower:5600000, upper:7000000,  base:976000,  rate:0.32};
+    return            {lower:7000000, upper:Infinity, base:1424000, rate:0.35};
+  }
+  // Current FY 2025-26 total tax — for savings comparison
   function taxFY26(I){
     var t;
     if(I<=600000) t=0;
@@ -262,19 +366,24 @@
     else if(I<=3200000) t=116000+(I-2200000)*0.23;
     else if(I<=4100000) t=346000+(I-3200000)*0.30;
     else t=616000+(I-4100000)*0.35;
-    if(I>10000000) t=t*1.09; // 9% surcharge (abolished in FY27)
+    if(I>10000000) t=t*1.09;
     return t;
   }
   function fmt(n){ return 'Rs. ' + Math.round(n).toLocaleString('en-PK'); }
 
-  window.stcCalc = function(){
-    var raw = parseFloat(document.getElementById('stc-amount').value);
+  function highlightSlab(annual){
+    var rows = document.querySelectorAll('#slab-body tr');
+    rows.forEach(function(r){
+      var lo = +r.getAttribute('data-lo'), hi = +r.getAttribute('data-hi');
+      r.classList.toggle('active', annual>=lo && annual<=hi);
+    });
+  }
+
+  window.stcCalc = function(doScroll){
+    var raw = parseFloat(amount.value);
     var res = document.getElementById('stc-result');
-    if(isNaN(raw) || raw < 0){
-      res.classList.remove('show');
-      document.getElementById('stc-amount').focus();
-      return;
-    }
+    if(isNaN(raw) || raw < 0){ res.classList.remove('show'); return; }
+
     var annual  = mode==='month' ? raw*12 : raw;
     var monthly = annual/12;
     var s = slabFY27(annual);
@@ -283,12 +392,8 @@
     var total     = s.base + taxExc;
 
     var bracket;
-    if(s.upper === Infinity){
-      bracket = 'Rs. 7,000,001 and above';
-    } else {
-      var low = s.lower === 0 ? 0 : s.lower + 1;
-      bracket = 'Rs. ' + low.toLocaleString('en-PK') + ' to Rs. ' + s.upper.toLocaleString('en-PK');
-    }
+    if(s.upper === Infinity){ bracket = 'Rs. 7,000,001 and above'; }
+    else { var low = s.lower===0 ? 0 : s.lower+1; bracket = 'Rs. ' + low.toLocaleString('en-PK') + ' to Rs. ' + s.upper.toLocaleString('en-PK'); }
 
     document.getElementById('b-monthly').textContent    = fmt(monthly);
     document.getElementById('b-yearly').textContent     = fmt(annual);
@@ -300,19 +405,30 @@
     document.getElementById('b-total').textContent      = fmt(total);
     document.getElementById('b-monthlytax').textContent = fmt(total/12);
 
+    // take-home bar
+    var taxPct = annual>0 ? (total/annual*100) : 0;
+    var netPct = 100 - taxPct;
+    document.getElementById('bar-tax').style.width = taxPct.toFixed(1)+'%';
+    document.getElementById('bar-net').style.width = netPct.toFixed(1)+'%';
+    document.getElementById('bar-tax-pct').textContent = '('+taxPct.toFixed(1)+'%)';
+    document.getElementById('bar-net-pct').textContent = '('+netPct.toFixed(1)+'%)';
+
     // savings vs 2025-26
-    var t26 = taxFY26(annual);
-    var saving = t26 - total;
+    var saving = taxFY26(annual) - total;
     var sEl = document.getElementById('r-save');
     if(saving > 0.5){
       sEl.innerHTML = 'Under the proposed 2026-27 slabs you pay <strong>'+fmt(saving)+' less per year</strong> (about <strong>'+fmt(saving/12)+'/month</strong>) than under 2025-26.';
     } else {
       sEl.innerHTML = 'Your slab rate is unchanged between 2025-26 and 2026-27, so your tax stays about the same.';
     }
+
+    highlightSlab(annual);
     res.classList.add('show');
-    // smooth-scroll to the result, offset for the sticky navbar
-    var y = res.getBoundingClientRect().top + window.pageYOffset - 80;
-    window.scrollTo({ top: y, behavior: 'smooth' });
+
+    if(doScroll){
+      var y = res.getBoundingClientRect().top + window.pageYOffset - 80;
+      window.scrollTo({ top: y, behavior: 'smooth' });
+    }
   };
 })();
 </script>
