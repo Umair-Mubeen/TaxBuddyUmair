@@ -310,6 +310,9 @@
       sEl.innerHTML = 'Your slab rate is unchanged between 2025-26 and 2026-27, so your tax stays about the same.';
     }
     res.classList.add('show');
+    // smooth-scroll to the result, offset for the sticky navbar
+    var y = res.getBoundingClientRect().top + window.pageYOffset - 80;
+    window.scrollTo({ top: y, behavior: 'smooth' });
   };
 })();
 </script>

@@ -50,6 +50,7 @@
     <div class="hero-card" aria-label="Quick Access">
       <div class="hero-card-title">Quick Access</div>
       <div class="hero-quick-links">
+
         <a href="{% url 'SalaryCalculator' %}"   class="hero-quick-link"><span><span class="hero-quick-link-icon">💼</span>Salary Tax Calculator</span><span class="hero-quick-link-arrow">→</span></a>
         <a href="{% url 'BusinessCalculator' %}" class="hero-quick-link"><span><span class="hero-quick-link-icon">🏢</span>Business Tax Calculator</span><span class="hero-quick-link-arrow">→</span></a>
                 <a href="{% url 'PropertyCalculator' %}" class="hero-quick-link"><span><span class="hero-quick-link-icon">🏢</span>Rental Calculator</span><span class="hero-quick-link-arrow">→</span></a>
@@ -157,6 +158,13 @@
       </div>
     </div>
     <div class="cards-grid">
+      <a href="{% url 'SalaryCalculator2027' %}" class="calc-card" style="text-decoration:none;">
+        <div class="calc-card-icon">💼</div>
+        <div class="calc-card-title">Proposed Salary Tax Calculator 2026-27</div>
+        <div class="calc-card-desc">Calculate your income tax on salaried income using the latest 2026–27 FBR tax slabs instantly.</div>
+        <span class="btn-calc">Calculate Now →</span>
+      </a>
+
       <a href="{% url 'SalaryCalculator' %}" class="calc-card" style="text-decoration:none;">
         <div class="calc-card-icon">💼</div>
         <div class="calc-card-title">Salary Tax Calculator</div>
