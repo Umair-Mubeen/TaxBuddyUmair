@@ -116,7 +116,7 @@ urlpatterns = [
     # Blog detail — clean /articles/ prefix avoids slug collisions
     path('articles/<slug:slug>/', views.BlogDetails, name='BlogDetails'),
     path('salary-tax-calculator-2026-27/', views.SalaryCalculator2027, name='SalaryCalculator2027'),
-
+    path('refund-analyzer/', views.refund_analyzer, name='refund_analyzer'),
     # Legacy 301 redirect: old /<slug>/ → /articles/<slug>/
     # Keeps old Google-indexed URLs working
     path('<slug:slug>/', views.legacy_blog_redirect, name='legacy_blog_redirect'),

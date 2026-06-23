@@ -1,0 +1,364 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load humanize %}
+{% block title %}Tax Refund Analyzer Pakistan | Are You Owed a Refund? | TaxBuddy Umair{% endblock %}
+{% block meta_desc %}Free tax refund analyzer Pakistan. Upload your FBR IRIS return, see every tax deduction classified as adjustable, minimum or final, and estimate if a refund is due.{% endblock %}
+
+{% block schema_extra %}{% include 'partials/schema_calculator.html' with calc_name='Tax Refund Analyzer Pakistan' calc_url='/refund-analyzer/' %}{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/calculators.css' %}">
+<style>
+/* ── Refund Analyzer (scoped under .ra) — uses site CSS variables ── */
+.ra{ }
+.ra-eyebrow{display:inline-flex;align-items:center;gap:8px;font-size:11px;text-transform:uppercase;letter-spacing:.12em;color:var(--green,#0D9E72);font-weight:700;margin-bottom:14px}
+.ra-eyebrow .dot{width:7px;height:7px;border-radius:50%;background:var(--green,#0D9E72)}
+
+/* dropzone */
+.ra-drop{border:2px dashed #c4d3e0;border-radius:var(--radius-lg,14px);padding:42px 24px;text-align:center;transition:.2s;cursor:pointer;background:var(--bg,#F7F9FC)}
+.ra-drop:hover,.ra-drop.over{border-color:var(--green,#0D9E72);background:#f0fdf4}
+.ra-drop .ic{width:56px;height:56px;border-radius:14px;background:var(--navy,#0A2647);display:grid;place-items:center;margin:0 auto 14px;color:#7fdcb9;font-size:13px;font-weight:800}
+.ra-drop h3{font-size:17px;color:var(--navy,#0A2647);margin-bottom:6px}
+.ra-drop p{font-size:13px;color:var(--text-mid,#4A5568)}
+.ra-drop .pick{color:var(--green-dark,#0a7d5a);font-weight:700;text-decoration:underline}
+.ra-secure{font-size:12px;color:var(--text-light,#718096);text-align:center;margin-top:14px}
+
+/* steps */
+.ra-steps{display:flex;gap:7px;font-size:12px;color:var(--text-light,#718096)}
+.ra-steps span{padding:4px 11px;border-radius:99px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.2);color:rgba(255,255,255,.65)}
+.ra-steps span.on{background:var(--green,#0D9E72);color:#fff;border-color:var(--green,#0D9E72)}
+.ra-steps span.done{background:rgba(13,158,114,.2);color:#7fdcb9;border-color:rgba(13,158,114,.35)}
+
+/* analyzing */
+.ra-load{display:none;text-align:center;padding:42px 20px}
+.ra-load.show{display:block}
+.ra-spin{width:46px;height:46px;border:4px solid #e2ecf3;border-top-color:var(--green,#0D9E72);border-radius:50%;margin:0 auto 18px;animation:raSpin .8s linear infinite}
+@keyframes raSpin{to{transform:rotate(360deg)}}
+.ra-load h3{font-size:17px;color:var(--navy,#0A2647);margin-bottom:6px}
+.ra-load p{font-size:13px;color:var(--text-mid,#4A5568)}
+.ra-file{display:inline-flex;align-items:center;gap:8px;background:var(--bg,#F7F9FC);border:1px solid var(--border,#E2E8F0);border-radius:8px;padding:6px 12px;font-size:13px;color:var(--text,#1A202C);margin-top:14px}
+
+/* section label */
+.ra-sec{font-size:12px;font-weight:700;color:var(--navy,#0A2647);text-transform:uppercase;letter-spacing:.08em;margin:22px 0 12px;padding-bottom:8px;border-bottom:1px solid var(--border,#E2E8F0)}
+
+/* review */
+.ra-review{display:none}.ra-review.show{display:block;animation:raFade .4s ease}
+@keyframes raFade{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+.ra-extracted{background:#f0fdf4;border:1px solid #bce8d6;border-radius:10px;padding:12px 16px;font-size:13px;color:var(--green-dark,#0a7d5a);margin-bottom:18px}
+.ra-tp{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:6px}
+.ra-flbl{font-size:11.5px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--text-light,#718096);margin-bottom:6px;display:block}
+.ra-ded{display:grid;grid-template-columns:1.5fr 1fr auto;gap:10px;align-items:end;margin-bottom:10px}
+.ra-rm{border:1px solid var(--border,#E2E8F0);background:#fff;color:#dc2626;border-radius:8px;width:42px;height:42px;cursor:pointer;font-size:18px;display:grid;place-items:center}
+.ra-rm:hover{background:#FFF5F5;border-color:#dc2626}
+.ra-add{display:inline-flex;align-items:center;gap:8px;background:var(--bg,#F7F9FC);border:1px dashed var(--green,#0D9E72);color:var(--green-dark,#0a7d5a);font-weight:600;font-size:13px;padding:9px 15px;border-radius:9px;cursor:pointer}
+.ra-add:hover{background:#f0fdf4}
+
+.ra-actions{display:flex;gap:12px;margin-top:22px;flex-wrap:wrap}
+
+/* results */
+.ra-results{display:none}.ra-results.show{display:block;animation:raFade .4s ease}
+.ra-verdict{border-radius:var(--radius-lg,14px);padding:22px 24px;margin-bottom:20px;color:#fff;display:flex;align-items:center;gap:18px;flex-wrap:wrap}
+.ra-verdict.refund{background:linear-gradient(135deg,var(--green,#0D9E72),#0b8a63)}
+.ra-verdict.payable{background:linear-gradient(135deg,#b45309,#f59e0b)}
+.ra-verdict.neutral{background:linear-gradient(135deg,var(--navy,#0A2647),#143b5e)}
+.ra-verdict .big{font-size:30px;font-weight:700;font-family:var(--font-head,serif)}
+.ra-verdict .lbl{font-size:13px;opacity:.9;text-transform:uppercase;letter-spacing:.08em}
+.ra-verdict .msg{font-size:14px;opacity:.95;max-width:46ch;line-height:1.5}
+.ra-grid2{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:20px}
+.ra-mini{background:var(--bg,#F7F9FC);border:1px solid var(--border,#E2E8F0);border-radius:12px;padding:16px}
+.ra-mini .k{font-size:11.5px;color:var(--text-light,#718096);text-transform:uppercase;letter-spacing:.06em}
+.ra-mini .v{font-size:22px;font-weight:700;color:var(--navy,#0A2647);margin-top:3px;font-family:var(--font-head,serif)}
+.ra-table{width:100%;border-collapse:collapse;font-size:13.5px;border:1px solid var(--border,#E2E8F0);border-radius:12px;overflow:hidden}
+.ra-table thead tr{background:var(--navy,#0A2647);color:#fff}
+.ra-table th,.ra-table td{padding:11px 14px;text-align:left}
+.ra-table tbody tr{border-bottom:1px solid var(--border,#E2E8F0)}
+.ra-table tbody tr:nth-child(even){background:var(--bg,#F7F9FC)}
+.ra-pill{display:inline-block;padding:3px 11px;border-radius:99px;font-size:12px;font-weight:700}
+.ra-pill.adj{background:#f0fdf4;color:var(--green-dark,#0a7d5a)}
+.ra-pill.min{background:#FFFBEB;color:#b45309}
+.ra-pill.fin{background:#FFF5F5;color:#dc2626}
+.ra-note{font-size:13px;color:var(--text-mid,#4A5568);background:#FFFBEB;border-left:4px solid #F59E0B;padding:12px 16px;border-radius:8px;margin-top:18px;line-height:1.6}
+
+@media(max-width:640px){
+  .ra-tp,.ra-grid2{grid-template-columns:1fr}
+  .ra-ded{grid-template-columns:1fr auto}
+}
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="article-hero calc-page-header">
+  <div class="article-hero-inner">
+    <div class="breadcrumb"><a href="{% url 'index' %}">Home</a><span class="breadcrumb-sep">›</span><span>Tools</span><span class="breadcrumb-sep">›</span><span>Refund Analyzer</span></div>
+    <h1>Tax Refund Analyzer — Are You Owed a Refund?</h1>
+    <div class="article-meta"><span>🧾 Section 168 · ITO 2001</span><span>🔄 Updated 2025–26</span></div>
+  </div>
+</div>
+
+<div class="content-grid">
+  <main class="content-main">
+    <div class="calc-container ra">
+      <div class="calc-header">
+        <div class="calc-header-icon">🧾</div>
+        <div>
+          <h2>Refund Analyzer</h2>
+          <p>Adjustable · Minimum · Final · ITO 2001</p>
+          <div class="calc-badges">
+            <span class="ra-steps" id="raSteps">
+              <span class="on" data-s="1">1 · Upload</span>
+              <span data-s="2">2 · Review</span>
+              <span data-s="3">3 · Result</span>
+            </span>
+          </div>
+        </div>
+      </div>
+
+      <div class="calc-body">
+
+        <!-- YMYL disclaimer -->
+        <div style="background:#fffbeb;border:1px solid #fde68a;border-radius:10px;padding:12px 16px;margin-bottom:18px;display:flex;gap:10px;align-items:flex-start;">
+          <span style="font-size:16px;line-height:1.4;flex-shrink:0;">&#9888;&#65039;</span>
+          <p style="font-size:12.5px;color:#92400e;margin:0;line-height:1.6;">
+            <strong>For educational and estimation purposes only.</strong> This tool classifies your tax deductions and estimates refund eligibility — it is not a refund guarantee or formal advice. AI extraction may contain errors. Always verify against official
+            <a href="https://www.fbr.gov.pk" target="_blank" rel="noopener" style="color:#92400e;text-decoration:underline;font-weight:600;">FBR records</a> or a qualified tax practitioner before filing.
+          </p>
+        </div>
+
+        <!-- STEP 1: UPLOAD -->
+        <div id="raUpload">
+          <div class="ra-drop" id="raDrop">
+            <div class="ic">PDF</div>
+            <h3>Drop your IRIS return PDF here</h3>
+            <p>or <span class="pick">browse to choose a file</span> · PDF only, up to 10MB</p>
+            <input type="file" id="raFileInput" accept="application/pdf" hidden>
+          </div>
+          <div class="ra-secure">🔒 Your file is processed for this analysis only — review every figure before relying on it.</div>
+        </div>
+
+        <!-- ANALYZING -->
+        <div class="ra-load" id="raLoad">
+          <div class="ra-spin"></div>
+          <h3>Reading your return…</h3>
+          <p>Extracting income heads and tax deductions by section.</p>
+          <div class="ra-file" id="raFileName">📄 return.pdf</div>
+        </div>
+
+        <!-- STEP 2: REVIEW -->
+        <div class="ra-review" id="raReview">
+          <div class="ra-extracted">✓ We read your return. Please <strong>review and correct</strong> the figures below before analyzing — AI extraction can make mistakes.</div>
+
+          <div class="ra-tp">
+            <div><span class="ra-flbl">Taxpayer name</span><input type="text" id="raName" class="form-input"></div>
+            <div><span class="ra-flbl">NTN / CNIC</span><input type="text" id="raNtn" class="form-input"></div>
+          </div>
+          <div class="ra-tp">
+            <div><span class="ra-flbl">Total taxable income (PKR)</span><input type="number" id="raIncome" class="form-input" min="0"></div>
+            <div><span class="ra-flbl">Taxpayer type</span>
+              <select id="raType" class="form-input form-select">
+                <option value="individual">Individual / Salaried</option>
+                <option value="aop">AOP / Partnership</option>
+                <option value="company">Company</option>
+                <option value="listed">Listed Company</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="ra-sec">Tax deductions found</div>
+          <div id="raDedList"></div>
+          <button class="ra-add" id="raAdd">＋ Add a deduction we missed</button>
+
+          <div class="ra-actions">
+            <button class="calc-submit" id="raGo" style="flex:1;min-width:200px">🧮 Analyze my refund</button>
+            <button class="ra-add" id="raBack" style="border-style:solid">Upload a different file</button>
+          </div>
+        </div>
+
+        <!-- STEP 3: RESULTS -->
+        <div class="ra-results" id="raResults">
+          <div class="ra-verdict neutral" id="raVerdict">
+            <div><div class="lbl" id="raVLbl">Estimated position</div><div class="big" id="raVBig">—</div></div>
+            <div class="msg" id="raVMsg"></div>
+          </div>
+          <div class="ra-grid2">
+            <div class="ra-mini"><div class="k">Estimated tax liability</div><div class="v" id="raLiab">—</div></div>
+            <div class="ra-mini"><div class="k">Adjustable tax paid (creditable)</div><div class="v" id="raAdjT">—</div></div>
+          </div>
+          <table class="ra-table">
+            <thead><tr><th>Section</th><th>Tax deducted</th><th>Type</th><th>Counts toward refund?</th></tr></thead>
+            <tbody id="raResBody"></tbody>
+          </table>
+          <div class="ra-note" id="raLegit"></div>
+
+          <div class="calc-cta" style="margin-top:16px">
+            <div class="calc-cta-text">Think you're owed a refund? Let us file your claim.</div>
+            <a href="https://wa.me/923332482742" class="btn-wa-sm" target="_blank" rel="noopener">💬 WhatsApp</a>
+          </div>
+
+          <div class="ra-actions">
+            <button class="ra-add" id="raRestart" style="border-style:solid">Start over</button>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- ── EDITORIAL CONTENT (SEO + value) ── -->
+    <article style="background:var(--white);border:1px solid var(--border);border-radius:var(--radius-lg);padding:28px;margin-top:24px;line-height:1.75;color:var(--text-mid);font-size:15px;">
+      <h2 style="font-size:21px;font-weight:700;color:var(--navy);margin:0 0 12px;">How Tax Refunds Work in Pakistan — Adjustable vs Minimum vs Final</h2>
+      <p style="margin:0 0 16px;">
+        A refund arises when the <strong>adjustable tax</strong> deducted from you during the year exceeds your actual tax liability. The catch most people miss: not every deduction counts toward a refund. Under the Income Tax Ordinance 2001, tax deducted at source falls into three types — <strong>adjustable</strong> (a credit you can reclaim), <strong>minimum</strong> (a floor you generally can't drop below), and <strong>final</strong> (the complete tax, not refundable). Only the adjustable portion can produce a refund.
+      </p>
+      <h3 style="font-size:17px;font-weight:700;color:var(--navy);margin:20px 0 10px;">Why the same section can be treated differently</h3>
+      <p style="margin:0 0 16px;">
+        The classification often depends on <strong>who you are</strong>. For example, tax under Section 153 on goods and contracts is <strong>adjustable</strong> for a listed company but <strong>minimum tax</strong> for an ordinary individual or AOP. Profit on debt under Section 151 is adjustable for a company but a separate-block final tax for individuals. This tool applies that logic based on the taxpayer type you select.
+      </p>
+      <h3 style="font-size:17px;font-weight:700;color:var(--navy);margin:20px 0 10px;">Frequently Asked Questions</h3>
+      <p style="margin:0 0 10px;"><strong>How do I know if my refund is legitimate?</strong><br>
+        A refund is genuine only where your adjustable tax paid exceeds your computed liability. Final and minimum tax amounts don't create refunds. This analyzer separates them for you.</p>
+      <p style="margin:0 0 10px;"><strong>Is the calculated amount exact?</strong><br>
+        No — it's an estimate. The exact figure depends on the current Finance Act slab rates, all your deductions and credits, and your full return. Always verify before filing a claim.</p>
+      <p style="margin:0;"><strong>Does FBR pay compensation for delayed refunds?</strong><br>
+        Yes — under Section 171, if a due refund isn't paid within three months, additional compensation may be claimable.</p>
+    </article>
+
+    {% include 'partials/cta_banner.html' %}
+  </main>
+  <aside class="content-sidebar">{% include 'partials/sidebar.html' %}</aside>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+(function(){
+  'use strict';
+  var SECTIONS=[
+    {code:"149",name:"Salary",base:"adjustable"},
+    {code:"151",name:"Profit on debt / bank deposit",base:"split151"},
+    {code:"153a",name:"Payment for goods (153(1)(a))",base:"split153"},
+    {code:"153b",name:"Payment for services (153(1)(b))",base:"min"},
+    {code:"153c",name:"Execution of contract (153(1)(c))",base:"split153"},
+    {code:"155",name:"Property rent",base:"adjustable"},
+    {code:"231AB",name:"Cash withdrawal (non-filer)",base:"adjustable"},
+    {code:"231B",name:"Vehicle purchase/registration",base:"adjustable"},
+    {code:"234",name:"Motor vehicle token",base:"adjustable"},
+    {code:"235",name:"Electricity",base:"adjustable"},
+    {code:"236",name:"Telephone & internet",base:"adjustable"},
+    {code:"236A",name:"Sale by auction",base:"adjustable"},
+    {code:"236C",name:"Property sale",base:"adjustable"},
+    {code:"236K",name:"Property purchase",base:"adjustable"},
+    {code:"236G",name:"Sales to distributors/dealers",base:"adjustable"},
+    {code:"236H",name:"Sales to retailers",base:"adjustable"},
+    {code:"154",name:"Export proceeds",base:"final"},
+    {code:"156",name:"Prize / winnings",base:"final"},
+    {code:"150",name:"Dividend",base:"final"}
+  ];
+  function classify(base,t){
+    if(base==="split153")return(t==="company"||t==="listed")?"adjustable":"minimum";
+    if(base==="split151")return(t==="company"||t==="listed")?"adjustable":"final";
+    return base==="min"?"minimum":(base==="final"?"final":"adjustable");
+  }
+  var LBL={adjustable:"Adjustable",minimum:"Minimum",final:"Final"};
+  var PILL={adjustable:"adj",minimum:"min",final:"fin"};
+  var $=function(id){return document.getElementById(id)};
+
+  function show(step){
+    $('raUpload').style.display = step==='upload'?'block':'none';
+    $('raLoad').classList.toggle('show', step==='load');
+    $('raReview').classList.toggle('show', step==='review');
+    $('raResults').classList.toggle('show', step==='results');
+    var map={upload:1,load:1,review:2,results:3},cur=map[step];
+    [].forEach.call(document.querySelectorAll('#raSteps span'),function(s){
+      var n=+s.getAttribute('data-s');
+      s.className = n<cur?'done':(n===cur?'on':'');
+    });
+  }
+
+  var drop=$('raDrop'),fileInput=$('raFileInput');
+  drop.onclick=function(){fileInput.click()};
+  drop.ondragover=function(e){e.preventDefault();drop.classList.add('over')};
+  drop.ondragleave=function(){drop.classList.remove('over')};
+  drop.ondrop=function(e){e.preventDefault();drop.classList.remove('over');if(e.dataTransfer.files[0])handleFile(e.dataTransfer.files[0])};
+  fileInput.onchange=function(e){if(e.target.files[0])handleFile(e.target.files[0])};
+
+  function handleFile(file){
+    if(file.type!=="application/pdf"){alert("Please upload a PDF file.");return;}
+    $('raFileName').textContent='📄 '+file.name;
+    show('load');
+    /* === DEMO EXTRACTION ===
+       PRODUCTION: POST the file to your Django backend, which calls the
+       Claude API to extract structured data, then return JSON to populate review. */
+    setTimeout(function(){ populate(DEMO_EXTRACT); show('review'); }, 1800);
+  }
+
+  var DEMO_EXTRACT={
+    name:"(extracted name)", ntn:"(extracted NTN)", taxpayer:"individual",
+    taxableIncome:2400000,
+    deductions:[{code:"149",amount:180000},{code:"236C",amount:90000},{code:"235",amount:24000},{code:"151",amount:30000}]
+  };
+
+  var dedList=$('raDedList');
+  function opts(sel){return SECTIONS.map(function(s){return '<option value="'+s.code+'" '+(s.code===sel?'selected':'')+'>'+s.code+' — '+s.name+'</option>'}).join('')}
+  function addDed(code,amt){
+    var r=document.createElement('div');r.className='ra-ded';
+    r.innerHTML='<div><span class="ra-flbl">Section</span><select class="form-input form-select ra-dsec">'+opts(code)+'</select></div>'
+      +'<div><span class="ra-flbl">Tax deducted (PKR)</span><input type="number" class="form-input ra-damt" min="0" value="'+(amt||'')+'"></div>'
+      +'<button class="ra-rm" title="Remove">×</button>';
+    r.querySelector('.ra-rm').onclick=function(){r.parentNode.removeChild(r)};
+    dedList.appendChild(r);
+  }
+  function populate(d){
+    $('raName').value=d.name||'';$('raNtn').value=d.ntn||'';
+    $('raIncome').value=d.taxableIncome||'';$('raType').value=d.taxpayer||'individual';
+    dedList.innerHTML='';
+    (d.deductions||[]).forEach(function(x){addDed(x.code,x.amount)});
+    if(!d.deductions||!d.deductions.length)addDed();
+  }
+  $('raAdd').onclick=function(){addDed()};
+  $('raBack').onclick=function(){fileInput.value='';show('upload')};
+  $('raRestart').onclick=function(){fileInput.value='';dedList.innerHTML='';show('upload')};
+
+  $('raGo').onclick=function(){
+    var t=$('raType').value, income=parseFloat($('raIncome').value)||0;
+    var adj=0,body='',count=0,anyMin=false,anyFin=false;
+    [].forEach.call(document.querySelectorAll('.ra-ded'),function(r){
+      var code=r.querySelector('.ra-dsec').value;
+      var amt=parseFloat(r.querySelector('.ra-damt').value)||0;
+      if(amt<=0)return;count++;
+      var m;SECTIONS.forEach(function(s){if(s.code===code)m=s});
+      var ty=classify(m.base,t);
+      if(ty==='adjustable')adj+=amt;if(ty==='minimum')anyMin=true;if(ty==='final')anyFin=true;
+      var c=ty==='adjustable'?'✔ Yes — credited':(ty==='minimum'?'⚠ Floor — limited':'✘ No — final');
+      body+='<tr><td><strong>'+m.code+'</strong> — '+m.name+'</td><td>Rs '+amt.toLocaleString()+'</td><td><span class="ra-pill '+PILL[ty]+'">'+LBL[ty]+'</span></td><td>'+c+'</td></tr>';
+    });
+    if(count===0){alert('Add at least one deduction with an amount.');return;}
+    var liab=estimate(income,t),diff=adj-liab;
+    $('raResBody').innerHTML=body;
+    $('raLiab').textContent='Rs '+Math.round(liab).toLocaleString();
+    $('raAdjT').textContent='Rs '+adj.toLocaleString();
+    var v=$('raVerdict');v.className='ra-verdict';
+    if(diff>0){v.classList.add('refund');$('raVLbl').textContent='Likely refund due';$('raVBig').textContent='Rs '+Math.round(diff).toLocaleString();$('raVMsg').textContent='Your adjustable tax paid appears to exceed your estimated liability. A refund of the difference may be claimable — subject to verification.';}
+    else if(diff<0){v.classList.add('payable');$('raVLbl').textContent='Likely balance payable';$('raVBig').textContent='Rs '+Math.round(-diff).toLocaleString();$('raVMsg').textContent='Your estimated liability exceeds the adjustable tax credited. You may owe the difference rather than be due a refund.';}
+    else{v.classList.add('neutral');$('raVLbl').textContent='Roughly balanced';$('raVBig').textContent='≈ Rs 0';$('raVMsg').textContent='Your adjustable tax paid is close to your estimated liability.';}
+    var lg='<strong>Is the refund legit?</strong> Only <em>adjustable</em> tax counts toward a refund. ';
+    if(anyFin)lg+='Some deductions are <strong>final tax</strong> — not refundable, and excluded. ';
+    if(anyMin)lg+='Some are <strong>minimum tax</strong> — a floor that may not be fully refundable. ';
+    lg+='This is an estimate using illustrative rates; the actual refund depends on current Finance Act slabs and your full return.';
+    $('raLegit').innerHTML=lg;
+    show('results');
+    setTimeout(function(){
+      var navH=document.querySelector('nav')?document.querySelector('nav').offsetHeight:70;
+      var top=$('raResults').getBoundingClientRect().top+window.scrollY-navH-16;
+      window.scrollTo({top:top,behavior:'smooth'});
+    },100);
+  };
+
+  /* Illustrative slab — REPLACE with your real First Schedule rates (or compute server-side) */
+  function estimate(income){
+    if(income<=600000)return 0;var t=0,prev=0;
+    var slabs=[[600000,0],[1200000,.15],[2200000,.20],[3200000,.25],[4100000,.30],[5600000,.35],[1e12,.45]];
+    for(var i=0;i<slabs.length;i++){var cap=slabs[i][0],rate=slabs[i][1];if(income>prev){t+=(Math.min(income,cap)-prev)*rate;prev=cap;}else break;}
+    return t;
+  }
+})();
+</script>
+{% endblock %}

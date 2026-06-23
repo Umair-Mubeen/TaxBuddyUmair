@@ -1858,3 +1858,7 @@ def wht_rates_api(request):
 
 def SalaryCalculator2027(request):
     return render(request, 'salary-tax-calculator-2026-27.html')
+
+
+def refund_analyzer(request):
+    return render(request, 'partials/refund-analyzer.html')
