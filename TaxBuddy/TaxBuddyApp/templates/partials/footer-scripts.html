@@ -1,0 +1,90 @@
+{% load static %}
+
+<!-- ================= CORE DEPENDENCIES ================= -->
+
+<!-- jQuery (FIRST – REQUIRED) -->
+<script src="{% static 'assets/js/plugins/jquery-3-6-0.min.js' %}"></script>
+
+<!-- Popper (required for Bootstrap dropdowns) -->
+<script src="{% static 'assets/js/plugins/popper.min.js' %}"></script>
+
+<!-- Bootstrap JS -->
+<script src="{% static 'assets/js/plugins/bootstrap.min.js' %}"></script>
+
+
+<!-- ================= UI PLUGINS ================= -->
+
+<script src="{% static 'assets/js/plugins/owl.carousel.min.js' %}"></script>
+<script src="{% static 'assets/js/plugins/aos.js' %}"></script>
+<script src="{% static 'assets/js/plugins/slick-slider.js' %}"></script>
+<script src="{% static 'assets/js/plugins/mesonry.js' %}"></script>
+<script src="{% static 'assets/js/plugins/jquery.magnific-popup.js' %}"></script>
+<script src="{% static 'assets/js/plugins/metisMenu.min.js' %}"></script>
+<script src="{% static 'assets/js/plugins/jquery.nice-select.js' %}"></script>
+<script src="{% static 'assets/js/plugins/jquery.countup.min.js' %}"></script>
+<script src="{% static 'assets/js/plugins/jquery.waypoints.min.js' %}"></script>
+
+<!-- Fontawesome JS (optional) -->
+<script src="{% static 'assets/js/plugins/fontawesome.js' %}"></script>
+
+
+<!-- ================= LIGHT GALLERY ================= -->
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lightgallery@1.10.0/dist/css/lightgallery.min.css">
+
+<script src="https://cdn.jsdelivr.net/npm/lightgallery@1.10.0/dist/js/lightgallery-all.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/lg-zoom@1.0.0/dist/lg-zoom.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/lg-rotate@1.0.0/dist/lg-rotate.min.js"></script>
+
+
+<!-- ================= MAIN SCRIPT ================= -->
+
+<script src="{% static 'assets/js/main.js' %}"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/lazysizes/5.3.2/lazysizes.min.js" async></script>
+
+
+<!-- ================= SAFE INITIALIZERS ================= -->
+
+<script>
+$(function () {
+    if ($('.lightgallery').length) {
+        $('.lightgallery').lightGallery({
+            selector: '.spnImg',
+            thumbnail: false
+        });
+    }
+});
+</script>
+
+<script>
+$(function () {
+    const incomeType = $('#hd_income_type');
+    if (!incomeType.length) return;
+
+    $('#incomeTypeSelect').val(incomeType.val()).trigger('change');
+});
+</script>
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+
+  if (document.querySelector('meta[name="disable-custom-mobile-nav"]')) {
+    return; // 🔥 STOP custom mobile nav on this page
+  }
+
+  const sidebar = document.querySelector('.mobile-sidebar');
+  const toggleIcon = document.querySelector('.mobile-nav-icon');
+  const closeIcon = document.querySelector('.menu-close');
+
+  if (!sidebar || !toggleIcon) return;
+
+  toggleIcon.addEventListener('click', () => {
+    sidebar.classList.add('active');
+  });
+
+  closeIcon?.addEventListener('click', () => {
+    sidebar.classList.remove('active');
+  });
+});
+</script>

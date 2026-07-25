@@ -1,0 +1,43 @@
+.single-logo {
+  height: 80px;
+  width: 200px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  @media #{$xs} {
+    height: auto;
+    width: auto;
+  }
+}
+
+.logos2 {
+  .single-logo {
+    height: 50px;
+    width: 90px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    img {
+      opacity: 0.5;
+    }
+  }
+}
+
+.owl-carousel .owl-item .single-logo img {
+  width: auto;
+  display: inline-block;
+}
+
+.logo-area2 {
+  p {
+    font-weight: $medium;
+    font-size: 20px;
+    line-height: 20px;
+    color: $color4;
+    margin-bottom: 20px;
+    @media #{$xs} {
+      font-size: 12px;
+    }
+  }
+}

@@ -1,0 +1,2509 @@
+[33mcommit 5d9268caa09611f7c7f11e5d5dbbdbcb9ae74bf8[m[33m ([m[1;36mHEAD -> [m[1;32mmain[m[33m)[m
+Author: Ovais Rind <rindovais7@gmail.com>
+Date:   Sat Jul 25 12:14:51 2026 +0500
+
+    Move secrets to environment variables
+
+[33mcommit b90ed5deca76e2b913d8edc9de79cbcab42c19e3[m
+Author: Ovais Rind <rindovais7@gmail.com>
+Date:   Sat Jul 25 12:09:25 2026 +0500
+
+    remove API Key
+
+[33mcommit 5dd3fef9b5ba02ec396998987d503ca52c65b850[m
+Author: Ovais Rind <rindovais7@gmail.com>
+Date:   Sat Jul 25 12:04:48 2026 +0500
+
+    updated work
+
+[33mcommit da1e4f39af65337c37c4dfaa6e4bff02fd80ea83[m
+Author: Ovais Rind <rindovais7@gmail.com>
+Date:   Mon Jul 20 19:14:23 2026 +0500
+
+    one line
+
+[33mcommit f54b4863b47b5e89a269fba7378d49413ba5e557[m
+Author: Ovais Rind <rindovais7@gmail.com>
+Date:   Sun Jul 19 23:26:49 2026 +0500
+
+    roadmap
+
+[33mcommit f24da0ab468966ef8e70c30be7d9363849e1195c[m[33m ([m[1;31morigin/main[m[33m)[m
+Author: Ovais Rind <rindovais7@gmail.com>
+Date:   Tue Jun 23 20:12:29 2026 +0500
+
+    refund analyzer
+
+[33mcommit 26f676c1431256e0b52dd474227c00347eaaa39d[m
+Author: Ovais Rind <rindovais7@gmail.com>
+Date:   Tue Jun 23 18:30:40 2026 +0500
+
+    fix issue
+
+[33mcommit a3cda0fa7b4423d823ef1e10acf407e43e75dbaa[m
+Author: Umair Mubeen <umair.mubeenir@gmail.com>
+Date:   Wed Jun 17 15:21:08 2026 +0500
+
+    improve UI
+
+[33mcommit 0d14689357f20c54d32b38f2bee005c6ec58c1b3[m
+Author: Umair Mubeen <umair.mubeenir@gmail.com>
+Date:   Wed Jun 17 11:12:43 2026 +0500
+
+    proposed salary calculator
+
+[33mcommit 14d3a6308a8cb321f612a8c82f2274a671338f46[m
+Author: Ovais Rind <rindovais7@gmail.com>
+Date:   Tue Jun 16 23:16:41 2026 +0500
+
+    new calculator 2026-27
+
+[33mcommit 119d10e9e324662c8e045230d68d7b8090a8dbce[m
+Author: Ovais Rind <rindovais7@gmail.com>
+Date:   Tue Jun 16 21:40:40 2026 +0500
+
+    add website favicon icons
+
+[33mcommit 35f99b74ca0e2e4758f8c9901439d476f8ee55c7[m
+Author: Umair Mubeen <umair.mubeenir@gmail.com>
+Date:   Tue Jun 16 15:41:59 2026 +0500
+
+    updates
+
+[33mcommit ec4a9521ddd30ca3d9bbf34731a426e1ffdb16cc[m
+Author: Umair Mubeen <umair.mubeenir@gmail.com>
+Date:   Tue Jun 16 15:03:58 2026 +0500
+
+    updated
+
+[33mcommit 47e0ab17a2aa7faef8b10a06ed1555c35732c54c[m
+Author: Umair Mubeen <umair.mubeenir@gmail.com>
+Date:   Tue Jun 16 14:52:18 2026 +0500
+
+    index html fix
+
+[33mcommit ac3d1cabde0ddfd86ff86fd5eb07101a32a0b09f[m
+Author: Umair Mubeen <umair.mubeenir@gmail.com>
+Date:   Tue Jun 16 12:38:45 2026 +0500
+
+    some adesense changes
+
+[33mcommit 49721b52f6ffaabc5fb9ac698b1a6cf84c4a630f[m
+Author: Ovais Rind <rindovais7@gmail.com>
+Date:   Tue Jun 9 22:33:39 2026 +0500
+
+    update url and sitemaps
+
+[33mcommit 628ec2a6474b13659735a2a6be8c36af36b09258[m
+Author: Ovais Rind <rindovais7@gmail.com>
+Date:   Tue Jun 9 22:31:54 2026 +0500
+
+    update url and sitemaps
+
+[33mcommit 39c2bf63e2d448398e0bd0dd423fef1744f2cdb8[m
+Author: Umair Mubeen <umair.mubeenir@gmail.com>
+Date:   Tue Jun 9 13:40:18 2026 +0500
+
+    issue pill
+
+[33mcommit 21d6625941bd6e982af762c2da380412012d55a8[m
+Author: Umair Mubeen <umair.mubeenir@gmail.com>
+Date:   Tue Jun 9 11:14:31 2026 +0500
+
+    update
+
+[33mcommit 648e53cb6d1bad8f76e964b0ed08a2ac3a6bb069[m
+Author: Umair Mubeen <umair.mubeenir@gmail.com>
+Date:   Mon Jun 8 11:42:56 2026 +0500
+
+    updates
+
+[33mcommit 9195bdd960d006af8e8047dbc03f2289aad6030a[m
+Author: Umair Mubeen <umair.mubeenir@gmail.com>
+Date:   Mon Jun 8 11:37:00 2026 +0500
+
+    refactor
+
+[33mcommit 82fc2ed83269e2e815a2fcd615958e52201c709c[m
+Author: Ovais Rind <rindovais7@gmail.com>
+Date:   Sun Jun 7 12:04:41 2026 +0500
+
+    views update
+
+[33mcommit cd568d0e3c0ad281d44e9f0357c4be5eb18f6245[m
+Author: Ovais Rind <rindovais7@gmail.com>
+Date:   Sun Jun 7 11:55:57 2026 +0500
+
+    views update
+
+[33mcommit 82810ed89e380fda3e7d2cd6eca88951fcc806b9[m
+Author: Ovais Rind <rindovais7@gmail.com>
+Date:   Sun Jun 7 00:17:12 2026 +0500
+
+    fix issue
+
+[33mcommit 55d1568369df309c6db3739df73ff1eb21d9f741[m
+Author: Ovais Rind <rindovais7@gmail.com>
+Date:   Sun Jun 7 00:02:23 2026 +0500
+
+    base
+
+[33mcommit 381701fea2764881b5b45136e6273289fe0a2895[m
+Author: Ovais Rind <rindovais7@gmail.com>
+Date:   Sat Jun 6 23:32:36 2026 +0500
+
+    changes as per google Adsense
+
+[33mcommit c64047dd87bddce017d3e4f27c9a72f9be2e648b[m
+Author: Ovais Rind <rindovais7@gmail.com>
+Date:   Fri Jun 5 21:09:05 2026 +0500
+
+    update
+
+[33mcommit 40b91d7e8e2bbf60e0d2cfc8e051e6f8f7372e85[m
+Author: Ovais Rind <rindovais7@gmail.com>
+Date:   Tue Jun 2 01:40:22 2026 +0500
+
+    new featuere withholding tax calculator and advance tax
+
+[33mcommit 0d40ae317ba788a56882de7a42b256b201a36873[m
+Author: Ovais Rind <rindovais7@gmail.com>
+Date:   Wed May 27 16:15:31 2026 +0500
+
+    FIX Internal Linking Issues
+
+[33mcommit ca77240363c112857d7896bc2de3aaba0e68fec5[m
+Author: Ovais Rind <rindovais7@gmail.com>
+Date:   Tue May 26 17:39:37 2026 +0500
+
+    add google adsense code
+
+[33mcommit 265afde909cfc492e12211b1ec317d6dff31f826[m
+Author: Ovais Rind <rindovais7@gmail.com>
+Date:   Tue May 26 17:28:42 2026 +0500
+
+    FAQ
+
+[33mcommit a899ad07d7bc7b7ba88e5c38cebe979d0c0b1bca[m
+Author: Ovais Rind <rindovais7@gmail.com>
+Date:   Tue May 26 15:33:36 2026 +0500
+
+    Fix add_guide slug auto-generation
+
+[33mcommit 25a24442201c3c4a6da60838aa38e30ca17d518c[m
+Author: Ovais Rind <rindovais7@gmail.com>
+Date:   Tue May 26 15:29:28 2026 +0500
+
+    Fix add_guide slug auto-generation
+
+[33mcommit ae93e83dfad404a94a8a648bf1a43907672076a1[m
+Author: Ovais Rind <rindovais7@gmail.com>
+Date:   Tue May 26 13:50:27 2026 +0500
+
+    fix issue
+
+[33mcommit 8f659365b0e198b25361ae711122ad56eb8e1c5b[m
+Author: Ovais Rind <rindovais7@gmail.com>
+Date:   Tue May 26 13:42:42 2026 +0500
+
+    update fix indexing issue
+
+[33mcommit c9b09fd1878c7bbce7671471cea39954bfab789f[m
+Author: Umair Mubeen <umair.mubeenir@gmail.com>
+Date:   Mon May 25 12:15:17 2026 +0500
+
+    update atl issues
+
+[33mcommit ecd00fdf5543fa6258bd68be62c365eb8bd2fd18[m
+Author: Ovais Rind <rindovais7@gmail.com>
+Date:   Mon May 25 01:20:49 2026 +0500
+
+    view file updated
+
+[33mcommit 1cc93628a3c5fa171bbd3240f3e4bf0329e2083e[m
+Author: Ovais Rind <rindovais7@gmail.com>
+Date:   Mon May 25 01:02:13 2026 +0500
+
+    New
+
+[33mcommit ec937b6d8f68ed6ba3fb4c762016b0c8a9015910[m
+Author: Ovais Rind <rindovais7@gmail.com>
+Date:   Mon May 25 00:56:00 2026 +0500
+
+    Remove ATL xlsx from git tracking
+
+[33mcommit 1140608937a41d68d496fa298dde0913dd3c8f8d[m
+Author: Ovais Rind <rindovais7@gmail.com>
+Date:   Mon May 25 00:44:18 2026 +0500
+
+    fix issues
+
+[33mcommit ba5b9ed7d17779736e5b4eb51132f2f4b257736b[m
+Author: Ovais Rind <rindovais7@gmail.com>
+Date:   Sun May 24 11:58:38 2026 +0500
+
+    Remove ATL files from git - too large
+
+[33mcommit 80000b5918a91bc72a3bbf6c8fdd06756ac3a70b[m
+Author: Ovais Rind <rindovais7@gmail.com>
+Date:   Sun May 24 11:46:00 2026 +0500
+
+    Add ATL file
+
+[33mcommit f4131158d1fc2e3d2dfad8fd9dbea68445338000[m
+Author: Ovais Rind <rindovais7@gmail.com>
+Date:   Sat May 23 17:30:53 2026 +0500
+
+    update ATL
+
+[33mcommit e75fd5d60b838d665097368e87f0083fdd0cd7c0[m
+Author: Umair Mubeen <umair.mubeenir@gmail.com>
+Date:   Thu May 21 17:45:13 2026 +0500
+
+    new changes
+
+[33mcommit 4d34dd25d8b716037d4022f7cc483ca2af39ed58[m
+Author: Umair Mubeen <umair.mubeenir@gmail.com>
+Date:   Tue May 19 14:59:56 2026 +0500
+
+    new templates
+
+[33mcommit e986605a80dea1ed260f320220065245bdb36ca3[m
+Author: Ovais Rind <rindovais7@gmail.com>
+Date:   Fri May 15 20:31:33 2026 +0500
+
+    update homepage
+
+[33mcommit bfb84f7987a6ac6c9811183e51d222a23c2ac964[m
+Author: Ovais Rind <rindovais7@gmail.com>
+Date:   Fri May 15 20:27:32 2026 +0500
+
+    update homepage
+
+[33mcommit 81cf2a926920010e6b234b9823c3310f35ec7a74[m
+Author: Ovais Rind <rindovais7@gmail.com>
+Date:   Fri May 15 20:02:27 2026 +0500
+
+    update UI
+
+[33mcommit e39116204bf4280abf3073b7be64eaca95874693[m
+Author: Ovais Rind <rindovais7@gmail.com>
+Date:   Fri May 15 17:23:05 2026 +0500
+
+    late_filer_rate
+
+[33mcommit 1e3beeef389792e311507e36e1e1e4a2ab82cd63[m
+Author: Ovais Rind <rindovais7@gmail.com>
+Date:   Fri May 15 13:07:45 2026 +0500
+
+    Fix canonical tag, remove static sitemap, add dynamic sitemap
+
+[33mcommit ae381235e7bb497ae1599edb31817658d0018841[m
+Author: Ovais Rind <rindovais7@gmail.com>
+Date:   Fri May 15 12:36:56 2026 +0500
+
+    update template
+
+[33mcommit bd9179cc92652bc1045e74f0de243c66bc77aade[m
+Author: Umair Mubeen <umair.mubeenir@gmail.com>
+Date:   Thu May 14 11:33:08 2026 +0500
+
+    AI Chatbot
+
+[33mcommit 216986a010daf092eedda59769264b2a2e8057de[m
+Author: Umair Mubeen <umair.mubeenir@gmail.com>
+Date:   Thu May 14 11:19:42 2026 +0500
+
+    AI Chatbot
+
+[33mcommit 31e8142be69616885948479887caeee4281bd96d[m
+Author: Umair Mubeen <umair.mubeenir@gmail.com>
+Date:   Wed May 13 16:39:56 2026 +0500
+
+    AI TaxBuddy Umair Assistant / Chatbot
+
+[33mcommit fb4403282521461d10d73ffda8b3208fd686ca5e[m
+Author: Umair Mubeen <umair.mubeenir@gmail.com>
+Date:   Wed May 13 14:55:13 2026 +0500
+
+    AI TaxBuddy Umair Assistant / Chatbot
+
+[33mcommit 646d46011e7db0fe37eec487354be0cdc8e50a01[m
+Author: Umair Mubeen <umair.mubeenir@gmail.com>
+Date:   Tue May 12 17:18:57 2026 +0500
+
+    AI text Assistant
+
+[33mcommit c45b1108e86a46c0710ee8f46aa03a66685e9a5f[m
+Author: Umair Mubeen <umair.mubeenir@gmail.com>
+Date:   Mon May 11 17:12:43 2026 +0500
+
+    improve sales tax and income tax guide
+
+[33mcommit fbf8f892ce72fa8d877567e5e538645dd1139207[m
+Author: Umair Mubeen <umair.mubeenir@gmail.com>
+Date:   Mon May 11 16:29:24 2026 +0500
+
+    updates
+
+[33mcommit a0c483ab0fab31d3ba415f062f6980b2fa7b5c24[m
+Author: Umair Mubeen <umair.mubeenir@gmail.com>
+Date:   Mon May 11 14:48:52 2026 +0500
+
+    update meta description
+
+[33mcommit 8a02d490e29a6ef05c9b2ff4cb400ff455b4054f[m
+Author: Umair Mubeen <umair.mubeenir@gmail.com>
+Date:   Mon May 11 11:55:49 2026 +0500
+
+    Google Tag manage
+
+[33mcommit a732f543cfe95c3dcb6b4b606f2b7a7aa5858006[m
+Author: Umair Mubeen <umair.mubeenir@gmail.com>
+Date:   Mon May 11 11:48:41 2026 +0500
+
+    update text
+
+[33mcommit 7b8f81d8ee102e7aef9e55d7d3ea1bec51f12b00[m
+Author: Umair Mubeen <umair.mubeenir@gmail.com>
+Date:   Mon May 11 11:46:35 2026 +0500
+
+    update text
+
+[33mcommit a6a62148899db071e68afaa3344cec10763ab9f6[m
+Author: Umair Mubeen <umair.mubeenir@gmail.com>
+Date:   Mon May 11 11:32:29 2026 +0500
+
+    add success / error messages
+
+[33mcommit 636bf1a8f4fc2ad515ebb1fe257694750d7cba7b[m
+Author: Umair Mubeen <umair.mubeenir@gmail.com>
+Date:   Mon May 11 11:26:11 2026 +0500
+
+    add message
+
+[33mcommit acc7094666af617a819f71854c83c6af8b9e5cbd[m
+Author: Umair Mubeen <umair.mubeenir@gmail.com>
+Date:   Mon May 11 11:18:51 2026 +0500
+
+    remove captcha
+
+[33mcommit 2a53b73566fdc512634bf2556281df1aa52c151c[m
+Author: Umair Mubeen <umair.mubeenir@gmail.com>
+Date:   Mon May 11 11:04:38 2026 +0500
+
+    google search console
+
+[33mcommit cbc4ea6000af7e298ef80adcd924d3334ec04e08[m
+Author: Umair Mubeen <umair.mubeenir@gmail.com>
+Date:   Mon May 11 10:57:57 2026 +0500
+
+    google search console
+
+[33mcommit d37bc387c7ca2667401490169e199c44258c265d[m
+Author: Ovais Rind <rindovais7@gmail.com>
+Date:   Sun May 10 20:48:25 2026 +0500
+
+    captcha setting
+
+[33mcommit 54a91a53d3608923c97cf6653e5913e68428d65f[m
+Author: Ovais Rind <rindovais7@gmail.com>
+Date:   Sun May 10 20:18:00 2026 +0500
+
+    captcha setting
+
+[33mcommit 46940d4061832bcc9f30cd1fdf8e14016dc6f081[m
+Author: Ovais Rind <rindovais7@gmail.com>
+Date:   Sun May 10 20:04:59 2026 +0500
+
+    imporve withholding tax rates
+
+[33mcommit 0b79372ca2de19508f5be750b4da81d30dd0f22b[m
+Author: Ovais Rind <rindovais7@gmail.com>
+Date:   Sun May 10 20:01:58 2026 +0500
+
+    imporve withholding tax rates
+
+[33mcommit 4a8b07ac0fb02cf3563759e3dbb7c4900955c40a[m
+Author: Ovais Rind <rindovais7@gmail.com>
+Date:   Sun May 10 19:53:59 2026 +0500
+
+    imporve withholding tax rates
+
+[33mcommit 71bbaef99741c4509adb79a5d4fac4d5b46be567[m
+Author: Ovais Rind <rindovais7@gmail.com>
+Date:   Sun May 10 19:51:12 2026 +0500
+
+    imporve withholding tax rates
+
+[33mcommit b429f53cd2bbead24f2a2d30906fc80a1dc85563[m
+Author: Ovais Rind <rindovais7@gmail.com>
+Date:   Sun May 10 19:47:56 2026 +0500
+
+    imporve withholding tax rates
+
+[33mcommit 890f64018ddbcc33f8e83a8cdb85a9611d762c1c[m
+Author: Ovais Rind <rindovais7@gmail.com>
+Date:   Sun May 10 19:45:11 2026 +0500
+
+    imporve withholding tax rates
+
+[33mcommit b7981114b1e507cb2b2706618a788efcfee62755[m
+Author: Ovais Rind <rindovais7@gmail.com>
+Date:   Sun May 10 19:41:06 2026 +0500
+
+    imporve withholding tax rates
+
+[33mcommit 5d9cc3cf199ca2cab112f304d432dbee9a659bf1[m
+Author: Ovais Rind <rindovais7@gmail.com>
+Date:   Sun May 10 19:37:36 2026 +0500
+
+    imporve withholding tax rates
+
+[33mcommit b396ba015053bac5e71b0ddcd75d0ec5dc87bd6e[m
+Author: Ovais Rind <rindovais7@gmail.com>
+Date:   Sun May 10 19:36:07 2026 +0500
+
+    imporve withholding tax rates
+
+[33mcommit 85ae4b99d6ddaa89739d26e544a7e348f0b31fe0[m
+Author: Ovais Rind <rindovais7@gmail.com>
+Date:   Sun May 10 19:31:48 2026 +0500
+
+    imporve withholding tax rates
+
+[33mcommit 47d2e66b99764ca79d9defed6edd375dd5e8be38[m
+Author: Ovais Rind <rindovais7@gmail.com>
+Date:   Sun May 10 19:22:57 2026 +0500
+
+    imporve withholding tax rates
+
+[33mcommit 452476d7aa84740e12366f6d163392bb6bc8cc27[m
+Author: Ovais Rind <rindovais7@gmail.com>
+Date:   Sun May 10 19:07:21 2026 +0500
+
+    imporve withholding tax rates
+
+[33mcommit a8002df78a5bc2f7b2ef81a3a29e1b2f71ddafc6[m
+Author: Umair Mubeen <umair.mubeenir@gmail.com>
+Date:   Thu May 7 14:33:11 2026 +0500
+
+    index update
+
+[33mcommit b279ab49c7ebed1382ff03de5e5f0fe5e7762780[m
+Author: Umair Mubeen <umair.mubeenir@gmail.com>
+Date:   Thu May 7 11:02:14 2026 +0500
+
+    faq update
+
+[33mcommit c458f8a3c177086c7cb3865b33e139437f24cc41[m
+Author: Umair Mubeen <umair.mubeenir@gmail.com>
+Date:   Wed May 6 15:40:02 2026 +0500
+
+    updated
+
+[33mcommit 9978a4092dd1f7b7c4d77cad45e9e7e345d47108[m
+Author: Umair Mubeen <umair.mubeenir@gmail.com>
+Date:   Wed May 6 15:33:08 2026 +0500
+
+    updated
+
+[33mcommit 91d4e7f5fe9f1bac2f2600118d97f34da347e803[m
+Author: Umair Mubeen <umair.mubeenir@gmail.com>
+Date:   Wed May 6 15:01:50 2026 +0500
+
+    update views , url , files
+
+[33mcommit 457c4495483e94f790b17581ca7c31eeba916e5f[m
+Author: Umair Mubeen <umair.mubeenir@gmail.com>
+Date:   Wed May 6 14:48:20 2026 +0500
+
+    index file updated
+
+[33mcommit bebe1a72366ed10f0ed94b1474cd6d72de9b8c62[m
+Author: Umair Mubeen <umair.mubeenir@gmail.com>
+Date:   Wed May 6 14:26:40 2026 +0500
+
+    update
+
+[33mcommit 08a7cd866d4b99869804a1e7f0214f4e976ff69d[m
+Author: Umair Mubeen <umair.mubeenir@gmail.com>
+Date:   Wed May 6 12:40:42 2026 +0500
+
+    update blog page
+
+[33mcommit 13ae8005907688a65eb3c7094bac867a94b35ad9[m
+Author: Umair Mubeen <umair.mubeenir@gmail.com>
+Date:   Wed May 6 11:46:00 2026 +0500
+
+    update index, navbar, sitemap.xml and service page
+
+[33mcommit ab4d3da2a81e6e87ad09ee15694d915dd9e184bc[m
+Author: Umair Mubeen <umair.mubeenir@gmail.com>
+Date:   Tue May 5 12:41:52 2026 +0500
+
+    updated base and footer file
+
+[33mcommit f69f3f1ac5d2c4adf5d4aca35be4219a30816d43[m
+Author: Umair Mubeen <umair.mubeenir@gmail.com>
+Date:   Tue May 5 12:36:10 2026 +0500
+
+    fix base and index files
+
+[33mcommit db5909be9043850ccff3235da4cf5658a45576e6[m
+Author: Umair Mubeen <umair.mubeenir@gmail.com>
+Date:   Tue May 5 12:12:44 2026 +0500
+
+    footer details
+
+[33mcommit d74ec782d55cde61d00e897c9bdeac0a0c6412a0[m
+Author: Umair Mubeen <umair.mubeenir@gmail.com>
+Date:   Tue May 5 12:01:48 2026 +0500
+
+    updated blog detail page
+
+[33mcommit cf3e9e474e8a902cbbd118aa24bfcd2a9f500fd4[m
+Author: Umair Mubeen <umair.mubeenir@gmail.com>
+Date:   Tue May 5 11:33:25 2026 +0500
+
+    update view and blog detaisl files
+
+[33mcommit 5ff64d6c9c8d066421b500b5513fb5940b3f92b6[m
+Author: Umair Mubeen <umair.mubeenir@gmail.com>
+Date:   Mon May 4 11:55:09 2026 +0500
+
+    fix issues
+
+[33mcommit e27dd3df742313aaadd4bf08e84eb09da0116060[m
+Author: Umair Mubeen <umair.mubeenir@gmail.com>
+Date:   Mon May 4 11:41:36 2026 +0500
+
+    fix base file
+
+[33mcommit dfb71a6613cd3eadee30552a285a08eb245f8d67[m
+Author: Umair Mubeen <umair.mubeenir@gmail.com>
+Date:   Mon May 4 11:34:46 2026 +0500
+
+    update base file
+
+[33mcommit 32387e9826fc66bf5fbb5ce242d7ed61846fb79d[m
+Author: Umair Mubeen <umair.mubeenir@gmail.com>
+Date:   Mon May 4 11:10:44 2026 +0500
+
+    update base filoe
+
+[33mcommit cb940f01c191646421a2c9beb1810ff92ce60957[m
+Author: Ovais Rind <rindovais7@gmail.com>
+Date:   Sun May 3 15:32:40 2026 +0500
+
+    updated UI
+
+[33mcommit f57f3539da1a5928b76dccbc99fe2af94a06c0e8[m
+Author: Ovais Rind <rindovais7@gmail.com>
+Date:   Sun May 3 15:21:19 2026 +0500
+
+    updated UI
+
+[33mcommit b013e7821ebf9c9d4d00ca79a038be925396fb83[m
+Author: Ovais Rind <rindovais7@gmail.com>
+Date:   Sun May 3 14:03:48 2026 +0500
+
+    fomrs
+
+[33mcommit cd2de5a774c083cc406bbc1e78d937f8dad40191[m
+Author: Ovais Rind <rindovais7@gmail.com>
+Date:   Sun May 3 12:39:33 2026 +0500
+
+    calculators
+
+[33mcommit 9cb04cdb4f79f4da22839a39a080407c3ba67ede[m
+Author: Ovais Rind <rindovais7@gmail.com>
+Date:   Sun May 3 12:26:49 2026 +0500
+
+    calculators
+
+[33mcommit 069f263f4fd833e8710a2a9125bacc4337de8686[m
+Author: Ovais Rind <rindovais7@gmail.com>
+Date:   Sun May 3 12:21:16 2026 +0500
+
+    calculators
+
+[33mcommit b9f5889f3a8b82c8cbc55d681bcdacf044839ade[m
+Author: Ovais Rind <rindovais7@gmail.com>
+Date:   Sun May 3 12:12:14 2026 +0500
+
+    fix views
+
+[33mcommit 4b46090f76f4bea1a3fad5865be2a23033017f19[m
+Author: Ovais Rind <rindovais7@gmail.com>
+Date:   Sun May 3 12:02:39 2026 +0500
+
+    fix base.html
+
+[33mcommit d075a9eb3f8f53556598968b30a8c08b39874489[m
+Author: Ovais Rind <rindovais7@gmail.com>
+Date:   Sun May 3 00:17:00 2026 +0500
+
+    comment on category filter
+
+[33mcommit 89f842c78f2a1fd6b4fa0132581b4dcee068f7cc[m
+Author: Ovais Rind <rindovais7@gmail.com>
+Date:   Sat May 2 23:46:35 2026 +0500
+
+    updated work
+
+[33mcommit 8c68c583e06f5bfef0ee9e6d5503838b1766b570[m
+Author: Ovais Rind <rindovais7@gmail.com>
+Date:   Sat May 2 18:52:34 2026 +0500
+
+    Fix MCQ Error
+
+[33mcommit d5e7deb9bf7abdf43ad86f8c78110a4577e78bdd[m
+Author: Ovais Rind <rindovais7@gmail.com>
+Date:   Sat May 2 17:43:30 2026 +0500
+
+    Fix Broken Links
+
+[33mcommit 615458a536611f797c2130a15334733497ec7113[m
+Author: Ovais Rind <rindovais7@gmail.com>
+Date:   Sat May 2 17:39:42 2026 +0500
+
+    Fix Broken Links
+
+[33mcommit 099c5e092267d6f9f4b001149307ccef15d06946[m
+Author: Ovais Rind <rindovais7@gmail.com>
+Date:   Sat May 2 17:35:42 2026 +0500
+
+    update UI
+
+[33mcommit 8c3fe3dbed8714206f79740139304efb8c2a5e58[m
+Author: Ovais Rind <rindovais7@gmail.com>
+Date:   Sat May 2 17:27:58 2026 +0500
+
+    update UI
+
+[33mcommit ba4b6ad1748759668a9b99af8c9ea21a9bd76e91[m
+Author: Ovais Rind <rindovais7@gmail.com>
+Date:   Sat May 2 13:31:26 2026 +0500
+
+    update UI
+
+[33mcommit c4abe17e08ebcf21491eb6c20191df85e619df8d[m
+Author: Ovais Rind <rindovais7@gmail.com>
+Date:   Sat May 2 13:20:33 2026 +0500
+
+    update UI
+
+[33mcommit 1c6adccb9594e0a309d8cf5c972d0c417269b35d[m
+Author: Ovais Rind <rindovais7@gmail.com>
+Date:   Fri May 1 14:41:28 2026 +0500
+
+    remove Ad Banner
+
+[33mcommit 4096645774f8932ec26a23ec9d851073dd93356a[m
+Author: Ovais Rind <rindovais7@gmail.com>
+Date:   Fri May 1 14:34:19 2026 +0500
+
+    navber working
+
+[33mcommit 45b902d1e551b073e1b86e66ec05d2a23b121dcc[m
+Author: Umair Mubeen <umair.mubeenir@gmail.com>
+Date:   Thu Apr 30 11:34:46 2026 +0500
+
+    updated work html file
+
+[33mcommit ab68217135bdf4eb181c4d5dad968f114b6a601f[m
+Author: Umair Mubeen <umair.mubeenir@gmail.com>
+Date:   Tue Apr 28 17:29:14 2026 +0500
+
+    updated UI
+
+[33mcommit b0a699106e76e378c91b25e7be6dbc1d965697ce[m
+Author: Umair Mubeen <umair.mubeenir@gmail.com>
+Date:   Mon Apr 27 15:20:00 2026 +0500
+
+    update UI
+
+[33mcommit 4e3704c79c47582246477f98140f7334d152dafb[m
+Author: Ovais Rind <rindovais7@gmail.com>
+Date:   Sun Apr 26 21:27:57 2026 +0500
+
+    updated work
+
+[33mcommit cb45c64c397f9b88b37d443f739cfa23b00aa1c8[m
+Merge: c63b3f6 92ab565
+Author: Ovais Rind <rindovais7@gmail.com>
+Date:   Sun Apr 26 21:26:14 2026 +0500
+
+    updated work
+
+[33mcommit c63b3f61a1d1ef277df396653b0bbe1a797a3823[m
+Author: Ovais Rind <rindovais7@gmail.com>
+Date:   Sun Apr 26 21:25:27 2026 +0500
+
+    updated work
+
+[33mcommit 92ab565ce34e20b0567ed5d37f99edd32d4cc428[m
+Author: Umair Mubeen <umair.mubeenir@gmail.com>
+Date:   Thu Apr 16 15:10:02 2026 +0500
+
+    updated UI
+
+[33mcommit fa64a6a71b10291ceffd2e126d2e1e0946d98878[m
+Author: Umair Mubeen <umair.mubeenir@gmail.com>
+Date:   Wed Apr 15 14:54:43 2026 +0500
+
+    updated UI
+
+[33mcommit 7e49c988a8f05a4a885797dce3b032e2527621dc[m
+Author: Umair Mubeen <umair.mubeenir@gmail.com>
+Date:   Tue Apr 14 15:15:38 2026 +0500
+
+    updated work
+
+[33mcommit 1d715d3d6cba5e1213114443957515ff25736f9e[m
+Author: Umair Mubeen <umair.mubeenir@gmail.com>
+Date:   Mon Apr 13 16:07:53 2026 +0500
+
+    updated work
+
+[33mcommit a99d5ab7aa978aa39471b4c658e60accd6d1b137[m
+Author: Ovais Rind <rindovais7@gmail.com>
+Date:   Sun Apr 12 23:03:39 2026 +0500
+
+    yes
+
+[33mcommit 2f9d9f4438ad86251ce2f5375bdfb2736d722da2[m
+Merge: f2e3074 ec60aca
+Author: Ovais Rind <rindovais7@gmail.com>
+Date:   Sat Apr 11 21:26:18 2026 +0500
+
+    updated layout
+
+[33mcommit f2e3074030b4daf713ab08ec41ab2d4c3583106d[m
+Author: Ovais Rind <rindovais7@gmail.com>
+Date:   Sat Apr 11 20:57:57 2026 +0500
+
+    yes
+
+[33mcommit ec60aca3f3cc613e4ebee27a30613c3326df573e[m
+Author: Umair Mubeen <umair.mubeenir@gmail.com>
+Date:   Fri Apr 10 16:01:17 2026 +0500
+
+    updated work
+
+[33mcommit 54981c6ed8b94921dd39391db6ca761f8374599c[m
+Author: Umair Mubeen <umair.mubeenir@gmail.com>
+Date:   Wed Apr 8 15:55:35 2026 +0500
+
+    update work
+
+[33mcommit a1226adc30c53d8dea17f41a8830c3aa71a71175[m
+Merge: a8b36a0 51bbafe
+Author: Umair Mubeen <umair.mubeenir@gmail.com>
+Date:   Tue Apr 7 14:30:47 2026 +0500
+
+    updated work
+
+[33mcommit a8b36a0e8ad6b7d256b8e86475c3aee9157acd62[m
+Author: Umair Mubeen <umair.mubeenir@gmail.com>
+Date:   Tue Apr 7 14:28:17 2026 +0500
+
+    updated layout work
+
+[33mcommit 51bbafe422956809298b6dee53ba86fb61d64ca4[m
+Merge: 39e6a4a eb2e234
+Author: Ovais Rind <rindovais7@gmail.com>
+Date:   Fri Mar 27 17:51:07 2026 +0500
+
+    yes
+
+[33mcommit 39e6a4a91a44e9499bef9ae1f5805db9e24ffe14[m
+Author: Ovais Rind <rindovais7@gmail.com>
+Date:   Fri Mar 27 17:49:32 2026 +0500
+
+    done
+
+[33mcommit eb2e234075b64874987b3d4efa64976529285af8[m
+Author: Umair Mubeen <umair.mubeenir@gmail.com>
+Date:   Thu Mar 26 16:56:02 2026 +0500
+
+    layout added
+
+[33mcommit 6a2943164f5efd1f24fb886191869f69b552d6b1[m
+Author: Umair Mubeen <umair.mubeenir@gmail.com>
+Date:   Wed Mar 25 15:31:19 2026 +0500
+
+    layout added
+
+[33mcommit 324ef340c7e4081294b1858371bc31e49697c052[m
+Author: Umair Mubeen <umair.mubeenir@gmail.com>
+Date:   Mon Mar 9 16:02:13 2026 +0500
+
+    updated
+
+[33mcommit 09da4f80784204d5e213903b5df0a664e86ed2f7[m
+Author: Umair Mubeen <umair.mubeenir@gmail.com>
+Date:   Sat Feb 28 11:55:27 2026 +0500
+
+    mcq work
+
+[33mcommit 112a7e9f588dd56d5f6081b7d022419d6b86f34e[m
+Author: Umair Mubeen <umair.mubeenir@gmail.com>
+Date:   Sat Feb 28 11:54:24 2026 +0500
+
+    mcq work
+
+[33mcommit 510218f0f57328b8812f2e87a071f2a113593c59[m
+Author: Umair Mubeen <umair.mubeenir@gmail.com>
+Date:   Sat Feb 28 11:53:32 2026 +0500
+
+    mcq work
+
+[33mcommit 504aa6c46d6b600f71db8fc1ce5ade6a1b3668f4[m
+Author: Umair Mubeen <umair.mubeenir@gmail.com>
+Date:   Sat Feb 28 11:49:06 2026 +0500
+
+    mcq work
+
+[33mcommit 9f10fbf2739de31fdcded43d7a186762a4e3ad92[m
+Author: Umair Mubeen <umair.mubeenir@gmail.com>
+Date:   Sat Feb 28 11:45:56 2026 +0500
+
+    mcq work
+
+[33mcommit d08ae4becdf190c53a8ffaf0b1af1faf9937c014[m
+Author: Umair Mubeen <umair.mubeenir@gmail.com>
+Date:   Sat Feb 28 11:42:34 2026 +0500
+
+    mcq work
+
+[33mcommit 3a21c3dfc1f23c9c5404d44758f52e7c6ca913a1[m
+Author: Umair Mubeen <umair.mubeenir@gmail.com>
+Date:   Sat Feb 28 11:38:32 2026 +0500
+
+    mcq work
+
+[33mcommit 82b671530c81a241817f10bfa56b9d4135a2acd9[m
+Author: Umair Mubeen <umair.mubeenir@gmail.com>
+Date:   Sat Feb 28 11:23:31 2026 +0500
+
+    mcq work
+
+[33mcommit 4e50d3b87ddbded28cd7301b49a8218898772189[m
+Author: Umair Mubeen <umair.mubeenir@gmail.com>
+Date:   Sat Feb 28 11:22:50 2026 +0500
+
+    mcq work
+
+[33mcommit 14505346d01ad6ec90d24b2b9fcccbae2519eba9[m
+Author: Umair Mubeen <umair.mubeenir@gmail.com>
+Date:   Sat Feb 28 11:16:31 2026 +0500
+
+    mcq work
+
+[33mcommit 4509f5eab9a38b8b10095181579b488b0ae25468[m
+Author: Umair Mubeen <umair.mubeenir@gmail.com>
+Date:   Sat Feb 28 11:15:12 2026 +0500
+
+    mcq work
+
+[33mcommit 8556f83feffddc83f1b8b2ee55818ab4bb88cb1f[m
+Author: Umair Mubeen <umair.mubeenir@gmail.com>
+Date:   Sat Feb 28 11:08:43 2026 +0500
+
+    mcq work
+
+[33mcommit bfb932b4e5271d8f32d6d51408050c6a9eb18f0a[m
+Author: Umair Mubeen <umair.mubeenir@gmail.com>
+Date:   Sat Feb 28 11:00:42 2026 +0500
+
+    mcq work
+
+[33mcommit 8e3a3c30fceb25a1ae3fcfc90ded1c324bc5f4c2[m
+Author: Umair Mubeen <umair.mubeenir@gmail.com>
+Date:   Sat Feb 28 10:46:33 2026 +0500
+
+    mcq work
+
+[33mcommit 5cd46239397c19c2780f33ee773cceda776ddf1c[m
+Author: Umair Mubeen <umair.mubeenir@gmail.com>
+Date:   Sat Feb 28 10:37:51 2026 +0500
+
+    updated
+
+[33mcommit ad891ee3db36079baf9ae6dadc51f1004c5edd6d[m
+Merge: ff2f051 b61436a
+Author: Umair Mubeen <umair.mubeenir@gmail.com>
+Date:   Sat Feb 28 10:32:05 2026 +0500
+
+    updated
+
+[33mcommit ff2f051389a82f732f004cfd3cc776ebd24b2f4b[m
+Author: Umair Mubeen <umair.mubeenir@gmail.com>
+Date:   Sat Feb 28 10:30:31 2026 +0500
+
+    mcq pagination
+
+[33mcommit b61436a72df621a77ad9650c482246309c634308[m
+Author: Ovais Rind <rindovais7@gmail.com>
+Date:   Fri Feb 27 01:19:29 2026 +0500
+
+    update
+
+[33mcommit 61e92353b1b1ab07a51fd7ad81dce54fede85ef9[m
+Author: Umair Mubeen <umair.mubeenir@gmail.com>
+Date:   Thu Feb 26 15:45:26 2026 +0500
+
+    update tax rates
+
+[33mcommit cf2deaed20a6b0d9d49bfb8961e3f38d77efc6bd[m
+Author: Umair Mubeen <umair.mubeenir@gmail.com>
+Date:   Thu Feb 26 15:40:57 2026 +0500
+
+    update tax rates
+
+[33mcommit 87ae07ae45d96bd0c5ec47519e9294b65676dd39[m
+Author: Umair Mubeen <umair.mubeenir@gmail.com>
+Date:   Tue Feb 24 16:09:27 2026 +0500
+
+    tax rates
+
+[33mcommit 148cd756d9eb9eb7871960fb9ad6495e7017fd16[m
+Author: Umair Mubeen <umair.mubeenir@gmail.com>
+Date:   Tue Feb 24 15:51:17 2026 +0500
+
+    font change
+
+[33mcommit c25c0369e5a8b52ff13d058914f6db95eaba0cb7[m
+Author: Umair Mubeen <umair.mubeenir@gmail.com>
+Date:   Mon Feb 23 15:31:03 2026 +0500
+
+    font change
+
+[33mcommit 5d183f2716ff55b90fcec34d3e0573aa01f6173b[m
+Author: Umair Mubeen <umair.mubeenir@gmail.com>
+Date:   Mon Feb 23 15:25:39 2026 +0500
+
+    font change
+
+[33mcommit 35ca978166b7b466bc18531aaf64f8bd127c4c99[m
+Author: Umair Mubeen <umair.mubeenir@gmail.com>
+Date:   Mon Feb 23 11:16:58 2026 +0500
+
+    font change
+
+[33mcommit 8e594f2c0c738b74bd4f99962d9879fb3dee012b[m
+Author: Ovais Rind <rindovais7@gmail.com>
+Date:   Sun Feb 22 22:11:29 2026 +0500
+
+    update
+
+[33mcommit 3c09490d6a55fe7dede6e2742c1ceb52265f4f32[m
+Author: Ovais Rind <rindovais7@gmail.com>
+Date:   Sun Feb 22 21:22:41 2026 +0500
+
+    update
+
+[33mcommit ee4a5f368137f73ca7615cc40ebe6daa101cc1df[m
+Author: Ovais Rind <rindovais7@gmail.com>
+Date:   Sun Feb 22 21:09:54 2026 +0500
+
+    update
+
+[33mcommit eca11211ffdcef30f0bedbf1fd46399dda7b5b61[m
+Author: Ovais Rind <rindovais7@gmail.com>
+Date:   Sun Feb 22 20:49:04 2026 +0500
+
+    update
+
+[33mcommit 9a8f6a228b274b5100f8f141dbc349811d2b19b0[m
+Author: Ovais Rind <rindovais7@gmail.com>
+Date:   Sun Feb 22 17:55:28 2026 +0500
+
+    update
+
+[33mcommit ac086bbda134ed957659749a824cdf355f241d94[m
+Author: Ovais Rind <rindovais7@gmail.com>
+Date:   Sun Feb 22 17:51:02 2026 +0500
+
+    update
+
+[33mcommit 6fd57dc64f2c38aefc4fc2cae3471d91d17efdfd[m
+Author: Ovais Rind <rindovais7@gmail.com>
+Date:   Sun Feb 22 17:40:43 2026 +0500
+
+    update
+
+[33mcommit 01954d9cf65a02d47f3d5f447b8732809e2c2a15[m
+Author: Ovais Rind <rindovais7@gmail.com>
+Date:   Sun Feb 22 16:02:43 2026 +0500
+
+    update
+
+[33mcommit 4ba860554199e24f328884750b831a4a51ad82c5[m
+Author: Ovais Rind <rindovais7@gmail.com>
+Date:   Sun Feb 22 15:54:13 2026 +0500
+
+    update
+
+[33mcommit 7ca86abe2574a4b03237bdca1cd62a44d2e45c9a[m
+Author: Ovais Rind <rindovais7@gmail.com>
+Date:   Sun Feb 22 15:47:18 2026 +0500
+
+    update
+
+[33mcommit c90f44a56000bbcbf66b094ef91ef45afa6831a4[m
+Author: Ovais Rind <rindovais7@gmail.com>
+Date:   Sun Feb 22 14:59:00 2026 +0500
+
+    update
+
+[33mcommit 3dc995391e80371378880844ab7ad5b5d1ecd314[m
+Author: Ovais Rind <rindovais7@gmail.com>
+Date:   Sat Feb 21 20:06:41 2026 +0500
+
+    updated
+
+[33mcommit 7f6fea8763e7da43497a874682774f717e93f506[m
+Author: Ovais Rind <rindovais7@gmail.com>
+Date:   Sat Feb 21 19:39:21 2026 +0500
+
+    updated work
+
+[33mcommit 566448abd37f0dfe20c12c9d016bab8b20d0f1a1[m
+Author: Ovais Rind <rindovais7@gmail.com>
+Date:   Sat Feb 21 15:58:47 2026 +0500
+
+    updated
+
+[33mcommit a9d753ce8827fbd9f0efcaca8789b9bea85c5dbd[m
+Author: Umair Mubeen <umair.mubeenir@gmail.com>
+Date:   Fri Feb 20 15:46:46 2026 +0500
+
+    Done
+
+[33mcommit 75ff07056d715e23d5574b80c4b89300f4b2e19c[m
+Author: Umair Mubeen <umair.mubeenir@gmail.com>
+Date:   Thu Feb 19 16:16:10 2026 +0500
+
+    update work
+
+[33mcommit df7645ddf9c7adfd9229de0438db4b1ea1cbec4e[m
+Author: Ovais Rind <rindovais7@gmail.com>
+Date:   Thu Feb 19 10:19:44 2026 +0500
+
+    update website UI till now
+
+[33mcommit 9eee35577779e73d00ce90eab661398e42ecf71f[m
+Author: Ovais Rind <rindovais7@gmail.com>
+Date:   Sat Feb 14 13:10:18 2026 +0500
+
+    Update UI
+
+[33mcommit dbe760355fa95cc8f8c9fb7851ca891f91eb3e37[m
+Author: Ovais Rind <rindovais7@gmail.com>
+Date:   Sat Feb 14 12:38:59 2026 +0500
+
+    Update UI
+
+[33mcommit b04215891841ff30fada82d71948ed51fc9ba395[m
+Author: Ovais Rind <rindovais7@gmail.com>
+Date:   Wed Feb 4 22:32:13 2026 +0500
+
+    yes
+
+[33mcommit 9e6f4fd4be10a541f2e435258ec13c97517dfa9c[m
+Author: Umair Mubeen <umair.mubeenir@gmail.com>
+Date:   Wed Feb 4 15:50:13 2026 +0500
+
+    updated UI
+
+[33mcommit 390ffdd8bbe0e536a22e03698ae7a80531831b51[m
+Author: Ovais Rind <rindovais7@gmail.com>
+Date:   Wed Feb 4 10:14:06 2026 +0500
+
+    add new pagesw
+
+[33mcommit b4f45d2c837c06691efa5fe6dd8518cef3684119[m
+Author: Umair Mubeen <umair.mubeenir@gmail.com>
+Date:   Tue Feb 3 16:40:57 2026 +0500
+
+    update one
+
+[33mcommit 5045916c7bfa56bf239e1302219799da7a55d9b9[m
+Author: Umair Mubeen <umair.mubeenir@gmail.com>
+Date:   Tue Feb 3 14:03:50 2026 +0500
+
+    updated website plus 4C
+
+[33mcommit 4ba2d549eabd9cafc1e294471f7f076846fabfcd[m
+Author: Ovais Rind <rindovais7@gmail.com>
+Date:   Sun Feb 1 22:57:25 2026 +0500
+
+    Updated website
+
+[33mcommit 9a224cdc74d409cc372c00a274fd2206b3eba113[m
+Author: Ovais Rind <rindovais7@gmail.com>
+Date:   Wed Jan 21 01:38:12 2026 +0500
+
+    further changes UI
+
+[33mcommit 621e35a6dcdb6f810c6c187140dccdb37c067255[m
+Author: Ovais Rind <rindovais7@gmail.com>
+Date:   Mon Jan 19 21:56:12 2026 +0500
+
+    further changes MCQ
+
+[33mcommit e070a66dcd214e5077b1b502bc1a62b0ebcef8ab[m
+Author: Ovais Rind <rindovais7@gmail.com>
+Date:   Fri Jan 16 20:20:30 2026 +0500
+
+    income tax mcq pakistan
+
+[33mcommit c91edd67d8449b1d167b7f4e15496d90db249c6a[m
+Author: Ovais Rind <rindovais7@gmail.com>
+Date:   Tue Jan 13 21:23:21 2026 +0500
+
+    update website
+
+[33mcommit 2162f212783f50171071075e3aada1344fc5a622[m
+Author: Ovais Rind <rindovais7@gmail.com>
+Date:   Mon Jan 12 23:40:32 2026 +0500
+
+    update website
+
+[33mcommit 8cd53970a4e0964c1bb94bfe9e4ea3fc09a99845[m
+Author: Ovais Rind <rindovais7@gmail.com>
+Date:   Mon Jan 12 23:22:05 2026 +0500
+
+    update website
+
+[33mcommit 93a5f61a352fdf5565bb86ed56caddf6bf45c941[m
+Author: Ovais Rind <rindovais7@gmail.com>
+Date:   Sat Jan 10 15:32:10 2026 +0500
+
+    update UI mcq
+
+[33mcommit 6f16fc5c9383bdf30029780866e217ca77fa3da7[m
+Author: Ovais Rind <rindovais7@gmail.com>
+Date:   Sat Jan 10 15:20:23 2026 +0500
+
+    update UI mcq
+
+[33mcommit e51ec73b4254cf2600b09c6be692f846562dfb16[m
+Author: Ovais Rind <rindovais7@gmail.com>
+Date:   Sat Jan 10 15:16:48 2026 +0500
+
+    update UI mcq
+
+[33mcommit 7aec38c511f7e80bff20a112280ae2833c77778d[m
+Author: Ovais Rind <rindovais7@gmail.com>
+Date:   Sat Jan 10 15:07:40 2026 +0500
+
+    update UI mcq
+
+[33mcommit a94c59c4608ef526ce2b7c98da21f0a4e7608f3b[m
+Author: Ovais Rind <rindovais7@gmail.com>
+Date:   Sat Jan 10 14:37:51 2026 +0500
+
+    update UI mcq
+
+[33mcommit 9db4c567ad8d43d2cea278000a064e4d9984ac16[m
+Author: Ovais Rind <rindovais7@gmail.com>
+Date:   Sat Jan 10 14:31:38 2026 +0500
+
+    update UI mcq
+
+[33mcommit 4af68cf89c4a1e3f6db697215ac72466a13b45dc[m
+Merge: ecd5721 852d706
+Author: Ovais Rind <rindovais7@gmail.com>
+Date:   Sat Jan 10 14:26:12 2026 +0500
+
+    yes
+
+[33mcommit ecd5721fd3823345adfba2b2d1000f9bc3e2dd31[m
+Author: Ovais Rind <rindovais7@gmail.com>
+Date:   Sat Jan 10 14:24:23 2026 +0500
+
+    mcqs
+
+[33mcommit 852d7064d7ce3dc313a6e28c24f7699ed9f55c9a[m
+Author: Umair Mubeen <umair.mubeenir@gmail.com>
+Date:   Mon Jan 5 15:49:30 2026 +0500
+
+    mcq part
+
+[33mcommit ee35d5be8b8428f3f4b909c90d31f6bad1fa2604[m
+Author: Ovais Rind <rindovais7@gmail.com>
+Date:   Mon Jan 5 00:20:22 2026 +0500
+
+    quizz
+
+[33mcommit 1d4230098f53ccc360eeb59df5c86ffb850df3c0[m
+Author: Ovais Rind <rindovais7@gmail.com>
+Date:   Sun Jan 4 17:19:10 2026 +0500
+
+    update heading
+
+[33mcommit d673f599be8e18a7201ec862827fd5c986daf072[m
+Author: Ovais Rind <rindovais7@gmail.com>
+Date:   Sun Jan 4 15:48:17 2026 +0500
+
+    remove mobile logo
+
+[33mcommit 749d954a09cbae93bcafbb0baf6c03bf3dbc2bff[m
+Author: Ovais Rind <rindovais7@gmail.com>
+Date:   Sun Jan 4 15:45:00 2026 +0500
+
+    Mcqs
+
+[33mcommit 72b9e2566c927ba6b4f60c3d542d107f3827f81e[m
+Author: Ovais Rind <rindovais7@gmail.com>
+Date:   Sun Jan 4 15:37:10 2026 +0500
+
+    Mcqs
+
+[33mcommit 3290d1897b4812956bef60d26ef4a938ecfbb0b0[m
+Author: Ovais Rind <rindovais7@gmail.com>
+Date:   Sun Jan 4 15:31:49 2026 +0500
+
+    Mcqs
+
+[33mcommit 069de18a076f34a74a254462b4071d09c5b3d8a7[m
+Author: Ovais Rind <rindovais7@gmail.com>
+Date:   Sun Jan 4 14:49:20 2026 +0500
+
+    Mcqs
+
+[33mcommit 1fc9485616a9a0040f65bee83625ed841d02cc18[m
+Author: Ovais Rind <rindovais7@gmail.com>
+Date:   Sun Jan 4 13:01:32 2026 +0500
+
+    changes UI
+
+[33mcommit 50c9f4c2d4640c415480c5f1b19365cbf77858ff[m
+Author: Ovais Rind <rindovais7@gmail.com>
+Date:   Sat Jan 3 17:24:58 2026 +0500
+
+    upddate date
+
+[33mcommit 54a75683dea5ee0ea8ec850b8b597335717de115[m
+Author: Ovais Rind <rindovais7@gmail.com>
+Date:   Sat Jan 3 17:22:17 2026 +0500
+
+    upddate date
+
+[33mcommit 0967c77f69544b6d534ef298e9b17fe40392acf8[m
+Author: Ovais Rind <rindovais7@gmail.com>
+Date:   Sat Jan 3 15:48:19 2026 +0500
+
+    changes
+
+[33mcommit a3dcae67b51dbbe80a0f3bcfd1c86e0969b5f676[m
+Author: Ovais Rind <rindovais7@gmail.com>
+Date:   Sat Jan 3 15:39:03 2026 +0500
+
+    changes
+
+[33mcommit eb8e57eb606795425ff31eed12a59855cd1b4452[m
+Author: Ovais Rind <rindovais7@gmail.com>
+Date:   Sat Jan 3 01:13:44 2026 +0500
+
+    changes
+
+[33mcommit f7df6309751e705df148906abbefb37f99f9cee0[m
+Author: Ovais Rind <rindovais7@gmail.com>
+Date:   Sat Jan 3 01:10:53 2026 +0500
+
+    changes
+
+[33mcommit 51564a90b322c08769a01d8a3a54b996664f66f2[m
+Author: Ovais Rind <rindovais7@gmail.com>
+Date:   Sat Jan 3 01:05:31 2026 +0500
+
+    changes
+
+[33mcommit d6400f4b4b3775e23deccb3f26e461be45e42406[m
+Author: Ovais Rind <rindovais7@gmail.com>
+Date:   Sat Jan 3 00:51:33 2026 +0500
+
+    changes
+
+[33mcommit 79683e9496ad62f3d9992711e0a5073f222c3dc6[m
+Author: Ovais Rind <rindovais7@gmail.com>
+Date:   Sat Jan 3 00:40:12 2026 +0500
+
+    changes
+
+[33mcommit 5130ea63fd4e2da9e2357edc85bdbdaf2408b5e3[m
+Author: Ovais Rind <rindovais7@gmail.com>
+Date:   Sat Jan 3 00:28:32 2026 +0500
+
+    changes
+
+[33mcommit 2d652c2a88f0de1de538d9a9f4c3ed304719e281[m
+Author: Ovais Rind <rindovais7@gmail.com>
+Date:   Sat Jan 3 00:24:55 2026 +0500
+
+    changes
+
+[33mcommit 0a8e020845a77dfa730eb672a50d3b20fa0a8225[m
+Author: Ovais Rind <rindovais7@gmail.com>
+Date:   Sat Jan 3 00:19:18 2026 +0500
+
+    changes
+
+[33mcommit db94c549b2c8c4131af07f89588864438c72d950[m
+Author: Ovais Rind <rindovais7@gmail.com>
+Date:   Fri Jan 2 20:13:56 2026 +0500
+
+    changes blos UI
+
+[33mcommit e754978e0beec981ff5f7df1fd521785e82a610a[m
+Author: Ovais Rind <rindovais7@gmail.com>
+Date:   Fri Jan 2 19:42:46 2026 +0500
+
+    changes blos UI
+
+[33mcommit 6838e45f68e138bd86f51ad73ddfcc8bb57db357[m
+Author: Ovais Rind <rindovais7@gmail.com>
+Date:   Fri Jan 2 19:39:56 2026 +0500
+
+    changes UI
+
+[33mcommit 19c856f8799f7ffdefec90d7a099f9c3d1ac982f[m
+Author: Ovais Rind <rindovais7@gmail.com>
+Date:   Fri Jan 2 19:06:07 2026 +0500
+
+    changes UI
+
+[33mcommit a0dc0b09a5bcb4ca01fb95a187f2112c75b7c5f7[m
+Author: Ovais Rind <rindovais7@gmail.com>
+Date:   Fri Jan 2 19:03:54 2026 +0500
+
+    changes UI
+
+[33mcommit b697195afcd2da72b8e849b412733f5ac84e8301[m
+Merge: 1bdfe94 7bfd87f
+Author: Ovais Rind <rindovais7@gmail.com>
+Date:   Fri Jan 2 19:03:46 2026 +0500
+
+    Merge branch 'main' of https://github.com/Umair-Mubeen/TaxBuddyUmair
+
+[33mcommit 1bdfe946ae6d293f723162084ec2b86101114de0[m
+Author: Ovais Rind <rindovais7@gmail.com>
+Date:   Fri Jan 2 19:03:18 2026 +0500
+
+    changes UI
+
+[33mcommit 7bfd87f003467e0c424919aa9f7da4c50cd30ce2[m
+Author: Umair Mubeen <umair.mubeenir@gmail.com>
+Date:   Thu Jan 1 12:41:34 2026 +0500
+
+    update urls
+
+[33mcommit 6403b8e692d0b43268b3eda47829cf2ba5fdc8ae[m
+Author: Umair Mubeen <umair.mubeenir@gmail.com>
+Date:   Thu Jan 1 12:16:50 2026 +0500
+
+    update urls
+
+[33mcommit 4591605b3fd15d63085f5d42e883a4fd7bef94fa[m
+Author: Umair Mubeen <umair.mubeenir@gmail.com>
+Date:   Thu Jan 1 12:08:10 2026 +0500
+
+    update urls
+
+[33mcommit d49cab0af07502a40bead7261ac252163a3e4455[m
+Author: Ovais Rind <rindovais7@gmail.com>
+Date:   Wed Dec 31 23:34:10 2025 +0500
+
+    changes
+
+[33mcommit 8fc413b79c4071255395ad848f85363a9bf12b52[m
+Author: Ovais Rind <rindovais7@gmail.com>
+Date:   Wed Dec 31 23:30:43 2025 +0500
+
+    changes
+
+[33mcommit 764406817eec58f8555fd7b2c57bd4f984b492bf[m
+Author: Umair Mubeen <umair.mubeenir@gmail.com>
+Date:   Wed Dec 31 19:37:43 2025 +0500
+
+    IT Quizz Test
+
+[33mcommit af72f9b3c71d7b1eed5de9101a99e17e074defa3[m
+Author: Ovais Rind <rindovais7@gmail.com>
+Date:   Sun Dec 28 20:46:30 2025 +0500
+
+    pricing sections
+
+[33mcommit 490315a36894aaf19e5565ed3e428c8b0244f4fc[m
+Author: Ovais Rind <rindovais7@gmail.com>
+Date:   Sun Dec 28 20:40:16 2025 +0500
+
+    pricing sections
+
+[33mcommit 4ce09ecf0b4daed5992acf867e2e5e59e427e885[m
+Author: Ovais Rind <rindovais7@gmail.com>
+Date:   Sun Dec 28 19:42:24 2025 +0500
+
+    facebook script
+
+[33mcommit 8be390cafd92accbbb4157aa60e230ad62be341b[m
+Author: Ovais Rind <rindovais7@gmail.com>
+Date:   Sun Dec 28 11:23:14 2025 +0500
+
+    font changes
+
+[33mcommit 1316b594a85e7fc516b18b7af07087292896d1e8[m
+Author: Umair Mubeen <umair.mubeenir@gmail.com>
+Date:   Sat Dec 27 13:21:19 2025 +0500
+
+    mcqs
+
+[33mcommit 5234a6e114f644ff3a9fffffcb2609c8c1e55e53[m
+Author: Ovais Rind <rindovais7@gmail.com>
+Date:   Wed Dec 17 21:43:37 2025 +0500
+
+    image remove
+
+[33mcommit 37d6130f97b3d7fdf6be66580d4588573ddcb29c[m
+Author: Ovais Rind <rindovais7@gmail.com>
+Date:   Tue Dec 16 21:05:13 2025 +0500
+
+    webp compression
+
+[33mcommit 62a49cdde5e1c9672cde0659198e31c7dd156a8c[m
+Author: Ovais Rind <rindovais7@gmail.com>
+Date:   Tue Dec 16 20:57:51 2025 +0500
+
+    webp compression
+
+[33mcommit 30bff6128dd8a38f35965859e98943b3cabb68b8[m
+Author: Ovais Rind <rindovais7@gmail.com>
+Date:   Fri Dec 12 19:38:57 2025 +0500
+
+    some changes
+
+[33mcommit 4288fd27d2dd019536869ff88549400d3cf2de82[m
+Author: Ovais Rind <rindovais7@gmail.com>
+Date:   Fri Dec 12 19:27:11 2025 +0500
+
+    image compression
+
+[33mcommit 49b919d655dd280ae7cfd81a3fde42f848645b4e[m
+Author: Ovais Rind <rindovais7@gmail.com>
+Date:   Tue Nov 25 17:32:42 2025 +0500
+
+    UI
+
+[33mcommit c2dea9d243845c3d3c005c476cb4b6308a1e7260[m
+Author: Umair Mubeen <umair.mubeenir@gmail.com>
+Date:   Tue Nov 25 16:23:58 2025 +0500
+
+    UI Changes
+
+[33mcommit 402c89a29e6eab80f14f5ae665e2d57b150093a5[m
+Author: Umair Mubeen <umair.mubeenir@gmail.com>
+Date:   Mon Nov 24 16:39:38 2025 +0500
+
+    some padding added
+
+[33mcommit 4b554de985e11022a054495567f3ede53263d4f7[m
+Author: Umair Mubeen <umair.mubeenir@gmail.com>
+Date:   Thu Nov 20 15:44:17 2025 +0500
+
+    changes UI
+
+[33mcommit 26ece21ed27f963c8b44c31d3935735e2b7612d0[m
+Author: Umair Mubeen <umair.mubeenir@gmail.com>
+Date:   Thu Nov 20 15:38:09 2025 +0500
+
+    changes UI
+
+[33mcommit baaa173ae39a9d2c72557c59394bcd4d41ce57c2[m
+Author: Umair Mubeen <umair.mubeenir@gmail.com>
+Date:   Thu Nov 20 12:26:52 2025 +0500
+
+    add image on salary calculator
+
+[33mcommit 302d25348c181e7609c2822d2c1f4fd1a03f4518[m
+Author: Umair Mubeen <umair.mubeenir@gmail.com>
+Date:   Thu Nov 20 12:17:13 2025 +0500
+
+    add image on salary calculator
+
+[33mcommit bc39a436074f3913da1d9a00e580768a420247dc[m
+Author: Umair Mubeen <umair.mubeenir@gmail.com>
+Date:   Thu Nov 20 12:12:24 2025 +0500
+
+    add image on salary calculator
+
+[33mcommit aeadcac74b0af88ef090579157f459913fee454b[m
+Author: Umair Mubeen <umair.mubeenir@gmail.com>
+Date:   Thu Nov 20 11:40:49 2025 +0500
+
+    add salary calculator image
+
+[33mcommit 0806f9b084b5fac6bc79d76aeb70a3a5900d3f4c[m
+Author: Umair Mubeen <umair.mubeenir@gmail.com>
+Date:   Wed Nov 19 14:59:25 2025 +0500
+
+    surchage added
+
+[33mcommit 358ec29d55e2b478b57d118e1ee6c5e1471eb20d[m
+Author: Umair Mubeen <umair.mubeenir@gmail.com>
+Date:   Wed Nov 19 12:37:37 2025 +0500
+
+    GAnalytics tools
+
+[33mcommit 884713c873b18886aff1ccc9f2e9edfb00c63bd4[m
+Author: Umair Mubeen <umair.mubeenir@gmail.com>
+Date:   Wed Nov 19 12:29:02 2025 +0500
+
+    google analytics tools
+
+[33mcommit 37594d9704096d6b2a8bc221f9b3ed7925795d7b[m
+Author: Ovais Rind <rindovais7@gmail.com>
+Date:   Tue Nov 18 21:12:28 2025 +0500
+
+    loog change
+
+[33mcommit 17360f7a20d7faa3645b95f9f209ecdc436cbc35[m
+Author: Umair Mubeen <umair.mubeenir@gmail.com>
+Date:   Tue Nov 18 17:00:37 2025 +0500
+
+    About.png
+
+[33mcommit 87c55d822c0d9e0cf6a50a5326a441c02de24736[m
+Author: Umair Mubeen <umair.mubeenir@gmail.com>
+Date:   Tue Nov 18 16:52:31 2025 +0500
+
+    update  about.png
+
+[33mcommit fa7b8247bffdafc0b9842c88251f665894b74a2d[m
+Author: Umair Mubeen <umair.mubeenir@gmail.com>
+Date:   Tue Nov 18 16:00:58 2025 +0500
+
+    update  production.py files
+
+[33mcommit a2e76cc3443cd1faf961826dde39232cb4375439[m
+Author: Umair Mubeen <umair.mubeenir@gmail.com>
+Date:   Tue Nov 18 15:51:27 2025 +0500
+
+    update  production.py files
+
+[33mcommit f5c7fc7b5ee33acf388ed9c1d07c3bdc3706c35f[m
+Author: Umair Mubeen <umair.mubeenir@gmail.com>
+Date:   Tue Nov 18 15:42:52 2025 +0500
+
+    update settings and production.py files
+
+[33mcommit 3be2d7213fb5488cc5ceb31aa393848edaf06479[m
+Author: Umair Mubeen <umair.mubeenir@gmail.com>
+Date:   Tue Nov 18 15:34:57 2025 +0500
+
+    update status
+
+[33mcommit 6921adddf3a220c8b67a367fb588121998840427[m
+Author: Umair Mubeen <umair.mubeenir@gmail.com>
+Date:   Tue Nov 18 15:16:01 2025 +0500
+
+    update webiste UI
+
+[33mcommit f41454e16abb3654cf81161f6bf09f5344cd367d[m
+Author: Ovais Rind <rindovais7@gmail.com>
+Date:   Thu Oct 16 19:46:20 2025 +0500
+
+    update log name
+
+[33mcommit abd5a4a52a0d52ddcb3f1750cbd1c0d7ce2e5036[m
+Author: Ovais Rind <rindovais7@gmail.com>
+Date:   Thu Oct 16 19:42:39 2025 +0500
+
+    update logo
+
+[33mcommit 7a04ac94924a285a2f803a841978ce3d2374e164[m
+Author: Ovais Rind <rindovais7@gmail.com>
+Date:   Thu Oct 16 19:28:11 2025 +0500
+
+    update text
+
+[33mcommit 090fe345f46c09be1d7d4fcd30f9a69ea15421b4[m
+Author: Ovais Rind <rindovais7@gmail.com>
+Date:   Thu Oct 16 19:25:43 2025 +0500
+
+    logo
+
+[33mcommit 5c32d60ff94b9baf27d6f164ede6ead70268aa2e[m
+Author: Umair Mubeen <umair.mubeenir@gmail.com>
+Date:   Wed Oct 15 14:04:07 2025 +0500
+
+    price section added
+
+[33mcommit 58661d444068021d8dcd65b669a19630b6162d05[m
+Author: Ovais Rind <rindovais7@gmail.com>
+Date:   Sun Oct 5 17:45:00 2025 +0500
+
+    image compression
+
+[33mcommit 3b5f9ae4b8b1c21547d2b93149061e8e55c34bf0[m
+Author: Ovais Rind <rindovais7@gmail.com>
+Date:   Sun Oct 5 16:21:54 2025 +0500
+
+    image compression
+
+[33mcommit 0c978746355e21ebf8d2c65585312ebf173ea8a2[m
+Author: Ovais Rind <rindovais7@gmail.com>
+Date:   Sun Oct 5 15:53:40 2025 +0500
+
+    fix UI issues
+
+[33mcommit 3732472f8d49dde53b2396c34aad129a61efa569[m
+Author: Ovais Rind <rindovais7@gmail.com>
+Date:   Tue Sep 16 22:47:36 2025 +0500
+
+    changes
+
+[33mcommit c5f6776c1649f8444ac27e91f7bc39e4df6fc7b7[m
+Author: Ovais Rind <rindovais7@gmail.com>
+Date:   Tue Sep 16 22:41:33 2025 +0500
+
+    changes
+
+[33mcommit 5982b547def6641dc257adfd66de219f521a6bc0[m
+Author: Ovais Rind <rindovais7@gmail.com>
+Date:   Tue Sep 16 00:01:17 2025 +0500
+
+    removed unused library
+
+[33mcommit 301ab7f675dddccb395e1094acf119e854a3ea7b[m
+Author: Ovais Rind <rindovais7@gmail.com>
+Date:   Mon Sep 15 23:56:36 2025 +0500
+
+    removed unused library
+
+[33mcommit 028a43830e29db6f6f8ebdfda1e82559cd0ad2b9[m
+Author: Ovais Rind <rindovais7@gmail.com>
+Date:   Mon Sep 15 21:38:17 2025 +0500
+
+    fix arrow
+
+[33mcommit 8c59dc33283fb6077b4708fb4e5725f643f46826[m
+Author: Ovais Rind <rindovais7@gmail.com>
+Date:   Mon Sep 15 21:25:08 2025 +0500
+
+    heading font same
+
+[33mcommit 224232714b0878b1e5c47cd05b5756076e3669bb[m
+Author: Ovais Rind <rindovais7@gmail.com>
+Date:   Mon Sep 15 21:05:15 2025 +0500
+
+    heading solved
+
+[33mcommit 756cb8787874cdb32780e08c907c23bfa08a0353[m
+Author: Umair Mubeen <umair.mubeenir@gmail.com>
+Date:   Mon Sep 15 17:06:02 2025 +0500
+
+    some fixes
+
+[33mcommit 65b125d4b9678ba70464cb71e2a1cad30a1bbc5e[m
+Author: Umair Mubeen <umair.mubeenir@gmail.com>
+Date:   Mon Sep 15 16:51:13 2025 +0500
+
+    some fixes
+
+[33mcommit b02c589e650210886f58b762a95acccc33145cfd[m
+Author: Umair Mubeen <umair.mubeenir@gmail.com>
+Date:   Mon Sep 15 16:13:31 2025 +0500
+
+    head / html tag
+
+[33mcommit bb6488c32587eee37b3754d40bf0d694af50dfc9[m
+Author: Umair Mubeen <umair.mubeenir@gmail.com>
+Date:   Mon Sep 15 15:38:34 2025 +0500
+
+    href solve tags
+
+[33mcommit 3f57b57e67af32ddeba3cc6ebf069db677c83b07[m
+Author: Umair Mubeen <umair.mubeenir@gmail.com>
+Date:   Mon Sep 15 14:34:33 2025 +0500
+
+    add webp format
+
+[33mcommit 03a367211ac3cf169e28bcd9b06acb56a1524b9c[m
+Author: Ovais Rind <rindovais7@gmail.com>
+Date:   Sun Sep 14 16:26:10 2025 +0500
+
+    og:image property
+
+[33mcommit 8e6ef713223f5d06a27628688b4aeb67ea35dc86[m
+Author: Ovais Rind <rindovais7@gmail.com>
+Date:   Sun Sep 14 16:25:14 2025 +0500
+
+    og:image property
+
+[33mcommit 7b97a0dd0b99d61f19840a597458e2d7b8c6dbe8[m
+Author: Ovais Rind <rindovais7@gmail.com>
+Date:   Sun Sep 14 16:20:56 2025 +0500
+
+    og:image property
+
+[33mcommit 5eff51a6c6309eba467f16fdbf299d6dec5e5ea6[m
+Author: Ovais Rind <rindovais7@gmail.com>
+Date:   Sun Sep 14 16:02:53 2025 +0500
+
+    icon logo
+
+[33mcommit 4a01a3a793b4d44dc50345d79febe9e391290db9[m
+Author: Ovais Rind <rindovais7@gmail.com>
+Date:   Sun Sep 14 15:57:04 2025 +0500
+
+    icon logo
+
+[33mcommit a580405de7bc93f242561f6673c987bbfe849688[m
+Author: Ovais Rind <rindovais7@gmail.com>
+Date:   Sun Sep 14 15:48:49 2025 +0500
+
+    load static
+
+[33mcommit 16111828fefc2fbb7b39680463960b495ed4dc86[m
+Author: Ovais Rind <rindovais7@gmail.com>
+Date:   Sun Sep 14 15:46:17 2025 +0500
+
+    col-lg-4
+
+[33mcommit 9ac8c4dc3650d138295dd5a79ccc76af956ced58[m
+Author: Ovais Rind <rindovais7@gmail.com>
+Date:   Sun Sep 14 15:44:21 2025 +0500
+
+    add website logo
+
+[33mcommit 1034833debcd5b4a0594de9c2d89cfe713d4ef25[m
+Author: Ovais Rind <rindovais7@gmail.com>
+Date:   Sun Sep 14 15:39:31 2025 +0500
+
+    add website logo
+
+[33mcommit 1ac910606e6c499a5fdea1486111ef75f81a4a50[m
+Author: Ovais Rind <rindovais7@gmail.com>
+Date:   Sun Sep 14 15:34:30 2025 +0500
+
+    add website logo
+
+[33mcommit cb9d4bbc19658ab11aa6f2e67a5bb518b72dd56d[m
+Author: Ovais Rind <rindovais7@gmail.com>
+Date:   Sun Sep 14 15:31:15 2025 +0500
+
+    add website logo
+
+[33mcommit 8bbcde6d33a582f9895c4a450a1743d17f2e5eb4[m
+Author: Ovais Rind <rindovais7@gmail.com>
+Date:   Sun Sep 14 15:26:52 2025 +0500
+
+    add website logo
+
+[33mcommit b1ba930ea9aff4db2592cd08abe397b2b5c19f87[m
+Author: Ovais Rind <rindovais7@gmail.com>
+Date:   Sun Sep 14 15:21:44 2025 +0500
+
+    add website logo
+
+[33mcommit 2dbbafc4a52bad53972f91f0ecef98eac361341b[m
+Author: Ovais Rind <rindovais7@gmail.com>
+Date:   Sun Sep 14 14:57:00 2025 +0500
+
+    image
+
+[33mcommit f6453d9cfd70a3c5d935792767ec8a077954629c[m
+Author: Umair Mubeen <umair.mubeenir@gmail.com>
+Date:   Fri Sep 12 16:35:05 2025 +0500
+
+    add logo
+
+[33mcommit d3c86818fccdd138b007ce9154a0e266b948b098[m
+Author: Umair Mubeen <umair.mubeenir@gmail.com>
+Date:   Fri Sep 12 13:03:38 2025 +0500
+
+    h3 tag replace with h2
+
+[33mcommit 681a495e2f7064a3b7373273962829cdafbeac28[m
+Author: Umair Mubeen <umair.mubeenir@gmail.com>
+Date:   Fri Sep 12 12:59:44 2025 +0500
+
+    remove styling
+
+[33mcommit 95335905f94f2d37dc82881060897c8a5ab00b02[m
+Author: Ovais Rind <rindovais7@gmail.com>
+Date:   Thu Sep 11 23:19:06 2025 +0500
+
+    header and footer
+
+[33mcommit a620abad276e9d52a3cb8e616fe38a877b9986f2[m
+Author: Ovais Rind <rindovais7@gmail.com>
+Date:   Thu Sep 11 20:47:52 2025 +0500
+
+    media folder updated
+
+[33mcommit f8e27a698188b37b4c72fcdd67778bcddf56e25e[m
+Author: Ovais Rind <rindovais7@gmail.com>
+Date:   Thu Sep 11 20:28:18 2025 +0500
+
+    media folder updated
+
+[33mcommit 6b15bbb2eed58de5403be947a78304db37ab87a5[m
+Author: Ovais Rind <rindovais7@gmail.com>
+Date:   Thu Sep 11 20:07:04 2025 +0500
+
+    media
+
+[33mcommit 9fee2b2078721ebf36303952da97e6a050cffd3d[m
+Author: Umair Mubeen <umair.mubeenir@gmail.com>
+Date:   Thu Sep 11 17:21:42 2025 +0500
+
+    some changes
+
+[33mcommit 0733a3fc3ebc2e6a1212e9deb33d7f18198804bb[m
+Author: Umair Mubeen <umair.mubeenir@gmail.com>
+Date:   Thu Sep 11 14:02:04 2025 +0500
+
+    facebook verification adds
+
+[33mcommit 8068d06aac91320af92ff10aa5fc4b5a2a4b554d[m
+Author: Ovais Rind <rindovais7@gmail.com>
+Date:   Wed Sep 10 22:53:27 2025 +0500
+
+    some fixes changes
+
+[33mcommit 390ed143bcf3203ba0a6e30de796bf90f89fe9ee[m
+Author: Ovais Rind <rindovais7@gmail.com>
+Date:   Wed Sep 10 22:44:08 2025 +0500
+
+    some fixes changes
+
+[33mcommit c99faf8e227eeca850982635fb41f4b51882d66f[m
+Author: Ovais Rind <rindovais7@gmail.com>
+Date:   Mon Sep 8 21:56:47 2025 +0500
+
+    add lazy loading class image
+
+[33mcommit 960dc4bcd8697cb3894c0c42ac4c490b57dcf7b8[m
+Author: Ovais Rind <rindovais7@gmail.com>
+Date:   Mon Sep 8 21:31:45 2025 +0500
+
+    alt used in image
+
+[33mcommit 7c016a4015cdfc35ab4e796187301f7c807808ac[m
+Author: Ovais Rind <rindovais7@gmail.com>
+Date:   Mon Sep 8 19:26:59 2025 +0500
+
+    some bug fixes
+
+[33mcommit 0514970c252812065c2a4c0d6c2efaaea1afad96[m
+Author: Ovais Rind <rindovais7@gmail.com>
+Date:   Sun Sep 7 16:06:57 2025 +0500
+
+    add title
+
+[33mcommit fc2627791d8bf8631f56a8deef453ba2cfa12397[m
+Author: Ovais Rind <rindovais7@gmail.com>
+Date:   Sun Sep 7 14:52:39 2025 +0500
+
+    add title
+
+[33mcommit 01e9380c0648f86f237b4ce04799a23a53e1b3ce[m
+Author: Ovais Rind <rindovais7@gmail.com>
+Date:   Sun Sep 7 14:38:50 2025 +0500
+
+    sitemap.xml and robots.txt
+
+[33mcommit 4cf71205f9d3154214886921f9f54628c6fe9500[m
+Author: Ovais Rind <rindovais7@gmail.com>
+Date:   Sun Sep 7 14:35:26 2025 +0500
+
+    sitemap.xml and robots.txt
+
+[33mcommit b9e944bee35b4c733015930d33921df1a53695fa[m
+Author: Ovais Rind <rindovais7@gmail.com>
+Date:   Sun Sep 7 14:33:48 2025 +0500
+
+    sitemap.xml and robots.txt
+
+[33mcommit 8375eb9a2278f92a3f03f021907f244c89051f91[m
+Author: Ovais Rind <rindovais7@gmail.com>
+Date:   Sun Sep 7 14:25:56 2025 +0500
+
+    sitemap.xml and robots.txt
+
+[33mcommit 4b925e6735f2aa9ff0c031b2c23c9a1c66042465[m
+Author: Ovais Rind <rindovais7@gmail.com>
+Date:   Sun Sep 7 14:10:41 2025 +0500
+
+    google site ver
+
+[33mcommit b1ce4bd79f99ee48c410bbcd39ffeecd7f1f5b69[m
+Author: Ovais Rind <rindovais7@gmail.com>
+Date:   Sun Sep 7 14:09:11 2025 +0500
+
+    google html file
+
+[33mcommit e018531cc3adadec4618154863e3dd9a0e7f4949[m
+Author: Ovais Rind <rindovais7@gmail.com>
+Date:   Sun Sep 7 13:54:48 2025 +0500
+
+    /
+
+[33mcommit 87a5c5931e24e3aef97c67f197b096843e064c44[m
+Author: Ovais Rind <rindovais7@gmail.com>
+Date:   Sun Sep 7 13:07:41 2025 +0500
+
+    add seo tags
+
+[33mcommit 1d2b2f44e0e48c16bc4904e96e22a5826bafe23f[m
+Author: Ovais Rind <rindovais7@gmail.com>
+Date:   Sun Sep 7 12:51:01 2025 +0500
+
+    blogs
+
+[33mcommit 8f913310db2f4c855e3e9b9d7189ec7e292a4dfe[m
+Author: Ovais Rind <rindovais7@gmail.com>
+Date:   Thu Sep 4 23:27:28 2025 +0500
+
+    changes
+
+[33mcommit a3618043017a14cc40c04383f12bbe252a3562dc[m
+Author: Umair Mubeen <umair.mubeenir@gmail.com>
+Date:   Thu Sep 4 17:14:26 2025 +0500
+
+    changes made slug
+
+[33mcommit 6a21c049a19dfb801009b327723c334fdd7eb9a3[m
+Author: Ovais Rind <rindovais7@gmail.com>
+Date:   Wed Sep 3 23:13:55 2025 +0500
+
+    changes made UI
+
+[33mcommit ebb59e470ec04f1cf3a39539ce1e7683c67ed111[m
+Author: Umair Mubeen <umair.mubeenir@gmail.com>
+Date:   Wed Sep 3 16:54:11 2025 +0500
+
+    further changes in UI services
+
+[33mcommit 4a595c0d3651e3107808ed614240c4a0a62239f1[m
+Author: Umair Mubeen <umair.mubeenir@gmail.com>
+Date:   Tue Sep 2 17:13:32 2025 +0500
+
+    UI Changes
+
+[33mcommit b47c45318b1dcddd2d4f13265d3aab968f3cf57b[m
+Author: Umair Mubeen <umair.mubeenir@gmail.com>
+Date:   Mon Sep 1 17:30:35 2025 +0500
+
+    changes made UI
+
+[33mcommit e75381f7301435d98bfe862f1ff5938c59761168[m
+Author: Ovais Rind <rindovais7@gmail.com>
+Date:   Fri Aug 29 20:25:33 2025 +0500
+
+    further changes in slab
+
+[33mcommit 3f95c9a1b9bb542d0cf1c3837e5e1dab1048f00f[m
+Author: Umair Mubeen <umair.mubeenir@gmail.com>
+Date:   Thu Aug 28 15:32:13 2025 +0500
+
+    changes in the slab / Property Slba
+
+[33mcommit 107f7140f3c10630eeae346971d47dae2e0e11e0[m
+Author: Umair Mubeen <umair.mubeenir@gmail.com>
+Date:   Thu Aug 28 14:34:49 2025 +0500
+
+    slab_propertyt_retnal
+
+[33mcommit 776b8a802eff7d3c0a41de5eb830dcbf1e9f06b0[m
+Author: Umair Mubeen <umair.mubeenir@gmail.com>
+Date:   Tue Aug 26 14:59:50 2025 +0500
+
+    add nav bar link
+
+[33mcommit baabc193917948a7dc39f95c04f5a5ce76b78834[m
+Author: Umair Mubeen <umair.mubeenir@gmail.com>
+Date:   Tue Aug 26 14:51:44 2025 +0500
+
+    AOP / Business / Salary - Migrations changes
+
+[33mcommit 799e8f2a57415ad0e53fc73dec2770b1eb7d2126[m
+Author: Umair Mubeen <umair.mubeenir@gmail.com>
+Date:   Mon Aug 25 17:50:56 2025 +0500
+
+    Salary , Property , AOP - Tax Calculator
+
+[33mcommit 6f39f0d2f500ec3073ece9ba81c8e69a80922046[m
+Author: Ovais Rind <rindovais7@gmail.com>
+Date:   Sun Aug 24 16:04:57 2025 +0500
+
+    add database salary tax brackets
+
+[33mcommit 4e1f84f3356a1aac4c6e2a589867328cbf27849c[m
+Author: Ovais Rind <rindovais7@gmail.com>
+Date:   Thu Aug 21 20:43:05 2025 +0500
+
+    Fix production.py (added MEDIA_URL and static config)
+
+[33mcommit 3dbd29c1ffcbb6480fba9ea46dcc5ca058a7f651[m
+Author: Ovais Rind <rindovais7@gmail.com>
+Date:   Thu Aug 21 20:32:12 2025 +0500
+
+    Fix production.py (added MEDIA_URL and static config)
+
+[33mcommit 221dde44025df03aeb50f860582a4624815f65f5[m
+Author: Ovais Rind <rindovais7@gmail.com>
+Date:   Thu Aug 21 20:07:45 2025 +0500
+
+    Fix production.py (added MEDIA_URL and static config)
+
+[33mcommit 516bc0e47656417fd66847f71444d8414cc98f99[m
+Author: Ovais Rind <rindovais7@gmail.com>
+Date:   Thu Aug 21 20:03:30 2025 +0500
+
+    Fix production.py (added MEDIA_URL and static config)
+
+[33mcommit 1ea39756e81faec6168a38bf3b9357b545ae3c2d[m
+Author: Umair Mubeen <umair.mubeenir@gmail.com>
+Date:   Thu Aug 21 15:21:39 2025 +0500
+
+    AOP / Business Income Tax Calculator
+
+[33mcommit 4a75fcd27f5cf68a27bda7003d4378b7776bae70[m
+Author: Umair Mubeen <umair.mubeenir@gmail.com>
+Date:   Tue Aug 19 15:29:50 2025 +0500
+
+    services
+
+[33mcommit da87cec21460148ba7faaa31cea8cf8ebbcba51a[m
+Author: Umair Mubeen <umair.mubeenir@gmail.com>
+Date:   Tue Aug 19 12:20:27 2025 +0500
+
+    prod.py changes
+
+[33mcommit 34f02f5c126debf2fa8ec9def01f44b34d9e55c2[m
+Author: Ovais Rind <rindovais7@gmail.com>
+Date:   Mon Aug 18 22:37:48 2025 +0500
+
+    image path
+
+[33mcommit 5edbb3b36498cca899c68f9b48d4e80446c7386c[m
+Author: Ovais Rind <rindovais7@gmail.com>
+Date:   Mon Aug 18 22:34:21 2025 +0500
+
+    image path
+
+[33mcommit 1cdbdb7e2ce3d447fe2f0d5f18114b9ba2377e42[m
+Author: Ovais Rind <rindovais7@gmail.com>
+Date:   Mon Aug 18 22:05:59 2025 +0500
+
+    image
+
+[33mcommit faf8058a351c51e26ab62a28595dc5731229b5a3[m
+Author: Ovais Rind <rindovais7@gmail.com>
+Date:   Mon Aug 18 22:01:54 2025 +0500
+
+    debug-true
+
+[33mcommit e34c5f391f611e3c508c4b723dd5cc14bd8124a3[m
+Author: Ovais Rind <rindovais7@gmail.com>
+Date:   Mon Aug 18 20:48:51 2025 +0500
+
+    production.py changes
+
+[33mcommit 4ed662258b94e589da3199549c608c322441f28c[m
+Author: Ovais Rind <rindovais7@gmail.com>
+Date:   Mon Aug 18 20:13:22 2025 +0500
+
+    property tax calculator
+
+[33mcommit 8ea653488a5f43563132af26cb1d9c807476917d[m
+Author: Ovais Rind <rindovais7@gmail.com>
+Date:   Thu Aug 14 17:56:33 2025 +0500
+
+    test
+
+[33mcommit f5704347583e2f3770e3b77e4c932490ef750ef8[m
+Author: Ovais Rind <rindovais7@gmail.com>
+Date:   Thu Aug 14 17:34:23 2025 +0500
+
+    rectify url
+
+[33mcommit f9ed27797cd089bfda52fadde47ddf805f7ed185[m
+Author: Ovais Rind <rindovais7@gmail.com>
+Date:   Thu Aug 14 17:16:32 2025 +0500
+
+    prodcution settings
+
+[33mcommit 64dd2abdff95d72aefbf0fd8c38565477f356fd5[m
+Author: Ovais Rind <rindovais7@gmail.com>
+Date:   Thu Aug 14 16:40:19 2025 +0500
+
+    changes
+
+[33mcommit 30f4060b5b9e9af2398cc07064c6d276600f6dea[m
+Author: Ovais Rind <rindovais7@gmail.com>
+Date:   Thu Aug 14 14:13:16 2025 +0500
+
+    image blog
+
+[33mcommit 97ebb99dfd52b8446d47b71165e80192aff1695a[m
+Author: Ovais Rind <rindovais7@gmail.com>
+Date:   Wed Aug 13 20:26:55 2025 +0500
+
+    updated slab responsive
+
+[33mcommit b4f21bc300c8a33fcdbc0a72dd3c791153d2932e[m
+Author: Ovais Rind <rindovais7@gmail.com>
+Date:   Wed Aug 13 20:20:39 2025 +0500
+
+    updated slab responsive
+
+[33mcommit d9a701522099a332a540f56bd1aedba0a8c3f8aa[m
+Author: Ovais Rind <rindovais7@gmail.com>
+Date:   Wed Aug 13 20:11:03 2025 +0500
+
+    updated slab padding top
+
+[33mcommit e1dad4f0b4d7d1f001b731f6c22c658503425332[m
+Author: Ovais Rind <rindovais7@gmail.com>
+Date:   Wed Aug 13 20:00:23 2025 +0500
+
+    updated slab
+
+[33mcommit e6e822d849ba87e0831e4fafa8a2bdffa618f6a2[m
+Author: Ovais Rind <rindovais7@gmail.com>
+Date:   Wed Jul 9 20:41:21 2025 +0500
+
+    UI Changes
+
+[33mcommit 13744d360f0c3ca5c59d5f5538863a0eadb2ad95[m
+Author: Ovais Rind <rindovais7@gmail.com>
+Date:   Wed Jul 9 20:19:06 2025 +0500
+
+    Income Tax Calculator
+
+[33mcommit f7c94a91b215fe0ad8331b25dc45b786857cd5cc[m
+Author: Umair Mubeen <umair.mubeenir@gmail.com>
+Date:   Wed Jul 9 15:30:25 2025 +0500
+
+    UI Tax Slab changes
+
+[33mcommit ae812987a7039b6864c0df873a878293bd723d39[m
+Author: Ovais Rind <rindovais7@gmail.com>
+Date:   Wed Jul 9 11:26:43 2025 +0500
+
+    tax slab
+
+[33mcommit 257696b8244d068c5fac23a3f458392e99ba549a[m
+Author: Ovais Rind <rindovais7@gmail.com>
+Date:   Tue Jul 1 14:33:45 2025 +0500
+
+    some changes
+
+[33mcommit 384a7ad3365bffc9270dfb93fd0dd627100672a4[m
+Author: Ovais Rind <rindovais7@gmail.com>
+Date:   Mon Jun 9 12:56:46 2025 +0500
+
+    some changes
+
+[33mcommit e1a04ca552567d7d3cf1b2e1531ac3f042778670[m
+Author: Ovais Rind <rindovais7@gmail.com>
+Date:   Sat Jun 7 22:11:15 2025 +0500
+
+    alt image fixes
+
+[33mcommit 97687249970717eca0ed8273d8bf20b858e87c9f[m
+Author: Ovais Rind <rindovais7@gmail.com>
+Date:   Sat Jun 7 12:13:12 2025 +0500
+
+    navbar work
+
+[33mcommit ca16e7908b4c75618a436447c8818857385ee63b[m
+Author: Ovais Rind <rindovais7@gmail.com>
+Date:   Sat Jun 7 12:12:22 2025 +0500
+
+    navbar work
+
+[33mcommit dc09010259691fcbcf80a3a04b9853ae8ca34e62[m
+Author: Ovais Rind <rindovais7@gmail.com>
+Date:   Sat Jun 7 11:33:15 2025 +0500
+
+    web responsive
+
+[33mcommit fd8c3583f186108dc9e4b0361ad6e70c0c825844[m
+Author: Ovais Rind <rindovais7@gmail.com>
+Date:   Wed Jun 4 21:12:57 2025 +0500
+
+    UI Improvements
+
+[33mcommit addc8edd2bee03e1c8edd3d8f8d5b1605057d9b5[m
+Author: Ovais Rind <rindovais7@gmail.com>
+Date:   Tue Jun 3 22:56:41 2025 +0500
+
+    mobile responsive
+
+[33mcommit eecf4ddc92e27ba26f996cc0dad49613042ac5e2[m
+Author: Ovais Rind <rindovais7@gmail.com>
+Date:   Tue Jun 3 22:32:59 2025 +0500
+
+    mobile responsive
+
+[33mcommit b28ae4f45ba4e0d41747c57a777253f2a676a5fc[m
+Author: Ovais Rind <rindovais7@gmail.com>
+Date:   Tue Jun 3 22:23:23 2025 +0500
+
+    mobile responsive
+
+[33mcommit c087fe286d44fb9c8e4c9488d9187624465ddae7[m
+Author: Ovais Rind <rindovais7@gmail.com>
+Date:   Tue Jun 3 22:13:52 2025 +0500
+
+    further changes
+
+[33mcommit 5a0fd093aaf8f7c2c5830e3c2c4353c174e3ac51[m
+Author: Ovais Rind <rindovais7@gmail.com>
+Date:   Mon Jun 2 22:25:12 2025 +0500
+
+    password db updated
+
+[33mcommit 13b17bd4e139295ac521844a6df4654d4ea059aa[m
+Author: Ovais Rind <rindovais7@gmail.com>
+Date:   Mon Jun 2 22:17:05 2025 +0500
+
+    password update
+
+[33mcommit 452bbf37f51d8678e7e07ebe64105753b4c20bf8[m
+Author: Ovais Rind <rindovais7@gmail.com>
+Date:   Mon Jun 2 22:16:00 2025 +0500
+
+    password update
+
+[33mcommit 1666746b30b2840c7ed89b999ccb4fba4b11f81d[m
+Author: Ovais Rind <rindovais7@gmail.com>
+Date:   Mon Jun 2 22:10:47 2025 +0500
+
+    password update
+
+[33mcommit b1e112fce944ac0c69e858f17a7d3445ba12f625[m
+Author: Ovais Rind <rindovais7@gmail.com>
+Date:   Mon Jun 2 22:06:04 2025 +0500
+
+    production
+
+[33mcommit 1871dbae8105ad92c458ea645e62fffeaac6faf9[m
+Author: Ovais Rind <rindovais7@gmail.com>
+Date:   Mon Jun 2 22:02:36 2025 +0500
+
+    production
+
+[33mcommit 4bcb840b0c12960b56310abe951c3f445b60c9f4[m
+Author: Ovais Rind <rindovais7@gmail.com>
+Date:   Mon Jun 2 22:00:39 2025 +0500
+
+    production
+
+[33mcommit c7ad37ca3c9bebfde11e9f54402fd5afd4bbf9a3[m
+Author: Ovais Rind <rindovais7@gmail.com>
+Date:   Mon Jun 2 21:13:01 2025 +0500
+
+    production
+
+[33mcommit fd7b5691fd41be56572d3f9638484ce188fb494a[m
+Author: Ovais Rind <rindovais7@gmail.com>
+Date:   Mon Jun 2 21:11:05 2025 +0500
+
+    production
+
+[33mcommit b0be3c789299d75760ce6788735fd8d9f5d7d280[m
+Author: Ovais Rind <rindovais7@gmail.com>
+Date:   Mon Jun 2 20:51:07 2025 +0500
+
+    add line wsgi
+
+[33mcommit e53236930022c4d6bbe0d62e378bc3f7aa42b136[m
+Author: Ovais Rind <rindovais7@gmail.com>
+Date:   Mon Jun 2 20:48:20 2025 +0500
+
+    init_py
+
+[33mcommit 52ea0e2496070e8a758f86717355b99b6a6ee916[m
+Author: Ovais Rind <rindovais7@gmail.com>
+Date:   Mon Jun 2 20:31:46 2025 +0500
+
+    commit reviews
+
+[33mcommit 632166fd670da8a40e061de520622cc11c883e33[m
+Author: Ovais Rind <rindovais7@gmail.com>
+Date:   Mon Jun 2 20:27:25 2025 +0500
+
+    some changes
+
+[33mcommit 3ed9a9777277554c819edf27b66816472253d1de[m
+Author: Ovais Rind <rindovais7@gmail.com>
+Date:   Thu May 29 22:53:50 2025 +0500
+
+    staticfiles
+
+[33mcommit 8a243e1601445a639c2e89dda4bc2691f04049c0[m
+Author: Ovais Rind <rindovais7@gmail.com>
+Date:   Thu May 29 22:37:16 2025 +0500
+
+    db changes
+
+[33mcommit 6ab7b32836c5d4612589f7ba66cfc0535171a4ba[m
+Author: Ovais Rind <rindovais7@gmail.com>
+Date:   Wed May 28 23:10:44 2025 +0500
+
+    some changes
+
+[33mcommit 7ef7a10a2e7eb4c9e7cadac19fbfa0da75e1c53a[m
+Author: Ovais Rind <rindovais7@gmail.com>
+Date:   Wed May 28 17:46:34 2025 +0500
+
+    some changes
+
+[33mcommit becd3c8f766f4632fac4f68acc3ebb8b0877cd8b[m
+Author: Umair Mubeen <umair.mubeenir@gmail.com>
+Date:   Mon May 19 16:55:55 2025 +0500
+
+    soft delete work
+
+[33mcommit 1810162816f0d349611da9a0469648019d51e9c0[m
+Author: Umair Mubeen <umair.mubeenir@gmail.com>
+Date:   Mon May 19 16:20:14 2025 +0500
+
+    some changes
+
+[33mcommit 56cab0997240d91478a318a8a557a4e06870379f[m
+Author: Umair Mubeen <umair.mubeenir@gmail.com>
+Date:   Mon May 19 16:06:31 2025 +0500
+
+    further changes in blog
+
+[33mcommit 8b161e56f8266bf6b3aa5048cafed7894dda0f72[m
+Author: Ovais Rind <rindovais7@gmail.com>
+Date:   Mon May 19 10:43:48 2025 +0500
+
+    changes
+
+[33mcommit a48ce0dac145042e8e83ada4ce350842cbbe386d[m
+Author: Ovais Rind <rindovais7@gmail.com>
+Date:   Fri May 16 21:36:26 2025 +0500
+
+    slug changes
+
+[33mcommit bc923538a0a69eeec8625738742a6ab84bd053df[m
+Author: Umair Mubeen <umair.mubeenir@gmail.com>
+Date:   Fri May 16 16:43:41 2025 +0500
+
+    comment system added
+
+[33mcommit 35fc9aa5966ea6f2b64bcea8b697f31af8b8370c[m
+Author: Ovais Rind <rindovais7@gmail.com>
+Date:   Fri May 16 01:08:27 2025 +0500
+
+    further wor blogs
+
+[33mcommit 33c8cda6e44f9994fc437a9f89c7b063cd53d203[m
+Author: Umair Mubeen <umair.mubeenir@gmail.com>
+Date:   Thu May 15 17:11:33 2025 +0500
+
+    blog system further changes
+
+[33mcommit fa429ea7a857f1cd06d9b7c897eab8c501fa23f3[m
+Author: Umair Mubeen <umair.mubeenir@gmail.com>
+Date:   Wed May 14 15:48:03 2025 +0500
+
+    blog form and view work
+
+[33mcommit 443eb990979a57d14dbc36c06fb6d6f18f589bd6[m
+Author: Umair Mubeen <umair.mubeenir@gmail.com>
+Date:   Tue May 13 12:20:49 2025 +0500
+
+    dashboard theme added
+
+[33mcommit c03a7a1ee731148b5649fad6a419246c50824533[m
+Author: Umair Mubeen <umair.mubeenir@gmail.com>
+Date:   Fri May 2 17:06:50 2025 +0500
+
+    blog added
+
+[33mcommit 20391c15afab54598b31fa5710c5ff08e8fba90b[m
+Author: Umair Mubeen <umair.mubeenir@gmail.com>
+Date:   Fri May 2 12:49:04 2025 +0500
+
+    further changes
+
+[33mcommit 818b540e9664c0264e16d60544c88609e97bf8e4[m
+Author: Umair Mubeen <umair.mubeenir@gmail.com>
+Date:   Wed Apr 30 17:15:11 2025 +0500
+
+    some changes
+
+[33mcommit e6a27f8b14321166fd4d59415c226e13d25c75fd[m
+Author: Umair Mubeen <umair.mubeenir@gmail.com>
+Date:   Wed Apr 30 16:43:33 2025 +0500
+
+    web layout changed - landing page
+
+[33mcommit e5576813a04b2821dda7f8448697501af4def0ff[m
+Author: Umair Mubeen <umair.mubeenir@gmail.com>
+Date:   Tue Apr 29 16:53:19 2025 +0500
+
+    remove one line
+
+[33mcommit 7b486c9aed631ed792f85ac95e5f600689ecca0b[m
+Author: Umair Mubeen <umair.mubeenir@gmail.com>
+Date:   Tue Apr 29 16:50:16 2025 +0500
+
+    add one line
+
+[33mcommit 7c37aab1b4e4db8c14a76a6659e7f0d72bf89e1f[m
+Author: Umair Mubeen <umair.mubeenir@gmail.com>
+Date:   Sat Apr 26 14:35:47 2025 +0500
+
+    changes
+
+[33mcommit d63e7d557a0e15dc056585d0f6cf72ad8b89b652[m
+Author: Umair Mubeen <umair.mubeenir@gmail.com>
+Date:   Thu Apr 17 15:55:50 2025 +0500
+
+    TaxCalculator Further Changes
+
+[33mcommit 2f32e7e3c8b86341b9508305c6d20a269886f5bf[m
+Author: Umair Mubeen <umair.mubeenir@gmail.com>
+Date:   Wed Apr 16 15:45:23 2025 +0500
+
+    TaxCalculator
+
+[33mcommit faf47a1468b50f20aed88129e9873fea391a4261[m
+Author: Umair Mubeen <umair.mubeenir@gmail.com>
+Date:   Wed Apr 16 11:23:31 2025 +0500
+
+    changes made today
+
+[33mcommit c4cc076c60b91364b57114a40272efeae1f0adc5[m
+Merge: 9c01fb2 82b3e75
+Author: Ovais Rind <rindovais7@gmail.com>
+Date:   Wed Apr 16 00:41:06 2025 +0500
+
+    Merge branch 'main' of https://github.com/Umair-Mubeen/TaxBuddyUmair
+
+[33mcommit 9c01fb253c94ac737a76a26b5f184afd272bc0a0[m
+Author: Ovais Rind <rindovais7@gmail.com>
+Date:   Wed Apr 16 00:39:03 2025 +0500
+
+    Home and Contact Page Ready
+
+[33mcommit 82b3e75b63fe52c139a93cf9e5dcd36d80c4996e[m
+Author: Umair-Mubeen <106667150+Umair-Mubeen@users.noreply.github.com>
+Date:   Wed Apr 16 00:32:38 2025 +0500
+
+    Initial commit

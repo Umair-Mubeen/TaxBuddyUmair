@@ -1,0 +1,110 @@
+{% extends "base.html" %}
+{% load humanize %}
+{# templates/rate_history.html — Salary slabs history + budget comparison #}
+
+{% block title %}Salary Tax Slabs History Pakistan — Year-by-Year Comparison | TaxBuddy Umair{% endblock %}
+{% block meta_desc %}Compare Pakistan salary income tax slabs across tax years. See exactly how much the Budget changed your salary tax — side-by-side rates and computed tax at every income level.{% endblock %}
+
+{% block head_extra %}
+<style>
+  .rh-wrap{max-width:940px;margin:0 auto;padding:32px 16px 60px}
+  .rh-wrap h1{color:#0A2647;font-size:1.7rem;margin-bottom:6px}
+  .rh-sub{color:#667085;font-size:.95rem;margin-bottom:22px}
+  .rh-pick{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-bottom:20px}
+  .rh-pick select{padding:9px 14px;border:1.5px solid #d8dee6;border-radius:9px;font-size:.92rem;outline:none;background:#fff}
+  .rh-pick button{background:#0D9E72;color:#fff;border:none;border-radius:9px;padding:10px 20px;font-weight:700;cursor:pointer}
+  .rh-tablewrap{overflow-x:auto;border:1px solid #e6eaf0;border-radius:12px;margin-bottom:26px}
+  table.rh{width:100%;border-collapse:collapse;font-size:.9rem;min-width:640px}
+  table.rh thead tr{background:#0A2647;color:#fff}
+  table.rh th{padding:11px 14px;text-align:left;font-size:.78rem;text-transform:uppercase;letter-spacing:.05em}
+  table.rh td{padding:10px 14px;border-bottom:1px solid #eef1f5;color:#344054}
+  table.rh tbody tr:last-child td{border-bottom:none}
+  .rh-up{color:#dc2626;font-weight:700}
+  .rh-down{color:#0b8a63;font-weight:700}
+  .rh-same{color:#98a2b3}
+  .rh-h2{color:#0A2647;font-size:1.2rem;margin:30px 0 12px}
+  .rh-yearhead{color:#0D9E72;font-weight:800;font-size:1.05rem;margin:22px 0 10px}
+  .rh-note{font-size:.8rem;color:#98a2b3;margin-top:6px}
+  .rh-cta{display:inline-block;background:#0D9E72;color:#fff;padding:11px 20px;border-radius:9px;font-weight:700;font-size:.9rem;text-decoration:none;margin-top:10px}
+  .rh-cta:hover{background:#0b8a63}
+  .rh-empty{border:1px solid #e6eaf0;border-radius:10px;padding:24px;background:#f9fafb;color:#475467}
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="rh-wrap">
+
+  <h1>Salary Tax Slabs — History &amp; Budget Comparison</h1>
+  <p class="rh-sub">Dekho har Budget ne tumhari salary ka tax kitna badla — side-by-side slabs aur computed tax har income level pe.</p>
+
+  {% if no_data %}
+    <div class="rh-empty">Slab data abhi available nahi. <a href="/SalaryCalculator/" style="color:#0D9E72;">Salary Calculator</a> use karein.</div>
+  {% else %}
+
+  <form method="get" class="rh-pick">
+    <label style="font-size:.9rem;color:#475467;font-weight:600;">Compare:</label>
+    <select name="y1">
+      {% for y in years %}<option value="{{ y }}" {% if y == y1 %}selected{% endif %}>{{ y }}</option>{% endfor %}
+    </select>
+    <span style="color:#98a2b3;">vs</span>
+    <select name="y2">
+      {% for y in years %}<option value="{{ y }}" {% if y == y2 %}selected{% endif %}>{{ y }}</option>{% endfor %}
+    </select>
+    <button type="submit">Compare</button>
+  </form>
+
+  <h2 class="rh-h2">Tax at each income — {{ y1 }} vs {{ y2 }}</h2>
+  <div class="rh-tablewrap">
+    <table class="rh">
+      <thead>
+        <tr>
+          <th>Annual Income</th>
+          <th>Monthly</th>
+          <th>Tax {{ y1 }}</th>
+          <th>Tax {{ y2 }}</th>
+          <th>Change / Year</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for row in comparison %}
+        <tr>
+          <td>Rs {{ row.income|intcomma }}</td>
+          <td>Rs {{ row.monthly|intcomma }}</td>
+          <td>{% if row.t1 is not None %}Rs {{ row.t1|intcomma }}{% else %}—{% endif %}</td>
+          <td>{% if row.t2 is not None %}Rs {{ row.t2|intcomma }}{% else %}—{% endif %}</td>
+          <td>
+            {% if row.diff is None %}<span class="rh-same">—</span>
+            {% elif row.diff > 0 %}<span class="rh-up">▲ Rs {{ row.diff|intcomma }}</span>
+            {% elif row.diff < 0 %}<span class="rh-down">▼ Rs {{ row.diff|intcomma }}</span>
+            {% else %}<span class="rh-same">No change</span>{% endif %}
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  <div class="rh-note">Computation: Base Tax + (Income − Base Income) × Rate, salaried individual slabs. Surcharge/credits shamil nahi.</div>
+  <a class="rh-cta" href="/SalaryCalculator/">🧮 Apni exact salary pe calculate karo</a>
+
+  <h2 class="rh-h2">Full slab history</h2>
+  {% for year, slabs in history %}
+  <div class="rh-yearhead">Tax Year {{ year }}</div>
+  <div class="rh-tablewrap">
+    <table class="rh">
+      <thead><tr><th>Income Range (Annual)</th><th>Rate</th><th>Fixed (Base) Tax</th></tr></thead>
+      <tbody>
+        {% for b in slabs %}
+        <tr>
+          <td>Rs {{ b.income_min|intcomma }} – {% if b.income_max %}Rs {{ b.income_max|intcomma }}{% else %}and above{% endif %}</td>
+          <td>{% widthratio b.rate 1 100 %}%</td>
+          <td>Rs {{ b.base_tax|intcomma }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  {% endfor %}
+
+  {% endif %}
+</div>
+{% endblock %}

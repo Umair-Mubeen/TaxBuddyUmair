@@ -1,0 +1,144 @@
+.subscribe-from-wrap {
+  position: relative;
+  z-index: 2;
+  border-radius: 8px;
+  background: $white;
+
+  button {
+    font-weight: $bold;
+    font-size: 16px;
+    display: flex;
+    align-items: center;
+    text-align: right;
+    color: $color4;
+    position: absolute;
+    right: 7px;
+    top: 8px;
+    border-radius: 8px;
+    border: none;
+    padding: 12px 20px;
+    background: $color7;
+    transition: all 0.3s;
+    img{
+      margin-left: 8px;
+    }
+
+    span {
+      width: 20px;
+      text-align: right;
+      font-size: 18px;
+      transform: rotate(-45deg);
+      height: 15px;
+      display: flex;
+      justify-content: flex-end;
+      img{
+        margin-left: 8px;
+      }
+    }
+
+    &:hover {
+      color: $color4;
+      background: #E7EDEB;
+      transition: all 0.3s;
+    }
+  }
+
+  input {
+    padding: 24px 18px;
+    border-radius: 8px;
+    border: none;
+    width: 72%;
+    font-weight: $medium;
+    font-size: 16px;
+    line-height: 16px;
+    color: $color4;
+
+    &:focus {
+      outline: none;
+    }
+  }
+}
+
+.subscribe-3 {
+  .subscribe-from-wrap {
+    button {
+      color: $white;
+      background: $color23;
+      font-family: $font3;
+      top: 9.5px;
+    }
+
+    input {
+      color: $color4;
+      font-family: $font3;
+
+      &:focus {
+        outline: none;
+      }
+    }
+  }
+}
+
+
+.subscribe-4 {
+  .subscribe-from-wrap {
+    button {
+      color: $white;
+      background: $secondary_color;
+      font-family: $font3;
+      top: 9.5px;
+      transition: all .3s;
+      img{
+        margin-left: 6px;
+      }
+      span{
+          width: 20px;
+          text-align: right;
+          font-size: 18px;
+          transform: rotate(-45deg);
+          height: 15px;
+          display: flex;
+          justify-content: flex-end;
+      }
+      &:hover{
+        background: $color22;
+        transition: all .3s;
+      }
+      
+    }
+
+    input {
+      color: $color4;
+      font-family: $font3;
+
+      &:focus {
+        outline: none;
+      }
+    }
+  }
+}
+
+.sunscribe-form {
+  @media #{$xs} {
+    margin-top: 40px;
+  }
+}
+
+
+.subscribe-1{
+h3 {
+    @media #{$xs}{
+      font-size: 28px;
+      line-height: 38px;
+      margin-bottom: 30px;
+      text-align: center;
+    }
+}
+
+.subscribe-btn.text-right {
+  @media #{$xs}{
+    text-align: center;
+  }
+}
+
+}

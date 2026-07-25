@@ -1,0 +1,304 @@
+{% load static %}
+<style>
+    .form-alert{
+    padding:14px 16px;
+    margin-bottom:16px;
+    border-radius:10px;
+    font-size:15px;
+}
+.form-alert.success{
+    background:#e7f6f1;
+    color:#0c5b47;
+    border-left:5px solid #0c5b47;
+}
+.form-alert.error{
+    background:#fdecea;
+    color:#b42318;
+    border-left:5px solid #b42318;
+}
+
+.error-text{
+    color:#b42318;
+    font-size:13px;
+    display:none;
+    margin-top:4px;
+}
+
+input.is-invalid,
+textarea.is-invalid{
+    border-color:#b42318;
+}
+
+@media (max-width:576px){
+    .error-text{
+        font-size:12px;
+    }
+}
+</style>
+
+<section class="contct6 sp2" id="contact"
+         aria-label="Contact for general tax information"
+         style="background: radial-gradient(circle at top right, #DAE7E3 0%, #F6FBF9 70%); padding: 90px 0;">
+
+    <div class="container">
+        <div class="row">
+
+            <!-- LEFT CONTENT -->
+            <div class="col-lg-6">
+                <div class="contact-all-hadding">
+
+                    <div class="hadding6">
+                        <h2 class="font-f-7" data-aos="fade-right" data-aos-duration="700">
+                            Looking for general tax information?
+                        </h2>
+                    </div>
+
+                    <div class="space20"></div>
+
+                    <div class="contact6-list" data-aos="fade-right" data-aos-duration="900">
+                        <ul>
+                            <li class="font-f-7"><span><i class="fa-solid fa-check"></i></span>
+                                Easy-to-understand tax guides and explanations
+                            </li>
+                            <li class="font-f-7"><span><i class="fa-solid fa-check"></i></span>
+                                Information on income, sales, and property tax rules
+                            </li>
+                            <li class="font-f-7"><span><i class="fa-solid fa-check"></i></span>
+                                Updated content based on current tax laws
+                            </li>
+                            <li class="font-f-7"><span><i class="fa-solid fa-check"></i></span>
+                                Educational resources for salaried persons and businesses
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div class="space30"></div>
+
+                    <div class="hadding6" data-aos="fade-right" data-aos-duration="1100">
+                        <h2 class="font-f-7">Get in touch for general queries:</h2>
+                    </div>
+                </div>
+
+                <!-- CONTACT INFO -->
+                <div class="row">
+
+                    <div class="col-lg-6">
+                        <div class="contact6-icon-box">
+                            <div class="contact6-icon">
+                                <img src="{% static 'assets/img/icons/contact6-icon1.png' %}" alt="">
+                            </div>
+                            <div class="contact6-hadding hadding6">
+                                <h4 class="font-f-7">Location</h4>
+                                <span>Gulshan-e-Iqbal, Karachi</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-6">
+                        <div class="contact6-icon-box">
+                            <div class="contact6-icon">
+                                <img src="{% static 'assets/img/icons/contact6-icon2.png' %}" alt="">
+                            </div>
+                            <div class="contact6-hadding hadding6">
+                                <h4 class="font-f-7">Phone</h4>
+                                <a href="tel:+923332482742">+92 333 2482742</a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-6">
+                        <div class="contact6-icon-box">
+                            <div class="contact6-icon">
+                                <img src="{% static 'assets/img/icons/contact6-icon3.png' %}" alt="">
+                            </div>
+                            <div class="contact6-hadding hadding6">
+                                <h4 class="font-f-7">Email</h4>
+                                <a href="mailto:umair.mubeenir@gmail.com">
+                                    umair.mubeenir@gmail.com
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-6">
+                        <div class="contact6-icon-box">
+                            <div class="contact6-icon">
+                                <img src="{% static 'assets/img/icons/contact6-icon4.png' %}" alt="">
+                            </div>
+                            <div class="contact6-hadding hadding6">
+                                <h4 class="font-f-7">WhatsApp</h4>
+                                <a href="https://wa.me/923332482742" target="_blank">
+                                    +92 333 2482742
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- RIGHT FORM -->
+            <div class="col-lg-6">
+                <div class="contact3-form-all" data-aos="zoom-out" data-aos-duration="900">
+
+                    <div class="hadding6 text-center">
+                        <h2 class="font-f-7">Contact Form</h2>
+                        <p>Send your general tax-related query.</p>
+                    </div>
+                    {% if messages %}
+    {% for message in messages %}
+        <div class="form-alert {{ message.tags }}">
+            {{ message }}
+        </div>
+    {% endfor %}
+{% endif %}
+
+
+<form action="{% url 'contact' %}" method="POST" id="contact-form" novalidate>
+    {% csrf_token %}
+    <input type="hidden" name="g-recaptcha-response" id="g-recaptcha-response">
+
+    <div class="form-input-all">
+
+        <!-- FIRST & LAST NAME -->
+        <div class="row">
+            <div class="col-md-6">
+                <label for="first_name">First Name</label>
+                <input type="text" id="first_name" name="first_name"
+                       class="form-control" required minlength="2"
+                       placeholder="Enter first name">
+                <small class="error-text"></small>
+            </div>
+
+            <div class="col-md-6">
+                <label for="last_name">Last Name</label>
+                <input type="text" id="last_name" name="last_name"
+                       class="form-control" required minlength="2"
+                       placeholder="Enter last name">
+                <small class="error-text"></small>
+            </div>
+        </div>
+
+        <!-- PHONE & EMAIL -->
+        <div class="row mt-3">
+            <div class="col-md-6">
+                <label for="phone_number">Phone Number</label>
+                <input type="tel" id="phone_number" name="phone_number"
+                       class="form-control" required
+                       pattern="^03[0-9]{9}$"
+                       placeholder="03XXXXXXXXX">
+                <small class="error-text"></small>
+            </div>
+
+            <div class="col-md-6">
+                <label for="email_address">Email Address</label>
+                <input type="email" id="email_address" name="email_address"
+                       class="form-control" required
+                       placeholder="example@email.com">
+                <small class="error-text"></small>
+            </div>
+        </div>
+
+        <!-- SUBJECT -->
+        <div class="mt-3">
+            <label for="subject">Subject</label>
+            <input type="text" id="subject" name="subject"
+                   class="form-control" required minlength="5"
+                   placeholder="Subject">
+            <small class="error-text"></small>
+        </div>
+
+        <!-- MESSAGE -->
+        <div class="mt-3">
+            <label for="additional_details">Message</label>
+            <textarea id="additional_details" name="additional_details"
+                      rows="4" class="form-control" required minlength="10"
+                      placeholder="Write your message"></textarea>
+            <small class="error-text"></small>
+        </div>
+
+        <div class="mt-4">
+            <button type="submit" class="btn btn-success px-4 py-2">
+                Send Message
+            </button>
+        </div>
+
+    </div>
+</form>
+
+                    <p class="text-center mt-3"
+                       style="font-size:13px; color:#6c757d;">
+                        Messages are reviewed for general informational purposes only.
+                    </p>
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+
+    const form = document.getElementById("contact-form");
+    if (!form) return;
+
+    form.addEventListener("submit", function (e) {
+
+        let isValid = true;
+        const fields = form.querySelectorAll("input:not([type='hidden']), textarea");
+
+        fields.forEach(field => {
+            const error = field.nextElementSibling;
+
+            if (!field.checkValidity()) {
+                field.classList.add("is-invalid");
+                error.style.display = "block";
+
+                if (field.validity.valueMissing) {
+                    error.innerText = "This field is required.";
+                } else if (field.validity.typeMismatch) {
+                    error.innerText = "Please enter a valid value.";
+                } else if (field.validity.patternMismatch) {
+                    error.innerText = "Please enter a valid phone number (03XXXXXXXXX).";
+                } else if (field.validity.tooShort) {
+                    error.innerText = `Minimum ${field.minLength} characters required.`;
+                }
+
+                isValid = false;
+            } else {
+                field.classList.remove("is-invalid");
+                error.style.display = "none";
+            }
+        });
+
+        if (!isValid) {
+            e.preventDefault();
+            return;
+        }
+
+        e.preventDefault();
+
+        const submitBtn = form.querySelector("button[type='submit']");
+        submitBtn.disabled = true;
+        submitBtn.innerText = "Sending...";
+
+        if (typeof grecaptcha === "undefined") {
+            console.error("reCAPTCHA not loaded");
+            form.submit(); // fallback submit
+            return;
+        }
+
+        grecaptcha.ready(function () {
+            grecaptcha.execute("6LesUD4sAAAAAGihejIqA70J-9gVxHzPmYaHXR-b", {
+                action: "contact"
+            }).then(function (token) {
+                document.getElementById("g-recaptcha-response").value = token;
+                form.submit();
+            });
+        });
+    });
+
+});
+</script>

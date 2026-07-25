@@ -1,0 +1,525 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9107458294991357"
+     crossorigin="anonymous"></script>
+
+  <!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-V2T7QFW14J"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-V2T7QFW14J');
+</script>
+
+  <link rel="icon" href="{% static 'favicon/favicon.ico' %}" sizes="any">
+<link rel="icon" type="image/svg+xml" href="{% static 'favicon/favicon.svg' %}">
+<link rel="icon" type="image/png" sizes="32x32" href="{% static 'favicon/favicon-32.png' %}">
+<link rel="icon" type="image/png" sizes="16x16" href="{% static 'favicon/favicon-16.png' %}">
+<link rel="apple-touch-icon" sizes="180x180" href="{% static 'favicon/apple-touch-icon.png' %}">
+<link rel="manifest" href="{% static 'favicon/site.webmanifest' %}">
+
+
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+
+  <!-- SEO Meta -->
+  <title>{% block title %}{{ meta_title|default:"TaxBuddy Umair | Pakistan Tax Education Platform" }}{% endblock %}</title>
+  <meta name="description" content="{% block meta_desc %}{{ meta_description|default:"Pakistan's free tax education platform. Free income tax & sales tax guides, calculators and MCQs — explained simply by TaxBuddy Umair. FBR 2025-26." }}{% endblock %}">
+  <meta name="robots" content="index, follow">
+  <meta name="theme-color" content="#0A2647">
+  <meta name="author" content="Umair Mubeen">
+  <link rel="canonical" href="https://www.taxbuddyumair.com{{ request.path }}">
+  {% if request.GET %}
+  <meta name="robots" content="noindex, follow">
+  {% endif %}
+
+  <!-- Open Graph -->
+  <meta property="og:title"       content="{% block og_title %}{{ meta_title|default:'TaxBuddy Umair' }}{% endblock %}">
+  <meta property="og:description" content="{% block og_desc %}{{ meta_description|default:"Pakistan's free tax education platform. Free income tax & sales tax guides, calculators & MCQs by TaxBuddy Umair." }}{% endblock %}">
+  <meta property="og:type"        content="{% block og_type %}website{% endblock %}">
+  <meta property="og:url"         content="https://www.taxbuddyumair.com{{ request.path }}">
+  <meta property="og:image"       content="{% block og_image %}{% static 'images/og-image.png' %}{% endblock %}">
+  <meta property="og:site_name"   content="TaxBuddy Umair">
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card"        content="summary_large_image">
+  <meta name="twitter:title"       content="{% block tw_title %}{{ meta_title|default:'TaxBuddy Umair | Pakistan Tax Education Platform' }}{% endblock %}">
+  <meta name="twitter:description" content="{% block tw_desc %}{{ meta_description|default:"Pakistan's free tax education platform. Free income tax & sales tax guides explained simply by TaxBuddy Umair." }}{% endblock %}">
+  <meta name="twitter:image"       content="{% block tw_image %}{% static 'images/og-image.png' %}{% endblock %}">
+
+  <!-- Schema.org: Website -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    "name": "TaxBuddy Umair",
+    "url": "https://www.taxbuddyumair.com",
+    "description": "Pakistan's free tax education platform. Free income tax guides, calculators, and MCQs explained simply by TaxBuddy Umair.",
+    "potentialAction": {
+      "@type": "SearchAction",
+      "target": "https://www.taxbuddyumair.com/search/?q={search_term_string}",
+      "query-input": "required name=search_term_string"
+    }
+  }
+  </script>
+
+  <!-- Schema.org: Person / Local Business -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "LocalBusiness",
+    "name": "TaxBuddy Umair",
+  "description": "Pakistan's trusted tax content creator simplifying income tax & sales tax for everyone. Free guides, calculators and MCQs on taxbuddyumair.com.",
+    "url": "https://www.taxbuddyumair.com",
+    "telephone": "+923332482742",
+    "email": "umair.mubeenir@gmail.com",
+    "address": {
+      "@type": "PostalAddress",
+      "addressLocality": "Gulshan-e-Iqbal",
+      "addressRegion": "Karachi",
+      "addressCountry": "PK"
+    },
+    "founder": {
+      "@type": "Person",
+      "name": "Umair Mubeen",
+      "jobTitle": "Tax Content Creator",
+      "sameAs": "https://www.taxbuddyumair.com"
+    }
+  }
+  </script>
+
+  {% block schema_extra %}{% endblock %}
+
+  <!-- Font Awesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+  <!-- Fonts: preload then async-load to prevent render-blocking -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="dns-prefetch" href="//pagead2.googlesyndication.com">
+  <link rel="dns-prefetch" href="//www.googletagmanager.com">
+  <link rel="preload" as="style"
+        href="https://fonts.googleapis.com/css2?family=Literata:wght@400;700&family=DM+Sans:wght@400;600&display=swap&font-display=swap"
+        onload="this.rel='stylesheet'">
+  <noscript>
+    <link href="https://fonts.googleapis.com/css2?family=Literata:wght@400;700&family=DM+Sans:wght@400;600&display=swap&font-display=swap" rel="stylesheet">
+  </noscript>
+
+  <!-- 1. CRITICAL INLINE CSS — browser paints this FIRST, no blank screen -->
+  <style>
+    /* ── Reset & Base ── */
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    html{font-size:16px;scroll-behavior:smooth}
+    body{
+      font-family:'DM Sans',system-ui,-apple-system,sans-serif;
+      background:#F7F9FC;color:#1A202C;
+      overflow-x:hidden;max-width:100vw;
+      -webkit-font-smoothing:antialiased;
+    }
+    :root{
+      --navy:#0A2647;--navy-mid:#144272;
+      --green:#0D9E72;--green-mid:#0B8A64;--green-light:#f0fdf7;
+      --white:#fff;--bg:#F7F9FC;
+      --border:#E2E8F0;--border-mid:#CBD5E0;
+      --text:#1A202C;--text-mid:#4A5568;--text-light:#718096;
+      --radius:12px;--radius-lg:16px;--radius-xl:20px;
+      --shadow-sm:0 1px 3px rgba(0,0,0,.08),0 1px 2px rgba(0,0,0,.06);
+      --font-head:'Literata',Georgia,serif;
+      --font-body:'DM Sans',system-ui,sans-serif;
+      --gold:#E8A020;--gold-light:#fffbeb;
+      --red:#E53E3E;--red-light:#fff5f5;
+    }
+    .topbar{background:#0A2647;color:rgba(255,255,255,.75);font-size:12.5px;padding:7px 0;min-height:36px}
+    .container{width:100%;max-width:1200px;margin:0 auto;padding:0 20px}
+    .navbar{background:#0A2647;position:sticky;top:0;z-index:990;border-bottom:1px solid rgba(255,255,255,.08);min-height:64px;display:flex;align-items:center}
+    .hero-section,.article-hero{background:#0A2647;color:#fff;padding:60px 0 48px}
+    .content-grid{display:grid;grid-template-columns:1fr 300px;gap:28px;max-width:1200px;margin:0 auto;padding:28px 20px}
+    .card,.sidebar-widget,.mcq-card,.calc-card{background:#fff;border:1px solid #E2E8F0;border-radius:16px}
+    .btn-primary{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:12px 24px;border-radius:12px;font-weight:700;font-size:14px;cursor:pointer;text-decoration:none;border:none;background:#0D9E72;color:#fff}
+    .btn-wa{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:12px 24px;border-radius:12px;font-weight:700;font-size:14px;cursor:pointer;text-decoration:none;border:none;background:#25d366;color:#fff}
+    .footer,.main-footer{background:#0A2647;color:rgba(255,255,255,.7)}
+    img{max-width:100%;height:auto;display:block}
+    @media(max-width:768px){.content-grid{grid-template-columns:1fr}.hero-section,.article-hero{padding:40px 0 32px}}
+  </style>
+
+  <!-- 2. main.css — loads after critical CSS already painted page -->
+  <link rel="stylesheet" href="{% static 'dist/css/main.css' %}">
+  <link rel="stylesheet" href="{% static 'dist/css/mobile-nav.css' %}">
+  <!-- Site Search styles -->
+  <style>
+  .nav-search{display:flex;align-items:center;gap:6px;margin:0 10px}
+  .nav-search input{width:130px;padding:7px 12px;border:1.5px solid #d8dee6;border-radius:8px;font-size:.85rem;outline:none;transition:width .2s,border-color .2s}
+  .nav-search input:focus{width:180px;border-color:#0D9E72}
+  .nav-search button{background:none;border:none;cursor:pointer;font-size:1rem;padding:4px}
+  @media (max-width: 992px){.nav-search{display:none!important}}
+  .mobile-nav-search{display:flex;gap:8px;padding:12px 16px;border-bottom:1px solid #e6eaf0}
+  .mobile-nav-search input{flex:1;padding:10px 14px;border:1.5px solid #d8dee6;border-radius:8px;font-size:.95rem;outline:none}
+  .mobile-nav-search input:focus{border-color:#0D9E72}
+  .mobile-nav-search button{background:#0D9E72;color:#fff;border:none;border-radius:8px;padding:0 16px;cursor:pointer}
+  .tb-menu-search{display:flex;gap:8px;padding:14px 18px;border-bottom:1px solid rgba(255,255,255,.12)}
+  .tb-menu-search input{flex:1;padding:11px 14px;border:1.5px solid rgba(255,255,255,.25);border-radius:8px;font-size:.95rem;outline:none;background:rgba(255,255,255,.08);color:#fff}
+  .tb-menu-search input::placeholder{color:rgba(255,255,255,.55)}
+  .tb-menu-search input:focus{border-color:#0D9E72;background:rgba(255,255,255,.12)}
+  .tb-menu-search button{background:#0D9E72;color:#fff;border:none;border-radius:8px;padding:0 16px;cursor:pointer;font-size:1rem}
+  </style>
+  {% block extra_css %}{% endblock %}
+
+  <!-- 3. Mobile menu CSS (inline to avoid extra request) -->
+  <style>
+@media(max-width:992px){.navbar-nav,.nav-links,header nav ul,nav .desktop-menu,.top-nav{display:none!important}.hamburger,.navbar-toggler,.menu-toggle,#hamburger,.mobile-toggle{display:flex!important;align-items:center;justify-content:center;background:transparent;border:none;cursor:pointer;padding:8px;color:#fff;min-width:44px;min-height:44px;-webkit-tap-highlight-color:transparent}}
+#tb-mobile-menu{display:none;position:fixed;top:0;left:0;right:0;bottom:0;z-index:9999;background:#0a2238;overflow-y:auto;-webkit-overflow-scrolling:touch;flex-direction:column}
+#tb-mobile-menu.tb-open{display:flex}
+.tb-menu-header{display:flex;align-items:center;justify-content:space-between;padding:16px 20px;border-bottom:1px solid rgba(255,255,255,.1);background:#0a2238;position:sticky;top:0;z-index:1}
+.tb-menu-logo{font-family:serif;font-size:20px;font-style:italic;font-weight:700;color:#fff}
+.tb-menu-logo em{color:#22c97a;font-style:normal}
+.tb-close-btn{background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.2);border-radius:8px;color:#fff;width:44px;height:44px;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:22px;line-height:1;-webkit-tap-highlight-color:transparent}
+.tb-menu-body{padding:12px 0;flex:1}
+.tb-menu-item{display:flex;align-items:center;justify-content:space-between;padding:14px 20px;color:rgba(255,255,255,.85);font-size:15px;font-weight:500;border-bottom:1px solid rgba(255,255,255,.06);text-decoration:none;min-height:52px;cursor:pointer;transition:background .15s;-webkit-tap-highlight-color:transparent}
+.tb-menu-item:hover,.tb-menu-item:active{background:rgba(255,255,255,.06);color:#fff}
+.tb-menu-item .tb-arrow{font-size:12px;color:rgba(255,255,255,.4);transition:transform .2s}
+.tb-menu-item.tb-expanded .tb-arrow{transform:rotate(90deg)}
+.tb-submenu{display:none;background:rgba(0,0,0,.2);border-bottom:1px solid rgba(255,255,255,.06)}
+.tb-submenu.tb-show{display:block}
+.tb-submenu a{display:flex;align-items:center;gap:10px;padding:13px 20px 13px 36px;color:rgba(255,255,255,.7);font-size:14px;text-decoration:none;border-bottom:1px solid rgba(255,255,255,.04);min-height:48px;transition:background .15s,color .15s;-webkit-tap-highlight-color:transparent}
+.tb-submenu a:last-child{border-bottom:none}
+.tb-submenu a:hover,.tb-submenu a:active{background:rgba(255,255,255,.06);color:#fff}
+.tb-menu-cta{padding:16px 20px 24px;display:flex;flex-direction:column;gap:10px}
+.tb-cta-btn{display:flex;align-items:center;justify-content:center;gap:8px;padding:14px;border-radius:10px;font-size:15px;font-weight:700;text-decoration:none;min-height:52px;-webkit-tap-highlight-color:transparent}
+.tb-cta-wa{background:#25d366;color:#fff}
+.tb-cta-wa:hover{background:#1ebe5d;color:#fff}
+.tb-cta-secondary{background:rgba(255,255,255,.1);color:rgba(255,255,255,.85);border:1px solid rgba(255,255,255,.2)}
+body.tb-no-scroll{overflow:hidden;position:fixed;width:100%}
+  </style>
+
+    {% block head_extra %}{% endblock %}
+  <meta name="google-site-verification" content="YRiHeT1-EtI8-FYtI3Oa0L9nx4ufgdHfxyqF2DVUpnw" />
+</head>
+<body>
+<!-- MOBILE FULL-SCREEN MENU -->
+<div id="tb-mobile-menu" role="dialog" aria-modal="true" aria-label="Navigation Menu">
+  <div class="tb-menu-header">
+    <div class="tb-menu-logo">Tax<em>Buddy</em> Umair</div>
+    <button class="tb-close-btn" id="tb-close" aria-label="Close menu">×</button>
+  </div>
+
+  <div class="tb-menu-body">
+
+    <!-- Search -->
+    <form method="get" action="/search/" class="tb-menu-search" role="search">
+      <input type="search" name="q" placeholder="Search guides, calculators…" aria-label="Search site">
+      <button type="submit" aria-label="Submit search">🔍</button>
+    </form>
+
+    <!-- Home -->
+    <a href="/" class="tb-menu-item">
+      🏠 Home
+    </a>
+
+    <!-- Tax Guides dropdown -->
+    <div class="tb-menu-item" id="toggle-guides" onclick="tbToggle('guides')">
+      <span>📚 Tax Guides</span>
+      <span class="tb-arrow">›</span>
+    </div>
+    <div class="tb-submenu" id="sub-guides">
+      <a href="/income-tax-guides/">📋 Income Tax Guide</a>
+      <a href="/sales-tax-guides/">📊 Sales Tax Guide</a>
+      <a href="/income-tax-rates/">📈 Income Tax Rates</a>
+      <a href="/withholding-tax-rates/">📉 Withholding Tax Rates</a>
+      <a href="/atl-check/">✅ ATL Check</a>
+      <a href="/tax-calendar/">📅 Tax Calendar</a>
+      <a href="/fbr-iris-guide/">🏛️ FBR IRIS Guide</a>
+    </div>
+
+    <!-- Calculators dropdown -->
+    <div class="tb-menu-item" id="toggle-calc" onclick="tbToggle('calc')">
+      <span>🧮 Calculators</span>
+      <span class="tb-arrow">›</span>
+    </div>
+    <div class="tb-submenu" id="sub-calc">
+      <a href="/SalaryCalculator/">💼 Salary Tax Calculator</a>
+      <a href="/BusinessCalculator/">🏢 Business Tax Calculator</a>
+      <a href="/AOPCalculator/">🤝 AOP Calculator</a>
+      <a href="/PropertyCalculator/">🏠 Property Calculator</a>
+      <a href="/TaxCalculator4C/">⚡ Super Tax 4C</a>
+    </div>
+
+    <!-- MCQs -->
+    <a href="/income-tax-mcqs-pakistan/" class="tb-menu-item">
+      📝 Tax MCQs
+    </a>
+
+    <!-- Blog dropdown -->
+    <div class="tb-menu-item" id="toggle-blog" onclick="tbToggle('blog')">
+      <span>📰 Blog</span>
+      <span class="tb-arrow">›</span>
+    </div>
+    <div class="tb-submenu" id="sub-blog">
+      <a href="/blog/income-tax/">📝 Income Tax Blog</a>
+      <a href="/blog/sales-tax/">📝 Sales Tax Blog</a>
+      <a href="/blog/">📝 All Posts</a>
+    </div>
+
+    <!-- Services -->
+    <a href="/online-services/" class="tb-menu-item">
+      🛎 Services
+    </a>
+
+    <!-- Contact -->
+    <a href="/#contact" class="tb-menu-item">
+      📞 Contact Us
+    </a>
+
+  </div>
+
+  <div class="tb-menu-cta">
+    <a href="/online-services/" class="tb-cta-btn tb-cta-secondary">
+      View All Services
+    </a>
+  </div>
+</div>
+
+  <!-- ── TOP AD STRIP ──────────────────────────────────── -->
+  {% block top_ad %}
+<!--  <div class="top-ad-strip">-->
+<!--    <div class="ad-wrapper-label">Advertisement</div>-->
+<!--    <div class="ad-zone ad-leaderboard">-->
+<!--      <div class="ad-zone-label">Google AdSense</div>-->
+<!--      <div class="ad-zone-size">Leaderboard 728×90 · Responsive</div>-->
+<!--    </div>-->
+<!--  </div>-->
+  {% endblock %}
+
+  <!-- ── TOPBAR ─────────────────────────────────────────── -->
+<!--  {% include 'partials/topbar.html' %}-->
+
+  <!-- ── NAVBAR ─────────────────────────────────────────── -->
+  {% include 'partials/navbar.html' %}
+
+  <!-- ── DJANGO MESSAGES ───────────────────────────────── -->
+
+  <!-- ── TAX FILING COUNTDOWN ──────────────────────────── -->
+  {% block filing_countdown %}{% endblock %}
+
+  <!-- ── PAGE CONTENT ──────────────────────────────────── -->
+  <main id="main-content">
+    {% block content %}{% endblock %}
+  </main>
+
+  <!-- ── FOOTER ─────────────────────────────────────────── -->
+  {% include 'partials/footer.html' %}
+
+  <!-- ── BACK TO TOP ────────────────────────────────────── -->
+  <button id="back-to-top" aria-label="Back to top"
+          style="display:none;position:fixed;bottom:90px;right:28px;
+                 width:44px;height:44px;border-radius:50%;
+                 background:var(--navy);color:#fff;border:none;
+                 cursor:pointer;font-size:18px;z-index:998;
+                 box-shadow:0 4px 14px rgba(10,38,71,0.3);
+                 transition:opacity .2s,transform .2s;"
+          title="Back to top">↑</button>
+
+  <!-- ── WHATSAPP FLOAT removed for AdSense review (was a persistent lead-gen hook on every page).
+       Restore only on /online-services/ and /#contact after approval if needed. ── -->
+
+  <!-- ── SCRIPTS ─────────────────────────────────────────── -->
+  <script src="{% static 'dist/js/main.js' %}" defer></script>
+  {% block extra_js %}{% endblock %}
+
+<script>
+(function () {
+  'use strict';
+
+  var menu = document.getElementById('tb-mobile-menu');
+  var closeBtn = document.getElementById('tb-close');
+
+  /* ── Find the hamburger button ──
+     Works with ANY of these: #hamburger, .hamburger,
+     .navbar-toggler, .menu-toggle, [data-toggle="collapse"]  */
+  var hamburger =
+    document.getElementById('hamburger') ||
+    document.querySelector('.hamburger') ||
+    document.querySelector('.navbar-toggler') ||
+    document.querySelector('.menu-toggle') ||
+    document.querySelector('[data-toggle="collapse"]') ||
+    document.querySelector('.mobile-toggle');
+
+  function openMenu() {
+    menu.classList.add('tb-open');
+    document.body.classList.add('tb-no-scroll');
+    if (hamburger) hamburger.setAttribute('aria-expanded', 'true');
+    // Focus trap: move focus into menu
+    var firstLink = menu.querySelector('a, button');
+    if (firstLink) firstLink.focus();
+  }
+
+  function closeMenu() {
+    menu.classList.remove('tb-open');
+    document.body.classList.remove('tb-no-scroll');
+    if (hamburger) hamburger.setAttribute('aria-expanded', 'false');
+  }
+
+  /* Open on hamburger click */
+  if (hamburger) {
+    hamburger.addEventListener('click', function (e) {
+      e.stopPropagation();
+      if (menu.classList.contains('tb-open')) {
+        closeMenu();
+      } else {
+        openMenu();
+      }
+    });
+  }
+
+  /* Close on X button */
+  if (closeBtn) {
+    closeBtn.addEventListener('click', closeMenu);
+  }
+
+  /* Close on backdrop click (outside menu content) */
+  menu.addEventListener('click', function (e) {
+    if (e.target === menu) closeMenu();
+  });
+
+  /* Close on Escape key */
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape' && menu.classList.contains('tb-open')) {
+      closeMenu();
+      if (hamburger) hamburger.focus();
+    }
+  });
+
+  /* Close when any menu link is clicked */
+  menu.querySelectorAll('a').forEach(function (link) {
+    link.addEventListener('click', closeMenu);
+  });
+
+  /* Submenu accordion toggle */
+  window.tbToggle = function (id) {
+    var sub = document.getElementById('sub-' + id);
+    var btn = document.getElementById('toggle-' + id);
+    if (!sub) return;
+    var isOpen = sub.classList.contains('tb-show');
+    // Close all submenus first
+    document.querySelectorAll('.tb-submenu').forEach(function (s) {
+      s.classList.remove('tb-show');
+    });
+    document.querySelectorAll('.tb-menu-item').forEach(function (b) {
+      b.classList.remove('tb-expanded');
+    });
+    // Toggle clicked one
+    if (!isOpen) {
+      sub.classList.add('tb-show');
+      if (btn) btn.classList.add('tb-expanded');
+    }
+  };
+
+  /* Swipe left to close */
+  var touchStartX = 0;
+  menu.addEventListener('touchstart', function (e) {
+    touchStartX = e.touches[0].clientX;
+  }, { passive: true });
+  menu.addEventListener('touchend', function (e) {
+    var diff = touchStartX - e.changedTouches[0].clientX;
+    if (diff > 60) closeMenu(); // swipe left 60px = close
+  }, { passive: true });
+
+})();
+</script>
+
+
+<style>
+/* ── SCROLL ANIMATIONS ──────────────────────────────────── */
+.fade-up{opacity:0;transform:translateY(28px);transition:opacity .6s ease,transform .6s ease}
+.fade-up.visible{opacity:1;transform:translateY(0)}
+.fade-left{opacity:0;transform:translateX(-28px);transition:opacity .6s ease,transform .6s ease}
+.fade-left.visible{opacity:1;transform:translateX(0)}
+.fade-right{opacity:0;transform:translateX(28px);transition:opacity .6s ease,transform .6s ease}
+.fade-right.visible{opacity:1;transform:translateX(0)}
+.scale-in{opacity:0;transform:scale(.94);transition:opacity .5s ease,transform .5s ease}
+.scale-in.visible{opacity:1;transform:scale(1)}
+
+/* ── HOVER LIFT ──────────────────────────────────────────── */
+.card,.wht-cards-grid>div,.calc-card{
+  transition:transform .2s ease,box-shadow .2s ease!important;
+}
+.card:hover,.wht-cards-grid>div:hover,.calc-card:hover{
+  transform:translateY(-4px)!important;
+  box-shadow:0 12px 32px rgba(10,38,71,.12)!important;
+}
+
+/* ── STAGGER delay helpers ───────────────────────────────── */
+.delay-1{transition-delay:.1s}
+.delay-2{transition-delay:.2s}
+.delay-3{transition-delay:.3s}
+.delay-4{transition-delay:.4s}
+.delay-5{transition-delay:.5s}
+</style>
+
+<script>
+/* Scroll observer — fade in elements */
+(function(){
+  var io = new IntersectionObserver(function(entries){
+    entries.forEach(function(e){
+      if(e.isIntersecting){
+        e.target.classList.add('visible');
+        io.unobserve(e.target);
+      }
+    });
+  },{threshold:0.12});
+
+  function observe(){
+    document.querySelectorAll('.fade-up,.fade-left,.fade-right,.scale-in')
+      .forEach(function(el){ io.observe(el); });
+  }
+  if(document.readyState==='loading'){
+    document.addEventListener('DOMContentLoaded', observe);
+  } else {
+    observe();
+  }
+})();
+
+/* Counter animation */
+function animateCounter(el){
+  var target = parseInt(el.dataset.count);
+  var duration = 1800;
+  var start = null;
+  function step(ts){
+    if(!start) start = ts;
+    var progress = Math.min((ts-start)/duration, 1);
+    var ease = 1 - Math.pow(1-progress, 3);
+    el.textContent = Math.floor(ease * target).toLocaleString();
+    if(progress < 1) requestAnimationFrame(step);
+    else el.textContent = target.toLocaleString() + (el.dataset.suffix||'');
+  }
+  requestAnimationFrame(step);
+}
+
+/* Counter observer */
+(function(){
+  var cio = new IntersectionObserver(function(entries){
+    entries.forEach(function(e){
+      if(e.isIntersecting){
+        animateCounter(e.target);
+        cio.unobserve(e.target);
+      }
+    });
+  },{threshold:0.5});
+  function observeCounters(){
+    document.querySelectorAll('[data-count]').forEach(function(el){
+      cio.observe(el);
+    });
+  }
+  if(document.readyState==='loading'){
+    document.addEventListener('DOMContentLoaded', observeCounters);
+  } else {
+    observeCounters();
+  }
+})();
+</script>
+</body>
+</html>

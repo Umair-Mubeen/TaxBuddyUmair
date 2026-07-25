@@ -1,0 +1,592 @@
+
+
+<style>
+/* ============================
+   FORM VALIDATION UI
+============================ */
+
+.error-msg{
+  display:none;
+  font-size:12.5px;
+  color:#dc2626;
+  margin-top:4px;
+}
+
+.is-invalid{
+  border-color:#dc2626 !important;
+  background:#fff5f5;
+}
+
+.is-valid{
+  border-color:#16a34a !important;
+  background:#f0fdf4;
+}
+
+/* =========================
+   TAX CALCULATOR FORM UPGRADE
+========================= */
+
+/* Wrapper card */
+.contact3-form-all{
+  background:#ffffff;
+  border-radius:22px;
+  padding:40px 36px;
+  box-shadow:0 24px 60px rgba(15,118,110,0.14);
+  border:1px solid rgba(15,118,110,0.18);
+  max-width:1100px;
+  margin:0 auto 60px;
+}
+
+/* Title */
+.hadding6 h1{
+  font-size:26px !important;
+  font-weight:800 !important;
+  color:#0f172a;
+  margin-bottom:8px;
+}
+
+/* Input wrapper */
+.input-single6{
+  display:flex;
+  flex-direction:column;
+}
+
+/* Labels */
+.input-single6 label{
+  font-size:13px;
+  font-weight:600;
+  color:#334155;
+  margin-bottom:6px;
+}
+
+/* Inputs & selects */
+.input-single6 .form-control{
+  height:46px;
+  border-radius:14px;
+  border:1px solid #e2ebe6;
+  padding:10px 14px !important;
+  font-size:15px;
+  background:#ffffff;
+}
+
+/* Focus state */
+.input-single6 .form-control:focus{
+  border-color:#0f766e;
+  box-shadow:0 0 0 3px rgba(15,118,110,0.15);
+  outline:none;
+}
+
+/* Remove ugly number arrows */
+input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button{
+  -webkit-appearance:none;
+  margin:0;
+}
+
+/* Calculate button */
+#submit_button{
+  height:48px;
+  border-radius:14px;
+  font-size:16px;
+  font-weight:700;
+  background:linear-gradient(135deg,#0f766e,#0c5b47);
+  border:none;
+  box-shadow:0 14px 30px rgba(15,118,110,0.35);
+  transition:all 0.25s ease;
+}
+
+/* Button hover */
+#submit_button:hover{
+  transform:translateY(-2px);
+  box-shadow:0 18px 40px rgba(15,118,110,0.45);
+}
+
+/* Align button nicely */
+.col-md-3.d-flex{
+  padding-top:22px;
+}
+
+/* =========================
+   MOBILE OPTIMIZATION
+========================= */
+@media(max-width:768px){
+
+  .contact3-form-all{
+    padding:28px 22px;
+  }
+
+  .hadding6 h1{
+    font-size:22px !important;
+  }
+
+  .col-md-3.d-flex{
+    padding-top:0;
+  }
+
+  #submit_button{
+    width:100%;
+  }
+}
+
+    /* ================================
+   GLOBAL RESET & THEME
+================================ */
+:root{
+  --green:#0f766e;
+  --green-dark:#0c5b47;
+  --green-soft:#e9f6f2;
+  --text:#0f172a;
+  --muted:#475569;
+  --border:#e2ebe6;
+  --bg:#F6FBF9;
+}
+
+*{
+  box-sizing:border-box;
+}
+
+body{
+  margin:0;
+  font-family:Inter, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  background:var(--bg);
+  color:var(--text);
+}
+
+/* ================================
+   SECTION WRAPPER
+================================ */
+.tax-ui{
+  padding:70px 0 90px;
+}
+
+
+/* ================================
+   PAGE HEADER
+================================ */
+.page-header{
+  max-width:780px;
+  margin-bottom:56px;
+}
+
+.badge{
+  display:inline-block;
+  background:var(--green-soft);
+  color:var(--green-dark);
+  padding:6px 14px;
+  border-radius:999px;
+  font-size:13px;
+  font-weight:600;
+  margin-bottom:14px;
+}
+
+.page-header h1{
+  font-size:32px;
+  line-height:1.25;
+  margin:10px 0 12px;
+  font-weight:800;
+}
+
+.page-header p{
+  font-size:16px;
+  color:var(--muted);
+  line-height:1.7;
+}
+
+/* ================================
+   INFO CARDS GRID
+================================ */
+.card-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
+  gap:26px;
+  margin-bottom:60px;
+}
+
+.card,
+.content-card,
+.calculator-card{
+  background:#ffffff;
+  border-radius:18px;
+  padding:28px;
+  border:1px solid var(--border);
+  box-shadow:0 10px 26px rgba(0,0,0,0.05);
+}
+
+/* Card Titles */
+.card h3,
+.content-card h3{
+  font-size:18px;
+  font-weight:700;
+  margin-bottom:14px;
+}
+
+/* Lists */
+.card ul,
+.content-card ul{
+  padding-left:20px;
+}
+
+.card li,
+.content-card li{
+  margin-bottom:10px;
+  font-size:14.5px;
+  color:#334155;
+}
+
+/* ================================
+   CALCULATOR CARD (MAIN FOCUS)
+================================ */
+.calculator-card{
+  margin:70px 0;
+  padding:36px;
+  border-radius:20px;
+  box-shadow:0 18px 50px rgba(15,118,110,0.12);
+  border:1px solid rgba(15,118,110,0.18);
+}
+
+.calculator-card h2{
+  font-size:22px;
+  font-weight:800;
+  margin-bottom:20px;
+}
+
+/* ================================
+   CONTENT CARD (AFTER CALC)
+================================ */
+.content-card{
+  margin-bottom:50px;
+}
+
+.content-card h3{
+  margin-top:10px;
+}
+
+/* ================================
+   DISCLAIMER
+================================ */
+.disclaimer-box{
+  background:#ffffff;
+  border:1px dashed var(--border);
+  padding:20px;
+  border-radius:14px;
+  font-size:13.5px;
+  color:#475569;
+}
+
+/* ================================
+   TYPOGRAPHY
+================================ */
+p{
+  line-height:1.7;
+  color:var(--muted);
+}
+
+/* ================================
+   RESPONSIVE
+================================ */
+@media(max-width:768px){
+
+  .tax-ui{
+    padding:50px 0 70px;
+  }
+
+  .page-header h1{
+    font-size:26px;
+  }
+
+  .calculator-card{
+    padding:26px;
+  }
+}
+
+</style>
+<!--=====Income Tax Calculator  =======-->
+
+<!--<section class="tax-ui">-->
+<!--  <div class="home6-full-header container">-->
+
+<!--    &lt;!&ndash; ======================-->
+<!--         PAGE INTRO-->
+<!--    ======================= &ndash;&gt;-->
+<!--    <header class="page-header">-->
+<!--      <span class="badge">{{ content.badge }}</span>-->
+<!--      <h1>{{ content.title }}</h1>-->
+<!--      <p>{{ content.intro }}</p>-->
+<!--    </header>-->
+
+<!--    &lt;!&ndash; ======================-->
+<!--         INFO OVERVIEW GRID-->
+<!--    ======================= &ndash;&gt;-->
+<!--    <div class="card-grid">-->
+
+<!--      &lt;!&ndash; WHO SHOULD USE &ndash;&gt;-->
+<!--      <section class="card">-->
+<!--        <h3>Who Should Use This Calculator?</h3>-->
+<!--        <ul>-->
+<!--          {% for item in content.who %}-->
+<!--            <li>{{ item }}</li>-->
+<!--          {% endfor %}-->
+<!--        </ul>-->
+<!--      </section>-->
+
+<!--      &lt;!&ndash; HOW IT WORKS &ndash;&gt;-->
+<!--      <section class="card">-->
+<!--        <h3>How This Calculator Works</h3>-->
+<!--        <p>{{ content.how }}</p>-->
+<!--      </section>-->
+
+<!--      &lt;!&ndash; FEATURES &ndash;&gt;-->
+<!--      {% if content.features %}-->
+<!--      <section class="card">-->
+<!--        <h3>Key Features</h3>-->
+<!--        <ul>-->
+<!--          {% for feature in content.features %}-->
+<!--            <li>{{ feature }}</li>-->
+<!--          {% endfor %}-->
+<!--        </ul>-->
+<!--      </section>-->
+<!--      {% endif %}-->
+
+<!--    </div>-->
+
+<!--    &lt;!&ndash; ======================-->
+<!--         CALCULATOR (PRIMARY)-->
+<!--    ======================= &ndash;&gt;-->
+<!--    <section class="calculator-card">-->
+<!--      <h2>{{ title }} – Income Tax Calculator</h2>-->
+
+<!--      &lt;!&ndash; YOUR EXISTING CALCULATOR FORM HERE &ndash;&gt;-->
+
+<!--    </section>-->
+
+<!--    &lt;!&ndash; ======================-->
+<!--         SUPPORTING CONTENT-->
+<!--    ======================= &ndash;&gt;-->
+<!--    <section class="content-card">-->
+
+<!--      <div class="content-block">-->
+<!--        <h3>Example Calculation</h3>-->
+<!--        <ul>-->
+<!--          {% for ex in content.example %}-->
+<!--            <li>{{ ex }}</li>-->
+<!--          {% endfor %}-->
+<!--        </ul>-->
+<!--      </div>-->
+
+<!--      <div class="content-block">-->
+<!--        <h3>Important Notes</h3>-->
+<!--        <ul>-->
+<!--          {% for note in content.notes %}-->
+<!--            <li>{{ note }}</li>-->
+<!--          {% endfor %}-->
+<!--        </ul>-->
+<!--      </div>-->
+
+<!--    </section>-->
+
+<!--    &lt;!&ndash; ======================-->
+<!--         DISCLAIMER-->
+<!--    ======================= &ndash;&gt;-->
+<!--    <footer class="disclaimer-box">-->
+<!--      <strong>Disclaimer:</strong>-->
+<!--      This calculator is for educational and informational purposes only and-->
+<!--      does not constitute legal or tax advice.-->
+<!--    </footer>-->
+
+<!--  </div>-->
+<!--</section>-->
+
+<div class="contct6 sp1" id="contact">
+
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-12">
+                <div class="contact3-form-all" data-aos="zoom-out" data-aos-duration="900">
+                    <div class="hadding6 text-center">
+                        <h1 class="font-30 font-f-7 font-lg-40 weight-500 line-height-lg-48 line-height-38">
+                            {{title}} - Income Tax Calculator
+                        </h1>
+                        <div class="space10"></div>
+                    </div>
+
+                    <form action="{{url}}" id="incomeForm" method="POST">
+                        {% csrf_token %}
+                        <div class="form-input-all">
+                            <div class="form-input-box">
+                                <div class="row g-3">
+                                    <div class="col-12 col-md-3">
+                                        <div class="input-single6">
+
+                                            <input type="hidden" name="tax_year_1" id="tax_year_1_id"
+                                                   value="{{tax_year_1}}">
+                                            <input type="hidden" name="tax_year_2" id="tax_year_2_id"
+                                                   value="{{tax_year_2}}">
+
+                                            <input type="hidden" value="{{income_type}}" id="hd_income_type"
+                                                   name="hd_income_type">
+
+                                            <label>Select Income Type</label>
+                                            <select class="form-control" id="incomeTypeSelect" name="income_type">
+                                                <option value="" disabled> Select Income Type</option>
+                                                <option value="Monthly"> Monthly Income</option>
+                                                <option value="Yearly"> Yearly</option>
+
+                                            </select>
+                                            <small class="error-msg"></small>
+
+                                        </div>
+                                    </div>
+
+
+                                    <!-- Taxpayer Type -->
+                                    <div class="col-12 col-md-3">
+                                        <div class="input-single6">
+                                            <label>Select Tax Year</label>
+                                            <select class="form-control" id="tax_year_1" name="tax_year_1" required>
+                                                <option disabled value="">Select the tax year</option>
+                                                <option value="2021-2022">July - 2021 to June 2022 - (2022)</option>
+                                                <option value="2022-2023">July - 2022 to June 2023 - (2023)</option>
+                                                <option value="2023-2024">July - 2023 to June 2024 - (2024)</option>
+                                                <option value="2024-2025">July - 2024 to June 2025 - (2025)</option>
+                                                <option value="2025-2026">July - 2025 to June 2026 - (2026)</option>
+
+                                            </select>
+                                            <small class="error-msg"></small>
+
+                                        </div>
+                                    </div>
+
+                                    <div class="col-12 col-md-3">
+                                        <div class="input-single6">
+                                            <label>Select Tax Year</label>
+                                            <select class="form-control" id="tax_year_2" name="tax_year_2" required>
+                                                <option disabled value="">Select the tax year</option>
+                                                <option value="2021-2022">July - 2021 to June 2022 - (2022)</option>
+                                                <option value="2022-2023">July - 2022 to June 2023 - (2023)</option>
+                                                <option value="2023-2024">July - 2023 to June 2024 - (2024)</option>
+                                                <option value="2024-2025">July - 2024 to June 2025 - (2025)</option>
+                                                <option value="2025-2026">July - 2025 to June 2026 - (2026)</option>
+
+                                            </select>
+                                            <small class="error-msg"></small>
+
+                                        </div>
+                                    </div>
+
+                                    <!-- Monthly Income -->
+                                    <div class="col-12 col-md-3">
+                                        <div class="input-single6">
+                                            <label>Gross Income</label>
+                                            <input class="form-control" id="incomeAmountInput" name="income_amount"
+                                                   placeholder="Monthly Income"
+                                                   type="number"/>
+                                            <small class="error-msg"></small>
+
+                                        </div>
+                                    </div>
+
+
+                                    <!-- Submit Button -->
+                                    <div class="col-12 col-md-3 d-flex align-items-end mb-3 mb-md-0">
+                                        <input class="btn btn-success w-100" id="submit_button" name="submit"
+                                               type="submit" value="Calculate"/>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+
+                </div>
+            </div>
+        </div>
+        {% include 'partials/slab_result_content.html' with content=context %}
+
+    </div>
+</div>
+<script>
+document.getElementById("incomeForm").addEventListener("submit", function(e){
+
+    let valid = true;
+
+    // Helpers
+    function showError(input, message){
+        input.classList.add("is-invalid");
+        input.classList.remove("is-valid");
+        const error = input.parentElement.querySelector(".error-msg");
+        if(error){
+            error.innerText = message;
+            error.style.display = "block";
+        }
+        valid = false;
+    }
+
+    function clearError(input){
+        input.classList.remove("is-invalid");
+        input.classList.add("is-valid");
+        const error = input.parentElement.querySelector(".error-msg");
+        if(error){
+            error.innerText = "";
+            error.style.display = "none";
+        }
+    }
+
+    // Fields
+    const incomeType = document.getElementById("incomeTypeSelect");
+    const taxYear1   = document.getElementById("tax_year_1");
+    const taxYear2   = document.getElementById("tax_year_2");
+    const incomeAmt  = document.getElementById("incomeAmountInput");
+
+    // Income Type
+    if(!incomeType.value){
+        showError(incomeType, "Please select income type");
+    } else {
+        clearError(incomeType);
+    }
+
+    // Tax Year 1
+    if(!taxYear1.value){
+        showError(taxYear1, "Please select first tax year");
+    } else {
+        clearError(taxYear1);
+    }
+
+    // Tax Year 2
+    if(!taxYear2.value){
+        showError(taxYear2, "Please select second tax year");
+    } else {
+        clearError(taxYear2);
+    }
+
+    // Same Tax Year Check
+    if(taxYear1.value && taxYear2.value && taxYear1.value === taxYear2.value){
+        showError(taxYear2, "Tax years must be different");
+    }
+
+    // Income Amount
+    if(!incomeAmt.value || incomeAmt.value <= 0){
+        showError(incomeAmt, "Enter a valid income amount");
+    } else {
+        clearError(incomeAmt);
+    }
+
+    // Stop submit if invalid
+    if(!valid){
+        e.preventDefault();
+        return false;
+    }
+
+    // Prevent double submit
+    const btn = document.getElementById("submit_button");
+    btn.value = "Calculating...";
+    btn.disabled = true;
+
+});
+</script>
+<script>
+document.getElementById("incomeTypeSelect").addEventListener("change", function(){
+    const input = document.getElementById("incomeAmountInput");
+    input.placeholder = this.value === "Yearly" ? "Yearly Income" : "Monthly Income";
+});
+</script>
+
+<!--=====Income Tax Calculator end=======-->

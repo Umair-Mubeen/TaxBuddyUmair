@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Server Error | TaxBuddy Umair{% endblock %}
+{% block top_ad %}{% endblock %}
+{% block content %}
+<div style="min-height:60vh;display:flex;align-items:center;justify-content:center;text-align:center;padding:60px 20px;">
+  <div>
+    <div style="font-size:72px;margin-bottom:20px;">⚠️</div>
+    <h1 style="font-family:var(--font-head);font-size:32px;color:var(--navy);margin-bottom:12px;">Something Went Wrong</h1>
+    <p style="font-size:15px;color:var(--text-light);margin-bottom:28px;max-width:400px;">
+      Our server encountered an error. Please try again in a moment.
+    </p>
+    <a href="{% url 'index' %}" class="btn-primary" style="text-decoration:none;">🏠 Go Home</a>
+  </div>
+</div>
+{% endblock %}

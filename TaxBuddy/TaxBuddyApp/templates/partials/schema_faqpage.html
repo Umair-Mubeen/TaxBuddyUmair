@@ -1,0 +1,30 @@
+{% comment %}
+FAQPage schema — homepage FAQ section ke liye, FAQ model se dynamic.
+USAGE (index.html mein):
+  {% block schema_extra %}
+    {% include 'partials/schema_faqpage.html' with faq_list=faqs %}
+  {% endblock %}
+'faqs' = jo variable index view FAQ objects template ko bhejta hai.
+Agar naam alag hai (e.g. faq_items), with faq_list=faq_items kar dena.
+NOTE: ek page pe FAQPage schema sirf EK dafa hona chahiye.
+{% endcomment %}
+{% if faq_list %}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {% for f in faq_list %}
+    {
+      "@type": "Question",
+      "name": "{{ f.question|escapejs }}",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "{{ f.answer|striptags|escapejs }}"
+      }
+    }{% if not forloop.last %},{% endif %}
+    {% endfor %}
+  ]
+}
+</script>
+{% endif %}

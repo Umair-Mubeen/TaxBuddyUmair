@@ -1,0 +1,158 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Income Tax Guides Pakistan 2025-26 | TaxBuddy Umair{% endblock %}
+{% block meta_desc %}Complete income tax guides for Pakistan — salary tax, property tax, business income, withholding tax sections and filer vs non-filer rates. Updated per Finance Act 2025.{% endblock %}
+{% block content %}
+
+<div class="article-hero">
+  <div class="article-hero-inner">
+    <div class="breadcrumb">
+      <a href="{% url 'index' %}">Home</a>
+      <span class="breadcrumb-sep">›</span>
+      <span>Income Tax Guides</span>
+    </div>
+    <h1>Income Tax Guides Pakistan 2025-26 — Free FBR Educational Guides</h1>
+    <div class="article-meta">
+      <span>📋 ITO 2001</span>
+      <span>🔄 Updated for FBR Tax Year 2025–26</span>
+      <span>🎓 Free &amp; Educational</span>
+    </div>
+  </div>
+</div>
+
+<!-- Top Ad -->
+<!--<div class="container">-->
+<!--  <div class="ad-wrapper">-->
+<!--    <div class="ad-wrapper-label">Advertisement</div>-->
+<!--    <div class="ad-zone ad-leaderboard">-->
+<!--      <div class="ad-zone-label">AdSense — Guides Top</div>-->
+<!--      <div class="ad-zone-size">728×90 / Responsive</div>-->
+<!--    </div>-->
+<!--  </div>-->
+<!--</div>-->
+
+<div class="content-grid">
+  <main class="content-main">
+
+    <!-- SEO Intro -->
+    <div style="background:var(--white);border:1px solid var(--border);border-radius:var(--radius-lg);padding:20px 24px;margin-bottom:24px;">
+      <p style="font-size:15px;color:var(--text-mid);line-height:1.8;margin:0;">
+        Welcome to TaxBuddy Umair's comprehensive <strong>income tax guides for Pakistan</strong>. These free guides cover everything you need to know about the <strong>Income Tax Ordinance, 2001 (ITO 2001)</strong> — from understanding tax slabs and filing returns to withholding tax sections, property tax, and filer vs non-filer rate differences. All guides are updated per <strong>Finance Act 2025-26</strong> and FBR notifications.
+      </p>
+      <div style="display:flex;gap:12px;flex-wrap:wrap;margin-top:14px;">
+        <a href="{% url 'SalaryCalculator' %}" style="font-size:13px;color:var(--green);font-weight:600;text-decoration:none;">💼 Salary Calculator →</a>
+        <a href="{% url 'withholding_tax_rates' %}" style="font-size:13px;color:var(--green);font-weight:600;text-decoration:none;">📊 WHT Rates →</a>
+        <a href="{% url 'atl_check' %}" style="font-size:13px;color:var(--green);font-weight:600;text-decoration:none;">✅ ATL Check →</a>
+        <a href="{% url 'tax_calendar' %}" style="font-size:13px;color:var(--green);font-weight:600;text-decoration:none;">📅 Tax Calendar →</a>
+      </div>
+    </div>
+
+    <!-- Static guide cards -->
+    <div class="section-header" style="margin-bottom:20px;">
+      <div>
+        <div class="section-tag">Comprehensive Guides</div>
+        <h2 class="section-title">Income Tax Topics</h2>
+      </div>
+    </div>
+
+    <div style="display:flex;flex-direction:column;gap:16px;margin-bottom:28px;">
+      {% for guide in guides %}
+      <div style="background:var(--white);border:1px solid var(--border);border-radius:var(--radius-lg);overflow:hidden;">
+        <div style="display:flex;align-items:stretch;">
+          <div style="width:5px;background:linear-gradient(180deg,var(--green),var(--navy));flex-shrink:0;"></div>
+          <div style="padding:20px 22px;flex:1;">
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;">
+              <span style="background:var(--green-light);color:var(--green);font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.08em;padding:3px 10px;border-radius:4px;">Income Tax Guide</span>
+              <span style="font-size:12px;color:var(--text-light);">Guide #{{ forloop.counter }}</span>
+            </div>
+            <h3 style="font-family:var(--font-head);font-size:18px;font-weight:700;color:var(--navy);margin:0 0 10px;">{{ guide.title }}</h3>
+            <p style="font-size:14px;color:var(--text-mid);line-height:1.7;margin:0 0 16px;">{{ guide.summary|striptags|truncatewords:45 }}</p>
+            <div style="display:flex;align-items:center;justify-content:space-between;padding-top:12px;border-top:1px solid var(--border);">
+              {% if guide.related_blog %}
+              <a href="{% url 'BlogDetails' slug=guide.related_blog.slug %}"
+                 style="display:inline-flex;align-items:center;gap:6px;background:var(--green);color:#fff;padding:7px 16px;border-radius:6px;font-size:13px;font-weight:600;text-decoration:none;">
+                📖 Read Full Article
+              </a>
+              {% else %}<span></span>{% endif %}
+              <span style="font-size:12px;color:var(--text-light);">{{ guide.summary|striptags|wordcount }} words</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      {% empty %}
+      <div style="text-align:center;padding:40px;color:var(--text-light);background:var(--white);border:1px solid var(--border);border-radius:var(--radius-lg);">
+        <p>Guides coming soon.</p>
+      </div>
+      {% endfor %}
+    </div>
+
+    <!-- Mid Ad --><!-- Mid Ad -->
+<!--    <div class="ad-wrapper">-->
+<!--      <div class="ad-wrapper-label">Advertisement</div>-->
+<!--      <div class="ad-zone ad-large-rect">-->
+<!--        <div class="ad-zone-label">AdSense — In-Content</div>-->
+<!--        <div class="ad-zone-size">336×280</div>-->
+<!--      </div>-->
+<!--    </div>-->
+
+    <!-- Blog Posts in this category -->
+    {% if blogs %}
+    <div class="section-header" style="margin:28px 0 16px;">
+      <div>
+        <div class="section-tag">Articles</div>
+        <h2 class="section-title">Income Tax Blog Posts</h2>
+      </div>
+      <a href="{% url 'viewBlogs_category' slug='income-tax' %}" class="section-link">View All →</a>
+    </div>
+    <div class="cards-grid">
+      {% for blog in blogs|slice:":6" %}
+      <a href="{% url 'BlogDetails' slug=blog.slug %}" class="card" style="text-decoration:none;">
+        <div class="card-body" style="padding-top:20px;">
+          <div class="card-tag">Income Tax</div>
+          <div class="card-title">{{ blog.title }}</div>
+          <div class="card-excerpt">{{ blog.meta_description|default:blog.content|striptags|truncatewords:15 }}</div>
+          <div class="card-footer">
+            <span>{{ blog.created_at|date:"M d, Y" }}</span>
+            <span class="card-read-more">Read →</span>
+          </div>
+        </div>
+      </a>
+      {% endfor %}
+    </div>
+    {% endif %}
+
+    <!-- FAQs -->
+    {% if faqs %}
+    <div style="margin-top:36px;">
+      <div class="section-tag" style="margin-bottom:10px;">FAQs</div>
+      <h2 class="section-title" style="margin-bottom:18px;">Income Tax FAQs</h2>
+      {% for faq in faqs %}
+      <div class="faq-item">
+        <div class="faq-question" role="button" tabindex="0" aria-expanded="false">
+          {{ faq.question }}<span class="faq-arrow" aria-hidden="true">+</span>
+        </div>
+        <div class="faq-answer">{{ faq.answer|safe }}</div>
+      </div>
+      {% endfor %}
+    </div>
+    {% endif %}
+
+    {% include 'partials/cta_banner.html' %}
+
+    <!-- Bottom Ad -->
+<!--    <div class="ad-wrapper">-->
+<!--      <div class="ad-wrapper-label">Advertisement</div>-->
+<!--      <div class="ad-zone ad-leaderboard">-->
+<!--        <div class="ad-zone-label">AdSense — Bottom</div>-->
+<!--        <div class="ad-zone-size">728×90 / Responsive</div>-->
+<!--      </div>-->
+<!--    </div>-->
+
+  </main>
+
+  <aside class="content-sidebar">
+    {% include 'partials/sidebar.html' %}
+  </aside>
+</div>
+{% endblock %}

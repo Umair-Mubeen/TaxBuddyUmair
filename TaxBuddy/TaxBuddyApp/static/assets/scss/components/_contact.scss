@@ -1,0 +1,840 @@
+
+.contact-form {
+  p {
+    font-weight: $regular;
+    font-size: 24px;
+    line-height: 36px;
+    color: $white;
+    margin-bottom: 24px;
+    @media #{$xs} {
+      font-size: 20px;
+      line-height: 30px;
+    }
+  }
+  input,
+  textarea {
+    width: 100%;
+    background: $white;
+    border: 1px solid #DDE1E0;
+    border-radius: 5px;
+    padding: 13px;
+  }
+  padding-left: 50px;
+  @media #{$xs} {
+    margin-top: 100px;
+    padding-left: 0;
+  }
+
+  label {
+    font-weight: $semi_bold;
+    font-size: 14px;
+    line-height: 20px;
+    color: $white;
+    margin-bottom: 10px;
+  }
+
+  input {
+    margin-bottom: 10px;
+    @media #{$xs} {
+      font-size: 14px;
+    }
+  }
+
+  textarea {
+    margin-bottom: 30px;
+    @media #{$xs} {
+      font-size: 14px;
+    }
+  }
+}
+
+.contact-img-elements {
+  height: 740px;
+  margin-right: 50px;
+  margin-left: -100px;
+  @media #{$lp} {
+    margin-left: 0;
+  }
+  @media #{$xm} {
+    height: auto;
+    margin-right: 0;
+    margin-left: 0;
+  }
+}
+
+img.contact-img {
+  border-radius: 8px;
+  width: 100%;
+  object-fit: cover;
+  height: 100%;
+}
+
+img.contact-shape1 {
+  position: absolute;
+  right: -95px;
+  top: 50%;
+  width: 190px;
+  z-index: 2;
+  @media #{$xm} {
+    right: 0;
+    top: 86%;
+    width: 120px;
+  }
+}
+
+.contact-form-2 {
+  input,
+  textarea {
+    font-family: $font3;
+    font-weight: $medium;
+    font-size: 16px;
+    line-height: 16px;
+    color: #304952;
+    width: 100%;
+    padding: 16px;
+    border-radius: 8px;
+    border: none;
+    margin-bottom: 20px;
+
+    &:focus {
+      outline: none;
+    }
+  }
+
+  .nice-select {
+    font-size: 16px;
+    height: 54px;
+    line-height: 54px;
+    color: #304952;
+    font-family: $font3;
+    font-weight: $medium;
+    border-color: transparent;
+
+    &:after {
+      border-bottom: 2px solid #304952;
+      border-right: 2px solid #304952;
+      height: 8px;
+      width: 8px;
+      right: 16px;
+      margin-top: -5px;
+    }
+  }
+}
+
+.contact-img-2 {
+  .contact-2-shape-1 {
+    width: 70px;
+    height: 70px;
+    position: absolute;
+    right: -42px;
+    bottom: -28px;
+    @media #{$xs} {
+      right: 0;
+    }
+  }
+
+  .contact-2-shape-2 {
+    position: absolute;
+    width: 300px;
+    height: 300px;
+    bottom: 20%;
+    left: -130px;
+    z-index: -1;
+    @media #{$xs} {
+      left: 0;
+    }
+  }
+
+  .contact-2-shape-3 {
+    position: absolute;
+    top: 0;
+    z-index: 9;
+    width: 40px;
+    height: 40px;
+    right: 100px;
+    top: -24px;
+  }
+}
+
+.contact-img-3 {
+  .contact-3-shape-4 {
+    position: absolute;
+    bottom: 0;
+    width: 140%;
+    height: 140%;
+    left: -28%;
+    top: -4%;
+    z-index: -1;
+
+    img {
+      animation: upNdown 5s infinite linear alternate;
+    }
+  }
+
+  .contact-3-shape-1 {
+    position: absolute;
+    top: 100px;
+    width: 40px;
+    height: 40px;
+    left: -40px;
+    z-index: 3;
+  }
+
+  .contact-3-shape-2 {
+    position: absolute;
+    top: 180px;
+    width: 40px;
+    height: 40px;
+    right: -26px;
+    z-index: 3;
+  }
+
+  .contact-3-shape-3 {
+    position: absolute;
+    bottom: -46px;
+    width: 40px;
+    height: 40px;
+    left: 40px;
+    z-index: 3;
+  }
+}
+
+.contact-2,
+.contact-3 {
+  .contact-img-elements {
+    height: 650px;
+    width: 530px;
+    margin-left: -50px;
+    margin-right: 0;
+    @media #{$xs} {
+      width: 100%;
+      height: 400px;
+      margin-left: 0;
+      margin-bottom: 100px;
+    }
+  }
+}
+
+
+
+
+.single-contact-box {
+  background: $white_bg;
+  box-shadow: 0px 5px 30px rgba(9, 8, 64, 0.05);
+  border-radius: 10px;
+  padding: 30px;
+  position: relative;
+  z-index: 2;
+  padding-left: 90px;
+  height: 154px;
+}
+
+.contact-box-icon {
+  position: absolute;
+  left: 30px;
+  top: 30px;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.contact-box-content {
+  p {
+    font-weight: $bold;
+    font-size: 16px;
+    line-height: 16px;
+    letter-spacing: 2px;
+    color: $secondary_color;
+    margin-bottom: 10px;
+  }
+  a {
+    font-weight: $bold;
+    font-size: 24px;
+    line-height: 34px;
+    color: $secondary_color;
+  }
+  
+}
+
+.contact-boxes {
+  margin-top: -77px;
+}
+
+.main-form {
+  input, textarea{
+    margin-bottom: 24px;
+    background: #E7E8F4;
+    border-radius: 5px;
+    border: none;
+    padding: 20px 20px;
+    width: 100%;
+    font-weight: $medium;
+    font-size: 16px;
+    line-height: 24px;
+    color: $secondary_color;
+    &::placeholder{
+      color: $secondary_color;
+    }
+  }
+}
+
+
+//******** home 7 contact area ********
+
+.contact7 {
+  .contact7-hadding {
+    span.span {
+      color: #fff;
+      font-family: $font3;
+      font-size: 16px;
+      font-style: normal;
+      font-weight: 500;
+      line-height: 16px; /* 100% */
+      background-color: #ffffff3a;
+      padding: 8px 16px;
+      border-radius: 100px;
+      img {
+        height: 20px;
+      }
+    }
+
+    h2 {
+      color: #fff;
+      font-family: $font3;
+      font-size: 44px;
+      font-style: normal;
+      font-weight: 700;
+      line-height: 54px; /* 122.727% */
+      padding: 0;
+      margin: 0;
+  
+      span.after {
+        position: relative;
+        img {
+          position: absolute;
+          bottom: -10px;
+          left: 0;
+        }
+      }
+
+  }
+}
+
+.contact7-box-all {
+  background: #fff;
+  padding: 24px;
+  border-radius: 5px;
+  margin-top: 40px;
+  .contact7-hadding {
+    h4 {
+      color: $new-title-colot1;
+      font-family: $font3;
+      font-size: 24px;
+      font-style: normal;
+      font-weight: 700;
+      line-height: 24px; /* 100% */
+    }
+    p {
+      color: var(--investment-consulting-paragraph-color, #4B4E50);
+      font-size: 16px;
+      font-style: normal;
+      font-weight: 500;
+      line-height: 26px; /* 162.5% */
+      padding-top: 10px;
+    }
+  }
+
+  .contact7-form {
+    .single-input {
+      margin-top: 20px;
+      input {
+        background-color: #E7E7E8;
+        padding: 14px;
+        border-radius: 5px;
+        border: none;
+        width: 100%;
+        &::placeholder {
+          color: var(--investment-consulting-text-color, #0a1317bd);
+          font-family: $font3;
+          font-size: 16px;
+          font-style: normal;
+          font-weight: 500;
+          line-height: 16px; /* 100% */
+        }
+      }
+      textarea {
+        background-color: #E7E7E8;
+        padding: 13px;
+        border-radius: 5px;
+        border: none;
+        width: 100%;
+        &::placeholder {
+          color: var(--investment-consulting-text-color, #0a1317bd);
+          font-family: $font3;
+          font-size: 16px;
+          font-style: normal;
+          font-weight: 500;
+          line-height: 16px; /* 100% */
+        }
+      }
+    }
+  }
+
+  .contact7-button {
+    button {
+      width: 100%;
+      border: none;
+    }
+  }
+}
+
+.contact7-all-boxs {
+  padding-left: 30px;
+
+  @media #{$md} {
+    padding-left: 0;
+  }
+
+  @media #{$xs} {
+    padding-left: 0;
+  }
+  .contact7-icon-box {
+    display: flex;
+    align-items: start;
+    background-color: #fff;
+    padding: 32px;
+    border-radius: 5px;
+    margin: 16px 0;
+    transition: 0.4s;
+    .icon {
+      img {
+        transition: 0.4s;
+      }
+    }
+    &:hover {
+      background: $new-bg-color1;
+      transition: 0.4s;
+      transform: translateY(-10px);
+      .headding {
+        h5 {
+          color: #fff;
+          transition: 0.4s;
+        }
+        a {
+          color: #fff;
+          transition: 0.4s;
+        }
+      }
+      .icon {
+        img {
+          filter: brightness(20);
+          transition: 0.4s;
+        }
+      }
+    }
+
+    .headding {
+      padding-left: 20px;
+      h5 {
+        color: $new-title-colot1;
+        font-family: $font3;
+        font-size: 20px;
+        font-style: normal;
+        font-weight: 700;
+        line-height: 20px; /* 100% */
+        padding-bottom: 5px;
+        transition: 0.4s;
+      }
+      a {
+        color: $new-title-colot1;
+        font-family: $font3;
+        font-size: 16px;
+        font-style: normal;
+        font-weight: 500;
+        line-height: 26px; /* 162.5% */
+        transition: 0.4s;
+      }
+    }
+  }
+}
+
+}
+
+//******** home 7 contact area ********
+
+//******** home 8 contact area ********
+
+.contact8 {
+  padding-bottom: 250px;
+  background-color: $new-bg-color6;
+  .contact8-img {
+    padding-right: 30px;
+    @media #{$md} {
+      padding-right: 0;
+    }
+    @media #{$xs} {
+      padding-right: 0;
+    }
+    img {
+      border-radius: 4px;
+    }
+  }
+
+  .contact8-form {
+    background-color: #fff;
+    padding: 32px;
+    border-radius: 4px;
+    .contact8-hadding {
+      h4 {
+        color: var(--visa-immigrant-consulting-text-color, #100906);
+        font-family: $font7;
+        font-size: 24px;
+        font-style: normal;
+        font-weight: 600;
+        line-height: 24px; /* 100% */
+      }
+
+      p {
+        color: var(--visa-immigrant-consulting-paragraph-color, #585452);
+        font-size: 16px;
+        font-style: normal;
+        font-weight: 500;
+        line-height: 16px; /* 100% */
+        padding-top: 5px;
+      }
+
+      .contact8-form-all {
+        ul {
+          li {
+            border-radius: 2px;
+            background: rgba(1, 92, 181, 0.10);
+            padding: 8px 14px;
+            display: inline-block;
+            color: #100906;
+            font-family: $font7;
+            font-size: 16px;
+            font-style: normal;
+            font-weight: 500;
+            line-height: 16px; /* 100% */
+            margin-top: 12px;
+            margin-right: 10px;
+            cursor: pointer;
+            transition: 0.4s;
+            margin-bottom: 5px;
+            &:hover {
+              color: #fff;
+              background: $new-bg-color5;
+              transition: 0.4s;
+            } 
+          }
+        }
+        ul.select-c {
+          li.active {
+            color: #fff;
+            background: $new-bg-color5;
+            transition: 0.4s;
+          }
+        }
+        .single-input {
+          input {
+            padding: 13px;
+            border-radius: 4px;
+            background: #F3F3F3;
+            margin-top: 20px;
+            border: none;
+            width: 100%;
+            &::placeholder {
+              color: var(--visa-immigrant-consulting-text-color, #100906b4);
+              font-family: $font7;
+              font-size: 16px;
+              font-style: normal;
+              font-weight: 500;
+              line-height: 16px; /* 100% */
+            }
+          }
+
+          textarea {
+            padding: 13px;
+            border-radius: 4px;
+            background: #F3F3F3;
+            margin-top: 20px;
+            border: none;
+            width: 100%;
+            &::placeholder {
+              color: var(--visa-immigrant-consulting-text-color, #100906b4);
+              font-family: $font7;
+              font-size: 16px;
+              font-style: normal;
+              font-weight: 500;
+              line-height: 16px; /* 100% */
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+.cta8 {
+  margin-top: -140px;
+  .cta8-area {
+    background-color: $new-bg-color5;
+    padding: 48px 40px;
+
+    .cta8-headding {
+      h1 {
+        color: var(--d-white, #FFF);
+        font-family: $font7;
+        font-size: 44px;
+        font-style: normal;
+        font-weight: 600;
+        line-height: 54px; /* 122.727% */
+
+        @media #{$md} {
+          font-size: 32px;
+          line-height: 40px;
+        }
+        @media #{$xs} {
+          font-size: 32px;
+          line-height: 40px;
+        }
+      }
+      p {
+        color: rgba(255, 255, 255, 0.80);
+        font-family: $font7;
+        font-size: 16px;
+        font-style: normal;
+        font-weight: 500;
+        line-height: 26px; /* 162.5% */
+        padding-top: 5px;
+      }
+    }
+    
+    .cta8-form {
+      .single-input {
+        input {
+          background: #347DC4;
+          padding: 12px;
+          border-radius: 2px;
+          border: none;
+          margin-top: 16px;
+          width: 100%;
+          color: #fff;
+          &::placeholder {
+            color: var(--d-white, #FFF);
+            font-family: $font7;
+            font-size: 16px;
+            font-style: normal;
+            font-weight: 500;
+          }
+        }
+      }
+
+      .button {
+        button {
+          width: 100%;
+          padding: 17px;
+        }
+      }
+    }
+
+  }
+}
+
+//******** home 8 contact area ********
+
+//******** home 9 contact area ********
+
+.contact9 {
+
+  .contact9-img {
+    margin-right: 30px;
+
+    @media #{$md} {
+      margin-right: 0px;
+    }
+    @media #{$xs} {
+      margin-right: 0px;
+    }
+  }
+  .contact9-form {
+    input {
+      padding: 16px 20px;
+      border-radius: 5px;
+      border: none;
+      background-color: #E2E3F2;
+      margin-top: 20px;
+      width: 100%;
+      &::placeholder {
+        color: var(--insurance-text-color, #0f182cb0);
+        font-size: 16px;
+        font-style: normal;
+        font-weight: 500;
+        line-height: 16px; /* 100% */
+        letter-spacing: -0.5px;
+      }
+    }
+
+    textarea {
+      padding: 16px 20px;
+      border-radius: 5px;
+      border: none;
+      background-color: #E2E3F2;
+      margin-top: 0px;
+      width: 100%;
+      &::placeholder {
+        color: var(--insurance-text-color, #0f182cb0);
+        font-size: 16px;
+        font-style: normal;
+        font-weight: 500;
+        line-height: 16px; /* 100% */
+        letter-spacing: -0.5px;
+      }
+    }
+
+
+    .nice-select.wide.select9 {
+      border: none;
+      background: #E2E3F2;
+      height: 60px;
+      line-height: 60px;
+      margin-bottom: 0;
+      margin-top: 20px;
+      color: var(--insurance-text-color, #0f182cb0);
+      font-size: 16px;
+      font-style: normal;
+      font-weight: 500;
+      letter-spacing: -0.5px;
+  }
+
+  }
+}
+
+//******** home 9 contact area ********
+
+//******** home 10 contact area ********
+
+.contact10 {
+
+  .headding10 {
+    margin-right: 30px;
+
+    @media #{$md} {
+      margin-right: 0;
+    }
+    @media #{$xs} {
+      margin-right: 0;
+    }
+  }
+  .contact-10-area {
+    h3 {
+      color: var(--D-Text, #212529);
+      font-family: $font9;
+      font-size: 20px;
+      font-style: normal;
+      font-weight: 400;
+      line-height: 20px; /* 100% */
+    }
+
+    .time-area {
+      padding: 16px 0;
+      border-bottom: 1px solid #4950579a;
+      a {
+        color: var(--d-para, #495057);
+        text-align: center;
+        font-size: 16px;
+        font-style: normal;
+        font-weight: 500;
+        line-height: 16px; /* 100% */
+        display: inline-block;
+        margin-right: 24px;
+        img {
+          margin-top: -3px;
+        }
+      }
+    }
+
+    .contact-icon-box {
+     .contact-box {
+      display: flex;
+      align-items: start;
+      margin-top: 30px;
+      .icon {
+        height: 50px;
+        width: 50px;
+        text-align: center;
+        line-height: 50px;
+        background-color: $new-bg-color11;
+        border-radius: 50%;
+        margin-right: 24px;
+      }
+      .headding {
+        h4 {
+          color: var(--D-Text, #212529);
+          font-family: $font9;
+          font-size: 20px;
+          font-style: normal;
+          font-weight: 700;
+          line-height: 20px; /* 100% */
+        }
+        a {
+          color: var(--d-para, #495057);
+          font-size: 16px;
+          font-style: normal;
+          font-weight: 500;
+          line-height: 16px; /* 100% */
+        }
+      }
+     }
+    }
+  }
+
+
+  .contact10-form {
+    background-color: #F8F9FA;
+    padding: 24px;
+    border-radius: 8px;
+    @media #{$md} {
+      margin-top: 30px;
+    }
+
+    @media #{$xs} {
+      margin-top: 30px;
+    }
+    .single-input {
+      padding-top: 24px;
+      label {
+        color: var(--D-Text, #212529);
+        font-size: 16px;
+        font-style: normal;
+        font-weight: 600;
+        line-height: 16px; /* 100% */
+        padding-bottom: 16px;
+      }
+      input, textarea {
+        padding: 16px 20px;
+        border: none;
+        border-radius: 8px;
+        border: 1px solid var(--Stroke-Color, #CED4DA);
+        background-color: transparent;
+        width: 100%;
+        &::placeholder {
+          color: var(--d-para, #495057);
+          font-size: 16px;
+          font-style: normal;
+          font-weight: 500;
+          line-height: 16px; /* 100% */
+        }
+      }
+    }
+  }
+
+
+  button {
+    border: none;
+  }
+}
+
+//******** home 10 contact area ********

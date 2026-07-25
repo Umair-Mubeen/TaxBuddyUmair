@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Test Page | TaxBuddy Umair{% endblock %}
+{% block content %}
+<div class="container" style="padding:60px 20px;text-align:center;">
+  <div style="font-size:56px;margin-bottom:16px;">✅</div>
+  <h1 style="font-family:var(--font-head);color:var(--navy);margin-bottom:8px;">Django is Working!</h1>
+  <p style="color:var(--text-light);font-size:15px;">Templates, static files, and URL routing are all configured correctly.</p>
+  <div style="display:flex;gap:12px;justify-content:center;margin-top:24px;flex-wrap:wrap;">
+    <a href="{% url 'index' %}"           class="btn-primary"  style="text-decoration:none;">🏠 Homepage</a>
+    <a href="{% url 'SalaryCalculator' %}" class="btn-outline" style="text-decoration:none;">🧮 Calculator</a>
+    <a href="{% url 'question_list' %}"    class="btn-outline" style="text-decoration:none;">📝 MCQs</a>
+  </div>
+</div>
+{% endblock %}

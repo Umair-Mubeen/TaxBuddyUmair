@@ -1,0 +1,264 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}ATL Check — Active Taxpayer List Pakistan 2025 | TaxBuddy Umair{% endblock %}
+{% block meta_desc %}Check your ATL status on FBR Active Taxpayers List Pakistan 2025. Verify filer status by CNIC, NTN or registration number. Updated ATL surcharge and filer benefits guide.{% endblock %}
+
+{% block extra_css %}
+<style>
+.atl-hero-card{background:linear-gradient(135deg,#0A2647,#144272);border-radius:var(--radius-lg);padding:32px;color:#fff;margin-bottom:24px;text-align:center;}
+.atl-step{display:flex;gap:16px;align-items:flex-start;padding:16px;background:var(--white);border:1px solid var(--border);border-radius:var(--radius-lg);margin-bottom:12px;}
+.atl-step-num{width:36px;height:36px;border-radius:50%;background:var(--navy);color:#fff;font-weight:700;font-size:16px;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.rate-compare{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:16px 0;}
+.rate-card-filer{background:#f0fdf4;border:1px solid #bbf7d0;border-radius:var(--radius-lg);padding:18px;text-align:center;}
+.rate-card-nonfiler{background:#fef2f2;border:1px solid #fca5a5;border-radius:var(--radius-lg);padding:18px;text-align:center;}
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="article-hero">
+  <div class="article-hero-inner">
+    <div class="breadcrumb">
+      <a href="{% url 'index' %}">Home</a>
+      <span class="breadcrumb-sep">›</span>
+      <span>ATL Check</span>
+    </div>
+    <h1>ATL Check — Active Taxpayer List Pakistan</h1>
+    <div class="article-meta">
+      <span>📋 FBR ATL 2025</span>
+      <span>🔄 Updated Weekly</span>
+      <span>✅ Free Check</span>
+    </div>
+  </div>
+</div>
+
+<div class="content-grid">
+  <main class="content-main">
+
+    <!-- ATL Check Widget — DB Search -->
+    <div class="atl-hero-card" style="padding:28px;">
+      <div style="font-size:40px;margin-bottom:10px;">🔍</div>
+      <h2 style="font-size:22px;font-weight:700;color:#fff;margin:0 0 8px;">Check Your ATL Status</h2>
+      <p style="font-size:14px;color:rgba(255,255,255,.7);margin:0 0 12px;">Search directly from FBR Active Taxpayers List — No Captcha!</p>
+
+      <!-- ATL Type Toggle -->
+      <div style="display:flex;gap:8px;justify-content:center;margin-bottom:6px;">
+        <button onclick="setATLType('income',this)"
+          id="btnIncome"
+          style="padding:7px 20px;border-radius:20px;border:2px solid #0D9E72;background:#0D9E72;color:#fff;font-size:13px;font-weight:600;cursor:pointer;font-family:inherit;">
+          📋 Income Tax ATL
+        </button>
+        <button onclick="setATLType('sales',this)"
+          id="btnSales"
+          style="padding:7px 20px;border-radius:20px;border:2px solid rgba(255,255,255,.3);background:transparent;color:rgba(255,255,255,.7);font-size:13px;font-weight:600;cursor:pointer;font-family:inherit;">
+          🏪 Sales Tax ATL
+        </button>
+      </div>
+      {% if atl_total %}
+      <div style="font-size:12px;color:rgba(255,255,255,.45);margin-bottom:18px;">📋 {{ atl_total|floatformat:"0" }} active taxpayers in database</div>
+      {% endif %}
+
+      <!-- DB Search Form -->
+      <div style="background:rgba(255,255,255,.08);border-radius:12px;padding:20px;max-width:480px;margin:0 auto;">
+
+        <div style="margin-bottom:14px;text-align:left;">
+          <label style="font-size:12px;font-weight:600;color:rgba(255,255,255,.6);text-transform:uppercase;letter-spacing:.06em;display:block;margin-bottom:6px;">Enter CNIC or NTN</label>
+          <input type="text" id="atlInput"
+            placeholder="e.g. 3520112345671 or 1234567"
+            maxlength="15"
+            style="width:100%;padding:12px 14px;border-radius:8px;border:2px solid transparent;font-size:15px;font-family:inherit;background:#fff;color:#0A2647;box-sizing:border-box;outline:none;letter-spacing:.05em;transition:border-color .15s;"
+            oninput="this.value=this.value.replace(/[^0-9]/g,'').slice(0,13)"
+            onkeydown="if(event.key==='Enter') searchATL()"
+          >
+          <div style="font-size:11px;color:rgba(255,255,255,.4);margin-top:5px;">CNIC: 13 digits without dashes · NTN: 7 digits</div>
+        </div>
+
+        <button onclick="searchATL()" id="atlBtn"
+          style="width:100%;background:#0D9E72;color:#fff;border:none;padding:13px;border-radius:8px;font-size:15px;font-weight:700;font-family:inherit;cursor:pointer;transition:background .15s;">
+          🔍 Check ATL Status
+        </button>
+
+        <!-- Result -->
+        <div id="atlResult" style="display:none;margin-top:16px;border-radius:10px;padding:16px;text-align:left;"></div>
+      </div>
+
+      <p style="font-size:11px;color:rgba(255,255,255,.35);margin:14px 0 0;">
+        Data sourced from FBR ATL — updated weekly
+      </p>
+    </div>
+
+    <script>
+    function searchATL(){
+      var q = document.getElementById('atlInput').value.trim().replace(/-/g,'').replace(/ /g,'');
+      var btn = document.getElementById('atlBtn');
+      var result = document.getElementById('atlResult');
+
+      if(!q || q.length < 7){
+        showResult('⚠️ Please enter at least 7 digits', '#fffbeb', '#92400e', false);
+        return;
+      }
+
+      // Loading state
+      btn.textContent = '⏳ Searching...';
+      btn.disabled = true;
+      result.style.display = 'none';
+
+      fetch('/api/atl-search/?q=' + encodeURIComponent(q) + '&type=income')
+        .then(function(r){ return r.json(); })
+        .then(function(data){
+          btn.textContent = '🔍 Check ATL Status';
+          btn.disabled = false;
+
+          if(data.found){
+            result.style.display = 'block';
+            result.style.background = 'rgba(13,158,114,.15)';
+            result.style.border = '1.5px solid #0D9E72';
+            result.innerHTML =
+              '<div style="display:flex;align-items:center;gap:10px;margin-bottom:12px;">' +
+                '<div style="width:40px;height:40px;border-radius:50%;background:#0D9E72;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0;">✅</div>' +
+                '<div><div style="font-size:16px;font-weight:700;color:#fff;">Active Filer</div>' +
+                '<div style="font-size:12px;color:rgba(255,255,255,.6);">Appears on FBR Active Taxpayers List</div></div>' +
+              '</div>' +
+              '<div style="background:rgba(255,255,255,.08);border-radius:8px;padding:12px;font-size:13px;color:rgba(255,255,255,.9);line-height:2;">' +
+              '<div><span style="color:rgba(255,255,255,.5);width:80px;display:inline-block;">Name</span><strong>' + (data.name||'—') + '</strong></div>' +
+              '<div><span style="color:rgba(255,255,255,.5);width:80px;display:inline-block;">NTN</span><strong>' + data.ntn + '</strong></div>' +
+              '<div><span style="color:rgba(255,255,255,.5);width:80px;display:inline-block;">Tax Year</span><strong>ATL ' + data.tax_year + '</strong></div>' +
+              '<div><span style="color:rgba(255,255,255,.5);width:80px;display:inline-block;">Type</span><strong>' + (data.atl_type||'Income Tax') + '</strong></div>' +
+              '</div>' +
+              '<div style="margin-top:10px;font-size:12px;color:#0D9E72;background:rgba(13,158,114,.1);padding:8px 12px;border-radius:6px;border:1px solid rgba(13,158,114,.3);">💚 This person pays lower WHT rates on property, banking & vehicles</div>';
+          } else {
+            result.style.display = 'block';
+            result.style.background = '#fef2f2';
+            result.style.border = '1px solid #fca5a5';
+            result.innerHTML =
+              '<div style="font-size:16px;font-weight:700;color:#dc2626;margin-bottom:8px;">❌ Not on ATL</div>' +
+              '<div style="font-size:13px;color:#991b1b;line-height:1.7;">' + (data.message || 'No record found. This person may be a Non-Filer or ATL not updated yet.') + '</div>' +
+              '<div style="margin-top:10px;font-size:12px;color:#dc2626;background:#fee2e2;padding:6px 10px;border-radius:6px;">File your return at <a href="https://iris.fbr.gov.pk" target="_blank" style="color:#dc2626;font-weight:700;">iris.fbr.gov.pk</a> to become a filer</div>';
+          }
+        })
+        .catch(function(){
+          btn.textContent = '🔍 Check ATL Status';
+          btn.disabled = false;
+          showResult('❌ Connection error. Please try again.', '#fef2f2', '#dc2626', false);
+        });
+    }
+
+    function showResult(msg, bg, color, found){
+      var result = document.getElementById('atlResult');
+      result.style.display = 'block';
+      result.style.background = bg;
+      result.style.border = '1px solid ' + color;
+      result.style.color = color;
+      result.innerHTML = '<div style="font-weight:600;">' + msg + '</div>';
+    }
+    </script>
+
+    <!-- How to Check -->
+    <h2 style="font-size:20px;font-weight:700;color:var(--navy);margin:0 0 16px;">How to Check ATL Status</h2>
+
+    <div class="atl-step">
+      <div class="atl-step-num">1</div>
+      <div>
+        <div style="font-weight:700;color:var(--navy);margin-bottom:4px;">Visit FBR IRIS Portal</div>
+        <div style="font-size:13.5px;color:var(--text-mid);">Go to <a href="https://iris.fbr.gov.pk/" target="_blank" style="color:var(--green);font-weight:600;">iris.fbr.gov.pk</a> — FBR's official IRIS portal</div>
+      </div>
+    </div>
+
+    <div class="atl-step">
+      <div class="atl-step-num">2</div>
+      <div>
+        <div style="font-weight:700;color:var(--navy);margin-bottom:4px;">Click "Online Verifications"</div>
+        <div style="font-size:13.5px;color:var(--text-mid);">On the IRIS homepage scroll down to <strong>Online Verifications</strong> section — no login required</div>
+      </div>
+    </div>
+
+    <div class="atl-step">
+      <div class="atl-step-num">3</div>
+      <div>
+        <div style="font-weight:700;color:var(--navy);margin-bottom:4px;">Click "Active Taxpayer List (Income Tax)"</div>
+        <div style="font-size:13.5px;color:var(--text-mid);">From the left panel select <strong>Active Taxpayer List (Income Tax)</strong> — the verification form will open on the right</div>
+      </div>
+    </div>
+
+    <div class="atl-step">
+      <div class="atl-step-num">4</div>
+      <div>
+        <div style="font-weight:700;color:var(--navy);margin-bottom:4px;">Select Parameter Type</div>
+        <div style="font-size:13.5px;color:var(--text-mid);">Select from dropdown: <strong>NTN</strong>, <strong>CNIC</strong>, <strong>Passport No.</strong>, or <strong>Reg/Inc. No.</strong> — then enter your Registration No.</div>
+      </div>
+    </div>
+
+    <div class="atl-step">
+      <div class="atl-step-num">5</div>
+      <div>
+        <div style="font-weight:700;color:var(--navy);margin-bottom:4px;">Enter Captcha & Click Verify</div>
+        <div style="font-size:13.5px;color:var(--text-mid);">Enter the Captcha code shown on screen and click <strong>Verify</strong>. Result will show immediately — Active Filer ✅ or Non-Filer ❌</div>
+      </div>
+    </div>
+
+    <!-- Also check via SMS -->
+    <div style="background:#f0fdf4;border:1px solid #bbf7d0;border-radius:var(--radius-lg);padding:20px;margin:20px 0;">
+      <h3 style="font-size:16px;font-weight:700;color:#15803d;margin:0 0 10px;">📱 Also Check via ATL Portal (Alternative)</h3>
+      <p style="font-size:13.5px;color:var(--text-mid);margin:0 0 10px;">You can also check directly at FBR's ATL portal:</p>
+      <div style="background:#fff;border:1px solid #bbf7d0;border-radius:8px;padding:12px 16px;font-size:14px;color:var(--navy);">
+        <a href="https://iris.fbr.gov.pk/" target="_blank" style="color:var(--green);font-weight:600;">ATL Check</a>
+        <div style="font-size:12px;color:var(--text-light);margin-top:4px;">Enter CNIC or NTN directly — no captcha required on this portal</div>
+      </div>
+    </div>
+
+    <!-- Filer vs Non-Filer Rates -->
+    <h2 style="font-size:20px;font-weight:700;color:var(--navy);margin:24px 0 16px;">Why Being a Filer Matters</h2>
+
+    <div class="rate-compare">
+      <div class="rate-card-filer">
+        <div style="font-size:32px;margin-bottom:8px;">✅</div>
+        <div style="font-size:16px;font-weight:700;color:#15803d;margin-bottom:12px;">Active Filer</div>
+        <div style="font-size:13px;color:#166534;text-align:left;">
+          <div style="padding:5px 0;border-bottom:1px solid #bbf7d0;">🏠 Property Sale: <strong>4.5%</strong></div>
+          <div style="padding:5px 0;border-bottom:1px solid #bbf7d0;">🏡 Property Buy: <strong>1.5%</strong></div>
+          <div style="padding:5px 0;border-bottom:1px solid #bbf7d0;">🏦 Bank Profit: <strong>20%</strong></div>
+          <div style="padding:5px 0;">🚗 Vehicle Reg: <strong>Lower rate</strong></div>
+        </div>
+      </div>
+      <div class="rate-card-nonfiler">
+        <div style="font-size:32px;margin-bottom:8px;">❌</div>
+        <div style="font-size:16px;font-weight:700;color:#dc2626;margin-bottom:12px;">Non-Filer</div>
+        <div style="font-size:13px;color:#991b1b;text-align:left;">
+          <div style="padding:5px 0;border-bottom:1px solid #fca5a5;">🏠 Property Sale: <strong>11.5%</strong></div>
+          <div style="padding:5px 0;border-bottom:1px solid #fca5a5;">🏡 Property Buy: <strong>10.5%</strong></div>
+          <div style="padding:5px 0;border-bottom:1px solid #fca5a5;">🏦 Bank Profit: <strong>40%</strong></div>
+          <div style="padding:5px 0;">🚗 Vehicle Reg: <strong>Higher rate</strong></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- How to become filer -->
+    <div style="background:var(--white);border:1px solid var(--border);border-radius:var(--radius-lg);padding:20px;margin-top:20px;">
+      <h3 style="font-size:16px;font-weight:700;color:var(--navy);margin:0 0 12px;">📝 How to Become a Filer</h3>
+      <ol style="font-size:13.5px;color:var(--text-mid);line-height:2;margin:0;padding-left:20px;">
+        <li>Register on IRIS portal — <a href="https://iris.fbr.gov.pk" target="_blank" style="color:var(--green);font-weight:600;">iris.fbr.gov.pk</a></li>
+        <li>Obtain your NTN (National Tax Number)</li>
+        <li>File your income tax return for the latest tax year</li>
+        <li>Your name appears on ATL within 2-3 days of filing</li>
+      </ol>
+      <div style="margin-top:12px;padding-top:12px;border-top:1px solid var(--border);">
+        <span style="font-size:13px;color:var(--text-light);">Return filing deadline: </span>
+        <strong style="color:var(--navy);">30 September (Section 118, ITO 2001)</strong>
+      </div>
+    </div>
+
+    <!-- ATL Surcharge -->
+    <div style="background:#fffbeb;border:1px solid #fde68a;border-radius:var(--radius-lg);padding:20px;margin-top:16px;">
+      <h3 style="font-size:15px;font-weight:700;color:#92400e;margin:0 0 8px;">⚠️ Late Filer ATL Surcharge</h3>
+      <p style="font-size:13.5px;color:#92400e;line-height:1.65;margin:0;">
+        If you file your return after the due date (30 September), you can still appear on ATL as a <strong>Late Filer</strong> by paying an ATL surcharge of <strong>Rs. 1,000</strong>. Late filers pay intermediate rates — higher than active filers but lower than non-filers.
+      </p>
+    </div>
+
+    {% include 'partials/cta_banner.html' %}
+
+  </main>
+  <aside class="content-sidebar">
+    {% include 'partials/sidebar.html' %}
+  </aside>
+</div>
+{% endblock %}

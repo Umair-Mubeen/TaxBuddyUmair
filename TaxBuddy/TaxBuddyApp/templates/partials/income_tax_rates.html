@@ -1,0 +1,178 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Income Tax Rates Pakistan {{ selected_year }} | TaxBuddy Umair{% endblock %}
+{% block meta_desc %}{{ meta_description|default:"Complete income tax rates Pakistan 2025-26 — salary slabs, business tax, AOP rates and company tax. FBR notified rates updated per Finance Act 2025." }}{% endblock %}
+{% block content %}
+
+<div class="article-hero">
+  <div class="article-hero-inner">
+    <div class="breadcrumb">
+      <a href="{% url 'index' %}">Home</a><span class="breadcrumb-sep">›</span>
+      <a href="{% url 'income_tax_guides' %}">Income Tax Guides</a><span class="breadcrumb-sep">›</span>
+      <span>Tax Rates</span>
+    </div>
+    <h1>Income Tax Rates Pakistan — {{ selected_year }}</h1>
+    <div class="article-meta">
+      <span>📊 FBR Notified Slabs</span>
+      <span>🔄 Salary, Business, AOP &amp; Company</span>
+    </div>
+  </div>
+</div>
+
+<div class="container">
+  <div class="ad-wrapper"><div class="ad-wrapper-label">Advertisement</div>
+    <div class="ad-zone ad-leaderboard"><div class="ad-zone-label">AdSense — Top</div><div class="ad-zone-size">728×90</div></div>
+  </div>
+</div>
+
+<div class="content-grid">
+  <main class="content-main">
+
+    <!-- Year Selector -->
+    <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:24px;align-items:center;">
+      <span style="font-size:13px;font-weight:600;color:var(--text-mid);">Tax Year:</span>
+      {% for year in years %}
+      <a href="?section={{ active_section }}&year={{ year }}"
+         style="padding:6px 16px;border-radius:20px;font-size:13px;font-weight:600;text-decoration:none;
+                {% if selected_year == year %}background:var(--green);color:#fff;{% else %}background:var(--bg);color:var(--text-mid);border:1px solid var(--border);{% endif %}">
+        {{ year }}
+      </a>
+      {% endfor %}
+    </div>
+
+    <!-- Section Tabs -->
+    <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:24px;">
+      {% for tab_id, tab_label in tab_sections %}
+      <a href="?section={{ tab_id }}&year={{ selected_year }}"
+         style="padding:8px 18px;border-radius:8px;font-size:13px;font-weight:600;text-decoration:none;
+                {% if active_section == tab_id %}background:var(--navy);color:#fff;{% else %}background:var(--bg);color:var(--text-mid);border:1px solid var(--border);{% endif %}">
+        {{ tab_label }}
+      </a>
+      {% empty %}
+      <a href="?section=salary&year={{ selected_year }}" style="padding:8px 18px;border-radius:8px;font-size:13px;font-weight:600;text-decoration:none;{% if active_section == 'salary' %}background:var(--navy);color:#fff;{% else %}background:var(--bg);color:var(--text-mid);border:1px solid var(--border);{% endif %}">💼 Salary</a>
+      <a href="?section=business&year={{ selected_year }}" style="padding:8px 18px;border-radius:8px;font-size:13px;font-weight:600;text-decoration:none;{% if active_section == 'business' %}background:var(--navy);color:#fff;{% else %}background:var(--bg);color:var(--text-mid);border:1px solid var(--border);{% endif %}">🏢 Business</a>
+      <a href="?section=aop&year={{ selected_year }}" style="padding:8px 18px;border-radius:8px;font-size:13px;font-weight:600;text-decoration:none;{% if active_section == 'aop' %}background:var(--navy);color:#fff;{% else %}background:var(--bg);color:var(--text-mid);border:1px solid var(--border);{% endif %}">🤝 AOP</a>
+      <a href="?section=company&year={{ selected_year }}" style="padding:8px 18px;border-radius:8px;font-size:13px;font-weight:600;text-decoration:none;{% if active_section == 'company' %}background:var(--navy);color:#fff;{% else %}background:var(--bg);color:var(--text-mid);border:1px solid var(--border);{% endif %}">🏦 Company</a>
+      {% endfor %}
+    </div>
+
+    <!-- Salary Slabs -->
+    {% if active_section == 'salary' %}
+    <div style="background:var(--white);border:1px solid var(--border);border-radius:var(--radius-lg);overflow:hidden;margin-bottom:24px;">
+      <div style="background:var(--navy);padding:14px 20px;display:flex;justify-content:space-between;align-items:center;">
+        <h2 style="font-family:var(--font-head);font-size:18px;color:#fff;margin:0;">Salary Individual — Tax Year {{ selected_year }}</h2>
+        <a href="{% url 'SalaryCalculator' %}" class="btn-wa-sm">🧮 Calculate</a>
+      </div>
+      <div style="overflow-x:auto;">
+        <table class="rates-table">
+          <thead><tr><th>Annual Income (PKR)</th><th>Base Tax (PKR)</th><th>Rate on Excess</th></tr></thead>
+          <tbody>
+            {% for bracket in salary_brackets %}
+            <tr>
+              <td>
+                {% if bracket.income_max %}
+                  {{ bracket.income_min|floatformat:0 }} – {{ bracket.income_max|floatformat:0 }}
+                {% else %}
+                  Above {{ bracket.income_min|floatformat:0 }}
+                {% endif %}
+              </td>
+              <td>{{ bracket.base_tax|floatformat:0 }}</td>
+              <td><span class="rate-badge">{{ bracket.rate_percent|floatformat:1 }}%</span></td>
+            </tr>
+            {% empty %}
+            <tr><td colspan="3" style="text-align:center;color:var(--text-light);padding:20px;">No brackets found for {{ selected_year }}</td></tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+    {% endif %}
+
+    <!-- Business / AOP Slabs -->
+    {% if active_section == 'business' or active_section == 'aop' %}
+    <div style="background:var(--white);border:1px solid var(--border);border-radius:var(--radius-lg);overflow:hidden;margin-bottom:24px;">
+      <div style="background:var(--navy);padding:14px 20px;display:flex;justify-content:space-between;align-items:center;">
+        <h2 style="font-family:var(--font-head);font-size:18px;color:#fff;margin:0;">
+          {% if active_section == 'aop' %}AOP{% else %}Business Individual{% endif %} — Tax Year {{ selected_year }}
+        </h2>
+        <a href="{% if active_section == 'aop' %}{% url 'AOPCalculator' %}{% else %}{% url 'BusinessCalculator' %}{% endif %}" class="btn-wa-sm">🧮 Calculate</a>
+      </div>
+      <div style="overflow-x:auto;">
+        <table class="rates-table">
+          <thead><tr><th>Annual Income (PKR)</th><th>Base Tax (PKR)</th><th>Rate on Excess</th></tr></thead>
+          <tbody>
+            {% for bracket in business_brackets %}
+            <tr>
+              <td>{% if bracket.income_max %}{{ bracket.income_min|floatformat:0 }} – {{ bracket.income_max|floatformat:0 }}{% else %}Above {{ bracket.income_min|floatformat:0 }}{% endif %}</td>
+              <td>{{ bracket.base_tax|floatformat:0 }}</td>
+              <td><span class="rate-badge">{{ bracket.rate_percent|floatformat:1 }}%</span></td>
+            </tr>
+            {% empty %}
+            <tr><td colspan="3" style="text-align:center;color:var(--text-light);padding:20px;">No brackets found for {{ selected_year }}</td></tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+    {% endif %}
+
+    <!-- Company Tax -->
+    {% if active_section == 'company' %}
+    <div style="background:var(--white);border:1px solid var(--border);border-radius:var(--radius-lg);overflow:hidden;margin-bottom:24px;">
+      <div style="background:var(--navy);padding:14px 20px;">
+        <h2 style="font-family:var(--font-head);font-size:18px;color:#fff;margin:0;">Company Tax Rates — {{ selected_year }}</h2>
+      </div>
+      <div style="overflow-x:auto;">
+        <table class="rates-table">
+          <thead><tr><th>Company Type</th><th>Tax Rate</th></tr></thead>
+          <tbody>
+            {% for year_key, rates in company_tax_rates.items %}
+              {% if year_key == selected_year %}
+                {% for company_type, rate in rates.items %}
+                <tr><td>{{ company_type }}</td><td><span class="rate-badge">{{ rate }}%</span></td></tr>
+                {% endfor %}
+              {% endif %}
+            {% empty %}
+            <tr><td colspan="2" style="text-align:center;color:var(--text-light);padding:20px;">No company rates found.</td></tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+    {% endif %}
+
+    <div class="ad-wrapper"><div class="ad-wrapper-label">Advertisement</div>
+      <div class="ad-zone ad-large-rect"><div class="ad-zone-label">AdSense — In-Content</div><div class="ad-zone-size">336×280</div></div>
+    </div>
+
+    <div class="highlight-box">
+      📌 <strong>Note:</strong> A surcharge of 10% on tax applies for Tax Year 2024–25 and 9% for 2025–26 where taxable income exceeds PKR 10 million.
+      These rates are based on FBR notifications and may be amended by Finance Acts.
+    </div>
+
+    {% include 'partials/cta_banner.html' %}
+
+    <div class="ad-wrapper"><div class="ad-wrapper-label">Advertisement</div>
+      <div class="ad-zone ad-leaderboard"><div class="ad-zone-label">AdSense — Bottom</div><div class="ad-zone-size">728×90</div></div>
+    </div>
+
+  </main>
+
+  <aside class="content-sidebar">
+    <!-- TOC -->
+    <div class="sidebar-widget">
+      <div class="sidebar-widget-header">📑 Tax Sections</div>
+      <div class="sidebar-widget-body">
+        <div class="sidebar-links">
+          <a class="sidebar-link {% if active_section == 'salary' %}active{% endif %}" href="?section=salary&year={{ selected_year }}"><span class="sidebar-link-dot"></span>Salary Individual</a>
+          <a class="sidebar-link {% if active_section == 'business' %}active{% endif %}" href="?section=business&year={{ selected_year }}"><span class="sidebar-link-dot"></span>Business Individual</a>
+          <a class="sidebar-link {% if active_section == 'aop' %}active{% endif %}" href="?section=aop&year={{ selected_year }}"><span class="sidebar-link-dot"></span>AOP / Partnership</a>
+          <a class="sidebar-link {% if active_section == 'company' %}active{% endif %}" href="?section=company&year={{ selected_year }}"><span class="sidebar-link-dot"></span>Company Tax Rates</a>
+        </div>
+      </div>
+    </div>
+    {% include 'partials/sidebar.html' %}
+  </aside>
+</div>
+{% endblock %}

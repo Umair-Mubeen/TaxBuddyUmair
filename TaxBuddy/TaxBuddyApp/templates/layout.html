@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Layout Demo | TaxBuddy Umair{% endblock %}
+{% block content %}
+<div class="container" style="padding:40px 20px;">
+  <h1 style="font-family:var(--font-head);color:var(--navy);margin-bottom:20px;">Layout Demo</h1>
+  {% if blogs %}
+  <div class="cards-grid">
+    {% for blog in blogs %}
+    <a href="{% url 'BlogDetails' slug=blog.slug %}" class="card" style="text-decoration:none;">
+      <div class="card-body" style="padding-top:20px;">
+        <div class="card-tag">{{ blog.category|default:"Tax" }}</div>
+        <div class="card-title">{{ blog.title }}</div>
+        <div class="card-footer"><span>{{ blog.created_at|date:"M d, Y" }}</span><span class="card-read-more">Read →</span></div>
+      </div>
+    </a>
+    {% endfor %}
+  </div>
+  {% else %}
+  <p style="color:var(--text-light);">No published blogs found.</p>
+  {% endif %}
+</div>
+{% endblock %}

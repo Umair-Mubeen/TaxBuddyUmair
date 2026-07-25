@@ -1,0 +1,71 @@
+{% extends 'Cpanel/base_cpanel.html' %}
+{% load static %}
+{% block title %}Manage Blogs{% endblock %}
+{% block nav_blogs %}active{% endblock %}
+
+{% block content %}
+<div class="cpanel-header">
+  <h1>📝 Manage Blogs</h1>
+  <a href="{% url 'AddBlog' %}" class="btn-primary" style="text-decoration:none;font-size:13px;padding:9px 18px;">➕ Add New Blog</a>
+</div>
+
+<div class="table-wrap">
+  <table class="data-table">
+    <thead>
+      <tr>
+        <th>#</th>
+        <th>Title</th>
+        <th>Category</th>
+        <th>Status</th>
+        <th>Views</th>
+        <th>Date</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for blog in result %}
+      <tr>
+        <td style="color:var(--text-light);">{{ forloop.counter }}</td>
+        <td>
+          <div style="font-weight:500;color:var(--navy);max-width:280px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">{{ blog.title }}</div>
+          <div style="font-size:11px;color:var(--text-light);margin-top:2px;">/{{ blog.slug }}/</div>
+        </td>
+        <td style="font-size:13px;">{{ blog.category|default:"—" }}</td>
+        <td>
+          {% if blog.status == 'published' %}
+          <span class="badge-pub">Published</span>
+          {% else %}
+          <span class="badge-draft">Draft</span>
+          {% endif %}
+        </td>
+        <td style="font-size:13px;color:var(--text-mid);">{{ blog.view_count }}</td>
+        <td style="font-size:12px;color:var(--text-light);">{{ blog.created_at|date:"M d, Y" }}</td>
+        <td>
+          <div style="display:flex;gap:6px;flex-wrap:wrap;">
+            <a href="{% url 'BlogDetails' slug=blog.slug %}" target="_blank"
+               style="padding:5px 10px;background:var(--bg);border:1px solid var(--border);border-radius:6px;font-size:12px;color:var(--text-mid);text-decoration:none;">
+              👁 View
+            </a>
+            <a href="{% url 'EditBlog' slug=blog.slug %}"
+               style="padding:5px 10px;background:var(--gold-light);border:1px solid var(--gold);border-radius:6px;font-size:12px;color:#7a4a10;text-decoration:none;">
+              ✏️ Edit
+            </a>
+            <a href="{% url 'deleteBlog' slug=blog.slug %}"
+               onclick="return confirm('Delete this blog post? This cannot be undone.')"
+               style="padding:5px 10px;background:var(--red-light);border:1px solid #fca5a5;border-radius:6px;font-size:12px;color:var(--red);text-decoration:none;">
+              🗑 Delete
+            </a>
+          </div>
+        </td>
+      </tr>
+      {% empty %}
+      <tr>
+        <td colspan="7" style="text-align:center;padding:40px;color:var(--text-light);">
+          No blog posts yet. <a href="{% url 'AddBlog' %}" style="color:var(--green);">Add your first post →</a>
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endblock %}

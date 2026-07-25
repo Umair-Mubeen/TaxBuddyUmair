@@ -1,0 +1,798 @@
+from django.db import models
+from django.contrib.auth.models import User
+from django.shortcuts import render
+from django.utils.text import slugify
+from django.utils import timezone
+
+
+# ─────────────────────────────────────────────────────────────
+# BLOG
+# ─────────────────────────────────────────────────────────────
+
+class Blog(models.Model):
+    STATUS_CHOICES = [('draft', 'Draft'), ('published', 'Published')]
+    TYPE_CHOICES = [('income_tax', 'Income Tax'), ('sales_tax', 'Sales Tax'),
+                    ('general', 'General'), ('freelancer', 'Freelancer')]
+
+    title = models.CharField(max_length=300)
+    slug = models.SlugField(max_length=350, unique=True, blank=True)
+    category = models.CharField(max_length=100, blank=True)
+    type = models.CharField(max_length=50, choices=TYPE_CHOICES, default='general')
+    content = models.TextField()
+    featured_image = models.ImageField(upload_to='blog_images/', null=True, blank=True)
+    author = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True)
+    status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='draft')
+    tag = models.CharField(max_length=500, blank=True, help_text="Comma-separated tags")
+    meta_title = models.CharField(max_length=200, blank=True)
+    meta_description = models.TextField(max_length=300, blank=True)
+    view_count = models.PositiveIntegerField(default=0)
+    is_deleted = models.BooleanField(default=False)
+    deleted_at = models.DateTimeField(null=True, blank=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        ordering = ['-created_at']
+        verbose_name = 'Blog'
+        verbose_name_plural = 'Blogs'
+
+    def __str__(self):
+        return self.title
+
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            base = slugify(self.title)
+            slug = base
+            n = 1
+            while Blog.objects.filter(slug=slug).exists():
+                slug = f"{base}-{n}"
+                n += 1
+            self.slug = slug
+        super().save(*args, **kwargs)
+
+    def get_tags_list(self):
+        if self.tag:
+            return [t.strip() for t in self.tag.split(',') if t.strip()]
+        return []
+
+
+class Comment(models.Model):
+    STATUS_CHOICES = [(0, 'Pending'), (1, 'Approved'), (2, 'Rejected')]
+
+    blog = models.ForeignKey(Blog, on_delete=models.CASCADE, related_name='comments', null=True, blank=True)
+    slug = models.SlugField(max_length=350, blank=True)
+    name = models.CharField(max_length=100)
+    email_address = models.EmailField()
+    comment = models.TextField()
+    status = models.IntegerField(choices=STATUS_CHOICES, default=0)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ['-created_at']
+
+    def __str__(self):
+        return f"{self.name} on {self.slug}"
+
+
+# ─────────────────────────────────────────────────────────────
+# CONTACT
+# ─────────────────────────────────────────────────────────────
+
+class Contact(models.Model):
+    first_name = models.CharField(max_length=100)
+    last_name = models.CharField(max_length=100, blank=True)
+    phone_number = models.CharField(max_length=20, blank=True)
+    email_address = models.EmailField()
+    subject = models.CharField(max_length=200, blank=True)
+    additional_details = models.TextField(blank=True)
+    is_read = models.BooleanField(default=False)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ['-created_at']
+
+    def __str__(self):
+        return f"{self.first_name} {self.last_name} – {self.email_address}"
+
+
+# ─────────────────────────────────────────────────────────────
+# TAX BRACKETS
+# ─────────────────────────────────────────────────────────────
+
+class TaxBracket(models.Model):
+    """Salary Individual tax brackets."""
+    year = models.CharField(max_length=20)  # e.g. "2025-2026"
+    income_min = models.DecimalField(max_digits=15, decimal_places=2)
+    income_max = models.DecimalField(max_digits=15, decimal_places=2, null=True, blank=True)
+    rate = models.DecimalField(max_digits=5, decimal_places=4)  # e.g. 0.05 = 5%
+    base_income = models.DecimalField(max_digits=15, decimal_places=2, default=0)
+    base_tax = models.DecimalField(max_digits=15, decimal_places=2, default=0)
+
+    class Meta:
+        ordering = ['year', 'income_min']
+        verbose_name = 'Salary Tax Bracket'
+
+    def __str__(self):
+        return f"{self.year} | {self.income_min} – {self.income_max or '∞'} @ {self.rate * 100:.1f}%"
+
+
+class Business_AOP_Slab(models.Model):
+    """Business Individual / AOP tax slabs."""
+    year = models.CharField(max_length=20)
+    income_min = models.DecimalField(max_digits=15, decimal_places=2)
+    income_max = models.DecimalField(max_digits=15, decimal_places=2, null=True, blank=True)
+    rate = models.DecimalField(max_digits=5, decimal_places=4)
+    base_income = models.DecimalField(max_digits=15, decimal_places=2, default=0)
+    base_tax = models.DecimalField(max_digits=15, decimal_places=2, default=0)
+
+    class Meta:
+        ordering = ['year', 'income_min']
+        verbose_name = 'Business/AOP Slab'
+
+    def __str__(self):
+        return f"Biz/AOP {self.year} | {self.income_min} – {self.income_max or '∞'}"
+
+
+class Property_Business_AOP_Slab(models.Model):
+    """Rental / Property income slabs."""
+    year = models.CharField(max_length=20)
+    income_min = models.DecimalField(max_digits=15, decimal_places=2)
+    income_max = models.DecimalField(max_digits=15, decimal_places=2, null=True, blank=True)
+    rate = models.DecimalField(max_digits=5, decimal_places=4)
+    base_income = models.DecimalField(max_digits=15, decimal_places=2, default=0)
+    base_tax = models.DecimalField(max_digits=15, decimal_places=2, default=0)
+
+    class Meta:
+        ordering = ['year', 'income_min']
+        verbose_name = 'Property/Rental Slab'
+
+    def __str__(self):
+        return f"Property {self.year} | {self.income_min}"
+
+
+class SuperTax4CRate(models.Model):
+    tax_year = models.IntegerField()
+    income_from = models.DecimalField(max_digits=15, decimal_places=2)
+    income_to = models.DecimalField(max_digits=15, decimal_places=2, null=True, blank=True)
+    rate = models.DecimalField(max_digits=5, decimal_places=4)
+
+    class Meta:
+        ordering = ['tax_year', 'income_from']
+        verbose_name = 'Super Tax 4C Rate'
+
+    def __str__(self):
+        return f"Super Tax {self.tax_year} | {self.income_from} @ {self.rate * 100:.1f}%"
+
+
+# ─────────────────────────────────────────────────────────────
+# MCQ / QUIZ
+# ─────────────────────────────────────────────────────────────
+
+class Category(models.Model):
+    name = models.CharField(max_length=100)
+    order = models.PositiveIntegerField(default=0)
+    slug = models.SlugField(max_length=120, unique=True, blank=True)
+
+    class Meta:
+        ordering = ['order', 'name']
+        verbose_name_plural = 'Categories'
+
+    def __str__(self):
+        return self.name
+
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            self.slug = slugify(self.name)
+        super().save(*args, **kwargs)
+
+
+class Tag(models.Model):
+    name = models.CharField(max_length=80, unique=True)
+    slug = models.SlugField(unique=True, blank=True)
+
+    def __str__(self):
+        return self.name
+
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            self.slug = slugify(self.name)
+        super().save(*args, **kwargs)
+
+
+class Question(models.Model):
+    DIFFICULTY_CHOICES = [('basic', 'Basic'), ('medium', 'Medium'), ('advanced', 'Advanced')]
+
+    question_text = models.TextField()
+    category = models.CharField(max_length=100, blank=True)
+    explanation = models.TextField(blank=True)
+    section_ref = models.CharField(max_length=200, blank=True, help_text="e.g. ITO 2001, Section 155")
+    difficulty = models.CharField(max_length=20, choices=DIFFICULTY_CHOICES, default='basic')
+    is_active = models.BooleanField(default=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ['category', 'id']
+
+    def __str__(self):
+        return self.question_text[:80]
+
+
+class Option(models.Model):
+    question = models.ForeignKey(Question, on_delete=models.CASCADE, related_name='options')
+    option_text = models.CharField(max_length=500)
+    is_correct = models.BooleanField(default=False)
+
+    def __str__(self):
+        return f"{'✓' if self.is_correct else '✗'} {self.option_text[:60]}"
+
+
+# ─────────────────────────────────────────────────────────────
+# TESTIMONIALS & FAQ  (new — used by homepage)
+# ─────────────────────────────────────────────────────────────
+
+class Testimonial(models.Model):
+    name = models.CharField(max_length=100)
+    role = models.CharField(max_length=150, blank=True)
+    initials = models.CharField(max_length=4, blank=True)
+    text = models.TextField()
+    rating = models.PositiveSmallIntegerField(default=5)
+    is_active = models.BooleanField(default=True)
+    order = models.PositiveIntegerField(default=0)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ['order', '-created_at']
+
+    def __str__(self):
+        return f"{self.name} – {self.role}"
+
+    def stars(self):
+        return '★' * self.rating + '☆' * (5 - self.rating)
+
+
+class FAQ(models.Model):
+    CATEGORY_CHOICES = [
+        ('filer',    'Filer Status'),
+        ('property', 'Property Tax'),
+        ('salary',   'Salary Tax'),
+        ('banking',  'Banking & Investments'),
+        ('sales',    'Sales Tax'),
+        ('general',  'General'),
+    ]
+
+    question = models.CharField(max_length=300)
+    answer   = models.TextField()
+    category = models.CharField(
+        max_length=20,
+        choices=CATEGORY_CHOICES,
+        default='general',
+        help_text="Used for filtering on homepage"
+    )
+    order      = models.PositiveIntegerField(default=0)
+    is_active  = models.BooleanField(default=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ['category', 'order']
+        verbose_name = 'FAQ'
+        verbose_name_plural = 'FAQs'
+
+    def __str__(self):
+        return self.question[:80]
+
+
+class WithholdingTaxRate(models.Model):
+    """
+    Stores WHT and Advance Tax rates for Section-wise display.
+    Used by the WHT rates page and admin panel.
+    """
+    CATEGORY_CHOICES = [
+        ('property', 'Property Sale / Purchase'),
+        ('banking', 'Banking & Finance'),
+        ('salary', 'Salary & Employment'),
+        ('business', 'Business / Contracts'),
+        ('advance', 'Advance Tax'),
+        ('other', 'Other Payments'),
+    ]
+
+    category = models.CharField(max_length=50, choices=CATEGORY_CHOICES)
+    section = models.CharField(max_length=100, help_text="e.g. Section 153(1)(b)")
+    description = models.CharField(max_length=300, help_text="e.g. Payments for services")
+    filer_rate = models.CharField(max_length=50, help_text="e.g. 4.5% or PKR 10,000")
+    late_filer_rate = models.CharField(max_length=50, blank=True, help_text="e.g. 7.5%")
+    non_filer_rate = models.CharField(max_length=50, blank=True, help_text="e.g. 11.5%")
+    who_deducts = models.CharField(max_length=200, blank=True, help_text="e.g. Prescribed persons")
+    threshold = models.CharField(max_length=200, blank=True, help_text="e.g. Above PKR 50,000")
+    tax_year = models.CharField(max_length=20, default='2025-2026')
+    notes = models.TextField(blank=True)
+    order = models.PositiveIntegerField(default=0)
+    is_active = models.BooleanField(default=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        ordering = ['category', 'order', 'section']
+        verbose_name = 'Withholding Tax Rate'
+        verbose_name_plural = 'Withholding Tax Rates'
+
+    def __str__(self):
+        return f"{self.section} — {self.description[:50]}"
+
+
+
+class TaxGuide(models.Model):
+    CATEGORY = [
+        ('income_tax', 'Income Tax'),
+        ('sales_tax', 'Sales Tax'),
+    ]
+    title       = models.CharField(max_length=300)
+    slug        = models.SlugField(unique=True)
+    summary     = models.TextField()        # 300-500 words
+    category    = models.CharField(max_length=20, choices=CATEGORY)
+    related_blog = models.ForeignKey(      # Blog post ka link
+        'Blog', null=True, blank=True,
+        on_delete=models.SET_NULL
+    )
+    order       = models.PositiveIntegerField(default=0)
+    is_active   = models.BooleanField(default=True)
+
+
+
+# ══════════════════════════════════════════════════════════════
+# 1. models.py — Add this model
+# ══════════════════════════════════════════════════════════════
+
+class ATLRecord(models.Model):
+    ntn         = models.CharField(max_length=20, db_index=True)
+    name        = models.CharField(max_length=300, blank=True)
+    business_name = models.CharField(max_length=300, blank=True)
+    tax_year    = models.CharField(max_length=10, default='2025')
+    created_at  = models.DateTimeField(auto_now_add=True)
+    updated_at  = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        ordering = ['ntn']
+        verbose_name = 'ATL Record'
+        indexes = [
+            models.Index(fields=['ntn']),
+        ]
+
+    def __str__(self):
+        return f"{self.ntn} — {self.name}"
+
+    @property
+    def is_cnic(self):
+        """NTN with 13 digits = individual CNIC"""
+        return len(str(self.ntn).replace('-', '')) == 13
+
+    @property
+    def display_name(self):
+        return self.business_name or self.name or 'N/A'
+
+
+# ══════════════════════════════════════════════════════════════
+# 2. management/commands/update_atl.py
+#    Path: TaxBuddyApp/management/commands/update_atl.py
+#    Run: python manage.py update_atl
+# ══════════════════════════════════════════════════════════════
+
+import requests
+import openpyxl
+from io import BytesIO
+from django.core.management.base import BaseCommand
+from TaxBuddyApp.models import ATLRecord
+import logging
+
+logger = logging.getLogger(__name__)
+
+class Command(BaseCommand):
+    help = 'Download and update ATL from FBR'
+
+    def handle(self, *args, **kwargs):
+        self.stdout.write('Downloading ATL from FBR...')
+
+        ATL_URL = 'https://www.fbr.gov.pk/download-atl/132041'
+
+        try:
+            response = requests.get(
+                ATL_URL,
+                timeout=120,
+                headers={'User-Agent': 'Mozilla/5.0'}
+            )
+            response.raise_for_status()
+        except Exception as e:
+            self.stdout.write(self.style.ERROR(f'Download failed: {e}'))
+            return
+
+        try:
+            wb = openpyxl.load_workbook(BytesIO(response.content), read_only=True)
+            ws = wb.active
+        except Exception as e:
+            self.stdout.write(self.style.ERROR(f'Excel parse failed: {e}'))
+            return
+
+        self.stdout.write('Clearing old records...')
+        ATLRecord.objects.all().delete()
+
+        batch = []
+        count = 0
+
+        for row in ws.iter_rows(min_row=2, values_only=True):
+            # Columns: S#, NTN, Name, Business Name
+            if not row or not row[1]:
+                continue
+
+            ntn           = str(row[1]).strip().replace('-', '').replace(' ', '')
+            name          = str(row[2] or '').strip()
+            business_name = str(row[3] or '').strip()
+
+            if not ntn or ntn in ('None', 'NTN', ''):
+                continue
+
+            batch.append(ATLRecord(
+                ntn=ntn,
+                name=name,
+                business_name=business_name,
+                tax_year='2025',
+            ))
+            count += 1
+
+            # Bulk insert every 5000 records
+            if len(batch) >= 5000:
+                ATLRecord.objects.bulk_create(batch, ignore_conflicts=True)
+                batch = []
+                self.stdout.write(f'  Imported {count} records...')
+
+        # Insert remaining
+        if batch:
+            ATLRecord.objects.bulk_create(batch, ignore_conflicts=True)
+
+        self.stdout.write(self.style.SUCCESS(
+            f'✓ ATL updated successfully — {count} records imported'
+        ))
+
+
+# ══════════════════════════════════════════════════════════════
+# 3. views.py — Add this view
+# ══════════════════════════════════════════════════════════════
+
+from django.db.models import Q
+
+def atl_check_view(request):
+    """Render ATL check page"""
+    return render(request, 'atl-check.html', {
+        'atl_total': ATLRecord.objects.count(),
+        'atl_updated': ATLRecord.objects.order_by('-updated_at').first(),
+    })
+
+
+def atl_search_api(request):
+    """AJAX API — search ATL by CNIC or NTN"""
+    from django.http import JsonResponse
+
+    query = request.GET.get('q', '').strip().replace('-', '').replace(' ', '')
+
+    if not query:
+        return JsonResponse({'found': False, 'error': 'Please enter CNIC or NTN'})
+
+    if len(query) < 7:
+        return JsonResponse({'found': False, 'error': 'Enter at least 7 digits'})
+
+    # Search DB
+    record = ATLRecord.objects.filter(ntn__icontains=query).first()
+
+    if record:
+        return JsonResponse({
+            'found': True,
+            'status': 'Active Filer ✅',
+            'ntn': record.ntn,
+            'name': record.display_name,
+            'tax_year': record.tax_year,
+            'message': f'{record.display_name} is an Active Filer on FBR ATL {record.tax_year}',
+        })
+    else:
+        return JsonResponse({
+            'found': False,
+            'status': 'Not Found ❌',
+            'message': f'No record found for {query} in ATL. This person may be a Non-Filer or the ATL may not be updated yet.',
+        })
+
+
+
+
+class WHTRate(models.Model):
+    """
+    Withholding Tax Rate Card — Finance Act 2025 / Tax Year 2025-26
+    Source: FBR Official WHT Rate Card (Updated up to June 30, 2025)
+    """
+
+    NATURE_CHOICES = [
+        ('WHT', 'Withholding Tax'),
+        ('Advance Tax', 'Advance Tax'),
+    ]
+
+    TYPE_CHOICES = [
+        ('Final Tax', 'Final Tax'),
+        ('Adjustable', 'Adjustable'),
+        ('Minimum Tax', 'Minimum Tax'),
+        ('Separate Block', 'Separate Block'),
+        ('Fixed Amount', 'Fixed Amount'),
+    ]
+
+    RATE_KIND_CHOICES = [
+        ('percentage', 'Percentage'),   # normal % rate
+        ('fixed',      'Fixed Amount'), # Rs. fixed amount (vehicles, etc.)
+        ('slab',       'Slab-Based'),   # graduated slabs (salary, rent)
+        ('per_unit',   'Per Unit'),     # Rs. per kg / per seat
+    ]
+
+    CAT_CHOICES = [
+        ('property',   'Property'),
+        ('banking',    'Banking & Finance'),
+        ('dividends',  'Dividends'),
+        ('imports',    'Imports'),
+        ('goods',      'Goods / Supplies'),
+        ('services',   'Services'),
+        ('contracts',  'Contracts'),
+        ('exports',    'Exports'),
+        ('rent',       'Rent'),
+        ('prizes',     'Prizes & Winnings'),
+        ('vehicles',   'Vehicles'),
+        ('salary',     'Salary'),
+        ('other',      'Other'),
+    ]
+
+    # ── Identity ────────────────────────────────────────────────
+    uid         = models.CharField(max_length=40, unique=True,
+                                   help_text="Unique slug e.g. 236C_upto50m")
+    section     = models.CharField(max_length=30,
+                                   help_text="ITO section e.g. 236C, 153(1)(b)")
+    cat         = models.CharField(max_length=20, choices=CAT_CHOICES)
+    name        = models.CharField(max_length=250)
+    sub         = models.CharField(max_length=400, blank=True)
+
+    # ── Rates ────────────────────────────────────────────────────
+    rate_kind   = models.CharField(max_length=12, choices=RATE_KIND_CHOICES,
+                                   default='percentage')
+    filer       = models.DecimalField(max_digits=12, decimal_places=4,
+                                      help_text="ATL / Filer rate (% or Rs.)")
+    late_filer  = models.DecimalField(max_digits=12, decimal_places=4,
+                                      help_text="Late Filer rate (% or Rs.)")
+    non_filer   = models.DecimalField(max_digits=12, decimal_places=4,
+                                      help_text="Non-ATL rate (% or Rs.)")
+
+    # ── Classification ───────────────────────────────────────────
+    nature      = models.CharField(max_length=20, choices=NATURE_CHOICES)
+    tax_type    = models.CharField(max_length=20, choices=TYPE_CHOICES,
+                                   db_column='type')
+
+    # ── Meta ─────────────────────────────────────────────────────
+    notes       = models.TextField(blank=True)
+    tax_year    = models.CharField(max_length=10, default='2025-26',
+                                   db_index=True)
+    schedule_ref = models.CharField(max_length=200, blank=True,
+                                    help_text="FBR Schedule reference")
+    is_active   = models.BooleanField(default=True)
+    sort_order  = models.PositiveSmallIntegerField(default=0)
+
+    slab_min = models.BigIntegerField(null=True, blank=True,
+                                      help_text="Lower bound of slab e.g. 600001")
+    slab_max = models.BigIntegerField(null=True, blank=True,
+                                      help_text="Upper bound of slab, NULL = no limit")
+    base_tax = models.DecimalField(max_digits=12, decimal_places=2,
+                                   null=True, blank=True,
+                                   help_text="Fixed tax before applying rate e.g. 6000")
+
+    class Meta:
+        db_table  = 'wht_rates'
+        ordering  = ['sort_order', 'section', 'uid']
+        indexes   = [
+            models.Index(fields=['tax_year', 'cat']),
+            models.Index(fields=['section']),
+        ]
+
+    def __str__(self):
+        return f"[{self.section}] {self.name} ({self.tax_year})"
+
+
+# ════════════════════════════════════════════════════════════
+# 1. models.py — ADD at the end (same file as Blog model)
+# ════════════════════════════════════════════════════════════
+
+class SearchQuery(models.Model):
+    """Logs every site search. High-count terms with 0 results
+    = your next articles / glossary entries (Product Bible #3, #4)."""
+    term = models.CharField(max_length=200, unique=True, db_index=True)
+    count = models.PositiveIntegerField(default=1)
+    results_found = models.PositiveIntegerField(default=0)
+    last_searched = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        ordering = ['-count']
+        verbose_name = 'Search Query'
+        verbose_name_plural = 'Search Queries'
+
+    def __str__(self):
+        return f"{self.term} ({self.count})"
+
+
+# ════════════════════════════════════════════════════════════
+# 2. admin.py — ADD (agar admin.py use karte ho; warna skip,
+#    Dashboard se bhi dekh sakte ho baad mein)
+# ════════════════════════════════════════════════════════════
+
+# from .models import SearchQuery
+#
+# @admin.register(SearchQuery)
+# class SearchQueryAdmin(admin.ModelAdmin):
+#     list_display = ('term', 'count', 'results_found', 'last_searched')
+#     search_fields = ('term',)
+#     ordering = ('-count',)
+
+# ════════════════════════════════════════════════════════════
+# 1. models.py — ADD at the end (TaxBuddyApp/models.py)
+# ════════════════════════════════════════════════════════════
+
+from django.utils.text import slugify  # (agar upar already hai to dobara nahi)
+
+
+class Instrument(models.Model):
+    """SRO / Circular / Notification Tracker — Product Bible Item #3."""
+
+    TYPE_CHOICES = [
+        ('sro', 'SRO'),
+        ('circular', 'Circular'),
+        ('notification', 'Notification'),
+    ]
+    STATUTE_CHOICES = [
+        ('income_tax', 'Income Tax'),
+        ('sales_tax', 'Sales Tax'),
+        ('fed', 'Federal Excise'),
+        ('customs', 'Customs'),
+    ]
+
+    instrument_type = models.CharField(max_length=20, choices=TYPE_CHOICES, default='sro', db_index=True)
+    number = models.CharField(max_length=100, unique=True,
+                              help_text='e.g. SRO 350(I)/2024 or Circular No. 3 of 2025')
+    slug = models.SlugField(max_length=140, unique=True, blank=True)
+    statute = models.CharField(max_length=20, choices=STATUTE_CHOICES, db_index=True)
+
+    issue_date = models.DateField(db_index=True)
+    effective_date = models.DateField(null=True, blank=True,
+                                      help_text='Blank = same as issue date')
+
+    subject = models.CharField(max_length=300,
+                               help_text='One-line: what this instrument is about')
+    summary = models.TextField(
+        help_text='Plain-English: what changed, in simple words (150-300 words)')
+    who_affected = models.TextField(
+        blank=True, help_text='Who does this apply to — e.g. property buyers, exporters, retailers')
+    old_rule = models.TextField(blank=True, help_text='Position BEFORE this instrument')
+    new_rule = models.TextField(blank=True, help_text='Position AFTER this instrument')
+
+    related_sections = models.CharField(
+        max_length=300, blank=True,
+        help_text='Comma-separated: 236C, 236K, 7E')
+    pdf = models.FileField(upload_to='instruments/', blank=True, null=True,
+                           help_text='Official PDF (recommended — FBR links break)')
+    fbr_link = models.URLField(blank=True, help_text='Official FBR page (optional backup)')
+    related_blog = models.ForeignKey('Blog', on_delete=models.SET_NULL, null=True, blank=True,
+                                     related_name='instruments',
+                                     help_text='Detailed analysis article (optional)')
+
+    is_active = models.BooleanField(default=True)
+    view_count = models.PositiveIntegerField(default=0)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        ordering = ['-issue_date']
+        indexes = [models.Index(fields=['instrument_type', 'statute', '-issue_date'])]
+
+    def __str__(self):
+        return self.number
+
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            cleaned = self.number.replace('(', '-').replace(')', '-').replace('/', '-').replace('.', '-')
+            self.slug = slugify(cleaned)
+        if not self.effective_date:
+            self.effective_date = self.issue_date
+        super().save(*args, **kwargs)
+
+    @property
+    def sections_list(self):
+        return [s.strip() for s in self.related_sections.split(',') if s.strip()]
+
+
+class Subscriber(models.Model):
+    """Newsletter list — SRO alerts + deadline digest (Product Bible Item #5 base)."""
+    email = models.EmailField(unique=True)
+    is_active = models.BooleanField(default=True)
+    source = models.CharField(max_length=50, default='sro_page')
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ['-created_at']
+
+    def __str__(self):
+        return self.email
+
+
+# ════════════════════════════════════════════════════════════
+# 2. admin.py — ADD (optional, cpanel bhi hai)
+# ════════════════════════════════════════════════════════════
+#
+# from .models import Instrument, Subscriber
+#
+# @admin.register(Instrument)
+# class InstrumentAdmin(admin.ModelAdmin):
+#     list_display = ('number', 'instrument_type', 'statute', 'issue_date', 'is_active', 'view_count')
+#     list_filter = ('instrument_type', 'statute', 'is_active')
+#     search_fields = ('number', 'subject', 'summary')
+#     prepopulated_fields = {}
+#
+# @admin.register(Subscriber)
+# class SubscriberAdmin(admin.ModelAdmin):
+#     list_display = ('email', 'is_active', 'source', 'created_at')
+#     search_fields = ('email',)
+
+# ════════════════════════════════════════════════════════════
+# 1. models.py — ADD at the end (TaxBuddyApp/models.py)
+# (slugify import Instrument wale kaam mein already add ho chuka)
+# ════════════════════════════════════════════════════════════
+
+class GlossaryTerm(models.Model):
+    """Tax Glossary — Product Bible Item #4 (Investopedia playbook)."""
+
+    term = models.CharField(max_length=120, unique=True,
+                            help_text='e.g. Minimum Tax, ATL, Further Tax')
+    slug = models.SlugField(max_length=140, unique=True, blank=True)
+    short_meaning = models.CharField(
+        max_length=300,
+        help_text='1-2 line simple definition — yahi AI engines quote karte hain')
+    explanation = models.TextField(
+        help_text='Detailed simple-English explanation (100-250 words)')
+    legal_definition = models.TextField(
+        blank=True, help_text='Statute ki exact/paraphrased definition (optional)')
+    section_ref = models.CharField(
+        max_length=150, blank=True,
+        help_text='e.g. Section 113, Income Tax Ordinance 2001')
+    example = models.TextField(
+        blank=True, help_text='Practical example with Rs figures')
+    related_terms = models.CharField(
+        max_length=300, blank=True,
+        help_text='Comma-separated terms: FTR, Withholding Tax')
+    related_url = models.CharField(
+        max_length=200, blank=True,
+        help_text='Related calculator/guide path e.g. /SalaryCalculator/')
+    related_url_label = models.CharField(
+        max_length=100, blank=True,
+        help_text='Button text e.g. Try the Salary Calculator')
+    related_blog = models.ForeignKey('Blog', on_delete=models.SET_NULL,
+                                     null=True, blank=True,
+                                     related_name='glossary_terms')
+
+    is_active = models.BooleanField(default=True)
+    view_count = models.PositiveIntegerField(default=0)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        ordering = ['term']
+
+    def __str__(self):
+        return self.term
+
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            self.slug = slugify(self.term)
+        super().save(*args, **kwargs)
+
+    @property
+    def first_letter(self):
+        return self.term[0].upper() if self.term else '#'
+
+    @property
+    def related_terms_list(self):
+        return [t.strip() for t in self.related_terms.split(',') if t.strip()]

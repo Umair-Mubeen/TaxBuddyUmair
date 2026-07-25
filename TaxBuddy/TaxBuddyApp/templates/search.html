@@ -1,0 +1,111 @@
+{% extends "base.html" %}
+{% comment %} 6. templates/search.html — as-is drop kar do, kuch adjust nahi karna.
+   base.html ka {% if request.GET %} noindex ?q= pages cover karta hai;
+   head_extra wala noindex bare /search/ ko bhi cover kar deta hai. {% endcomment %}
+
+{% block title %}{{ meta_title }}{% endblock %}
+
+{% block head_extra %}
+<meta name="robots" content="noindex, follow">
+<style>
+  .tbs-wrap{max-width:820px;margin:0 auto;padding:32px 16px 60px}
+  .tbs-wrap h1{color:#0A2647;font-size:1.6rem;margin-bottom:18px}
+  .tbs-form{display:flex;gap:8px;margin-bottom:26px}
+  .tbs-form input[type=search]{flex:1;padding:12px 16px;border:2px solid #d8dee6;border-radius:10px;font-size:1rem;outline:none}
+  .tbs-form input[type=search]:focus{border-color:#0D9E72}
+  .tbs-form button{background:#0D9E72;color:#fff;border:none;border-radius:10px;padding:12px 22px;font-size:1rem;cursor:pointer;font-weight:600}
+  .tbs-form button:hover{background:#0b8a63}
+  .tbs-count{color:#667085;font-size:.9rem;margin-bottom:20px}
+  .tbs-sec{font-size:.78rem;letter-spacing:.08em;text-transform:uppercase;color:#98a2b3;margin:22px 0 10px;font-weight:700}
+  .tbs-card{border:1px solid #e6eaf0;border-radius:10px;padding:12px 16px;margin-bottom:10px;background:#fff}
+  .tbs-card a{color:#0A2647;font-weight:600;text-decoration:none}
+  .tbs-card a:hover{color:#0D9E72}
+  .tbs-card p{color:#667085;font-size:.88rem;margin:4px 0 0}
+  .tbs-faq-q{color:#0A2647;font-weight:600}
+  .tbs-empty{border:1px solid #e6eaf0;border-radius:10px;padding:20px;background:#f9fafb}
+  .tbs-empty a{display:inline-block;margin:8px 8px 0 0;padding:8px 14px;border:1px solid #0D9E72;color:#0D9E72;border-radius:8px;text-decoration:none;font-size:.9rem}
+  .tbs-empty a:hover{background:#0D9E72;color:#fff}
+  .tbs-pager{display:flex;gap:10px;align-items:center;margin-top:18px;font-size:.9rem}
+  .tbs-pager a{color:#0D9E72;text-decoration:none;font-weight:600}
+  .tbs-pager span{color:#98a2b3}
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="tbs-wrap">
+
+  <h1>Search TaxBuddy Umair</h1>
+
+  <form method="get" action="{% url 'search' %}" class="tbs-form" role="search">
+    <input type="search" name="q" value="{{ q }}"
+           placeholder="Search guides, articles, calculators… e.g. 236C, filer status, salary tax"
+           aria-label="Search" autofocus>
+    <button type="submit">Search</button>
+  </form>
+
+  {% if q %}
+    <div class="tbs-count">{{ total }} result{{ total|pluralize }} for "<strong>{{ q }}</strong>"</div>
+
+    {% if page_hits %}
+      <div class="tbs-sec">Tools &amp; Calculators</div>
+      {% for p in page_hits %}
+        <div class="tbs-card">
+          <a href="{{ p.url }}">{{ p.title }}</a>
+          <p>{{ p.desc }}</p>
+        </div>
+      {% endfor %}
+    {% endif %}
+
+    {% if guide_hits %}
+      <div class="tbs-sec">Tax Guides</div>
+      {% for g in guide_hits %}
+        <div class="tbs-card">
+          <a href="{{ g.url }}">{{ g.title }}</a>
+          <p>{{ g.summary|striptags|truncatewords:25 }}</p>
+        </div>
+      {% endfor %}
+    {% endif %}
+
+    {% if faq_hits %}
+      <div class="tbs-sec">Quick Answers</div>
+      {% for f in faq_hits %}
+        <div class="tbs-card">
+          <span class="tbs-faq-q">{{ f.question }}</span>
+          <p>{{ f.answer|striptags|truncatewords:40 }}</p>
+        </div>
+      {% endfor %}
+    {% endif %}
+
+    {% if page_obj.object_list %}
+      <div class="tbs-sec">Articles</div>
+      {% for b in page_obj.object_list %}
+        <div class="tbs-card">
+          <a href="{% url 'BlogDetails' b.slug %}">{{ b.title }}</a>
+        </div>
+      {% endfor %}
+
+      {% if page_obj.has_other_pages %}
+        <div class="tbs-pager">
+          {% if page_obj.has_previous %}
+            <a href="?q={{ q|urlencode }}&page={{ page_obj.previous_page_number }}">‹ Prev</a>
+          {% endif %}
+          <span>Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}</span>
+          {% if page_obj.has_next %}
+            <a href="?q={{ q|urlencode }}&page={{ page_obj.next_page_number }}">Next ›</a>
+          {% endif %}
+        </div>
+      {% endif %}
+    {% endif %}
+
+    {% if total == 0 %}
+      <div class="tbs-empty">
+        <p style="margin:0 0 4px;color:#0A2647">No results for "<strong>{{ q }}</strong>". Try a section number (e.g. <em>236C</em>) or a simpler keyword, or browse:</p>
+        <a href="{% url 'income_tax_guides' %}">📚 Tax Guides</a>
+        <a href="{% url 'SalaryCalculator' %}">🧮 Calculators</a>
+        <a href="{% url 'viewBlogs' %}">📝 Blog</a>
+      </div>
+    {% endif %}
+
+  {% endif %}
+</div>
+{% endblock %}

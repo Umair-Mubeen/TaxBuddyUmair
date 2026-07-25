@@ -1,0 +1,577 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load humanize %}
+{% block title %}Business Income Tax Calculator Pakistan 2025-26 | TaxBuddy Umair{% endblock %}
+{% block meta_desc %}Free business income tax calculator Pakistan 2025-26. Calculate net business tax for sole proprietors, freelancers and traders based on FBR notified slabs.{% endblock %}
+{% block schema_extra %}{% include 'partials/schema_calculator.html' with calc_name='Business Income Tax Calculator Pakistan 2025-26' calc_url='/BusinessCalculator/' %}{% endblock %}
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/calculators.css' %}">
+<style>
+.calc-result-title{font-size:16px;font-weight:700;color:#fff;text-align:center;margin-bottom:16px}
+.calc-result-subtitle{font-size:12px;color:rgba(255,255,255,.45);text-align:center;margin-top:-10px;margin-bottom:16px}
+.cmp-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.cmp-card{background:#fff;border-radius:12px;overflow:hidden;box-shadow:0 2px 12px rgba(10,38,71,.1)}
+.cmp-head{background:#0A2647;padding:12px 16px;font-size:12px;font-weight:600;color:rgba(255,255,255,.7)}
+.cmp-table{width:100%;border-collapse:collapse}
+.cmp-table tr{border-bottom:1px solid #E2E8F0}
+.cmp-table tr:last-child{border-bottom:none}
+.cmp-table td{padding:11px 16px;font-size:13px}
+.cmp-table td:first-child{color:#4A5568}
+.cmp-table td:last-child{text-align:right;font-weight:600;color:#0A2647}
+.cmp-table tr.hl{background:#E8A020}
+.cmp-table tr.hl td{color:#fff!important;font-weight:700}
+.field-err{display:none;font-size:12px;color:#E53E3E;margin-top:4px;font-weight:500}
+.field-err.show{display:block}
+.form-input.is-error,.form-select.is-error{border-color:#E53E3E!important;background:#FFF5F5!important;box-shadow:0 0 0 3px rgba(229,62,62,.08)!important}
+.form-input.is-valid,.form-select.is-valid{border-color:#38A169!important}
+.year-conflict{display:none;background:#FFFBEB;border:1px solid #F59E0B;border-radius:8px;padding:10px 14px;font-size:13px;color:#92400E;margin-bottom:12px;align-items:center;gap:8px}
+.year-conflict.show{display:flex}
+@media(max-width:640px){.cmp-grid{grid-template-columns:1fr!important}.result-inner-grid{grid-template-columns:1fr!important}}
+
+/* ── UPDATED SUBMIT BUTTON ── */
+.calc-submit {
+  width: 100%;
+  padding: 15px 24px;
+  background: linear-gradient(135deg, #0D9E72, #0B8A64);
+  color: #fff;
+  font-size: 15px;
+  font-weight: 700;
+  font-family: inherit;
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  margin-top: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  min-height: 54px;
+  letter-spacing: .01em;
+  box-shadow: 0 4px 14px rgba(13,158,114,.35);
+  transition: all .2s;
+}
+.calc-submit:hover {
+  background: linear-gradient(135deg, #0B8A64, #097554);
+  box-shadow: 0 6px 20px rgba(13,158,114,.45);
+  transform: translateY(-1px);
+}
+.calc-submit:active { transform: translateY(0); box-shadow: none; }
+.calc-submit:disabled { opacity:.6; cursor:not-allowed; transform:none; box-shadow:none; }
+/* ── PRE-CALC INFO CARDS ── */
+.precalc-cards {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 12px;
+  margin-top: 20px;
+}
+.precalc-card {
+  background: #fff;
+  border: 1px solid #E2E8F0;
+  border-radius: 12px;
+  padding: 16px;
+  transition: box-shadow .2s;
+}
+.precalc-card:hover { box-shadow: 0 4px 16px rgba(10,38,71,.08); }
+.precalc-card-icon {
+  width: 36px; height: 36px;
+  border-radius: 8px;
+  display: flex; align-items: center;
+  justify-content: center;
+  font-size: 18px; margin-bottom: 10px;
+}
+.pc-warn { background: #FEF3DC; }
+.pc-blue { background: #EBF8FF; }
+.pc-navy { background: #EEF2FF; }
+.precalc-card h5 { font-size: 13px; font-weight: 700; color: #0A2647; margin-bottom: 10px; }
+.precalc-card ul { list-style: none; display: flex; flex-direction: column; gap: 6px; }
+.precalc-card ul li { display: flex; align-items: flex-start; gap: 7px; font-size: 12.5px; color: #4A5568; line-height: 1.5; }
+.pc-dot { width: 5px; height: 5px; border-radius: 50%; flex-shrink: 0; margin-top: 5px; }
+.pc-dot-warn  { background: #E8A020; }
+.pc-dot-green { background: #0D9E72; }
+.pc-dot-navy  { background: #0A2647; }
+@media(max-width:768px){ .precalc-cards { grid-template-columns: 1fr 1fr !important; } }
+@media(max-width:480px){ .precalc-cards { grid-template-columns: 1fr !important; } }
+
+
+/* ── UPDATED FORM HEADER & FIELDS ── */
+.calc-header {
+  background: var(--navy, #0A2647);
+  padding: 24px 28px;
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+}
+.calc-header-icon {
+  width: 48px; height: 48px;
+  background: rgba(255,255,255,.12);
+  border-radius: 12px;
+  display: flex; align-items: center;
+  justify-content: center;
+  font-size: 24px; flex-shrink: 0;
+}
+.calc-header h2 { font-size: 20px; font-weight: 700; color: #fff; margin-bottom: 4px; }
+.calc-header p  { font-size: 13px; color: rgba(255,255,255,.55); margin-bottom: 10px; }
+.calc-badges { display: flex; gap: 6px; flex-wrap: wrap; }
+.calc-badge {
+  font-size: 10px; font-weight: 700; letter-spacing: .06em;
+  text-transform: uppercase; padding: 3px 10px;
+  border-radius: 20px; border: 1px solid rgba(255,255,255,.2);
+  color: rgba(255,255,255,.65); background: rgba(255,255,255,.08);
+}
+/* Income toggle */
+.income-toggle {
+  display: flex; gap: 0;
+  border-radius: 10px; overflow: hidden;
+  border: 1.5px solid var(--border, #E2E8F0);
+  background: var(--bg, #F7F9FC);
+  margin-bottom: 20px;
+}
+.income-toggle input[type="radio"] { display: none; }
+.income-toggle label {
+  flex: 1; text-align: center;
+  padding: 10px 16px;
+  font-size: 13.5px; font-weight: 600;
+  cursor: pointer; color: var(--text-mid, #4A5568);
+  transition: all .2s; user-select: none;
+  display: flex; align-items: center;
+  justify-content: center; gap: 6px;
+}
+.income-toggle input[type="radio"]:checked + label {
+  background: var(--navy, #0A2647);
+  color: #fff;
+}
+/* Field wrapper */
+.field-wrap { margin-bottom: 18px; }
+.field-top {
+  display: flex; align-items: center;
+  justify-content: space-between; margin-bottom: 6px;
+}
+.field-label-text {
+  font-size: 12px; font-weight: 700;
+  text-transform: uppercase; letter-spacing: .08em;
+  color: var(--text-light, #718096);
+}
+.field-required { color: #E53E3E; margin-left: 2px; }
+.field-live-preview {
+  font-size: 11.5px; font-weight: 600;
+  color: var(--green, #0D9E72);
+  display: none;
+}
+/* Input with prefix */
+.field-input-wrap { position: relative; }
+.field-prefix {
+  position: absolute; left: 14px; top: 50%;
+  transform: translateY(-50%);
+  font-size: 13px; font-weight: 700;
+  color: var(--text-light, #718096);
+  pointer-events: none; user-select: none;
+}
+.form-input.has-prefix { padding-left: 40px; }
+.form-input {
+  width: 100%;
+  padding: 12px 14px;
+  font-size: 14px; font-family: inherit;
+  border: 1.5px solid var(--border, #E2E8F0);
+  border-radius: 10px; outline: none;
+  background: var(--bg, #F7F9FC);
+  color: var(--text, #1A202C);
+  transition: border-color .2s, box-shadow .2s, background .2s;
+}
+.form-input:focus {
+  border-color: var(--navy, #0A2647);
+  background: #fff;
+  box-shadow: 0 0 0 3px rgba(10,38,71,.08);
+}
+.form-input.is-error {
+  border-color: #E53E3E;
+  background: #FFF5F5;
+  box-shadow: 0 0 0 3px rgba(229,62,62,.08);
+}
+.form-input.is-valid { border-color: #38A169; background: #F0FFF4; }
+.form-select { appearance: none; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23718096' stroke-width='2.5'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 14px center; padding-right: 36px; }
+.field-hint { font-size: 11.5px; color: var(--text-light, #718096); margin-top: 5px; }
+.field-err { display: none; font-size: 12px; color: #E53E3E; margin-top: 5px; font-weight: 500; }
+.field-err.show { display: flex; align-items: center; gap: 4px; }
+/* Year selectors */
+.year-selectors { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 16px; }
+.year-select-label { font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: .08em; color: var(--text-light, #718096); margin-bottom: 6px; }
+.year-badge { display: inline-block; background: rgba(13,158,114,.1); color: var(--green, #0D9E72); font-size: 10px; font-weight: 600; padding: 2px 7px; border-radius: 4px; margin-left: 4px; }
+/* Year conflict */
+.year-conflict { display: none; background: #FFFBEB; border: 1px solid #F59E0B; border-radius: 8px; padding: 10px 14px; font-size: 13px; color: #92400E; margin-bottom: 14px; align-items: center; gap: 8px; }
+.year-conflict.show { display: flex; }
+@media(max-width:640px){ .year-selectors { grid-template-columns: 1fr !important; } }
+
+
+/* ── RESULT SECTION FIXES ── */
+.calc-result { margin-top: 32px !important; border-top: 3px solid var(--green, #0D9E72); }
+.calc-result-title {
+  font-size: 16px; font-weight: 700;
+  color: var(--navy, #0A2647); text-align: center;
+  margin-bottom: 4px; letter-spacing: -.01em;
+  background: var(--bg, #f7f9fc);
+  padding: 14px 16px 0;
+  margin: 0 -20px 14px;
+}
+.calc-result-subtitle {
+  font-size: 12px; color: var(--text-mid, #4A5568);
+  text-align: center; margin: 0 0 14px;
+  padding: 0 16px;
+}
+
+/* ── TAX DIFFERENCE SUMMARY ── */
+.tax-diff-bar{
+  margin-top:16px;
+  border-radius:12px;
+  overflow:hidden;
+  border:1.5px solid rgba(255,255,255,.15);
+}
+.tax-diff-header{
+  background:rgba(255,255,255,.08);
+  padding:10px 16px;
+  font-size:11px;font-weight:700;
+  text-transform:uppercase;letter-spacing:.09em;
+  color:rgba(255,255,255,.6);
+  text-align:center;
+}
+.tax-diff-grid{
+  display:grid;
+  grid-template-columns:1fr auto 1fr;
+  gap:0;
+  background:rgba(255,255,255,.04);
+}
+.tax-diff-year{
+  padding:14px 16px;
+  text-align:center;
+}
+.tax-diff-year-label{
+  font-size:11px;color:rgba(255,255,255,.5);
+  text-transform:uppercase;letter-spacing:.07em;margin-bottom:4px;
+}
+.tax-diff-year-amount{
+  font-size:22px;font-weight:700;color:#fff;
+  font-family:var(--font-head,serif);
+}
+.tax-diff-year-sub{
+  font-size:11px;color:rgba(255,255,255,.4);margin-top:2px;
+}
+.tax-diff-middle{
+  display:flex;flex-direction:column;
+  align-items:center;justify-content:center;
+  padding:14px 12px;
+  border-left:1px solid rgba(255,255,255,.08);
+  border-right:1px solid rgba(255,255,255,.08);
+  min-width:90px;
+}
+.tax-diff-vs{
+  font-size:10px;font-weight:700;
+  color:rgba(255,255,255,.3);
+  text-transform:uppercase;letter-spacing:.1em;
+  margin-bottom:6px;
+}
+.tax-diff-badge{
+  font-size:13px;font-weight:700;
+  padding:5px 12px;border-radius:var(--radius-pill,99px);
+  text-align:center;line-height:1.3;
+}
+.diff-save{background:rgba(34,201,122,.2);color:#4ee8b0;border:1px solid rgba(34,201,122,.3)}
+.diff-more{background:rgba(229,62,62,.2);color:#fc8181;border:1px solid rgba(229,62,62,.3)}
+.diff-same{background:rgba(255,255,255,.1);color:rgba(255,255,255,.6);border:1px solid rgba(255,255,255,.15)}
+.tax-diff-verdict{
+  padding:10px 16px;
+  font-size:12.5px;
+  color:rgba(255,255,255,.65);
+  text-align:center;
+  border-top:1px solid rgba(255,255,255,.08);
+  line-height:1.55;
+}
+.tax-diff-verdict strong{color:#fff}
+@media(max-width:480px){
+  .tax-diff-year-amount{font-size:18px}
+  .tax-diff-middle{min-width:70px;padding:10px 8px}
+  .tax-diff-badge{font-size:12px;padding:4px 9px}
+}
+
+
+/* ── TAX DIFFERENCE SUMMARY (white card outside dark result) ── */
+.tax-diff-wrap{margin-top:16px;background:var(--white);border:1.5px solid var(--border);border-radius:var(--radius-lg);overflow:hidden;box-shadow:var(--shadow-sm)}
+.tax-diff-inner{padding:0}
+.tax-diff-header-txt{background:var(--navy);color:rgba(255,255,255,.85);font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.09em;padding:10px 16px;text-align:center}
+.tax-diff-row{display:grid;grid-template-columns:1fr auto 1fr;align-items:center}
+.tax-diff-col{padding:16px;text-align:center}
+.tax-diff-lbl{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--text-light);margin-bottom:5px}
+.tax-diff-amt{font-size:22px;font-weight:700;color:var(--navy);font-family:var(--font-head)}
+.tax-diff-sub{font-size:11px;color:var(--text-light);margin-top:2px}
+.tax-diff-center{padding:16px 12px;text-align:center;border-left:1px solid var(--border);border-right:1px solid var(--border)}
+.tax-diff-vs-txt{font-size:10px;font-weight:700;color:var(--text-light);text-transform:uppercase;letter-spacing:.1em;margin-bottom:8px}
+.tax-diff-pill{font-size:12.5px;font-weight:700;padding:6px 12px;border-radius:var(--radius-pill);white-space:nowrap}
+.pill-save{background:rgba(34,201,122,.12);color:var(--green-dark);border:1px solid rgba(34,201,122,.25)}
+.pill-more{background:rgba(229,62,62,.1);color:#dc2626;border:1px solid rgba(229,62,62,.2)}
+.pill-same{background:var(--bg);color:var(--text-mid);border:1px solid var(--border)}
+.tax-diff-note{padding:10px 16px;font-size:13px;color:var(--text-mid);text-align:center;border-top:1px solid var(--border);background:var(--bg);line-height:1.55}
+.tax-diff-note strong{color:var(--navy)}
+@media(max-width:480px){
+  .tax-diff-amt{font-size:18px}
+  .tax-diff-center{padding:12px 8px}
+  .tax-diff-pill{font-size:11.5px;padding:5px 9px}
+}
+
+</style>
+{% endblock %}
+{% block content %}
+<div class="article-hero calc-page-header">
+  <div class="article-hero-inner">
+    <div class="breadcrumb"><a href="{% url 'index' %}">Home</a><span class="breadcrumb-sep">›</span><span>Calculators</span><span class="breadcrumb-sep">›</span><span>Business Tax Calculator</span></div>
+    <h1>Business Income Tax Calculator — Pakistan 2025–26</h1>
+    <div class="article-meta"><span>🔄 FBR Tax Year 2025–26</span><span>🏢 Sole Proprietors &amp; SMEs</span></div>
+  </div>
+</div>
+<div class="content-grid">
+  <main class="content-main">
+    <div class="calc-container">
+      <div class="calc-header">
+        <div class="calc-header-icon">🏢</div>
+        <div>
+          <h2>Business Tax Calculator</h2>
+          <p>Sole Proprietors & Business Individuals · ITO 2001</p>
+          <div class="calc-badges"><span class="calc-badge">Sole Proprietors</span><span class="calc-badge">SMEs</span><span class="calc-badge">FBR 2025-26</span></div>
+        </div>
+      </div>
+            <div class="calc-body">
+        <!-- YMYL educational disclaimer (added for AdSense / trust) -->
+        <div style="background:#fffbeb;border:1px solid #fde68a;border-radius:10px;padding:12px 16px;margin-bottom:18px;display:flex;gap:10px;align-items:flex-start;">
+          <span style="font-size:16px;line-height:1.4;flex-shrink:0;">&#9888;&#65039;</span>
+          <p style="font-size:12.5px;color:#92400e;margin:0;line-height:1.6;">
+            <strong>For educational purposes only.</strong> This calculator gives an estimate based on FBR-notified slabs for the selected tax year and is not formal tax, legal, or financial advice. Always verify your liability against official
+            <a href="https://www.fbr.gov.pk" target="_blank" rel="noopener" style="color:#92400e;text-decoration:underline;font-weight:600;">FBR circulars / the Gazette of Pakistan</a>
+            or a qualified tax practitioner before filing.
+          </p>
+        </div>
+
+        <form method="POST" action="{% url 'BusinessCalculator' %}#calc-results" id="calc-form" novalidate>
+          {% csrf_token %}
+
+          <!-- INCOME TYPE TOGGLE -->
+          <div class="income-toggle">
+            <input type="radio" name="income_type" id="tog-monthly" value="Monthly"
+                   {% if income_type == 'Monthly' or not income_type %}checked{% endif %}>
+            <label for="tog-monthly">📅 Monthly Income</label>
+            <input type="radio" name="income_type" id="tog-yearly" value="Yearly"
+                   {% if income_type == 'Yearly' %}checked{% endif %}>
+            <label for="tog-yearly">📆 Annual Income</label>
+          </div>
+
+          <!-- INCOME FIELD -->
+          <div class="field-wrap">
+            <div class="field-top">
+              <span class="field-label-text">Net Business Income (PKR)<span class="field-required">*</span></span>
+              <span class="field-live-preview" id="live-preview"></span>
+            </div>
+            <div class="field-input-wrap">
+              <span class="field-prefix">₨</span>
+              <input type="number" id="income_amount" name="income_amount"
+                     class="form-input number-only has-prefix"
+                     placeholder="e.g. 2,400,000"
+                     min="1" required
+                     value="{% if request.POST.income_amount %}{{ request.POST.income_amount }}{% endif %}">
+            </div>
+            <div class="field-hint">Net income after allowable business expenses</div>
+            <div class="field-err" id="err-income">⚠ Please enter a valid amount greater than 0</div>
+          </div>
+          <!-- TAX YEAR SELECTORS -->
+          <div class="year-selectors">
+            <div>
+              <div class="year-select-label">Tax Year 1 <span class="year-badge">Compare</span></div>
+              <select name="tax_year_1" id="tax_year_1" class="form-input form-select" required>
+                <option value="">— Select Year —</option>
+                {% for y in years %}<option value="{{ y }}" {% if tax_year_1 == y %}selected{% endif %}>{{ y }}</option>{% empty %}<option value="2025-2026"{% if tax_year_1 == "2025-2026" %} selected{% endif %}>2025-2026</option><option value="2024-2025"{% if tax_year_1 == "2024-2025" %} selected{% endif %}>2024-2025</option><option value="2023-2024"{% if tax_year_1 == "2023-2024" %} selected{% endif %}>2023-2024</option>{% endfor %}
+              </select>
+              <div class="field-err" id="err-year1">⚠ Please select Tax Year 1</div>
+            </div>
+            <div>
+              <div class="year-select-label">Tax Year 2 <span class="year-badge">Compare</span></div>
+              <select name="tax_year_2" id="tax_year_2" class="form-input form-select" required>
+                <option value="">— Select Year —</option>
+                {% for y in years %}<option value="{{ y }}" {% if tax_year_2 == y %}selected{% endif %}>{{ y }}</option>{% empty %}<option value="2025-2026"{% if tax_year_2 == "2025-2026" %} selected{% endif %}>2025-2026</option><option value="2024-2025"{% if tax_year_2 == "2024-2025" %} selected{% endif %}>2024-2025</option><option value="2023-2024"{% if tax_year_2 == "2023-2024" %} selected{% endif %}>2023-2024</option>{% endfor %}
+              </select>
+              <div class="field-err" id="err-year2">⚠ Please select Tax Year 2</div>
+            </div>
+          </div>
+
+          <div class="year-conflict" id="year-conflict">
+            ⚠️ Please select <strong>two different tax years</strong> to compare results.
+          </div>
+
+          <button type="submit" class="calc-submit" id="calc-submit">
+            🧮 Calculate Business Tax
+          </button>
+        </form>
+        {%  if not tax_year_1_result %}
+        <div class="precalc-cards">
+          <div class="precalc-card">
+            <div class="precalc-card-icon pc-warn">⚠️</div>
+            <h5>Disclaimer</h5>
+            <ul>
+              <li><span class="pc-dot pc-dot-warn"></span>Actual tax liability may vary. Allowable expenses reduce taxable income.</li>
+              <li><span class="pc-dot pc-dot-warn"></span>Results are estimates. Consult a tax professional for final assessment.</li>
+            </ul>
+          </div>
+          <div class="precalc-card">
+            <div class="precalc-card-icon pc-blue">🏢</div>
+            <h5>Who is this for?</h5>
+            <ul>{% for item in content.who %}<li><span class="pc-dot pc-dot-green"></span>{{ item }}</li>{% endfor %}</ul>
+          </div>
+          <div class="precalc-card">
+            <div class="precalc-card-icon pc-navy">📌</div>
+            <h5>Important Notes</h5>
+            <ul>{% for note in content.notes %}<li><span class="pc-dot pc-dot-navy"></span>{{ note }}</li>{% endfor %}</ul>
+          </div>
+        </div>
+        {%  endif %}
+
+        {% if tax_year_1_result and tax_year_2_result %}
+        <div class="calc-result" id="calc-results">
+          <div class="calc-result-title">Tax Calculation Comparison: {{ tax_year_1 }} VS {{ tax_year_2 }}</div>
+          <div class="calc-result-subtitle">Monthly: PKR {{ monthly_income|floatformat:0|intcomma }} &nbsp;|&nbsp; Annual: PKR {{ yearly_income|floatformat:0|intcomma }}</div>
+          <div class="cmp-grid">
+            <div class="cmp-card">
+              <div class="cmp-head">Tax Calculation for Tax Year : {{ tax_year_1 }}</div>
+              <table class="cmp-table">
+                <tr><td>Monthly Income</td><td>Rs. {{ monthly_income|floatformat:0|intcomma }}</td></tr>
+                <tr><td>Yearly Income</td><td>Rs. {{ yearly_income|floatformat:0|intcomma }}</td></tr>
+                <tr class="hl"><td>Applicable Tax Bracket</td><td>Rs. {{ tax_year_1_result.lower|floatformat:0|intcomma }} to Rs. {% if tax_year_1_result.upper >= 999999999 %}inf{% else %}{{ tax_year_1_result.upper|floatformat:0|intcomma }}{% endif %}</td></tr>
+                <tr><td>Base Tax</td><td>Rs. {{ tax_year_1_result.fixed_tax|floatformat:0|intcomma }}</td></tr>
+                <tr><td>Amount Exceeding Bracket</td><td>Rs. {{ tax_year_1_result.amount_exceeding|floatformat:0|intcomma }}</td></tr>
+                <tr class="hl"><td>Rate Applied</td><td>{{ tax_year_1_result.rate|floatformat:0|intcomma }} %</td></tr>
+                <tr><td>Tax on Amount Exceeding</td><td>Rs. {{ tax_year_1_result.tax_on_exceeding|floatformat:0|intcomma }}</td></tr>
+                <tr><td>Total Tax Chargeable</td><td>Rs. {{ tax_year_1_result.total_tax|floatformat:0|intcomma }}</td></tr>
+                {% if tax_year_1_result.surcharge > 0 %}<tr><td>{{ surcharge_label_1 }}</td><td>Rs. {{ tax_year_1_result.surcharge|floatformat:0|intcomma }}</td></tr>{% endif %}
+                <tr class="hl"><td>Monthly Tax</td><td>Rs. {{ tax_year_1_result.per_month|floatformat:0|intcomma }}</td></tr>
+              </table>
+            </div>
+            <div class="cmp-card">
+              <div class="cmp-head">Tax Calculation for Tax Year : {{ tax_year_2 }}</div>
+              <table class="cmp-table">
+                <tr><td>Monthly Income</td><td>Rs. {{ monthly_income|floatformat:0|intcomma }}</td></tr>
+                <tr><td>Yearly Income</td><td>Rs. {{ yearly_income|floatformat:0|intcomma }}</td></tr>
+                <tr class="hl"><td>Applicable Tax Bracket</td><td>Rs. {{ tax_year_2_result.lower|floatformat:0|intcomma }} to Rs. {% if tax_year_2_result.upper >= 999999999 %}inf{% else %}{{ tax_year_2_result.upper|floatformat:0|intcomma }}{% endif %}</td></tr>
+                <tr><td>Base Tax</td><td>Rs. {{ tax_year_2_result.fixed_tax|floatformat:0|intcomma }}</td></tr>
+                <tr><td>Amount Exceeding Bracket</td><td>Rs. {{ tax_year_2_result.amount_exceeding|floatformat:0|intcomma }}</td></tr>
+                <tr class="hl"><td>Rate Applied</td><td>{{ tax_year_2_result.rate|floatformat:0|intcomma }} %</td></tr>
+                <tr><td>Tax on Amount Exceeding</td><td>Rs. {{ tax_year_2_result.tax_on_exceeding|floatformat:0|intcomma }}</td></tr>
+                <tr><td>Total Tax Chargeable</td><td>Rs. {{ tax_year_2_result.total_tax|floatformat:0|intcomma }}</td></tr>
+                {% if tax_year_2_result.surcharge > 0 %}<tr><td>{{ surcharge_label_2 }}</td><td>Rs. {{ tax_year_2_result.surcharge|floatformat:0|intcomma }}</td></tr>{% endif %}
+                <tr class="hl"><td>Monthly Tax</td><td>Rs. {{ tax_year_2_result.per_month|floatformat:0|intcomma }}</td></tr>
+              </table>
+            </div>
+          </div>
+
+          <!-- ── TAX DIFFERENCE SUMMARY ── -->
+
+
+          <div class="calc-cta" style="margin-top:14px">
+            <div class="calc-cta-text">Need business return filing? <strong>Starting PKR 5,000</strong></div>
+            <a href="https://wa.me/923332482742" class="btn-wa-sm" target="_blank" rel="noopener">💬 Get Help</a>
+          </div>
+          <!-- disclaimer + who + notes inside result -->
+          <div style="margin-top:16px;background:#FFFBEB;border-radius:10px;padding:14px 16px;font-size:13px;color:#92400E;line-height:1.65;border-left:3px solid #F59E0B">
+            ⚠️ These results are for <strong style="color:#78350F">estimation purposes only</strong>. Actual tax may vary based on deductions, credits, and withholding tax already deducted. Consult a tax professional for accurate assessment.
+          </div>
+          <div class="result-inner-grid" style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:14px">
+            <div style="background:#fff;border-radius:10px;padding:14px 16px">
+              <div style="font-size:12px;font-weight:700;color:#0A2647;margin-bottom:10px">👤 Who should use this?</div>
+              <ul style="list-style:none;display:flex;flex-direction:column;gap:6px">
+                {% for item in content.who %}<li style="display:flex;align-items:flex-start;gap:7px;font-size:12.5px;color:#4A5568"><span style="width:5px;height:5px;border-radius:50%;background:#0D9E72;flex-shrink:0;margin-top:5px"></span>{{ item }}</li>{% endfor %}
+              </ul>
+            </div>
+            <div style="background:#fff;border-radius:10px;padding:14px 16px">
+              <div style="font-size:12px;font-weight:700;color:#0A2647;margin-bottom:10px">📌 Important Notes</div>
+              <ul style="list-style:none;display:flex;flex-direction:column;gap:6px">
+                {% for note in content.notes %}<li style="display:flex;align-items:flex-start;gap:7px;font-size:12.5px;color:#4A5568"><span style="width:5px;height:5px;border-radius:50%;background:#E8A020;flex-shrink:0;margin-top:5px"></span>{{ note }}</li>{% endfor %}
+              </ul>
+            </div>
+          </div>
+        </div>
+        {% endif %}
+      </div>
+    </div>
+
+        <!-- ── TAX DIFFERENCE SUMMARY ── -->
+        {% if tax_year_1_result and tax_year_2_result %}
+        <div class="tax-diff-wrap">
+          <div class="tax-diff-header-txt">📊 Monthly Tax Comparison at a Glance</div>
+          <div class="tax-diff-row">
+            <div class="tax-diff-col">
+              <div class="tax-diff-lbl">{{ tax_year_1 }}</div>
+              <div class="tax-diff-amt">Rs. {{ tax_year_1_result.per_month|floatformat:0 }}</div>
+              <div class="tax-diff-sub">per month</div>
+            </div>
+            <div class="tax-diff-center">
+              <div class="tax-diff-vs-txt">vs</div>
+              {% if tax_year_1_result.per_month > tax_year_2_result.per_month %}
+              <div class="tax-diff-pill pill-more">▲ Higher in {{ tax_year_1 }}</div>
+              {% elif tax_year_1_result.per_month < tax_year_2_result.per_month %}
+              <div class="tax-diff-pill pill-save">▼ Lower in {{ tax_year_1 }}</div>
+              {% else %}
+              <div class="tax-diff-pill pill-same">= Same both years</div>
+              {% endif %}
+            </div>
+            <div class="tax-diff-col">
+              <div class="tax-diff-lbl">{{ tax_year_2 }}</div>
+              <div class="tax-diff-amt">Rs. {{ tax_year_2_result.per_month|floatformat:0 }}</div>
+              <div class="tax-diff-sub">per month</div>
+            </div>
+          </div>
+          <div class="tax-diff-note">
+            {% if tax_year_1_result.per_month > tax_year_2_result.per_month %}
+            💡 You pay <strong>more tax in {{ tax_year_1 }}</strong> than {{ tax_year_2 }} for this income level.
+            {% elif tax_year_1_result.per_month < tax_year_2_result.per_month %}
+            💡 You pay <strong>less tax in {{ tax_year_1 }}</strong> — a saving compared to {{ tax_year_2 }}.
+            {% else %}
+            💡 <strong>No change</strong> — your monthly tax is the same in both years for this income.
+            {% endif %}
+          </div>
+        </div>
+        {% endif %}
+    
+<!-- ── EDITORIAL CONTENT (SEO + value) ── -->
+    <article style="background:var(--white);border:1px solid var(--border);border-radius:var(--radius-lg);padding:28px;margin-top:24px;line-height:1.75;color:var(--text-mid);font-size:15px;">
+      <h2 style="font-size:21px;font-weight:700;color:var(--navy);margin:0 0 12px;">How Business Income Tax Is Calculated in Pakistan (2025–26)</h2>
+      <p style="margin:0 0 16px;">
+        Sole proprietors, traders, and most freelancers are taxed as <strong>non-salaried individuals</strong> under the Income Tax Ordinance, 2001. Tax is charged on your <strong>net business income</strong> — gross receipts minus allowable business expenses under Section 20 (rent, salaries, utilities, depreciation, and other costs incurred to earn the income). These slabs are notably higher than the salaried slabs, so understanding them matters for anyone running a business or working independently.
+      </p>
+      <h3 style="font-size:17px;font-weight:700;color:var(--navy);margin:20px 0 10px;">Business / Non-Salaried Slabs — Tax Year 2025–26</h3>
+      <div style="overflow-x:auto;margin-bottom:16px;">
+        <table style="width:100%;border-collapse:collapse;font-size:14px;">
+          <thead><tr style="background:var(--navy);color:#fff;"><th style="text-align:left;padding:10px 12px;">Annual Taxable Income</th><th style="text-align:left;padding:10px 12px;">Tax</th></tr></thead>
+          <tbody>
+            <tr style="border-bottom:1px solid var(--border);"><td style="padding:10px 12px;">Up to Rs. 600,000</td><td style="padding:10px 12px;">0%</td></tr>
+            <tr style="border-bottom:1px solid var(--border);"><td style="padding:10px 12px;">600,001 – 1,200,000</td><td style="padding:10px 12px;">15% of amount over 600,000</td></tr>
+            <tr style="border-bottom:1px solid var(--border);"><td style="padding:10px 12px;">1,200,001 – 1,600,000</td><td style="padding:10px 12px;">Rs. 90,000 + 20% of amount over 1,200,000</td></tr>
+            <tr style="border-bottom:1px solid var(--border);"><td style="padding:10px 12px;">1,600,001 – 3,200,000</td><td style="padding:10px 12px;">Rs. 170,000 + 30% of amount over 1,600,000</td></tr>
+            <tr style="border-bottom:1px solid var(--border);"><td style="padding:10px 12px;">3,200,001 – 5,600,000</td><td style="padding:10px 12px;">Rs. 650,000 + 40% of amount over 3,200,000</td></tr>
+            <tr><td style="padding:10px 12px;">Above 5,600,000</td><td style="padding:10px 12px;">Rs. 1,610,000 + 45% of amount over 5,600,000</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <h3 style="font-size:17px;font-weight:700;color:var(--navy);margin:20px 0 10px;">Worked Example</h3>
+      <p style="margin:0 0 16px;">
+        Say your net business profit for the year is <strong>Rs. 2,000,000</strong> (after deducting business expenses). This falls in the 1,600,001 – 3,200,000 slab: tax = Rs. 170,000 base + 30% of (2,000,000 − 1,600,000) = Rs. 170,000 + Rs. 120,000 = <strong>Rs. 290,000</strong> for the year.
+      </p>
+      <h3 style="font-size:17px;font-weight:700;color:var(--navy);margin:20px 0 10px;">Frequently Asked Questions</h3>
+      <p style="margin:0 0 10px;"><strong>Are freelancers taxed at these slabs?</strong><br>
+        Most local-service freelancers are, yes. But freelancers earning from IT or IT-enabled <em>service exports</em> through banking channels fall under the final tax regime (Section 154A) — 0.25% if PSEB-registered, otherwise 1% — not these slabs.</p>
+      <p style="margin:0 0 10px;"><strong>What counts as a business expense?</strong><br>
+        Any expense wholly and exclusively incurred to earn business income — rent, staff salaries, utilities, supplies, and depreciation on assets. Personal expenses are not deductible.</p>
+      <p style="margin:0;"><strong>Why are these rates higher than salaried rates?</strong><br>
+        Salaried individuals get concessional slabs (1% at the second bracket); non-salaried income starts at 15% above Rs. 600,000 and tops out at 45%. Always file to stay on the ATL and avoid higher withholding everywhere else.</p>
+    </article>
+
+    {% include 'partials/cta_banner.html' %}
+  </main>
+  <aside class="content-sidebar">{% include 'partials/sidebar.html' %}</aside>
+</div>
+{% endblock %}
+{% block extra_js %}
+<script src="{% static 'js/calculators.js' %}"></script>
+
+{% endblock %}

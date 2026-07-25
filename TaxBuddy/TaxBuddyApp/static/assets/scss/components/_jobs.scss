@@ -1,0 +1,63 @@
+
+
+.single-job {
+    background: $white;
+    border: 1px solid rgba(22, 21, 64, 0.25);
+    border-radius: 7px;
+    padding: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 30px;
+    width: 100%;
+}
+
+.job-icon {
+    width: 50px;
+    height: 50px;
+    background: $color7;
+    box-shadow: 0px 4px 15px rgba(253, 194, 76, 0.5);
+    text-align: center;
+    line-height: 50px;
+    border-radius: 50%;
+    position: absolute;
+    left: 0;
+    top: 0;
+}
+
+.job-desc {
+    position: relative;
+    z-index: 2;
+    padding-left: 65px;
+}
+
+.job-desc h5 {
+    font-family: $font3;
+    font-style: normal;
+    font-weight: $bold;
+    font-size: 20px;
+    line-height: 20px;
+    color: $color22;
+    margin-bottom: 8px;
+}
+
+.job-desc h3 {
+    font-family: $font3;
+    font-style: normal;
+    font-weight: $bold;
+    font-size: 24px;
+    line-height: 24px;
+    letter-spacing: -1px;
+    color: $secondary_color;
+    margin-bottom: 8px;
+}
+
+.job-desc p {
+    font-family: $font3;
+    font-style: normal;
+    font-weight: $medium;
+    font-size: 20px;
+    line-height: 20px;
+    color: $color24;
+    margin-bottom: 0;
+}

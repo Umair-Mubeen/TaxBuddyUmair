@@ -1,0 +1,56 @@
+{% load static %}
+<footer class="main-footer">
+    <!-- To the right -->
+    <div class="float-right d-none d-sm-inline">
+
+    </div>
+    <!-- Default to the left -->
+    <strong>Copyright &copy; 2024-2025 <a href="#">TaxBuddy Umair</a>.</strong> All rights reserved.
+</footer>
+
+<script src="{% static 'plugins/jquery/jquery.min.js' %}"></script>
+<script src="{% static 'plugins/jquery-ui/jquery-ui.min.js' %}"></script>
+<script src="{% static 'plugins/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+<script src="{% static 'plugins/chart.js/Chart.min.js' %}"></script>
+<script src="{% static 'plugins/sparklines/sparkline.js' %}"></script>
+<script src="{% static 'plugins/jqvmap/jquery.vmap.min.js' %}"></script>
+<script src="{% static 'plugins/jqvmap/maps/jquery.vmap.usa.js' %}"></script>
+<script src="{% static 'plugins/jquery-knob/jquery.knob.min.js' %}"></script>
+<script src="{% static 'plugins/moment/moment.min.js' %}"></script>
+<script src="{% static 'plugins/daterangepicker/daterangepicker.js' %}"></script>
+<script src="{% static 'plugins/tempusdominus-bootstrap-4/js/tempusdominus-bootstrap-4.min.js' %}"></script>
+<script src="{% static 'plugins/summernote/summernote-bs4.min.js' %}"></script>
+<script src="{% static 'plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js' %}"></script>
+<script src="{% static 'dist/js/adminlte.js' %}"></script>
+<script src="{% static 'dist/js/pages/dashboard.js' %}"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+
+<!-- LightGallery core JavaScript -->
+<script src="https://cdn.jsdelivr.net/npm/lightgallery@1.10.0/dist/js/lightgallery-all.min.js"></script>
+
+<!-- LightGallery Zoom Plugin -->
+<script src="https://cdn.jsdelivr.net/npm/lg-zoom@1.0.0/dist/lg-zoom.min.js"></script>
+
+<!-- LightGallery Rotate Plugin -->
+<script src="https://cdn.jsdelivr.net/npm/lg-rotate@1.0.0/dist/lg-rotate.min.js"></script>
+
+
+<script>
+  $(function () {
+    //Add text editor
+    $('#compose-textarea').summernote()
+  })
+</script>
+
+
+<!--Light gallery -->
+<script type="text/javascript">
+    $(document).ready(function() {
+        $('.lightgallery').lightGallery({
+            selector: '.spnImg',
+            thumbnail: false
+
+        });
+    });
+</script>
+<!--Light gallery Ends Here -->

@@ -1,0 +1,128 @@
+{% extends 'Cpanel/base_cpanel.html' %}
+{% load static %}
+{% block title %}Manage Questions{% endblock %}
+{% block nav_qlist %}active{% endblock %}
+
+{% block content %}
+<div class="cpanel-header">
+  <h1>📋 MCQ Questions ({{ questions.count }})</h1>
+  <a href="{% url 'questions-add' %}" class="btn-primary" style="text-decoration:none;font-size:13px;padding:9px 18px;">➕ Add Question</a>
+</div>
+
+<!-- Filter by category -->
+<div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:20px;align-items:center;">
+  <span style="font-size:13px;font-weight:600;color:var(--text-mid);">Filter:</span>
+  <button onclick="filterCategory('all', this)"
+          style="padding:5px 14px;border-radius:20px;border:1px solid var(--green);background:var(--green);color:#fff;font-size:12px;cursor:pointer;font-family:var(--font-body);">
+    All
+  </button>
+  {% regroup questions by category as cat_groups %}
+  {% for group in cat_groups %}
+  <button onclick="filterCategory('{{ group.grouper|escapejs }}', this)"
+          style="padding:5px 14px;border-radius:20px;border:1px solid var(--border);background:transparent;color:var(--text-mid);font-size:12px;cursor:pointer;font-family:var(--font-body);">
+    {{ group.grouper|default:"Uncategorised" }} ({{ group.list|length }})
+  </button>
+  {% endfor %}
+</div>
+
+<div class="table-wrap">
+  <table class="data-table" id="questions-table">
+    <thead>
+      <tr>
+        <th>#</th>
+        <th>Question</th>
+        <th>Category</th>
+        <th>Difficulty</th>
+        <th>Options</th>
+        <th>Status</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for q in questions %}
+      <tr data-category="{{ q.category|default:'Uncategorised' }}">
+        <td style="color:var(--text-light);font-size:13px;">{{ forloop.counter }}</td>
+        <td style="max-width:360px;">
+          <div style="font-size:13.5px;font-weight:500;color:var(--navy);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:340px;">
+            {{ q.question_text|truncatechars:80 }}
+          </div>
+          {% if q.section_ref %}
+          <div style="font-size:11px;color:var(--text-light);margin-top:2px;">📖 {{ q.section_ref }}</div>
+          {% endif %}
+        </td>
+        <td>
+          <span style="background:rgba(10,38,71,.07);color:var(--navy);padding:3px 10px;border-radius:20px;font-size:11px;font-weight:600;white-space:nowrap;">
+            {{ q.category|default:"—" }}
+          </span>
+        </td>
+        <td>
+          <span style="font-size:12px;padding:3px 8px;border-radius:4px;font-weight:600;
+            {% if q.difficulty == 'basic' %}background:var(--green-light);color:var(--green-mid);
+            {% elif q.difficulty == 'medium' %}background:var(--gold-light);color:#854F0B;
+            {% else %}background:var(--red-light);color:var(--red);{% endif %}">
+            {{ q.difficulty|title }}
+          </span>
+        </td>
+        <td style="font-size:13px;color:var(--text-mid);">
+          {{ q.options.count }} options
+        </td>
+        <td>
+          {% if q.is_active %}
+          <span class="badge-pub">Active</span>
+          {% else %}
+          <span class="badge-draft">Inactive</span>
+          {% endif %}
+        </td>
+        <td>
+          <div style="display:flex;gap:6px;">
+            <a href="{% url 'questions-edit' pk=q.pk %}"
+               style="padding:5px 10px;background:var(--gold-light);border:1px solid var(--gold);border-radius:6px;font-size:12px;color:#7a4a10;text-decoration:none;">
+              ✏️ Edit
+            </a>
+            <a href="{% url 'questions-delete' pk=q.pk %}"
+               onclick="return confirm('Delete this question permanently?')"
+               style="padding:5px 10px;background:var(--red-light);border:1px solid #fca5a5;border-radius:6px;font-size:12px;color:var(--red);text-decoration:none;">
+              🗑
+            </a>
+          </div>
+        </td>
+      </tr>
+      {% empty %}
+      <tr>
+        <td colspan="7" style="text-align:center;padding:40px;color:var(--text-light);">
+          No questions yet. <a href="{% url 'questions-add' %}" style="color:var(--green);">Add your first question →</a>
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+
+<div style="margin-top:12px;font-size:12px;color:var(--text-light);">
+  Total: <strong>{{ questions.count }}</strong> questions
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+function filterCategory(cat, btn) {
+  // Toggle button style
+  document.querySelectorAll('[onclick^="filterCategory"]').forEach(b => {
+    b.style.background = 'transparent';
+    b.style.color = 'var(--text-mid)';
+    b.style.borderColor = 'var(--border)';
+  });
+  btn.style.background = 'var(--green)';
+  btn.style.color = '#fff';
+  btn.style.borderColor = 'var(--green)';
+
+  document.querySelectorAll('#questions-table tbody tr').forEach(row => {
+    if (cat === 'all') {
+      row.style.display = '';
+    } else {
+      row.style.display = row.dataset.category === cat ? '' : 'none';
+    }
+  });
+}
+</script>
+{% endblock %}

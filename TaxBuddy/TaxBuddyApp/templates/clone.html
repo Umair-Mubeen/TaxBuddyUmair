@@ -1,0 +1,141 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}{{ category_name }} Blog | TaxBuddy Umair{% endblock %}
+{% block meta_desc %}{{ category_name }} tax guides and articles for Pakistan — updated per Finance Act 2025 and FBR notifications. Free educational content by TaxBuddy Umair.{% endblock %}
+{% block content %}
+
+<div class="article-hero">
+  <div class="article-hero-inner">
+    <div class="breadcrumb">
+      <a href="{% url 'index' %}">Home</a>
+      <span class="breadcrumb-sep">›</span>
+      <a href="{% url 'viewBlogs' %}">Blog</a>
+      {% if category_name != 'All' %}
+      <span class="breadcrumb-sep">›</span>
+      <span>{{ category_name }}</span>
+      {% endif %}
+    </div>
+    <h1>{% if category_name == 'All' %}All Tax Articles{% else %}{{ category_name }} Articles{% endif %}</h1>
+    <div class="article-meta">
+      <span>📰 {{ page_obj.paginator.count }} article{{ page_obj.paginator.count|pluralize }}</span>
+      <span>🔄 Updated for FBR 2025–26</span>
+    </div>
+  </div>
+</div>
+
+
+<div class="content-grid">
+  <main class="content-main">
+
+    <!-- Category Filter Pills -->
+<!--    <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:20px;">-->
+<!--      <a href="{% url 'viewBlogs' %}"-->
+<!--         style="padding:6px 16px;border-radius:20px;font-size:12px;font-weight:600;-->
+<!--                {% if category_name == 'All' %}background:var(&#45;&#45;green);color:#fff;{% else %}background:var(&#45;&#45;bg);color:var(&#45;&#45;text-mid);border:1px solid var(&#45;&#45;border);{% endif %}-->
+<!--                text-decoration:none;">-->
+<!--        All-->
+<!--      </a>-->
+<!--      {% for label, slug in categories %}-->
+<!--      <a href="{% url 'viewBlogs_category' slug=slug %}"-->
+<!--         style="padding:6px 16px;border-radius:20px;font-size:12px;font-weight:600;-->
+<!--                {% if category_name|lower == label|lower %}background:var(&#45;&#45;green);color:#fff;{% else %}background:var(&#45;&#45;bg);color:var(&#45;&#45;text-mid);border:1px solid var(&#45;&#45;border);{% endif %}-->
+<!--                text-decoration:none;">-->
+<!--        {{ label }}-->
+<!--      </a>-->
+<!--      {% endfor %}-->
+<!--    </div>-->
+
+    <!-- SEO Intro based on category -->
+    {% if category_name == 'Income Tax' or category_slug == 'income-tax' %}
+    <div style="background:var(--white);border:1px solid var(--border);border-radius:var(--radius-lg);padding:16px 20px;margin-bottom:20px;">
+      <p style="font-size:14px;color:var(--text-mid);line-height:1.75;margin:0;">
+        Browse all <strong>income tax articles for Pakistan</strong> — covering ITO 2001 sections, filer vs non-filer rates, property tax, withholding tax, advance tax, and FBR compliance. Updated per Finance Act 2025-26.
+        <a href="{% url 'income_tax_guides' %}" style="color:var(--green);font-weight:600;"> View Income Tax Guides →</a>
+      </p>
+    </div>
+    {% elif category_name == 'Sales Tax' or category_slug == 'sales-tax' %}
+    <div style="background:var(--white);border:1px solid var(--border);border-radius:var(--radius-lg);padding:16px 20px;margin-bottom:20px;">
+      <p style="font-size:14px;color:var(--text-mid);line-height:1.75;margin:0;">
+        Browse all <strong>sales tax articles for Pakistan</strong> — covering GST 18%, input/output tax, zero-rated goods, Tier-1 retailers, monthly return filing, and SRO updates under Sales Tax Act 1990.
+        <a href="{% url 'sales_tax_guides' %}" style="color:var(--green);font-weight:600;"> View Sales Tax Guides →</a>
+      </p>
+    </div>
+    {% else %}
+    <div style="background:var(--white);border:1px solid var(--border);border-radius:var(--radius-lg);padding:16px 20px;margin-bottom:20px;">
+      <p style="font-size:14px;color:var(--text-mid);line-height:1.75;margin:0;">
+        Free Pakistan tax education articles by <strong>Umair Mubeen</strong> — income tax, sales tax, FBR compliance, and withholding tax guides. Updated per Finance Act 2025-26.
+      </p>
+    </div>
+    {% endif %}
+
+    <!-- Blog Cards -->
+    {% if page_obj.object_list %}
+    <div class="cards-grid" style="margin-bottom:24px;">
+      {% for blog in page_obj %}
+      <a href="{% url 'BlogDetails' slug=blog.slug %}" class="card" style="text-decoration:none;">
+        {% if blog.featured_image %}
+        <div class="card-img" style="position:relative;overflow:hidden;">
+          <img src="{{ blog.featured_image.url }}" alt="{{ blog.title }}" loading="lazy"
+               style="width:100%;height:100%;object-fit:cover;position:absolute;inset:0;">
+        </div>
+        {% else %}
+        <div class="card-img" style="background:linear-gradient(135deg,#0A2647,#1E5F8E);">📄</div>
+        {% endif %}
+        <div class="card-body">
+          <div class="card-tag">{{ blog.category|default:"Tax" }}</div>
+          <div class="card-title">{{ blog.title }}</div>
+          <div class="card-excerpt">{{ blog.meta_description|default:blog.content|striptags|truncatewords:18 }}</div>
+          <div class="card-footer">
+            <span>{{ blog.created_at|date:"M d, Y" }}</span>
+            <span class="card-read-more">Read →</span>
+          </div>
+        </div>
+      </a>
+
+
+      {% endfor %}
+    </div>
+
+    <!-- Pagination -->
+    {% if page_obj.has_other_pages %}
+    <nav class="pagination" aria-label="Blog pagination">
+      {% if page_obj.has_previous %}
+      <a href="?page={{ page_obj.previous_page_number }}">← Prev</a>
+      {% else %}
+      <span class="disabled">← Prev</span>
+      {% endif %}
+
+      {% for num in page_obj.paginator.page_range %}
+        {% if page_obj.number == num %}
+        <span class="current">{{ num }}</span>
+        {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
+        <a href="?page={{ num }}">{{ num }}</a>
+        {% endif %}
+      {% endfor %}
+
+      {% if page_obj.has_next %}
+      <a href="?page={{ page_obj.next_page_number }}">Next →</a>
+      {% else %}
+      <span class="disabled">Next →</span>
+      {% endif %}
+    </nav>
+    {% endif %}
+
+    {% else %}
+    <div style="text-align:center;padding:60px 20px;color:var(--text-light);">
+      <div style="font-size:48px;margin-bottom:16px;">📭</div>
+      <h3 style="font-family:var(--font-head);color:var(--navy);margin-bottom:8px;">No articles found</h3>
+      <p>No articles in this category yet. Check back soon!</p>
+      <a href="{% url 'viewBlogs' %}" class="btn-primary" style="display:inline-block;margin-top:16px;text-decoration:none;">View All Articles</a>
+    </div>
+    {% endif %}
+
+  </main>
+
+  <!-- Sidebar -->
+  <aside class="content-sidebar">
+    {% include 'partials/sidebar.html' %}
+  </aside>
+</div>
+{% endblock %}

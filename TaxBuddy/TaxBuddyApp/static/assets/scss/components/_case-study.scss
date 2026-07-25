@@ -1,0 +1,682 @@
+.case-study-1 {
+  .single-case-study {
+    &:hover {
+      cursor: move;
+
+      .case-study-img {
+        img {
+          transition: all 0.3s;
+          transform: scale(1.1);
+        }
+      }
+    }
+  }
+
+  .owl-nav {
+    button {
+      position: absolute;
+      height: 80px;
+      width: 80px;
+      text-align: center;
+      line-height: 80px;
+      background: #FFFFFF !important;
+      top: 50%;
+      left: -40px;
+      border-radius: 50%;
+      transition: all 0.3s;
+      margin-top: -40px;
+      @media #{$xs}{
+        left: 0;
+      }
+
+      &.owl-next {
+        left: auto;
+        right: -40px;
+        @media #{$xs}{
+          right: 0;
+        }
+      }
+
+      &:hover {
+        background: #FDC24C !important;
+        transition: all 0.3s;
+        color: $white;
+      }
+    }
+  }
+
+  .case-study-img {
+    height: 420px;
+    border-radius: 8px;
+    overflow: hidden;
+    @media #{$xs} {
+      height: 300px;
+    }
+
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: all 0.3s;
+      transform: scale(1);
+    }
+  }
+
+  .case-study-content {
+    padding: 24px 0 0;
+
+    h4 {
+      font-family: $font3;
+      font-weight: $bold;
+      font-size: 24px;
+      line-height: 24px;
+      letter-spacing: -1px;
+      color: $white;
+      margin-bottom: 14px;
+    }
+
+    p {
+      font-family: $font3;
+      font-weight: $bold;
+      font-size: 20px;
+      line-height: 30px;
+      color: $white;
+      opacity: 0.7;
+      margin-bottom: 32px;
+    }
+  }
+
+  .owl-carousel .owl-item .single-case-study img {
+    width: 100%;
+  }
+}
+
+.case-study-2 {
+  .case-study-img {
+    border-radius: 8px;
+    overflow: hidden;
+    height: 300px;
+
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+  }
+
+  .case-study-icon {
+    height: 100px;
+    width: 100px;
+    padding: 30px;
+    background: $color9;
+    border-radius: 50px;
+    z-index: 2;
+    box-shadow: 0 4px 10px rgba(220, 237, 243, 0.5);
+    position: absolute;
+    top: -50px;
+    left: 50%;
+    margin-left: -50px;
+  }
+
+  .single-case-study-content {
+    text-align: center;
+    position: relative;
+    z-index: 2;
+    padding: 66px 32px 32px;
+    border-radius: 0 0 8px 8px;
+    transition: all 0.3s;
+
+    h3 {
+      font-family: $font4;
+      font-weight: $regular;
+      font-size: 24px;
+      line-height: 24px;
+      text-align: center;
+      text-transform: capitalize;
+      color: $color23;
+      margin-bottom: 16px;
+    }
+
+    p {
+      font-family: $font3;
+      font-weight: $bold;
+      font-size: 16px;
+      line-height: 26px;
+      text-align: center;
+      color: #304952;
+    }
+  }
+
+  .single-case-study {
+    margin-bottom: 30px;
+
+    &.active,
+    &:hover {
+      .case-study-img {
+        border-radius: 8px 8px 0 0;
+      }
+
+      .single-case-study-content {
+        background: #F6F7FA;
+        transition: all 0.3s;
+      }
+    }
+  }
+}
+
+
+.casestudy-2{
+
+.single-case-study {
+  border-radius: 10px;
+  overflow: hidden;
+  position: relative;
+  z-index: 2;
+  transition: all .3s;
+  margin-bottom: 30px;
+}
+
+.single-case-study:after {
+  position: absolute;
+  content: "";
+  height: 100%;
+  width: 100%;
+  background: #000;
+  left: 0;
+  top: 0;
+  z-index: 2;
+  transform: rotate(15deg);
+  transition: all .3s;
+  visibility: hidden;
+  opacity: 0;
+}
+
+.case-study-contents {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  padding: 30px;
+  z-index: 3;
+  transform: scale(0.8);
+  visibility: hidden;
+  opacity: 0;
+  transition: all .3s;
+}
+
+ul.case-categories li a {
+  font-weight: $bold;
+  font-size: 12px;
+  line-height: 13px;
+  align-items: center;
+  text-align: right;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: $white;
+  padding: 8px 16px;
+  background: rgba(245, 209, 164, 0.5);
+  border-radius: 50px;
+  display: inline-block;
+  font-family: $font3;
+  &:hover{
+    color: $white;
+  }
+}
+
+.case-study-contents h4, 
+.case-study-contents h4 a {
+  font-weight: $bold;
+  font-size: 20px;
+  line-height: 32px;
+  color: $white;
+  margin: 12px 0;
+}
+
+.single-case-study:hover .case-study-contents {
+  visibility: visible;
+  opacity: 1;
+  transform: scale(1);
+  transition: all 1s;
+}
+
+.single-case-study:hover:after {
+  transition: all .3s;
+  visibility: visible;
+  opacity: .5;
+  transform: rotate(0);
+}
+
+.case-study-img {
+  height: 550px;
+}
+
+.case-study-img img {
+  object-fit: cover;
+  width: 100%;
+  height: 100%;
+}
+}
+
+
+.single-case-study-2 .case-study-contents {
+  position: relative;
+  z-index: 2;
+  left: 0;
+  top: 0;
+  visibility: visible;
+  opacity: 1;
+  transform: scale(1);
+  padding: 30px 0 ;
+}
+
+.casestudy-2{
+  .single-case-study-2{
+    .case-study-img{
+      height: 350px;
+      img{
+        border-radius: 8px;
+      }
+    }
+    ul.case-categories{
+      li{
+        a{
+          color: $secondary_color;
+        }
+      }
+    }
+    h4,
+    h4 a{
+      color: $secondary_color;
+      &:hover{
+        color: $color22;
+      }
+    }
+  }
+}
+
+
+
+//******** home 7 case study area ********
+
+.case7 {
+
+  @media #{$md} {
+    padding: 50px 0px 120px 0px;
+  }
+  @media #{$xs} {
+    padding: 50px 0px 120px 0px;
+  }
+  .owl-nav {
+    @media #{$md} {
+      margin-top: -30px;
+      padding-top: 0;;
+    }
+
+    @media #{$xs} {
+      margin-top: -30px;
+      padding-top: 0;;
+    }
+  }
+  .owl-nav button svg {
+    background: red;
+    font-size: 20px;
+    padding: 20px 22px;
+    border-radius: 5px;
+    color: #fff;
+    transition: 0.4s;
+    &:hover {
+      background: $new-pera-colot1;
+      transition: 0.4s;
+    }
+
+}
+.owl-nav button:nth-child(1) svg {
+  position: absolute;
+  top: 50%;
+  margin-top: -31px;
+  left: -60px;
+
+  @media #{$md} {
+    left: 40%;
+    top: 110%;
+    margin-rihgt: 70px;
+    margin-top: 0;
+  }
+
+  @media #{$xs} {
+    left: 30%;
+    top: 110%;
+    margin-rihgt: 70px;
+    margin-top: 0;
+  }
+
+}
+ .owl-carousel .owl-nav button.owl-next, .owl-carousel .owl-nav button.owl-prev, .owl-carousel button.owl-dot {
+  background: none;
+}
+
+.owl-nav button:nth-child(2) svg {
+  position: absolute;
+  top: 50%;
+  margin-top: -31px;
+  right: -60px;
+  @media #{$md} {
+    right: 40%;
+    top: 110%;
+    margin-top: 1px;
+  }
+  @media #{$xs} {
+    right: 30%;
+    top: 110%;
+    margin-top: 1px;
+  }
+}
+
+}
+
+.case7-slider-all {
+  .case7-single-slider {
+    margin: 0px 8px;
+    position: relative;
+    .image {
+      img {
+        width: 100%;
+        border-radius: 5px;
+      }
+    }
+    .case7-hadding-bottom-all {
+      background: #fff;
+      border-radius: 5px;
+      padding: 20px;
+      position: absolute;
+      bottom: 20px;
+      right: 0;
+      width: 90%;
+      margin-left: 20px;
+      margin-right: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      .hadding {
+        p {
+          color: $new-pera-colot1;
+          font-family: $font3;
+          font-size: 16px;
+          font-style: normal;
+          font-weight: 500;
+          line-height: 16px; /* 100% */
+          padding-bottom: 10px;
+          padding-bottom: 5px;
+          margin: 0;
+        } 
+        h3 {
+          padding: 0;
+          margin: 0;
+          a {
+            color: var(--investment-consulting-text-color, #0A1317);
+            font-size: 22px;
+            font-style: normal;
+            font-weight: 500;
+            line-height: 22px; /* 100% */
+            display: inline-block;
+            font-family: $font3;
+            padding: 0;
+            margin: 0;
+          }
+        }
+      }
+
+
+      .arrow {
+        background: #00415D;
+        height: 48px;
+        width: 48px;
+        text-align: center;
+        line-height: 48px;
+        border-radius: 50%;
+        color: #fff;
+        display: inline-block;
+        transform: rotate(-45deg);
+        transition: 0.4s;
+        a {
+          color: #fff;
+        }
+      }
+    }
+
+    &:hover {
+      .case7-hadding-bottom-all {
+        .arrow {
+          background: $new-bg-color1;
+          transition: 0.4s;
+        }
+      }
+    }
+  }
+}
+
+//******** home 7 case study area ********
+
+//******** home 8 case study area ********
+
+.case8 {
+
+  @media #{$xs} {
+    padding: 60px 0px 130px 0px;
+  }
+  .case8-arrows {
+    text-align: end;
+    display: flex;
+    align-items: center;
+    justify-content: end;
+
+    @media #{$xs} {
+      text-align: end;
+      display: flex;
+      align-items: center;
+      justify-content: end;
+      position: absolute;
+      bottom: 30px;
+      left: 50%;
+      margin-left: -70px;
+    }
+    .testimonial-next-arrow1 {
+      margin-right: 24px;
+    }
+    button {
+      border: none;
+      height: 60px;
+      width: 60px;
+      border-radius: 5px;
+      background-color: #FEE7D0;
+      color: $new-bg-color4;
+      transition: 0.4s;
+      &:hover {
+        background: $new-bg-color4;
+        color: #fff;
+        transition: 0.4s;
+      }
+    }
+  }
+  .case8-slider-all {
+    .case8-single-slider {
+      margin: 0px 15px;
+      position: relative;
+      .image {
+        img {
+          width: 100%;
+          border-radius: 2px;
+        }
+      }
+      .headding {
+        position: absolute;
+        bottom: 24px;
+        left: 24px;
+        .icon {
+          a {
+            display: inline-block;
+            height: 48px;
+            width: 48px;
+            background-color: $new-bg-color5;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 48px;
+            color: #fff;
+            font-size: 20px;
+            transform: rotate(-45deg);
+            margin-bottom: 24px;
+            transition: 0.4s;
+          }
+        }
+        a.tags {
+          color: var(--d-white, #FFF);
+          font-size: 16px;
+          font-style: normal;
+          font-weight: 500;
+          line-height: 16px;
+        }
+        h4 {
+          padding: 0;
+          margin: 0;
+          a {
+            padding-top: 16px;
+            color: var(--d-white, #FFF);
+            font-family: $font7;
+            font-size: 24px;
+            font-style: normal;
+            font-weight: 600;
+            line-height: 24px;
+            display: inline-block;
+          }
+        }
+      }
+
+      &:hover {
+        .icon {
+          a {
+            display: inline-block;
+            height: 48px;
+            width: 48px;
+            background-color: $new-bg-color4;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 48px;
+            color: #fff;
+            font-size: 20px;
+            transform: rotate(-45deg);
+            margin-bottom: 24px;
+            transition: 0.4s;
+          }
+        }
+      }
+    }
+  }
+}
+
+//******** home 8 case study area ********
+
+//******** home 10 case study area ********
+
+.case10 {
+  background-color: $new-bg-color12;
+  .case10-box {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 50px;
+    padding-bottom: 30px;
+    border-bottom: 1px solid #CED4DA;
+    position: relative;
+
+    .headding {
+      h4 {
+        a {
+          color: var(--D-Text, #212529);
+          font-family: $font9;
+          font-size: 20px;
+          font-style: normal;
+          font-weight: 700;
+          line-height: 20px; /* 100% */
+          display: inline-block;
+          transition: all .4s;
+
+          span {
+            display: inline-block;
+            margin-right: 12px;
+            font-weight: 400;
+          }
+        }
+      }
+
+      p {
+        color: var(--d-para, #495057);
+        font-size: 16px;
+        font-style: normal;
+        font-weight: 500;
+        line-height: 28px;
+        padding-top: 5px;
+        padding-left: 40px;
+      }
+    }
+
+    .hover-image {
+      position: absolute;
+      top: -150px;
+      left: 50%;
+      transform: scale(0.3) rotate(-30deg);
+      transition: all .4s;
+      opacity: 0;
+    }
+
+
+    .arrow a {
+      height: 58px;
+      width: 58px;
+      text-align: center;
+      line-height: 58px;
+      border-radius: 50%;
+      border: 1px solid #CED4DA;
+      display: inline-block;
+      transform: rotate(-45deg);
+      color: #000;
+      transition: all .4s;
+    }
+
+    &:hover {
+      .arrow a {
+        height: 58px;
+        width: 58px;
+        text-align: center;
+        line-height: 58px;
+        border-radius: 50%;
+        border: 1px solid $new-bg-color10;
+        display: inline-block;
+        transform: rotate(-45deg);
+        color: $new-bg-color10;
+        transition: all .4s;
+  
+      }
+      .hover-image {
+        position: absolute;
+        top: -150px;
+        left: 50%;
+        transform: scale(1) rotate(0deg);
+        transition: all .4s;
+        opacity: 1;
+      }
+
+      .headding {
+        h4 {
+          a {
+            transition: all .4s;
+            color: $new-bg-color10;
+          }
+        }
+      }
+
+    }
+
+  }
+}
+
+//******** home 10 case study area ********

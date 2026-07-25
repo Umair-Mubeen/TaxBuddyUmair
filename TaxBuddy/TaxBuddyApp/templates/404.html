@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Page Not Found | TaxBuddy Umair{% endblock %}
+{% block top_ad %}{% endblock %}
+{% block content %}
+<div style="min-height:60vh;display:flex;align-items:center;justify-content:center;text-align:center;padding:60px 20px;">
+  <div>
+    <div style="font-size:72px;margin-bottom:20px;">🔍</div>
+    <h1 style="font-family:var(--font-head);font-size:32px;color:var(--navy);margin-bottom:12px;">Page Not Found</h1>
+    <p style="font-size:15px;color:var(--text-light);margin-bottom:28px;max-width:400px;">
+      The page you're looking for doesn't exist or has been moved.
+    </p>
+    <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap;">
+      <a href="{% url 'index' %}" class="btn-primary" style="text-decoration:none;">🏠 Go Home</a>
+      <a href="{% url 'income_tax_guides' %}" class="btn-outline" style="text-decoration:none;">📚 Tax Guides</a>
+      <a href="{% url 'SalaryCalculator' %}" class="btn-outline" style="text-decoration:none;">🧮 Calculators</a>
+    </div>
+  </div>
+</div>
+{% endblock %}

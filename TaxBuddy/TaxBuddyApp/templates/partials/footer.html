@@ -1,0 +1,98 @@
+{% load static %}
+
+<footer>
+  <!-- Footer Ad Strip -->
+<!--  <div style="max-width:1200px;margin:0 auto;padding:0 20px 24px;text-align:center;">-->
+<!--    <div class="ad-wrapper-label" style="color:rgba(255,255,255,0.3);">Advertisement</div>-->
+<!--    <div class="ad-zone ad-leaderboard" style="background:rgba(255,255,255,0.04);border-color:rgba(255,255,255,0.1);">-->
+<!--      <div class="ad-zone-label" style="background:rgba(255,255,255,0.06);color:rgba(255,255,255,0.3);border-color:rgba(255,255,255,0.1);">AdSense — Footer</div>-->
+<!--      <div class="ad-zone-size" style="color:rgba(255,255,255,0.35);">728×90 / Responsive</div>-->
+<!--    </div>-->
+<!--  </div>-->
+
+  <div class="footer-grid">
+    <!-- Brand -->
+    <div class="footer-brand">
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:4px;">
+        <div style="width:36px;height:36px;background:var(--green);border-radius:8px;display:flex;align-items:center;justify-content:center;color:#fff;font-family:var(--font-head);font-weight:700;font-size:16px;">TB</div>
+        <span style="font-family:var(--font-head);font-weight:700;font-size:17px;color:#fff;">TaxBuddy Umair</span>
+      </div>
+      <p>Pakistan's trusted income tax &amp; sales tax education platform. Helping individuals, freelancers, and businesses navigate FBR compliance since 2020.</p>
+      <div class="footer-social">
+        <!-- Font Awesome CDN — add this in your <head> if not already there -->
+
+<!-- Social Links -->
+<a href="https://www.facebook.com/TaxBuddyUmair/" target="_blank" class="footer-social-btn" title="Facebook" aria-label="Facebook">
+  <i class="fab fa-facebook-f" aria-hidden="true"></i>
+</a>
+
+<a href="https://www.youtube.com/@TaxBuddyUmair" target="_blank" class="footer-social-btn" title="YouTube" aria-label="YouTube">
+  <i class="fab fa-youtube" aria-hidden="true"></i>
+</a>
+
+<a href="https://www.instagram.com/taxbuddy_umair/" target="_blank" class="footer-social-btn" title="Instagram" aria-label="Instagram">
+  <i class="fab fa-instagram" aria-hidden="true"></i>
+</a>
+
+<a href="https://wa.me/923332482742" target="_blank" rel="noopener" class="footer-social-btn" title="WhatsApp" aria-label="WhatsApp">
+  <i class="fab fa-whatsapp" aria-hidden="true"></i>
+</a>
+      </div>
+    </div>
+
+    <!-- Tax Guides -->
+    <div>
+      <div class="footer-col-title">Tax Guides</div>
+      <div class="footer-links">
+        <a href="{% url 'income_tax_guides' %}">Income Tax Guide</a>
+        <a href="{% url 'sales_tax_guides' %}">Sales Tax Guide</a>
+        <a href="{% url 'withholding_tax_rates' %}">Withholding Tax Rates 2025-26</a>
+        <a href="{% url 'atl_check' %}">ATL Check</a>
+        <a href="{% url 'fbr_iris_guide' %}">FBR IRIS Guide</a>
+        <a href="{% url 'question_list' %}">Tax MCQs</a>
+      </div>
+    </div>
+
+    <!-- Tools -->
+    <div>
+      <div class="footer-col-title">Calculators</div>
+      <div class="footer-links">
+        <a href="{% url 'SalaryCalculator2027' %}">Prop Salary Calculator 2026-27</a>
+        <a href="{% url 'SalaryCalculator' %}">Salary Tax Calculator</a>
+        <a href="{% url 'BusinessCalculator' %}">Business Tax Calculator</a>
+        <a href="{% url 'AOPCalculator' %}">AOP Calculator</a>
+        <a href="{% url 'PropertyCalculator' %}">Property Calculator</a>
+        <a href="{% url 'TaxCalculator4C' %}">Super Tax 4C</a>
+         <a href="{% url 'Withholding_Tax_Card' %}">Wht & Advance Tax Calculator</a>
+
+      </div>
+    </div>
+
+    <!-- Company -->
+    <div>
+      <div class="footer-col-title">Company</div>
+      <div class="footer-links">
+        <a href="{% url 'about_us' %}">About Us</a>
+        <a href="{% url 'online_services' %}">Services &amp; Pricing</a>
+        <a href="{% url 'viewBlogs' %}">Blog</a>
+               <a href="{% url 'tax_calendar' %}">Tax Calendar</a>
+
+        <a href="{% url 'privacy_policy' %}">Privacy Policy</a>
+        <a href="{% url 'terms_and_conditions' %}">Terms &amp; Conditions</a>
+      </div>
+<!--      <div style="margin-top:16px;">-->
+<!--        <div class="footer-col-title">Contact</div>-->
+<!--        <div class="footer-links">-->
+<!--          <a href="tel:+923332482742">📞 +92 333 248 2742</a>-->
+<!--          <a href="mailto:umair.mubeenir@gmail.com">✉ umair.mubeenir@gmail.com</a>-->
+<!--&lt;!&ndash;          <span style="color:rgba(255,255,255,0.4);font-size:13px;">📍 Gulshan-e-Iqbal, Karachi</span>&ndash;&gt;-->
+<!--        </div>-->
+<!--      </div>-->
+    </div>
+  </div>
+
+  <div class="footer-bottom">
+    <span>© {% now "Y" %} TaxBuddy Umair. All Rights Reserved.</span>
+    <span>TaxBuddy Umair is an independent tax education platform and is <strong>not affiliated with, endorsed by, or representing the Federal Board of Revenue (FBR)</strong> or any government body. All content is for educational and informational purposes only — always verify with the <a href="https://www.fbr.gov.pk" target="_blank" rel="noopener" style="color:inherit;text-decoration:underline;">FBR's official portal</a> or a qualified tax advisor before making any tax decision.</span>
+  </div>
+</footer>

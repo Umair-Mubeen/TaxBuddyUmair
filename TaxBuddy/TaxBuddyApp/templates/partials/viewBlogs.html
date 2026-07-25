@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+{% load static %}
+{% load humanize %}
+<html lang="en">
+<head>
+
+    <!-- Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-EEP4P5YWE6"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-EEP4P5YWE6');
+
+
+    </script>
+    <title>Income Tax & Sales Tax Blog in Pakistan | FBR Updates 2026 – TaxBuddy Umair</title>
+
+<meta name="description" content="Latest Income Tax and Sales Tax updates in Pakistan with expert guidance on FBR laws, property tax, ATL status, tax filing, and compliance. Stay updated with TaxBuddy Umair.">
+
+<meta name="keywords" content="Income Tax Pakistan, Sales Tax Pakistan, FBR updates 2026, tax filing Pakistan, ATL status, property tax Pakistan, tax laws Pakistan, TaxBuddy Umair">
+
+<meta name="robots" content="index, follow">
+
+<link rel="canonical" href="https://www.taxbuddyumair.com{{ request.path }}">
+
+<!-- Open Graph -->
+<meta property="og:title" content="Income Tax & Sales Tax Blog – Latest FBR Updates 2026">
+<meta property="og:description" content="Expert insights on Income Tax, Sales Tax, FBR notifications, property tax, and compliance in Pakistan.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="{{ request.build_absolute_uri }}">
+<meta property="og:image" content="https://taxbuddyumair.com/static/assets/img/icons/fab2.png">
+<meta property="og:site_name" content="TaxBuddy Umair">
+
+<!-- Twitter Card -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Income Tax & Sales Tax Blog – FBR Updates Pakistan">
+<meta name="twitter:description" content="Latest tax laws, filing guides, and FBR updates in Pakistan.">
+<meta name="twitter:image" content="https://taxbuddyumair.com/static/assets/img/icons/fab2.png">
+
+<link rel="shortcut icon" href="{% static 'assets/img/icons/fab2.png' %}">
+    {% include 'partials/head-css.html' %}
+
+    <!-- Blog UI CSS -->
+    <style>
+    .blog-filter {
+    display: inline-flex;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.filter-btn {
+    border: none;
+    padding: 8px 18px;
+    border-radius: 30px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    background: #e5e7eb;
+    color: #111827;
+    transition: 0.3s ease;
+}
+
+.filter-btn:hover {
+    background: #1d4ed8;
+    color: #ffffff;
+}
+
+.filter-btn.active {
+    background: #1d4ed8;
+    color: #ffffff;
+}
+
+        .single-blog {
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            background: #ffffff;
+            border-radius: 12px;
+            padding: 15px;
+            transition: 0.3s ease;
+        }
+
+        .single-blog:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 12px 30px rgba(0,0,0,0.08);
+        }
+
+        .blog-img {
+            width: 100%;
+            height: 240px;
+            background: #f4f6f8;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 10px;
+            overflow: hidden;
+            margin-bottom: 12px;
+        }
+
+        .blog-img img {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain; /* SHOW FULL IMAGE */
+        }
+
+        .blog-tags {
+            list-style: none;
+            padding: 0;
+            margin: 0 0 8px;
+        }
+
+        .blog-tags li a {
+            font-size: 12px;
+            font-weight: 600;
+            color: #7977C6;
+            padding: 4px 10px;
+            border-radius: 20px;
+            text-decoration: none;
+        }
+
+        .blog-title {
+            font-size: 15px;
+            line-height: 1.4;
+            font-weight: 700;
+            color: #111827;
+            text-decoration: none;
+        }
+
+        .blog-title:hover {
+            color: #1d4ed8;
+        }
+
+        @media (max-width: 768px) {
+            .blog-img {
+                height: 180px;
+            }
+        }
+@media (max-width: 576px) {
+    .blog-area .row.mb-4 {
+        margin-bottom: 20px !important;
+    }
+}
+
+
+@media (max-width: 576px) {
+
+    .blog-filter {
+        margin-top: 40px;
+
+    }
+    }
+
+
+@media (max-width: 576px) {
+    .blog-img {
+        height: 160px;
+    }
+}
+
+@media (max-width: 576px) {
+    .blog-title {
+        font-size: 16px;
+        line-height: 1.45;
+    }
+}
+
+@media (max-width: 576px) {
+    .single-blog {
+        margin-bottom: 18px;
+    }
+}
+
+
+
+    </style>
+
+</head>
+<body>
+
+{% include 'partials/topbar.html' %}
+
+<!-- BLOG LIST -->
+<section class="blog-area section-padding">
+    <div class="container">
+        <!-- BLOG FILTER -->
+        <div class="row mb-4">
+            <div class="col-12 text-center">
+                <div class="blog-filter">
+                    <button class="filter-btn active" data-filter="all">All</button>
+                    <button class="filter-btn" data-filter="income">Income Tax</button>
+                    <button class="filter-btn" data-filter="sales">Sales Tax</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+
+{% for blog in blogs %}
+<div class="col-lg-3 col-md-6 mb-4 blog-item"
+     data-type="{% if blog.type == '1' %}income{% else %}sales{% endif %}">
+
+    <article class="single-blog" itemscope itemtype="https://schema.org/BlogPosting">
+
+        <div class="blog-img">
+            <a href="/{{ blog.slug }}/" itemprop="url">
+                <img src="{{ blog.featured_image.url }}"
+                     alt="{{ blog.title }}"
+                     loading="lazy"
+                     itemprop="image">
+            </a>
+        </div>
+
+        <ul class="blog-tags">
+            <li>
+                <a href="#" itemprop="about"
+                   style="background-color:#7977C6;color:#FFFFFF">
+                    {% if blog.type == '1' %}
+                        Income Tax
+                    {% else %}
+                        Sales Tax
+                    {% endif %}
+                </a>
+            </li>
+        </ul>
+
+        <h3 itemprop="headline">
+            <a href="/{{ blog.slug }}/"
+               class="blog-title"
+               style="font-size:20px">
+                {{ blog.title }}
+            </a>
+        </h3>
+
+    </article>
+</div>
+{% endfor %}
+            <div class="row">
+    <div class="col-12 text-center mt-3">
+        <button id="loadMoreBtn" class="btn btn-info" style="background-color:#7977C6;color:#FFFFFF">
+            Load More
+        </button>
+    </div>
+</div>
+
+
+        </div>
+    </div>
+</section>
+
+{% include 'partials/footer.html' %}
+{% include 'partials/up.html' %}
+{% include 'partials/footer-scripts.html' %}
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    const buttons = document.querySelectorAll(".filter-btn");
+    const blogs = document.querySelectorAll(".blog-item");
+
+    buttons.forEach(btn => {
+        btn.addEventListener("click", () => {
+
+            // active button
+            buttons.forEach(b => b.classList.remove("active"));
+            btn.classList.add("active");
+
+            const filter = btn.getAttribute("data-filter");
+
+            blogs.forEach(blog => {
+                const type = blog.getAttribute("data-type");
+
+                if (filter === "all" || filter === type) {
+                    blog.style.display = "block";
+                } else {
+                    blog.style.display = "none";
+                }
+            });
+        });
+    });
+});
+
+
+</script>
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+
+    const items = document.querySelectorAll(".blog-item");
+    const loadMoreBtn = document.getElementById("loadMoreBtn");
+
+    const ITEMS_PER_LOAD = 4;
+    let visibleCount = ITEMS_PER_LOAD;
+
+    // Hide all first
+    items.forEach((item, index) => {
+        if (index >= ITEMS_PER_LOAD) {
+            item.style.display = "none";
+        }
+    });
+
+    loadMoreBtn.addEventListener("click", function () {
+        let shown = 0;
+
+        items.forEach((item, index) => {
+            if (item.style.display === "none" && shown < 4) {
+                item.style.display = "block";
+                shown++;
+            }
+        });
+
+        visibleCount += shown;
+
+        if (visibleCount >= items.length) {
+            loadMoreBtn.style.display = "none";
+        }
+    });
+
+});
+</script>
+
+</body>
+</html>

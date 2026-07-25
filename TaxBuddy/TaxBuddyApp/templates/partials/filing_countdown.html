@@ -1,0 +1,106 @@
+{% load static %}
+<!-- FBR Tax Filing Deadline Countdown Banner -->
+<div id="filing-countdown-bar"
+     style="background:linear-gradient(90deg,var(--navy) 0%,var(--navy-mid) 100%);
+            padding:10px 20px;text-align:center;position:relative;overflow:hidden;">
+  <div style="max-width:1200px;margin:0 auto;display:flex;align-items:center;
+              justify-content:center;gap:16px;flex-wrap:wrap;">
+
+    <span style="font-size:13px;color:rgba(255,255,255,0.75);">
+      ⏳ <strong style="color:#fff;">FBR Tax Return Filing Deadline:</strong>
+      30 September 2025
+    </span>
+
+    <!-- Countdown display -->
+    <div id="countdown-display"
+         style="display:flex;gap:10px;align-items:center;">
+      <div class="c-unit">
+        <span class="c-num" id="c-days">--</span>
+        <span class="c-lbl">Days</span>
+      </div>
+      <span style="color:rgba(255,255,255,0.4);font-size:18px;">:</span>
+      <div class="c-unit">
+        <span class="c-num" id="c-hours">--</span>
+        <span class="c-lbl">Hrs</span>
+      </div>
+      <span style="color:rgba(255,255,255,0.4);font-size:18px;">:</span>
+      <div class="c-unit">
+        <span class="c-num" id="c-mins">--</span>
+        <span class="c-lbl">Mins</span>
+      </div>
+    </div>
+
+    <a href="https://wa.me/923332482742?text=I%20need%20help%20filing%20my%20tax%20return%20before%20the%20deadline"
+       target="_blank" rel="noopener"
+       style="background:var(--green);color:#fff;padding:6px 16px;
+              border-radius:20px;font-size:12px;font-weight:600;
+              text-decoration:none;white-space:nowrap;flex-shrink:0;">
+      📋 File Before Deadline →
+    </a>
+
+    <!-- Close button -->
+    <button onclick="document.getElementById('filing-countdown-bar').style.display='none';
+                     sessionStorage.setItem('countdown_closed','1');"
+            style="position:absolute;right:14px;top:50%;transform:translateY(-50%);
+                   background:none;border:none;color:rgba(255,255,255,0.4);
+                   cursor:pointer;font-size:18px;padding:4px 8px;line-height:1;"
+            aria-label="Close">×</button>
+  </div>
+</div>
+
+<style>
+.c-unit { text-align:center; }
+.c-num  { display:block;font-family:var(--font-head);font-size:18px;font-weight:700;color:#fff;line-height:1; }
+.c-lbl  { font-size:9px;color:rgba(255,255,255,0.45);text-transform:uppercase;letter-spacing:.08em; }
+@media(max-width:640px){
+  #filing-countdown-bar { padding:8px 36px 8px 14px; }
+  .c-num { font-size:15px; }
+  #countdown-display { gap:6px; }
+}
+</style>
+
+<script>
+(function(){
+  // Hide if user already closed it this session
+  if(sessionStorage.getItem('countdown_closed')) {
+    var bar = document.getElementById('filing-countdown-bar');
+    if(bar) bar.style.display = 'none';
+    return;
+  }
+
+  var deadline = new Date('2025-09-30T23:59:59+05:00'); // PKT timezone
+
+  function updateCountdown() {
+    var now  = new Date();
+    var diff = deadline - now;
+
+    if(diff <= 0) {
+      // Deadline passed — hide the bar
+      var bar = document.getElementById('filing-countdown-bar');
+      if(bar) bar.style.display = 'none';
+      return;
+    }
+
+    var days  = Math.floor(diff / (1000 * 60 * 60 * 24));
+    var hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+    var mins  = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+
+    var dEl = document.getElementById('c-days');
+    var hEl = document.getElementById('c-hours');
+    var mEl = document.getElementById('c-mins');
+
+    if(dEl) dEl.textContent = String(days).padStart(2,'0');
+    if(hEl) hEl.textContent = String(hours).padStart(2,'0');
+    if(mEl) mEl.textContent = String(mins).padStart(2,'0');
+
+    // Urgency colour when under 14 days
+    if(days < 14) {
+      var bar = document.getElementById('filing-countdown-bar');
+      if(bar) bar.style.background = 'linear-gradient(90deg,#991b1b 0%,#b91c1c 100%)';
+    }
+  }
+
+  updateCountdown();
+  setInterval(updateCountdown, 60000); // update every minute
+})();
+</script>

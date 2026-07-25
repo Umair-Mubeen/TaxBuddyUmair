@@ -1,0 +1,120 @@
+{% extends "base.html" %}
+{# 5. templates/sro_list.html — public SRO Tracker list page #}
+
+{% block title %}SRO, Circular & Notification Tracker Pakistan {% now "Y" %} | TaxBuddy Umair{% endblock %}
+{% block meta_desc %}Every FBR SRO, circular and notification explained in plain English — what changed, who is affected, and from when. Income tax, sales tax and FED updates tracked by TaxBuddy Umair.{% endblock %}
+
+{% block head_extra %}
+<style>
+  .sro-wrap{max-width:920px;margin:0 auto;padding:32px 16px 60px}
+  .sro-wrap h1{color:#0A2647;font-size:1.7rem;margin-bottom:6px}
+  .sro-sub{color:#667085;font-size:.95rem;margin-bottom:22px}
+  .sro-search{display:flex;gap:8px;margin-bottom:16px}
+  .sro-search input{flex:1;padding:11px 15px;border:2px solid #d8dee6;border-radius:10px;font-size:.95rem;outline:none}
+  .sro-search input:focus{border-color:#0D9E72}
+  .sro-search button{background:#0D9E72;color:#fff;border:none;border-radius:10px;padding:11px 20px;font-weight:600;cursor:pointer}
+  .sro-filters{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:8px}
+  .sro-pill{padding:5px 13px;border-radius:20px;border:1.5px solid #d8dee6;color:#475467;font-size:.82rem;font-weight:600;text-decoration:none;transition:all .15s}
+  .sro-pill:hover,.sro-pill.on{background:#0A2647;border-color:#0A2647;color:#fff}
+  .sro-count{color:#98a2b3;font-size:.85rem;margin:14px 0}
+  .sro-card{border:1px solid #e6eaf0;border-radius:12px;padding:16px 18px;margin-bottom:12px;background:#fff;transition:box-shadow .15s}
+  .sro-card:hover{box-shadow:0 4px 14px rgba(10,38,71,.08)}
+  .sro-badges{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:6px}
+  .sro-badge{font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.05em;padding:3px 9px;border-radius:5px}
+  .b-sro{background:#e8f6f0;color:#0b8a63}.b-circular{background:#eef2ff;color:#4338ca}.b-notification{background:#fff7ed;color:#c2410c}
+  .b-statute{background:#f2f4f7;color:#475467}
+  .sro-card a.num{color:#0A2647;font-weight:700;font-size:1.05rem;text-decoration:none}
+  .sro-card a.num:hover{color:#0D9E72}
+  .sro-card .subj{color:#344054;font-size:.93rem;margin:5px 0 6px}
+  .sro-card .meta{color:#98a2b3;font-size:.8rem}
+  .sro-news{background:#0A2647;border-radius:14px;padding:26px 24px;margin:28px 0;color:#fff}
+  .sro-news h3{font-size:1.1rem;margin:0 0 4px}
+  .sro-news p{color:rgba(255,255,255,.75);font-size:.88rem;margin:0 0 14px}
+  .sro-news form{display:flex;gap:8px;flex-wrap:wrap}
+  .sro-news input{flex:1;min-width:220px;padding:11px 14px;border:none;border-radius:9px;font-size:.95rem;outline:none}
+  .sro-news button{background:#0D9E72;color:#fff;border:none;border-radius:9px;padding:11px 22px;font-weight:700;cursor:pointer}
+  .sro-news button:hover{background:#0b8a63}
+  .sro-pager{display:flex;gap:10px;align-items:center;margin-top:18px;font-size:.9rem}
+  .sro-pager a{color:#0D9E72;text-decoration:none;font-weight:600}
+  .sro-pager span{color:#98a2b3}
+  .sro-empty{border:1px solid #e6eaf0;border-radius:10px;padding:24px;background:#f9fafb;color:#475467}
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="sro-wrap">
+
+  <h1>SRO &amp; Circular Tracker</h1>
+  <p class="sro-sub">Every FBR SRO, circular and notification — explained in plain English. What changed, who's affected, from when.</p>
+
+  {% if messages %}{% for msg in messages %}
+    <div style="padding:11px 15px;border-radius:9px;font-size:.9rem;margin-bottom:14px;{% if msg.tags == 'success' %}background:#f0fdf4;border:1px solid #bbf7d0;color:#15803d{% elif msg.tags == 'error' %}background:#fef2f2;border:1px solid #fca5a5;color:#dc2626{% else %}background:#eff6ff;border:1px solid #bfdbfe;color:#1d4ed8{% endif %}">{{ msg }}</div>
+  {% endfor %}{% endif %}
+
+  <form method="get" action="{% url 'sro_list' %}" class="sro-search" role="search">
+    <input type="search" name="q" value="{{ q }}" placeholder="Search by number or topic… e.g. 350, property, exporters">
+    <button type="submit">Search</button>
+  </form>
+
+  <div class="sro-filters">
+    <a class="sro-pill {% if active_type == 'all' %}on{% endif %}" href="?type=all&statute={{ active_statute }}&year={{ active_year }}">All Types</a>
+    <a class="sro-pill {% if active_type == 'sro' %}on{% endif %}" href="?type=sro&statute={{ active_statute }}&year={{ active_year }}">SROs</a>
+    <a class="sro-pill {% if active_type == 'circular' %}on{% endif %}" href="?type=circular&statute={{ active_statute }}&year={{ active_year }}">Circulars</a>
+    <a class="sro-pill {% if active_type == 'notification' %}on{% endif %}" href="?type=notification&statute={{ active_statute }}&year={{ active_year }}">Notifications</a>
+  </div>
+  <div class="sro-filters">
+    <a class="sro-pill {% if active_statute == 'all' %}on{% endif %}" href="?type={{ active_type }}&statute=all&year={{ active_year }}">All Laws</a>
+    <a class="sro-pill {% if active_statute == 'income_tax' %}on{% endif %}" href="?type={{ active_type }}&statute=income_tax&year={{ active_year }}">Income Tax</a>
+    <a class="sro-pill {% if active_statute == 'sales_tax' %}on{% endif %}" href="?type={{ active_type }}&statute=sales_tax&year={{ active_year }}">Sales Tax</a>
+    <a class="sro-pill {% if active_statute == 'fed' %}on{% endif %}" href="?type={{ active_type }}&statute=fed&year={{ active_year }}">FED</a>
+    <a class="sro-pill {% if active_statute == 'customs' %}on{% endif %}" href="?type={{ active_type }}&statute=customs&year={{ active_year }}">Customs</a>
+  </div>
+  {% if years %}
+  <div class="sro-filters">
+    <a class="sro-pill {% if active_year == 'all' %}on{% endif %}" href="?type={{ active_type }}&statute={{ active_statute }}&year=all">All Years</a>
+    {% for y in years %}
+    <a class="sro-pill {% if active_year == y|stringformat:'s' %}on{% endif %}" href="?type={{ active_type }}&statute={{ active_statute }}&year={{ y }}">{{ y }}</a>
+    {% endfor %}
+  </div>
+  {% endif %}
+
+  <div class="sro-count">{{ total }} instrument{{ total|pluralize }}</div>
+
+  {% for i in page_obj.object_list %}
+  <div class="sro-card">
+    <div class="sro-badges">
+      <span class="sro-badge b-{{ i.instrument_type }}">{{ i.get_instrument_type_display }}</span>
+      <span class="sro-badge b-statute">{{ i.get_statute_display }}</span>
+    </div>
+    <a class="num" href="{% url 'sro_detail' slug=i.slug %}">{{ i.number }}</a>
+    <div class="subj">{{ i.subject }}</div>
+    <div class="meta">Issued {{ i.issue_date|date:"d M Y" }}{% if i.effective_date != i.issue_date %} · Effective {{ i.effective_date|date:"d M Y" }}{% endif %}{% if i.related_sections %} · Sections: {{ i.related_sections }}{% endif %}</div>
+  </div>
+  {% empty %}
+  <div class="sro-empty">
+    No instruments found{% if q %} for "<strong>{{ q }}</strong>"{% endif %}. Try removing filters, ya sirf number search karo (e.g. "350").
+  </div>
+  {% endfor %}
+
+  {% if page_obj.has_other_pages %}
+  <div class="sro-pager">
+    {% if page_obj.has_previous %}<a href="?type={{ active_type }}&statute={{ active_statute }}&year={{ active_year }}&q={{ q|urlencode }}&page={{ page_obj.previous_page_number }}">‹ Prev</a>{% endif %}
+    <span>Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}</span>
+    {% if page_obj.has_next %}<a href="?type={{ active_type }}&statute={{ active_statute }}&year={{ active_year }}&q={{ q|urlencode }}&page={{ page_obj.next_page_number }}">Next ›</a>{% endif %}
+  </div>
+  {% endif %}
+
+  <div class="sro-news">
+    <h3>📬 Never miss an SRO</h3>
+    <p>Get every new SRO, circular and deadline explained in plain English — free, straight to your inbox.</p>
+    <form method="post" action="{% url 'subscribe' %}">
+      {% csrf_token %}
+      <input type="hidden" name="source" value="sro_page">
+      <input type="hidden" name="next" value="{{ request.get_full_path }}">
+      <input type="email" name="email" placeholder="your@email.com" required>
+      <button type="submit">Subscribe Free</button>
+    </form>
+  </div>
+
+</div>
+{% endblock %}

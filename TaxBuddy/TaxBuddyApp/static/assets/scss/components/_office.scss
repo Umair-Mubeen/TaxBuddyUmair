@@ -1,0 +1,43 @@
+.single-office {
+    background: $white;
+    border-radius: 7px;
+    padding: 24px 80px 24px 24px;
+    margin-bottom: 30px;
+    transition: all .3s;
+    transform: translateY(0);
+    &:hover{
+      transition: all .3s;
+      transform: translateY(-5px);
+    }
+}
+
+.single-office h3, .single-office h3 a {
+    font-weight: $bold;
+    font-size: 32px;
+    line-height: 32px;
+    display: flex;
+    align-items: center;
+    letter-spacing: -1px;
+    color: $secondary_color;
+    
+}
+
+.single-office p {
+    font-weight: $medium;
+    font-size: 20px;
+    line-height: 32px;
+    color: $color24;
+    margin-top: 16px;
+}
+
+.office-icon {
+    background: $color22;
+    box-shadow: 0px 4px 15px rgba(121, 119, 198, 0.5);
+    display: inline-block;
+    width: 50px;
+    height: 50px;
+    border-radius: 50px;
+    line-height: 50px;
+    text-align: center;
+    margin-bottom: 30px;
+}

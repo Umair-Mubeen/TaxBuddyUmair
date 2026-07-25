@@ -1,0 +1,38 @@
+<html>
+<head>
+    <title>TaxBuddy Umair</title>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    {% include 'partials/head-css.html' %}
+</head>
+<!-- Chatbot Floating Button -->
+<div class="chatbot-button" id="chatbot-toggle">
+    <i class="fa fa-commenting"></i>
+</div>
+
+<!-- Chatbot Box -->
+<div class="chatbot-box d-none" id="chatbot-box">
+    <div class="chatbot-header">
+        <span>Chat with TaxBuddy Umair</span>
+        <button id="chatbot-close">&times;</button>
+    </div>
+    <div class="chatbot-body">
+        <p>Hello! How can I assist you today?</p>
+        <!-- You can embed chatbot iframe here (Dialogflow, Botpress, etc.) -->
+    </div>
+    <div class="chatbot-footer">
+        <input placeholder="Type your message..." type="text"/>
+        <button><i class="fa fa-paper-plane"></i></button>
+    </div>
+</div>
+
+<script>
+  document.getElementById("chatbot-toggle").addEventListener("click", function () {
+    document.getElementById("chatbot-box").classList.toggle("d-none");
+  });
+
+  document.getElementById("chatbot-close").addEventListener("click", function () {
+    document.getElementById("chatbot-box").classList.add("d-none");
+  });
+
+</script>
+</html>
