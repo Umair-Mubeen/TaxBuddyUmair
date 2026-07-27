@@ -519,7 +519,7 @@ def income_tax_rates(request):
 def withholding_tax_rates(request):
     try:
         active_section = request.GET.get('section', 'property')
-        tax_year       = request.GET.get('year', '2025-2026')
+        tax_year       = request.GET.get('year', '2026-2027')
 
         all_rates = WithholdingTaxRate.objects.filter(
             is_active=True, tax_year=tax_year
