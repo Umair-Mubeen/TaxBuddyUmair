@@ -159,16 +159,12 @@ def index(request):
         PREFERRED_WHT_YEAR = '2026-2027'
         wht_rates = {}
         for section in wht_sections:
-            # DB stores sections as "Section 236C" etc. Match exactly with the
-            # "Section " prefix so '236C' does NOT also match 'Section 236CB'.
             base = WithholdingTaxRate.objects.filter(
                 section__iexact='Section ' + section,
                 is_active=True,
+                tax_year=PREFERRED_WHT_YEAR,  # strict — only this year
             )
-            r = base.filter(tax_year=PREFERRED_WHT_YEAR).order_by('order').first()
-            if r is None:                  # fall back to most recent active year
-                r = base.order_by('-tax_year', 'order').first()
-            wht_rates[section] = r
+            wht_rates[section] = base.order_by('order').first()  # None if not added yet
 
         return render(request, 'index.html', {
             'result': all_blogs,
@@ -961,7 +957,7 @@ def tax_knowledge_quiz(request):
 def manage_wht_rates(request):
     try:
         active_cat = request.GET.get('cat', 'all')
-        tax_year   = request.GET.get('year', '2025-2026')
+        tax_year   = request.GET.get('year', '2026-2027')
         rates = WithholdingTaxRate.objects.all().order_by('category', 'order')
         if active_cat and active_cat != 'all':
             rates = rates.filter(category=active_cat)
