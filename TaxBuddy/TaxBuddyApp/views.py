@@ -156,7 +156,7 @@ def index(request):
 
         # WHT Rates for homepage cards — top 6 sections
         wht_sections = ['236C', '236K', '151', '153', '150', '236Y']
-        PREFERRED_WHT_YEAR = '2025-2026'
+        PREFERRED_WHT_YEAR = '2026-2027'
         wht_rates = {}
         for section in wht_sections:
             # DB stores sections as "Section 236C" etc. Match exactly with the
