@@ -1,12 +1,12 @@
 {% extends 'base.html' %}
 {% load static %}
 
-{% block title %}Withholding Tax Calculator Pakistan 2025-26 | TaxBuddy Umair{% endblock %}
+{% block title %}Withholding Tax Calculator Pakistan 2026-27 | TaxBuddy Umair{% endblock %}
 {% block meta_desc %}Free withholding tax calculator Pakistan 2025-26. Calculate WHT & advance tax for 80+ transactions — property, banking, services, imports, exports, rent, prizes and more. Filer, Late Filer & Non-Filer rates per FBR Finance Act 2025.{% endblock %}
 
 {% block schema_extra %}
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"WebApplication","name":"Withholding Tax Calculator Pakistan 2025-26","url":"https://www.taxbuddyumair.com/Withholding-Tax-Card/","description":"Calculate withholding tax and advance tax for 80+ FBR sections — Finance Act 2025.","applicationCategory":"FinanceApplication","operatingSystem":"Any"}
+{"@context":"https://schema.org","@type":"WebApplication","name":"Withholding Tax Calculator Pakistan 2026-27","url":"https://www.taxbuddyumair.com/Withholding-Tax-Card/","description":"Calculate withholding tax and advance tax for 80+ FBR sections — Finance Act 2025.","applicationCategory":"FinanceApplication","operatingSystem":"Any"}
 </script>
 {% endblock %}
 
@@ -169,6 +169,11 @@
 .wht-filer-pill.fp-non.active{background:#FEF2F2;border-color:#dc2626;color:#b91c1c}
 .wht-step2-hint{background:#FFFBEB;border:1px solid #FDE68A;border-radius:var(--radius,8px);padding:10px 14px;font-size:13px;color:#92400E;margin-bottom:16px}
 @media(max-width:480px){.wht-filer-pills{grid-template-columns:1fr}}
+.wht-year-select{display:flex;align-items:center;gap:8px;margin-bottom:18px;flex-wrap:wrap}
+.wht-year-lbl{font-size:13px;font-weight:600;color:var(--text-mid,#475467)}
+.wht-year-btn{font-family:inherit;font-size:13px;font-weight:600;padding:8px 18px;border-radius:20px;border:1.5px solid var(--border,#E2E8F0);background:var(--white,#fff);color:var(--text-mid,#475467);cursor:pointer;transition:all .15s}
+.wht-year-btn:hover{border-color:var(--navy,#0A2647);color:var(--navy,#0A2647)}
+.wht-year-btn.active{background:var(--green,#0D9E72);border-color:var(--green,#0D9E72);color:#fff}
 </style>
 {% endblock %}
 
@@ -176,13 +181,20 @@
 
 <section class="wht-hero">
   <div class="container">
-    <div class="wht-act-badge">📋 Finance Act 2025 — Tax Year 2025-26</div>
+    <div class="wht-act-badge">📋 Finance Act 2026 — Tax Year 2026-27</div>
     <h1>Withholding &amp; Advance Tax Calculator</h1>
-    <p>80+ transactions covered — property, banking, services, imports, exports, rent, prizes and more. Filer, Late Filer &amp; Non-Filer rates per FBR WHT Rate Card 2025-26.</p>
+    <p>80+ transactions covered — property, banking, services, imports, exports, rent, prizes and more. Filer, Late Filer &amp; Non-Filer rates per FBR WHT Rate Card 2026-27.</p>
   </div>
 </section>
 
 <div class="wht-wrap">
+        <!-- Tax year selector -->
+        <div class="wht-year-select">
+          <span class="wht-year-lbl">Tax Year:</span>
+          <button type="button" class="wht-year-btn active" data-year="2026-2027" onclick="whtSetYear('2026-2027',this)">2026-2027</button>
+          <button type="button" class="wht-year-btn" data-year="2025-2026" onclick="whtSetYear('2025-2026',this)">2025-2026</button>
+        </div>
+
         <!-- YMYL educational disclaimer (added for AdSense / trust) -->
         <div style="background:#fffbeb;border:1px solid #fde68a;border-radius:10px;padding:12px 16px;margin-bottom:18px;display:flex;gap:10px;align-items:flex-start;">
           <span style="font-size:16px;line-height:1.4;flex-shrink:0;">&#9888;&#65039;</span>
@@ -314,7 +326,7 @@
   <!-- RATE REFERENCE TABLE -->
   <div class="wht-panel">
     <div class="wht-panel-head">
-      <h2><span>📊</span> Complete WHT Rate Reference — Finance Act 2025</h2>
+      <h2><span>📊</span> Complete WHT Rate Reference — Finance Act 2026</h2>
       <span id="whtTblCountBadge" style="background:rgba(255,255,255,.2);color:#fff;font-size:11px;font-weight:700;padding:3px 10px;border-radius:12px"></span>
     </div>
 
@@ -375,7 +387,8 @@
 // ═══════════════════════════════════
 // CONFIG & STATE
 // ═══════════════════════════════════
-const WHT_API = '/api/wht-rates/?year=2025-26';
+let WHT_YEAR = '2026-2027';
+function whtApiUrl(){ return '/api/wht-rates/?year=' + WHT_YEAR; }
 let WHT_DATA  = [];
 let whtSel    = null;
 let whtCat    = 'all';
@@ -390,7 +403,7 @@ let tblSortDir = 'asc';
 // ═══════════════════════════════════
 async function whtBoot(){
   try {
-    const res  = await fetch(WHT_API);
+    const res  = await fetch(whtApiUrl());
     const json = await res.json();
     if(json.status !== 'ok' || !json.rates.length){
       document.getElementById('whtTxGrid').innerHTML =
@@ -404,6 +417,21 @@ async function whtBoot(){
     document.getElementById('whtTxGrid').innerHTML =
       '<div class="wht-msg"><p>❌ Could not load rates. Please refresh.</p></div>';
   }
+}
+
+// ═══════════════════════════════════
+// YEAR SWITCH
+// ═══════════════════════════════════
+function whtSetYear(year, btn){
+  if(year === WHT_YEAR) return;
+  WHT_YEAR = year;
+  document.querySelectorAll('.wht-year-btn').forEach(function(b){ b.classList.remove('active'); });
+  if(btn){ btn.classList.add('active'); }
+  // reset selection and reload rates for the chosen year
+  whtSel = null;
+  var grid = document.getElementById('whtTxGrid');
+  if(grid){ grid.innerHTML = '<div class="wht-msg"><div class="wht-spinner"></div><p>Loading ' + year + ' rates…</p></div>'; }
+  whtBoot();
 }
 
 // ═══════════════════════════════════

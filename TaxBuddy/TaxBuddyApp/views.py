@@ -1766,7 +1766,7 @@ def Withholding_Tax_Card(request):
     Actual rate data is loaded via /api/wht-rates/ JSON API.
     """
     try:
-        tax_year = request.GET.get('year', '2025-2026')
+        tax_year = request.GET.get('year', '2026-2027')
 
         # Category list for tab buttons (static — matches DB cat values)
         categories = [
@@ -1784,15 +1784,15 @@ def Withholding_Tax_Card(request):
             {'key': 'salary', 'label': '💰 Salary'},
             {'key': 'other', 'label': '📋 Other'},
         ]
-
+        print(categories)
         return render(request, 'partials/wht_calculator.html', {
             'categories': categories,
             'tax_year': tax_year,
-            'meta_title': 'Withholding Tax Calculator Pakistan 2025-26 | TaxBuddy Umair',
+            'meta_title': 'Withholding Tax Calculator Pakistan 2026-27 | TaxBuddy Umair',
             'meta_description': (
-                'Free withholding tax & advance tax calculator Pakistan 2025-26. '
+                'Free withholding tax & advance tax calculator Pakistan 2026-27. '
                 'Calculate WHT for 80+ FBR sections — property, banking, services, '
-                'imports, exports. Filer vs non-filer rates per Finance Act 2025.'
+                'imports, exports. Filer vs non-filer rates per Finance Act 2026.'
             ),
         })
     except Exception as e:
@@ -1801,12 +1801,13 @@ def Withholding_Tax_Card(request):
 
 def wht_rates_api(request):
     try:
-        tax_year = request.GET.get('year', '2025-26')
+        tax_year = request.GET.get('year', '2026-2027')
 
         rates_qs = WHTRate.objects.filter(
             is_active=True,
             tax_year=tax_year,
         ).order_by('sort_order', 'section')
+        print(rates_qs)
 
         # Sections jahan late filer rate ALAG hoti hai
         LATE_FILER_DIFF_SECTIONS = {'236C', '236K'}
