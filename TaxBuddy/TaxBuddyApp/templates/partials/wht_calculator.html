@@ -170,6 +170,7 @@
 .wht-step2-hint{background:#FFFBEB;border:1px solid #FDE68A;border-radius:var(--radius,8px);padding:10px 14px;font-size:13px;color:#92400E;margin-bottom:16px}
 @media(max-width:480px){.wht-filer-pills{grid-template-columns:1fr}}
 .wht-year-select{display:flex;align-items:center;gap:8px;margin-bottom:18px;flex-wrap:wrap}
+body.hide-late .fp-late,body.hide-late th[data-col="late_filer"],body.hide-late .late-filer-cell{display:none !important}
 .wht-year-lbl{font-size:13px;font-weight:600;color:var(--text-mid,#475467)}
 .wht-year-btn{font-family:inherit;font-size:13px;font-weight:600;padding:8px 18px;border-radius:20px;border:1.5px solid var(--border,#E2E8F0);background:var(--white,#fff);color:var(--text-mid,#475467);cursor:pointer;transition:all .15s}
 .wht-year-btn:hover{border-color:var(--navy,#0A2647);color:var(--navy,#0A2647)}
@@ -422,11 +423,22 @@ async function whtBoot(){
 // ═══════════════════════════════════
 // YEAR SWITCH
 // ═══════════════════════════════════
+function whtApplyLateVisibility(){
+  // Late filer abolished from 2026-2027 onwards
+  var hide = (WHT_YEAR !== '2025-2026');
+  document.body.classList.toggle('hide-late', hide);
+  // if late filer was the selected status, reset to filer
+  if(hide && typeof whtFiler !== 'undefined' && whtFiler === 'late_filer'){
+    var filerBtn = document.querySelector('.wht-filer-pill');
+    if(filerBtn){ whtSetFiler('filer', filerBtn); }
+  }
+}
 function whtSetYear(year, btn){
   if(year === WHT_YEAR) return;
   WHT_YEAR = year;
   document.querySelectorAll('.wht-year-btn').forEach(function(b){ b.classList.remove('active'); });
   if(btn){ btn.classList.add('active'); }
+  whtApplyLateVisibility();
   // reset selection and reload rates for the chosen year
   whtSel = null;
   var grid = document.getElementById('whtTxGrid');
@@ -755,7 +767,7 @@ function whtCalculate(opts){
     <div class="wht-drow"><span class="wht-dk">Tax Type</span><span class="wht-dtag ${whtTagCls(whtSel.type,'type')}">${whtSel.type||'—'}</span></div>
     <div class="wht-drow">
       <span class="wht-dk">Rates (Filer / Late / Non-Filer)</span>
-      <span class="wht-dv">${whtFmtRate(ratesRef,'filer')} / ${whtFmtRate(ratesRef,'late_filer')} / ${whtFmtRate(ratesRef,'non_filer')}</span>
+      <span class="wht-dv">${whtFmtRate(ratesRef,'filer')}${WHT_YEAR==='2025-2026' ? ' / '+whtFmtRate(ratesRef,'late_filer') : ''} / ${whtFmtRate(ratesRef,'non_filer')}</span>
     </div>
   `;
 
@@ -810,7 +822,7 @@ function whtRenderTable(){
       `<td><div style="font-weight:600;font-size:13px">${tx.name||''}</div>` +
          `<div style="font-size:11.5px;color:var(--text-light)">${tx.sub||''}</div></td>` +
       `<td style="color:var(--green);font-weight:700">${whtFmtRate(tx,'filer')}</td>` +
-      `<td style="color:#B45309;font-weight:700">${whtFmtRate(tx,'late_filer')}</td>` +
+      `<td class="late-filer-cell" style="color:#B45309;font-weight:700">${whtFmtRate(tx,'late_filer')}</td>` +
       `<td style="color:#E53E3E;font-weight:700">${whtFmtRate(tx,'non_filer')}</td>` +
       `<td><span class="wht-tx-badge ${whtBadgeCls(tx.nature)}">${tx.nature||''}</span></td>` +
       `<td><span class="wht-dtag ${whtTagCls(tx.type,'type')}">${tx.type||''}</span></td>`;
@@ -884,6 +896,6 @@ function tblUpdateSortHeaders(){
   });
 }
 
-document.addEventListener('DOMContentLoaded', whtBoot);
+document.addEventListener('DOMContentLoaded', function(){ whtApplyLateVisibility(); whtBoot(); });
 </script>
 {% endblock %}
