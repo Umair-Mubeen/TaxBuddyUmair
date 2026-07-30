@@ -1802,6 +1802,7 @@ def Withholding_Tax_Card(request):
 def wht_rates_api(request):
     try:
         tax_year = request.GET.get('year', '2026-2027')
+        print(tax_year)
 
         rates_qs = WHTRate.objects.filter(
             is_active=True,
