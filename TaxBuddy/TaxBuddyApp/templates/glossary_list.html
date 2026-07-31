@@ -4,59 +4,82 @@
 {% block title %}Pakistan Tax Glossary — {{ total }} Terms Explained Simply | TaxBuddy Umair{% endblock %}
 {% block meta_desc %}Every Pakistan tax term explained in simple English — ATL, NTN, Minimum Tax, FTR, Input Tax, Further Tax and more. With section references, examples and calculators.{% endblock %}
 
-{% block head_extra %}
+{% block extra_css %}
 <style>
-  .gl-wrap{max-width:920px;margin:0 auto;padding:32px 16px 60px}
-  .gl-wrap h1{color:#0A2647;font-size:1.7rem;margin-bottom:6px}
-  .gl-sub{color:#667085;font-size:.95rem;margin-bottom:22px}
-  .gl-search{display:flex;gap:8px;margin-bottom:18px}
-  .gl-search input{flex:1;padding:11px 15px;border:2px solid #d8dee6;border-radius:10px;font-size:.95rem;outline:none}
-  .gl-search input:focus{border-color:#0D9E72}
-  .gl-search button{background:#0D9E72;color:#fff;border:none;border-radius:10px;padding:11px 20px;font-weight:600;cursor:pointer}
-  .gl-letters{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:26px}
-  .gl-letters a{width:34px;height:34px;display:flex;align-items:center;justify-content:center;border:1.5px solid #d8dee6;border-radius:8px;color:#0A2647;font-weight:700;font-size:.85rem;text-decoration:none}
-  .gl-letters a:hover{background:#0A2647;border-color:#0A2647;color:#fff}
-  .gl-letter-head{color:#0D9E72;font-size:1.3rem;font-weight:800;border-bottom:2px solid #e6eaf0;padding-bottom:6px;margin:26px 0 12px}
-  .gl-card{border:1px solid #e6eaf0;border-radius:11px;padding:14px 17px;margin-bottom:10px;background:#fff;transition:box-shadow .15s}
-  .gl-card:hover{box-shadow:0 4px 14px rgba(10,38,71,.08)}
-  .gl-card a{color:#0A2647;font-weight:700;font-size:1rem;text-decoration:none}
-  .gl-card a:hover{color:#0D9E72}
-  .gl-card p{color:#475467;font-size:.9rem;margin:4px 0 0;line-height:1.5}
-  .gl-count{color:#98a2b3;font-size:.85rem;margin-bottom:6px}
-  .gl-empty{border:1px solid #e6eaf0;border-radius:10px;padding:24px;background:#f9fafb;color:#475467}
+  .gl-intro{font-size:14.5px;color:var(--text-mid,#475467);line-height:1.7;max-width:720px;margin:4px 0 22px}
+  .gl-panel{background:#fff;border:1px solid var(--border,#E2E8F0);border-radius:14px;padding:18px 20px;margin-bottom:22px;box-shadow:0 1px 3px rgba(10,38,71,.04)}
+  .gl-search{display:flex;gap:8px}
+  .gl-search input{flex:1;padding:13px 16px;border:1.5px solid var(--border,#E2E8F0);border-radius:10px;font-size:15px;font-family:inherit;outline:none;color:var(--navy,#0A2647)}
+  .gl-search input:focus{border-color:var(--green,#0D9E72)}
+  .gl-search button{background:var(--green,#0D9E72);color:#fff;border:none;border-radius:10px;padding:13px 24px;font-weight:700;font-size:14px;cursor:pointer;font-family:inherit}
+  .gl-search button:hover{background:var(--green-dark,#0b8a63)}
+  .gl-letters{display:flex;gap:6px;flex-wrap:wrap;margin-top:14px}
+  .gl-letters a{width:36px;height:36px;display:flex;align-items:center;justify-content:center;border:1.5px solid var(--border,#E2E8F0);border-radius:9px;color:var(--navy,#0A2647);font-weight:700;font-size:14px;text-decoration:none;transition:all .15s}
+  .gl-letters a:hover{background:var(--green,#0D9E72);border-color:var(--green,#0D9E72);color:#fff}
+  .gl-letter-head{color:var(--green-dark,#0b8a63);font-size:1.4rem;font-weight:800;border-bottom:2px solid var(--border,#E2E8F0);padding-bottom:8px;margin:28px 0 14px}
+  .gl-card{display:block;border:1px solid var(--border,#E2E8F0);border-left:4px solid var(--green,#0D9E72);border-radius:12px;padding:16px 18px;margin-bottom:10px;background:#fff;transition:box-shadow .18s,transform .18s;text-decoration:none}
+  .gl-card:hover{box-shadow:0 6px 20px rgba(10,38,71,.1);transform:translateY(-2px)}
+  .gl-card .term{color:var(--navy,#0A2647);font-weight:700;font-size:16px}
+  .gl-card p{color:var(--text-mid,#475467);font-size:13.5px;margin:5px 0 0;line-height:1.55}
+  .gl-count{color:var(--text-light,#98A2B3);font-size:13px;margin-bottom:6px;font-weight:600}
+  .gl-empty{border:1px dashed var(--border,#E2E8F0);border-radius:12px;padding:40px 24px;background:#fff;color:var(--text-mid,#475467);text-align:center}
 </style>
 {% endblock %}
 
 {% block content %}
-<div class="gl-wrap">
-
-  <h1>Pakistan Tax Glossary</h1>
-  <p class="gl-sub">Har tax term — simple English mein, section reference aur example ke saath.</p>
-
-  <form method="get" action="{% url 'glossary_list' %}" class="gl-search" role="search">
-    <input type="search" name="q" value="{{ q }}" placeholder="Search a term… e.g. minimum tax, ATL, further tax">
-    <button type="submit">Search</button>
-  </form>
-
-  {% if not q and letters %}
-  <div class="gl-letters">
-    {% for l in letters %}<a href="#letter-{{ l }}">{{ l }}</a>{% endfor %}
+<div class="article-hero calc-page-header">
+  <div class="article-hero-inner">
+    <div class="breadcrumb">
+      <a href="{% url 'index' %}">Home</a>
+      <span class="breadcrumb-sep">›</span>
+      <span>Tax Glossary</span>
+    </div>
+    <h1>Pakistan Tax Glossary</h1>
+    <div class="article-meta">
+      <span>📖 {{ total }} term{{ total|pluralize }}</span>
+      <span>💬 Simple English + examples</span>
+    </div>
   </div>
-  {% endif %}
+</div>
 
-  <div class="gl-count">{{ total }} term{{ total|pluralize }}{% if q %} for "<strong>{{ q }}</strong>"{% endif %}</div>
+<div class="content-grid">
+  <main class="content-main">
+
+  <p class="gl-intro">Every Pakistan tax term — explained in simple English, with the <strong>section reference</strong> and a real example. From ATL and NTN to Minimum Tax, FTR and Input Tax.</p>
+
+  <div class="gl-panel">
+    <form method="get" action="{% url 'glossary_list' %}" class="gl-search" role="search">
+      <input type="search" name="q" value="{{ q }}" placeholder="Search a term… e.g. minimum tax, ATL, further tax">
+      <button type="submit">Search</button>
+    </form>
+    {% if not q and letters %}
+    <div class="gl-letters">
+      {% for l in letters %}<a href="#letter-{{ l }}">{{ l }}</a>{% endfor %}
+    </div>
+    {% endif %}
+  </div>
+
+  <div class="gl-count">{{ total }} term{{ total|pluralize }}{% if q %} for "{{ q }}"{% endif %}</div>
 
   {% for letter, terms in groups %}
     <div class="gl-letter-head" id="letter-{{ letter }}">{{ letter }}</div>
     {% for t in terms %}
-    <div class="gl-card">
-      <a href="{% url 'glossary_detail' slug=t.slug %}">{{ t.term }}</a>
+    <a class="gl-card" href="{% url 'glossary_detail' slug=t.slug %}">
+      <div class="term">{{ t.term }}</div>
       <p>{{ t.short_meaning }}</p>
-    </div>
+    </a>
     {% endfor %}
   {% empty %}
-    <div class="gl-empty">No terms found{% if q %} for "<strong>{{ q }}</strong>"{% endif %}. Spelling check karo ya <a href="{% url 'glossary_list' %}" style="color:#0D9E72;">saari list dekho</a>.</div>
+    <div class="gl-empty">
+      <div style="font-size:15px;font-weight:600;margin-bottom:4px">No terms found{% if q %} for "{{ q }}"{% endif %}</div>
+      <div style="font-size:13px">Check spelling or <a href="{% url 'glossary_list' %}" style="color:var(--green,#0D9E72);font-weight:600">browse all terms</a>.</div>
+    </div>
   {% endfor %}
 
+  </main>
+
+  <aside class="content-sidebar">
+    {% include 'partials/sidebar.html' %}
+  </aside>
 </div>
 {% endblock %}

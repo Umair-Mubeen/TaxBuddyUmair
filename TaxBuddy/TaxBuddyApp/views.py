@@ -2610,3 +2610,7 @@ def salary_rate_history(request):
 # navbar — Calculators dropdown mein:
 #   <a href="{% url 'salary_rate_history' %}" role="menuitem">📊 Slabs History & Budget Comparison</a>
 # ════════════════════════════════════════════════════════════
+
+
+def freelancer_calculator(request):
+    return render(request, 'partials/freelancer-tax-calculator.html')

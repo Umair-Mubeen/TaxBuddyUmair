@@ -32,36 +32,44 @@
 </script>
 {% endblock %}
 
-{% block head_extra %}
+{% block extra_css %}
 <style>
-  .gt-wrap{max-width:780px;margin:0 auto;padding:32px 16px 60px}
-  .gt-crumb{font-size:.85rem;margin-bottom:14px}
-  .gt-crumb a{color:#0D9E72;text-decoration:none}
-  .gt-wrap h1{color:#0A2647;font-size:1.7rem;margin:0 0 10px}
-  .gt-short{background:#e8f6f0;border-left:4px solid #0D9E72;border-radius:0 10px 10px 0;padding:14px 18px;color:#0A2647;font-size:1.02rem;line-height:1.6;margin-bottom:20px;font-weight:500}
-  .gt-box{border:1px solid #e6eaf0;border-radius:12px;padding:18px 20px;margin-bottom:16px;background:#fff}
-  .gt-box h2{font-size:.8rem;text-transform:uppercase;letter-spacing:.07em;color:#98a2b3;margin:0 0 8px}
-  .gt-box .txt{color:#344054;font-size:.95rem;line-height:1.75;white-space:pre-line}
-  .gt-legal{background:#f8f9fb;font-style:italic}
-  .gt-section{display:inline-block;background:#0A2647;color:#fff;font-size:.8rem;font-weight:600;padding:5px 12px;border-radius:6px;margin-top:8px}
-  .gt-actions{display:flex;gap:10px;flex-wrap:wrap;margin:20px 0}
-  .gt-btn{display:inline-block;padding:11px 20px;border-radius:9px;font-weight:700;font-size:.9rem;text-decoration:none}
-  .gt-btn.calc{background:#0D9E72;color:#fff}
-  .gt-btn.calc:hover{background:#0b8a63}
-  .gt-btn.art{border:1.5px solid #0D9E72;color:#0D9E72}
+  .gt-short{background:linear-gradient(135deg,rgba(13,158,114,.08),rgba(13,158,114,.03));border-left:4px solid var(--green,#0D9E72);border-radius:0 12px 12px 0;padding:18px 22px;color:var(--navy,#0A2647);font-size:1.05rem;line-height:1.65;margin-bottom:22px;font-weight:500}
+  .gt-box{border:1px solid var(--border,#E2E8F0);border-radius:14px;padding:20px 22px;margin-bottom:16px;background:#fff;box-shadow:0 1px 3px rgba(10,38,71,.04)}
+  .gt-box h2{font-size:12px;text-transform:uppercase;letter-spacing:.06em;color:var(--text-light,#98A2B3);margin:0 0 10px;font-weight:700}
+  .gt-box .txt{color:var(--text,#1A202C);font-size:15px;line-height:1.75;white-space:pre-line}
+  .gt-legal{background:#f8f9fb}
+  .gt-legal .txt{font-style:italic}
+  .gt-section{display:inline-block;background:var(--navy,#0A2647);color:#fff;font-size:12.5px;font-weight:600;padding:6px 13px;border-radius:7px;margin-top:10px}
+  .gt-actions{display:flex;gap:10px;flex-wrap:wrap;margin:22px 0}
+  .gt-btn{display:inline-flex;align-items:center;gap:6px;padding:12px 22px;border-radius:10px;font-weight:700;font-size:14px;text-decoration:none;transition:all .15s}
+  .gt-btn.calc{background:var(--green,#0D9E72);color:#fff}
+  .gt-btn.calc:hover{background:var(--green-dark,#0b8a63)}
+  .gt-btn.art{border:1.5px solid var(--green,#0D9E72);color:var(--green-dark,#0b8a63)}
+  .gt-btn.art:hover{background:var(--green,#0D9E72);color:#fff}
   .gt-chips{display:flex;gap:6px;flex-wrap:wrap}
-  .gt-chip{background:#f2f4f7;color:#0A2647;font-size:.85rem;font-weight:600;padding:6px 14px;border-radius:20px;text-decoration:none}
-  .gt-chip:hover{background:#0A2647;color:#fff}
-  .gt-disclaimer{font-size:.8rem;color:#98a2b3;border-top:1px solid #e6eaf0;padding-top:14px;margin-top:8px}
+  .gt-chip{background:#f1f5f9;color:var(--navy,#0A2647);font-size:13px;font-weight:600;padding:7px 15px;border-radius:20px;text-decoration:none;transition:all .15s}
+  .gt-chip:hover{background:var(--navy,#0A2647);color:#fff}
+  .gt-disclaimer{font-size:12.5px;color:var(--text-light,#98A2B3);border-top:1px solid var(--border,#E2E8F0);padding-top:16px;margin-top:12px;line-height:1.6}
 </style>
 {% endblock %}
 
 {% block content %}
-<div class="gt-wrap">
+<div class="article-hero calc-page-header">
+  <div class="article-hero-inner">
+    <div class="breadcrumb">
+      <a href="{% url 'index' %}">Home</a>
+      <span class="breadcrumb-sep">›</span>
+      <a href="{% url 'glossary_list' %}">Tax Glossary</a>
+      <span class="breadcrumb-sep">›</span>
+      <span>{{ t.term }}</span>
+    </div>
+    <h1>{{ t.term }}</h1>
+  </div>
+</div>
 
-  <div class="gt-crumb"><a href="{% url 'glossary_list' %}">← Tax Glossary</a></div>
-
-  <h1>{{ t.term }}</h1>
+<div class="content-grid">
+  <main class="content-main">
 
   <div class="gt-short">{{ t.short_meaning }}</div>
 
@@ -112,5 +120,10 @@
     Educational definition, not legal advice. Verify against the statute text ({{ t.section_ref|default:"relevant law" }}) before acting.
   </div>
 
+  </main>
+
+  <aside class="content-sidebar">
+    {% include 'partials/sidebar.html' %}
+  </aside>
 </div>
 {% endblock %}

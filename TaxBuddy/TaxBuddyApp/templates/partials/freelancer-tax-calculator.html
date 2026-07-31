@@ -1,0 +1,392 @@
+{% extends 'base.html' %}
+
+{% block title %}Freelancer &amp; IT Export Tax Calculator Pakistan 2026-27 | Section 154A | TaxBuddy Umair{% endblock %}
+{% block meta_desc %}Free freelancer & IT export tax calculator Pakistan 2026-27. Calculate withholding tax on foreign remittances under Section 154A — 0.25% for PSEB-registered exporters vs 1% for others. Bank deduction & Normal Tax Regime explained.{% endblock %}
+{% block schema_extra %}{% include 'partials/schema_calculator.html' with calc_name='Freelancer & IT Export Tax Calculator Pakistan 2026-27' calc_url='/freelancer-tax-calculator/' %}{% endblock %}
+
+{% block extra_css %}
+<style>
+  .calc-header { background: var(--navy, #0A2647); border-radius: 14px 14px 0 0; padding: 22px 26px; display: flex; align-items: center; gap: 16px; }
+  .calc-header-icon { font-size: 30px; line-height: 1; flex-shrink: 0; }
+  .calc-header h2 { font-size: 20px; font-weight: 700; color: #fff; margin-bottom: 4px; }
+  .calc-header p { font-size: 13px; color: rgba(255,255,255,.55); margin-bottom: 10px; }
+  .calc-badges { display: flex; gap: 6px; flex-wrap: wrap; }
+  .calc-badge { background: rgba(255,255,255,.12); color: rgba(255,255,255,.85); font-size: 11px; font-weight: 600; padding: 3px 10px; border-radius: 20px; }
+
+  .calc-container { background:#fff; border:1px solid var(--border,#E2E8F0); border-radius:14px; box-shadow:0 4px 20px rgba(10,38,71,.06); overflow:hidden; }
+  .calc-body { padding: 26px; }
+
+  .fc-field { margin-bottom: 22px; }
+  .fc-label { display:block; font-size:13px; font-weight:600; color:var(--navy,#0A2647); margin-bottom:8px; }
+  .fc-hint { font-size:12px; color:var(--text-light,#98A2B3); margin-top:6px; line-height:1.5; }
+  .fc-input { width:100%; font-family:inherit; font-size:18px; font-weight:600; color:var(--navy,#0A2647); border:1.5px solid var(--border,#E2E8F0); border-radius:10px; padding:14px 16px; }
+  .fc-input:focus { outline:none; border-color:var(--green,#0D9E72); }
+
+  .fc-toggle { display:grid; grid-template-columns:1fr 1fr; gap:12px; }
+  .fc-opt { border:2px solid var(--border,#E2E8F0); border-radius:12px; padding:14px 16px; cursor:pointer; transition:all .15s; text-align:left; background:#fff; }
+  .fc-opt:hover { border-color:var(--green,#0D9E72); }
+  .fc-opt.active { border-color:var(--green,#0D9E72); background:rgba(13,158,114,.06); }
+  .fc-opt.warn.active { border-color:var(--amber,#B45309); background:#fffbeb; }
+  .fc-opt .r { font-size:22px; font-weight:800; color:var(--green-dark,#0b8a63); margin-bottom:2px; }
+  .fc-opt.warn .r { color:var(--amber,#B45309); }
+  .fc-opt .t { font-size:13.5px; font-weight:700; color:var(--navy,#0A2647); margin-bottom:3px; }
+  .fc-opt .d { font-size:12px; color:var(--text-mid,#475467); line-height:1.5; }
+
+  .fc-result { margin-top:26px; border-top:3px solid var(--green,#0D9E72); background:var(--navy,#0A2647); border-radius:12px; padding:22px 24px; }
+  .fc-result-row { display:flex; justify-content:space-between; align-items:baseline; padding:10px 0; border-bottom:1px solid rgba(255,255,255,.12); }
+  .fc-result-row:last-child { border-bottom:none; }
+  .fc-result-k { font-size:13.5px; color:rgba(255,255,255,.75); }
+  .fc-result-v { font-size:16px; font-weight:700; color:#fff; }
+  .fc-result-big { margin-top:6px; padding-top:14px; }
+  .fc-result-big .fc-result-k { font-size:15px; color:#fff; }
+  .fc-result-big .fc-result-v { font-size:26px; color:#5eead4; }
+  .fc-net .fc-result-v { color:#86efac; }
+
+  .fc-note { border-radius:0 10px 10px 0; padding:14px 18px; margin-top:16px; font-size:13.5px; line-height:1.6; }
+  .fc-note-save { background:rgba(13,158,114,.08); border-left:4px solid var(--green,#0D9E72); color:var(--text,#1A202C); }
+  .fc-note-save strong { color:var(--green-dark,#0b8a63); }
+  .fc-note-ntr { background:#fef2f2; border-left:4px solid var(--red,#dc2626); color:var(--text,#1A202C); }
+  .fc-note-ntr strong { color:var(--red,#dc2626); }
+  .fc-note-filer { background:#fffbeb; border-left:4px solid var(--amber,#B45309); color:#92400e; font-size:13px; }
+
+  .fc-section { margin-top:32px; }
+  .fc-section h2 { font-size:1.3rem; color:var(--navy,#0A2647); margin-bottom:12px; }
+  .fc-section p { font-size:14.5px; color:var(--text-mid,#475467); line-height:1.7; margin-bottom:12px; }
+  .fc-faq details { background:#fff; border:1px solid var(--border,#E2E8F0); border-radius:10px; padding:14px 18px; margin-bottom:12px; }
+  .fc-faq summary { font-weight:700; color:var(--navy,#0A2647); cursor:pointer; font-size:14.5px; }
+  .fc-faq details p { margin-top:8px; font-size:13.5px; color:var(--text-mid,#475467); line-height:1.7; margin-bottom:0; }
+
+  @media(max-width:560px){ .fc-toggle { grid-template-columns:1fr; } }
+</style>
+{% endblock %}
+
+{% block content %}
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[
+{"@type":"Question","name":"What is the tax rate for freelancers in Pakistan 2026-27?","acceptedAnswer":{"@type":"Answer","text":"Under Section 154A, freelancers and IT exporters registered with the Pakistan Software Export Board (PSEB) pay 0.25% withholding tax on foreign remittances. Those not registered pay 1%. In both cases it is treated as final tax, subject to conditions."}},
+{"@type":"Question","name":"What if my bank isn't deducting the tax?","acceptedAnswer":{"@type":"Answer","text":"If the tax isn't withheld at source under the correct IT-services purpose code, Section 154A's final-tax treatment can fail, and the income may be taxed under the Normal Tax Regime as business income at slab rates up to 45%."}},
+{"@type":"Question","name":"Is freelancer income tax in Pakistan final or adjustable?","acceptedAnswer":{"@type":"Answer","text":"Under Section 154A, the withholding tax on export of IT and IT-enabled services is treated as final tax, subject to conditions, when proceeds are received in foreign exchange through a bank."}},
+{"@type":"Question","name":"Do I need to register with PSEB as a freelancer?","acceptedAnswer":{"@type":"Answer","text":"PSEB registration reduces your withholding tax from 1% to 0.25% on IT and IT-enabled service exports — a four-times lower rate."}}
+]}
+</script>
+
+<div class="article-hero calc-page-header">
+  <div class="article-hero-inner">
+    <div class="breadcrumb">
+      <a href="{% url 'index' %}">Home</a>
+      <span class="breadcrumb-sep">›</span>
+      <span>Calculators</span>
+      <span class="breadcrumb-sep">›</span>
+      <span>Freelancer &amp; IT Export Tax Calculator</span>
+    </div>
+    <h1>Freelancer &amp; IT Export Tax Calculator — Pakistan 2026–27</h1>
+    <div class="article-meta">
+      <span>⚖️ Section 154A</span>
+      <span>✅ Free &amp; Accurate</span>
+      <span>💻 For Fiverr, Upwork &amp; foreign clients</span>
+    </div>
+  </div>
+</div>
+
+<div class="content-grid">
+  <main class="content-main">
+
+    <div class="calc-container">
+      <div class="calc-header">
+        <div class="calc-header-icon">💻</div>
+        <div>
+          <h2>Freelancer &amp; IT Export Tax</h2>
+          <p>Withholding tax on foreign remittances · Section 154A</p>
+          <div class="calc-badges"><span class="calc-badge">FBR 2026-27</span><span class="calc-badge">Section 154A</span><span class="calc-badge">Free</span></div>
+        </div>
+      </div>
+
+      <div class="calc-body">
+        <div style="background:#fffbeb;border:1px solid #fde68a;border-radius:10px;padding:12px 16px;margin-bottom:18px;display:flex;gap:10px;align-items:flex-start;">
+          <span style="font-size:16px;line-height:1.4;flex-shrink:0;">&#9888;&#65039;</span>
+          <p style="font-size:12.5px;color:#92400e;margin:0;line-height:1.6;">
+            <strong>For educational purposes only.</strong> This calculator estimates withholding tax under Section 154A and is not formal tax, legal, or financial advice. The 0.25% rate and final-tax treatment depend on PSEB registration, correct bank deduction, and filer status — verify against official
+            <a href="https://www.fbr.gov.pk" target="_blank" rel="noopener" style="color:#92400e;text-decoration:underline;font-weight:600;">FBR</a> and
+            <a href="https://www.pseb.org.pk" target="_blank" rel="noopener" style="color:#92400e;text-decoration:underline;font-weight:600;">PSEB</a> sources or a qualified tax practitioner.
+          </p>
+        </div>
+
+        <div class="fc-field">
+          <label class="fc-label" for="fcAmount">Foreign income received (PKR)</label>
+          <input type="text" inputmode="numeric" id="fcAmount" class="fc-input" placeholder="e.g. 500,000" oninput="fcCalc(); fcScheduleScroll();">
+          <div class="fc-hint">Amount credited to your bank, converted to rupees — per remittance or per year (rate is the same).</div>
+        </div>
+
+        <div class="fc-field">
+          <label class="fc-label">Where is your client based?</label>
+          <div class="fc-toggle">
+            <button type="button" class="fc-opt active" id="fcClientForeign" onclick="fcSetClient(true,this)">
+              <div class="t" style="margin-top:2px">🌍 Foreign client</div>
+              <div class="d">Overseas company, Fiverr, Upwork, direct — export of services</div>
+            </button>
+            <button type="button" class="fc-opt warn" id="fcClientLocal" onclick="fcSetClient(false,this)">
+              <div class="t" style="margin-top:2px">🇵🇰 Pakistani client</div>
+              <div class="d">Local client — not an export; taxed under normal regime</div>
+            </button>
+          </div>
+          <div class="fc-hint">Section 154A applies only to export of services to foreign clients. Local work is taxed under the Normal Tax Regime.</div>
+        </div>
+
+        <div class="fc-field">
+          <label class="fc-label">Are you registered with PSEB (Pakistan Software Export Board)?</label>
+          <div class="fc-toggle">
+            <button type="button" class="fc-opt active" id="fcPseb" onclick="fcSetPseb(true,this)">
+              <div class="r">0.25%</div>
+              <div class="t">Yes, PSEB registered</div>
+              <div class="d">Reduced rate for registered IT / software exporters</div>
+            </button>
+            <button type="button" class="fc-opt warn" id="fcNoPseb" onclick="fcSetPseb(false,this)">
+              <div class="r">1%</div>
+              <div class="t">No, not registered</div>
+              <div class="d">Standard rate for exported services</div>
+            </button>
+          </div>
+          <div class="fc-hint">PSEB registration cuts your rate from 1% to 0.25% — four times lower.</div>
+        </div>
+
+        <div class="fc-field">
+          <label class="fc-label">Is your bank deducting the tax on each foreign remittance?</label>
+          <div class="fc-toggle">
+            <button type="button" class="fc-opt active" id="fcBankYes" onclick="fcSetBank(true,this)">
+              <div class="t" style="margin-top:2px">✅ Yes, bank deducts it</div>
+              <div class="d">Realized under IT-services purpose code, WHT certificate issued</div>
+            </button>
+            <button type="button" class="fc-opt warn" id="fcBankNo" onclick="fcSetBank(false,this)">
+              <div class="t" style="margin-top:2px">⚠️ No, bank isn't deducting</div>
+              <div class="d">Realized as a normal / family remittance, no tax deducted</div>
+            </button>
+          </div>
+          <div class="fc-hint">Section 154A gives final-tax treatment only when the bank actually withholds it at source on the export proceeds.</div>
+        </div>
+
+        <div class="fc-field">
+          <label class="fc-label">Are you a filer (on the Active Taxpayers List)?</label>
+          <div class="fc-toggle">
+            <button type="button" class="fc-opt active" id="fcFilerYes" onclick="fcSetFiler(true,this)">
+              <div class="t" style="margin-top:2px">✅ Filer (on ATL)</div>
+              <div class="d">Required for the reduced rate to count as final tax</div>
+            </button>
+            <button type="button" class="fc-opt warn" id="fcFilerNo" onclick="fcSetFiler(false,this)">
+              <div class="t" style="margin-top:2px">⚠️ Non-filer</div>
+              <div class="d">Higher deduction; final-tax benefit may not apply</div>
+            </button>
+          </div>
+        </div>
+
+        <div class="fc-field">
+          <label class="fc-label">How do you receive payments?</label>
+          <div class="fc-toggle">
+            <button type="button" class="fc-opt active" id="fcChanOk" onclick="fcSetChannel(true,this)">
+              <div class="t" style="margin-top:2px">✅ Approved banking channel</div>
+              <div class="d">Pakistani bank, Payoneer linked to local account, or Wise</div>
+            </button>
+            <button type="button" class="fc-opt warn" id="fcChanNo" onclick="fcSetChannel(false,this)">
+              <div class="t" style="margin-top:2px">⚠️ PayPal / informal / other</div>
+              <div class="d">PayPal is not an SBP-approved channel; may lose export rate</div>
+            </button>
+          </div>
+          <div class="fc-hint">At least 80% of foreign earnings should arrive through approved banking channels (the "80% rule").</div>
+        </div>
+
+        <div class="fc-field">
+          <label class="fc-label">Do you keep a PRC / ePRC for each remittance?</label>
+          <div class="fc-toggle">
+            <button type="button" class="fc-opt active" id="fcPrcYes" onclick="fcSetPrc(true,this)">
+              <div class="t" style="margin-top:2px">✅ Yes, PRC kept</div>
+              <div class="d">Proceeds Realization Certificate from bank for each payment</div>
+            </button>
+            <button type="button" class="fc-opt warn" id="fcPrcNo" onclick="fcSetPrc(false,this)">
+              <div class="t" style="margin-top:2px">⚠️ No PRC</div>
+              <div class="d">Proof of legal foreign-currency realization is missing</div>
+            </button>
+          </div>
+          <div class="fc-hint">The PRC (with the correct IT-export purpose code) is your proof the income was realized legally.</div>
+        </div>
+
+        <div class="fc-result" id="fcResult" style="display:none">
+          <div class="fc-result-row"><span class="fc-result-k">Likely treatment</span><span class="fc-result-v" id="fcOutClass">—</span></div>
+          <div class="fc-result-row"><span class="fc-result-k">Foreign income</span><span class="fc-result-v" id="fcOutGross">—</span></div>
+          <div class="fc-result-row"><span class="fc-result-k">Rate applied (Section 154A)</span><span class="fc-result-v" id="fcOutRate">—</span></div>
+          <div class="fc-result-row fc-result-big"><span class="fc-result-k">Estimated tax</span><span class="fc-result-v" id="fcOutTax">—</span></div>
+          <div class="fc-result-row fc-net"><span class="fc-result-k">You keep (after tax)</span><span class="fc-result-v" id="fcOutNet">—</span></div>
+        </div>
+
+        <!-- Compliance checklist (educational, not a legal determination) -->
+        <div id="fcChecklist" style="display:none;background:#fff;border:1px solid var(--border,#E2E8F0);border-radius:12px;padding:18px 20px;margin-top:16px">
+          <div style="font-size:14px;font-weight:700;color:var(--navy,#0A2647);margin-bottom:4px">Final-tax conditions (Section 154A)</div>
+          <div style="font-size:12px;color:var(--text-light,#98A2B3);margin-bottom:12px">To be treated as final tax at the reduced rate, these generally need to be met — subject to fulfillment of statutory conditions.</div>
+          <ul id="fcCheckList" style="list-style:none;display:flex;flex-direction:column;gap:8px;margin:0"></ul>
+        </div>
+
+        <div class="fc-note fc-note-save" id="fcSaveNote" style="display:none">
+          <strong>PSEB registration would save you <span id="fcSaveAmt">—</span></strong> on this amount — the difference between the 1% and 0.25% rate. If you export IT services regularly, registering usually pays for itself.
+        </div>
+
+        <div class="fc-note fc-note-ntr" id="fcLocalWarn" style="display:none">
+          <strong>ℹ️ Local client — Section 154A does not apply.</strong> Income from a Pakistani client is not an export of services, so the 0.25% / 1% final-tax rate under 154A is not available. This income is generally taxed under the <strong>Normal Tax Regime</strong> as business income at slab rates, subject to applicable law. Use the business or income-tax calculator for an estimate.
+        </div>
+
+        <div class="fc-note fc-note-ntr" id="fcNtrWarn" style="display:none">
+          <strong>⚠️ This may not be final tax.</strong> If your bank isn't deducting tax at source on the export proceeds, Section 154A's final-tax treatment can fail — and the income may instead be taxed under the <strong>Normal Tax Regime</strong> (business income at standard slab rates, up to 45%). Ask your bank to realize the remittance under the correct IT-services purpose code and issue a withholding certificate.
+        </div>
+
+        <div class="fc-note fc-note-filer" id="fcFilerWarn" style="display:none">
+          <strong>You're marked as a non-filer.</strong> The reduced 154A rate and final-tax treatment generally require being on the Active Taxpayers List. File your return to secure the low rate.
+        </div>
+
+      </div>
+    </div>
+
+    <div class="fc-section">
+      <h2>How freelancer tax works under Section 154A</h2>
+      <p>When you receive payment from a foreign client into a Pakistani bank account, your bank — the authorized dealer in foreign exchange — deducts withholding tax at source under Section 154A. You don't pay it separately; it's taken before the money reaches you.</p>
+      <p>The rate depends on whether you're registered with the <strong>Pakistan Software Export Board (PSEB)</strong>. Registered IT and IT-enabled exporters pay <strong>0.25%</strong>; others exporting services pay <strong>1%</strong>. Both are treated as <strong>final tax</strong>, subject to conditions — settling your liability on that export income so it isn't taxed again at normal slab rates.</p>
+      <p><strong>The catch — your bank has to actually deduct it.</strong> Final-tax treatment depends on the bank withholding at source under the correct IT-services purpose code. If the bank realizes it as an ordinary or family remittance and deducts nothing, the benefit can fail — and that income may be taxed under the <strong>Normal Tax Regime</strong> as business income at slab rates (up to 45%). Always ask for the correct purpose code and a withholding certificate, and keep proof of the banking channel.</p>
+      <p>Being on the <strong>Active Taxpayers List (filer)</strong> also matters: the reduced rate and final-tax status generally require it, subject to fulfillment of statutory conditions.</p>
+    </div>
+
+    <div class="fc-section">
+      <h2>Get your bank purpose code right</h2>
+      <p>A common problem: banks realize IT export payments under <strong>9471 (family remittance / gift)</strong>, which deducts 0% — but then the income may not qualify for 154A final tax. Ask your bank to use the correct IT-services purpose code:</p>
+      <p style="background:#fff;border:1px solid var(--border,#E2E8F0);border-radius:10px;padding:14px 18px;font-size:13.5px;line-height:1.9;color:var(--text,#1A202C)">
+        <strong>9186</strong> — Freelance computer &amp; information-system services (individuals) — <em>most freelancers</em><br>
+        <strong>9182</strong> — IT / software consultancy services<br>
+        <strong>9184</strong> — Export of computer software (design, development, programming)<br>
+        <strong>9185</strong> — Other computer services<br>
+        <span style="color:#92400e"><strong>Avoid 9471</strong> — family remittance / gift; deducts 0% but risks losing the export treatment</span>
+      </p>
+      <p style="font-size:12.5px;color:var(--text-light,#98A2B3)">Purpose codes and conditions are set by the State Bank of Pakistan and change over time (e.g. the revised e-PRC/S-PRC formats effective October 2025). Confirm the current code with your bank.</p>
+    </div>
+
+    <div class="fc-section fc-faq">
+      <h2>Frequently asked questions</h2>
+      <details><summary>What is the tax rate for freelancers in Pakistan 2026-27?</summary><p>Under Section 154A, PSEB-registered IT exporters pay <strong>0.25%</strong> on foreign remittances; those not registered pay <strong>1%</strong>. Both are final tax, subject to conditions.</p></details>
+      <details><summary>What if my bank isn't deducting the tax?</summary><p>Some banks realize IT export proceeds under a generic remittance code and deduct nothing. If tax isn't withheld at source under the correct IT-services purpose code, the final-tax treatment can fail, and the income may be taxed under the Normal Tax Regime at slab rates. Ask your bank to use the correct code and issue a withholding certificate.</p></details>
+      <details><summary>What is the Normal Tax Regime for freelancers?</summary><p>If your export income doesn't qualify for 154A final-tax treatment, it's taxed as business income at non-salaried slab rates — rising up to 45% at higher incomes — after allowable expenses. That's why meeting the conditions matters.</p></details>
+      <details><summary>Should I register with PSEB?</summary><p>PSEB registration drops your rate from 1% to 0.25% — four times lower. On Rs 1,000,000 that's Rs 2,500 instead of Rs 10,000. If you export regularly, it usually pays for itself quickly.</p></details>
+      <details><summary>Does this cover Fiverr and Upwork income?</summary><p>Yes — if the payment is for IT or IT-enabled services and received in foreign exchange through your bank, Section 154A applies. What matters is the nature of the service and how the money arrives, not the platform.</p></details>
+      <details><summary>Is PayPal income eligible for the 0.25% rate?</summary><p>PayPal is not an SBP-approved channel, so income received via PayPal may not qualify for the export rate directly. Transfer funds to your Pakistani bank account through an approved channel and obtain PRCs to establish legitimacy — subject to applicable SBP rules.</p></details>
+      <details><summary>What is the 80% rule?</summary><p>To claim the reduced final-tax treatment, at least 80% of your foreign earnings should generally be received in Pakistan through approved banking channels (Pakistani bank, Payoneer linked to a local account, or Wise). This is both a tax condition and SBP foreign-exchange policy, subject to applicable law.</p></details>
+      <details><summary>Which SBP purpose code should my bank use?</summary><p>For freelance IT services, the code is typically <strong>9186</strong>; for consultancy or software export, <strong>9182–9185</strong>. Avoid <strong>9471</strong> (family remittance), which deducts 0% but can disqualify the export treatment. Confirm the current code with your bank, as SBP updates these.</p></details>
+    </div>
+
+  </main>
+
+  <aside class="content-sidebar">
+    {% include 'partials/sidebar.html' %}
+  </aside>
+</div>
+
+<script>
+let fcIsPseb=true, fcBankDeducts=true, fcIsFiler=true, fcClientForeign=true, fcChannelOk=true, fcHasPrc=true;
+function fcNum(s){ return parseFloat(String(s).replace(/[^0-9.]/g,'')) || 0; }
+function fcFmt(n){ return 'Rs. ' + Math.round(n).toLocaleString('en-PK'); }
+
+function fcSetPseb(v){ fcIsPseb=v; document.getElementById('fcPseb').classList.toggle('active',v); document.getElementById('fcNoPseb').classList.toggle('active',!v); fcCalc(); }
+function fcSetBank(v){ fcBankDeducts=v; document.getElementById('fcBankYes').classList.toggle('active',v); document.getElementById('fcBankNo').classList.toggle('active',!v); fcCalc(); }
+function fcSetFiler(v){ fcIsFiler=v; document.getElementById('fcFilerYes').classList.toggle('active',v); document.getElementById('fcFilerNo').classList.toggle('active',!v); fcCalc(); }
+function fcSetClient(v){ fcClientForeign=v; document.getElementById('fcClientForeign').classList.toggle('active',v); document.getElementById('fcClientLocal').classList.toggle('active',!v); fcCalc(); }
+function fcSetChannel(v){ fcChannelOk=v; document.getElementById('fcChanOk').classList.toggle('active',v); document.getElementById('fcChanNo').classList.toggle('active',!v); fcCalc(); }
+function fcSetPrc(v){ fcHasPrc=v; document.getElementById('fcPrcYes').classList.toggle('active',v); document.getElementById('fcPrcNo').classList.toggle('active',!v); fcCalc(); }
+
+function fcCheckItem(ok, text){
+  var icon = ok ? '<span style="color:var(--green,#0D9E72);font-weight:700">✓</span>' : '<span style="color:var(--amber,#B45309);font-weight:700">✗</span>';
+  var color = ok ? 'var(--text-mid,#475467)' : '#92400e';
+  return '<li style="display:flex;gap:8px;align-items:flex-start;font-size:13px;color:'+color+';line-height:1.5">'+icon+'<span>'+text+'</span></li>';
+}
+
+function fcCalc(){
+  var amt = fcNum(document.getElementById('fcAmount').value);
+  var result=document.getElementById('fcResult'), saveNote=document.getElementById('fcSaveNote'),
+      ntrWarn=document.getElementById('fcNtrWarn'), filerWarn=document.getElementById('fcFilerWarn'),
+      checklist=document.getElementById('fcChecklist');
+
+  if(amt<=0){
+    result.style.display='none'; saveNote.style.display='none'; ntrWarn.style.display='none';
+    filerWarn.style.display='none'; checklist.style.display='none'; return;
+  }
+
+  var rate = fcIsPseb ? 0.25 : 1;
+  var tax = amt*rate/100, net = amt-tax;
+
+  // Local (Pakistani) client → NOT an export, so 154A does not apply at all.
+  if(!fcClientForeign){
+    document.getElementById('fcOutClass').textContent = 'Not Section 154A — local service';
+    document.getElementById('fcOutClass').style.color = '#fbbf24';
+    document.getElementById('fcOutGross').textContent = fcFmt(amt);
+    document.getElementById('fcOutRate').textContent = 'Normal Tax Regime (slab rates)';
+    document.getElementById('fcOutTax').textContent = 'Depends on total income';
+    document.getElementById('fcOutNet').textContent = '—';
+    result.style.display='block';
+    saveNote.style.display='none';
+    filerWarn.style.display = fcIsFiler ? 'none' : 'block';
+    // show the local-client explanation, hide the bank-deduction NTR warning
+    document.getElementById('fcLocalWarn').style.display='block';
+    ntrWarn.style.display='none';
+    // checklist still useful — first line will show the local-client flag
+    renderChecklist();
+    checklist.style.display='block';
+    return;
+  }
+  document.getElementById('fcLocalWarn').style.display='none';
+
+  // classification — all conditions must hold to LIKELY be FTR
+  var ftrLikely = fcClientForeign && fcBankDeducts && fcIsFiler && fcChannelOk;
+  var classLabel = ftrLikely
+    ? 'May qualify as Final Tax (154A)'
+    : 'May fall under Normal Tax Regime';
+
+  document.getElementById('fcOutClass').textContent = classLabel;
+  document.getElementById('fcOutClass').style.color = ftrLikely ? '#5eead4' : '#fbbf24';
+  document.getElementById('fcOutGross').textContent = fcFmt(amt);
+  var rateLabel = rate+'%'+(fcIsPseb?' (PSEB registered)':' (not registered)');
+  document.getElementById('fcOutRate').textContent = rateLabel;
+  document.getElementById('fcOutTax').textContent = fcFmt(tax);
+  document.getElementById('fcOutNet').textContent = fcFmt(net);
+  result.style.display='block';
+
+  // PSEB savings note
+  if(!fcIsPseb && fcBankDeducts && fcClientForeign){
+    document.getElementById('fcSaveAmt').textContent = fcFmt(amt*(1-0.25)/100);
+    saveNote.style.display='block';
+  } else { saveNote.style.display='none'; }
+
+  // NTR warning — when a key condition breaks
+  ntrWarn.style.display = (!fcBankDeducts || !fcClientForeign) ? 'block' : 'none';
+  filerWarn.style.display = fcIsFiler ? 'none' : 'block';
+
+  renderChecklist();
+  checklist.style.display='block';
+}
+
+function renderChecklist(){
+  var ul = document.getElementById('fcCheckList');
+  ul.innerHTML =
+    fcCheckItem(fcClientForeign, fcClientForeign ? 'Foreign client — export of services' : 'Client is in Pakistan — this is NOT an export, so Section 154A does not apply (normal tax regime)') +
+    fcCheckItem(fcIsPseb, fcIsPseb ? 'PSEB registered — 0.25% rate' : 'Not PSEB registered — 1% rate (register to reduce it)') +
+    fcCheckItem(fcBankDeducts, fcBankDeducts ? 'Bank deducts tax at source' : 'Bank not deducting — ask for correct IT purpose code (e.g. 9186), not family remittance (9471)') +
+    fcCheckItem(fcChannelOk, fcChannelOk ? 'Approved banking channel' : 'Use an approved channel — PayPal is not SBP-approved') +
+    fcCheckItem(fcIsFiler, fcIsFiler ? 'Filer (on ATL) and return filed' : 'Become a filer — final tax generally requires a filed return') +
+    fcCheckItem(fcHasPrc, fcHasPrc ? 'PRC / ePRC kept as proof' : 'Get a PRC for each remittance from your bank');
+}
+
+// scroll to result only after the user pauses typing (debounced)
+let fcScrollTimer = null;
+function fcScheduleScroll(){
+  var result = document.getElementById('fcResult');
+  if(!result || result.style.display === 'none' || result.style.display === '') return;
+  clearTimeout(fcScrollTimer);
+  fcScrollTimer = setTimeout(function(){
+    result.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  }, 800);
+}
+
+document.getElementById('fcAmount').addEventListener('blur', function(){ var n=fcNum(this.value); if(n>0) this.value=n.toLocaleString('en-PK'); });
+document.getElementById('fcAmount').addEventListener('focus', function(){ this.value=String(fcNum(this.value)||''); });
+</script>
+{% endblock %}

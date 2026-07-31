@@ -30,6 +30,7 @@ class StaticSitemap(Sitemap):
         return [
             'index',
             'about_us',
+            'contact',
             'atl_check',
             'tax_calendar',
             'fbr_iris_guide',
@@ -56,11 +57,14 @@ class CalculatorSitemap(Sitemap):
     def items(self):
         return [
             'SalaryCalculator',
+            'SalaryCalculator2027',
             'BusinessCalculator',
             'AOPCalculator',
             'PropertyCalculator',
             'TaxCalculator4C',
-            'SalaryCalculator2027'
+            'Withholding_Tax_Card',
+            'refund_analyzer',
+            'freelancer_calculator',
         ]
 
     def location(self, item):

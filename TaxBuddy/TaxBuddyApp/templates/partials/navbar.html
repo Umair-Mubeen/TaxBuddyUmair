@@ -30,6 +30,8 @@
           <a href="{% url 'sales_tax_guides' %}"  role="menuitem">📊 Sales Tax Guide</a>
           <a href="{% url 'income_tax_rates' %}"  role="menuitem">📈 Income Tax Rates</a>
           <a href="{% url 'withholding_tax_rates' %}" role="menuitem">📉 Withholding Tax Rates</a>
+          <a href="{% url 'sro_list' %}"           role="menuitem">📜 SRO &amp; Circular Tracker</a>
+          <a href="{% url 'glossary_list' %}"      role="menuitem">📖 Tax Glossary</a>
           <a href="{% url 'atl_check' %}"         role="menuitem">✅ ATL Check</a>
           <a href="{% url 'tax_calendar' %}"       role="menuitem">📅 Tax Calendar</a>
           <a href="{% url 'fbr_iris_guide' %}"     role="menuitem">🏛️ FBR IRIS Guide</a>
@@ -41,12 +43,11 @@
           Calculators <span class="nav-arrow" aria-hidden="true">▾</span>
         </a>
         <div class="dropdown" role="menu">
-          <a href="{% url 'SalaryCalculator2027' %}"   role="menuitem">💼 Prop Salary Calculator 2026-27</a>
-
-          <a href="{% url 'SalaryCalculator' %}"   role="menuitem">💼 Salary Tax Calculator</a>
-          <a href="{% url 'BusinessCalculator' %}" role="menuitem">🏢 Business Tax Calculator</a>
+          <a href="{% url 'SalaryCalculator' %}"   role="menuitem">💼 Salary Calculator</a>
+          <a href="{% url 'BusinessCalculator' %}" role="menuitem">🏢 Business Calculator</a>
           <a href="{% url 'AOPCalculator' %}"      role="menuitem">🤝 AOP Calculator</a>
           <a href="{% url 'PropertyCalculator' %}" role="menuitem">🏠 Property Calculator</a>
+          <a href="{% url 'freelancer_calculator' %}" role="menuitem">💻 Freelancer &amp; IT Export</a>
           <a href="{% url 'TaxCalculator4C' %}"    role="menuitem">⚡ Super Tax 4C</a>
         </div>
       </li>
@@ -124,6 +125,8 @@
         <a href="{% url 'sales_tax_guides' %}">Sales Tax Guide</a>
         <a href="{% url 'income_tax_rates' %}">Income Tax Rates</a>
         <a href="{% url 'withholding_tax_rates' %}">Withholding Tax Rates</a>
+        <a href="{% url 'sro_list' %}">📜 SRO &amp; Circular Tracker</a>
+        <a href="{% url 'glossary_list' %}">📖 Tax Glossary</a>
         <a href="{% url 'atl_check' %}">✅ ATL Check</a>
         <a href="{% url 'tax_calendar' %}">📅 Tax Calendar</a>
         <a href="{% url 'fbr_iris_guide' %}">🏛️ FBR IRIS Guide</a>
@@ -139,6 +142,7 @@
         <a href="{% url 'BusinessCalculator' %}">Business Tax Calculator</a>
         <a href="{% url 'AOPCalculator' %}">AOP Calculator</a>
         <a href="{% url 'PropertyCalculator' %}">Property Calculator</a>
+        <a href="{% url 'freelancer_calculator' %}">Freelancer &amp; IT Export Tax</a>
         <a href="{% url 'TaxCalculator4C' %}">Super Tax 4C</a>
       </div>
     </div>

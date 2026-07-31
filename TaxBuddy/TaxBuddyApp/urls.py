@@ -52,6 +52,7 @@ urlpatterns = [
     path('PropertyCalculator/', views.PropertyCalculator, name='PropertyCalculator'),
     path('TaxCalculator4C/', views.TaxCalculator4C, name='TaxCalculator4C'),
     path('Withholding-Tax-Card/', views.Withholding_Tax_Card, name='Withholding_Tax_Card'),
+    path('freelancer-tax-calculator/', views.freelancer_calculator, name='freelancer_calculator'),
 
     # ── API ───────────────────────────────────────────────────
     path('api/section-4c-rate/', views.section_4c_rate_view, name='section_4c_rate'),
