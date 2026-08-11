@@ -39,9 +39,9 @@
 /* ---- 2-COLUMN LAYOUT (main + sidebar) ---- */
 .fmv-layout{display:block}
 .fmv-aside{margin-top:18px}
-@media(min-width:960px){
-  .fmv-layout{display:grid;grid-template-columns:minmax(0,1fr) 320px;gap:24px;align-items:start}
-  .fmv-aside{margin-top:0;position:sticky;top:16px}
+@media(min-width:900px){
+  .fmv-layout{display:grid;grid-template-columns:minmax(0,1fr) 300px;gap:28px;align-items:start}
+  .fmv-aside{margin-top:0;position:sticky;top:80px}
 }
 
 /* ---- STEP RAIL ---- */
@@ -57,7 +57,7 @@
 .fmv-railline{flex:0 1 30px;height:2px;background:var(--border);border-radius:2px}
 
 /* ---- CARD ---- */
-.fmv-card{background:#fff;border:1px solid var(--border);border-radius:var(--fmv-radius);
+.fmv-card{background:#fff;border:1px solid var(--border);border-radius:var(--radius-lg);
   box-shadow:var(--fmv-shadow);overflow:hidden;margin-bottom:18px}
 .fmv-card-head{display:flex;align-items:center;gap:11px;padding:16px 18px;
   background:var(--navy);color:#fff}
@@ -68,7 +68,7 @@
 .fmv-card-body{padding:20px 18px}
 /* Step-1 card must let the search dropdown overflow its rounded box */
 .fmv-card.is-open{overflow:visible}
-.fmv-card.is-open .fmv-card-head{border-radius:var(--fmv-radius) var(--fmv-radius) 0 0}
+.fmv-card.is-open .fmv-card-head{border-radius:var(--radius-lg) var(--radius-lg) 0 0}
 
 /* ---- FIELDS ---- */
 .fmv-field{margin-bottom:18px}
@@ -116,13 +116,13 @@
 .fmv-type .ic{font-size:22px;line-height:1}
 
 /* ---- BUTTON ---- */
-.fmv-btn{width:100%;padding:15px;background:linear-gradient(135deg,#0D9E72,#0bbf87);color:#fff;border:none;
+.fmv-btn{width:100%;padding:15px;background:var(--green);color:#fff;border:none;
   border-radius:var(--fmv-radius-sm);font-size:16px;font-weight:700;cursor:pointer;
-  transition:filter .18s,transform .1s;box-shadow:0 6px 18px rgba(13,158,114,.32);display:flex;
+  transition:background .2s,transform .1s;display:flex;
   align-items:center;justify-content:center;gap:9px}
-.fmv-btn:hover{filter:brightness(1.04)}
+.fmv-btn:hover{background:var(--green-mid)}
 .fmv-btn:active{transform:translateY(1px)}
-.fmv-btn:disabled{opacity:.45;cursor:not-allowed;box-shadow:none;filter:grayscale(.3)}
+.fmv-btn:disabled{background:#a0aec0;cursor:not-allowed}
 .fmv-btn .spin{width:18px;height:18px;border:2.5px solid rgba(255,255,255,.4);border-top-color:#fff;
   border-radius:50%;animation:fmvspin .7s linear infinite;display:none}
 .fmv-btn.loading .spin{display:inline-block}
@@ -142,15 +142,19 @@
 .fmv-result{display:none;animation:fmvUp .4s ease}
 .fmv-result.show{display:block}
 @keyframes fmvUp{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
-.fmv-result .fmv-card{border:1.5px solid var(--green);box-shadow:var(--fmv-shadow-lg)}
-.fmv-final{background:linear-gradient(160deg,#f0fbf6,#e3f7ee);padding:26px 20px 24px;text-align:center;
-  border-bottom:1px solid #cdeede}
+.fmv-result .fmv-card{border:1px solid var(--border);box-shadow:var(--shadow-md)}
+/* green result header bar (matches .wht-result-head) */
+.fmv-result-head{background:var(--green);padding:14px 20px}
+.fmv-result-head h3{color:#fff;font-size:15px;font-weight:700;margin:0}
+.fmv-final{background:var(--white);padding:24px 20px 22px;text-align:center;
+  border-bottom:1px solid var(--border)}
 .fmv-final .lbl{font-size:12px;font-weight:700;color:var(--green);text-transform:uppercase;letter-spacing:.8px}
 .fmv-final .val{font-family:var(--font-head);font-size:clamp(2rem,8vw,3rem);font-weight:800;color:var(--navy);
   margin:6px 0 4px;line-height:1;letter-spacing:-1px}
 .fmv-final .area{font-size:13.5px;color:var(--text-mid);font-weight:500}
-.fmv-summary{font-size:13.5px;color:var(--text-mid);line-height:1.6;background:#fff;margin-top:12px;
-  padding:11px 14px;border-radius:var(--fmv-radius-sm);border:1px dashed var(--border)}
+.fmv-words{font-size:15px;font-weight:700;color:var(--green);margin:2px 0 4px;letter-spacing:.2px}
+.fmv-summary{font-size:13.5px;color:var(--text-mid);line-height:1.6;background:var(--bg);margin-top:12px;
+  padding:11px 14px;border-radius:var(--radius);border:1px solid var(--border)}
 .fmv-copy{margin-top:14px;background:#fff;border:1.5px solid var(--green);color:var(--green);font-size:13px;
   font-weight:700;padding:9px 20px;border-radius:30px;cursor:pointer;transition:.16s}
 .fmv-copy:hover{background:var(--green);color:#fff}
@@ -159,12 +163,19 @@
 .fmv-break{padding:18px}
 .fmv-break h3{font-size:13px;font-weight:700;color:var(--text-mid);text-transform:uppercase;letter-spacing:.5px;margin:0 0 12px}
 .fmv-row{display:flex;justify-content:space-between;gap:12px;padding:11px 0;border-bottom:1px solid var(--border);
-  font-size:14px;color:var(--text)}
+  font-size:14px;color:var(--text);align-items:center}
+.fmv-row .lbl-ic{display:flex;align-items:center;gap:9px}
+.fmv-row .lbl-ic .ic{width:26px;height:26px;border-radius:7px;background:var(--green-light);display:flex;
+  align-items:center;justify-content:center;font-size:14px;flex:none}
+.fmv-row.formula{background:#f7f9fc;margin:0 -18px;padding:11px 18px;border-bottom:1px dashed var(--border);
+  font-size:13px;color:var(--text-mid)}
+.fmv-row.formula .v{color:var(--navy);font-weight:700}
 .fmv-row .v{font-weight:600;white-space:nowrap;text-align:right}
 .fmv-row.adj{color:var(--text-light);font-size:13px}
 .fmv-row.adj.add .v{color:var(--green)}
-.fmv-row.adj.cut .v{color:#c0392b}
-.fmv-row.total{border-top:2px solid var(--navy);border-bottom:none;padding-top:14px;margin-top:4px;
+.fmv-row.adj.cut .v{color:#E53E3E}
+.fmv-row.total{border-top:2px solid var(--navy);border-bottom:none;padding:14px 12px;margin:6px -12px 0;
+  background:var(--green-light);border-radius:0 0 8px 8px;
   font-weight:800;color:var(--navy);font-size:16px}
 .fmv-more{margin-top:12px;border:1px solid var(--border);border-radius:var(--fmv-radius-sm);overflow:hidden}
 .fmv-more summary{padding:12px 14px;font-size:13.5px;font-weight:600;color:var(--navy);cursor:pointer;
@@ -180,7 +191,7 @@
 .fmv-disc{font-size:12px;color:var(--text-light);line-height:1.55;padding:14px 18px;background:#fafbfc;border-top:1px solid var(--border)}
 .fmv-disc b{color:var(--text-mid)}
 /* next-step CTA in result */
-.fmv-next{margin:16px 18px 0;background:var(--navy);border-radius:var(--fmv-radius-sm);
+.fmv-next{margin:16px 18px 0;background:linear-gradient(135deg,var(--navy) 0%,var(--navy-mid) 100%);border-radius:var(--fmv-radius-sm);
   padding:14px 16px;display:flex;align-items:center;gap:12px;flex-wrap:wrap}
 .fmv-next .txt{flex:1;min-width:150px;color:#fff}
 .fmv-next .txt b{display:block;font-size:13.5px;font-weight:700;margin-bottom:2px}
@@ -297,9 +308,11 @@
   <!-- STEP 3: RESULT -->
   <div class="fmv-result" id="fmvResult">
     <div class="fmv-card">
+      <div class="fmv-result-head"><h3>💰 Your FBR Valuation Result</h3></div>
       <div class="fmv-final">
         <div class="lbl">FBR Fair Market Value</div>
         <div class="val" id="fmvFinal">—</div>
+        <div class="fmv-words" id="fmvWords"></div>
         <div class="area" id="fmvArea"></div>
         <div class="fmv-summary" id="fmvSummary"></div>
         <button class="fmv-copy" id="fmvCopy" type="button">📋 Copy value</button>
@@ -538,21 +551,31 @@ async function fmvCalculate(){
   btn.classList.remove('loading');btn.disabled=false;btn.querySelector('.txt').textContent='Calculate FMV';
 }
 function fmtNum(n){return (+n).toLocaleString('en-PK');}
+/* Pakistani crore/lakh words, e.g. 32400000 -> "3.24 Crore" */
+function inWords(n){
+  n=Math.round(+n);
+  if(n>=10000000){var c=n/10000000;return (c%1===0?c:c.toFixed(2).replace(/\.?0+$/,''))+' Crore';}
+  if(n>=100000){var l=n/100000;return (l%1===0?l:l.toFixed(2).replace(/\.?0+$/,''))+' Lakh';}
+  if(n>=1000){var k=n/1000;return (k%1===0?k:k.toFixed(1).replace(/\.?0+$/,''))+' Thousand';}
+  return String(n);
+}
 function renderResult(d){
   $('fmvFinal').textContent=d.final_fmv_display;
+  var w=$('fmvWords'); if(w) w.textContent='≈ Rs '+inWords(d.final_fmv);
   $('fmvArea').textContent=`${d.area} · FBR #${d.fbr_no}`;
   $('fmvLegal').textContent=d.legal_basis||'';
   $('fmvSummary').innerHTML=`This is the FBR notified value for a <b>${TYPE_LABEL[d.property_type]||'property'}</b>`
     +` of <b>${fmtNum(d.area_sqft)} sq.ft</b> in <b>${d.area}</b>, at <b>Rs ${fmtNum(d.rate)}/sq.ft</b>.`;
 
-  let rows=`<div class="fmv-row"><span>Applicable rate</span><span class="v">Rs ${fmtNum(d.rate)} / sq.ft</span></div>
-    <div class="fmv-row"><span>Chargeable area</span><span class="v">${fmtNum(d.area_sqft)} sq.ft</span></div>
-    <div class="fmv-row"><span>Base value</span><span class="v">Rs ${fmtNum(d.base_value)}</span></div>`;
+  let rows=`<div class="fmv-row"><span class="lbl-ic"><span class="ic">📊</span>Applicable rate</span><span class="v">Rs ${fmtNum(d.rate)} / sq.ft</span></div>
+    <div class="fmv-row"><span class="lbl-ic"><span class="ic">📐</span>Chargeable area</span><span class="v">${fmtNum(d.area_sqft)} sq.ft</span></div>
+    <div class="fmv-row formula"><span>Rs ${fmtNum(d.rate)} × ${fmtNum(d.area_sqft)} sq.ft</span><span class="v">= Rs ${fmtNum(d.base_value)}</span></div>`;
   (d.adjustments||[]).forEach(a=>{
     const cls=a.type==='reduction'?'cut':(a.type==='addition'||a.type==='set_to_open_plot'?'add':'');
-    rows+=`<div class="fmv-row adj ${cls}"><span>${a.label}</span><span class="v">${a.amount||''}</span></div>`;});
-  if(d.age!=null&&d.age!==undefined)rows+=`<div class="fmv-row adj"><span>Building age</span><span class="v">${d.age} yrs</span></div>`;
-  rows+=`<div class="fmv-row total"><span>FBR Fair Market Value</span><span class="v">${d.final_fmv_display}</span></div>`;
+    const ic=cls==='cut'?'➖':(cls==='add'?'➕':'•');
+    rows+=`<div class="fmv-row adj ${cls}"><span class="lbl-ic"><span class="ic">${ic}</span>${a.label}</span><span class="v">${a.amount||''}</span></div>`;});
+  if(d.age!=null&&d.age!==undefined)rows+=`<div class="fmv-row adj"><span class="lbl-ic"><span class="ic">🏗️</span>Building age</span><span class="v">${d.age} yrs</span></div>`;
+  rows+=`<div class="fmv-row total"><span>✅ FBR Fair Market Value</span><span class="v">${d.final_fmv_display}</span></div>`;
   $('fmvBreak').innerHTML=rows;
   $('fmvStepsBox').innerHTML=(d.calculation_steps||[]).map(s=>`<div class="s"><b>${s.label}</b>${s.detail}</div>`).join('');
 
