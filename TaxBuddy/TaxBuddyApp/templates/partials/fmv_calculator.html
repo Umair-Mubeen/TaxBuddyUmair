@@ -18,10 +18,9 @@
   background:var(--bg,#f7f8fa)}
 
 /* ---- HERO ---- */
-.fmv-hero{position:relative;background:linear-gradient(160deg,#0A2647 0%,#123a63 55%,#0d3352 100%);
+.fmv-hero{position:relative;background:var(--navy);
   color:#fff;padding:40px 0 34px;overflow:hidden}
-.fmv-hero::before{content:"";position:absolute;inset:0;
-  background:radial-gradient(600px 240px at 82% -10%,rgba(13,158,114,.28),transparent 70%);pointer-events:none}
+.fmv-hero::before{content:none}
 .fmv-hero-in{position:relative;max-width:1000px;margin:0 auto;padding:0 20px}
 .fmv-badge{display:inline-flex;align-items:center;gap:8px;background:rgba(13,158,114,.16);
   border:1px solid rgba(13,158,114,.4);color:#63e0b0;font-size:12px;font-weight:600;
@@ -61,7 +60,7 @@
 .fmv-card{background:#fff;border:1px solid var(--border);border-radius:var(--fmv-radius);
   box-shadow:var(--fmv-shadow);overflow:hidden;margin-bottom:18px}
 .fmv-card-head{display:flex;align-items:center;gap:11px;padding:16px 18px;
-  background:linear-gradient(135deg,#0A2647,#15406e);color:#fff}
+  background:var(--navy);color:#fff}
 .fmv-card-head .ic{font-size:19px;line-height:1}
 .fmv-card-head h2{font-size:15px;font-weight:700;margin:0;flex:1;color:#fff}
 .fmv-card-head .step{font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:.6px;
@@ -181,7 +180,7 @@
 .fmv-disc{font-size:12px;color:var(--text-light);line-height:1.55;padding:14px 18px;background:#fafbfc;border-top:1px solid var(--border)}
 .fmv-disc b{color:var(--text-mid)}
 /* next-step CTA in result */
-.fmv-next{margin:16px 18px 0;background:linear-gradient(135deg,#0A2647,#15406e);border-radius:var(--fmv-radius-sm);
+.fmv-next{margin:16px 18px 0;background:var(--navy);border-radius:var(--fmv-radius-sm);
   padding:14px 16px;display:flex;align-items:center;gap:12px;flex-wrap:wrap}
 .fmv-next .txt{flex:1;min-width:150px;color:#fff}
 .fmv-next .txt b{display:block;font-size:13.5px;font-weight:700;margin-bottom:2px}
@@ -372,23 +371,7 @@
    </div>{# /fmv-main #}
 
    <aside class="fmv-aside">
-  <div class="fmv-card">
-    <div class="fmv-card-head"><span class="ic">🔗</span><h2>Quick links</h2></div>
-    <div class="fmv-links">
-      <a href="/salary-tax-calculator-2026-27/">Salary Tax Calculator</a>
-      <a href="/BusinessCalculator/">Business Tax Calculator</a>
-      <a href="/AOPCalculator/">AOP Tax Calculator</a>
-      <a href="/PropertyCalculator/">Rental Tax Calculator</a>
-      <a href="/freelancer-tax-calculator/">Freelancer Tax Calculator</a>
-      <a href="/refund-analyzer/">Refund Analyzer</a>
-      <a href="/withholding-tax-rates/">Withholding Tax Rates</a>
-      <a href="/atl-check/">ATL Check</a>
-      <a href="/fbr-iris-guide/">FBR IRIS Guide</a>
-      <a href="/tax-calendar/">Tax Calendar</a>
-      <a href="/income-tax-guides/">Income Tax Guides</a>
-      <a href="/sales-tax-guides/">Sales Tax Guides</a>
-    </div>
-  </div>
+     {% include 'partials/sidebar.html' %}
    </aside>
   </div>{# /fmv-layout #}
 </div>{# /fmv-wrap #}
