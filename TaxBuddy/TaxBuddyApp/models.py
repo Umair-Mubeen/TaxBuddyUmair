@@ -796,3 +796,191 @@ class GlossaryTerm(models.Model):
     @property
     def related_terms_list(self):
         return [t.strip() for t in self.related_terms.split(',') if t.strip()]
+
+
+
+# ════════════════════════════════════════════════════════════════
+#  KARACHI FBR FMV CALCULATOR  — ADD at the end of TaxBuddyApp/models.py
+#  Source: S.R.O. 1724(I)/2024  +  S.R.O. 144(I)/2025
+# ════════════════════════════════════════════════════════════════
+from decimal import Decimal
+# (models, timezone already imported at top of models.py)
+
+RATE_FIELDS = [
+    'residential_open_rate', 'residential_builtup_rate',
+    'commercial_open_rate', 'commercial_builtup_rate',
+    'flat_rate', 'industrial_open_rate', 'industrial_builtup_rate',
+]
+
+# maps engine keys  <->  model fields
+ENGINE_KEY_MAP = {
+    'residential_open':    'residential_open_rate',
+    'residential_builtup': 'residential_builtup_rate',
+    'commercial_open':     'commercial_open_rate',
+    'commercial_builtup':  'commercial_builtup_rate',
+    'flats':               'flat_rate',
+    'industrial_open':     'industrial_open_rate',
+    'industrial_builtup':  'industrial_builtup_rate',
+}
+
+
+class PropertyFMVRateVersion(models.Model):
+    """A single FBR valuation notification/version for a city.
+    Adding a future notification = create a new version + its areas;
+    the calculator logic never changes."""
+    STATUS_CHOICES = [
+        ('active', 'Active'),
+        ('superseded', 'Superseded'),
+        ('draft', 'Draft'),
+    ]
+    version_name        = models.CharField(max_length=120, unique=True,
+                            help_text='e.g. Karachi 2024-25 (SRO 1724)')
+    city                = models.CharField(max_length=60, default='Karachi', db_index=True)
+    notification_number = models.CharField(max_length=120,
+                            help_text='e.g. S.R.O. 1724(I)/2024')
+    amendment_number    = models.CharField(max_length=120, blank=True,
+                            help_text='e.g. S.R.O. 144(I)/2025')
+    notification_date   = models.DateField()
+    effective_from      = models.DateField()
+    effective_to        = models.DateField(null=True, blank=True,
+                            help_text='Blank = still in force')
+    status              = models.CharField(max_length=20, choices=STATUS_CHOICES,
+                            default='draft', db_index=True)
+    notes               = models.TextField(blank=True)
+    is_active           = models.BooleanField(default=True)
+    created_at          = models.DateTimeField(auto_now_add=True)
+    updated_at          = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        db_table = 'fmv_rate_versions'
+        ordering = ['-effective_from']
+        verbose_name = 'FMV Rate Version'
+
+    def __str__(self):
+        return f"{self.version_name} ({self.status})"
+
+    @property
+    def legal_basis(self):
+        base = f"{self.notification_number} dated {self.notification_date:%d %B %Y}"
+        if self.amendment_number:
+            base += f", as amended by {self.amendment_number}"
+        return base
+
+
+class PropertyFMVArea(models.Model):
+    """One row of the FBR Karachi valuation table (per version).
+    Rate fields are NULLABLE — a null means the rate was blank / '-' /
+    'N/A' in the source (preserved distinctly from a real 0).
+    `rate_markers` records which nulls were explicit 'N/A' vs blank."""
+    version = models.ForeignKey(PropertyFMVRateVersion, on_delete=models.CASCADE,
+                                related_name='areas')
+    fbr_no    = models.IntegerField(null=True, blank=True,
+                            help_text="Serial no. in the FBR notification")
+    city      = models.CharField(max_length=60, default='Karachi', db_index=True)
+    area_name = models.CharField(max_length=300, db_index=True,
+                            help_text='Exact FBR area description — do NOT normalise')
+
+    residential_open_rate    = models.DecimalField(max_digits=12, decimal_places=2, null=True, blank=True)
+    residential_builtup_rate = models.DecimalField(max_digits=12, decimal_places=2, null=True, blank=True)
+    commercial_open_rate     = models.DecimalField(max_digits=12, decimal_places=2, null=True, blank=True)
+    commercial_builtup_rate  = models.DecimalField(max_digits=12, decimal_places=2, null=True, blank=True)
+    flat_rate                = models.DecimalField(max_digits=12, decimal_places=2, null=True, blank=True)
+    industrial_open_rate     = models.DecimalField(max_digits=12, decimal_places=2, null=True, blank=True)
+    industrial_builtup_rate  = models.DecimalField(max_digits=12, decimal_places=2, null=True, blank=True)
+
+    rate_markers = models.JSONField(default=dict, blank=True,
+                            help_text="{'industrial_open_rate':'na'} for explicit N/A cells")
+    is_flagged   = models.BooleanField(default=False,
+                            help_text='Source column mapping ambiguous — verify before relying on it')
+    is_dha       = models.BooleanField(default=False,
+                            help_text='Area qualifies for the DHA Khayaban +15% rule (p)')
+    notes        = models.TextField(blank=True)
+    created_at   = models.DateTimeField(auto_now_add=True)
+    updated_at   = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        db_table = 'fmv_areas'
+        ordering = ['version', 'area_name']
+        verbose_name = 'FMV Area Rate'
+        unique_together = [('version', 'area_name')]
+        indexes = [
+            models.Index(fields=['version', 'area_name']),
+            models.Index(fields=['city']),
+        ]
+
+    def __str__(self):
+        return f"{self.area_name} [{self.version.version_name}]"
+
+    # ── helpers used by the engine / API ────────────────────────
+    def rates_dict(self):
+        """Return {engine_key: Decimal|None} for calculate_fmv()."""
+        return {ek: getattr(self, mf) for ek, mf in ENGINE_KEY_MAP.items()}
+
+    def available_types(self):
+        """Which property categories can actually be valued here."""
+        r = self.rates_dict()
+        types = []
+        if r['residential_open'] is not None:
+            types += ['residential_open', 'amenity', 'mixed']
+        if r['residential_builtup'] is not None:
+            types.append('residential_builtup')
+        if r['flats'] is not None:
+            types.append('flat')
+        if r['commercial_open'] is not None:
+            types.append('commercial_open')
+        if r['commercial_builtup'] is not None:
+            types.append('commercial_builtup')
+        if r['industrial_open'] is not None:
+            types.append('industrial_open')
+        if r['industrial_builtup'] is not None:
+            types.append('industrial_builtup')
+        return sorted(set(types))
+
+
+class PropertyFMVRule(models.Model):
+    """Depreciation / adjustment rules layer (S.R.O. 144(I)/2025).
+    The engine ships with these values built-in for determinism; this
+    table makes them visible and editable from admin/cpanel, and lets a
+    future notification override them per version."""
+    ADJ_TYPES = [
+        ('reduction_pct', 'Percentage Reduction'),
+        ('increase_pct',  'Percentage Increase'),
+        ('factor_pct',    'Percentage Factor of another value'),
+        ('set_open_plot', 'Set to Open-Plot Value'),
+        ('note',          'Informational / Definition'),
+    ]
+    PROPERTY_TYPES = [
+        ('residential_open', 'Residential Open Plot'),
+        ('residential_builtup', 'Residential Built-up'),
+        ('flat', 'Flat / Apartment'),
+        ('commercial_open', 'Commercial Open Plot'),
+        ('commercial_builtup', 'Commercial Built-up'),
+        ('industrial_open', 'Industrial Open Plot'),
+        ('industrial_builtup', 'Industrial Built-up'),
+        ('amenity', 'Amenity Plot'),
+        ('mixed', 'Mixed Purpose'),
+        ('all', 'All / General'),
+    ]
+    version    = models.ForeignKey(PropertyFMVRateVersion, on_delete=models.CASCADE,
+                        null=True, blank=True, related_name='rules',
+                        help_text='Blank = applies to all versions')
+    rule_code  = models.CharField(max_length=10, help_text="SRO clause e.g. m, n, o, p, q, r, c, k, f")
+    property_type = models.CharField(max_length=30, choices=PROPERTY_TYPES, default='all')
+    rule_name  = models.CharField(max_length=200)
+    min_age    = models.IntegerField(null=True, blank=True, help_text='Age band lower bound (exclusive)')
+    max_age    = models.IntegerField(null=True, blank=True, help_text='Age band upper bound (inclusive); blank = no limit')
+    adjustment_type = models.CharField(max_length=20, choices=ADJ_TYPES)
+    adjustment_percentage = models.DecimalField(max_digits=6, decimal_places=2, null=True, blank=True)
+    description = models.TextField(blank=True)
+    effective_from = models.DateField(null=True, blank=True)
+    effective_to   = models.DateField(null=True, blank=True)
+    is_active   = models.BooleanField(default=True)
+    sort_order  = models.PositiveSmallIntegerField(default=0)
+
+    class Meta:
+        db_table = 'fmv_rules'
+        ordering = ['property_type', 'sort_order', 'rule_code']
+        verbose_name = 'FMV Rule'
+
+    def __str__(self):
+        return f"[{self.rule_code}] {self.rule_name}"

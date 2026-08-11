@@ -2614,3 +2614,151 @@ def salary_rate_history(request):
 
 def freelancer_calculator(request):
     return render(request, 'partials/freelancer-tax-calculator.html')
+
+
+# ════════════════════════════════════════════════════════════════
+#  KARACHI FBR FMV CALCULATOR — ADD to TaxBuddyApp/views.py
+#  (JsonResponse, render already imported at top of views.py)
+# ════════════════════════════════════════════════════════════════
+from django.http import JsonResponse
+from .models import PropertyFMVRateVersion, PropertyFMVArea
+from .fmv_engine import calculate_fmv, FMVError
+
+# Metadata for the property-type selector + which inputs each needs.
+FMV_PROPERTY_TYPES = [
+    {'key': 'residential_open',    'label': 'Residential Plot',        'icon': '🏠',
+     'fields': ['plot_size', 'special_category']},
+    {'key': 'residential_builtup', 'label': 'Residential House',       'icon': '🏡',
+     'fields': ['ground_covered', 'additional_qualifying_storeys', 'construction_year', 'plot_size']},
+    {'key': 'flat',                'label': 'Flat / Apartment',        'icon': '🏢',
+     'fields': ['covered_area', 'construction_year']},
+    {'key': 'commercial_open',     'label': 'Commercial Plot',         'icon': '🏬',
+     'fields': ['plot_size', 'dha_khayaban']},
+    {'key': 'commercial_builtup',  'label': 'Commercial Building',     'icon': '🏨',
+     'fields': ['ground_covered', 'additional_covered', 'basement_area', 'construction_year']},
+    {'key': 'industrial_open',     'label': 'Industrial Plot',         'icon': '🏭',
+     'fields': ['plot_size']},
+    {'key': 'industrial_builtup',  'label': 'Industrial Built-up',     'icon': '⚙️',
+     'fields': ['plot_size', 'covered_area']},
+    {'key': 'amenity',             'label': 'Amenity Plot',            'icon': '🏫',
+     'fields': ['plot_size']},
+    {'key': 'mixed',               'label': 'Mixed Purpose',           'icon': '🔀',
+     'fields': ['plot_size', 'purposes']},
+]
+
+
+def _active_version():
+    return (PropertyFMVRateVersion.objects
+            .filter(city='Karachi', status='active', is_active=True)
+            .order_by('-effective_from').first())
+
+
+def karachi_fmv_calculator(request):
+    """Public page — Karachi FBR Fair Market Value calculator."""
+    version = _active_version()
+    return render(request, 'partials/fmv_calculator.html', {
+        'version': version,
+        'legal_basis': version.legal_basis if version else '',
+        'property_types': FMV_PROPERTY_TYPES,
+        'meta_title': 'Karachi FBR FMV Calculator 2026 | Immovable Property Fair Market Value',
+        'meta_description': (
+            'Free Karachi FBR fair market value (FMV) calculator. Work out the FBR '
+            'valuation of plots, houses, flats and commercial property for 236C/236K '
+            'and 7E — 235 Karachi areas, per S.R.O. 1724(I)/2024 & S.R.O. 144(I)/2025.'
+        ),
+    })
+
+
+def fmv_areas_api(request):
+    """GET — list of areas for the searchable dropdown (active version)."""
+    version = _active_version()
+    if not version:
+        return JsonResponse({'status': 'error', 'message': 'No active FMV version seeded.'}, status=404)
+
+    q = request.GET.get('q', '').strip().lower()
+    qs = version.areas.all()
+    if q:
+        qs = qs.filter(area_name__icontains=q)
+
+    areas = [{
+        'id': a.id,
+        'fbr_no': a.fbr_no,
+        'name': a.area_name,
+        'available_types': a.available_types(),
+        'is_dha': a.is_dha,
+        'is_flagged': a.is_flagged,
+    } for a in qs]
+
+    return JsonResponse({
+        'status': 'ok',
+        'version': version.version_name,
+        'legal_basis': version.legal_basis,
+        'count': len(areas),
+        'areas': areas,
+    })
+
+
+def _num(request, key):
+    val = request.GET.get(key, '').strip()
+    if val in ('', 'null', 'undefined'):
+        return None
+    try:
+        return float(val)
+    except ValueError:
+        return None
+
+
+def fmv_calculate_api(request):
+    """GET — compute FMV for an area + property type + inputs."""
+    version = _active_version()
+    if not version:
+        return JsonResponse({'status': 'error', 'message': 'No active FMV version.'}, status=404)
+
+    try:
+        area = version.areas.get(id=request.GET.get('area_id'))
+    except (PropertyFMVArea.DoesNotExist, ValueError, TypeError):
+        return JsonResponse({'status': 'error', 'message': 'Please choose a valid area.'}, status=400)
+
+    ptype = request.GET.get('property_type', '')
+
+    payload = {
+        'property_type': ptype,
+        'plot_size': _num(request, 'plot_size'),
+        'plot_size_unit': request.GET.get('plot_size_unit', 'sqyd'),
+        'ground_covered': _num(request, 'ground_covered'),
+        'ground_covered_unit': request.GET.get('ground_covered_unit', 'sqft'),
+        'covered_area': _num(request, 'covered_area'),
+        'covered_area_unit': request.GET.get('covered_area_unit', 'sqft'),
+        'additional_covered': _num(request, 'additional_covered'),
+        'additional_covered_unit': request.GET.get('additional_covered_unit', 'sqft'),
+        'basement_area': _num(request, 'basement_area'),
+        'basement_area_unit': request.GET.get('basement_area_unit', 'sqft'),
+        'additional_qualifying_storeys': _num(request, 'additional_qualifying_storeys') or 0,
+        'construction_year': _num(request, 'construction_year'),
+        'special_category': request.GET.get('special_category', '').strip() or None,
+        'dha_khayaban': request.GET.get('dha_khayaban') in ('1', 'true', 'on', 'yes'),
+        'purposes': [p for p in request.GET.get('purposes', '').split(',') if p],
+    }
+
+    # gate the DHA rule to DHA-tagged areas only
+    if payload['dha_khayaban'] and not area.is_dha:
+        payload['dha_khayaban'] = False
+
+    try:
+        result = calculate_fmv(payload, area.rates_dict(), as_of=None)
+    except FMVError as e:
+        return JsonResponse({'status': 'error', 'message': str(e)}, status=422)
+    except Exception as e:
+        return JsonResponse({'status': 'error', 'message': f'Could not compute: {e}'}, status=400)
+
+    # Decimals -> str for JSON
+    result['final_fmv'] = str(result['final_fmv'])
+    result['base_value'] = str(result.get('base_value', ''))
+    result.update({
+        'status': 'ok',
+        'area': area.area_name,
+        'fbr_no': area.fbr_no,
+        'is_flagged': area.is_flagged,
+        'legal_basis': version.legal_basis,
+    })
+    return JsonResponse(result)
