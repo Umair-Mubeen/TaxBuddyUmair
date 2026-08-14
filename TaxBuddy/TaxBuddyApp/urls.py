@@ -137,6 +137,11 @@ urlpatterns = [
     path('blog/<slug:slug>/', views.viewBlogs, name='viewBlogs_category'),
     path('api/wht-rates/',       views.wht_rates_api,        name='wht_rates_api'),
 
+    # ── KARACHI FMV CALCULATOR ────────────────────────────────
+    path('karachi-fmv-calculator/', views.karachi_fmv_calculator, name='karachi_fmv_calculator'),
+    path('api/fmv-areas/', views.fmv_areas_api, name='fmv_areas_api'),
+    path('api/fmv-calculate/', views.fmv_calculate_api, name='fmv_calculate_api'),
+
     # Blog detail — clean /articles/ prefix avoids slug collisions
     path('articles/<slug:slug>/', views.BlogDetails, name='BlogDetails'),
     path('salary-tax-calculator-2026-27/', views.SalaryCalculator2027, name='SalaryCalculator2027'),
@@ -146,6 +151,26 @@ urlpatterns = [
     # Legacy 301 redirect: old /<slug>/ → /articles/<slug>/
     # Keeps old Google-indexed URLs working
     path('<slug:slug>/', views.legacy_blog_redirect, name='legacy_blog_redirect'),
+# ════════════════════════════════════════════════════════════════
+#  ADD these to TaxBuddyApp/urls.py  urlpatterns  (before the greedy
+#  blog/<slug> and <slug> catch-all patterns at the very bottom).
+# ════════════════════════════════════════════════════════════════
+
+
+
+# ════════════════════════════════════════════════════════════════
+#  ALSO add the page URL name to CalculatorSitemap in
+#  TaxBuddyApp/sitemaps.py so it appears in sitemap.xml. Example:
+#
+#    class CalculatorSitemap(Sitemap):
+#        def items(self):
+#            return [
+#                ...existing names...,
+#                'karachi_fmv_calculator',
+#            ]
+#        def location(self, name):
+#            return reverse(name)
+# ════════════════════════════════════════════════════════════════
 ]
 
 if settings.DEBUG:

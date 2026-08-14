@@ -1,0 +1,593 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}{{ meta_title }}{% endblock %}
+{% block meta_desc %}{{ meta_description }}{% endblock %}
+
+{% block schema_extra %}
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"WebApplication","name":"Karachi FBR FMV Calculator","url":"https://www.taxbuddyumair.com/karachi-fmv-calculator/","description":"Calculate the FBR fair market value of immovable property in Karachi under S.R.O. 1724(I)/2024 and S.R.O. 144(I)/2025.","applicationCategory":"FinanceApplication","operatingSystem":"Any","offers":{"@type":"Offer","price":"0","priceCurrency":"PKR"}}
+</script>
+{% endblock %}
+
+{% block extra_css %}
+<style>
+/* ============ FMV CALCULATOR — mobile-first ============ */
+.fmv-scope{--fmv-radius:14px;--fmv-radius-sm:10px;--fmv-shadow:0 4px 18px rgba(10,38,71,.07);
+  --fmv-shadow-lg:0 12px 34px rgba(10,38,71,.14);--fmv-ring:0 0 0 4px rgba(13,158,114,.14);
+  background:var(--bg,#f7f8fa)}
+
+/* ---- HERO ---- */
+.fmv-hero{position:relative;background:var(--navy);
+  color:#fff;padding:40px 0 34px;overflow:hidden}
+.fmv-hero::before{content:none}
+.fmv-hero-in{position:relative;max-width:1000px;margin:0 auto;padding:0 20px}
+.fmv-badge{display:inline-flex;align-items:center;gap:8px;background:rgba(13,158,114,.16);
+  border:1px solid rgba(13,158,114,.4);color:#63e0b0;font-size:12px;font-weight:600;
+  padding:6px 14px;border-radius:30px;margin-bottom:16px}
+.fmv-badge .dot{width:7px;height:7px;border-radius:50%;background:#22c58a;box-shadow:0 0 0 4px rgba(34,197,138,.25)}
+.fmv-hero h1{font-family:var(--font-head);font-size:clamp(1.55rem,5.4vw,2.5rem);font-weight:800;
+  line-height:1.12;margin:0 0 12px;letter-spacing:-.5px}
+.fmv-hero p{color:rgba(255,255,255,.78);font-size:clamp(14px,2.4vw,16px);max-width:640px;line-height:1.6;margin:0}
+.fmv-trust{display:flex;gap:26px;margin-top:22px;flex-wrap:wrap}
+.fmv-trust div{display:flex;flex-direction:column}
+.fmv-trust b{font-family:var(--font-head);font-size:22px;font-weight:800;color:#fff;line-height:1}
+.fmv-trust span{font-size:11.5px;color:rgba(255,255,255,.62);margin-top:3px;text-transform:uppercase;letter-spacing:.5px}
+
+.fmv-wrap{max-width:1140px;margin:-20px auto 0;padding:0 16px 70px;position:relative;z-index:2}
+
+/* ---- 2-COLUMN LAYOUT (main + sidebar) ---- */
+.fmv-layout{display:block}
+.fmv-aside{margin-top:18px}
+@media(min-width:900px){
+  .fmv-layout{display:grid;grid-template-columns:minmax(0,1fr) 300px;gap:28px;align-items:start}
+  .fmv-aside{margin-top:0;position:sticky;top:80px}
+}
+
+/* ---- STEP RAIL ---- */
+.fmv-rail{display:flex;align-items:center;justify-content:center;gap:6px;margin:0 0 20px}
+.fmv-chip{display:inline-flex;align-items:center;gap:7px;background:#fff;border:1.5px solid var(--border);
+  color:var(--text-light);font-size:12.5px;font-weight:600;padding:7px 13px;border-radius:30px;
+  box-shadow:var(--fmv-shadow);transition:.25s}
+.fmv-chip .n{display:inline-flex;align-items:center;justify-content:center;width:19px;height:19px;border-radius:50%;
+  background:var(--border);color:#fff;font-size:11px;font-weight:700}
+.fmv-chip.on{border-color:var(--green);color:var(--navy)}
+.fmv-chip.on .n{background:var(--green)}
+.fmv-chip.done .n{background:var(--navy)}
+.fmv-railline{flex:0 1 30px;height:2px;background:var(--border);border-radius:2px}
+
+/* ---- CARD ---- */
+.fmv-card{background:#fff;border:1px solid var(--border);border-radius:var(--radius-lg);
+  box-shadow:var(--fmv-shadow);overflow:hidden;margin-bottom:18px}
+.fmv-card-head{display:flex;align-items:center;gap:11px;padding:16px 18px;
+  background:var(--navy);color:#fff}
+.fmv-card-head .ic{font-size:19px;line-height:1}
+.fmv-card-head h2{font-size:15px;font-weight:700;margin:0;flex:1;color:#fff}
+.fmv-card-head .step{font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:.6px;
+  background:rgba(255,255,255,.14);padding:4px 10px;border-radius:20px}
+.fmv-card-body{padding:20px 18px}
+/* Step-1 card must let the search dropdown overflow its rounded box */
+.fmv-card.is-open{overflow:visible}
+.fmv-card.is-open .fmv-card-head{border-radius:var(--radius-lg) var(--radius-lg) 0 0}
+
+/* ---- FIELDS ---- */
+.fmv-field{margin-bottom:18px}
+.fmv-field:last-child{margin-bottom:0}
+.fmv-label{display:block;font-size:13px;font-weight:600;color:var(--text-mid);margin:0 0 7px}
+.fmv-input,.fmv-select{width:100%;padding:13px 14px;border:1.5px solid var(--border);border-radius:var(--fmv-radius-sm);
+  font-size:16px;outline:none;background:#fff;color:var(--text);box-sizing:border-box;
+  transition:border-color .18s,box-shadow .18s;-webkit-appearance:none;appearance:none}
+.fmv-input:focus,.fmv-select:focus{border-color:var(--green);box-shadow:var(--fmv-ring)}
+.fmv-select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath fill='%2364748b' d='M6 8 0 0h12z'/%3E%3C/svg%3E");
+  background-repeat:no-repeat;background-position:right 14px center;padding-right:34px}
+.fmv-inline{display:flex;gap:9px}
+.fmv-inline .fmv-input{flex:1}
+.fmv-inline .fmv-select{width:120px;flex:none}
+.fmv-hint{font-size:12px;color:var(--text-light);margin-top:6px;line-height:1.45}
+
+/* ---- COMBOBOX ---- */
+.fmv-combo{position:relative}
+.fmv-combo-clear{position:absolute;right:10px;top:50%;transform:translateY(-50%);width:28px;height:28px;
+  border:none;background:#f1f4f8;color:var(--text-light);border-radius:50%;font-size:18px;line-height:1;
+  cursor:pointer;display:none;align-items:center;justify-content:center}
+.fmv-combo-clear.show{display:flex}
+.fmv-combo-list{position:absolute;top:calc(100% + 6px);left:0;right:0;z-index:50;background:#fff;
+  border:1.5px solid var(--border);border-radius:var(--fmv-radius-sm);max-height:300px;overflow-y:auto;
+  box-shadow:var(--fmv-shadow-lg);display:none;-webkit-overflow-scrolling:touch}
+.fmv-combo-list.show{display:block}
+.fmv-opt{padding:13px 14px;font-size:14px;cursor:pointer;border-bottom:1px solid #f1f4f8;
+  display:flex;justify-content:space-between;gap:10px;align-items:center;min-height:46px}
+.fmv-opt:last-child{border-bottom:none}
+.fmv-opt:hover,.fmv-opt.active{background:var(--green-light)}
+.fmv-opt .r{display:flex;gap:7px;align-items:center;flex:none}
+.fmv-opt .fbr{font-size:11px;color:var(--text-light)}
+.fmv-opt .tag{font-size:9.5px;font-weight:700;color:#B45309;background:#FFF3E0;padding:2px 8px;border-radius:20px}
+.fmv-opt .tag.dha{color:#1A6EA8;background:#EBF8FF}
+.fmv-opt .none{color:var(--text-light);font-style:italic}
+
+/* ---- TYPE GRID ---- */
+.fmv-types{display:grid;grid-template-columns:repeat(2,1fr);gap:9px}
+.fmv-type{padding:14px 8px;border:1.5px solid var(--border);border-radius:var(--fmv-radius-sm);background:#fff;
+  cursor:pointer;text-align:center;font-size:12.5px;font-weight:600;color:var(--text-mid);
+  transition:.16s;line-height:1.25;min-height:74px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px}
+.fmv-type:hover{border-color:var(--navy);color:var(--navy);transform:translateY(-1px)}
+.fmv-type.active{background:var(--navy);border-color:var(--navy);color:#fff;box-shadow:0 6px 16px rgba(10,38,71,.22)}
+.fmv-type.disabled{opacity:.4;pointer-events:none;filter:grayscale(.7);background:#fafbfc}
+.fmv-type .ic{font-size:22px;line-height:1}
+
+/* ---- BUTTON ---- */
+.fmv-btn{width:100%;padding:15px;background:var(--green);color:#fff;border:none;
+  border-radius:var(--fmv-radius-sm);font-size:16px;font-weight:700;cursor:pointer;
+  transition:background .2s,transform .1s;display:flex;
+  align-items:center;justify-content:center;gap:9px}
+.fmv-btn:hover{background:var(--green-mid)}
+.fmv-btn:active{transform:translateY(1px)}
+.fmv-btn:disabled{background:#a0aec0;cursor:not-allowed}
+.fmv-btn .spin{width:18px;height:18px;border:2.5px solid rgba(255,255,255,.4);border-top-color:#fff;
+  border-radius:50%;animation:fmvspin .7s linear infinite;display:none}
+.fmv-btn.loading .spin{display:inline-block}
+
+/* ---- CHECK / NOTE ---- */
+.fmv-check{display:flex;align-items:center;gap:11px;font-size:14px;color:var(--text);cursor:pointer;
+  padding:11px 13px;border:1.5px solid var(--border);border-radius:var(--fmv-radius-sm);transition:.16s;min-height:46px}
+.fmv-check:hover{border-color:var(--green)}
+.fmv-check input{width:19px;height:19px;accent-color:var(--green);flex:none}
+.fmv-note{font-size:13px;background:#FFF8E1;border:1px solid #FFE082;color:#8a6d00;padding:11px 13px;
+  border-radius:var(--fmv-radius-sm);margin:14px 0 4px;line-height:1.5}
+.fmv-err{display:none;background:#FEF2F2;border:1px solid #FCA5A5;color:#991B1B;padding:13px 14px;
+  border-radius:var(--fmv-radius-sm);font-size:13.5px;margin-top:12px;line-height:1.5}
+.fmv-err.show{display:block}
+
+/* ---- RESULT ---- */
+.fmv-result{display:none;animation:fmvUp .4s ease}
+.fmv-result.show{display:block}
+@keyframes fmvUp{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+.fmv-result .fmv-card{border:1px solid var(--border);box-shadow:var(--shadow-md)}
+/* green result header bar (matches .wht-result-head) */
+.fmv-result-head{background:var(--green);padding:14px 20px}
+.fmv-result-head h3{color:#fff;font-size:15px;font-weight:700;margin:0}
+.fmv-final{background:var(--white);padding:24px 20px 22px;text-align:center;
+  border-bottom:1px solid var(--border)}
+.fmv-final .lbl{font-size:12px;font-weight:700;color:var(--green);text-transform:uppercase;letter-spacing:.8px}
+.fmv-final .val{font-family:var(--font-head);font-size:clamp(2rem,8vw,3rem);font-weight:800;color:var(--navy);
+  margin:6px 0 4px;line-height:1;letter-spacing:-1px}
+.fmv-final .area{font-size:13.5px;color:var(--text-mid);font-weight:500}
+.fmv-words{font-size:15px;font-weight:700;color:var(--green);margin:2px 0 4px;letter-spacing:.2px}
+.fmv-summary{font-size:13.5px;color:var(--text-mid);line-height:1.6;background:var(--bg);margin-top:12px;
+  padding:11px 14px;border-radius:var(--radius);border:1px solid var(--border)}
+.fmv-copy{margin-top:14px;background:#fff;border:1.5px solid var(--green);color:var(--green);font-size:13px;
+  font-weight:700;padding:9px 20px;border-radius:30px;cursor:pointer;transition:.16s}
+.fmv-copy:hover{background:var(--green);color:#fff}
+.fmv-copy.done{background:var(--navy);border-color:var(--navy);color:#fff}
+
+.fmv-break{padding:18px}
+.fmv-break h3{font-size:13px;font-weight:700;color:var(--text-mid);text-transform:uppercase;letter-spacing:.5px;margin:0 0 12px}
+.fmv-row{display:flex;justify-content:space-between;gap:12px;padding:11px 0;border-bottom:1px solid var(--border);
+  font-size:14px;color:var(--text);align-items:center}
+.fmv-row .lbl-ic{display:flex;align-items:center;gap:9px}
+.fmv-row .lbl-ic .ic{width:26px;height:26px;border-radius:7px;background:var(--green-light);display:flex;
+  align-items:center;justify-content:center;font-size:14px;flex:none}
+.fmv-row.formula{background:#f7f9fc;margin:0 -18px;padding:11px 18px;border-bottom:1px dashed var(--border);
+  font-size:13px;color:var(--text-mid)}
+.fmv-row.formula .v{color:var(--navy);font-weight:700}
+.fmv-row .v{font-weight:600;white-space:nowrap;text-align:right}
+.fmv-row.adj{color:var(--text-light);font-size:13px}
+.fmv-row.adj.add .v{color:var(--green)}
+.fmv-row.adj.cut .v{color:#E53E3E}
+.fmv-row.total{border-top:2px solid var(--navy);border-bottom:none;padding:14px 12px;margin:6px -12px 0;
+  background:var(--green-light);border-radius:0 0 8px 8px;
+  font-weight:800;color:var(--navy);font-size:16px}
+.fmv-more{margin-top:12px;border:1px solid var(--border);border-radius:var(--fmv-radius-sm);overflow:hidden}
+.fmv-more summary{padding:12px 14px;font-size:13.5px;font-weight:600;color:var(--navy);cursor:pointer;
+  list-style:none;display:flex;justify-content:space-between;align-items:center}
+.fmv-more summary::-webkit-details-marker{display:none}
+.fmv-more summary::after{content:"＋";color:var(--green);font-weight:700}
+.fmv-more[open] summary::after{content:"－"}
+.fmv-stepbox{padding:4px 14px 14px}
+.fmv-stepbox .s{padding:9px 0;border-bottom:1px dashed #e3e8ef;font-size:12.5px;color:var(--text-mid)}
+.fmv-stepbox .s:last-child{border-bottom:none}
+.fmv-stepbox .s b{display:block;color:var(--text);font-weight:600;margin-bottom:2px}
+.fmv-legal-txt{padding:4px 14px 14px;font-size:12.5px;color:var(--text-mid);line-height:1.6}
+.fmv-disc{font-size:12px;color:var(--text-light);line-height:1.55;padding:14px 18px;background:#fafbfc;border-top:1px solid var(--border)}
+.fmv-disc b{color:var(--text-mid)}
+/* next-step CTA in result */
+.fmv-next{margin:16px 18px 0;background:linear-gradient(135deg,var(--navy) 0%,var(--navy-mid) 100%);border-radius:var(--fmv-radius-sm);
+  padding:14px 16px;display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.fmv-next .txt{flex:1;min-width:150px;color:#fff}
+.fmv-next .txt b{display:block;font-size:13.5px;font-weight:700;margin-bottom:2px}
+.fmv-next .txt span{font-size:12px;color:rgba(255,255,255,.72);line-height:1.4}
+.fmv-next a{background:var(--green);color:#fff;text-decoration:none;font-size:13px;font-weight:700;
+  padding:10px 16px;border-radius:8px;white-space:nowrap;transition:filter .15s;flex:none}
+.fmv-next a:hover{filter:brightness(1.06)}
+
+/* ---- CONTENT (About / FAQ) ---- */
+.fmv-main .fmv-card-body h3{font-family:var(--font-head);font-size:1.1rem;color:var(--navy);margin:0 0 10px}
+.fmv-main .fmv-card-body h3:not(:first-child){margin-top:22px;padding-top:20px;border-top:1px solid var(--border)}
+.fmv-main .fmv-card-body p{font-size:14.5px;color:var(--text-mid);line-height:1.72;margin:0 0 12px}
+.fmv-main .fmv-card-body p:last-child{margin-bottom:0}
+.fmv-faq details{border-bottom:1px solid var(--border);background:#fff}
+.fmv-faq details:last-child{border-bottom:none}
+.fmv-faq details[open]{background:#fafdfb}
+.fmv-faq summary{padding:15px 18px;font-weight:600;font-size:14px;color:var(--navy);cursor:pointer;
+  list-style:none;display:flex;justify-content:space-between;gap:12px;align-items:center}
+.fmv-faq summary::-webkit-details-marker{display:none}
+.fmv-faq summary::after{content:"＋";color:var(--green);font-weight:700;flex:none}
+.fmv-faq details[open] summary::after{content:"－"}
+.fmv-faq .a{padding:0 18px 16px;font-size:13.5px;color:var(--text-mid);line-height:1.65}
+
+/* ---- QUICK LINKS ---- */
+.fmv-links{padding:10px 8px}
+.fmv-links a{display:flex;align-items:center;gap:11px;padding:11px 12px;font-size:14px;color:var(--text);
+  text-decoration:none;border-radius:8px;transition:.15s;font-weight:500}
+.fmv-links a::before{content:"";width:7px;height:7px;border-radius:50%;background:var(--green);flex:none}
+.fmv-links a:hover{background:var(--green-light);color:var(--navy)}
+
+@keyframes fmvspin{to{transform:rotate(360deg)}}
+
+/* ============ RESPONSIVE ============ */
+@media(min-width:560px){
+  .fmv-types{grid-template-columns:repeat(3,1fr)}
+  .fmv-card-body{padding:24px}
+}
+@media(min-width:768px){
+  .fmv-hero{padding:56px 0 46px}
+  .fmv-wrap{padding-bottom:80px}
+  .fmv-types{grid-template-columns:repeat(3,1fr);gap:10px}
+  .fmv-input,.fmv-select{font-size:15px}
+}
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="fmv-scope">
+
+<section class="fmv-hero">
+  <div class="fmv-hero-in">
+    <span class="fmv-badge"><span class="dot"></span>Official FBR rates · S.R.O. 1724(I)/2024 + 144(I)/2025</span>
+    <h1>Karachi FBR Fair Market&nbsp;Value Calculator</h1>
+    <p>Find the FBR notified value of any plot, house, flat or commercial property in Karachi — the figure your
+       236C / 236K withholding and Section&nbsp;7E are charged on.</p>
+    <div class="fmv-trust">
+      <div><b>235</b><span>Karachi areas</span></div>
+      <div><b>9</b><span>Property types</span></div>
+      <div><b>Free</b><span>No sign-up</span></div>
+    </div>
+  </div>
+</section>
+
+<div class="fmv-wrap">
+  <div class="fmv-rail">
+    <span class="fmv-chip on" id="rail1"><span class="n">1</span>Area &amp; type</span>
+    <span class="fmv-railline"></span>
+    <span class="fmv-chip" id="rail2"><span class="n">2</span>Details</span>
+    <span class="fmv-railline"></span>
+    <span class="fmv-chip" id="rail3"><span class="n">3</span>Value</span>
+  </div>
+
+  <div class="fmv-layout">
+   <div class="fmv-main">
+  <!-- STEP 1 -->
+  <div class="fmv-card is-open">
+    <div class="fmv-card-head"><span class="ic">📍</span><h2>Choose the area &amp; property type</h2><span class="step">Step 1</span></div>
+    <div class="fmv-card-body">
+      <div class="fmv-field">
+        <label class="fmv-label" for="fmvAreaInput">Karachi area <span style="color:var(--text-light);font-weight:400">(as listed by FBR)</span></label>
+        <div class="fmv-combo">
+          <input type="text" id="fmvAreaInput" class="fmv-input" autocomplete="off" role="combobox" aria-expanded="false"
+                 placeholder="Search e.g. Clifton, DHA Phase VIII, Gulshan…">
+          <button type="button" class="fmv-combo-clear" id="fmvClear" aria-label="Clear">×</button>
+          <div id="fmvAreaList" class="fmv-combo-list" role="listbox"></div>
+        </div>
+        <div class="fmv-hint" id="fmvAreaMeta">Start typing to see matching areas.</div>
+      </div>
+
+      <div class="fmv-field" id="fmvTypeField" style="display:none">
+        <label class="fmv-label">Property type</label>
+        <div class="fmv-types" id="fmvTypeGrid"></div>
+        <div class="fmv-hint">Greyed-out types have no FBR rate for this area.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- STEP 2 -->
+  <div class="fmv-card" id="fmvInputPanel" style="display:none">
+    <div class="fmv-card-head"><span class="ic">📐</span><h2>Enter property details</h2><span class="step">Step 2</span></div>
+    <div class="fmv-card-body">
+      <div id="fmvFields"></div>
+      <div id="fmvFlagNote" class="fmv-note" style="display:none">
+        ⚠️ FBR's source table for this area has an ambiguous column layout. Treat the result as indicative and
+        verify the rate against the official notification.
+      </div>
+      <button class="fmv-btn" id="fmvCalcBtn" style="margin-top:8px" disabled>
+        <span class="spin"></span><span class="txt">Calculate FMV</span>
+      </button>
+      <div class="fmv-err" id="fmvErr"></div>
+    </div>
+  </div>
+
+  <!-- STEP 3: RESULT -->
+  <div class="fmv-result" id="fmvResult">
+    <div class="fmv-card">
+      <div class="fmv-result-head"><h3>💰 Your FBR Valuation Result</h3></div>
+      <div class="fmv-final">
+        <div class="lbl">FBR Fair Market Value</div>
+        <div class="val" id="fmvFinal">—</div>
+        <div class="fmv-words" id="fmvWords"></div>
+        <div class="area" id="fmvArea"></div>
+        <div class="fmv-summary" id="fmvSummary"></div>
+        <button class="fmv-copy" id="fmvCopy" type="button">📋 Copy value</button>
+      </div>
+
+      <div class="fmv-break">
+        <h3>How this was calculated</h3>
+        <div id="fmvBreak"></div>
+
+        <details class="fmv-more">
+          <summary>Step-by-step working</summary>
+          <div class="fmv-stepbox" id="fmvStepsBox"></div>
+        </details>
+        <details class="fmv-more">
+          <summary>Source &amp; legal basis</summary>
+          <div class="fmv-legal-txt" id="fmvLegal"></div>
+        </details>
+      </div>
+
+      <div class="fmv-next">
+        <div class="txt">
+          <b>Next: work out the tax on this value</b>
+          <span>See the 236C / 236K advance-tax rates that apply to this FMV.</span>
+        </div>
+        <a href="/Withholding-Tax-Card/">Withholding Tax Card 2026-27 →</a>
+      </div>
+
+      <div class="fmv-disc">
+        <b>Unofficial estimate.</b> This mirrors FBR's notified valuation table and the S.R.O. 144(I)/2025 rules
+        for guidance only — it is not an official FBR valuation and won't capture every property-specific fact.
+        Confirm the final figure against the FBR notification before filing.
+      </div>
+    </div>
+  </div>
+
+  <div class="fmv-card">
+    <div class="fmv-card-head"><span class="ic">📖</span><h2>About this calculator</h2></div>
+    <div class="fmv-card-body">
+      <h3>How the FBR fair market value works in Karachi</h3>
+      <p>Under Section 68 of the Income Tax Ordinance 2001, FBR notifies area-wise valuation rates for immovable
+         property. For Karachi these come from <b>S.R.O. 1724(I)/2024</b> (effective 1 November 2024), with the
+         valuation method set in <b>S.R.O. 144(I)/2025</b>. Advance tax under sections 236C (seller) and 236K (buyer),
+         and the Section 7E deemed-income return, are charged on this notified value or the declared price — whichever
+         is higher. This tool applies the exact area rate plus the depreciation, amenity, basement and DHA rules.</p>
+
+      <h3>What you'll need</h3>
+      <p>The FBR area name, the property category (plot, house, flat, commercial or industrial), the plot or covered
+         area in square yards or square feet, and — for built-up property — the construction year, so age-based
+         depreciation applies. Houses over 25 years are valued at the open-plot rate; flats depreciate up to 50%
+         beyond 30 years.</p>
+    </div>
+  </div>
+
+  <div class="fmv-card">
+    <div class="fmv-card-head"><span class="ic">❓</span><h2>Frequently asked questions</h2></div>
+    <div class="fmv-faq">
+    <details><summary>Is this the value FBR uses for 236C and 236K?</summary><div class="a">Sections 236C and 236K advance tax are charged on the FBR notified value or the declared consideration, whichever is higher. This calculator reproduces the notified value from S.R.O. 1724(I)/2024. Confirm against the official table for the exact transaction.</div></details>
+    <details><summary>Which notification does this use?</summary><div class="a">The Karachi valuation table in S.R.O. 1724(I)/2024 (effective 1 November 2024), with the valuation rules from S.R.O. 144(I)/2025 (11 February 2025).</div></details>
+    <details><summary>How is an old house valued?</summary><div class="a">Built-up residential value drops by 5% (5–10 years), 7.5% (10–15) and 10% (15–25). Beyond 25 years the property is valued at the area's open-plot rate.</div></details>
+    <details><summary>How are flats depreciated?</summary><div class="a">Flats reduce by 10% (5–10 years), 20% (10–20), 30% (20–30) and 50% beyond 30 years, applied to the area's flat rate.</div></details>
+    <details><summary>What is the amenity-plot rate?</summary><div class="a">Amenity plots are valued at 50% of the residential open-plot rate for that area.</div></details>
+    <details><summary>Why do some areas have no rate for a category?</summary><div class="a">FBR left some cells blank or marked N/A. Where a rate is missing the tool won't invent one — it tells you the category can't be valued for that area.</div></details>
+    <details><summary>What is the DHA Khayaban 15% addition?</summary><div class="a">Commercial plots of DHA facing a Khayaban are increased by 15%. The option only appears for DHA areas.</div></details>
+    <details><summary>How is a commercial building with a basement valued?</summary><div class="a">The basement is added at 20% of the ground-floor value; floors above ground at 75% of the ground-floor rate, then age depreciation applies.</div></details>
+    <details><summary>How is industrial built-up property valued?</summary><div class="a">The industrial built-up rate applies to the entire plot area plus the covered area, per S.R.O. 144(I)/2025.</div></details>
+    <details><summary>Can I rely on this for filing?</summary><div class="a">Treat it as guidance. It mirrors the notification but doesn't capture every property-specific fact — verify the final figure against the FBR table before filing.</div></details>
+    </div>
+  </div>
+   </div>{# /fmv-main #}
+
+   <aside class="fmv-aside">
+     {% include 'partials/sidebar.html' %}
+   </aside>
+  </div>{# /fmv-layout #}
+</div>{# /fmv-wrap #}
+
+</div>{# /fmv-scope #}
+{% endblock %}
+
+{% block extra_js %}
+<script>
+const UNIT_OPTS=`<option value="sqyd">sq.yd</option><option value="sqft">sq.ft</option><option value="marla">Marla</option>`;
+const SPECIAL_OPTS=`<option value="">Normal plot</option>
+  <option value="Nala-facing">Nala-facing</option>
+  <option value="Commercial-facing">Facing a commercial road/plot</option>
+  <option value="School/Mosque/Graveyard-facing">Facing school / mosque / graveyard</option>
+  <option value="Rear/Triangular plot">Rear or triangular plot</option>`;
+
+function sizeField(id,label,fixed){
+  const u=fixed
+    ? `<div class="fmv-select" style="display:flex;align-items:center;justify-content:center;color:var(--text-light);width:120px;flex:none">sq.ft</div>`
+    : `<select class="fmv-select" id="${id}_unit" aria-label="unit">${UNIT_OPTS}</select>`;
+  return `<div class="fmv-field"><label class="fmv-label" for="${id}">${label}</label>
+    <div class="fmv-inline"><input type="number" inputmode="decimal" min="0" step="any" class="fmv-input" id="${id}" placeholder="0">${u}</div></div>`;
+}
+function numField(id,label,hint){
+  return `<div class="fmv-field"><label class="fmv-label" for="${id}">${label}</label>
+    <input type="number" inputmode="numeric" min="0" step="1" class="fmv-input" id="${id}" placeholder="0">
+    ${hint?`<div class="fmv-hint">${hint}</div>`:''}</div>`;
+}
+const FIELD_BUILDERS={
+  plot_size:()=>sizeField('plot_size','Plot size'),
+  ground_covered:()=>sizeField('ground_covered','Ground-floor covered area',1),
+  covered_area:()=>sizeField('covered_area','Covered area',1),
+  additional_covered:()=>sizeField('additional_covered','Upper floors covered area (optional)',1),
+  basement_area:()=>sizeField('basement_area','Basement area (optional)',1),
+  additional_qualifying_storeys:()=>numField('additional_qualifying_storeys','Extra storeys above ground','Only storeys with a bedroom + bathroom. Ground floor is counted automatically.'),
+  construction_year:()=>numField('construction_year','Year of construction','Leave blank for a brand-new / age-0 building.'),
+  special_category:()=>`<div class="fmv-field"><label class="fmv-label" for="special_category">Plot category</label>
+    <select class="fmv-select" id="special_category">${SPECIAL_OPTS}</select>
+    <div class="fmv-hint">A qualifying category applies a one-time 20% reduction (rule r).</div></div>`,
+  dha_khayaban:()=>`<div class="fmv-field"><label class="fmv-check"><input type="checkbox" id="dha_khayaban"><span>DHA commercial plot facing a Khayaban <b style="color:var(--green)">(+15%)</b></span></label></div>`,
+  purposes:()=>`<div class="fmv-field"><label class="fmv-label">Purposes used (value = mean of rates)</label>
+    <label class="fmv-check" style="margin-bottom:8px"><input type="checkbox" class="fmv-purpose" value="residential_open" checked><span>Residential</span></label>
+    <label class="fmv-check" style="margin-bottom:8px"><input type="checkbox" class="fmv-purpose" value="commercial_open"><span>Commercial</span></label>
+    <label class="fmv-check"><input type="checkbox" class="fmv-purpose" value="industrial_open"><span>Industrial</span></label></div>`,
+};
+const TYPE_FIELDS={
+  residential_open:['plot_size','special_category'],
+  residential_builtup:['ground_covered','additional_qualifying_storeys','construction_year','plot_size'],
+  flat:['covered_area','construction_year'],
+  commercial_open:['plot_size','dha_khayaban'],
+  commercial_builtup:['ground_covered','additional_covered','basement_area','construction_year'],
+  industrial_open:['plot_size'],
+  industrial_builtup:['plot_size','covered_area'],
+  amenity:['plot_size'],
+  mixed:['plot_size','purposes'],
+};
+const TYPE_META=[
+  ['residential_open','🏠','Residential Plot'],['residential_builtup','🏡','Residential House'],
+  ['flat','🏢','Flat / Apartment'],['commercial_open','🏬','Commercial Plot'],
+  ['commercial_builtup','🏨','Commercial Building'],['industrial_open','🏭','Industrial Plot'],
+  ['industrial_builtup','⚙️','Industrial Built-up'],['amenity','🏫','Amenity Plot'],['mixed','🔀','Mixed Purpose'],
+];
+const TYPE_LABEL=Object.fromEntries(TYPE_META.map(([k,,l])=>[k,l]));
+
+let AREAS=[],selArea=null,selType=null,activeIdx=-1;
+const $=id=>document.getElementById(id);
+
+async function fmvBoot(){
+  try{const r=await fetch('/api/fmv-areas/');const d=await r.json();
+    if(d.status==='ok'){AREAS=d.areas;$('fmvLegal').textContent=d.legal_basis;}
+  }catch(e){console.error(e);}
+}
+function setRail(step){
+  [['rail1',1],['rail2',2],['rail3',3]].forEach(([id,n])=>{
+    const el=$(id);el.classList.toggle('on',n===step);el.classList.toggle('done',n<step);
+  });
+}
+
+/* combobox */
+function renderList(items){
+  const box=$('fmvAreaList');
+  if(!items.length){box.innerHTML=`<div class="fmv-opt none">No area matches — try a shorter word.</div>`;box.classList.add('show');return;}
+  box.innerHTML=items.slice(0,60).map(a=>{
+    const tags=(a.is_dha?'<span class="tag dha">DHA</span>':'')+(a.is_flagged?'<span class="tag">check</span>':'');
+    return `<div class="fmv-opt" data-id="${a.id}"><span>${a.name}</span><span class="r"><span class="fbr">#${a.fbr_no}</span>${tags}</span></div>`;
+  }).join('');
+  box.classList.add('show');activeIdx=-1;
+  box.querySelectorAll('.fmv-opt[data-id]').forEach(el=>el.onclick=()=>pickArea(+el.dataset.id));
+}
+function pickArea(id){
+  selArea=AREAS.find(a=>a.id===id);if(!selArea)return;
+  $('fmvAreaInput').value=selArea.name;$('fmvAreaList').classList.remove('show');
+  $('fmvClear').classList.add('show');
+  $('fmvAreaMeta').innerHTML=`✓ FBR #${selArea.fbr_no}${selArea.is_dha?' · DHA area':''}${selArea.is_flagged?' · ⚠️ ambiguous source row':''}`;
+  buildTypeGrid();$('fmvTypeField').style.display='block';
+  selType=null;$('fmvInputPanel').style.display='none';$('fmvResult').classList.remove('show');
+  setRail(1);
+}
+$('fmvAreaInput').addEventListener('input',function(){
+  const q=this.value.toLowerCase().trim();selArea=null;
+  $('fmvClear').classList.toggle('show',!!this.value);
+  renderList(q?AREAS.filter(a=>a.name.toLowerCase().includes(q)):AREAS);
+});
+$('fmvAreaInput').addEventListener('focus',function(){if(AREAS.length&&!this.value)renderList(AREAS);});
+$('fmvAreaInput').addEventListener('keydown',function(e){
+  const opts=[...$('fmvAreaList').querySelectorAll('.fmv-opt[data-id]')];
+  if(e.key==='ArrowDown')activeIdx=Math.min(activeIdx+1,opts.length-1);
+  else if(e.key==='ArrowUp')activeIdx=Math.max(activeIdx-1,0);
+  else if(e.key==='Enter'&&activeIdx>=0){e.preventDefault();opts[activeIdx].click();return;}
+  else if(e.key==='Escape'){$('fmvAreaList').classList.remove('show');return;}
+  else return;
+  e.preventDefault();
+  opts.forEach((o,i)=>o.classList.toggle('active',i===activeIdx));
+  if(opts[activeIdx])opts[activeIdx].scrollIntoView({block:'nearest'});
+});
+$('fmvClear').onclick=()=>{const i=$('fmvAreaInput');i.value='';selArea=null;
+  $('fmvClear').classList.remove('show');$('fmvAreaMeta').textContent='Start typing to see matching areas.';
+  $('fmvTypeField').style.display='none';$('fmvInputPanel').style.display='none';
+  $('fmvResult').classList.remove('show');i.focus();renderList(AREAS);setRail(1);};
+document.addEventListener('click',e=>{if(!e.target.closest('.fmv-combo'))$('fmvAreaList').classList.remove('show');});
+
+/* type grid */
+function buildTypeGrid(){
+  const avail=new Set(selArea.available_types||[]);
+  $('fmvTypeGrid').innerHTML=TYPE_META.map(([k,ic,lbl])=>
+    `<div class="fmv-type ${avail.has(k)?'':'disabled'}" data-t="${k}"><span class="ic">${ic}</span>${lbl}</div>`).join('');
+  $('fmvTypeGrid').querySelectorAll('.fmv-type:not(.disabled)').forEach(el=>el.onclick=()=>selectType(el.dataset.t,el));
+}
+function selectType(t,el){
+  selType=t;
+  document.querySelectorAll('.fmv-type').forEach(x=>x.classList.remove('active'));
+  el.classList.add('active');
+  $('fmvFields').innerHTML=TYPE_FIELDS[t].map(f=>FIELD_BUILDERS[f]()).join('');
+  $('fmvFlagNote').style.display=selArea.is_flagged?'block':'none';
+  $('fmvInputPanel').style.display='block';
+  $('fmvCalcBtn').disabled=false;$('fmvErr').classList.remove('show');$('fmvResult').classList.remove('show');
+  setRail(2);
+  $('fmvInputPanel').scrollIntoView({behavior:'smooth',block:'nearest'});
+}
+
+/* calculate */
+const val=id=>{const e=$(id);return e?e.value:'';};
+async function fmvCalculate(){
+  if(!selArea||!selType)return;
+  const p=new URLSearchParams({area_id:selArea.id,property_type:selType});
+  ['plot_size','ground_covered','covered_area','additional_covered','basement_area',
+   'additional_qualifying_storeys','construction_year','special_category'].forEach(f=>{
+    const v=val(f);if(v!=='')p.append(f,v);
+    const u=$(f+'_unit');if(u)p.append(f+'_unit',u.value);});
+  if($('dha_khayaban')?.checked)p.append('dha_khayaban','1');
+  const purp=[...document.querySelectorAll('.fmv-purpose:checked')].map(c=>c.value);
+  if(purp.length)p.append('purposes',purp.join(','));
+
+  const btn=$('fmvCalcBtn');btn.classList.add('loading');btn.disabled=true;
+  btn.querySelector('.txt').textContent='Calculating…';
+  const err=$('fmvErr');err.classList.remove('show');
+  try{
+    const r=await fetch('/api/fmv-calculate/?'+p.toString());
+    const d=await r.json();
+    if(d.status!=='ok'){err.textContent=d.message||'Could not calculate.';err.classList.add('show');
+      $('fmvResult').classList.remove('show');setRail(2);}
+    else renderResult(d);
+  }catch(e){err.textContent='Network error. Please try again.';err.classList.add('show');}
+  btn.classList.remove('loading');btn.disabled=false;btn.querySelector('.txt').textContent='Calculate FMV';
+}
+function fmtNum(n){return (+n).toLocaleString('en-PK');}
+/* Pakistani crore/lakh words, e.g. 32400000 -> "3.24 Crore" */
+function inWords(n){
+  n=Math.round(+n);
+  if(n>=10000000){var c=n/10000000;return (c%1===0?c:c.toFixed(2).replace(/\.?0+$/,''))+' Crore';}
+  if(n>=100000){var l=n/100000;return (l%1===0?l:l.toFixed(2).replace(/\.?0+$/,''))+' Lakh';}
+  if(n>=1000){var k=n/1000;return (k%1===0?k:k.toFixed(1).replace(/\.?0+$/,''))+' Thousand';}
+  return String(n);
+}
+function renderResult(d){
+  $('fmvFinal').textContent=d.final_fmv_display;
+  var w=$('fmvWords'); if(w) w.textContent='≈ Rs '+inWords(d.final_fmv);
+  $('fmvArea').textContent=`${d.area} · FBR #${d.fbr_no}`;
+  $('fmvLegal').textContent=d.legal_basis||'';
+  $('fmvSummary').innerHTML=`This is the FBR notified value for a <b>${TYPE_LABEL[d.property_type]||'property'}</b>`
+    +` of <b>${fmtNum(d.area_sqft)} sq.ft</b> in <b>${d.area}</b>, at <b>Rs ${fmtNum(d.rate)}/sq.ft</b>.`;
+
+  let rows=`<div class="fmv-row"><span class="lbl-ic"><span class="ic">📊</span>Applicable rate</span><span class="v">Rs ${fmtNum(d.rate)} / sq.ft</span></div>
+    <div class="fmv-row"><span class="lbl-ic"><span class="ic">📐</span>Chargeable area</span><span class="v">${fmtNum(d.area_sqft)} sq.ft</span></div>
+    <div class="fmv-row formula"><span>Rs ${fmtNum(d.rate)} × ${fmtNum(d.area_sqft)} sq.ft</span><span class="v">= Rs ${fmtNum(d.base_value)}</span></div>`;
+  (d.adjustments||[]).forEach(a=>{
+    const cls=a.type==='reduction'?'cut':(a.type==='addition'||a.type==='set_to_open_plot'?'add':'');
+    const ic=cls==='cut'?'➖':(cls==='add'?'➕':'•');
+    rows+=`<div class="fmv-row adj ${cls}"><span class="lbl-ic"><span class="ic">${ic}</span>${a.label}</span><span class="v">${a.amount||''}</span></div>`;});
+  if(d.age!=null&&d.age!==undefined)rows+=`<div class="fmv-row adj"><span class="lbl-ic"><span class="ic">🏗️</span>Building age</span><span class="v">${d.age} yrs</span></div>`;
+  rows+=`<div class="fmv-row total"><span>✅ FBR Fair Market Value</span><span class="v">${d.final_fmv_display}</span></div>`;
+  $('fmvBreak').innerHTML=rows;
+  $('fmvStepsBox').innerHTML=(d.calculation_steps||[]).map(s=>`<div class="s"><b>${s.label}</b>${s.detail}</div>`).join('');
+
+  const box=$('fmvResult');box.classList.add('show');setRail(3);
+  box.scrollIntoView({behavior:'smooth',block:'start'});
+}
+$('fmvCalcBtn').addEventListener('click',fmvCalculate);
+$('fmvCopy').onclick=function(){
+  const t=$('fmvFinal').textContent.trim();
+  navigator.clipboard?.writeText(t).then(()=>{this.textContent='✓ Copied';this.classList.add('done');
+    setTimeout(()=>{this.textContent='📋 Copy value';this.classList.remove('done');},1600);});
+};
+fmvBoot();
+</script>
+{% endblock %}
