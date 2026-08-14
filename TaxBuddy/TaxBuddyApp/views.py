@@ -2763,6 +2763,7 @@ def fmv_calculate_api(request):
     })
     return JsonResponse(result)
 
+
 def advance_tax_calculator(request):
     return render(request, 'partials/AdvanceTaxCalculator.html')
 

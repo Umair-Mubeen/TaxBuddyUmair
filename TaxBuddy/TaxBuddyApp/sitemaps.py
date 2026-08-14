@@ -144,7 +144,7 @@ class CalculatorSitemap(Sitemap):
             'Withholding_Tax_Card',
             'refund_analyzer',
             'freelancer_calculator',
-            'freelancer_calculator',
+            'karachi_fmv_calculator',
             'advance_tax_calculator',
         ]
 
