@@ -2614,3 +2614,7 @@ def salary_rate_history(request):
 
 def freelancer_calculator(request):
     return render(request, 'partials/freelancer-tax-calculator.html')
+
+
+def advance_tax_calculator(request):
+    return render(request, 'partials/AdvanceTaxCalculator.html')

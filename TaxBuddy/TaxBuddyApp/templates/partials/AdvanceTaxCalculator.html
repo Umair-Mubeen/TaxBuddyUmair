@@ -1,0 +1,1078 @@
+{% extends "base.html" %}
+{# ============================================================
+   Section 147 Advance Tax Calculator — TaxBuddy Umair
+   Calculation logic lives in AT.calc() (see bottom of file) so it
+   can be mirrored server-side. No rates/thresholds are hard-coded
+   beyond those stated in Section 147 itself:
+     - Rs 1,000,000 individual threshold        s.147(2)
+     - (A/4) - B  individual formula            s.147(4B)
+     - (A x B/C) - D company/AOP formula        s.147(4)
+     - unknown turnover = 1/4 of 120% of last   s.147(4) proviso
+     - securities CG 2% / 1.5%, 21 days         s.147(5B)
+     - builder/developer: 4 equal instalments   s.147(5C)  [rate NOT included]
+   ============================================================ #}
+
+{% block title %}Section 147 Advance Tax Calculator Pakistan | Tax Year 2026 | TaxBuddy Umair{% endblock %}
+{% block meta_desc %}Calculate advance tax under Section 147 of Pakistan's Income Tax Ordinance, 2001 for individuals, companies and AOPs — with quarterly due dates, formulas and worked results.{% endblock %}
+
+{% block schema_extra %}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "Section 147 Advance Tax Calculator",
+  "url": "https://www.taxbuddyumair.com{{ request.path }}",
+  "applicationCategory": "FinanceApplication",
+  "operatingSystem": "All",
+  "browserRequirements": "Requires JavaScript",
+  "offers": {"@type": "Offer", "price": "0", "priceCurrency": "PKR"},
+  "publisher": {"@type": "Organization", "name": "TaxBuddy Umair", "url": "https://www.taxbuddyumair.com/"}
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {"@type":"Question","name":"What is advance tax under Section 147?","acceptedAnswer":{"@type":"Answer","text":"Advance tax is income tax paid in four quarterly instalments during the tax year instead of a single payment at the time of filing. It is adjustable — every rupee paid is credited against the final tax liability, and any excess is refundable."}},
+    {"@type":"Question","name":"Who has to pay advance tax?","acceptedAnswer":{"@type":"Answer","text":"Companies and Associations of Persons pay quarterly regardless of income level. Individuals pay only where the latest assessed taxable income, excluding the income specified in Section 147(1)(b), (c) and (d), is Rs 1,000,000 or more."}},
+    {"@type":"Question","name":"What is the individual formula for advance tax?","acceptedAnswer":{"@type":"Answer","text":"For individuals the quarterly amount is (A divided by 4) minus B, where A is the tax assessed for the latest tax year and B is the tax paid in the quarter for which a credit is allowed under Section 168, other than tax deducted under Section 149."}},
+    {"@type":"Question","name":"What is the company and AOP formula for advance tax?","acceptedAnswer":{"@type":"Answer","text":"For companies and AOPs the quarterly amount is (A multiplied by B divided by C) minus D, where A is turnover for the quarter, B is tax assessed for the latest tax year, C is turnover for that latest tax year, and D is tax paid in the quarter for which a credit is allowed under Section 168."}},
+    {"@type":"Question","name":"What happens if quarterly turnover is not known?","acceptedAnswer":{"@type":"Answer","text":"Where the taxpayer fails to provide turnover or the quarter's turnover is not known, it is taken to be one-fourth of one hundred and twenty percent of the turnover of the latest tax year for which a return has been filed."}},
+    {"@type":"Question","name":"When is advance tax due?","acceptedAnswer":{"@type":"Answer","text":"Individuals pay by 15 September, 15 December, 15 March and 15 June. Companies and AOPs pay by 25 September, 25 December, 25 March and 15 June."}},
+    {"@type":"Question","name":"Is advance tax charged on salary?","acceptedAnswer":{"@type":"Answer","text":"No. Income subject to deduction of tax at source under Section 149 is excluded from the advance tax computation, and for individuals tax deducted under Section 149 is also excluded from the credit component B."}},
+    {"@type":"Question","name":"Is advance tax payable on final tax income?","acceptedAnswer":{"@type":"Answer","text":"Income from which tax has been collected or deducted and for which no tax credit is allowed as a result of Section 168(3) is excluded from advance tax under Section 147(1)(d)."}},
+    {"@type":"Question","name":"Is there advance tax on capital gains from securities?","acceptedAnswer":{"@type":"Answer","text":"Yes. Under Section 147(5B) advance tax is 2% of the capital gains derived during the quarter where the holding period is less than six months, and 1.5% where it is more than six but less than twelve months, payable within twenty-one days after the close of each quarter. It does not apply to individual investors."}},
+    {"@type":"Question","name":"How is advance tax adjusted in the return?","acceptedAnswer":{"@type":"Answer","text":"A taxpayer who has paid advance tax is allowed a tax credit for that tax in computing the tax due on taxable income for that year. Any credit that cannot be applied is refunded to the taxpayer."}}
+  ]
+}
+</script>
+{% endblock %}
+
+{% block extra_css %}
+<style>
+  :root{
+    --at-navy:#0A2647; --at-green:#0D9E72; --at-green-dark:#0b8a63;
+    --at-border:#E2E8F0; --at-text:#1A202C; --at-mid:#475467; --at-light:#98A2B3;
+  }
+  .at-intro{font-size:14.5px;color:var(--at-mid);line-height:1.7;max-width:760px;margin:4px 0 10px}
+  .at-badge{display:inline-block;background:#e8f6f0;color:var(--at-green-dark);font-size:11.5px;font-weight:700;
+            text-transform:uppercase;letter-spacing:.05em;padding:5px 12px;border-radius:20px;margin-bottom:18px}
+
+  /* ---- shell ---- */
+  .at-card{background:#fff;border:1px solid var(--at-border);border-radius:16px;padding:22px 24px;margin-bottom:18px;
+           box-shadow:0 1px 3px rgba(10,38,71,.05)}
+  .at-card h2{font-size:13px;text-transform:uppercase;letter-spacing:.06em;color:var(--at-light);
+              margin:0 0 14px;font-weight:700}
+
+  /* ---- taxpayer type selector ---- */
+  .at-types{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px}
+  .at-type{border:1.5px solid var(--at-border);border-radius:12px;padding:14px 12px;text-align:center;cursor:pointer;
+           background:#fff;transition:all .15s;font-family:inherit}
+  .at-type:hover{border-color:var(--at-green);transform:translateY(-1px)}
+  .at-type.on{border-color:var(--at-green);background:#f0fdf4;box-shadow:0 0 0 3px rgba(13,158,114,.12)}
+  .at-type .ic{font-size:22px;display:block;margin-bottom:6px}
+  .at-type .tl{font-size:13.5px;font-weight:700;color:var(--at-navy);line-height:1.3}
+
+  /* ---- fields ---- */
+  .at-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+  @media(max-width:720px){.at-grid{grid-template-columns:1fr}}
+  .at-field{margin-bottom:2px}
+  .at-field label{display:block;font-size:13px;font-weight:600;color:var(--at-navy);margin-bottom:6px}
+  .at-field .hint{font-size:12px;color:var(--at-light);margin-top:5px;line-height:1.5}
+  .at-inwrap{position:relative}
+  .at-inwrap .rs{position:absolute;left:13px;top:50%;transform:translateY(-50%);color:var(--at-light);
+                 font-size:13.5px;font-weight:600;pointer-events:none}
+  .at-field input[type=text]{width:100%;padding:12px 14px 12px 40px;border:1.5px solid var(--at-border);border-radius:10px;
+                             font-size:15px;font-family:inherit;color:var(--at-navy);outline:none;background:#fff}
+  .at-field input[type=text]:focus{border-color:var(--at-green)}
+  .at-field input.err{border-color:#dc2626;background:#fef2f2}
+  .at-err{color:#dc2626;font-size:12px;margin-top:5px;display:none}
+  .at-err.show{display:block}
+
+  .at-check{display:flex;align-items:flex-start;gap:10px;background:#f8fafc;border:1px solid var(--at-border);
+            border-radius:10px;padding:12px 14px;margin-top:4px;cursor:pointer}
+  .at-check input{margin-top:2px;width:16px;height:16px;accent-color:var(--at-green);flex-shrink:0}
+  .at-check span{font-size:13px;color:var(--at-text);line-height:1.5;font-weight:600}
+  .at-check small{display:block;font-weight:400;color:var(--at-light);margin-top:3px}
+
+  /* ---- quarter selector ---- */
+  .at-quarters{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+  @media(max-width:560px){.at-quarters{grid-template-columns:repeat(2,1fr)}}
+  .at-q{border:1.5px solid var(--at-border);border-radius:10px;padding:11px 8px;text-align:center;cursor:pointer;
+        background:#fff;font-family:inherit;transition:all .15s}
+  .at-q:hover{border-color:var(--at-green)}
+  .at-q.on{border-color:var(--at-navy);background:var(--at-navy);color:#fff}
+  .at-q .qn{font-size:13px;font-weight:700;display:block}
+  .at-q .qd{font-size:11px;opacity:.75;margin-top:2px;display:block}
+
+  /* ---- notes ---- */
+  .at-note{border-radius:10px;padding:12px 15px;font-size:13px;line-height:1.6;margin-top:14px}
+  .at-note strong{font-weight:700}
+  .at-note-info{background:#f0fdf4;border-left:4px solid var(--at-green);color:var(--at-text)}
+  .at-note-warn{background:#fffbeb;border-left:4px solid #f59e0b;color:var(--at-text)}
+  .at-note-stop{background:#fef2f2;border-left:4px solid #dc2626;color:var(--at-text)}
+
+  /* ---- result ---- */
+  .at-result{display:none;background:linear-gradient(135deg,var(--at-navy),#144272);border-radius:16px;
+             padding:26px 24px;color:#fff;margin-bottom:18px;box-shadow:0 10px 34px rgba(10,38,71,.18)}
+  .at-result .rl{font-size:12px;text-transform:uppercase;letter-spacing:.07em;color:rgba(255,255,255,.7);
+                 font-weight:700;margin-bottom:6px}
+  .at-result .rv{font-size:2.1rem;font-weight:800;line-height:1.15;color:#5eead4}
+  .at-result .rv.na{font-size:1.25rem;color:#fbbf24}
+  .at-result .rsub{font-size:13px;color:rgba(255,255,255,.72);margin-top:8px;line-height:1.6}
+  .at-sum{margin-top:20px;border-top:1px solid rgba(255,255,255,.16);padding-top:16px}
+  .at-sum .sh{font-size:11.5px;text-transform:uppercase;letter-spacing:.06em;color:rgba(255,255,255,.6);
+              font-weight:700;margin-bottom:10px}
+  .at-row{display:flex;justify-content:space-between;gap:14px;padding:7px 0;font-size:13.5px;
+          border-bottom:1px dashed rgba(255,255,255,.12)}
+  .at-row:last-child{border-bottom:none}
+  .at-row .k{color:rgba(255,255,255,.72)}
+  .at-row .v{font-weight:700;text-align:right}
+  .at-formula{margin-top:14px;background:rgba(255,255,255,.08);border-radius:10px;padding:12px 14px;
+              font-size:13px;color:rgba(255,255,255,.9);line-height:1.7}
+  .at-formula code{background:none;color:#5eead4;font-weight:700}
+
+  .at-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:18px}
+  .at-btn{padding:12px 22px;border-radius:10px;font-weight:700;font-size:14px;cursor:pointer;font-family:inherit;
+          border:none;transition:all .15s;text-decoration:none;display:inline-flex;align-items:center;gap:6px}
+  .at-btn-go{background:var(--at-green);color:#fff;width:100%;justify-content:center;padding:14px;font-size:15px}
+  .at-btn-go:hover{background:var(--at-green-dark)}
+  .at-btn-ghost{background:rgba(255,255,255,.12);color:#fff}
+  .at-btn-ghost:hover{background:rgba(255,255,255,.2)}
+
+  /* ---- schedule ---- */
+  .at-table{width:100%;border-collapse:collapse;font-size:13.5px;margin-top:12px}
+  .at-table thead tr{background:var(--at-navy);color:#fff}
+  .at-table th{padding:11px 14px;text-align:left;font-weight:600}
+  .at-table td{padding:10px 14px;border-bottom:1px solid var(--at-border);color:var(--at-text)}
+  .at-table tbody tr.now{background:#f0fdf4}
+  .at-table tbody tr.now td{font-weight:700;color:var(--at-green-dark)}
+  .at-scroll{overflow-x:auto;-webkit-overflow-scrolling:touch}
+
+  /* ---- SEO content ---- */
+  .at-seo h2{color:var(--at-navy);font-size:1.25rem;margin:30px 0 10px}
+  .at-seo h3{color:var(--at-navy);font-size:1.02rem;margin:20px 0 7px}
+  .at-seo p, .at-seo li{color:var(--at-text);font-size:14.5px;line-height:1.75}
+  .at-seo ul{padding-left:20px}
+  .at-fbox{border:1px solid var(--at-border);border-radius:12px;padding:16px 18px;margin:14px 0;background:#f8fafc}
+  .at-fbox .fm{font-size:16px;font-weight:800;color:var(--at-navy);letter-spacing:.02em}
+  .at-fbox .fd{font-size:13px;color:var(--at-mid);margin-top:8px;line-height:1.7}
+  .at-disc{font-size:12.5px;color:var(--at-light);border-top:1px solid var(--at-border);padding-top:15px;
+           margin-top:8px;line-height:1.65}
+  .at-hide{display:none !important}
+  @media print{
+    .at-types,.at-actions,.at-btn-go,.content-sidebar,nav,footer{display:none !important}
+    .at-result{background:#fff !important;color:#000 !important;box-shadow:none;border:2px solid #0A2647}
+    .at-result .rv{color:#0A2647 !important}
+    .at-result .rl,.at-result .rsub,.at-row .k{color:#475467 !important}
+  }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="article-hero calc-page-header">
+  <div class="article-hero-inner">
+    <div class="breadcrumb">
+      <a href="{% url 'index' %}">Home</a>
+      <span class="breadcrumb-sep">›</span>
+      <span>Advance Tax Calculator</span>
+    </div>
+    <h1>Section 147 Advance Tax Calculator — Pakistan</h1>
+    <div class="article-meta">
+      <span>📅 Tax Year 2026</span>
+      <span>🧮 Individuals · Companies · AOPs</span>
+    </div>
+  </div>
+</div>
+
+<div class="content-grid">
+  <main class="content-main">
+
+    <div class="at-badge">Income Tax Ordinance, 2001</div>
+    <p class="at-intro"><strong>Calculate advance tax payable under Section 147 of the Income Tax Ordinance, 2001.</strong>
+      This calculator helps taxpayers estimate advance tax payable under Section 147 based on the applicable taxpayer
+      category, latest assessed tax, turnover and eligible tax credits.</p>
+    <p class="at-intro" style="color:#98A2B3;font-size:13px;">For educational and estimation purposes only.</p>
+
+    <!-- ============ 1. TAXPAYER TYPE ============ -->
+    <div class="at-card">
+      <h2>Select Taxpayer Type</h2>
+      <div class="at-types" id="atTypes">
+        <button type="button" class="at-type on" data-type="individual">
+          <span class="ic">👤</span><span class="tl">Individual</span></button>
+        <button type="button" class="at-type" data-type="company">
+          <span class="ic">🏢</span><span class="tl">Company</span></button>
+        <button type="button" class="at-type" data-type="aop">
+          <span class="ic">🤝</span><span class="tl">Association of Persons</span></button>
+        <button type="button" class="at-type" data-type="securities">
+          <span class="ic">📈</span><span class="tl">Capital Gains — Securities</span></button>
+        <button type="button" class="at-type" data-type="builder">
+          <span class="ic">🏗️</span><span class="tl">Builder / Developer</span></button>
+      </div>
+    </div>
+
+    <!-- ============ 2. INDIVIDUAL ============ -->
+    <div class="at-card at-panel" id="panelIndividual">
+      <h2>Eligibility &amp; Threshold</h2>
+
+      <div class="at-field">
+        <label for="indIncome">Latest Assessed Taxable Income</label>
+        <div class="at-inwrap"><span class="rs">Rs.</span>
+          <input type="text" id="indIncome" inputmode="numeric" placeholder="1,500,000"></div>
+        <div class="hint">Under Section 147(2), the provision does not apply where the individual's latest assessed
+          taxable income, excluding the specified income referred to in Section 147(1)(b), (c) and (d), is less than
+          Rs. 1,000,000.</div>
+        <div class="at-err" id="errIndIncome">Please enter the latest assessed taxable income.</div>
+      </div>
+
+      <div class="at-grid" style="margin-top:18px">
+        <div class="at-field">
+          <label for="indTax">Latest Assessed Tax Liability (A)</label>
+          <div class="at-inwrap"><span class="rs">Rs.</span>
+            <input type="text" id="indTax" inputmode="numeric" placeholder="800,000"></div>
+          <div class="hint">Tax assessed for the latest tax year, or latest assessment year under the repealed
+            Ordinance. Includes liability under Section 4C.</div>
+          <div class="at-err" id="errIndTax">Please enter the latest assessed tax liability.</div>
+        </div>
+        <div class="at-field">
+          <label for="indCredit">Tax Paid / Eligible Credit for the Quarter (B)</label>
+          <div class="at-inwrap"><span class="rs">Rs.</span>
+            <input type="text" id="indCredit" inputmode="numeric" placeholder="50,000"></div>
+          <div class="hint">Tax paid in the quarter for which a credit is allowed under Section 168 —
+            <strong>other than tax deducted under Section 149</strong>.</div>
+          <div class="at-err" id="errIndCredit">Enter 0 if no tax was paid in the quarter.</div>
+        </div>
+      </div>
+
+      <div class="at-note at-note-warn">
+        <strong>Do not include salary tax.</strong> Tax deducted from salary under Section 149 is expressly excluded
+        from component B — it cannot reduce your quarterly instalment.
+      </div>
+    </div>
+
+    <!-- ============ 3. COMPANY / AOP ============ -->
+    <div class="at-card at-panel at-hide" id="panelBusiness">
+      <h2><span id="bizHeading">Company</span> — Quarterly Advance Tax</h2>
+
+      <label class="at-check" for="bizNoHistory">
+        <input type="checkbox" id="bizNoHistory">
+        <span>No last assessed income / declared turnover available
+          <small>Switches to the estimation mechanism under Section 147(6A).</small></span>
+      </label>
+
+      <div id="bizNormal">
+        <div class="at-grid" style="margin-top:16px">
+          <div class="at-field">
+            <label for="bizQtrTurnover">Turnover for the Quarter (A)</label>
+            <div class="at-inwrap"><span class="rs">Rs.</span>
+              <input type="text" id="bizQtrTurnover" inputmode="numeric" placeholder="30,000,000"></div>
+            <div class="at-err" id="errBizQtrTurnover">Please enter the quarter's turnover.</div>
+          </div>
+          <div class="at-field">
+            <label for="bizTaxAssessed">Tax Assessed for Latest Tax Year (B)</label>
+            <div class="at-inwrap"><span class="rs">Rs.</span>
+              <input type="text" id="bizTaxAssessed" inputmode="numeric" placeholder="2,000,000"></div>
+            <div class="hint">Tax assessed includes tax under Sections 4C, 113 and 113C.</div>
+            <div class="at-err" id="errBizTaxAssessed">Please enter the tax assessed for the latest tax year.</div>
+          </div>
+          <div class="at-field">
+            <label for="bizYearTurnover">Turnover for Latest Tax Year (C)</label>
+            <div class="at-inwrap"><span class="rs">Rs.</span>
+              <input type="text" id="bizYearTurnover" inputmode="numeric" placeholder="100,000,000"></div>
+            <div class="at-err" id="errBizYearTurnover">Turnover for the latest tax year must be greater than zero.</div>
+          </div>
+          <div class="at-field">
+            <label for="bizCredit">Tax Paid in the Quarter — Eligible Credit (D)</label>
+            <div class="at-inwrap"><span class="rs">Rs.</span>
+              <input type="text" id="bizCredit" inputmode="numeric" placeholder="200,000"></div>
+            <div class="hint">Tax paid in the quarter for which a credit is allowed under Section 168.</div>
+            <div class="at-err" id="errBizCredit">Enter 0 if no tax was paid in the quarter.</div>
+          </div>
+        </div>
+
+        <label class="at-check" for="bizUnknownTurnover" style="margin-top:14px">
+          <input type="checkbox" id="bizUnknownTurnover">
+          <span>Quarterly turnover not available / not known
+            <small>Turnover for the quarter will be taken as one-fourth of 120% of the turnover of the latest tax year
+              for which a return has been filed.</small></span>
+        </label>
+
+        <div style="margin-top:20px">
+          <h2>Optional — Sections 4C, 113 &amp; 113C</h2>
+          <div class="at-note at-note-stop" style="margin-top:0">
+            <strong>Enter tax assessed carefully. Do not include the same tax liability twice.</strong>
+            If these amounts are already inside your "Tax Assessed" figure above, leave these fields at zero.
+          </div>
+          <div class="at-grid" style="margin-top:14px">
+            <div class="at-field">
+              <label for="biz4C">Tax Liability under Section 4C</label>
+              <div class="at-inwrap"><span class="rs">Rs.</span>
+                <input type="text" id="biz4C" inputmode="numeric" placeholder="0"></div>
+            </div>
+            <div class="at-field">
+              <label for="biz113">Tax Liability under Section 113</label>
+              <div class="at-inwrap"><span class="rs">Rs.</span>
+                <input type="text" id="biz113" inputmode="numeric" placeholder="0"></div>
+            </div>
+            <div class="at-field">
+              <label for="biz113C">Tax Liability under Section 113C</label>
+              <div class="at-inwrap"><span class="rs">Rs.</span>
+                <input type="text" id="biz113C" inputmode="numeric" placeholder="0"></div>
+              <div class="hint">Taken into account under Section 147(4AA).</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 147(6A) branch -->
+      <div id="bizEstimate" class="at-hide">
+        <div class="at-note at-note-warn" style="margin-top:16px">
+          <strong>Section 147(6A) — no last assessed income or declared turnover.</strong> Advance tax is still payable.
+          The taxpayer estimates the amount on the basis of quarterly turnover, takes into account tax payable under
+          Sections 113 and 113C, and adjusts for amounts already paid.
+        </div>
+        <div class="at-grid" style="margin-top:16px">
+          <div class="at-field">
+            <label for="estQtrTurnover">Turnover for the Quarter</label>
+            <div class="at-inwrap"><span class="rs">Rs.</span>
+              <input type="text" id="estQtrTurnover" inputmode="numeric" placeholder="10,000,000"></div>
+            <div class="at-err" id="errEstQtrTurnover">Please enter the quarter's turnover.</div>
+          </div>
+          <div class="at-field">
+            <label for="estLiability">Estimated Tax Liability on this Turnover</label>
+            <div class="at-inwrap"><span class="rs">Rs.</span>
+              <input type="text" id="estLiability" inputmode="numeric" placeholder="150,000"></div>
+            <div class="hint">Your own estimate for the quarter, taking into account liability under Sections 113 and
+              113C. Section 147 does not prescribe a fixed rate for this situation.</div>
+            <div class="at-err" id="errEstLiability">Please enter your estimated tax liability for the quarter.</div>
+          </div>
+          <div class="at-field">
+            <label for="estPaid">Tax Already Paid / Adjustable</label>
+            <div class="at-inwrap"><span class="rs">Rs.</span>
+              <input type="text" id="estPaid" inputmode="numeric" placeholder="0"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ============ 4. SECURITIES ============ -->
+    <div class="at-card at-panel at-hide" id="panelSecurities">
+      <h2>Capital Gains from Sale of Securities — Section 147(5B)</h2>
+
+      <div class="at-field">
+        <label for="secGain">Capital Gains Derived During the Quarter</label>
+        <div class="at-inwrap"><span class="rs">Rs.</span>
+          <input type="text" id="secGain" inputmode="numeric" placeholder="500,000"></div>
+        <div class="at-err" id="errSecGain">Please enter the capital gains for the quarter.</div>
+      </div>
+
+      <div class="at-field" style="margin-top:16px">
+        <label>Holding Period / Investor Type</label>
+        <div class="at-quarters" id="secOptions" style="grid-template-columns:1fr">
+          <button type="button" class="at-q on" data-hold="lt6" style="text-align:left;padding:13px 15px">
+            <span class="qn">Less than 6 months</span><span class="qd">Advance tax at 2% of the gain</span></button>
+          <button type="button" class="at-q" data-hold="6to12" style="text-align:left;padding:13px 15px">
+            <span class="qn">More than 6 but less than 12 months</span><span class="qd">Advance tax at 1.5% of the gain</span></button>
+          <button type="button" class="at-q" data-hold="individual" style="text-align:left;padding:13px 15px">
+            <span class="qn">Individual Investor</span><span class="qd">Section 147(5B) does not apply</span></button>
+        </div>
+      </div>
+
+      <div class="at-note at-note-info">
+        Advance tax under Section 147(5B) is payable to the Commissioner within <strong>21 days after the close of each
+        quarter</strong>. The sub-section is <strong>not applicable to individual investors</strong>.
+      </div>
+    </div>
+
+    <!-- ============ 5. BUILDER ============ -->
+    <div class="at-card at-panel at-hide" id="panelBuilder">
+      <h2>Builder / Developer — Section 147(5C)</h2>
+      <p style="font-size:14px;color:var(--at-text);line-height:1.7;margin:0 0 12px">
+        Section 147(5C) applies to every person deriving income from the business of:</p>
+      <ul style="font-size:14px;color:var(--at-text);line-height:1.8;padding-left:20px;margin:0 0 14px">
+        <li>construction and disposal of residential, commercial or other buildings; or</li>
+        <li>development and sale of residential, commercial or other plots, for itself or otherwise.</li>
+      </ul>
+      <div class="at-note at-note-info" style="margin-top:0">
+        <strong>Project-by-Project Advance Tax — Four Equal Instalments.</strong> Adjustable advance tax is payable on a
+        project-by-project basis, as prescribed, at the rates specified in Part IIB of the First Schedule, in four equal
+        instalments, on the due dates under sub-sections (5) and (5A).
+      </div>
+      <div class="at-note at-note-warn">
+        <strong>Rate not included in this calculator.</strong> Refer to Part IIB of the First Schedule for the
+        applicable rate.
+      </div>
+      <div class="at-actions">
+        <a class="at-btn" style="border:1.5px solid var(--at-navy);color:var(--at-navy)"
+           href="{% url 'income_tax_rates' %}">View Applicable Rate →</a>
+      </div>
+    </div>
+
+    <!-- ============ 6. QUARTER ============ -->
+    <div class="at-card at-panel" id="panelQuarter">
+      <h2>Select Quarter</h2>
+      <div class="at-quarters" id="atQuarters">
+        <button type="button" class="at-q on" data-q="sep"><span class="qn">September</span><span class="qd" data-due>15 Sep</span></button>
+        <button type="button" class="at-q" data-q="dec"><span class="qn">December</span><span class="qd" data-due>15 Dec</span></button>
+        <button type="button" class="at-q" data-q="mar"><span class="qn">March</span><span class="qd" data-due>15 Mar</span></button>
+        <button type="button" class="at-q" data-q="jun"><span class="qn">June</span><span class="qd" data-due>15 Jun</span></button>
+      </div>
+      <div class="at-note at-note-info" id="dueNote">Individuals pay by the 15th day of September, December, March and June.</div>
+    </div>
+
+    <div style="margin:6px 0 20px">
+      <button type="button" class="at-btn at-btn-go" id="atCalc">Calculate Advance Tax</button>
+    </div>
+
+    <!-- ============ 7. RESULT ============ -->
+    <div class="at-result" id="atResult">
+      <div class="rl">Estimated Advance Tax Payable</div>
+      <div class="rv" id="resValue">Rs. 0</div>
+      <div class="rsub" id="resSub"></div>
+
+      <div class="at-sum">
+        <div class="sh">Calculation Summary</div>
+        <div id="resRows"></div>
+        <div class="at-formula" id="resFormula"></div>
+      </div>
+
+      <div class="at-actions">
+        <button type="button" class="at-btn at-btn-ghost" id="btnReset">↺ Reset Calculator</button>
+        <button type="button" class="at-btn at-btn-ghost" id="btnPrint">🖨 Print Result</button>
+        <button type="button" class="at-btn at-btn-ghost" id="btnShare">🔗 Share Result</button>
+        <button type="button" class="at-btn at-btn-ghost" id="btnDownload">⬇ Download Calculation</button>
+      </div>
+    </div>
+
+    <div class="at-card" id="discCard" style="display:none">
+      <div class="at-disc" style="border-top:none;padding-top:0;margin-top:0">
+        <strong style="color:var(--at-mid)">Disclaimer:</strong> This calculator provides an estimate based on the
+        information entered by the user and the Section 147 provisions incorporated into the calculator. It is intended
+        for educational purposes and does not constitute tax or legal advice. Taxpayers should verify their actual
+        liability under the applicable Income Tax Ordinance, Finance Act, rules, notifications and other relevant
+        provisions.
+      </div>
+    </div>
+
+    <!-- ============ 8. SCHEDULE ============ -->
+    <div class="at-card" id="schedCard">
+      <h2>Quarterly Payment Schedule</h2>
+      <div class="at-scroll">
+        <table class="at-table">
+          <thead><tr><th>Quarter</th><th>Period</th><th>Due Date</th></tr></thead>
+          <tbody id="schedBody"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- ============ 9. SEO CONTENT ============ -->
+    <div class="at-seo">
+
+      <h2>What is Section 147 Advance Tax?</h2>
+      <p>Advance tax under Section 147 of the Income Tax Ordinance, 2001 is income tax paid <strong>during</strong> the
+        tax year in four quarterly instalments, rather than as a single payment when the return is filed. It is not an
+        additional tax: under Section 147(8) a taxpayer who has paid advance tax is allowed a tax credit for it in
+        computing the tax due on taxable income for that year, and under Section 147(10) any credit that cannot be
+        applied is refunded.</p>
+
+      <h2>Who Has to Pay Advance Tax?</h2>
+      <p>Every taxpayer whose income was charged to tax for the latest tax year is liable, other than in respect of the
+        income excluded by Section 147(1):</p>
+      <ul>
+        <li>income chargeable to tax under Sections 5, 6 and 7 — clause (b);</li>
+        <li>income subject to deduction of tax at source under Section 149 (salary) — clause (c);</li>
+        <li>income from which tax has been collected under Division II or deducted under Division III, or deducted or
+          collected under Chapter XII, and for which no tax credit is allowed as a result of Section 168(3) —
+          clause (d).</li>
+      </ul>
+      <p>Under Section 147(2), the section <strong>does not apply to an individual</strong> where the individual's
+        latest assessed taxable income — excluding the income referred to in clauses (b), (c) and (d) — is less than
+        <strong>Rs. 1,000,000</strong>. Companies and associations of persons are liable irrespective of any such
+        threshold.</p>
+
+      <h2>Section 147 Formula for Individuals</h2>
+      <div class="at-fbox">
+        <div class="fm">(A ÷ 4) − B</div>
+        <div class="fd">
+          <strong>A</strong> — tax assessed to the taxpayer for the latest tax year, or the latest assessment year under
+          the repealed Ordinance. Tax assessed includes liability under Section 4C.<br>
+          <strong>B</strong> — tax paid in the quarter for which a tax credit is allowed under Section 168,
+          <strong>other than tax deducted under Section 149</strong>.
+        </div>
+      </div>
+      <p>This formula applies where the individual has latest assessed income of Rs. 1,000,000 or more as determined
+        under Section 147(2).</p>
+
+      <h2>Section 147 Formula for Companies and AOPs</h2>
+      <div class="at-fbox">
+        <div class="fm">(A × B ÷ C) − D</div>
+        <div class="fd">
+          <strong>A</strong> — the taxpayer's turnover for the quarter.<br>
+          <strong>B</strong> — the tax assessed to the taxpayer for the latest tax year. Tax assessed includes tax under
+          Sections 4C, 113 and 113C.<br>
+          <strong>C</strong> — the taxpayer's turnover for the latest tax year.<br>
+          <strong>D</strong> — the tax paid in the quarter for which a tax credit is allowed under Section 168.
+        </div>
+      </div>
+      <p>Where the taxpayer fails to provide turnover, or the turnover for the quarter is not known, it is taken to be
+        <strong>one-fourth of one hundred and twenty percent of the turnover of the latest tax year</strong> for which a
+        return has been filed. Under Section 147(4AA), tax liability under Sections 4C, 113 and 113C is also taken into
+        account when working out advance tax.</p>
+      <p>Under Section 147(6A), a company or an association of persons must pay advance tax <strong>even in the absence
+        of last assessed income or declared turnover</strong> — estimating the amount on the basis of quarterly
+        turnover, taking into account tax payable under Sections 113 and 113C, and adjusting for amounts already paid.</p>
+
+      <h2>Section 147 Quarterly Due Dates</h2>
+      <div class="at-scroll">
+        <table class="at-table">
+          <thead><tr><th>Quarter</th><th>Individual — s.147(5)</th><th>Company / AOP — s.147(5A)</th></tr></thead>
+          <tbody>
+            <tr><td>September</td><td>15 September</td><td>25 September</td></tr>
+            <tr><td>December</td><td>15 December</td><td>25 December</td></tr>
+            <tr><td>March</td><td>15 March</td><td>25 March</td></tr>
+            <tr><td>June</td><td>15 June</td><td>15 June</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h2>Advance Tax on Capital Gains from Securities</h2>
+      <p>Section 147(5B) charges adjustable advance tax on capital gain from the sale of securities:</p>
+      <div class="at-scroll">
+        <table class="at-table">
+          <thead><tr><th>Holding Period</th><th>Rate of Advance Tax</th></tr></thead>
+          <tbody>
+            <tr><td>Less than six months</td><td>2% of the capital gains derived during the quarter</td></tr>
+            <tr><td>More than six but less than twelve months</td><td>1.5% of the capital gains derived during the quarter</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p>Such advance tax is payable to the Commissioner within <strong>twenty-one days</strong> after the close of each
+        quarter. The provisions of this sub-section are <strong>not applicable to individual investors</strong>.</p>
+
+      <h2>Advance Tax for Builders and Developers</h2>
+      <p>Under Section 147(5C), every person deriving income from the construction and disposal of residential,
+        commercial or other buildings, or the development and sale of plots, is liable to pay adjustable advance tax on
+        a <strong>project-by-project basis</strong>, as prescribed, at the rates specified in Part IIB of the First
+        Schedule, in <strong>four equal instalments</strong>, payable in accordance with sub-sections (5) and (5A).</p>
+
+      <h2>How Advance Tax is Adjusted in the Income Tax Return?</h2>
+      <p>A taxpayer who has paid advance tax for a tax year is allowed a tax credit for that tax in computing the tax
+        due on taxable income for that year (Section 147(8)). The credit is applied in accordance with Section 4(3)
+        (Section 147(9)), and any credit or part of a credit that cannot be applied is refunded to the taxpayer
+        (Section 147(10)). Under Section 147(7), advance tax due is treated as if it were tax due under an assessment
+        order.</p>
+
+      <h3>Paying less than the formula amount</h3>
+      <p>Under Section 147(6), a taxpayer who estimates before the last instalment is due that the tax payable for the
+        year is likely to be less than the formula amount may furnish an estimate and pay accordingly. The estimate must
+        contain turnover for the completed quarters, estimated turnover for the remaining quarters with reasons for any
+        decline, documentary evidence of estimated expenses or deductions, evidence of tax payments and credits, and a
+        computation of estimated taxable income. Under Section 147(6B) the Commissioner may reject an inadequate
+        estimate after providing an opportunity of being heard.</p>
+
+      <h3>Paying more than the formula amount</h3>
+      <p>Under Section 147(4A), any taxpayer required to pay under sub-section (4) — including a banking company — must
+        estimate the tax payable for the year before the second instalment is due. Where the tax payable is likely to
+        exceed the formula amount, the taxpayer furnishes the estimate on or before the due date of the second quarter,
+        pays fifty per cent of that amount by that date after adjusting amounts already paid, and pays the remaining
+        fifty per cent in two equal instalments by the due dates of the third and fourth quarters.</p>
+
+      <h2>Frequently Asked Questions</h2>
+
+      <h3>1. What is advance tax under Section 147?</h3>
+      <p>It is income tax paid in four quarterly instalments during the tax year rather than a single payment at filing.
+        It is fully adjustable against the final liability, and any excess is refunded.</p>
+
+      <h3>2. Who has to pay advance tax?</h3>
+      <p>Companies and AOPs pay quarterly regardless of income level. Individuals pay only where latest assessed taxable
+        income, excluding the income in Section 147(1)(b), (c) and (d), is Rs. 1,000,000 or more.</p>
+
+      <h3>3. Is advance tax payable on salary?</h3>
+      <p>No. Income subject to deduction under Section 149 is excluded by Section 147(1)(c). For individuals, tax
+        deducted under Section 149 is also excluded from component B of the formula.</p>
+
+      <h3>4. Is advance tax payable on final tax income?</h3>
+      <p>Income from which tax has been collected or deducted and for which no tax credit is allowed as a result of
+        Section 168(3) is excluded under Section 147(1)(d).</p>
+
+      <h3>5. What is the individual formula?</h3>
+      <p>(A ÷ 4) − B, where A is tax assessed for the latest tax year and B is tax paid in the quarter creditable under
+        Section 168, other than tax deducted under Section 149.</p>
+
+      <h3>6. What is the company and AOP formula?</h3>
+      <p>(A × B ÷ C) − D, where A is the quarter's turnover, B is tax assessed for the latest tax year, C is turnover
+        for the latest tax year and D is tax paid in the quarter creditable under Section 168.</p>
+
+      <h3>7. What if the quarter's turnover is not known?</h3>
+      <p>It is taken to be one-fourth of one hundred and twenty percent of the turnover of the latest tax year for which
+        a return has been filed.</p>
+
+      <h3>8. Does a new company with no assessment history pay advance tax?</h3>
+      <p>Yes. Under Section 147(6A), advance tax is payable in the absence of last assessed income or declared turnover.
+        The taxpayer estimates the amount on the basis of quarterly turnover, accounts for liability under Sections 113
+        and 113C, and adjusts amounts already paid.</p>
+
+      <h3>9. Is advance tax charged on capital gains from securities?</h3>
+      <p>Yes, under Section 147(5B) — 2% where the holding period is less than six months and 1.5% where it is more than
+        six but less than twelve months, payable within twenty-one days after the close of each quarter. It does not
+        apply to individual investors.</p>
+
+      <h3>10. What happens if advance tax is not paid?</h3>
+      <p>Under Section 147(7) the provisions of the Ordinance apply to advance tax due as if the amount were tax due
+        under an assessment order, so the normal recovery machinery applies, along with default surcharge on the
+        shortfall for the period of default.</p>
+
+      <div class="at-disc">
+        <strong>Disclaimer:</strong> This calculator and the accompanying explanation are provided for educational
+        purposes only and do not constitute tax or legal advice. Thresholds, rates, due dates and computation rules
+        under the Income Tax Ordinance, 2001 are amended through Finance Acts and FBR notifications. Always verify the
+        current position at <a href="https://fbr.gov.pk" target="_blank" rel="noopener" style="color:var(--at-green-dark)">fbr.gov.pk</a>
+        or consult a qualified tax practitioner before acting. TaxBuddy Umair is not affiliated with FBR.
+      </div>
+    </div>
+
+  </main>
+
+  <aside class="content-sidebar">
+    {% include 'partials/sidebar.html' %}
+  </aside>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+/* ============================================================
+   Section 147 Advance Tax — calculation layer
+   AT.calc(input) is pure: same inputs -> same output. Mirror this
+   in Python (services/advance_tax.py) for server-side validation.
+   Money is handled in paisa (integers) to avoid float drift.
+   ============================================================ */
+(function(){
+  'use strict';
+
+  var AT = {};
+
+  /* ---------- money helpers (integer paisa) ---------- */
+  function toPaisa(v){                       // "1,500,000.50" -> 150000050
+    if(v === null || v === undefined) return 0;
+    var s = String(v).replace(/[^0-9.]/g,'');
+    if(s === '' ) return 0;
+    var parts = s.split('.');
+    var rupees = parseInt(parts[0] || '0', 10);
+    var frac = ((parts[1] || '') + '00').slice(0,2);
+    return rupees * 100 + parseInt(frac, 10);
+  }
+  function fmt(paisa){                        // 150000050 -> "Rs. 1,500,000.50"
+    var neg = paisa < 0; paisa = Math.abs(Math.round(paisa));
+    var r = Math.floor(paisa / 100), c = paisa % 100;
+    var s = String(r).replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+    return (neg ? '-' : '') + 'Rs. ' + s + (c ? '.' + (c < 10 ? '0' + c : c) : '');
+  }
+  function fmtPlain(paisa){                   // for CSV/plain text
+    return fmt(paisa).replace('Rs. ','');
+  }
+  AT.toPaisa = toPaisa; AT.fmt = fmt;
+
+  /* ---------- statutory constants (Section 147 only) ---------- */
+  var THRESHOLD_INDIVIDUAL = 1000000 * 100;   // s.147(2) — Rs 1,000,000 in paisa
+  var UNKNOWN_TURNOVER_PCT = 120;             // s.147(4) proviso — 120%
+  var UNKNOWN_TURNOVER_DIV = 4;               // s.147(4) proviso — one-fourth
+  var CG_RATE_LT6  = 2.0;                     // s.147(5B)
+  var CG_RATE_6T12 = 1.5;                     // s.147(5B)
+
+  var DUE = {
+    individual: {sep:'15 September', dec:'15 December', mar:'15 March', jun:'15 June'},
+    business:   {sep:'25 September', dec:'25 December', mar:'25 March', jun:'15 June'}
+  };
+  var QPERIOD = {sep:'July – September', dec:'October – December', mar:'January – March', jun:'April – June'};
+  var QNAME   = {sep:'September Quarter', dec:'December Quarter', mar:'March Quarter', jun:'June Quarter'};
+
+  /* ============================================================
+     CORE CALCULATION
+     ============================================================ */
+  AT.calc = function(i){
+    var out = {applicable:true, payable:0, rows:[], formula:'', note:'', label:'Estimated Advance Tax Payable'};
+
+    /* ---- INDIVIDUAL — s.147(2) threshold then s.147(4B) ---- */
+    if(i.type === 'individual'){
+      if(i.income < THRESHOLD_INDIVIDUAL){
+        out.applicable = false;
+        out.headline = 'Not Applicable';
+        out.note = 'Section 147 Advance Tax: Not Applicable based on the Rs. 1,000,000 threshold. Under Section 147(2) '
+                 + 'the section does not apply where the individual\u2019s latest assessed taxable income, excluding the '
+                 + 'income referred to in Section 147(1)(b), (c) and (d), is less than Rs. 1,000,000.';
+        out.rows = [
+          ['Taxpayer Type','Individual'],
+          ['Latest Assessed Taxable Income', fmt(i.income)],
+          ['Threshold — s.147(2)', fmt(THRESHOLD_INDIVIDUAL)],
+          ['Result','Below threshold — not liable']
+        ];
+        return out;
+      }
+      var quarterShare = Math.round(i.taxAssessed / 4);
+      var raw = quarterShare - i.credit;
+      out.payable = Math.max(0, raw);
+      out.formula = '(A \u00f7 4) \u2212 B  =  (' + fmt(i.taxAssessed) + ' \u00f7 4) \u2212 ' + fmt(i.credit)
+                  + '  =  <code>' + fmt(out.payable) + '</code>';
+      out.rows = [
+        ['Taxpayer Type','Individual'],
+        ['Latest Assessed Taxable Income', fmt(i.income)],
+        ['Latest Assessed Tax (A)', fmt(i.taxAssessed)],
+        ['One Quarter\u2019s Share (A \u00f7 4)', fmt(quarterShare)],
+        ['Eligible Tax Credit (B)', '\u2212 ' + fmt(i.credit)],
+        ['Quarter', QNAME[i.quarter]],
+        ['Due Date', DUE.individual[i.quarter]]
+      ];
+      if(raw < 0){
+        out.note = 'The eligible credit exceeds one quarter\u2019s share, so no advance tax is payable for this quarter. '
+                 + 'Excess credit available: ' + fmt(Math.abs(raw)) + '.';
+      }
+      return out;
+    }
+
+    /* ---- SECURITIES — s.147(5B) ---- */
+    if(i.type === 'securities'){
+      if(i.holding === 'individual'){
+        out.applicable = false;
+        out.headline = 'Not Applicable';
+        out.note = 'Section 147(5B) is not applicable to individual investors.';
+        out.rows = [
+          ['Taxpayer Type','Individual Investor'],
+          ['Capital Gains for the Quarter', fmt(i.gain)],
+          ['Result','Sub-section (5B) does not apply']
+        ];
+        return out;
+      }
+      var rate = (i.holding === 'lt6') ? CG_RATE_LT6 : CG_RATE_6T12;
+      out.payable = Math.round(i.gain * rate / 100);
+      out.formula = 'Capital Gains \u00d7 ' + rate + '%  =  ' + fmt(i.gain) + ' \u00d7 ' + rate
+                  + '%  =  <code>' + fmt(out.payable) + '</code>';
+      out.rows = [
+        ['Taxpayer Type','Capital Gains \u2014 Securities'],
+        ['Holding Period', i.holding === 'lt6' ? 'Less than 6 months' : 'More than 6 but less than 12 months'],
+        ['Capital Gains for the Quarter', fmt(i.gain)],
+        ['Applicable Rate', rate + '%'],
+        ['Payment Deadline','Within 21 days after the close of the quarter']
+      ];
+      out.note = 'Payable within 21 days after the close of each quarter.';
+      return out;
+    }
+
+    /* ---- COMPANY / AOP ---- */
+    var typeLabel = (i.type === 'company') ? 'Company' : 'Association of Persons (AOP)';
+
+    /* s.147(6A) — no last assessed income / declared turnover */
+    if(i.noHistory){
+      var estRaw = i.estLiability - i.estPaid;
+      out.payable = Math.max(0, estRaw);
+      out.label = 'Estimated Advance Tax';
+      out.formula = 'Estimated liability \u2212 tax already paid  =  ' + fmt(i.estLiability) + ' \u2212 '
+                  + fmt(i.estPaid) + '  =  <code>' + fmt(out.payable) + '</code>';
+      out.rows = [
+        ['Taxpayer Type', typeLabel + ' \u2014 s.147(6A)'],
+        ['Turnover for the Quarter', fmt(i.estQtrTurnover)],
+        ['Estimated Tax Liability', fmt(i.estLiability)],
+        ['Tax Already Paid', '\u2212 ' + fmt(i.estPaid)],
+        ['Quarter', QNAME[i.quarter]],
+        ['Due Date', DUE.business[i.quarter]]
+      ];
+      out.note = 'Estimated under Section 147(6A) on the basis of quarterly turnover, taking into account liability '
+               + 'under Sections 113 and 113C and adjusting amounts already paid. Section 147 does not prescribe a '
+               + 'fixed rate for this situation \u2014 the estimate is the taxpayer\u2019s own.';
+      return out;
+    }
+
+    /* s.147(4) — normal formula */
+    var A = i.qtrTurnover;
+    var derivedNote = '';
+    if(i.unknownTurnover){
+      A = Math.round(i.yearTurnover * UNKNOWN_TURNOVER_PCT / 100 / UNKNOWN_TURNOVER_DIV);
+      derivedNote = 'Quarterly turnover was not available, so it has been taken as one-fourth of 120% of the turnover '
+                  + 'of the latest tax year: ' + fmt(i.yearTurnover) + ' \u00d7 120% \u00f7 4 = ' + fmt(A) + '.';
+    }
+    var extra = i.tax4C + i.tax113 + i.tax113C;   // s.147(4AA)
+    var B = i.taxAssessed + extra;
+    var base = Math.round(A * B / i.yearTurnover);
+    var rawBiz = base - i.credit;
+    out.payable = Math.max(0, rawBiz);
+    out.formula = '(A \u00d7 B \u00f7 C) \u2212 D  =  (' + fmt(A) + ' \u00d7 ' + fmt(B) + ' \u00f7 ' + fmt(i.yearTurnover)
+                + ') \u2212 ' + fmt(i.credit) + '  =  <code>' + fmt(out.payable) + '</code>';
+
+    out.rows = [
+      ['Taxpayer Type', typeLabel],
+      ['Turnover for the Quarter (A)', fmt(A) + (i.unknownTurnover ? ' (derived)' : '')],
+      ['Tax Assessed \u2014 Latest Year (B)', fmt(B) + (extra > 0 ? ' (incl. 4C/113/113C)' : '')],
+      ['Turnover \u2014 Latest Year (C)', fmt(i.yearTurnover)],
+      ['Effective Rate (B \u00f7 C)', (i.yearTurnover ? (B / i.yearTurnover * 100).toFixed(3) : '0') + '%'],
+      ['Computed (A \u00d7 B \u00f7 C)', fmt(base)],
+      ['Eligible Tax Credit (D)', '\u2212 ' + fmt(i.credit)],
+      ['Quarter', QNAME[i.quarter]],
+      ['Due Date', DUE.business[i.quarter]]
+    ];
+    var notes = [];
+    if(derivedNote) notes.push(derivedNote);
+    if(extra > 0) notes.push('Liability under Sections 4C, 113 and 113C of ' + fmt(extra)
+                             + ' has been added to tax assessed under Section 147(4AA).');
+    if(rawBiz < 0) notes.push('The eligible credit exceeds the computed amount, so no advance tax is payable for this '
+                             + 'quarter. Excess credit available: ' + fmt(Math.abs(rawBiz)) + '.');
+    out.note = notes.join(' ');
+    return out;
+  };
+
+  /* ============================================================
+     UI LAYER
+     ============================================================ */
+  var state = {type:'individual', quarter:'sep', holding:'lt6'};
+
+  function $(id){ return document.getElementById(id); }
+  function val(id){ var el = $(id); return el ? toPaisa(el.value) : 0; }
+  function blank(id){ var el = $(id); return !el || el.value.replace(/[^0-9.]/g,'') === ''; }
+
+  /* live thousand-separator formatting */
+  function attachFormat(el){
+    el.addEventListener('input', function(){
+      var caretEnd = el.selectionStart === el.value.length;
+      var raw = el.value.replace(/[^0-9.]/g,'');
+      var parts = raw.split('.');
+      var intPart = (parts[0] || '').replace(/^0+(?=\d)/,'');
+      var pretty = intPart.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+      if(parts.length > 1) pretty += '.' + parts[1].slice(0,2);
+      el.value = pretty;
+      if(caretEnd){ el.selectionStart = el.selectionEnd = el.value.length; }
+      el.classList.remove('err');
+      var e = $('err' + el.id.charAt(0).toUpperCase() + el.id.slice(1));
+      if(e) e.classList.remove('show');
+    });
+  }
+  Array.prototype.forEach.call(document.querySelectorAll('.at-field input[type=text]'), attachFormat);
+
+  /* ---- panel switching ---- */
+  var PANELS = {
+    individual: ['panelIndividual','panelQuarter'],
+    company:    ['panelBusiness','panelQuarter'],
+    aop:        ['panelBusiness','panelQuarter'],
+    securities: ['panelSecurities'],
+    builder:    ['panelBuilder']
+  };
+  function showPanels(){
+    var show = PANELS[state.type] || [];
+    ['panelIndividual','panelBusiness','panelSecurities','panelBuilder','panelQuarter'].forEach(function(id){
+      var el = $(id); if(!el) return;
+      if(show.indexOf(id) >= 0) el.classList.remove('at-hide'); else el.classList.add('at-hide');
+    });
+    $('atCalc').parentNode.style.display = (state.type === 'builder') ? 'none' : '';
+    $('schedCard').style.display = (state.type === 'builder' || state.type === 'securities') ? 'none' : '';
+    if(state.type === 'company') $('bizHeading').textContent = 'Company';
+    if(state.type === 'aop')     $('bizHeading').textContent = 'Association of Persons';
+    updateDueLabels();
+    hideResult();
+    buildSchedule();
+  }
+
+  function isBusiness(){ return state.type === 'company' || state.type === 'aop'; }
+
+  function updateDueLabels(){
+    var map = isBusiness() ? DUE.business : DUE.individual;
+    Array.prototype.forEach.call(document.querySelectorAll('#atQuarters .at-q'), function(b){
+      b.querySelector('[data-due]').textContent = map[b.dataset.q].replace(/(\d+) (\w{3})\w*/, '$1 $2');
+    });
+    $('dueNote').innerHTML = isBusiness()
+      ? 'Companies and AOPs pay by the 25th day of September, December and March, and the <strong>15th day of June</strong> — Section 147(5A).'
+      : 'Individuals pay by the 15th day of September, December, March and June — Section 147(5).';
+  }
+
+  function buildSchedule(){
+    var map = isBusiness() ? DUE.business : DUE.individual;
+    var html = '';
+    ['sep','dec','mar','jun'].forEach(function(q){
+      html += '<tr class="' + (q === state.quarter ? 'now' : '') + '"><td>' + QNAME[q].replace(' Quarter','')
+            + '</td><td>' + QPERIOD[q] + '</td><td>' + map[q] + '</td></tr>';
+    });
+    $('schedBody').innerHTML = html;
+  }
+
+  /* ---- selectors ---- */
+  Array.prototype.forEach.call(document.querySelectorAll('#atTypes .at-type'), function(btn){
+    btn.addEventListener('click', function(){
+      document.querySelectorAll('#atTypes .at-type').forEach(function(b){ b.classList.remove('on'); });
+      btn.classList.add('on');
+      state.type = btn.dataset.type;
+      showPanels();
+    });
+  });
+  Array.prototype.forEach.call(document.querySelectorAll('#atQuarters .at-q'), function(btn){
+    btn.addEventListener('click', function(){
+      document.querySelectorAll('#atQuarters .at-q').forEach(function(b){ b.classList.remove('on'); });
+      btn.classList.add('on');
+      state.quarter = btn.dataset.q;
+      buildSchedule(); hideResult();
+    });
+  });
+  Array.prototype.forEach.call(document.querySelectorAll('#secOptions .at-q'), function(btn){
+    btn.addEventListener('click', function(){
+      document.querySelectorAll('#secOptions .at-q').forEach(function(b){ b.classList.remove('on'); });
+      btn.classList.add('on');
+      state.holding = btn.dataset.hold;
+      hideResult();
+    });
+  });
+
+  $('bizNoHistory').addEventListener('change', function(){
+    $('bizNormal').classList.toggle('at-hide', this.checked);
+    $('bizEstimate').classList.toggle('at-hide', !this.checked);
+    hideResult();
+  });
+  $('bizUnknownTurnover').addEventListener('change', function(){
+    var f = $('bizQtrTurnover');
+    f.disabled = this.checked;
+    f.style.opacity = this.checked ? .5 : 1;
+    if(this.checked){ f.classList.remove('err'); $('errBizQtrTurnover').classList.remove('show'); }
+    hideResult();
+  });
+
+  /* ---- validation ---- */
+  function fail(id, msg){
+    var el = $(id); if(el) el.classList.add('err');
+    var e = $('err' + id.charAt(0).toUpperCase() + id.slice(1));
+    if(e){ if(msg) e.textContent = msg; e.classList.add('show'); }
+    return false;
+  }
+  function clearErrors(){
+    document.querySelectorAll('.at-field input').forEach(function(i){ i.classList.remove('err'); });
+    document.querySelectorAll('.at-err').forEach(function(e){ e.classList.remove('show'); });
+  }
+
+  function collect(){
+    clearErrors();
+    var ok = true;
+
+    if(state.type === 'individual'){
+      if(blank('indIncome')) ok = fail('indIncome');
+      if(!blank('indIncome') && val('indIncome') >= THRESHOLD_INDIVIDUAL && blank('indTax')) ok = fail('indTax');
+      if(!ok) return null;
+      return {type:'individual', quarter:state.quarter,
+              income:val('indIncome'), taxAssessed:val('indTax'), credit:val('indCredit')};
+    }
+
+    if(state.type === 'securities'){
+      if(state.holding !== 'individual' && blank('secGain')) ok = fail('secGain');
+      if(!ok) return null;
+      return {type:'securities', gain:val('secGain'), holding:state.holding, quarter:state.quarter};
+    }
+
+    // company / aop
+    var noHistory = $('bizNoHistory').checked;
+    if(noHistory){
+      if(blank('estQtrTurnover')) ok = fail('estQtrTurnover');
+      if(blank('estLiability'))   ok = fail('estLiability');
+      if(!ok) return null;
+      return {type:state.type, quarter:state.quarter, noHistory:true,
+              estQtrTurnover:val('estQtrTurnover'), estLiability:val('estLiability'), estPaid:val('estPaid')};
+    }
+
+    var unknown = $('bizUnknownTurnover').checked;
+    if(!unknown && blank('bizQtrTurnover')) ok = fail('bizQtrTurnover');
+    if(blank('bizTaxAssessed')) ok = fail('bizTaxAssessed');
+    if(blank('bizYearTurnover') || val('bizYearTurnover') <= 0)
+      ok = fail('bizYearTurnover','Turnover for the latest tax year must be greater than zero.');
+    if(!ok) return null;
+
+    return {type:state.type, quarter:state.quarter, noHistory:false, unknownTurnover:unknown,
+            qtrTurnover:val('bizQtrTurnover'), taxAssessed:val('bizTaxAssessed'),
+            yearTurnover:val('bizYearTurnover'), credit:val('bizCredit'),
+            tax4C:val('biz4C'), tax113:val('biz113'), tax113C:val('biz113C')};
+  }
+
+  /* ---- render ---- */
+  var lastResult = null, lastInput = null;
+
+  function hideResult(){
+    $('atResult').style.display = 'none';
+    $('discCard').style.display = 'none';
+  }
+
+  function render(res){
+    var rv = $('resValue');
+    if(res.applicable){
+      rv.classList.remove('na');
+      rv.textContent = fmt(res.payable);
+      $('atResult').querySelector('.rl').textContent = res.label;
+    }else{
+      rv.classList.add('na');
+      rv.textContent = res.headline;
+      $('atResult').querySelector('.rl').textContent = 'Result';
+    }
+    $('resSub').textContent = res.note || '';
+    $('resSub').style.display = res.note ? '' : 'none';
+
+    $('resRows').innerHTML = res.rows.map(function(r){
+      return '<div class="at-row"><span class="k">' + r[0] + '</span><span class="v">' + r[1] + '</span></div>';
+    }).join('');
+
+    var f = $('resFormula');
+    if(res.formula){ f.innerHTML = '<strong>Formula applied:</strong><br>' + res.formula; f.style.display = ''; }
+    else { f.style.display = 'none'; }
+
+    $('atResult').style.display = 'block';
+    $('discCard').style.display = 'block';
+    $('atResult').scrollIntoView({behavior:'smooth', block:'center'});
+  }
+
+  $('atCalc').addEventListener('click', function(){
+    var input = collect();
+    if(!input) return;
+    lastInput = input;
+    lastResult = AT.calc(input);
+    render(lastResult);
+    buildSchedule();
+  });
+
+  /* ---- actions ---- */
+  $('btnReset').addEventListener('click', function(){
+    document.querySelectorAll('.at-field input[type=text]').forEach(function(i){ i.value = ''; i.disabled = false; i.style.opacity = 1; });
+    $('bizNoHistory').checked = false; $('bizUnknownTurnover').checked = false;
+    $('bizNormal').classList.remove('at-hide'); $('bizEstimate').classList.add('at-hide');
+    clearErrors(); hideResult();
+    window.scrollTo({top: document.querySelector('.content-main').offsetTop - 20, behavior:'smooth'});
+  });
+
+  $('btnPrint').addEventListener('click', function(){ window.print(); });
+
+  $('btnShare').addEventListener('click', function(){
+    if(!lastResult) return;
+    var txt = 'Section 147 Advance Tax — ' + (lastResult.applicable ? fmt(lastResult.payable) : lastResult.headline)
+            + '\nCalculated with TaxBuddy Umair: ' + window.location.href;
+    if(navigator.share){
+      navigator.share({title:'Section 147 Advance Tax Calculator', text:txt, url:window.location.href}).catch(function(){});
+    }else if(navigator.clipboard){
+      navigator.clipboard.writeText(txt).then(function(){
+        var b = $('btnShare'), o = b.textContent; b.textContent = '✓ Copied';
+        setTimeout(function(){ b.textContent = o; }, 1800);
+      });
+    }
+  });
+
+  $('btnDownload').addEventListener('click', function(){
+    if(!lastResult) return;
+    var lines = ['Section 147 Advance Tax Calculation — TaxBuddy Umair',''];
+    lastResult.rows.forEach(function(r){ lines.push(r[0] + ',' + String(r[1]).replace(/,/g,'') ); });
+    lines.push('');
+    lines.push(lastResult.applicable ? ('Advance Tax Payable,' + fmtPlain(lastResult.payable).replace(/,/g,''))
+                                     : ('Result,' + lastResult.headline));
+    if(lastResult.note) lines.push('', 'Note,"' + lastResult.note.replace(/"/g,'""') + '"');
+    lines.push('', 'Generated,' + new Date().toLocaleString());
+    lines.push('Disclaimer,"Educational estimate only. Verify at fbr.gov.pk."');
+    var blob = new Blob([lines.join('\n')], {type:'text/csv;charset=utf-8;'});
+    var a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = 'advance-tax-section-147.csv';
+    document.body.appendChild(a); a.click(); document.body.removeChild(a);
+  });
+
+  /* ---- init ---- */
+  showPanels();
+  window.TaxBuddyAdvanceTax = AT;   // exposed for tests / server-side parity checks
+})();
+</script>
+{% endblock %}
