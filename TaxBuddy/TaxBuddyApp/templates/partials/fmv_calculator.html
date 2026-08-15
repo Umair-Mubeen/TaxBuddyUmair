@@ -84,6 +84,11 @@
 .fmv-inline .fmv-input{flex:1}
 .fmv-inline .fmv-select{width:120px;flex:none}
 .fmv-hint{font-size:12px;color:var(--text-light);margin-top:6px;line-height:1.45}
+.fmv-conv{display:none;margin-top:7px;background:var(--green-light);border:1px solid var(--border);border-radius:var(--radius);padding:8px 11px}
+.fmv-conv.show{display:block}
+.fmv-conv-main{font-size:13px;font-weight:700;color:var(--green-mid)}
+.fmv-conv-main span{font-size:11px;font-weight:500;color:var(--text-light)}
+.fmv-conv-sub{font-size:11.5px;color:var(--text-mid);margin-top:3px;line-height:1.5}
 
 /* ---- COMBOBOX ---- */
 .fmv-combo{position:relative}
@@ -190,6 +195,25 @@
 .fmv-legal-txt{padding:4px 14px 14px;font-size:12.5px;color:var(--text-mid);line-height:1.6}
 .fmv-disc{font-size:12px;color:var(--text-light);line-height:1.55;padding:14px 18px;background:#fafbfc;border-top:1px solid var(--border)}
 .fmv-disc b{color:var(--text-mid)}
+/* advance tax section */
+.fmv-atx{margin:16px 18px 0;border:1px solid var(--border);border-radius:var(--radius-lg);overflow:hidden}
+.fmv-atx-head{background:var(--navy);padding:12px 16px;display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap}
+.fmv-atx-head h3{color:#fff;font-size:14px;font-weight:700;margin:0}
+.fmv-toggle{display:inline-flex;background:rgba(255,255,255,.12);border-radius:20px;padding:3px}
+.fmv-toggle button{border:none;background:none;color:rgba(255,255,255,.7);font-size:12px;font-weight:700;
+  padding:6px 13px;border-radius:16px;cursor:pointer;transition:.15s;font-family:inherit}
+.fmv-toggle button.on{background:var(--green);color:#fff}
+.fmv-atx-sub{padding:11px 16px 0;font-size:12.5px;color:var(--text-mid)}
+.fmv-atx-cards{display:grid;grid-template-columns:1fr 1fr;gap:12px;padding:14px 16px}
+.fmv-atx-card{border:1.5px solid var(--border);border-radius:var(--radius);padding:14px;text-align:center;background:var(--white)}
+.fmv-atx-card.filer{border-color:var(--green);background:var(--green-light)}
+.fmv-atx-card.nonfiler{border-color:#FCA5A5;background:var(--red-light)}
+.fmv-atx-card .t{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.6px;color:var(--text-mid)}
+.fmv-atx-card.filer .t{color:var(--green-mid)}
+.fmv-atx-card.nonfiler .t{color:#c0392b}
+.fmv-atx-card .rate{font-size:13px;font-weight:600;color:var(--text-light);margin-top:3px}
+.fmv-atx-card .amt{font-family:var(--font-head);font-size:clamp(1.2rem,4.5vw,1.5rem);font-weight:800;color:var(--navy);margin-top:5px;line-height:1.1}
+.fmv-atx-note{font-size:11.5px;color:var(--text-light);line-height:1.5;padding:0 16px 14px}
 /* next-step CTA in result */
 .fmv-next{margin:16px 18px 0;background:linear-gradient(135deg,var(--navy) 0%,var(--navy-mid) 100%);border-radius:var(--fmv-radius-sm);
   padding:14px 16px;display:flex;align-items:center;gap:12px;flex-wrap:wrap}
@@ -200,7 +224,21 @@
   padding:10px 16px;border-radius:8px;white-space:nowrap;transition:filter .15s;flex:none}
 .fmv-next a:hover{filter:brightness(1.06)}
 
-/* ---- CONTENT (About / FAQ) ---- */
+/* ---- FORMULA REFERENCE (matches site .at-fbox) ---- */
+.fmv-formulas .fmv-card-body{padding-top:8px}
+.fmv-fgrid{display:grid;grid-template-columns:1fr;gap:12px}
+@media(min-width:620px){.fmv-fgrid{grid-template-columns:1fr 1fr}}
+.fmv-fbox{border:1px solid var(--border);border-radius:12px;padding:14px 16px;background:#f8fafc}
+.fmv-fbox .ttl{font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.04em;color:var(--green-mid);margin-bottom:6px;display:flex;align-items:center;gap:7px}
+.fmv-fbox .fm{font-size:15px;font-weight:800;color:var(--navy);letter-spacing:.01em;line-height:1.4}
+.fmv-fbox .fd{font-size:12.5px;color:var(--text-mid);margin-top:7px;line-height:1.65}
+.fmv-fbox .fd b{color:var(--text)}
+.fmv-ftable{width:100%;border-collapse:collapse;font-size:12.5px;margin-top:6px}
+.fmv-ftable td{padding:5px 0;border-bottom:1px dashed var(--border);color:var(--text-mid)}
+.fmv-ftable td:last-child{text-align:right;font-weight:700;color:var(--navy)}
+.fmv-ftable tr:last-child td{border-bottom:none}
+.fmv-fnote{grid-column:1/-1;font-size:12.5px;color:var(--text-mid);background:var(--green-light);
+  border:1px solid var(--border);border-radius:10px;padding:11px 14px;line-height:1.6}
 .fmv-main .fmv-card-body h3{font-family:var(--font-head);font-size:1.1rem;color:var(--navy);margin:0 0 10px}
 .fmv-main .fmv-card-body h3:not(:first-child){margin-top:22px;padding-top:20px;border-top:1px solid var(--border)}
 .fmv-main .fmv-card-body p{font-size:14.5px;color:var(--text-mid);line-height:1.72;margin:0 0 12px}
@@ -332,6 +370,30 @@
         </details>
       </div>
 
+      <div class="fmv-atx">
+        <div class="fmv-atx-head">
+          <h3>Advance tax on this value</h3>
+          <div class="fmv-toggle" id="fmvTxToggle">
+            <button type="button" class="on" data-tx="sale">Sale (236C)</button>
+            <button type="button" data-tx="purchase">Purchase (236K)</button>
+          </div>
+        </div>
+        <div class="fmv-atx-sub" id="fmvTxSub"></div>
+        <div class="fmv-atx-cards">
+          <div class="fmv-atx-card filer">
+            <div class="t">Filer</div>
+            <div class="rate" id="fmvTxFilerRate">—</div>
+            <div class="amt" id="fmvTxFilerAmt">—</div>
+          </div>
+          <div class="fmv-atx-card nonfiler">
+            <div class="t">Non-filer</div>
+            <div class="rate" id="fmvTxNonRate">—</div>
+            <div class="amt" id="fmvTxNonAmt">—</div>
+          </div>
+        </div>
+        <div class="fmv-atx-note">Advance tax under Section 236C (seller) / 236K (buyer), charged on the FBR value or declared price, whichever is higher. Rates are indicative — verify current rates before filing.</div>
+      </div>
+
       <div class="fmv-next">
         <div class="txt">
           <b>Next: work out the tax on this value</b>
@@ -344,6 +406,83 @@
         <b>Unofficial estimate.</b> This mirrors FBR's notified valuation table and the S.R.O. 144(I)/2025 rules
         for guidance only — it is not an official FBR valuation and won't capture every property-specific fact.
         Confirm the final figure against the FBR notification before filing.
+      </div>
+    </div>
+  </div>
+
+  <!-- FORMULA REFERENCE (after result) -->
+  <div class="fmv-card fmv-formulas">
+    <div class="fmv-card-head"><span class="ic">📋</span><h2>How the FMV is calculated — formulas</h2></div>
+    <div class="fmv-card-body">
+      <p style="font-size:13.5px;color:var(--text-mid);line-height:1.65;margin:0 0 14px">
+        Every value uses the FBR notified per-sq.ft rate for the area, then the S.R.O. 144(I)/2025
+        rules for the property type. Here is the exact method for each:</p>
+      <div class="fmv-fgrid">
+
+        <div class="fmv-fbox">
+          <div class="ttl">🏠 Residential / Commercial / Industrial Plot</div>
+          <div class="fm">FMV = Rate × Area</div>
+          <div class="fd"><b>Rate</b> = FBR open-plot rate for the area (Rs/sq.ft). <b>Area</b> converted to sq.ft
+            (1 sq.yd = 9, 1 Marla = 225, 1 Kanal = 4,500, 1 Acre = 43,560).</div>
+        </div>
+
+        <div class="fmv-fbox">
+          <div class="ttl">🏫 Amenity Plot</div>
+          <div class="fm">FMV = 50% × Residential rate × Area</div>
+          <div class="fd">Amenity plots are valued at half the area's residential open-plot rate (rule c).</div>
+        </div>
+
+        <div class="fmv-fbox">
+          <div class="ttl">🏡 Residential House (built-up)</div>
+          <div class="fm">Ground = Rate × covered area<br>+ 25% of ground value per extra storey<br>− age depreciation</div>
+          <div class="fd">Each qualifying upper storey (bedroom + bath) adds 25% of the ground-floor value (rule f).
+            Depreciation by age:</div>
+          <table class="fmv-ftable">
+            <tr><td>Up to 5 years</td><td>0%</td></tr>
+            <tr><td>5 – 10 years</td><td>−5%</td></tr>
+            <tr><td>10 – 15 years</td><td>−7.5%</td></tr>
+            <tr><td>15 – 25 years</td><td>−10%</td></tr>
+            <tr><td>Over 25 years</td><td>= open-plot value</td></tr>
+          </table>
+        </div>
+
+        <div class="fmv-fbox">
+          <div class="ttl">🏢 Flat / Apartment</div>
+          <div class="fm">FMV = Flat rate × covered area<br>− age depreciation</div>
+          <div class="fd">Depreciation by age (rule n):</div>
+          <table class="fmv-ftable">
+            <tr><td>Up to 5 years</td><td>0%</td></tr>
+            <tr><td>5 – 10 years</td><td>−10%</td></tr>
+            <tr><td>10 – 20 years</td><td>−20%</td></tr>
+            <tr><td>20 – 30 years</td><td>−30%</td></tr>
+            <tr><td>Over 30 years</td><td>−50%</td></tr>
+          </table>
+        </div>
+
+        <div class="fmv-fbox">
+          <div class="ttl">🏨 Commercial Building (built-up)</div>
+          <div class="fm">Ground = Rate × covered area<br>+ upper floors @ 75% of rate<br>+ basement @ 20% of ground value<br>− age depreciation</div>
+          <div class="fd">Upper floors −25% (rule q), basement 20% of ground value (rule k). Depreciation:</div>
+          <table class="fmv-ftable">
+            <tr><td>Up to 10 years</td><td>0%</td></tr>
+            <tr><td>10 – 15 years</td><td>−5%</td></tr>
+            <tr><td>15 – 25 years</td><td>−8%</td></tr>
+            <tr><td>Over 25 years</td><td>−10%</td></tr>
+          </table>
+        </div>
+
+        <div class="fmv-fbox">
+          <div class="ttl">⚙️ Industrial Built-up &nbsp;·&nbsp; 🔀 Mixed Purpose</div>
+          <div class="fm">Industrial: Rate × (plot + covered area)<br>Mixed: mean of applicable rates × Area</div>
+          <div class="fd">Industrial built-up applies the rate to the whole plot plus covered area (rule e).
+            Mixed-use land uses the average of the applicable residential / commercial / industrial rates (rule h).</div>
+        </div>
+
+        <div class="fmv-fnote">
+          <b>Adjustments:</b> DHA commercial plot facing a Khayaban <b>+15%</b> (rule p) ·
+          Special residential plot — nala / commercial / school / mosque / graveyard-facing, or rear/triangular —
+          <b>−20% once</b> (rule r).
+        </div>
       </div>
     </div>
   </div>
@@ -394,7 +533,8 @@
 
 {% block extra_js %}
 <script>
-const UNIT_OPTS=`<option value="sqyd">sq.yd</option><option value="sqft">sq.ft</option><option value="marla">Marla</option>`;
+const UNIT_OPTS=`<option value="sqyd">sq.yd</option><option value="sqft">sq.ft</option><option value="marla">Marla</option><option value="kanal">Kanal</option><option value="acre">Acre</option>`;
+const UNIT_SQFT={sqft:1,sqyd:9,marla:225,kanal:4500,acre:43560};
 const SPECIAL_OPTS=`<option value="">Normal plot</option>
   <option value="Nala-facing">Nala-facing</option>
   <option value="Commercial-facing">Facing a commercial road/plot</option>
@@ -405,8 +545,33 @@ function sizeField(id,label,fixed){
   const u=fixed
     ? `<div class="fmv-select" style="display:flex;align-items:center;justify-content:center;color:var(--text-light);width:120px;flex:none">sq.ft</div>`
     : `<select class="fmv-select" id="${id}_unit" aria-label="unit">${UNIT_OPTS}</select>`;
+  const conv=fixed?'':`<div class="fmv-conv" id="${id}_conv"></div>`;
   return `<div class="fmv-field"><label class="fmv-label" for="${id}">${label}</label>
-    <div class="fmv-inline"><input type="number" inputmode="decimal" min="0" step="any" class="fmv-input" id="${id}" placeholder="0">${u}</div></div>`;
+    <div class="fmv-inline"><input type="number" inputmode="decimal" min="0" step="any" class="fmv-input" id="${id}" placeholder="0">${u}</div>${conv}</div>`;
+}
+/* live "= X sq.ft" under a size input */
+function fmtSqft(n){return (Math.round(n*100)/100).toLocaleString('en-PK');}
+const UNIT_LABEL={sqft:'sq.ft',sqyd:'sq.yd',marla:'Marla',kanal:'Kanal',acre:'Acre'};
+function updateConv(id){
+  const inp=$(id), sel=$(id+'_unit'), box=$(id+'_conv');
+  if(!inp||!box)return;
+  const v=parseFloat(inp.value); const unit=sel?sel.value:'sqft';
+  if(!v||v<=0){box.classList.remove('show');box.innerHTML='';return;}
+  const sqft=v*(UNIT_SQFT[unit]||1);
+  let html=`<div class="fmv-conv-main">= ${fmtSqft(sqft)} sq.ft <span>(used for valuation)</span></div>`;
+  if(unit!=='sqft'){
+    html+=`<div class="fmv-conv-sub">1 ${UNIT_LABEL[unit]} = ${UNIT_SQFT[unit].toLocaleString('en-PK')} sq.ft</div>`;
+  }
+  box.innerHTML=html;
+  box.classList.add('show');
+}
+function wireConverters(){
+  document.querySelectorAll('#fmvFields input[type=number]').forEach(inp=>{
+    if(!$(inp.id+'_conv'))return;
+    const upd=()=>updateConv(inp.id);
+    inp.addEventListener('input',upd);
+    const sel=$(inp.id+'_unit'); if(sel)sel.addEventListener('change',upd);
+  });
 }
 function numField(id,label,hint){
   return `<div class="fmv-field"><label class="fmv-label" for="${id}">${label}</label>
@@ -518,6 +683,7 @@ function selectType(t,el){
   document.querySelectorAll('.fmv-type').forEach(x=>x.classList.remove('active'));
   el.classList.add('active');
   $('fmvFields').innerHTML=TYPE_FIELDS[t].map(f=>FIELD_BUILDERS[f]()).join('');
+  wireConverters();
   $('fmvFlagNote').style.display=selArea.is_flagged?'block':'none';
   $('fmvInputPanel').style.display='block';
   $('fmvCalcBtn').disabled=false;$('fmvErr').classList.remove('show');$('fmvResult').classList.remove('show');
@@ -560,6 +726,7 @@ function inWords(n){
   return String(n);
 }
 function renderResult(d){
+  FMV_VALUE=+d.final_fmv||0;
   $('fmvFinal').textContent=d.final_fmv_display;
   var w=$('fmvWords'); if(w) w.textContent='≈ Rs '+inWords(d.final_fmv);
   $('fmvArea').textContent=`${d.area} · FBR #${d.fbr_no}`;
@@ -580,8 +747,40 @@ function renderResult(d){
   $('fmvStepsBox').innerHTML=(d.calculation_steps||[]).map(s=>`<div class="s"><b>${s.label}</b>${s.detail}</div>`).join('');
 
   const box=$('fmvResult');box.classList.add('show');setRail(3);
+  renderAdvanceTax();
   box.scrollIntoView({behavior:'smooth',block:'start'});
 }
+
+/* ── ADVANCE TAX (236C / 236K) ── */
+var FMV_VALUE=0, txMode='sale';
+/* Rates (Tax Year 2025-26). Purchase (236K) is FMV-slab based. */
+function txRates(mode,fmv){
+  if(mode==='sale') return {label:'Sale / transfer (Section 236C)', filer:2.75, nonfiler:11.5, band:'On the Gross consideration'};
+  // purchase 236K — non-filer rate rises with FMV
+  var nf = fmv<=50000000 ? 10.5 : (fmv<=100000000 ? 14.5 : 18.5);
+  var band = fmv<=50000000 ? 'FMV up to Rs 50M' : (fmv<=100000000 ? 'FMV Rs 50M–100M' : 'FMV above Rs 100M');
+  return {label:'Purchase (Section 236K)', filer:1.25, nonfiler:nf, band:band};
+}
+function renderAdvanceTax(){
+  if(!FMV_VALUE)return;
+  var r=txRates(txMode, FMV_VALUE);
+  $('fmvTxSub').textContent=r.label+' · '+r.band;
+  $('fmvTxFilerRate').textContent=r.filer+'%';
+  $('fmvTxNonRate').textContent=r.nonfiler+'%';
+  $('fmvTxFilerAmt').textContent='Rs '+fmtNum(Math.round(FMV_VALUE*r.filer/100));
+  $('fmvTxNonAmt').textContent='Rs '+fmtNum(Math.round(FMV_VALUE*r.nonfiler/100));
+}
+(function wireTxToggle(){
+  var t=$('fmvTxToggle'); if(!t)return;
+  t.querySelectorAll('button').forEach(function(b){
+    b.addEventListener('click',function(){
+      txMode=b.dataset.tx;
+      t.querySelectorAll('button').forEach(x=>x.classList.toggle('on',x===b));
+      renderAdvanceTax();
+    });
+  });
+})();
+
 $('fmvCalcBtn').addEventListener('click',fmvCalculate);
 $('fmvCopy').onclick=function(){
   const t=$('fmvFinal').textContent.trim();

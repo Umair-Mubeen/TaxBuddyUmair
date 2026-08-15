@@ -25,11 +25,15 @@ ZERO = Decimal('0')
 # ── unit conversion ─────────────────────────────────────────────
 SQYD_TO_SQFT = D(9)          # 1 sq. yard = 9 sq. ft (Karachi)
 MARLA_TO_SQFT = D(225)       # 1 Marla = 25 sq.yd = 225 sq.ft  (configurable — see FLAGS)
+KANAL_TO_SQFT = D(4500)      # 1 Kanal = 20 Marla = 500 sq.yd = 4,500 sq.ft
+ACRE_TO_SQFT = D(43560)      # 1 Acre = 8 Kanal = 43,560 sq.ft
 
 UNIT_FACTORS = {
     'sqft':  D(1),
     'sqyd':  SQYD_TO_SQFT,
     'marla': MARLA_TO_SQFT,
+    'kanal': KANAL_TO_SQFT,
+    'acre':  ACRE_TO_SQFT,
 }
 
 # ── default rules (mirror S.R.O. 144(I)/2025) ───────────────────

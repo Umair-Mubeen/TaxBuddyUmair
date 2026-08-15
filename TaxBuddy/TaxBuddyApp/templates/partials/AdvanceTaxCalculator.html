@@ -12,7 +12,7 @@
      - builder/developer: 4 equal instalments   s.147(5C)  [rate NOT included]
    ============================================================ #}
 
-{% block title %}Section 147 Advance Tax Calculator Pakistan | Tax Year 2026 | TaxBuddy Umair{% endblock %}
+{% block title %}Section 147 Advance Tax Calculator Pakistan | Tax Year 202-27 | TaxBuddy Umair{% endblock %}
 {% block meta_desc %}Calculate advance tax under Section 147 of Pakistan's Income Tax Ordinance, 2001 for individuals, companies and AOPs — with quarterly due dates, formulas and worked results.{% endblock %}
 
 {% block schema_extra %}
@@ -156,6 +156,25 @@
   .at-seo p, .at-seo li{color:var(--at-text);font-size:14.5px;line-height:1.75}
   .at-seo ul{padding-left:20px}
   .at-fbox{border:1px solid var(--at-border);border-radius:12px;padding:16px 18px;margin:14px 0;background:#f8fafc}
+  .at-fbanner{border:1px solid var(--at-border);border-left:4px solid var(--at-green);border-radius:12px;
+    padding:14px 16px;margin-bottom:18px;background:#f0fdf4}
+  .at-fbanner .fb-tag{display:inline-block;background:var(--at-green);color:#fff;font-size:10.5px;font-weight:700;
+    text-transform:uppercase;letter-spacing:.05em;padding:3px 10px;border-radius:20px;margin-bottom:8px}
+  .at-fbanner .fb-fm{font-size:17px;font-weight:800;color:var(--at-navy);letter-spacing:.01em;line-height:1.4}
+  .at-fbanner .fb-fd{font-size:12.5px;color:var(--at-mid);margin-top:7px;line-height:1.65}
+  .at-fbanner .fb-fd b{color:var(--at-navy)}
+  .at-seo{background:none;padding:0}
+  .at-seo-card{background:#fff;border:1px solid var(--at-border);border-radius:16px;padding:20px 22px;margin-bottom:16px;box-shadow:0 1px 3px rgba(16,24,40,.04)}
+  .at-seo-card > h2:first-child, .at-seo-card > h3:first-child{margin-top:0}
+  .at-seo-card h2{font-size:1.15rem;margin:0 0 10px}
+  .at-seo-card h3{margin:16px 0 6px}
+  .at-seo-card p:last-child, .at-seo-card > div:last-child{margin-bottom:0}
+  .at-disc-card{position:relative;overflow:hidden;background:linear-gradient(135deg,var(--at-navy,#0A2647) 0%,#144272 100%);
+    border:none;border-radius:16px;padding:20px 22px;margin-top:8px;color:rgba(255,255,255,.85);line-height:1.65}
+  .at-disc-card::before{content:"";position:absolute;right:-40px;top:-40px;width:200px;height:200px;border-radius:50%;
+    background:radial-gradient(circle,rgba(13,158,114,.22),transparent 70%);pointer-events:none}
+  .at-disc-card strong{color:#fff}
+  .at-disc-card a{color:#5eead4 !important;text-decoration:underline}
   .at-fbox .fm{font-size:16px;font-weight:800;color:var(--at-navy);letter-spacing:.02em}
   .at-fbox .fd{font-size:13px;color:var(--at-mid);margin-top:8px;line-height:1.7}
   .at-disc{font-size:12.5px;color:var(--at-light);border-top:1px solid var(--at-border);padding-top:15px;
@@ -180,7 +199,7 @@
     </div>
     <h1>Section 147 Advance Tax Calculator — Pakistan</h1>
     <div class="article-meta">
-      <span>📅 Tax Year 2026</span>
+      <span>📅 Tax Year 2026-27</span>
       <span>🧮 Individuals · Companies · AOPs</span>
     </div>
   </div>
@@ -189,11 +208,13 @@
 <div class="content-grid">
   <main class="content-main">
 
-    <div class="at-badge">Income Tax Ordinance, 2001</div>
-    <p class="at-intro"><strong>Calculate advance tax payable under Section 147 of the Income Tax Ordinance, 2001.</strong>
-      This calculator helps taxpayers estimate advance tax payable under Section 147 based on the applicable taxpayer
-      category, latest assessed tax, turnover and eligible tax credits.</p>
-    <p class="at-intro" style="color:#98A2B3;font-size:13px;">For educational and estimation purposes only.</p>
+    <div class="at-card">
+      <div class="at-badge">Income Tax Ordinance, 2001</div>
+      <p class="at-intro" style="margin-bottom:0"><strong>Calculate advance tax payable under Section 147 of the Income Tax Ordinance, 2001.</strong>
+        This calculator helps taxpayers estimate advance tax payable under Section 147 based on the applicable taxpayer
+        category, latest assessed tax, turnover and eligible tax credits.
+        <span style="display:block;color:#98A2B3;font-size:13px;margin-top:6px">For educational and estimation purposes only.</span></p>
+    </div>
 
     <!-- ============ 1. TAXPAYER TYPE ============ -->
     <div class="at-card">
@@ -210,6 +231,13 @@
         <button type="button" class="at-type" data-type="builder">
           <span class="ic">🏗️</span><span class="tl">Builder / Developer</span></button>
       </div>
+    </div>
+
+    <!-- dynamic formula for the selected taxpayer type -->
+    <div class="at-fbanner" id="atFormulaBanner">
+      <div class="fb-tag" id="fbTag">Formula</div>
+      <div class="fb-fm" id="fbFm"></div>
+      <div class="fb-fd" id="fbFd"></div>
     </div>
 
     <!-- ============ 2. INDIVIDUAL ============ -->
@@ -469,14 +497,17 @@
     <!-- ============ 9. SEO CONTENT ============ -->
     <div class="at-seo">
 
-      <h2>What is Section 147 Advance Tax?</h2>
+      <div class="at-card at-seo-card">
+        <h2>What is Section 147 Advance Tax?</h2>
       <p>Advance tax under Section 147 of the Income Tax Ordinance, 2001 is income tax paid <strong>during</strong> the
         tax year in four quarterly instalments, rather than as a single payment when the return is filed. It is not an
         additional tax: under Section 147(8) a taxpayer who has paid advance tax is allowed a tax credit for it in
         computing the tax due on taxable income for that year, and under Section 147(10) any credit that cannot be
         applied is refunded.</p>
+      </div>
 
-      <h2>Who Has to Pay Advance Tax?</h2>
+      <div class="at-card at-seo-card">
+        <h2>Who Has to Pay Advance Tax?</h2>
       <p>Every taxpayer whose income was charged to tax for the latest tax year is liable, other than in respect of the
         income excluded by Section 147(1):</p>
       <ul>
@@ -490,8 +521,10 @@
         latest assessed taxable income — excluding the income referred to in clauses (b), (c) and (d) — is less than
         <strong>Rs. 1,000,000</strong>. Companies and associations of persons are liable irrespective of any such
         threshold.</p>
+      </div>
 
-      <h2>Section 147 Formula for Individuals</h2>
+      <div class="at-card at-seo-card">
+        <h2>Section 147 Formula for Individuals</h2>
       <div class="at-fbox">
         <div class="fm">(A ÷ 4) − B</div>
         <div class="fd">
@@ -503,8 +536,10 @@
       </div>
       <p>This formula applies where the individual has latest assessed income of Rs. 1,000,000 or more as determined
         under Section 147(2).</p>
+      </div>
 
-      <h2>Section 147 Formula for Companies and AOPs</h2>
+      <div class="at-card at-seo-card">
+        <h2>Section 147 Formula for Companies and AOPs</h2>
       <div class="at-fbox">
         <div class="fm">(A × B ÷ C) − D</div>
         <div class="fd">
@@ -522,8 +557,10 @@
       <p>Under Section 147(6A), a company or an association of persons must pay advance tax <strong>even in the absence
         of last assessed income or declared turnover</strong> — estimating the amount on the basis of quarterly
         turnover, taking into account tax payable under Sections 113 and 113C, and adjusting for amounts already paid.</p>
+      </div>
 
-      <h2>Section 147 Quarterly Due Dates</h2>
+      <div class="at-card at-seo-card">
+        <h2>Section 147 Quarterly Due Dates</h2>
       <div class="at-scroll">
         <table class="at-table">
           <thead><tr><th>Quarter</th><th>Individual — s.147(5)</th><th>Company / AOP — s.147(5A)</th></tr></thead>
@@ -535,8 +572,10 @@
           </tbody>
         </table>
       </div>
+      </div>
 
-      <h2>Advance Tax on Capital Gains from Securities</h2>
+      <div class="at-card at-seo-card">
+        <h2>Advance Tax on Capital Gains from Securities</h2>
       <p>Section 147(5B) charges adjustable advance tax on capital gain from the sale of securities:</p>
       <div class="at-scroll">
         <table class="at-table">
@@ -549,14 +588,18 @@
       </div>
       <p>Such advance tax is payable to the Commissioner within <strong>twenty-one days</strong> after the close of each
         quarter. The provisions of this sub-section are <strong>not applicable to individual investors</strong>.</p>
+      </div>
 
-      <h2>Advance Tax for Builders and Developers</h2>
+      <div class="at-card at-seo-card">
+        <h2>Advance Tax for Builders and Developers</h2>
       <p>Under Section 147(5C), every person deriving income from the construction and disposal of residential,
         commercial or other buildings, or the development and sale of plots, is liable to pay adjustable advance tax on
         a <strong>project-by-project basis</strong>, as prescribed, at the rates specified in Part IIB of the First
         Schedule, in <strong>four equal instalments</strong>, payable in accordance with sub-sections (5) and (5A).</p>
+      </div>
 
-      <h2>How Advance Tax is Adjusted in the Income Tax Return?</h2>
+      <div class="at-card at-seo-card">
+        <h2>How Advance Tax is Adjusted in the Income Tax Return?</h2>
       <p>A taxpayer who has paid advance tax for a tax year is allowed a tax credit for that tax in computing the tax
         due on taxable income for that year (Section 147(8)). The credit is applied in accordance with Section 4(3)
         (Section 147(9)), and any credit or part of a credit that cannot be applied is refunded to the taxpayer
@@ -577,8 +620,10 @@
         exceed the formula amount, the taxpayer furnishes the estimate on or before the due date of the second quarter,
         pays fifty per cent of that amount by that date after adjusting amounts already paid, and pays the remaining
         fifty per cent in two equal instalments by the due dates of the third and fourth quarters.</p>
+      </div>
 
-      <h2>Frequently Asked Questions</h2>
+      <div class="at-card at-seo-card">
+        <h2>Frequently Asked Questions</h2>
 
       <h3>1. What is advance tax under Section 147?</h3>
       <p>It is income tax paid in four quarterly instalments during the tax year rather than a single payment at filing.
@@ -622,8 +667,9 @@
       <p>Under Section 147(7) the provisions of the Ordinance apply to advance tax due as if the amount were tax due
         under an assessment order, so the normal recovery machinery applies, along with default surcharge on the
         shortfall for the period of default.</p>
+      </div>
 
-      <div class="at-disc">
+      <div class="at-disc at-disc-card">
         <strong>Disclaimer:</strong> This calculator and the accompanying explanation are provided for educational
         purposes only and do not constitute tax or legal advice. Thresholds, rates, due dates and computation rules
         under the Income Tax Ordinance, 2001 are amended through Finance Acts and FBR notifications. Always verify the
@@ -855,6 +901,25 @@
     securities: ['panelSecurities'],
     builder:    ['panelBuilder']
   };
+  var FORMULA_BY_TYPE = {
+    individual: {tag:'Individual — s.147(4B)', fm:'(A \u00f7 4) \u2212 B',
+      fd:'<b>A</b> = tax assessed for the latest tax year (incl. Section 4C). <b>B</b> = tax paid in the quarter credited under Section 168, other than tax deducted under Section 149. Applies where latest assessed income is Rs. 1,000,000 or more.'},
+    company: {tag:'Company — s.147(4)', fm:'(A \u00d7 B \u00f7 C) \u2212 D',
+      fd:'<b>A</b> = turnover for the quarter. <b>B</b> = tax assessed for the latest tax year (incl. 4C, 113 & 113C). <b>C</b> = turnover for the latest tax year. <b>D</b> = tax paid in the quarter credited under Section 168.'},
+    aop: {tag:'AOP — s.147(4)', fm:'(A \u00d7 B \u00f7 C) \u2212 D',
+      fd:'<b>A</b> = turnover for the quarter. <b>B</b> = tax assessed for the latest tax year (incl. 4C, 113 & 113C). <b>C</b> = turnover for the latest tax year. <b>D</b> = tax paid in the quarter credited under Section 168.'},
+    securities: {tag:'Capital Gains — s.147(5B)', fm:'Capital Gains \u00d7 Rate',
+      fd:'<b>2%</b> if securities held less than 6 months, <b>1.5%</b> if held 6\u201312 months. Not applicable to individual investors. Payable within 21 days of quarter close.'},
+    builder: {tag:'Builder / Developer — s.147(5C)', fm:'Project-basis rate (Part IIB)',
+      fd:'Adjustable advance tax on a project-by-project basis at the rates in Part IIB of the First Schedule, paid in <b>four equal instalments</b> per s.147(5)/(5A).'}
+  };
+  function updateFormulaBanner(){
+    var b = FORMULA_BY_TYPE[state.type]; if(!b) return;
+    var el=$('atFormulaBanner'); if(!el) return;
+    $('fbTag').textContent = b.tag;
+    $('fbFm').innerHTML = b.fm;
+    $('fbFd').innerHTML = b.fd;
+  }
   function showPanels(){
     var show = PANELS[state.type] || [];
     ['panelIndividual','panelBusiness','panelSecurities','panelBuilder','panelQuarter'].forEach(function(id){
@@ -866,6 +931,7 @@
     if(state.type === 'company') $('bizHeading').textContent = 'Company';
     if(state.type === 'aop')     $('bizHeading').textContent = 'Association of Persons';
     updateDueLabels();
+    updateFormulaBanner();
     hideResult();
     buildSchedule();
   }
