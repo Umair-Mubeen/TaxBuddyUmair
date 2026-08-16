@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 {% load static %}
 {% block title %}Super Tax Section 4C Calculator Pakistan | TaxBuddy Umair{% endblock %}
-{% block meta_desc %}Free Super Tax calculator Pakistan 2025-26. Calculate Section 4C super tax for companies and individuals with income above Rs. 150 million. Compare across tax years.{% endblock %}
+{% block meta_desc %}Free Super Tax calculator Pakistan 2026-27. Calculate Section 4C super tax for companies and individuals with income above Rs. 150 million. Compare across tax years.{% endblock %}
 {% block schema_extra %}{% include 'partials/schema_calculator.html' with calc_name='Super Tax Section 4C Calculator Pakistan' calc_url='/TaxCalculator4C/' %}{% endblock %}
 
 {% block extra_css %}
@@ -85,7 +85,7 @@
 
     <div class="highlight-box">
       📌 <strong>What is Super Tax (Section 4C)?</strong> Super Tax is an additional tax levied under Section 4C of ITO 2001
-      on persons (individuals, AOPs, and companies) whose income exceeds PKR 150 million.
+      on high-income persons. From TY 2026-27 it applies to general persons only above PKR 500 million (flat 8%), while banks, E&amp;P and fertilizer stay on the 1%–10% slab from PKR 150 million.
       Rates vary by income tier and tax year.
     </div>
 
@@ -95,7 +95,7 @@
         <div>
           <h2>Super Tax 4C Calculator</h2>
           <p>Compare Section 4C super tax across FBR tax years · ITO 2001</p>
-          <div class="calc-badges"><span class="calc-badge">FBR 2025-26</span><span class="calc-badge">Section 4C</span><span class="calc-badge">Free</span></div>
+          <div class="calc-badges"><span class="calc-badge">FBR 2026-27</span><span class="calc-badge">Section 4C</span><span class="calc-badge">Free</span></div>
         </div>
       </div>
       <div class="calc-body">
@@ -126,15 +126,31 @@
             <div class="field-err" id="err-income">⚠ Please enter a valid amount greater than 0</div>
           </div>
 
+          <!-- SECTOR (Finance Act 2026) -->
+          <div class="field-wrap">
+            <div class="field-top">
+              <span class="field-label-text">Taxpayer sector <span class="field-required">*</span></span>
+            </div>
+            <div class="field-input-wrap">
+              <select name="sector" id="sector" class="form-input form-select">
+                <option value="general" selected>General — companies, AOPs &amp; individuals</option>
+                <option value="carveout">Bank / Oil &amp; Gas E&amp;P / Fertilizer</option>
+              </select>
+            </div>
+            <div class="field-hint">From TY 2026-27, general persons pay super tax only above Rs. 500M; banks, E&amp;P and fertilizer keep the full 1%&ndash;10% slab.</div>
+          </div>
+
           <!-- TAX YEAR SELECTORS -->
           <div class="year-selectors">
             <div>
               <div class="year-select-label">Tax Year 1 <span class="year-badge">Compare</span></div>
               <select name="tax_year_1" id="tax_year_1" class="form-input form-select" required>
                 <option value="">— Select Year —</option>
-                <option value="2025-2026" selected>2025-2026</option>
+                <option value="2026-2027" selected>2026-2027</option>
+                <option value="2025-2026">2025-2026</option>
                 <option value="2024-2025">2024-2025</option>
                 <option value="2023-2024">2023-2024</option>
+                <option value="2022-2023">2022-2023</option>
               </select>
               <div class="field-err" id="err-year1">⚠ Please select Tax Year 1</div>
             </div>
@@ -142,9 +158,11 @@
               <div class="year-select-label">Tax Year 2 <span class="year-badge">Compare</span></div>
               <select name="tax_year_2" id="tax_year_2" class="form-input form-select" required>
                 <option value="">— Select Year —</option>
-                <option value="2025-2026">2025-2026</option>
-                <option value="2024-2025" selected>2024-2025</option>
+                <option value="2026-2027">2026-2027</option>
+                <option value="2025-2026" selected>2025-2026</option>
+                <option value="2024-2025">2024-2025</option>
                 <option value="2023-2024">2023-2024</option>
+                <option value="2022-2023">2022-2023</option>
               </select>
               <div class="field-err" id="err-year2">⚠ Please select Tax Year 2</div>
             </div>
@@ -165,7 +183,7 @@
           <div class="calc-result-subtitle" id="res-subtitle"></div>
           <div class="cmp-grid" id="res-grid"></div>
           <div class="calc-disclaimer" style="margin-top:14px;">
-            ⚠️ Super tax applies to persons with income exceeding PKR 150 million. Marginal relief provisions in the law may apply near tier boundaries. Verify final rates with FBR.
+            ⚠️ From TY 2026-27, general persons pay super tax only above Rs. 500M (flat 8%); banks, E&amp;P and fertilizer keep the 1%–10% slab from Rs. 150M. Marginal relief may apply near the Rs. 500M line. Verify final rates with FBR.
           </div>
         </div>
 
@@ -175,24 +193,27 @@
     <!-- Rates Table -->
     <div style="background:var(--white);border:1px solid var(--border);border-radius:var(--radius-lg);overflow:hidden;margin-top:24px;">
       <div style="background:var(--navy);padding:14px 20px;">
-        <h2 style="font-family:var(--font-head);font-size:18px;color:#fff;margin:0;">Super Tax Rates — Section 4C</h2>
+        <h2 style="font-family:var(--font-head);font-size:18px;color:#fff;margin:0;">Super Tax Rates by Tax Year — Section 4C</h2>
       </div>
       <div style="overflow-x:auto;">
         <table class="rates-table">
           <thead>
-            <tr><th>Income Tier (PKR)</th><th>TY 2023–2025</th><th>TY 2026</th></tr>
+            <tr><th>Income Tier (PKR)</th><th>TY 2022</th><th>TY 2023&ndash;2025</th><th>TY 2025&ndash;26</th><th>TY 2026&ndash;27</th></tr>
           </thead>
           <tbody>
-            <tr><td>Up to 150M</td><td><span class="rate-badge">0%</span></td><td><span class="rate-badge">0%</span></td></tr>
-            <tr><td>150M &ndash; 200M</td><td><span class="rate-badge">1%</span></td><td><span class="rate-badge">1%</span></td></tr>
-            <tr><td>200M &ndash; 250M</td><td><span class="rate-badge">2%</span></td><td><span class="rate-badge">2%</span></td></tr>
-            <tr><td>250M &ndash; 300M</td><td><span class="rate-badge">3%</span></td><td><span class="rate-badge">2.5%</span></td></tr>
-            <tr><td>300M &ndash; 350M</td><td><span class="rate-badge">4%</span></td><td><span class="rate-badge">3.5%</span></td></tr>
-            <tr><td>350M &ndash; 400M</td><td><span class="rate-badge">6%</span></td><td><span class="rate-badge">5.5%</span></td></tr>
-            <tr><td>400M &ndash; 500M</td><td><span class="rate-badge">8%</span></td><td><span class="rate-badge">7.5%</span></td></tr>
-            <tr><td>Above 500M</td><td><span class="rate-badge">10%</span></td><td><span class="rate-badge">10%</span></td></tr>
+            <tr><td>Up to 150M</td><td><span class="rate-badge">0%</span></td><td><span class="rate-badge">0%</span></td><td><span class="rate-badge">0%</span></td><td><span class="rate-badge">0%</span></td></tr>
+            <tr><td>150M &ndash; 200M</td><td><span class="rate-badge">1%</span></td><td><span class="rate-badge">1%</span></td><td><span class="rate-badge">1%</span></td><td><span class="rate-badge">0%</span></td></tr>
+            <tr><td>200M &ndash; 250M</td><td><span class="rate-badge">2%</span></td><td><span class="rate-badge">2%</span></td><td><span class="rate-badge">2%</span></td><td><span class="rate-badge">0%</span></td></tr>
+            <tr><td>250M &ndash; 300M</td><td><span class="rate-badge">3%</span></td><td><span class="rate-badge">3%</span></td><td><span class="rate-badge">2.5%</span></td><td><span class="rate-badge">0%</span></td></tr>
+            <tr><td>300M &ndash; 350M</td><td><span class="rate-badge">4%</span></td><td><span class="rate-badge">4%</span></td><td><span class="rate-badge">3.5%</span></td><td><span class="rate-badge">0%</span></td></tr>
+            <tr><td>350M &ndash; 400M</td><td><span class="rate-badge">4%</span></td><td><span class="rate-badge">6%</span></td><td><span class="rate-badge">5.5%</span></td><td><span class="rate-badge">0%</span></td></tr>
+            <tr><td>400M &ndash; 500M</td><td><span class="rate-badge">4%</span></td><td><span class="rate-badge">8%</span></td><td><span class="rate-badge">7.5%</span></td><td><span class="rate-badge">0%</span></td></tr>
+            <tr><td>Above 500M</td><td><span class="rate-badge">4%</span></td><td><span class="rate-badge">10%</span></td><td><span class="rate-badge">10%</span></td><td><span class="rate-badge">8%</span></td></tr>
           </tbody>
         </table>
+      </div>
+      <div style="padding:12px 20px;font-size:12.5px;color:var(--text-mid);border-top:1px solid var(--border);line-height:1.6;">
+        <strong>TY 2026&ndash;27 rates shown are for general persons.</strong> Banks, Oil &amp; Gas E&amp;P and fertilizer manufacturers do not get the relief — they stay on the 1%&ndash;10% slab from Rs. 150M. In <strong>TY 2022</strong>, 13 specified sectors paid 10% above Rs. 300M (banking companies from TY 2023). Super tax is charged on the <strong>whole</strong> income, not just the amount above the tier.
       </div>
     </div>
 
@@ -200,15 +221,15 @@
     <article style="background:var(--white);border:1px solid var(--border);border-radius:var(--radius-lg);padding:28px;margin-top:24px;line-height:1.75;color:var(--text-mid);font-size:15px;">
       <h2 style="font-size:21px;font-weight:700;color:var(--navy);margin:0 0 12px;">Understanding Super Tax Under Section 4C (Pakistan)</h2>
       <p style="margin:0 0 16px;">
-        Super Tax is an <strong>additional income tax</strong> introduced under Section 4C of the Income Tax Ordinance, 2001, to raise extra revenue from the highest earners. It applies to individuals, Associations of Persons (AOPs), and companies whose income for the year exceeds <strong>Rs. 150 million</strong>. It is charged on top of your normal income tax — not instead of it. The rate that applies to you depends on which income tier you fall into, ranging from 1% up to 10%.
+        Super Tax is an <strong>additional income tax</strong> introduced under Section 4C of the Income Tax Ordinance, 2001, to raise extra revenue from the highest earners. It applies to individuals, Associations of Persons (AOPs), and companies whose income for the year exceeds <strong>Rs. 150 million</strong>. It is charged on top of your normal income tax — not instead of it. Under the <strong>Finance Act 2026 (Tax Year 2026-27)</strong>, super tax was significantly relaxed: general persons now pay <strong>nothing below Rs. 500 million</strong> and a flat <strong>8%</strong> above it, while banks, oil &amp; gas exploration companies and fertilizer manufacturers keep the full 1%–10% slab.
       </p>
       <h3 style="font-size:17px;font-weight:700;color:var(--navy);margin:20px 0 10px;">Who Has to Pay It?</h3>
       <p style="margin:0 0 16px;">
-        Only persons with income above Rs. 150 million in the tax year. If your income is below that threshold, Section 4C super tax does not apply to you at all. The top rate of 10% applies to all sectors with income above Rs. 500 million (the earlier sector-based discrimination was removed by the Finance Act, 2023). The Finance Act, 2025 reduced the rates by 0.5% for income between Rs. 250 million and Rs. 500 million, effective tax year 2026.
+        From Tax Year 2026-27, general persons (ordinary companies, AOPs and individuals) pay super tax only where income exceeds <strong>Rs. 500 million</strong>, at a flat <strong>8%</strong> — the six middle bands between Rs. 150M and Rs. 500M were removed and the top rate was cut from 10% to 8%. Banks, oil &amp; gas E&amp;P companies and fertilizer manufacturers are excluded from this relief and continue on the full slab (1%–10%) from Rs. 150 million. A new exemption also applies where export proceeds actually received exceed 80% of total sales. For earlier years (2023-2025 and 2025-26) the slab rates shown above applied to everyone.
       </p>
       <h3 style="font-size:17px;font-weight:700;color:var(--navy);margin:20px 0 10px;">How It Is Calculated</h3>
       <p style="margin:0 0 16px;">
-        The super tax rate for your income tier is applied to your income for the year. For example, a person with income of Rs. 220 million falls in the 200M–250M tier (2%), so super tax ≈ Rs. 4.4 million, payable in addition to normal income tax. Marginal relief provisions in the law soften the jump where income only just crosses a tier boundary.
+        The rate is applied to your <strong>whole</strong> income for the year, not just the part above the threshold. For example, in TY 2026-27 a general company with income of Rs. 600 million pays 8% = Rs. 48 million super tax (over Rs. 500M), while the same company with Rs. 450 million pays nothing. A bank with Rs. 220 million still falls in the 200M–250M tier (2%). Marginal relief provisions soften the jump where income only just crosses the Rs. 500M line.
       </p>
       <h3 style="font-size:17px;font-weight:700;color:var(--navy);margin:20px 0 10px;">Frequently Asked Questions</h3>
       <p style="margin:0 0 10px;"><strong>Is super tax separate from the high-income surcharge?</strong><br>
@@ -253,10 +274,27 @@
   income.addEventListener('input', updatePreview);
   document.querySelectorAll('input[name="income_type"]').forEach(function(r){ r.addEventListener('change', updatePreview); });
 
-  // Section 4C tiers. reduced=true => Finance Act 2025 rates (TY 2025-2026)
-  function tierFor(annual, year){
-    var reduced = (year === '2025-2026');
-    if(annual <= 150000000) return {rate:0,    label:'Up to Rs. 150M — no super tax'};
+  // Section 4C tiers.
+  //  - FA2026 (TY 2026-2027): general persons pay 0% up to 500M, 8% above 500M.
+  //    Banks / Oil & Gas E&P / Fertilizer keep the full slab (1%-10%).
+  //  - FA2025 (TY 2025-2026) reduced the 250M-500M band by 0.5%.
+  function tierFor(annual, year, sector){
+    if(annual <= 150000000) return {rate:0, label:'Up to Rs. 150M — no super tax'};
+    // Tax Year 2022 (Finance Act 2022): general max 4%; specified sectors 10% above 300M
+    if(year === '2022-2023'){
+      if(sector === 'carveout' && annual > 300000000) return {rate:10, label:'Above Rs. 300M (specified sector)'};
+      if(annual <= 200000000) return {rate:1, label:'Rs. 150M – 200M'};
+      if(annual <= 250000000) return {rate:2, label:'Rs. 200M – 250M'};
+      if(annual <= 300000000) return {rate:3, label:'Rs. 250M – 300M'};
+      return {rate:4, label:'Above Rs. 300M (TY2022 max 4%)'};
+    }
+    // Finance Act 2026 relief for general persons
+    if(year === '2026-2027' && sector !== 'carveout'){
+      if(annual <= 500000000) return {rate:0, label:'Up to Rs. 500M — no super tax (FA 2026 relief)'};
+      return {rate:8, label:'Above Rs. 500M (FA 2026)'};
+    }
+    // Slab path: older years, FA2025, and FA2026 carve-out sectors
+    var reduced = (year === '2025-2026' || year === '2026-2027');
     if(annual <= 200000000) return {rate:1,    label:'Rs. 150M – 200M'};
     if(annual <= 250000000) return {rate:2,    label:'Rs. 200M – 250M'};
     if(annual <= 300000000) return {rate:reduced?2.5:3, label:'Rs. 250M – 300M'};
@@ -266,8 +304,8 @@
     return {rate:10, label:'Above Rs. 500M'};
   }
 
-  function card(year, annual){
-    var t = tierFor(annual, year);
+  function card(year, annual, sector){
+    var t = tierFor(annual, year, sector);
     var tax = annual * t.rate / 100;
     return ''
       + '<div class="cmp-card">'
@@ -297,9 +335,10 @@
     var ok = valIncome() & valY1() & valY2() & checkYears();
     if(!ok) return;
     var annual = annualOf(parseFloat(income.value)||0);
+    var sector = (document.getElementById('sector')||{}).value || 'general';
     document.getElementById('res-title').textContent = 'Super Tax Comparison: ' + yr1.value + ' VS ' + yr2.value;
     document.getElementById('res-subtitle').textContent = 'Annual Income: ' + pkr(annual);
-    document.getElementById('res-grid').innerHTML = card(yr1.value, annual) + card(yr2.value, annual);
+    document.getElementById('res-grid').innerHTML = card(yr1.value, annual, sector) + card(yr2.value, annual, sector);
     results.style.display = 'block';
     var navH = document.querySelector('nav') ? document.querySelector('nav').offsetHeight : 70;
     var top = results.getBoundingClientRect().top + window.scrollY - navH - 16;

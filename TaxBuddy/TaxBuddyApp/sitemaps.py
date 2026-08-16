@@ -146,6 +146,7 @@ class CalculatorSitemap(Sitemap):
             'freelancer_calculator',
             'karachi_fmv_calculator',
             'advance_tax_calculator',
+            'capital_gains_tax_calculator'
         ]
 
     def location(self, item):

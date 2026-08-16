@@ -1,0 +1,401 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Capital Gains Tax Calculator Pakistan 2026-27 — Property (Section 37) | TaxBuddy Umair{% endblock %}
+{% block meta_desc %}Free Capital Gains Tax (CGT) calculator for immovable property in Pakistan under Section 37. Works out CGT on plots, houses and flats — flat 15% for property acquired on/after 1 July 2024, and holding-period slabs for earlier acquisitions.{% endblock %}
+
+{% block schema_extra %}
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"WebApplication","name":"Capital Gains Tax Calculator Pakistan","url":"https://www.taxbuddyumair.com/capital-gains-tax-calculator/","description":"Calculate capital gains tax on the sale of immovable property in Pakistan under Section 37 of the Income Tax Ordinance, 2001.","applicationCategory":"FinanceApplication","operatingSystem":"Any","offers":{"@type":"Offer","price":"0","priceCurrency":"PKR"}}
+</script>
+{% endblock %}
+
+{% block extra_css %}
+<style>
+.cgt{--r:8px;--rl:12px;--rx:16px}
+.cgt .card{background:#fff;border:1px solid var(--border);border-radius:var(--rl);margin-bottom:18px;box-shadow:0 1px 3px rgba(16,24,40,.05);overflow:hidden}
+.cgt .card-head{background:var(--navy);color:#fff;padding:14px 18px;display:flex;align-items:center;gap:10px}
+.cgt .card-head h2{color:#fff;font-size:15px;font-weight:700;margin:0;flex:1}
+.cgt .card-head .ic{font-size:19px}
+.cgt .card-body{padding:20px 18px}
+.cgt .intro{font-size:14.5px;color:var(--text-mid);line-height:1.7;margin:0}
+.cgt .badge{display:inline-block;background:var(--green-light);color:var(--green-mid);font-size:11.5px;font-weight:700;padding:5px 12px;border-radius:20px;margin-bottom:10px}
+
+.cgt .fbanner{border:1px solid var(--border);border-left:4px solid var(--green);border-radius:var(--rl);padding:14px 16px;margin-bottom:18px;background:var(--green-light)}
+.cgt .fbanner .tag{display:inline-block;background:var(--green);color:#fff;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;padding:3px 10px;border-radius:20px;margin-bottom:8px}
+.cgt .fbanner .fm{font-size:16px;font-weight:800;color:var(--navy);line-height:1.45}
+.cgt .fbanner .fd{font-size:12.5px;color:var(--text-mid);margin-top:7px;line-height:1.6}
+
+.cgt label{display:block;font-size:13px;font-weight:600;color:var(--text-mid);margin:0 0 7px}
+.cgt .field{margin-bottom:16px}
+.cgt input[type=text],.cgt input[type=number],.cgt input[type=date],.cgt select{width:100%;padding:12px 14px;border:1.5px solid var(--border);border-radius:var(--r);font-size:16px;color:var(--text);background:#fff;box-sizing:border-box;outline:none;-webkit-appearance:none;appearance:none}
+.cgt input:focus,.cgt select:focus{border-color:var(--green);box-shadow:0 0 0 4px rgba(13,158,114,.13)}
+.cgt .hint{font-size:12px;color:var(--text-light);margin-top:6px;line-height:1.45}
+.cgt .two{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+@media(max-width:520px){.cgt .two{grid-template-columns:1fr}}
+.cgt .types{display:grid;grid-template-columns:repeat(3,1fr);gap:9px}
+.cgt .type{border:1.5px solid var(--border);border-radius:var(--r);padding:13px 8px;text-align:center;cursor:pointer;font-size:13px;font-weight:600;color:var(--text-mid);transition:.15s}
+.cgt .type:hover{border-color:var(--navy);color:var(--navy)}
+.cgt .type.on{background:var(--navy);border-color:var(--navy);color:#fff}
+.cgt .type .ic{display:block;font-size:20px;margin-bottom:4px}
+.cgt .check{display:flex;align-items:center;gap:10px;font-size:14px;color:var(--text);cursor:pointer;padding:11px 13px;border:1.5px solid var(--border);border-radius:var(--r)}
+.cgt .check input{width:18px;height:18px;accent-color:var(--green)}
+.cgt .btn{width:100%;padding:15px;background:var(--green);color:#fff;border:none;border-radius:var(--r);font-size:16px;font-weight:700;cursor:pointer;transition:background .2s}
+.cgt .btn:hover{background:var(--green-mid)}
+.cgt .err{display:none;background:var(--red-light,#FFF5F5);border:1px solid #FCA5A5;color:#991B1B;padding:12px 14px;border-radius:var(--r);font-size:13.5px;margin-top:12px}
+.cgt .err.show{display:block}
+
+/* result */
+.cgt .result{display:none}
+.cgt .result.show{display:block}
+.cgt .res-head{background:var(--green);padding:13px 18px}
+.cgt .res-head h2{color:#fff;font-size:15px;font-weight:700;margin:0}
+.cgt .final{padding:22px 20px;text-align:center;border-bottom:1px solid var(--border)}
+.cgt .final .lbl{font-size:12px;font-weight:700;color:var(--green);text-transform:uppercase;letter-spacing:.7px}
+.cgt .final .val{font-family:var(--font-head);font-size:clamp(1.9rem,7vw,2.7rem);font-weight:800;color:var(--navy);margin:5px 0 3px;line-height:1}
+.cgt .final .sub{font-size:13px;color:var(--text-mid)}
+.cgt .rows{padding:8px 18px 16px}
+.cgt .row{display:flex;justify-content:space-between;gap:12px;padding:11px 0;border-bottom:1px solid var(--border);font-size:14px;color:var(--text)}
+.cgt .row .v{font-weight:700;text-align:right;white-space:nowrap}
+.cgt .row.cut .v{color:var(--red,#E53E3E)}
+.cgt .row.total{border-top:2px solid var(--navy);border-bottom:none;margin-top:4px;padding:13px 12px;background:var(--green-light);border-radius:0 0 8px 8px;font-weight:800;color:var(--navy);font-size:16px}
+.cgt .rnote{font-size:12.5px;color:var(--text-mid);background:#f7f9fc;border-radius:var(--r);padding:11px 14px;margin:0 18px 16px;line-height:1.6}
+.cgt .disc{font-size:12px;color:var(--text-light);padding:14px 18px;background:#fafbfc;border-top:1px solid var(--border);line-height:1.55}
+.cgt .cta{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin:16px 18px 0;padding:14px 16px;border-radius:var(--r);background:linear-gradient(135deg,var(--navy) 0%,var(--navy-mid,#144272) 100%)}
+.cgt .cta .t{flex:1;min-width:160px;color:#fff}
+.cgt .cta .t b{display:block;font-size:13.5px;font-weight:700}
+.cgt .cta .t span{font-size:12px;color:rgba(255,255,255,.72)}
+.cgt .cta a{background:var(--green);color:#fff;text-decoration:none;font-size:13px;font-weight:700;padding:10px 16px;border-radius:8px;white-space:nowrap}
+
+/* seo */
+.cgt .seo-card h2{color:var(--navy);font-family:var(--font-head);font-size:1.15rem;margin:0 0 10px}
+.cgt .seo-card h3{color:var(--navy);font-size:1rem;margin:16px 0 6px}
+.cgt .seo-card p{color:var(--text-mid);font-size:14.5px;line-height:1.72;margin:0 0 10px}
+.cgt .rate-tbl{width:100%;border-collapse:collapse;font-size:13px;margin-top:8px}
+.cgt .rate-tbl th,.cgt .rate-tbl td{padding:8px 10px;border:1px solid var(--border);text-align:center}
+.cgt .rate-tbl th{background:var(--navy);color:#fff;font-weight:700}
+.cgt .rate-tbl td:first-child{text-align:left;font-weight:600;color:var(--text)}
+.cgt .faq details{border-bottom:1px solid var(--border)}
+.cgt .faq details:last-child{border-bottom:none}
+.cgt .faq summary{padding:13px 0;font-weight:600;font-size:14px;color:var(--navy);cursor:pointer;list-style:none;display:flex;justify-content:space-between}
+.cgt .faq summary::-webkit-details-marker{display:none}
+.cgt .faq summary::after{content:"＋";color:var(--green);font-weight:700}
+.cgt .faq details[open] summary::after{content:"－"}
+.cgt .faq .a{padding:0 0 14px;font-size:13.5px;color:var(--text-mid);line-height:1.65}
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="article-hero calc-page-header">
+  <div class="article-hero-inner">
+    <div class="breadcrumb">
+      <a href="{% url 'index' %}">Home</a><span class="breadcrumb-sep">›</span><span>Capital Gains Tax Calculator</span>
+    </div>
+    <h1>Capital Gains Tax Calculator — Property (Section 37)</h1>
+    <div class="article-meta">
+      <span>📅 Tax Year 2026-27</span><span>🏠 Plots · Houses · Flats</span>
+    </div>
+  </div>
+</div>
+
+<div class="content-grid cgt">
+  <main class="content-main">
+
+    <div class="card">
+      <div class="card-body">
+        <div class="badge">Income Tax Ordinance, 2001 — Section 37</div>
+        <p class="intro"><strong>Work out the capital gains tax (CGT) payable on the sale of immovable property in Pakistan.</strong>
+          The rate depends on when the property was acquired: a flat rate for property acquired on or after 1 July 2024,
+          and holding-period slabs for earlier acquisitions. For educational and estimation purposes only.</p>
+      </div>
+    </div>
+
+    <div class="fbanner">
+      <div class="tag">Formula</div>
+      <div class="fm">CGT = ( Higher of Sale price or FBR value − Cost − Expenses ) × Rate</div>
+      <div class="fd">The gain is the disposal value (sale consideration or FBR fair market value, whichever is higher)
+        minus the cost of acquisition and allowable expenses. The rate is applied to the gain, not the sale price.</div>
+    </div>
+
+    <div class="card">
+      <div class="card-head"><span class="ic">🏠</span><h2>Property &amp; sale details</h2></div>
+      <div class="card-body">
+
+        <div class="field">
+          <label>Property type</label>
+          <div class="types" id="cgtTypes">
+            <div class="type on" data-t="plot"><span class="ic">🏞️</span>Open Plot</div>
+            <div class="type" data-t="constructed"><span class="ic">🏡</span>Constructed</div>
+            <div class="type" data-t="flat"><span class="ic">🏢</span>Flat</div>
+          </div>
+        </div>
+
+        <div class="two">
+          <div class="field">
+            <label for="cgtAcq">Date of acquisition (purchase)</label>
+            <input type="date" id="cgtAcq">
+            <div class="hint">Decides which tax regime applies (cut-off: 1 July 2024).</div>
+          </div>
+          <div class="field">
+            <label for="cgtDisp">Date of disposal (sale)</label>
+            <input type="date" id="cgtDisp">
+            <div class="hint">Defaults to today if left blank.</div>
+          </div>
+        </div>
+
+        <div class="two">
+          <div class="field">
+            <label for="cgtSale">Sale consideration (Rs)</label>
+            <input type="number" inputmode="numeric" min="0" id="cgtSale" placeholder="20,000,000">
+          </div>
+          <div class="field">
+            <label for="cgtFbr">FBR fair market value (Rs)</label>
+            <input type="number" inputmode="numeric" min="0" id="cgtFbr" placeholder="18,000,000">
+            <div class="hint">Tax is on the higher of this and the sale price.</div>
+          </div>
+        </div>
+
+        <div class="two">
+          <div class="field">
+            <label for="cgtCost">Cost of acquisition (Rs)</label>
+            <input type="number" inputmode="numeric" min="0" id="cgtCost" placeholder="12,000,000">
+          </div>
+          <div class="field">
+            <label for="cgtExp">Allowable expenses (Rs) — optional</label>
+            <input type="number" inputmode="numeric" min="0" id="cgtExp" placeholder="0">
+            <div class="hint">Improvement cost, transfer/legal fees, etc.</div>
+          </div>
+        </div>
+
+        <div class="field">
+          <label>Seller's filer status (at date of disposal)</label>
+          <select id="cgtFiler">
+            <option value="filer">Filer — on ATL</option>
+            <option value="nonfiler">Non-filer — not on ATL</option>
+          </select>
+        </div>
+
+        <div class="field">
+          <label class="check"><input type="checkbox" id="cgtForces">
+            <span>Govt / Armed Forces <b>original allottee — first sale</b> (Clause 9A: 50% off, 75% if held over 3 years)</span></label>
+          <div class="hint">Requires certification from the allotment authority. Applies to the original allottee's first disposal only.</div>
+        </div>
+
+        <div class="field">
+          <label class="check"><input type="checkbox" id="cgt75a">
+            <span>Property was purchased in <b>cash / non-banking channel</b> (Section 75A)</span></label>
+          <div class="hint">If the purchase value was above Rs 5,000,000 and paid in cash, the cost is disallowed under Section 75A — the full sale value becomes taxable gain.</div>
+        </div>
+
+        <button class="btn" id="cgtCalc">Calculate CGT</button>
+        <div class="err" id="cgtErr"></div>
+      </div>
+    </div>
+
+    <!-- RESULT -->
+    <div class="card result" id="cgtResult">
+      <div class="res-head"><h2>💰 Capital Gains Tax</h2></div>
+      <div class="final">
+        <div class="lbl">Estimated CGT Payable</div>
+        <div class="val" id="cgtFinal">—</div>
+        <div class="sub" id="cgtSub"></div>
+      </div>
+      <div class="rows" id="cgtRows"></div>
+      <div class="rnote" id="cgtNote"></div>
+      <div class="cta">
+        <div class="t"><b>Also collected at transfer</b><span>236C (seller) & 236K (buyer) advance tax are separate from CGT.</span></div>
+        <a href="/Withholding-Tax-Card/">Withholding Tax Card →</a>
+      </div>
+      <div class="disc"><b>Unofficial estimate.</b> CGT rules under Section 37 change through Finance Acts. This tool covers
+        common cases for individuals — special situations (very old acquisitions before July 2022, inherited property,
+        non-residents, companies) may differ. Verify against the current law before filing.</div>
+    </div>
+
+    <!-- SEO -->
+    <div class="card"><div class="card-body seo-card">
+      <h2>How capital gains tax on property works in Pakistan</h2>
+      <p>Under Section 37 of the Income Tax Ordinance 2001, tax is charged on the <b>gain</b> you make when you sell
+        immovable property — not on the sale price. The gain is the disposal value (the sale price, or the FBR notified
+        fair market value if higher) minus what you paid for the property and any allowable expenses such as improvement
+        or transfer costs. CGT is completely separate from the 236C and 236K advance taxes collected at registration.</p>
+      <h3>Two regimes — the acquisition date decides everything</h3>
+      <p>The Finance Act 2024 split property CGT into two regimes based on when you acquired the property:</p>
+      <p><b>Acquired on or after 1 July 2024:</b> a flat <b>15%</b> for sellers on the Active Taxpayers List (ATL) at the
+        date of disposal, regardless of how long the property was held. Non-filers pay progressive slab rates, with a
+        minimum of 15%.</p>
+      <p><b>Acquired on or before 30 June 2024:</b> the older holding-period regime continues — the longer you held the
+        property, the lower the rate, reaching 0% for long holds.</p>
+    </div></div>
+
+    <div class="card"><div class="card-body seo-card">
+      <h2>Holding-period CGT rates (property acquired before 1 July 2024)</h2>
+      <table class="rate-tbl">
+        <thead><tr><th>Holding period</th><th>Open Plot</th><th>Constructed</th><th>Flat</th></tr></thead>
+        <tbody>
+          <tr><td>Up to 1 year</td><td>15%</td><td>15%</td><td>15%</td></tr>
+          <tr><td>1 – 2 years</td><td>12.5%</td><td>10%</td><td>7.5%</td></tr>
+          <tr><td>2 – 3 years</td><td>10%</td><td>7.5%</td><td>0%</td></tr>
+          <tr><td>3 – 4 years</td><td>7.5%</td><td>5%</td><td>0%</td></tr>
+          <tr><td>4 – 5 years</td><td>5%</td><td>0%</td><td>0%</td></tr>
+          <tr><td>5 – 6 years</td><td>2.5%</td><td>0%</td><td>0%</td></tr>
+          <tr><td>Over 6 years</td><td>0%</td><td>0%</td><td>0%</td></tr>
+        </tbody>
+      </table>
+    </div></div>
+
+    <div class="card"><div class="card-body seo-card">
+      <h2>Clause 9A relief — 50% / 75% CGT reduction for govt &amp; armed forces</h2>
+      <p>Under Clause 9A, Part III of the Second Schedule to the Income Tax Ordinance 2001, serving and retired
+        government employees (federal or provincial) and Armed Forces personnel get a reduction in capital gains tax
+        on the <b>first sale</b> of property that was <b>allotted to them by the government</b>:</p>
+      <p><b>50% reduction</b> on the first disposal, and <b>75% reduction</b> if the property is sold <b>more than 3
+        years</b> after allotment/acquisition. It is a reduction in tax, not a full exemption — CGT is worked out
+        normally and then reduced.</p>
+      <p>The relief is available to the <b>original allottee only</b> (not a buyer, transferee or heir), applies to the
+        first disposal only, and requires a certificate from the allotment authority (DHA, CDA, housing foundation,
+        provincial housing department, etc.). It covers CGT only — 236C advance tax still applies separately.
+        <a href="/articles/capital-gain-tax-reduction-9a-second-schedule-ito-2001/">Read the full Clause 9A guide →</a></p>
+    </div></div>
+
+    <div class="card"><div class="card-body seo-card">
+      <h2>Section 75A — why you should never buy property in cash</h2>
+      <p>Under Section 75A of the Income Tax Ordinance 2001, immovable property with a fair market value above
+        <b>Rs 5,000,000</b> (or any other asset above Rs 1,000,000) must be purchased through a banking channel —
+        a crossed cheque, crossed pay order, crossed demand draft, or other crossed banking instrument. Here the fair
+        market value means the FBR-notified value or the provincial stamp-duty value, whichever is higher.</p>
+      <p>If you buy such a property in cash or through a bearer cheque, two things happen:</p>
+      <p><b>1. A 5% penalty</b> of the property value (FBR or stamp-duty value, whichever is higher) can be imposed.</p>
+      <p><b>2. Your cost is wiped out for CGT.</b> The cash amount is not treated as cost under Section 76 when you later
+        sell. With no cost to deduct, the <b>entire sale value becomes taxable capital gain</b> — dramatically increasing
+        the CGT you pay. This is why paying cash to please a seller can cost the buyer millions later. Tick the
+        Section 75A option above to see this effect on your figures.</p>
+    </div></div>
+
+    <div class="card"><div class="card-body seo-card faq">
+      <h2>Frequently asked questions</h2>
+      <details><summary>Is CGT the same as 236C advance tax?</summary><div class="a">No. 236C and 236K are adjustable advance taxes collected from the seller and buyer at transfer. CGT under Section 37 is the tax on your actual profit (gain) from the sale.</div></details>
+      <details><summary>What rate applies if I bought after 1 July 2024?</summary><div class="a">A flat 15% for filers on the ATL at disposal, regardless of holding period. Non-filers face progressive rates with a 15% minimum.</div></details>
+      <details><summary>How is the gain calculated?</summary><div class="a">Higher of the sale price or FBR fair market value, minus cost of acquisition and allowable expenses. The rate applies to the gain, not the sale price.</div></details>
+      <details><summary>Do older properties still get lower rates?</summary><div class="a">Yes. Property acquired on or before 30 June 2024 follows the holding-period slabs — the rate falls as the holding period rises, reaching 0% for long holds.</div></details>
+      <details><summary>Is there any relief for armed forces or government allottees?</summary><div class="a">Yes — under Clause 9A, Part III, Second Schedule, CGT is reduced by 50% on the first sale of government/armed-forces allotted property by the original allottee, and by 75% if the property is sold more than 3 years after allotment. Certification from the allotment authority is required.</div></details>
+    </div></div>
+
+  </main>
+
+  <aside class="content-sidebar">
+    {% include 'partials/sidebar.html' %}
+  </aside>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+(function(){
+  'use strict';
+  var $=function(id){return document.getElementById(id);};
+  var state={type:'plot'};
+
+  var OLD_RATES={
+    plot:        [[1,15],[2,12.5],[3,10],[4,7.5],[5,5],[6,2.5],[Infinity,0]],
+    constructed: [[1,15],[2,10],[3,7.5],[4,5],[Infinity,0]],
+    flat:        [[1,15],[2,7.5],[Infinity,0]]
+  };
+  var TYPE_LABEL={plot:'Open Plot',constructed:'Constructed Property',flat:'Flat'};
+  var CUTOFF=new Date('2024-07-01T00:00:00');
+
+  function fmt(n){return 'Rs '+Math.round(n).toLocaleString('en-PK');}
+  function num(id){var v=parseFloat($(id).value);return isNaN(v)?0:v;}
+  function oldRate(type,years){var t=OLD_RATES[type];for(var i=0;i<t.length;i++){if(years<t[i][0])return t[i][1];}return 0;}
+
+  // type selector
+  document.querySelectorAll('#cgtTypes .type').forEach(function(el){
+    el.addEventListener('click',function(){
+      document.querySelectorAll('#cgtTypes .type').forEach(function(x){x.classList.remove('on');});
+      el.classList.add('on'); state.type=el.dataset.t;
+    });
+  });
+
+  $('cgtCalc').addEventListener('click',function(){
+    var err=$('cgtErr'); err.classList.remove('show');
+    var acqV=$('cgtAcq').value;
+    if(!acqV){err.textContent='Please enter the date of acquisition (purchase).';err.classList.add('show');return;}
+    var acq=new Date(acqV+'T00:00:00');
+    var disp=$('cgtDisp').value?new Date($('cgtDisp').value+'T00:00:00'):new Date();
+    if(disp<acq){err.textContent='Date of disposal cannot be before the date of acquisition.';err.classList.add('show');return;}
+    var holdingYears=(disp-acq)/(365.25*24*3600*1000);
+
+    var sale=num('cgtSale'), fbr=num('cgtFbr'), cost=num('cgtCost'), exp=num('cgtExp');
+    if(sale<=0 && fbr<=0){err.textContent='Enter the sale price or the FBR value.';err.classList.add('show');return;}
+    if(cost<=0){err.textContent='Enter the cost of acquisition.';err.classList.add('show');return;}
+
+    var disposal=Math.max(sale,fbr);
+
+    // Section 75A: cash purchase of property with value > Rs 5M -> cost disallowed under s.76
+    var S75A_THRESHOLD=5000000;
+    var s75a = $('cgt75a').checked && cost>S75A_THRESHOLD;
+    var costAllowed = s75a ? 0 : cost;
+    var gain=disposal-costAllowed-exp;
+
+    var rows='';
+    rows+='<div class="row"><span>Property type</span><span class="v">'+TYPE_LABEL[state.type]+'</span></div>';
+    rows+='<div class="row"><span>Disposal value (higher of sale / FBR)</span><span class="v">'+fmt(disposal)+'</span></div>';
+    if(s75a){
+      rows+='<div class="row"><span>Cost of acquisition</span><span class="v" style="text-decoration:line-through;color:var(--text-light)">'+fmt(cost)+'</span></div>';
+      rows+='<div class="row cut"><span>Cost disallowed — Section 75A (cash purchase)</span><span class="v">− Rs 0</span></div>';
+    } else {
+      rows+='<div class="row cut"><span>Less: cost of acquisition</span><span class="v">− '+fmt(cost)+'</span></div>';
+    }
+    if(exp>0) rows+='<div class="row cut"><span>Less: allowable expenses</span><span class="v">− '+fmt(exp)+'</span></div>';
+    rows+='<div class="row"><span>Capital gain</span><span class="v">'+fmt(Math.max(0,gain))+'</span></div>';
+
+    var note='', rate=0, regime='', tax=0;
+    var s75aNote = s75a ? ' ⚠️ Section 75A: because the property (value above Rs 5,000,000) was purchased in cash / outside the banking channel, the purchase amount is not allowed as cost under Section 76 — so the entire sale value is taxed as gain. A separate penalty of 5% of the property value may also apply.' : '';
+
+    if(gain<=0){
+      rate=0; tax=0; regime='No gain';
+      note='There is no capital gain on this disposal, so no capital gains tax is payable. (A capital loss cannot be set off against other heads of income.)';
+    } else if(acq>=CUTOFF){
+      regime='Acquired on/after 1 July 2024 — flat regime';
+      if($('cgtFiler').value==='filer'){
+        rate=15;
+        note='Property acquired on or after 1 July 2024 is taxed at a flat 15% for sellers on the ATL, regardless of holding period.';
+      } else {
+        rate=15;
+        note='For non-filers, progressive slab rates apply with a minimum of 15%. This estimate uses the 15% minimum — your actual rate may be higher depending on total income.';
+      }
+      rows+='<div class="row"><span>Regime</span><span class="v">Flat (post-1 Jul 2024)</span></div>';
+      rows+='<div class="row"><span>Holding period</span><span class="v">'+holdingYears.toFixed(2)+' years</span></div>';
+    } else {
+      rate=oldRate(state.type,holdingYears);
+      regime='Acquired before 1 July 2024 — holding-period regime';
+      rows+='<div class="row"><span>Holding period</span><span class="v">'+holdingYears.toFixed(2)+' years</span></div>';
+      note='Property acquired on or before 30 June 2024 follows the holding-period slabs for a '+TYPE_LABEL[state.type]+'. '
+         + (rate===0?'At this holding period the rate is 0% — no CGT is payable.':'');
+    }
+
+    // Clause 9A, Part III, 2nd Schedule — govt / armed-forces original allottee, first sale
+    // 50% reduction; 75% if held over 3 years from allotment/acquisition
+    if($('cgtForces').checked && rate>0){
+      var reduction = holdingYears>3 ? 75 : 50;
+      var cgtBefore = Math.round(Math.max(0,gain)*rate/100);
+      rows+='<div class="row"><span>Rate before Clause 9A relief</span><span class="v">'+rate+'%</span></div>';
+      rows+='<div class="row"><span>CGT before relief</span><span class="v">'+fmt(cgtBefore)+'</span></div>';
+      rows+='<div class="row cut"><span>Clause 9A relief '+(holdingYears>3?'(held &gt; 3 yrs)':'(first sale)')+'</span><span class="v">−'+reduction+'% (−'+fmt(cgtBefore*reduction/100)+')</span></div>';
+      rate = rate * (1 - reduction/100);
+      note += ' Clause 9A (Part III, 2nd Schedule): as a government / armed-forces original allottee on first disposal, CGT is reduced by '+reduction+'%'+(holdingYears>3?' (75% because the property was held over 3 years)':'')+'. Requires certification from the allotment authority.';
+    }
+
+    if(gain>0) tax=Math.round(Math.max(0,gain)*rate/100);
+    rows+='<div class="row"><span>Applicable CGT rate</span><span class="v">'+rate+'%</span></div>';
+    rows+='<div class="row total"><span>Capital Gains Tax'+($('cgtForces').checked && gain>0?' (after relief)':'')+'</span><span class="v">'+fmt(tax)+'</span></div>';
+
+    $('cgtFinal').textContent=fmt(tax);
+    $('cgtSub').textContent=regime;
+    $('cgtRows').innerHTML=rows;
+    $('cgtNote').textContent=note+s75aNote;
+    var box=$('cgtResult'); box.classList.add('show');
+    box.scrollIntoView({behavior:'smooth',block:'start'});
+  });
+})();
+</script>
+{% endblock %}

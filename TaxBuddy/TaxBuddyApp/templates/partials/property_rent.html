@@ -97,6 +97,8 @@
 
 
 /* ── UPDATED FORM HEADER & FIELDS ── */
+.calc-container{background:var(--white,#fff);border:1px solid var(--border,#E2E8F0);border-radius:var(--radius-lg,12px);box-shadow:var(--shadow-sm,0 1px 3px rgba(16,24,40,.06));overflow:hidden;margin-bottom:20px}
+.calc-body{padding:24px 28px}
 .calc-header {
   background: var(--navy, #0A2647);
   padding: 24px 28px;
@@ -312,10 +314,13 @@
 .pill-same{background:var(--bg);color:var(--text-mid);border:1px solid var(--border)}
 .tax-diff-note{padding:10px 16px;font-size:13px;color:var(--text-mid);text-align:center;border-top:1px solid var(--border);background:var(--bg);line-height:1.55}
 .tax-diff-note strong{color:var(--navy)}
-@media(max-width:480px){
-  .tax-diff-amt{font-size:18px}
-  .tax-diff-center{padding:12px 8px}
-  .tax-diff-pill{font-size:11.5px;padding:5px 9px}
+@media(max-width:560px){
+  .tax-diff-row{grid-template-columns:1fr 1fr}
+  .tax-diff-center{order:1;grid-column:1 / -1;border-left:none;border-right:none;border-top:1px solid var(--border);padding:12px}
+  .tax-diff-col{padding:14px 10px}
+  .tax-diff-amt{font-size:20px}
+  .tax-diff-vs-txt{display:none}
+  .tax-diff-pill{font-size:12px;padding:7px 16px;display:inline-block}
 }
 
 </style>

@@ -2767,3 +2767,5 @@ def fmv_calculate_api(request):
 def advance_tax_calculator(request):
     return render(request, 'partials/AdvanceTaxCalculator.html')
 
+def capital_gains_tax_calculator(request):
+    return render(request, 'partials/capital_gain_tax_calculator.html', {})
