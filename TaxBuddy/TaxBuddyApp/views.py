@@ -2769,3 +2769,8 @@ def advance_tax_calculator(request):
 
 def capital_gains_tax_calculator(request):
     return render(request, 'partials/capital_gain_tax_calculator.html', {})
+
+def ads_txt(request):
+    """Serve ads.txt at site root for AdSense — add to urls.py: path('ads.txt', views.ads_txt)"""
+    content = "google.com, pub-9107458294991357, DIRECT, f08c47fec0942fa0"
+    return HttpResponse(content, content_type="text/plain")

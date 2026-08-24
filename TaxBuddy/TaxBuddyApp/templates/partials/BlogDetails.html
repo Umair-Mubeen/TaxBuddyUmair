@@ -11,6 +11,7 @@
 {% block tw_desc %}{{ blog.meta_description|default:blog.title }}{% endblock %}
 {% block tw_image %}{% if blog.featured_image %}{{ blog.featured_image.url }}{% else %}{% static 'images/og-image.png' %}{% endif %}{% endblock %}
 {% block schema_extra %}{% include 'partials/schema_blog.html' with blog=blog %}{% endblock %}
+{% block content_bottom_ad %}{% endblock %}
 
 {% block extra_css %}
 <style>
@@ -422,6 +423,11 @@
 <!--  </div>-->
 <!--</div>-->
 
+<!-- Blog top ad -->
+<div class="container" style="margin-top:20px;">
+  {% include 'partials/ad_unit.html' with slot='BLOG_TOP_SLOT' min_height='120px' %}
+</div>
+
 <div class="content-grid">
 
   <!-- ── MAIN CONTENT ───────────────────────────────────── -->
@@ -430,6 +436,9 @@
     <article class="article-content" id="article-body">
       {{ blog.content|safe }}
     </article>
+
+    <!-- After-article ad -->
+    {% include 'partials/ad_unit.html' with slot='BLOG_AFTER_SLOT' min_height='280px' %}
 
     <!-- In-content Ad -->
 <!--    <div class="ad-wrapper" style="margin:32px 0;">-->
@@ -632,6 +641,26 @@
 {% endblock %}
 
 {% block extra_js %}
+<!-- In-article ad injector (true mid-content placement) -->
+<script>
+(function(){
+  var art = document.getElementById('article-body');
+  if(!art) return;
+  var ps = art.querySelectorAll(':scope > p');
+  if(ps.length < 6) return;               // only longer articles
+  var idx = Math.min(3, Math.floor(ps.length/2)) - 1;
+  var target = ps[idx];
+  if(!target) return;
+  var wrap = document.createElement('div');
+  wrap.style.cssText = 'margin:28px 0;text-align:center;';
+  wrap.innerHTML = '<div style="font-size:11px;letter-spacing:.05em;text-transform:uppercase;color:#a0aec0;margin-bottom:4px;">Advertisement</div>'
+    + '<div style="min-height:280px;overflow:hidden;">'
+    + '<ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-9107458294991357" data-ad-slot="BLOG_INARTICLE_SLOT" data-ad-format="auto" data-full-width-responsive="true"></ins>'
+    + '</div>';
+  target.parentNode.insertBefore(wrap, target.nextSibling);
+  (adsbygoogle = window.adsbygoogle || []).push({});
+})();
+</script>
 <script>
 /* ── READING PROGRESS BAR ─────────────────────────────────── */
 const progressBar = document.getElementById('reading-progress');

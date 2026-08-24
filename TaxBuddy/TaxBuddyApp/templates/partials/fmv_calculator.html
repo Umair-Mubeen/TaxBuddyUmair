@@ -532,6 +532,7 @@
 {% endblock %}
 
 {% block extra_js %}
+{% include 'partials/ad_result_js.html' with target='fmvResult' slot='TOOL_RESULT_SLOT' %}
 <script>
 const UNIT_OPTS=`<option value="sqyd">sq.yd</option><option value="sqft">sq.ft</option><option value="marla">Marla</option><option value="kanal">Kanal</option><option value="acre">Acre</option>`;
 const UNIT_SQFT={sqft:1,sqyd:9,marla:225,kanal:4500,acre:43560};

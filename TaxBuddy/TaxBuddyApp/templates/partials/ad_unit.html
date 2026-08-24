@@ -1,0 +1,18 @@
+{% comment %}
+Reusable AdSense unit.
+  {% include 'partials/ad_unit.html' with slot='1234567890' %}
+  {% include 'partials/ad_unit.html' with slot='1234567890' min_height='120px' %}
+Create each slot in AdSense -> Ads -> By ad unit, copy the data-ad-slot number.
+{% endcomment %}
+<div class="ad-wrapper" style="margin:24px 0;text-align:center;">
+  <div style="font-size:11px;letter-spacing:.05em;text-transform:uppercase;color:#a0aec0;margin-bottom:4px;">Advertisement</div>
+  <div style="min-height:{{ min_height|default:'280px' }};overflow:hidden;">
+    <ins class="adsbygoogle"
+         style="display:block"
+         data-ad-client="ca-pub-9107458294991357"
+         data-ad-slot="{{ slot }}"
+         data-ad-format="{{ format|default:'auto' }}"
+         data-full-width-responsive="{{ responsive|default:'true' }}"></ins>
+  </div>
+  <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+</div>

@@ -232,6 +232,9 @@
           {% endfor %}
         </tbody>
       </table>
+
+      <!-- In-content ad -->
+      {% include 'partials/ad_unit.html' with slot='INCONTENT_SLOT' min_height='280px' %}
     </div>
     {% else %}
     <div class="empty-state" style="background:var(--white);border:1px solid var(--border);border-radius:12px;padding:40px 20px;">

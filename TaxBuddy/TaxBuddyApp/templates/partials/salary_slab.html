@@ -601,6 +601,11 @@
         It's an estimate. Your final liability depends on tax credits, withholding already deducted, and any exemptions. Always confirm on the <a href="https://iris.fbr.gov.pk" target="_blank" rel="noopener" style="color:var(--green);font-weight:600;">FBR IRIS portal</a> or with a tax professional.</p>
     </article>
 
+    {% if tax_year_1_result and tax_year_2_result %}
+    <!-- High-intent ad: renders only after a calculation -->
+    {% include 'partials/ad_unit.html' with slot='TOOL_RESULT_SLOT' min_height='280px' %}
+    {% endif %}
+
     {% include 'partials/cta_banner.html' %}
 
   </main>

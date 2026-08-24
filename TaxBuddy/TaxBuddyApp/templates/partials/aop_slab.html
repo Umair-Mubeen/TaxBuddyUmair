@@ -585,6 +585,11 @@
         Yes. An AOP gets its own NTN on the FBR IRIS portal and files its own annual return, separate from the members' personal returns.</p>
     </article>
 
+    {% if tax_year_1_result and tax_year_2_result %}
+    <!-- High-intent ad: renders only after a calculation -->
+    {% include 'partials/ad_unit.html' with slot='TOOL_RESULT_SLOT' min_height='280px' %}
+    {% endif %}
+
     {% include 'partials/cta_banner.html' %}
   </main>
   <aside class="content-sidebar">{% include 'partials/sidebar.html' %}</aside>

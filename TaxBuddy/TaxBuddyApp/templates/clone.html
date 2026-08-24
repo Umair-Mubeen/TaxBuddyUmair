@@ -73,6 +73,11 @@
     {% if page_obj.object_list %}
     <div class="cards-grid" style="margin-bottom:24px;">
       {% for blog in page_obj %}
+      {% if forloop.counter == 4 %}
+      <div style="grid-column:1 / -1;">
+        {% include 'partials/ad_unit.html' with slot='INCONTENT_SLOT' min_height='280px' %}
+      </div>
+      {% endif %}
       <a href="{% url 'BlogDetails' slug=blog.slug %}" class="card" style="text-decoration:none;">
         {% if blog.featured_image %}
         <div class="card-img" style="position:relative;overflow:hidden;">

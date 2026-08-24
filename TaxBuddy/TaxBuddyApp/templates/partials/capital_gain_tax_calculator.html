@@ -289,6 +289,7 @@
 {% endblock %}
 
 {% block extra_js %}
+{% include 'partials/ad_result_js.html' with target='cgtResult' slot='TOOL_RESULT_SLOT' %}
 <script>
 (function(){
   'use strict';
