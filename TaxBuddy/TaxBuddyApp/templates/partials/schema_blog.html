@@ -1,6 +1,8 @@
 {% comment %}
   Include this in BlogDetails.html inside {% block schema_extra %}
   Usage: {% include 'partials/schema_blog.html' with blog=blog %}
+  Enhanced for GEO / AI Overview: author linked to site #author, BreadcrumbList,
+  articleSection, inLanguage, image fallback.
 {% endcomment %}
 <script type="application/ld+json">
 {
@@ -9,23 +11,25 @@
   "headline": "{{ blog.title|escapejs }}",
   "description": "{{ blog.meta_description|default:blog.content|striptags|truncatewords:30|escapejs }}",
   "url": "https://www.taxbuddyumair.com/articles/{{ blog.slug }}/",
-  {% if blog.featured_image %}
-  "image": "https://www.taxbuddyumair.com{{ blog.featured_image.url }}",
-  {% endif %}
+  "image": "{% if blog.featured_image %}https://www.taxbuddyumair.com{{ blog.featured_image.url }}{% else %}https://www.taxbuddyumair.com{% static 'images/og-image.png' %}{% endif %}",
   "datePublished": "{{ blog.created_at|date:'c' }}",
-  "dateModified": "{{ blog.updated_at|date:'c' }}",
+  "dateModified": "{{ blog.updated_at|default:blog.created_at|date:'c' }}",
+  "inLanguage": "en-PK",
+  {% if blog.category %}"articleSection": "{{ blog.category|escapejs }}",{% endif %}
   "author": {
     "@type": "Person",
+    "@id": "https://www.taxbuddyumair.com/#author",
     "name": "{% if blog.author %}{{ blog.author.get_full_name|default:blog.author.username }}{% else %}Umair Mubeen{% endif %}",
-    "url": "https://www.taxbuddyumair.com"
+    "url": "https://www.taxbuddyumair.com/about-us/"
   },
   "publisher": {
     "@type": "Organization",
+    "@id": "https://www.taxbuddyumair.com/#org",
     "name": "TaxBuddy Umair",
     "url": "https://www.taxbuddyumair.com",
     "logo": {
       "@type": "ImageObject",
-      "url": "https://www.taxbuddyumair.com/static/images/logo.png"
+      "url": "https://www.taxbuddyumair.com{% static 'images/og-image.png' %}"
     }
   },
   "mainEntityOfPage": {
@@ -33,5 +37,18 @@
     "@id": "https://www.taxbuddyumair.com/articles/{{ blog.slug }}/"
   },
   "keywords": "{{ blog.tag|default:'income tax, Pakistan, FBR' }}"
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://www.taxbuddyumair.com/" },
+    { "@type": "ListItem", "position": 2, "name": "Blog", "item": "https://www.taxbuddyumair.com/blog/" }{% if blog.category %},
+    { "@type": "ListItem", "position": 3, "name": "{{ blog.category|escapejs }}", "item": "https://www.taxbuddyumair.com/blog/{{ blog.category|slugify }}/" },
+    { "@type": "ListItem", "position": 4, "name": "{{ blog.title|striptags|escapejs }}", "item": "https://www.taxbuddyumair.com/articles/{{ blog.slug }}/" }{% else %},
+    { "@type": "ListItem", "position": 3, "name": "{{ blog.title|striptags|escapejs }}", "item": "https://www.taxbuddyumair.com/articles/{{ blog.slug }}/" }{% endif %}
+  ]
 }
 </script>

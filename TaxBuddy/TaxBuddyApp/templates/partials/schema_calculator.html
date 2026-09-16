@@ -1,16 +1,26 @@
 {% comment %}
-  Include this in calculator templates inside {% block schema_extra %}
+  Include in calculator templates inside {% block schema_extra %}
   Usage: {% include 'partials/schema_calculator.html' with calc_name="Salary Tax Calculator" calc_url="/SalaryCalculator/" %}
+
+  NOTE: This outputs WebApplication schema only. The generic FAQ was removed because
+  Google requires FAQ structured data to MATCH the FAQs visible on that exact page —
+  a shared generic FAQ across every calculator is a guideline mismatch. Calculators
+  that show real FAQs (advance tax, CGT, FMV) already ship their own matching FAQ
+  schema inline. To add FAQ rich snippets to another calculator, add a FAQPage block
+  in that template whose questions match its visible FAQ section.
 {% endcomment %}
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
   "@type": "WebApplication",
   "name": "{{ calc_name|default:'Tax Calculator Pakistan' }}",
-  "url": "https://www.taxbuddyumair.com{{ calc_url|default:'/SalaryCalculator/' }}",
-  "description": "Free online {{ calc_name|default:'income tax calculator' }} for Pakistan. Updated for FBR Tax Year 2025-26.",
+  "url": "https://www.taxbuddyumair.com{{ calc_url|default:request.path }}",
+  "description": "Free online {{ calc_name|default:'income tax calculator' }} for Pakistan, updated for FBR Tax Year 2026-27.",
   "applicationCategory": "FinanceApplication",
   "operatingSystem": "All",
+  "browserRequirements": "Requires JavaScript",
+  "inLanguage": "en-PK",
+  "isAccessibleForFree": true,
   "offers": {
     "@type": "Offer",
     "price": "0",
@@ -18,41 +28,15 @@
   },
   "author": {
     "@type": "Person",
+    "@id": "https://www.taxbuddyumair.com/#author",
     "name": "Umair Mubeen",
-    "url": "https://www.taxbuddyumair.com"
+    "url": "https://www.taxbuddyumair.com/about-us/"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "@id": "https://www.taxbuddyumair.com/#org",
+    "name": "TaxBuddy Umair",
+    "url": "https://www.taxbuddyumair.com/"
   }
-}
-</script>
-
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "FAQPage",
-  "mainEntity": [
-    {
-      "@type": "Question",
-      "name": "How is income tax calculated in Pakistan?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "Income tax in Pakistan is calculated using slab-based rates under the Income Tax Ordinance 2001. Tax = Fixed Base Tax + (Taxable Income - Base Income Threshold) x Applicable Rate. Use our free calculator above for an instant estimate."
-      }
-    },
-    {
-      "@type": "Question",
-      "name": "What is the income tax exemption limit in Pakistan 2025-26?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "For Tax Year 2025-26, the income tax exemption limit for salaried individuals is PKR 600,000 per year (PKR 50,000 per month). Income below this threshold is taxed at 0%."
-      }
-    },
-    {
-      "@type": "Question",
-      "name": "When is the tax return filing deadline in Pakistan?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "The standard income tax return filing deadline in Pakistan is 30 September each year for the preceding tax year (July-June). For Tax Year 2025, the deadline is 30 September 2025."
-      }
-    }
-  ]
 }
 </script>

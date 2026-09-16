@@ -1,5 +1,11 @@
+from datetime import date
+
 from django.contrib.sitemaps import Sitemap
 from django.urls import reverse
+
+# Bump this whenever you update the calculators / static tool pages
+# (e.g. after a Finance Act rate change) so Google sees a fresh signal.
+TOOLS_LASTMOD = date(2026, 9, 16)
 
 from .models import Blog, GlossaryTerm, Instrument
 
@@ -76,6 +82,9 @@ class HomeSitemap(Sitemap):
     priority = 1.0
     protocol = 'https'
 
+    def lastmod(self, item):
+        return TOOLS_LASTMOD
+
     def items(self):
         return ['index']
 
@@ -88,6 +97,9 @@ class StaticSitemap(Sitemap):
     changefreq = 'monthly'
     priority = 0.8
     protocol = 'https'
+
+    def lastmod(self, item):
+        return TOOLS_LASTMOD
 
     def items(self):
         return [
@@ -132,6 +144,9 @@ class CalculatorSitemap(Sitemap):
     changefreq = 'monthly'
     priority = 0.9
     protocol = 'https'
+
+    def lastmod(self, item):
+        return TOOLS_LASTMOD
 
     def items(self):
         return [

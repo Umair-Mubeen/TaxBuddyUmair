@@ -1,3 +1,50 @@
+# robots.txt — TaxBuddy Umair
+# Allows all standard search engines AND AI answer engines to crawl the site,
+# so the content can be indexed and cited in Google AI Overviews, ChatGPT,
+# Gemini, Perplexity, Claude, etc.
+
+# ── Default: allow everything ──────────────────────────────
 User-agent: *
 Allow: /
-Sitemap: https://taxbuddyumair.com/sitemap.xml
+
+# ── AI / answer-engine crawlers (explicitly allowed for GEO) ──
+# Google AI Overviews / Gemini
+User-agent: Google-Extended
+Allow: /
+
+# OpenAI — ChatGPT search & training
+User-agent: GPTBot
+Allow: /
+User-agent: OAI-SearchBot
+Allow: /
+User-agent: ChatGPT-User
+Allow: /
+
+# Microsoft Copilot / Bing (also powers ChatGPT search)
+User-agent: bingbot
+Allow: /
+
+# Perplexity
+User-agent: PerplexityBot
+Allow: /
+User-agent: Perplexity-User
+Allow: /
+
+# Anthropic Claude
+User-agent: ClaudeBot
+Allow: /
+User-agent: Claude-Web
+Allow: /
+
+# Apple Intelligence
+User-agent: Applebot
+Allow: /
+User-agent: Applebot-Extended
+Allow: /
+
+# Common Crawl (feeds many AI models)
+User-agent: CCBot
+Allow: /
+
+# ── Sitemap (www — matches the live site) ──────────────────
+Sitemap: https://www.taxbuddyumair.com/sitemap.xml
