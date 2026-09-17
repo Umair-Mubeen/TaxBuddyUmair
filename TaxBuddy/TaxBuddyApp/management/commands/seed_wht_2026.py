@@ -100,13 +100,13 @@ ROWS = [
     ('advance', 'Section 152(2A)', 'Payments to PE of non-resident — sale of goods (company)', '5%', '10%', 'Payer', 'Minimum, subject to conditions'),
 
     # ---------- VEHICLES: 234 token ----------
-    ('advance', 'Section 234', 'Motor vehicle token — up to 1,000 CC', 'Rs 800', 'Rs 10,000', 'Excise & taxation', 'Annual, by engine capacity'),
-    ('advance', 'Section 234', 'Motor vehicle token — 1,001–1,199 CC', 'Rs 1,500', 'Rs 18,000', 'Excise & taxation', 'Annual, by engine capacity'),
-    ('advance', 'Section 234', 'Motor vehicle token — 1,200–1,299 CC', 'Rs 1,750', 'Rs 20,000', 'Excise & taxation', 'Annual, by engine capacity'),
-    ('advance', 'Section 234', 'Motor vehicle token — 1,300–1,499 CC', 'Rs 2,500', 'Rs 30,000', 'Excise & taxation', 'Annual, by engine capacity'),
-    ('advance', 'Section 234', 'Motor vehicle token — 1,500–1,599 CC', 'Rs 3,750', 'Rs 45,000', 'Excise & taxation', 'Annual, by engine capacity'),
-    ('advance', 'Section 234', 'Motor vehicle token — 1,600–1,999 CC', 'Rs 4,500', 'Rs 60,000', 'Excise & taxation', 'Annual, by engine capacity'),
-    ('advance', 'Section 234', 'Motor vehicle token — above 2,000 CC', 'Rs 10,000', 'Rs 120,000', 'Excise & taxation', 'Annual, by engine capacity'),
+    ('advance', 'Section 234', 'Motor vehicle token — up to 1,000 CC', 'Rs 800', 'Rs 1,600', 'Excise & taxation', 'Annual, by engine capacity'),
+    ('advance', 'Section 234', 'Motor vehicle token — 1,001–1,199 CC', 'Rs 1,500', 'Rs 3,000', 'Excise & taxation', 'Annual, by engine capacity'),
+    ('advance', 'Section 234', 'Motor vehicle token — 1,200–1,299 CC', 'Rs 1,750', 'Rs 3,500', 'Excise & taxation', 'Annual, by engine capacity'),
+    ('advance', 'Section 234', 'Motor vehicle token — 1,300–1,499 CC', 'Rs 2,500', 'Rs 5,000', 'Excise & taxation', 'Annual, by engine capacity'),
+    ('advance', 'Section 234', 'Motor vehicle token — 1,500–1,599 CC', 'Rs 3,750', 'Rs 7,500', 'Excise & taxation', 'Annual, by engine capacity'),
+    ('advance', 'Section 234', 'Motor vehicle token — 1,600–1,999 CC', 'Rs 4,500', 'Rs 9,000', 'Excise & taxation', 'Annual, by engine capacity'),
+    ('advance', 'Section 234', 'Motor vehicle token — above 2,000 CC', 'Rs 10,000', 'Rs 20,000', 'Excise & taxation', 'Annual, by engine capacity'),
 
     # ---------- VEHICLES: 231B registration (% of value) ----------
     ('advance', 'Section 231B', 'Vehicle registration — up to 850 CC', '0.5%', '1.5%', 'Registration authority', '% of vehicle value'),
@@ -132,7 +132,7 @@ ROWS = [
     ('advance', 'Section 236', 'Mobile phone / prepaid card / units', '15%', '15%', 'Mobile operator', 'On the amount'),
 
     # ---------- OTHER ----------
-    ('other', 'Section 236CB', 'Functions & gatherings', '10%', '10%', 'Function/event arranger', 'On total bill'),
+    ('other', 'Section 236CB', 'Functions & gatherings', '10%', '20%', 'Function/event arranger', 'On total bill'),
     ('other', 'Section 156', 'Prize bond winnings', '15%', '30%', 'Payer', 'On gross winning'),
     ('other', 'Section 156A', 'Petroleum products — commission to petrol pump operators', '12%', '24%', 'Oil marketing company', 'Final tax'),
     ('other', 'Section 233', 'Brokerage & commission — advertising agents', '10%', '20%', 'The principal', 'Minimum tax'),
@@ -140,12 +140,12 @@ ROWS = [
     ('other', 'Section 233', 'Brokerage & commission — others', '12%', '24%', 'The principal', 'Minimum tax'),
     ('other', 'Section 236A', 'Sale by auction (goods/property)', '10%', '20%', 'Auction authority', 'On auction value'),
     ('other', 'Section 236A', 'Auction of immovable property', '5%', '10%', 'Auction authority', 'On auction value'),
-    ('other', 'Section 236G', 'Sales to distributors — fertilizer', '0.7%', '1.4%', 'Manufacturer / commercial importer', 'On sales amount'),
+    ('other', 'Section 236G', 'Sales to distributors — fertilizer', '0.25%', '0.70%', 'Manufacturer / commercial importer', 'On sales amount'),
     ('other', 'Section 236G', 'Sales to distributors — other than fertilizer', '0.1%', '2%', 'Manufacturer / commercial importer', 'On sales amount'),
     ('other', 'Section 236H', 'Sales to retailers', '0.5%', '2.5%', 'Manufacturer / distributor', 'On sales amount'),
     ('other', 'Section 236H', 'Sales to wholesalers', '0.5%', '1%', 'Manufacturer / distributor', 'On sales amount'),
     ('other', 'Section 231C', 'Foreign domestic workers — visa issuance/renewal', 'Rs 200,000', 'Rs 400,000', 'Visa-issuing authority', 'Per visa (agency/sponsor)'),
-    ('other', 'Section 236Z', 'Bonus shares issued (value)', '10%', '10%', 'Company issuing bonus shares', 'Final tax'),
+    ('other', 'Section 236Z', 'Bonus shares issued (value)', '10%', '20%', 'Company issuing bonus shares', 'Final tax'),
 ]
 
 
