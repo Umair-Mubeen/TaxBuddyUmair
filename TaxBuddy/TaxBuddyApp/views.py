@@ -2774,3 +2774,9 @@ def ads_txt(request):
     """Serve ads.txt at site root for AdSense — add to urls.py: path('ads.txt', views.ads_txt)"""
     content = "google.com, pub-9107458294991357, DIRECT, f08c47fec0942fa0"
     return HttpResponse(content, content_type="text/plain")
+
+def pta_mobile_tax(request):
+    return render(request, 'pta_mobile_tax.html', {
+        'meta_title': 'PTA Mobile Tax Calculator 2026-27 Pakistan | iPhone & Samsung Passport vs CNIC',
+        'meta_desc': 'Free PTA mobile tax calculator (2026-27) using official FBR customs valuation. Compare Passport vs CNIC cost for any iPhone, Samsung, Pixel or OnePlus.',
+    })

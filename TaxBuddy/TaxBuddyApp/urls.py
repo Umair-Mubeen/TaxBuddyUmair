@@ -55,6 +55,7 @@ urlpatterns = [
     path('freelancer-tax-calculator/', views.freelancer_calculator, name='freelancer_calculator'),
     path('advance-tax-calculator/', views.advance_tax_calculator, name='advance_tax_calculator'),
     path('capital-gains-tax-calculator/', views.capital_gains_tax_calculator, name='capital_gains_tax_calculator'),
+    path('pta-mobile-tax-calculator/', views.pta_mobile_tax, name='pta_mobile_tax'),
 
     # ── API ───────────────────────────────────────────────────
     path('api/section-4c-rate/', views.section_4c_rate_view, name='section_4c_rate'),
