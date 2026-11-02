@@ -2,7 +2,7 @@
 {% load static %}
 
 {% block title %}Income Tax Guides Pakistan 2026-27 | TaxBuddy Umair{% endblock %}
-{% block meta_desc %}Complete income tax guides for Pakistan — salary tax, property tax, business income, withholding tax sections and filer vs non-filer rates. Updated per Finance Act 2025.{% endblock %}
+{% block meta_desc %}Complete income tax guides for Pakistan — salary tax, property tax, business income, withholding tax sections and filer vs non-filer rates. Updated per Finance Act 2026 (Tax Year 2026-27).{% endblock %}
 {% block content %}
 
 <div class="article-hero">
@@ -14,9 +14,9 @@
     </div>
     <h1>Income Tax Guides Pakistan 2026-27 — Free FBR Educational Guides</h1>
     <div class="article-meta">
-      <span>📋 ITO 2001</span>
-      <span>🔄 Updated for FBR Tax Year 2025–26</span>
-      <span>🎓 Free &amp; Educational</span>
+      <span><i class="fas fa-file-lines" aria-hidden="true"></i> ITO 2001</span>
+      <span><i class="fas fa-rotate" aria-hidden="true"></i> Updated for FBR Tax Year 2026-27</span>
+      <span><i class="fas fa-graduation-cap" aria-hidden="true"></i> Free &amp; Educational</span>
     </div>
   </div>
 </div>
@@ -41,10 +41,10 @@
         Welcome to TaxBuddy Umair's comprehensive <strong>income tax guides for Pakistan</strong>. These free guides cover everything you need to know about the <strong>Income Tax Ordinance, 2001 (ITO 2001)</strong> — from understanding tax slabs and filing returns to withholding tax sections, property tax, and filer vs non-filer rate differences. All guides are updated per <strong>Finance Act 2026-27</strong> and FBR notifications.
       </p>
       <div style="display:flex;gap:12px;flex-wrap:wrap;margin-top:14px;">
-        <a href="{% url 'SalaryCalculator' %}" style="font-size:13px;color:var(--green);font-weight:600;text-decoration:none;">💼 Salary Calculator →</a>
-        <a href="{% url 'withholding_tax_rates' %}" style="font-size:13px;color:var(--green);font-weight:600;text-decoration:none;">📊 WHT Rates →</a>
-        <a href="{% url 'atl_check' %}" style="font-size:13px;color:var(--green);font-weight:600;text-decoration:none;">✅ ATL Check →</a>
-        <a href="{% url 'tax_calendar' %}" style="font-size:13px;color:var(--green);font-weight:600;text-decoration:none;">📅 Tax Calendar →</a>
+        <a href="{% url 'SalaryCalculator' %}" style="font-size:13px;color:var(--green);font-weight:600;text-decoration:none;"><i class="fas fa-briefcase"></i> Salary Tax Calculator →</a>
+        <a href="{% url 'withholding_tax_rates' %}" style="font-size:13px;color:var(--green);font-weight:600;text-decoration:none;"><i class="fas fa-chart-column"></i> WHT Rates →</a>
+        <a href="{% url 'atl_check' %}" style="font-size:13px;color:var(--green);font-weight:600;text-decoration:none;"><i class="fas fa-circle-check"></i> ATL Check →</a>
+        <a href="{% url 'tax_calendar' %}" style="font-size:13px;color:var(--green);font-weight:600;text-decoration:none;"><i class="fas fa-calendar-days"></i> Tax Calendar →</a>
       </div>
     </div>
 
@@ -72,7 +72,7 @@
               {% if guide.related_blog %}
               <a href="{% url 'BlogDetails' slug=guide.related_blog.slug %}"
                  style="display:inline-flex;align-items:center;gap:6px;background:var(--green);color:#fff;padding:7px 16px;border-radius:6px;font-size:13px;font-weight:600;text-decoration:none;">
-                📖 Read Full Article
+                <i class="fas fa-book-open"></i> Read Full Article
               </a>
               {% else %}<span></span>{% endif %}
               <span style="font-size:12px;color:var(--text-light);">{{ guide.summary|striptags|wordcount }} words</span>

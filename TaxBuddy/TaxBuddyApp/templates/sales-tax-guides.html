@@ -14,9 +14,9 @@
     </div>
     <h1>Sales Tax Guides Pakistan 2026-27 — GST, Input Tax & Filing Help</h1>
     <div class="article-meta">
-      <span>📊 Sales Tax Act 1990</span>
-      <span>🔄 Updated 2025–26</span>
-      <span>🎓 Free &amp; Educational</span>
+      <span><i class="fas fa-receipt" aria-hidden="true"></i> Sales Tax Act 1990</span>
+      <span><i class="fas fa-rotate" aria-hidden="true"></i> Updated for Tax Year 2026-27</span>
+      <span><i class="fas fa-graduation-cap" aria-hidden="true"></i> Free &amp; Educational</span>
     </div>
   </div>
 </div>
@@ -37,9 +37,9 @@
         Pakistan's <strong>Sales Tax Act 1990</strong> governs GST at the standard rate of <strong>18%</strong> on taxable supplies. These free guides explain input tax, output tax, zero-rated and exempt goods, Tier-1 retailer obligations, monthly return filing on FBR IRIS, and withholding obligations for registered persons. Updated per <strong>Finance Act 2026-27</strong> and latest SROs.
       </p>
       <div style="display:flex;gap:12px;flex-wrap:wrap;margin-top:14px;">
-        <a href="{% url 'withholding_tax_rates' %}" style="font-size:13px;color:var(--green);font-weight:600;text-decoration:none;">📊 WHT Rates →</a>
-        <a href="{% url 'tax_calendar' %}" style="font-size:13px;color:var(--green);font-weight:600;text-decoration:none;">📅 Sales Tax Deadlines →</a>
-        <a href="{% url 'fbr_iris_guide' %}" style="font-size:13px;color:var(--green);font-weight:600;text-decoration:none;">🏛️ FBR IRIS Guide →</a>
+        <a href="{% url 'withholding_tax_rates' %}" style="font-size:13px;color:var(--green);font-weight:600;text-decoration:none;"><i class="fas fa-chart-column"></i> WHT Rates →</a>
+        <a href="{% url 'tax_calendar' %}" style="font-size:13px;color:var(--green);font-weight:600;text-decoration:none;"><i class="fas fa-calendar-days"></i> Sales Tax Deadlines →</a>
+        <a href="{% url 'fbr_iris_guide' %}" style="font-size:13px;color:var(--green);font-weight:600;text-decoration:none;"><i class="fas fa-landmark"></i> FBR IRIS Guide →</a>
       </div>
     </div>
 
@@ -63,7 +63,7 @@
               {% if guide.related_blog %}
               <a href="{% url 'BlogDetails' slug=guide.related_blog.slug %}"
                  style="display:inline-flex;align-items:center;gap:6px;background:#0D9E72;color:#fff;padding:7px 16px;border-radius:6px;font-size:13px;font-weight:600;text-decoration:none;">
-                📖 Read Full Article
+                <i class="fas fa-book-open"></i> Read Full Article
               </a>
               {% else %}<span></span>{% endif %}
               <span style="font-size:12px;color:var(--text-light);">{{ guide.summary|striptags|wordcount }} words</span>

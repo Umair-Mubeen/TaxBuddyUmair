@@ -26,15 +26,15 @@
           Tax Guides <span class="nav-arrow" aria-hidden="true">▾</span>
         </a>
         <div class="dropdown" role="menu">
-          <a href="{% url 'income_tax_guides' %}" role="menuitem">📋 Income Tax Guide</a>
-          <a href="{% url 'sales_tax_guides' %}"  role="menuitem">📊 Sales Tax Guide</a>
-          <a href="{% url 'income_tax_rates' %}"  role="menuitem">📈 Income Tax Rates</a>
-          <a href="{% url 'withholding_tax_rates' %}" role="menuitem">📉 Withholding Tax Rates</a>
-          <a href="{% url 'sro_list' %}"           role="menuitem">📜 SRO &amp; Circular Tracker</a>
-          <a href="{% url 'glossary_list' %}"      role="menuitem">📖 Tax Glossary</a>
-          <a href="{% url 'atl_check' %}"         role="menuitem">✅ ATL Check</a>
-          <a href="{% url 'tax_calendar' %}"       role="menuitem">📅 Tax Calendar</a>
-          <a href="{% url 'fbr_iris_guide' %}"     role="menuitem">🏛️ FBR IRIS Guide</a>
+          <a href="{% url 'income_tax_guides' %}" role="menuitem"><i class="fas fa-file-lines" aria-hidden="true"></i> Income Tax Guide</a>
+          <a href="{% url 'sales_tax_guides' %}"  role="menuitem"><i class="fas fa-receipt" aria-hidden="true"></i> Sales Tax Guide</a>
+          <a href="{% url 'income_tax_rates' %}"  role="menuitem"><i class="fas fa-chart-line" aria-hidden="true"></i> Income Tax Rates</a>
+          <a href="{% url 'withholding_tax_rates' %}" role="menuitem"><i class="fas fa-chart-column" aria-hidden="true"></i> Withholding Tax Rates</a>
+          <a href="{% url 'sro_list' %}"           role="menuitem"><i class="fas fa-scroll" aria-hidden="true"></i> SRO &amp; Circular Tracker</a>
+          <a href="{% url 'glossary_list' %}"      role="menuitem"><i class="fas fa-book" aria-hidden="true"></i> Tax Glossary</a>
+          <a href="{% url 'atl_check' %}"          role="menuitem"><i class="fas fa-circle-check" aria-hidden="true"></i> ATL Check</a>
+          <a href="{% url 'tax_calendar' %}"       role="menuitem"><i class="fas fa-calendar-days" aria-hidden="true"></i> Tax Calendar</a>
+          <a href="{% url 'fbr_iris_guide' %}"     role="menuitem"><i class="fas fa-landmark" aria-hidden="true"></i> FBR IRIS Guide</a>
         </div>
       </li>
 
@@ -43,18 +43,16 @@
           Calculators <span class="nav-arrow" aria-hidden="true">▾</span>
         </a>
         <div class="dropdown" role="menu">
-          <a href="{% url 'advance_tax_calculator' %}"   role="menuitem">💼 Advance Tax Calculator</a>
-          <a href="{% url 'karachi_fmv_calculator' %}"   role="menuitem">🏠 Karachi FMV Calculator</a>
-          <a href="{% url 'capital_gains_tax_calculator' %}" role="menuitem">🏠 Capital Gain Tax Calculator</a>
-
-          <a href="{% url 'SalaryCalculator' %}"   role="menuitem">💼 Salary Calculator</a>
-          <a href="{% url 'BusinessCalculator' %}" role="menuitem">🏢 Business Calculator</a>
-          <a href="{% url 'AOPCalculator' %}"      role="menuitem">🤝 AOP Calculator</a>
-          <a href="{% url 'PropertyCalculator' %}" role="menuitem">🏠 Property Calculator</a>
-
-          <a href="{% url 'freelancer_calculator' %}" role="menuitem">💻 Freelancer &amp; IT Export</a>
-          <a href="{% url 'TaxCalculator4C' %}"    role="menuitem">⚡ Super Tax 4C</a>
-
+          <a href="{% url 'SalaryCalculator' %}"   role="menuitem"><i class="fas fa-briefcase" aria-hidden="true"></i> Salary Tax Calculator</a>
+          <a href="{% url 'BusinessCalculator' %}" role="menuitem"><i class="fas fa-building" aria-hidden="true"></i> Business Tax Calculator</a>
+          <a href="{% url 'AOPCalculator' %}"      role="menuitem"><i class="fas fa-handshake" aria-hidden="true"></i> AOP Tax Calculator</a>
+          <a href="{% url 'PropertyCalculator' %}" role="menuitem"><i class="fas fa-house-chimney" aria-hidden="true"></i> Property / Rental Tax</a>
+          <a href="{% url 'capital_gains_tax_calculator' %}" role="menuitem"><i class="fas fa-arrow-trend-up" aria-hidden="true"></i> Capital Gain Tax</a>
+          <a href="{% url 'TaxCalculator4C' %}"    role="menuitem"><i class="fas fa-bolt" aria-hidden="true"></i> Super Tax (4C)</a>
+          <a href="{% url 'freelancer_calculator' %}" role="menuitem"><i class="fas fa-laptop-code" aria-hidden="true"></i> Freelancer &amp; IT Export</a>
+          <a href="{% url 'advance_tax_calculator' %}" role="menuitem"><i class="fas fa-money-bill-trend-up" aria-hidden="true"></i> Advance Tax Calculator</a>
+          <a href="{% url 'Withholding_Tax_Card' %}" role="menuitem"><i class="fas fa-file-invoice-dollar" aria-hidden="true"></i> WHT &amp; Advance Tax</a>
+          <a href="{% url 'karachi_fmv_calculator' %}" role="menuitem"><i class="fas fa-location-dot" aria-hidden="true"></i> Karachi FMV Calculator</a>
         </div>
       </li>
 
@@ -70,9 +68,9 @@
           Blog <span class="nav-arrow" aria-hidden="true">▾</span>
         </a>
         <div class="dropdown" role="menu">
-          <a href="{% url 'viewBlogs_category' slug='income-tax' %}" role="menuitem">📝 Income Tax</a>
-          <a href="{% url 'viewBlogs_category' slug='sales-tax' %}"  role="menuitem">📝 Sales Tax</a>
-          <a href="{% url 'viewBlogs' %}" role="menuitem">📝 All Posts</a>
+          <a href="{% url 'viewBlogs_category' slug='income-tax' %}" role="menuitem"><i class="fas fa-newspaper" aria-hidden="true"></i> Income Tax</a>
+          <a href="{% url 'viewBlogs_category' slug='sales-tax' %}"  role="menuitem"><i class="fas fa-newspaper" aria-hidden="true"></i> Sales Tax</a>
+          <a href="{% url 'viewBlogs' %}" role="menuitem"><i class="fas fa-layer-group" aria-hidden="true"></i> All Posts</a>
         </div>
       </li>
 
@@ -95,7 +93,7 @@
     <!-- Site Search (desktop) -->
     <form method="get" action="{% url 'search' %}" class="nav-search" role="search">
       <input type="search" name="q" placeholder="Search…" aria-label="Search site">
-      <button type="submit" aria-label="Submit search">🔍</button>
+      <button type="submit" aria-label="Submit search"><i class="fas fa-magnifying-glass" aria-hidden="true"></i></button>
     </form>
 
     <!-- CTA button — points to internal Services page; sales pitch isolated to /online-services/ for AdSense -->
@@ -117,51 +115,51 @@
 
     <form method="get" action="{% url 'search' %}" class="mobile-nav-search" role="search">
       <input type="search" name="q" placeholder="Search guides, calculators…" aria-label="Search site">
-      <button type="submit" aria-label="Submit search">🔍</button>
+      <button type="submit" aria-label="Submit search"><i class="fas fa-magnifying-glass" aria-hidden="true"></i></button>
     </form>
 
-    <a href="{% url 'index' %}">🏠 Home</a>
+    <a href="{% url 'index' %}"><i class="fas fa-house" aria-hidden="true"></i> Home</a>
 
     <div class="mobile-nav-group">
       <button class="mobile-nav-toggle" data-target="mob-guides" aria-expanded="false">
-        📚 Tax Guides <span class="mob-arrow">▾</span>
+        <span><i class="fas fa-book-open" aria-hidden="true"></i> Tax Guides</span> <span class="mob-arrow">▾</span>
       </button>
       <div class="mobile-nav-sub" id="mob-guides">
         <a href="{% url 'income_tax_guides' %}">Income Tax Guide</a>
         <a href="{% url 'sales_tax_guides' %}">Sales Tax Guide</a>
         <a href="{% url 'income_tax_rates' %}">Income Tax Rates</a>
         <a href="{% url 'withholding_tax_rates' %}">Withholding Tax Rates</a>
-        <a href="{% url 'sro_list' %}">📜 SRO &amp; Circular Tracker</a>
-        <a href="{% url 'glossary_list' %}">📖 Tax Glossary</a>
-        <a href="{% url 'atl_check' %}">✅ ATL Check</a>
-        <a href="{% url 'tax_calendar' %}">📅 Tax Calendar</a>
-        <a href="{% url 'fbr_iris_guide' %}">🏛️ FBR IRIS Guide</a>
+        <a href="{% url 'sro_list' %}">SRO &amp; Circular Tracker</a>
+        <a href="{% url 'glossary_list' %}">Tax Glossary</a>
+        <a href="{% url 'atl_check' %}">ATL Check</a>
+        <a href="{% url 'tax_calendar' %}">Tax Calendar</a>
+        <a href="{% url 'fbr_iris_guide' %}">FBR IRIS Guide</a>
       </div>
     </div>
 
     <div class="mobile-nav-group">
       <button class="mobile-nav-toggle" data-target="mob-calc" aria-expanded="false">
-        🧮 Calculators <span class="mob-arrow">▾</span>
+        <span><i class="fas fa-calculator" aria-hidden="true"></i> Calculators</span> <span class="mob-arrow">▾</span>
       </button>
       <div class="mobile-nav-sub" id="mob-calc">
         <a href="{% url 'SalaryCalculator' %}">Salary Tax Calculator</a>
         <a href="{% url 'BusinessCalculator' %}">Business Tax Calculator</a>
-        <a href="{% url 'AOPCalculator' %}">AOP Calculator</a>
-        <a href="{% url 'PropertyCalculator' %}">Property Calculator</a>
-        <a href="{% url 'freelancer_calculator' %}">Freelancer &amp; IT Export Tax</a>
-        <a href="{% url 'TaxCalculator4C' %}">Super Tax 4C</a>
+        <a href="{% url 'AOPCalculator' %}">AOP Tax Calculator</a>
+        <a href="{% url 'PropertyCalculator' %}">Property / Rental Tax</a>
+        <a href="{% url 'capital_gains_tax_calculator' %}">Capital Gain Tax</a>
+        <a href="{% url 'TaxCalculator4C' %}">Super Tax (4C)</a>
+        <a href="{% url 'freelancer_calculator' %}">Freelancer &amp; IT Export</a>
         <a href="{% url 'advance_tax_calculator' %}">Advance Tax Calculator</a>
+        <a href="{% url 'Withholding_Tax_Card' %}">WHT &amp; Advance Tax</a>
         <a href="{% url 'karachi_fmv_calculator' %}">Karachi FMV Calculator</a>
-        <a href="{% url 'capital_gains_tax_calculator' %}">Capital Gain Tax Calculator</a>
-
       </div>
     </div>
 
-    <a href="{% url 'question_list' %}">📝 Tax MCQs</a>
+    <a href="{% url 'question_list' %}"><i class="fas fa-pen-to-square" aria-hidden="true"></i> Tax MCQs</a>
 
     <div class="mobile-nav-group">
       <button class="mobile-nav-toggle" data-target="mob-blog" aria-expanded="false">
-        📰 Blog <span class="mob-arrow">▾</span>
+        <span><i class="fas fa-newspaper" aria-hidden="true"></i> Blog</span> <span class="mob-arrow">▾</span>
       </button>
       <div class="mobile-nav-sub" id="mob-blog">
         <a href="{% url 'viewBlogs_category' slug='income-tax' %}">Income Tax Blog</a>
@@ -170,9 +168,9 @@
       </div>
     </div>
 
-    <a href="{% url 'online_services' %}">🛎 Services</a>
+    <a href="{% url 'online_services' %}"><i class="fas fa-headset" aria-hidden="true"></i> Services</a>
 
-    <a href="{% url 'about_us' %}">👤 About Us</a>
+    <a href="{% url 'about_us' %}"><i class="fas fa-user" aria-hidden="true"></i> About Us</a>
 
   </div><!-- end mobile-nav -->
 
