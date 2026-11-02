@@ -20,8 +20,9 @@
 #     (section__iexact='Section 236C') match.
 #   • late_filer_rate left blank (abolished for 2026-2027).
 #   • 2025-2026 rows are NOT touched — history preserved.
-#   • All rates verified against KPMG TY2027 card + Income Tax
-#     Ordinance (amended to 30 June 2026). 154A flagged [VERIFY].
+#   • All rates verified against the OFFICIAL FBR Withholding Income Tax
+#     Rate Card (updated to 30 June 2026, Finance Act 2026) — 18 pages.
+#   • 154A (IT export) confirmed at 0.25% for PSEB-registered (page 9).
 # ══════════════════════════════════════════════════════════════
 
 from django.core.management.base import BaseCommand
@@ -76,19 +77,18 @@ ROWS = [
     ('business', 'Section 153(1)(a)', 'Other goods — company (toll manufacturing)', '9%', '18%', 'Prescribed person', 'Minimum for mfr/listed'),
     ('business', 'Section 153(1)(a)', 'Other goods — other taxpayers (excl. toll mfg)', '5.5%', '11%', 'Prescribed person', 'Minimum tax'),
     ('business', 'Section 153(1)(a)', 'Other goods — other taxpayers (toll mfg)', '11%', '22%', 'Prescribed person', 'Minimum tax'),
-    ('business', 'Section 153(1)(b)', 'Transport / freight forwarding / air cargo / courier', '4%', '8%', 'Prescribed person', 'Minimum tax'),
-    ('business', 'Section 153(1)(b)', 'Manpower/hotel/security/software/tracking/advertising/warehousing services', '7%', '14%', 'Prescribed person', 'Minimum tax'),
+    ('business', 'Section 153(1)(b)', 'Certain specified services (incl. transport, freight, courier, manpower, hotel, security, software, warehousing)', '7%', '14%', 'Prescribed person', 'Minimum tax'),
     ('business', 'Section 153(1)(b)', 'Engineering/inspection/testing/oilfield/telecom/travel/REIT-mgmt services', '7%', '14%', 'Prescribed person', 'Minimum tax'),
     ('business', 'Section 153(1)(b)', 'IT & IT-enabled services (as defined in s.2)', '4%', '8%', 'Prescribed person', 'Minimum tax'),
-    ('business', 'Section 153(1)(b)', 'Oil tanker contractor services', '2%', '4%', 'Prescribed person', 'Minimum tax'),
-    ('business', 'Section 153(1)(b)', 'Independent professionals (lawyers/accountants/engineers)', '15%', '30% (individual) / N/A for AOP', 'Prescribed person', 'Minimum for individual'),
+    ('business', 'Section 153(1)(b)', 'Independent professionals (doctors/lawyers/accountants/architects/software engineers)', '15%', '30%', 'Prescribed person', 'Minimum tax; working independently'),
     ('business', 'Section 153(1)(b)', 'Companies operating terminal / port operating services', '12%', '24%', 'Prescribed person', 'Minimum tax'),
     ('business', 'Section 153(1)(b)', 'Other services — company', '14%', '28%', 'Prescribed person', 'Minimum tax'),
     ('business', 'Section 153(1)(b)', 'Electronic/print media advertisement services', '1.5%', '3%', 'Prescribed person', 'Minimum tax'),
     ('business', 'Section 153(1)(c)', 'Execution of contract — company', '7.5%', '15%', 'Prescribed person', 'Minimum (adjustable for listed)'),
     ('business', 'Section 153(1)(c)', 'Execution of contract — other taxpayers', '8%', '16%', 'Prescribed person', 'Minimum tax'),
     ('business', 'Section 153(1)(c)', 'Execution of contract — sportsperson', '15%', '30%', 'Prescribed person', 'Minimum tax'),
-    ('business', 'Section 153(2A)', 'E-commerce (digital/banking payment)', '1%', '2%', 'Payment intermediary', 'Adjustable / final'),
+    ('business', 'Section 153(2A)', 'E-commerce — digitally ordered goods/services (digital/banking payment)', '1%', '2%', 'Payment intermediary', 'Adjustable / final'),
+    ('business', 'Section 153(2A)', 'E-commerce — cash on delivery by courier service', '2%', '4%', 'Courier service', 'Adjustable / final'),
     ('business', 'Section 153', 'Export house — services for rendering of certain services', '1%', '2%', 'Prescribed person', 'Minimum tax'),
 
     # ---------- IMPORTS / EXPORTS ----------
@@ -96,7 +96,8 @@ ROWS = [
     ('advance', 'Section 148', 'Import — goods in Part II, Twelfth Schedule', '2%', '4%', 'Customs', 'Minimum (varies for industrial own-use)'),
     ('advance', 'Section 154', 'Export of goods (on realization of proceeds)', '1.25%', '1.25%', 'Authorized dealer (bank)', 'Minimum tax'),
     ('advance', 'Section 154', 'Sale of goods to an exporter (inland back-to-back)', '1.25%', '1.25%', 'Banking company', 'Minimum tax'),
-    ('advance', 'Section 154A', 'Export of IT / IT-enabled services (foreign remittance) [VERIFY]', '0.25%', '0.25%', 'Authorized dealer (bank)', 'Final (reduced rate, conditions)'),
+    ('advance', 'Section 154A', 'Export of IT / IT-enabled services (PSEB-registered)', '0.25%', '0.25%', 'Authorized dealer (bank)', 'Final tax; PSEB-registered, TY2024–2029'),
+    ('advance', 'Section 154A', 'Export of IT / IT-enabled services (any other case)', '1%', '1%', 'Authorized dealer (bank)', 'Final tax; not PSEB-registered'),
     ('advance', 'Section 152(2A)', 'Payments to PE of non-resident — sale of goods (company)', '5%', '10%', 'Payer', 'Minimum, subject to conditions'),
 
     # ---------- VEHICLES: 234 token ----------
@@ -126,10 +127,8 @@ ROWS = [
     ('advance', 'Section 235', 'Electricity bill — above Rs 20,000 (commercial)', 'Rs 1,950 + 12%', 'Rs 1,950 + 12%', 'Electricity supplier', 'Of amount over Rs 20,000'),
     ('advance', 'Section 235', 'Electricity bill — above Rs 20,000 (industrial)', 'Rs 1,950 + 5%', 'Rs 1,950 + 5%', 'Electricity supplier', 'Of amount over Rs 20,000'),
     ('advance', 'Section 235', 'Electricity — domestic (non-ATL), bill over Rs 25,000', '—', '7.5%', 'Electricity supplier', 'Only if not on ATL'),
-    ('advance', 'Section 236', 'Telephone bill over Rs 1,000', '10%', '10%', 'Telephone company', 'On amount over Rs 1,000'),
-    ('advance', 'Section 236', 'Internet / prepaid card / units', '15%', '15%', 'ISP / card issuer', 'On the amount'),
-    ('advance', 'Section 236', 'Internet/prepaid — non-filer (u/s 114B)', '—', '75%', 'ISP / card issuer', 'For persons in FBR general order'),
-    ('advance', 'Section 236', 'Mobile phone / prepaid card / units', '15%', '15%', 'Mobile operator', 'On the amount'),
+    ('advance', 'Section 236', 'Telephone bill (non-mobile) over Rs 1,000', '10%', '10%', 'Telephone company', 'On amount of bill exceeding Rs 1,000'),
+    ('advance', 'Section 236', 'Internet / mobile / prepaid cards & sale of units', '15%', '15%', 'ISP / mobile operator / card issuer', 'On the amount of bill or sale price'),
 
     # ---------- OTHER ----------
     ('other', 'Section 236CB', 'Functions & gatherings', '10%', '20%', 'Function/event arranger', 'On total bill'),
@@ -143,7 +142,6 @@ ROWS = [
     ('other', 'Section 236G', 'Sales to distributors — fertilizer', '0.25%', '0.70%', 'Manufacturer / commercial importer', 'On sales amount'),
     ('other', 'Section 236G', 'Sales to distributors — other than fertilizer', '0.1%', '2%', 'Manufacturer / commercial importer', 'On sales amount'),
     ('other', 'Section 236H', 'Sales to retailers', '0.5%', '2.5%', 'Manufacturer / distributor', 'On sales amount'),
-    ('other', 'Section 236H', 'Sales to wholesalers', '0.5%', '1%', 'Manufacturer / distributor', 'On sales amount'),
     ('other', 'Section 231C', 'Foreign domestic workers — visa issuance/renewal', 'Rs 200,000', 'Rs 400,000', 'Visa-issuing authority', 'Per visa (agency/sponsor)'),
     ('other', 'Section 236Z', 'Bonus shares issued (value)', '10%', '20%', 'Company issuing bonus shares', 'Final tax'),
 ]
@@ -152,7 +150,19 @@ ROWS = [
 class Command(BaseCommand):
     help = 'Seed verified TY2026-27 withholding tax rates into WithholdingTaxRate'
 
+    def add_arguments(self, parser):
+        parser.add_argument(
+            '--fresh', action='store_true',
+            help='Delete all existing 2026-2027 rows first, then re-seed clean '
+                 '(removes old/renamed/duplicate rows). 2025-2026 history is NOT touched.',
+        )
+
     def handle(self, *args, **opts):
+        if opts.get('fresh'):
+            deleted, _ = WithholdingTaxRate.objects.filter(tax_year=YEAR).delete()
+            self.stdout.write(self.style.WARNING(
+                f'--fresh: deleted {deleted} existing {YEAR} row(s) before re-seeding.'
+            ))
         created, updated = 0, 0
         for i, (cat, sec, desc, filer, nonf, deducts, thr) in enumerate(ROWS):
             obj, was_created = WithholdingTaxRate.objects.update_or_create(
