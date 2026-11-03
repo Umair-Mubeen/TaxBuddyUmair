@@ -8,7 +8,7 @@ load_dotenv(Path(__file__).resolve().parent.parent / ".env")
 
 
 ANTHROPIC_API_KEY = os.getenv("ANTHROPIC_API_KEY", "")
-AI_MODEL = os.getenv("AI_MODEL", "claude-3-5-haiku-latest")
+AI_MODEL = os.getenv("AI_MODEL", "claude-haiku-5-5")
 
 
 BASE_DIR = Path(__file__).resolve().parent.parent.parent

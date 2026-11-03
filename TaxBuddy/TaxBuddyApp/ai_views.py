@@ -22,7 +22,6 @@ from django.shortcuts import render
 from django.views.decorators.http import require_POST
 from django.views.decorators.csrf import csrf_protect
 
-
 # ── Verified FBR Tax Year 2026-27 facts the assistant is grounded on ──
 TAX_FACTS_2026_27 = """
 PAKISTAN TAX — VERIFIED FACTS FOR TAX YEAR 2026-27 (Finance Act 2026):
@@ -56,7 +55,7 @@ Non-filers pay much higher withholding on property, bank profit, dividends and c
 Return filing deadline for individuals/AOPs is 30 September (for the tax year ending 30 June).
 """.strip()
 
-SYSTEM_PROMPT = f"""You are "TaxBuddy AI", the Pakistan tax assistant on taxbuddyumair.com, a free tax-education platform by Umair Mubeen (a Pakistani tax educator).
+SYSTEM_PROMPT = f"""You are "TaxBuddy Umair AI", the Pakistan tax assistant on taxbuddyumair.com, a free tax-education platform by Umair Mubeen (a Pakistani tax educator).
 
 YOUR ROLE:
 - Answer questions about Pakistan income tax, sales tax, property tax, withholding tax, filer/non-filer status and FBR filing, in simple language.
@@ -97,7 +96,7 @@ def _client():
         raise RuntimeError("ANTHROPIC_API_KEY is not set in settings/env.")
     return anthropic.Anthropic(api_key=key)
 
-AI_MODEL = getattr(settings, "AI_MODEL", "claude-3-5-haiku-latest")
+AI_MODEL = getattr(settings, "AI_MODEL", "") or "AI_MODEL=claude-haiku-5-5"
 MAX_INPUT_CHARS = 1500          # cap user input length
 MAX_HISTORY_TURNS = 8           # cap conversation memory sent to API
 RATE_LIMIT_MAX = 25             # max AI requests
@@ -175,7 +174,9 @@ def ai_chat_api(request):
 
     try:
         answer = _call_claude(SYSTEM_PROMPT, msgs, max_tokens=900)
+        print(answer)
     except Exception as e:
+        print(e)
         return JsonResponse({"status": "error",
                              "message": "The AI assistant is unavailable right now. Please try again shortly."},
                             status=503)
