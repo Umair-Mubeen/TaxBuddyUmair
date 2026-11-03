@@ -1,5 +1,12 @@
 # base.py
 import os
+
+from dotenv import load_dotenv
+load_dotenv()
+
+ANTHROPIC_API_KEY = os.getenv("ANTHROPIC_API_KEY", "")
+AI_MODEL = os.getenv("AI_MODEL", "claude-3-5-haiku-latest")
+
 from pathlib import Path
 
 BASE_DIR = Path(__file__).resolve().parent.parent.parent
@@ -56,6 +63,9 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
+
+
 
 DATABASES = {
     'default': {

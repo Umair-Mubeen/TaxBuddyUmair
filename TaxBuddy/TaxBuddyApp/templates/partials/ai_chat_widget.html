@@ -1,0 +1,111 @@
+{% load static %}
+<style>
+#aiw-launch{position:fixed;bottom:24px;right:24px;z-index:997;width:58px;height:58px;border-radius:50%;
+  background:linear-gradient(135deg,#0D9E72,#0B8A64);color:#fff;border:none;cursor:pointer;font-size:24px;
+  box-shadow:0 6px 20px rgba(13,158,114,.45);display:flex;align-items:center;justify-content:center;transition:transform .2s}
+#aiw-launch:hover{transform:scale(1.08)}
+#aiw-launch .aiw-badge{position:absolute;top:-4px;right:-4px;background:#E8A020;color:#fff;font-size:9px;font-weight:700;
+  padding:2px 6px;border-radius:999px;letter-spacing:.03em}
+#aiw-panel{position:fixed;bottom:92px;right:24px;z-index:998;width:min(380px,calc(100vw - 32px));
+  height:min(560px,calc(100vh - 140px));background:#fff;border:1px solid #E2E8F0;border-radius:18px;
+  box-shadow:0 16px 48px rgba(10,38,71,.22);display:none;flex-direction:column;overflow:hidden}
+#aiw-panel.open{display:flex}
+.aiw-head{background:#0A2647;padding:14px 16px;display:flex;align-items:center;gap:10px}
+.aiw-head-ico{width:34px;height:34px;border-radius:9px;background:rgba(255,255,255,.12);display:flex;align-items:center;justify-content:center;color:#8DE5C8;font-size:15px;flex-shrink:0}
+.aiw-head b{color:#fff;font-size:14px;display:block;line-height:1.2}
+.aiw-head small{color:rgba(255,255,255,.55);font-size:11px}
+.aiw-close{margin-left:auto;background:rgba(255,255,255,.12);border:none;color:#fff;width:30px;height:30px;border-radius:8px;cursor:pointer;font-size:16px}
+.aiw-msgs{flex:1;overflow-y:auto;padding:14px;background:#F6F9FC}
+.aiw-row{display:flex;margin-bottom:11px}
+.aiw-row.user{justify-content:flex-end}
+.aiw-bubble{max-width:85%;padding:9px 13px;border-radius:13px;font-size:13.5px;line-height:1.55}
+.aiw-row.ai .aiw-bubble{background:#fff;border:1px solid #E2E8F0;color:#0F172A;border-top-left-radius:3px}
+.aiw-row.user .aiw-bubble{background:#0A2647;color:#fff;border-top-right-radius:3px}
+.aiw-bubble strong{font-weight:700}
+.aiw-bubble a{color:#0D9E72;font-weight:600}
+.aiw-row.user .aiw-bubble a{color:#8DE5C8}
+.aiw-bubble ul{margin:5px 0 5px 16px}
+.aiw-type{display:inline-flex;gap:4px}
+.aiw-type span{width:6px;height:6px;border-radius:50%;background:#B6C2D1;animation:aiwB 1.2s infinite both}
+.aiw-type span:nth-child(2){animation-delay:.2s}.aiw-type span:nth-child(3){animation-delay:.4s}
+@keyframes aiwB{0%,80%,100%{opacity:.25}40%{opacity:1}}
+.aiw-bar{display:flex;gap:8px;padding:10px;border-top:1px solid #E2E8F0;background:#fff}
+.aiw-input{flex:1;border:1.5px solid #E2E8F0;border-radius:10px;padding:10px 12px;font-size:13.5px;font-family:inherit;outline:none;resize:none;max-height:90px;background:#F6F9FC;color:#0F172A}
+.aiw-input:focus{border-color:#0D9E72;background:#fff}
+.aiw-send{flex-shrink:0;width:42px;border:none;border-radius:10px;background:#0D9E72;color:#fff;font-size:15px;cursor:pointer}
+.aiw-send:disabled{opacity:.5}
+.aiw-disc{font-size:10px;color:#94A3B8;text-align:center;padding:0 10px 8px;background:#fff;line-height:1.4}
+@media(max-width:480px){#aiw-panel{bottom:86px;right:12px;left:12px;width:auto}#aiw-launch{bottom:18px;right:18px}}
+</style>
+
+<button id="aiw-launch" aria-label="Open AI tax assistant" title="Ask TaxBuddy Umair AI">
+  <i class="fas fa-robot" aria-hidden="true"></i>
+  <span class="aiw-badge">AI</span>
+</button>
+
+<div id="aiw-panel" role="dialog" aria-label="AI Tax Assistant">
+  <div class="aiw-head">
+    <div class="aiw-head-ico"><i class="fas fa-robot"></i></div>
+    <div><b>TaxBuddy Umair AI</b><small>Pakistan tax · 2026-27</small></div>
+    <button class="aiw-close" id="aiw-close" aria-label="Close">×</button>
+  </div>
+  <div class="aiw-msgs" id="aiw-msgs">
+    <div class="aiw-row ai"><div class="aiw-bubble">Hi! 👋 Pakistan tax ka koi sawaal? Income tax, filer status, property tax — poochein.</div></div>
+  </div>
+  <div class="aiw-bar">
+    <textarea class="aiw-input" id="aiw-input" rows="1" placeholder="Apna sawaal likhein…" maxlength="1500"></textarea>
+    <button class="aiw-send" id="aiw-send" aria-label="Send"><i class="fas fa-paper-plane"></i></button>
+  </div>
+  <div class="aiw-disc">AI estimates, educational only — not tax advice.</div>
+</div>
+
+<script>
+(function(){
+  var API="/api/ai-chat/";   /* hardcoded path — avoids NoReverseMatch if URL name not yet registered */
+  var CSRF="{{ csrf_token }}";
+  var launch=document.getElementById('aiw-launch');
+  var panel=document.getElementById('aiw-panel');
+  var closeB=document.getElementById('aiw-close');
+  var msgs=document.getElementById('aiw-msgs');
+  var input=document.getElementById('aiw-input');
+  var sendB=document.getElementById('aiw-send');
+  var history=[], busy=false;
+
+  launch.addEventListener('click', function(){ panel.classList.toggle('open'); if(panel.classList.contains('open')) input.focus(); });
+  closeB.addEventListener('click', function(){ panel.classList.remove('open'); });
+
+  function esc(s){var d=document.createElement('div');d.textContent=s;return d.innerHTML;}
+  function fmt(t){
+    var s=esc(t).replace(/\*\*([^*]+)\*\*/g,'<strong>$1</strong>')
+      .replace(/\[([^\]]+)\]\((https?:\/\/[^\s)]+|\/[^\s)]*)\)/g,'<a href="$2" target="_blank" rel="noopener">$1</a>');
+    var lines=s.split('\n'),out=[],ul=false;
+    lines.forEach(function(ln){
+      if(/^\s*[-•]\s+/.test(ln)){ if(!ul){out.push('<ul>');ul=true;} out.push('<li>'+ln.replace(/^\s*[-•]\s+/,'')+'</li>'); }
+      else { if(ul){out.push('</ul>');ul=false;} out.push(ln); }
+    });
+    if(ul)out.push('</ul>');
+    return out.join('\n').replace(/\n{2,}/g,'<br><br>').replace(/\n/g,'<br>');
+  }
+  function row(role,html){var r=document.createElement('div');r.className='aiw-row '+(role==='user'?'user':'ai');
+    var b=document.createElement('div');b.className='aiw-bubble';b.innerHTML=html;r.appendChild(b);msgs.appendChild(r);msgs.scrollTop=msgs.scrollHeight;return b;}
+
+  function send(){
+    var text=(input.value||'').trim(); if(!text||busy) return;
+    busy=true; sendB.disabled=true;
+    row('user',esc(text)); history.push({role:'user',content:text});
+    input.value=''; input.style.height='auto';
+    var t=row('ai','<span class="aiw-type"><span></span><span></span><span></span></span>');
+    fetch(API,{method:'POST',headers:{'Content-Type':'application/json','X-CSRFToken':CSRF},
+      body:JSON.stringify({message:text,history:history.slice(0,-1)})})
+      .then(function(r){return r.json();})
+      .then(function(d){ t.parentNode.remove();
+        if(d.status==='ok'){ row('ai',fmt(d.reply)); history.push({role:'assistant',content:d.reply}); }
+        else { row('ai',esc(d.message||'Try again.')); } })
+      .catch(function(){ t.parentNode.remove(); row('ai','Connection error.'); })
+      .finally(function(){ busy=false; sendB.disabled=false; input.focus(); });
+  }
+  sendB.addEventListener('click', send);
+  input.addEventListener('keydown', function(e){ if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();send();} });
+  input.addEventListener('input', function(){ this.style.height='auto'; this.style.height=Math.min(this.scrollHeight,90)+'px'; });
+})();
+</script>

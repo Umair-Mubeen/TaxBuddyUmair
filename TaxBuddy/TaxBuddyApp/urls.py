@@ -6,7 +6,7 @@ from django.views.generic import TemplateView
 
 from .sitemaps import BlogSitemap, StaticSitemap, CalculatorSitemap
 from . import views
-
+from . import ai_views
 sitemaps = {
     'static': StaticSitemap,
     'calculators': CalculatorSitemap,
@@ -131,8 +131,12 @@ urlpatterns = [
     path('edit-glossary/<int:pk>/',    views.add_edit_glossary, name='edit_glossary'),
     path('delete-glossary/<int:pk>/',  views.delete_glossary,  name='delete_glossary'),
 
-    # ── AI CHAT ──────────────────────────────────────────────
-    path('ai-chat/', views.ai_chat, name='ai_chat'),
+    # ── AI ASSISTANT & SMART CALCULATOR (ABOVE the <slug> catch-all) ──
+    path('ai-chat/',           ai_views.ai_tax_assistant,   name='ai_tax_assistant'),
+    path('ai-tax-calculator/', ai_views.ai_smart_calculator, name='ai_smart_calculator'),
+    path('api/ai-chat/',       ai_views.ai_chat_api,        name='ai_chat_api'),
+    path('api/ai-smart-calc/', ai_views.ai_smart_calc_api,  name='ai_smart_calc_api'),
+
     path('api/atl-search/', views.atl_search_api, name='atl_search_api'),
 
     # ── BLOG (MUST BE LAST — slug patterns are greedy) ────────
@@ -154,26 +158,6 @@ urlpatterns = [
     # Legacy 301 redirect: old /<slug>/ → /articles/<slug>/
     # Keeps old Google-indexed URLs working
     path('<slug:slug>/', views.legacy_blog_redirect, name='legacy_blog_redirect'),
-# ════════════════════════════════════════════════════════════════
-#  ADD these to TaxBuddyApp/urls.py  urlpatterns  (before the greedy
-#  blog/<slug> and <slug> catch-all patterns at the very bottom).
-# ════════════════════════════════════════════════════════════════
-
-
-
-# ════════════════════════════════════════════════════════════════
-#  ALSO add the page URL name to CalculatorSitemap in
-#  TaxBuddyApp/sitemaps.py so it appears in sitemap.xml. Example:
-#
-#    class CalculatorSitemap(Sitemap):
-#        def items(self):
-#            return [
-#                ...existing names...,
-#                'karachi_fmv_calculator',
-#            ]
-#        def location(self, name):
-#            return reverse(name)
-# ════════════════════════════════════════════════════════════════
 ]
 
 if settings.DEBUG:

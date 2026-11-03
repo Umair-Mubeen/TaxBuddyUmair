@@ -1,0 +1,159 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}AI Pakistan Tax Assistant — Ask Tax Questions Free | TaxBuddy Umair{% endblock %}
+{% block meta_desc %}Free AI tax assistant for Pakistan. Ask about income tax, sales tax, filer status, property tax (236C/236K) and FBR filing — instant, simple answers for Tax Year 2026-27.{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/calculators.css' %}">
+<style>
+.ai-wrap{max-width:860px;margin:0 auto;padding:24px 16px 60px}
+.ai-card{background:var(--white,#fff);border:1px solid var(--border,#E2E8F0);border-radius:var(--radius-lg,12px);box-shadow:var(--shadow-sm,0 1px 3px rgba(16,24,40,.06));overflow:hidden;display:flex;flex-direction:column;height:min(70vh,640px)}
+.ai-head{background:var(--navy,#0A2647);padding:16px 20px;display:flex;align-items:center;gap:12px}
+.ai-head-ico{width:40px;height:40px;border-radius:11px;background:rgba(255,255,255,.12);display:flex;align-items:center;justify-content:center;font-size:18px;color:#8DE5C8;flex-shrink:0}
+.ai-head h2{color:#fff;font-size:16px;font-weight:700;margin:0}
+.ai-head p{color:rgba(255,255,255,.6);font-size:12px;margin:2px 0 0}
+.ai-head .dot{width:8px;height:8px;border-radius:50%;background:#2ee6a6;margin-left:auto;box-shadow:0 0 0 3px rgba(46,230,166,.2)}
+.ai-msgs{flex:1;overflow-y:auto;padding:18px 18px 8px;background:var(--bg,#F6F9FC)}
+.ai-row{display:flex;margin-bottom:14px}
+.ai-row.user{justify-content:flex-end}
+.ai-bubble{max-width:82%;padding:11px 15px;border-radius:14px;font-size:14px;line-height:1.6}
+.ai-row.ai .ai-bubble{background:#fff;border:1px solid var(--border,#E2E8F0);color:var(--text,#0F172A);border-top-left-radius:4px}
+.ai-row.user .ai-bubble{background:var(--navy,#0A2647);color:#fff;border-top-right-radius:4px}
+.ai-bubble strong{color:inherit;font-weight:700}
+.ai-bubble a{color:var(--green,#0D9E72);font-weight:600}
+.ai-row.user .ai-bubble a{color:#8DE5C8}
+.ai-bubble ul{margin:6px 0 6px 18px}
+.ai-bubble li{margin-bottom:3px}
+.ai-typing{display:inline-flex;gap:4px;padding:4px 2px}
+.ai-typing span{width:7px;height:7px;border-radius:50%;background:#B6C2D1;animation:aiBlink 1.2s infinite both}
+.ai-typing span:nth-child(2){animation-delay:.2s}.ai-typing span:nth-child(3){animation-delay:.4s}
+@keyframes aiBlink{0%,80%,100%{opacity:.25}40%{opacity:1}}
+.ai-chips{display:flex;gap:8px;flex-wrap:wrap;padding:12px 18px;border-top:1px solid var(--border,#E2E8F0);background:#fff}
+.ai-chip{border:1.5px solid var(--border,#E2E8F0);background:#fff;color:var(--text-mid,#475569);font-size:12.5px;font-weight:600;padding:7px 13px;border-radius:999px;cursor:pointer;font-family:inherit;transition:all .15s}
+.ai-chip:hover{border-color:var(--green,#0D9E72);color:var(--green,#0D9E72)}
+.ai-input-bar{display:flex;gap:10px;padding:14px 16px;border-top:1px solid var(--border,#E2E8F0);background:#fff}
+.ai-input{flex:1;border:1.5px solid var(--border,#E2E8F0);border-radius:12px;padding:12px 14px;font-size:14px;font-family:inherit;outline:none;resize:none;max-height:120px;background:var(--bg,#F6F9FC);color:var(--text,#0F172A)}
+.ai-input:focus{border-color:var(--green,#0D9E72);background:#fff;box-shadow:0 0 0 3px rgba(13,158,114,.1)}
+.ai-send{flex-shrink:0;width:48px;border:none;border-radius:12px;background:linear-gradient(135deg,#0D9E72,#0B8A64);color:#fff;font-size:17px;cursor:pointer;box-shadow:0 4px 12px rgba(13,158,114,.3)}
+.ai-send:disabled{opacity:.5;cursor:not-allowed}
+.ai-disc{font-size:11.5px;color:var(--text-light,#64748B);text-align:center;margin-top:14px;line-height:1.5}
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="article-hero">
+  <div class="article-hero-inner">
+    <div class="breadcrumb">
+      <a href="{% url 'index' %}">Home</a>
+      <span class="breadcrumb-sep">›</span>
+      <span>AI Tax Assistant</span>
+    </div>
+    <h1>AI Pakistan Tax Assistant</h1>
+    <div class="article-meta">
+      <span><i class="fas fa-robot" aria-hidden="true"></i> Instant Answers</span>
+      <span><i class="fas fa-rotate" aria-hidden="true"></i> FBR 2026-27</span>
+      <span><i class="fas fa-graduation-cap" aria-hidden="true"></i> Free &amp; Educational</span>
+    </div>
+  </div>
+</div>
+
+<div class="ai-wrap">
+  <div class="ai-card">
+    <div class="ai-head">
+      <div class="ai-head-ico"><i class="fas fa-robot"></i></div>
+      <div>
+        <h2>TaxBuddy Umair AI</h2>
+        <p>Pakistan income &amp; sales tax · 2026-27</p>
+      </div>
+      <span class="dot" title="Online"></span>
+    </div>
+
+    <div class="ai-msgs" id="aiMsgs">
+      <div class="ai-row ai">
+        <div class="ai-bubble">Assalam-o-Alaikum! 👋 Main <strong>TaxBuddy Umair AI</strong> hoon. Pakistan ke income tax, sales tax, filer status, property tax ya FBR filing ke baare mein kuch bhi poochein — simple jawab dunga.</div>
+      </div>
+    </div>
+
+    <div class="ai-chips" id="aiChips">
+      <button class="ai-chip">Mera salary 250,000/month hai, kitna tax?</button>
+      <button class="ai-chip">Filer vs non-filer ka farak?</button>
+      <button class="ai-chip">236C property sale tax kya hai?</button>
+      <button class="ai-chip">How do I become a filer?</button>
+    </div>
+
+    <div class="ai-input-bar">
+      <textarea class="ai-input" id="aiInput" rows="1" placeholder="Apna tax sawaal likhein…" maxlength="1500"></textarea>
+      <button class="ai-send" id="aiSend" aria-label="Send"><i class="fas fa-paper-plane"></i></button>
+    </div>
+  </div>
+
+  <p class="ai-disc">
+    ⚠️ AI answers are educational estimates for Tax Year 2026-27 and may be imperfect — not professional tax or legal advice.
+    TaxBuddy Umair is an independent educator, not affiliated with FBR. For exact figures use the
+    <a href="{% url 'SalaryCalculator' %}" style="color:var(--green);font-weight:600;">calculators</a>, and consult a tax professional for filing.
+  </p>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+(function(){
+  var API = "{% url 'ai_chat_api' %}";
+  var CSRF = "{{ csrf_token }}";
+  var msgs = document.getElementById('aiMsgs');
+  var input = document.getElementById('aiInput');
+  var sendBtn = document.getElementById('aiSend');
+  var history = [];
+  var busy = false;
+
+  function esc(s){var d=document.createElement('div');d.textContent=s;return d.innerHTML;}
+  // minimal + safe markdown: escape first, then allow **bold**, links, bullets, line breaks
+  function fmt(t){
+    var s = esc(t);
+    s = s.replace(/\*\*([^*]+)\*\*/g,'<strong>$1</strong>');
+    s = s.replace(/\[([^\]]+)\]\((https?:\/\/[^\s)]+|\/[^\s)]*)\)/g,'<a href="$2" target="_blank" rel="noopener">$1</a>');
+    // bullet lines
+    var lines = s.split('\n'), out=[], inUl=false;
+    lines.forEach(function(ln){
+      if(/^\s*[-•]\s+/.test(ln)){ if(!inUl){out.push('<ul>');inUl=true;} out.push('<li>'+ln.replace(/^\s*[-•]\s+/,'')+'</li>'); }
+      else { if(inUl){out.push('</ul>');inUl=false;} out.push(ln); }
+    });
+    if(inUl) out.push('</ul>');
+    return out.join('\n').replace(/\n{2,}/g,'<br><br>').replace(/\n/g,'<br>');
+  }
+  function addRow(role, html){
+    var row=document.createElement('div'); row.className='ai-row '+(role==='user'?'user':'ai');
+    var b=document.createElement('div'); b.className='ai-bubble'; b.innerHTML=html; row.appendChild(b);
+    msgs.appendChild(row); msgs.scrollTop=msgs.scrollHeight; return b;
+  }
+  function typing(){ return addRow('ai','<span class="ai-typing"><span></span><span></span><span></span></span>'); }
+
+  function send(text){
+    text=(text||'').trim(); if(!text||busy) return;
+    busy=true; sendBtn.disabled=true;
+    addRow('user', esc(text));
+    history.push({role:'user',content:text});
+    input.value=''; input.style.height='auto';
+    var t = typing();
+    fetch(API,{method:'POST',headers:{'Content-Type':'application/json','X-CSRFToken':CSRF},
+      body:JSON.stringify({message:text, history:history.slice(0,-1)})})
+      .then(function(r){return r.json();})
+      .then(function(d){
+        t.parentNode.remove();
+        if(d.status==='ok'){ addRow('ai', fmt(d.reply)); history.push({role:'assistant',content:d.reply}); }
+        else { addRow('ai', esc(d.message||'Something went wrong.')); }
+      })
+      .catch(function(){ t.parentNode.remove(); addRow('ai','Connection error. Please try again.'); })
+      .finally(function(){ busy=false; sendBtn.disabled=false; input.focus(); });
+  }
+
+  sendBtn.addEventListener('click', function(){ send(input.value); });
+  input.addEventListener('keydown', function(e){ if(e.key==='Enter' && !e.shiftKey){ e.preventDefault(); send(input.value); } });
+  input.addEventListener('input', function(){ this.style.height='auto'; this.style.height=Math.min(this.scrollHeight,120)+'px'; });
+  document.getElementById('aiChips').addEventListener('click', function(e){
+    if(e.target.classList.contains('ai-chip')) send(e.target.textContent);
+  });
+})();
+</script>
+{% endblock %}
