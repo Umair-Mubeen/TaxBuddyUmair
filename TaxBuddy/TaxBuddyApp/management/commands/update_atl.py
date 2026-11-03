@@ -16,9 +16,17 @@ class Command(BaseCommand):
             type=str,
             help='Path to local ATL file (skip download)',
         )
+        parser.add_argument(
+            '--year',
+            type=str,
+            default='2026',
+            help='Tax year label for these records (default: 2026)',
+        )
 
     def handle(self, *args, **kwargs):
+        self.year = kwargs.get('year') or '2026'
         file_path = kwargs.get('file')
+        self.stdout.write(f'🗓️  Tax year label: {self.year}')
 
         # ── Option 1: Local file provided ────────────────────
         if file_path:
@@ -196,7 +204,7 @@ class Command(BaseCommand):
                 ntn=ntn,
                 name=name,
                 business_name=business_name,
-                tax_year='2025',
+                tax_year=self.year,
             ))
             count += 1
 
