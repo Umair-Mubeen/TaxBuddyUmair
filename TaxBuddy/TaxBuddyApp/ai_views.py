@@ -22,6 +22,7 @@ from django.shortcuts import render
 from django.views.decorators.http import require_POST
 from django.views.decorators.csrf import csrf_protect
 
+
 # ── Verified FBR Tax Year 2026-27 facts the assistant is grounded on ──
 TAX_FACTS_2026_27 = """
 PAKISTAN TAX — VERIFIED FACTS FOR TAX YEAR 2026-27 (Finance Act 2026):
@@ -130,7 +131,7 @@ def _call_claude(system_prompt, messages, max_tokens=900):
 # ════════════════ PAGES ════════════════
 def ai_tax_assistant(request):
     """Full-page AI chat (serves the existing /ai-chat/ route)."""
-    return render(request, "ai_tax_assistant.html", {
+    return render(request, "partials/ai_tax_assistant.html", {
         "meta_title": "AI Pakistan Tax Assistant | Ask Tax Questions Free | TaxBuddy Umair",
         "meta_description": "Free AI tax assistant for Pakistan. Ask about income tax, sales tax, "
                             "filer status, property tax and FBR filing — instant answers for 2026-27.",
@@ -139,7 +140,7 @@ def ai_tax_assistant(request):
 
 def ai_smart_calculator(request):
     """AI Smart Tax Calculator page."""
-    return render(request, "ai_smart_calculator.html", {
+    return render(request, "partials/ai_smart_calculator.html", {
         "meta_title": "AI Smart Tax Calculator Pakistan 2026-27 | TaxBuddy Umair",
         "meta_description": "Describe your income in plain language and let AI estimate your Pakistan "
                             "income tax for 2026-27 with a clear breakdown. Free and instant.",

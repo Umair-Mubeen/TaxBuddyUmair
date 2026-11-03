@@ -1,13 +1,15 @@
 # base.py
 import os
 
+from pathlib import Path
+
 from dotenv import load_dotenv
-load_dotenv()
+load_dotenv(Path(__file__).resolve().parent.parent / ".env")
+
 
 ANTHROPIC_API_KEY = os.getenv("ANTHROPIC_API_KEY", "")
 AI_MODEL = os.getenv("AI_MODEL", "claude-3-5-haiku-latest")
 
-from pathlib import Path
 
 BASE_DIR = Path(__file__).resolve().parent.parent.parent
 
