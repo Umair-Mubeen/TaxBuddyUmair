@@ -1,0 +1,378 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Zakat Calculator Pakistan 2026 | Gold, Silver, Cash & Nisab | TaxBuddy Umair{% endblock %}
+{% block meta_desc %}Free Zakat calculator for Pakistan (2026). Work out your Zakat at 2.5% on gold, silver, cash, savings, business stock and investments — with the current silver Nisab. Simple, accurate and Shariah-based.{% endblock %}
+
+{% block schema_extra %}
+{% include 'partials/schema_calculator.html' with calc_name='Zakat Calculator Pakistan 2026' calc_url='/zakat-calculator/' %}
+<script type="application/ld+json">
+{
+  "@context":"https://schema.org","@type":"FAQPage","mainEntity":[
+    {"@type":"Question","name":"What is the Nisab for Zakat in Pakistan?","acceptedAnswer":{"@type":"Answer","text":"Nisab is the minimum wealth on which Zakat becomes due. It equals the value of 52.5 tola (612.36 grams) of silver, or 7.5 tola (87.48 grams) of gold if gold is your only asset. When you hold mixed assets such as cash and gold, the lower silver Nisab applies. At a silver rate of about Rs 6,532 per tola, the Nisab is roughly Rs 343,000."}},
+    {"@type":"Question","name":"How much Zakat do I pay?","acceptedAnswer":{"@type":"Answer","text":"Zakat is 2.5% of your total net zakatable wealth (assets minus immediate liabilities), provided that wealth is above the Nisab and has been held for one lunar year."}},
+    {"@type":"Question","name":"Which assets are included in Zakat?","acceptedAnswer":{"@type":"Answer","text":"Zakat applies to gold, silver, cash in hand, bank balances, foreign currency, business stock and inventory, money receivable, listed shares at market value, and prize bonds at face value. Immediate debts and payables are deducted."}},
+    {"@type":"Question","name":"Is Zakat due on gold jewellery?","acceptedAnswer":{"@type":"Answer","text":"Yes. Under the view followed in Pakistan, Zakat is due at 2.5% on the market value of gold and silver jewellery once your total wealth exceeds the Nisab."}},
+    {"@type":"Question","name":"When is Zakat calculated?","acceptedAnswer":{"@type":"Answer","text":"Zakat is due once a lunar (Hijri) year passes on wealth above the Nisab. Many people value their wealth on 1 Ramadan each year and pay then."}}
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[
+    {"@type":"ListItem","position":1,"name":"Home","item":"https://www.taxbuddyumair.com/"},
+    {"@type":"ListItem","position":2,"name":"Calculators","item":"https://www.taxbuddyumair.com/calculators/"},
+    {"@type":"ListItem","position":3,"name":"Zakat Calculator","item":"https://www.taxbuddyumair.com/zakat-calculator/"}
+  ]
+}
+</script>
+{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/calculators.css' %}">
+<style>
+/* ── Reuse site calculator card shell (same as Salary / PTA) ── */
+.calc-container{background:var(--white,#fff);border:1px solid var(--border,#E2E8F0);border-radius:var(--radius-lg,12px);box-shadow:var(--shadow-sm,0 1px 3px rgba(16,24,40,.06));overflow:hidden;margin-bottom:20px}
+.calc-body{padding:24px 28px}
+.calc-header{background:var(--navy,#0A2647);padding:24px 28px;display:flex;align-items:flex-start;gap:16px}
+.calc-header-icon{width:48px;height:48px;background:rgba(255,255,255,.12);border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:24px;flex-shrink:0}
+.calc-header h2{font-size:20px;font-weight:700;color:#fff;margin-bottom:4px}
+.calc-header p{font-size:13px;color:rgba(255,255,255,.55);margin-bottom:10px}
+.calc-badges{display:flex;gap:6px;flex-wrap:wrap}
+.calc-badge{font-size:10px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;padding:3px 10px;border-radius:20px;border:1px solid rgba(255,255,255,.2);color:rgba(255,255,255,.65);background:rgba(255,255,255,.08)}
+
+.zk-eduwarn{background:#fffbeb;border:1px solid #fde68a;border-radius:10px;padding:12px 16px;margin-bottom:18px;display:flex;gap:10px;align-items:flex-start}
+.zk-eduwarn p{font-size:12.5px;color:#92400e;margin:0;line-height:1.6}
+
+/* section groups */
+.zk-group{margin-bottom:22px}
+.zk-group-title{font-size:13px;font-weight:700;color:var(--navy,#0A2647);text-transform:uppercase;letter-spacing:.05em;margin:0 0 12px;padding-bottom:8px;border-bottom:2px solid #E6F7F2;display:flex;align-items:center;gap:8px}
+.zk-field{margin-bottom:14px}
+.zk-label{display:block;font-size:12.5px;font-weight:600;color:var(--text-mid,#4A5568);margin-bottom:5px}
+.zk-label small{color:var(--text-light,#718096);font-weight:400}
+.zk-inwrap{position:relative;display:flex;gap:10px}
+.zk-prefix{position:absolute;left:12px;top:50%;transform:translateY(-50%);font-size:12px;font-weight:700;color:var(--text-light,#718096);pointer-events:none}
+.zk-input{width:100%;padding:11px 12px 11px 34px;font-size:14px;font-family:inherit;border:1.5px solid var(--border,#E2E8F0);border-radius:10px;outline:none;background:var(--bg,#F7F9FC);color:var(--text,#1A202C);transition:border-color .2s,box-shadow .2s,background .2s}
+.zk-input.noprefix{padding-left:12px}
+.zk-input:focus{border-color:var(--green,#0D9E72);background:#fff;box-shadow:0 0 0 3px rgba(13,158,114,.1)}
+.zk-unit{width:110px;flex-shrink:0;padding:11px 10px;font-size:13px;font-family:inherit;border:1.5px solid var(--border,#E2E8F0);border-radius:10px;background:#fff;color:var(--text,#1A202C);appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23718096' stroke-width='2.5'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 10px center;padding-right:28px}
+.zk-hint{font-size:11px;color:var(--text-light,#718096);margin-top:4px}
+.zk-raterow{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+@media(max-width:560px){.zk-raterow{grid-template-columns:1fr}}
+
+.zk-btn{width:100%;padding:15px 24px;background:linear-gradient(135deg,#0D9E72,#0B8A64);color:#fff;font-size:15px;font-weight:700;font-family:inherit;border:none;border-radius:12px;cursor:pointer;margin-top:8px;min-height:54px;box-shadow:0 4px 14px rgba(13,158,114,.35);transition:all .2s}
+.zk-btn:hover{background:linear-gradient(135deg,#0B8A64,#097554);box-shadow:0 6px 20px rgba(13,158,114,.45);transform:translateY(-1px)}
+.zk-btn:active{transform:translateY(0);box-shadow:none}
+.zk-reset{width:100%;padding:11px;background:none;border:1.5px solid var(--border,#E2E8F0);border-radius:10px;color:var(--text-mid,#4A5568);font-weight:600;font-size:13.5px;font-family:inherit;cursor:pointer;margin-top:10px}
+.zk-reset:hover{background:var(--bg,#F7F9FC)}
+
+/* result */
+#zkResult{display:none;margin-top:26px;border-top:3px solid var(--green,#0D9E72);padding-top:22px}
+.zk-headline{border-radius:14px;padding:22px;text-align:center;margin-bottom:16px}
+.zk-headline.due{background:#E6F7F2;border:1.5px solid var(--green,#0D9E72)}
+.zk-headline.none{background:var(--bg,#F7F9FC);border:1.5px solid var(--border,#E2E8F0)}
+.zk-headline .cap{font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:#0B8A64;margin-bottom:6px}
+.zk-headline.none .cap{color:var(--text-light,#718096)}
+.zk-headline .amt{font-size:34px;font-weight:800;color:var(--navy,#0A2647);font-family:var(--font-head,Georgia,serif);line-height:1.1}
+.zk-headline .sub{font-size:12.5px;color:var(--text-mid,#4A5568);margin-top:8px}
+.zk-break{border:1px solid var(--border,#E2E8F0);border-radius:12px;overflow:hidden}
+.zk-break .r{display:flex;justify-content:space-between;align-items:center;padding:11px 16px;border-bottom:1px solid var(--border,#E2E8F0);font-size:13.5px}
+.zk-break .r:last-child{border-bottom:none}
+.zk-break .r .k{color:var(--text-mid,#4A5568)}
+.zk-break .r .v{font-weight:700;color:var(--navy,#0A2647)}
+.zk-break .r.sub-h{background:#F7FAFD;font-weight:700;color:var(--navy,#0A2647);font-size:12px;text-transform:uppercase;letter-spacing:.04em}
+.zk-break .r.minus .v{color:#dc2626}
+.zk-break .r.total{background:var(--navy,#0A2647)}
+.zk-break .r.total .k{color:#fff;font-weight:700}.zk-break .r.total .v{color:#fff}
+.zk-break .r.nisab{background:#FFF7EC}.zk-break .r.nisab .k{color:#B8810F;font-weight:600}.zk-break .r.nisab .v{color:#B8810F}
+.zk-note{background:#FFF7EC;border:1px solid #F3D89B;border-radius:11px;padding:13px 15px;font-size:12.5px;color:#8A6410;margin-top:16px;line-height:1.55}
+
+/* secondary cards */
+.zk-sec{background:var(--white,#fff);border:1px solid var(--border,#E2E8F0);border-radius:var(--radius-lg,12px);box-shadow:var(--shadow-sm,0 1px 3px rgba(16,24,40,.06));padding:24px 28px;margin-bottom:20px}
+.zk-sec h2{font-size:18px;font-weight:700;color:var(--navy,#0A2647);margin:0 0 14px}
+.zk-sec p{font-size:14px;color:var(--text-mid,#4A5568);line-height:1.7;margin:0 0 12px}
+.zk-tablescroll{overflow-x:auto}
+.zk-table{width:100%;border-collapse:collapse;font-size:13.5px}
+.zk-table th,.zk-table td{padding:10px 12px;border:1px solid var(--border,#E2E8F0);text-align:left}
+.zk-table th{background:var(--navy,#0A2647);color:#fff;font-weight:600}
+.zk-table tr:nth-child(even) td{background:#F7FAFD}
+.zk-faq details{border:1px solid var(--border,#E2E8F0);border-radius:11px;margin-bottom:10px}
+.zk-faq summary{cursor:pointer;padding:14px 16px;font-weight:600;color:var(--navy,#0A2647);font-size:14px;list-style:none;display:flex;justify-content:space-between;align-items:center}
+.zk-faq summary::-webkit-details-marker{display:none}
+.zk-faq summary::after{content:'+';color:var(--green,#0D9E72);font-size:1.3rem;font-weight:700}
+.zk-faq details[open] summary::after{content:'−'}
+.zk-faq .ans{padding:0 16px 15px;color:var(--text-mid,#4A5568);font-size:13.5px;line-height:1.6}
+</style>
+{% endblock %}
+
+{% block content %}
+
+<div class="article-hero calc-page-header">
+  <div class="article-hero-inner">
+    <div class="breadcrumb">
+      <a href="{% url 'index' %}">Home</a>
+      <span class="breadcrumb-sep">›</span>
+      <span>Calculators</span>
+      <span class="breadcrumb-sep">›</span>
+      <span>Zakat Calculator</span>
+    </div>
+    <h1>Zakat Calculator Pakistan — 2026</h1>
+    <div class="article-meta">
+      <span>🕌 Shariah-based 2.5%</span>
+      <span>✅ Silver Nisab</span>
+      <span>💰 Gold, Cash &amp; Assets</span>
+    </div>
+  </div>
+</div>
+
+<div class="content-grid">
+  <main class="content-main">
+
+    <div class="calc-container">
+      <div class="calc-header">
+        <div class="calc-header-icon">🕌</div>
+        <div>
+          <h2>Zakat Calculator</h2>
+          <p>Calculate Zakat at 2.5% on your total wealth · 2026</p>
+          <div class="calc-badges">
+            <span class="calc-badge">2.5% Rate</span>
+            <span class="calc-badge">Nisab Based</span>
+            <span class="calc-badge">Free</span>
+          </div>
+        </div>
+      </div>
+      <div class="calc-body">
+
+        <div class="zk-eduwarn">
+          <span style="font-size:16px;line-height:1.4;flex-shrink:0;">&#128161;</span>
+          <p><strong>How to use:</strong> Enter everything you own that is subject to Zakat, then your immediate
+            debts. Zakat is <strong>2.5%</strong> of your net wealth if it is above the Nisab and you have held
+            it for one lunar year. Update the gold &amp; silver rates to today's market price for accuracy.</p>
+        </div>
+
+        <!-- METAL RATES -->
+        <div class="zk-group">
+          <div class="zk-group-title">💹 Today's metal rates <small style="font-weight:400;text-transform:none;letter-spacing:0;color:#718096;">(per tola)</small></div>
+          <div class="zk-raterow">
+            <div class="zk-field">
+              <label class="zk-label">Gold rate <small>(Rs / tola)</small></label>
+              <div class="zk-inwrap"><span class="zk-prefix">Rs</span><input type="number" id="goldRate" class="zk-input" value="440000" min="0"></div>
+            </div>
+            <div class="zk-field">
+              <label class="zk-label">Silver rate <small>(Rs / tola)</small></label>
+              <div class="zk-inwrap"><span class="zk-prefix">Rs</span><input type="number" id="silverRate" class="zk-input" value="6532" min="0"></div>
+            </div>
+          </div>
+          <div class="zk-hint">1 tola = 11.664 grams. Nisab is based on the silver rate (52.5 tola). Update both to today's rate.</div>
+        </div>
+
+        <!-- GOLD & SILVER -->
+        <div class="zk-group">
+          <div class="zk-group-title">🪙 Gold &amp; Silver you own</div>
+          <div class="zk-field">
+            <label class="zk-label">Gold</label>
+            <div class="zk-inwrap">
+              <input type="number" id="gold" class="zk-input noprefix" placeholder="0" min="0" step="0.01">
+              <select id="goldUnit" class="zk-unit"><option value="tola">tola</option><option value="g">grams</option></select>
+            </div>
+          </div>
+          <div class="zk-field">
+            <label class="zk-label">Silver</label>
+            <div class="zk-inwrap">
+              <input type="number" id="silver" class="zk-input noprefix" placeholder="0" min="0" step="0.01">
+              <select id="silverUnit" class="zk-unit"><option value="tola">tola</option><option value="g">grams</option></select>
+            </div>
+          </div>
+        </div>
+
+        <!-- CASH & SAVINGS -->
+        <div class="zk-group">
+          <div class="zk-group-title">💵 Cash &amp; Savings</div>
+          <div class="zk-field"><label class="zk-label">Cash in hand</label><div class="zk-inwrap"><span class="zk-prefix">Rs</span><input type="number" id="cash" class="zk-input" placeholder="0" min="0"></div></div>
+          <div class="zk-field"><label class="zk-label">Bank balance / savings</label><div class="zk-inwrap"><span class="zk-prefix">Rs</span><input type="number" id="bank" class="zk-input" placeholder="0" min="0"></div></div>
+          <div class="zk-field"><label class="zk-label">Foreign currency <small>(in PKR value)</small></label><div class="zk-inwrap"><span class="zk-prefix">Rs</span><input type="number" id="forex" class="zk-input" placeholder="0" min="0"></div></div>
+        </div>
+
+        <!-- BUSINESS & INVESTMENTS -->
+        <div class="zk-group">
+          <div class="zk-group-title">📈 Business &amp; Investments</div>
+          <div class="zk-field"><label class="zk-label">Business stock / inventory <small>(resale value)</small></label><div class="zk-inwrap"><span class="zk-prefix">Rs</span><input type="number" id="business" class="zk-input" placeholder="0" min="0"></div></div>
+          <div class="zk-field"><label class="zk-label">Money receivable <small>(loans owed to you, recoverable)</small></label><div class="zk-inwrap"><span class="zk-prefix">Rs</span><input type="number" id="receivables" class="zk-input" placeholder="0" min="0"></div></div>
+          <div class="zk-field"><label class="zk-label">Shares / mutual funds <small>(market value)</small></label><div class="zk-inwrap"><span class="zk-prefix">Rs</span><input type="number" id="shares" class="zk-input" placeholder="0" min="0"></div></div>
+          <div class="zk-field"><label class="zk-label">Prize bonds <small>(face value)</small></label><div class="zk-inwrap"><span class="zk-prefix">Rs</span><input type="number" id="bonds" class="zk-input" placeholder="0" min="0"></div></div>
+        </div>
+
+        <!-- LIABILITIES -->
+        <div class="zk-group">
+          <div class="zk-group-title">➖ Deduct liabilities</div>
+          <div class="zk-field"><label class="zk-label">Immediate debts &amp; payables <small>(due now — loans, bills, business payables)</small></label><div class="zk-inwrap"><span class="zk-prefix">Rs</span><input type="number" id="liabilities" class="zk-input" placeholder="0" min="0"></div></div>
+        </div>
+
+        <button class="zk-btn" id="zkCalc">🧮 Calculate My Zakat</button>
+        <button class="zk-reset" id="zkReset">Reset all fields</button>
+
+        <!-- RESULT -->
+        <div id="zkResult">
+          <div class="zk-headline" id="zkHead">
+            <div class="cap" id="zkCap">Zakat Payable</div>
+            <div class="amt" id="zkAmt">Rs 0</div>
+            <div class="sub" id="zkSub"></div>
+          </div>
+          <div class="zk-break" id="zkBreak"></div>
+          <div class="zk-note">
+            <strong>Note:</strong> This is a guide based on the 2.5% rate and the silver Nisab (52.5 tola).
+            Views differ on some assets (e.g. gold jewellery in regular use, provident fund, partially recoverable
+            loans). For your exact obligation, confirm with a qualified scholar.
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- NISAB EXPLAINER -->
+    <div class="zk-sec">
+      <h2>📏 What is Nisab?</h2>
+      <p><strong>Nisab</strong> is the minimum amount of wealth you must own before Zakat becomes obligatory.
+        If your total net wealth stays below Nisab, no Zakat is due. There are two thresholds:</p>
+      <div class="zk-tablescroll">
+        <table class="zk-table">
+          <thead><tr><th>Nisab basis</th><th>Weight</th><th>When it applies</th></tr></thead>
+          <tbody>
+            <tr><td><strong>Silver</strong></td><td>52.5 tola (612.36 g)</td><td>Mixed assets — cash, gold, savings, etc. (the common case)</td></tr>
+            <tr><td><strong>Gold</strong></td><td>7.5 tola (87.48 g)</td><td>Only when gold is your sole zakatable asset</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p style="margin-top:12px;">Because most people hold some cash along with gold, the lower <strong>silver Nisab</strong>
+        is used — this is the more cautious view and benefits those eligible to receive Zakat. At a silver rate of
+        around Rs 6,532 per tola, the Nisab works out to roughly <strong>Rs 343,000</strong>.</p>
+    </div>
+
+    <!-- WHAT'S INCLUDED -->
+    <div class="zk-sec">
+      <h2>✅ What is included in Zakat?</h2>
+      <div class="zk-tablescroll">
+        <table class="zk-table">
+          <thead><tr><th>Zakatable (add)</th><th>Not zakatable / deduct</th></tr></thead>
+          <tbody>
+            <tr><td>Gold &amp; silver (incl. jewellery)</td><td>Your home you live in</td></tr>
+            <tr><td>Cash in hand &amp; bank balances</td><td>Personal car &amp; household items</td></tr>
+            <tr><td>Foreign currency</td><td>Property for personal use</td></tr>
+            <tr><td>Business stock &amp; inventory</td><td>Fixed business assets (machinery, shop)</td></tr>
+            <tr><td>Money receivable (recoverable loans)</td><td>Immediate debts &amp; payables (deduct)</td></tr>
+            <tr><td>Shares / mutual funds (market value)</td><td></td></tr>
+            <tr><td>Prize bonds (face value)</td><td></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- FAQ -->
+    <div class="zk-sec zk-faq">
+      <h2>❓ Frequently asked questions</h2>
+      <details open>
+        <summary>How much Zakat do I have to pay?</summary>
+        <div class="ans">Zakat is <strong>2.5%</strong> of your total net wealth (zakatable assets minus immediate
+          debts), as long as that wealth is above the Nisab and has been held for one full lunar year.</div>
+      </details>
+      <details>
+        <summary>Is Zakat due on gold jewellery I wear?</summary>
+        <div class="ans">Under the view commonly followed in Pakistan, Zakat is due at 2.5% on the market value of
+          gold and silver jewellery once your total wealth exceeds the Nisab — whether it is worn or stored. Some
+          scholars differ, so follow the ruling you trust.</div>
+      </details>
+      <details>
+        <summary>When should I calculate my Zakat?</summary>
+        <div class="ans">Zakat becomes due when one lunar (Hijri) year passes on wealth that stayed above the Nisab.
+          Many people fix a date — often <strong>1 Ramadan</strong> — value their wealth that day each year, and pay then.</div>
+      </details>
+      <details>
+        <summary>Do I deduct my debts?</summary>
+        <div class="ans">Yes — immediate debts and payables due now (loans, unpaid bills, business payables) are
+          deducted from your total before applying 2.5%. Long-term loans are usually counted only for the instalment
+          due, so check with a scholar for large liabilities.</div>
+      </details>
+      <details>
+        <summary>Is Zakat the same as the tax I pay to FBR?</summary>
+        <div class="ans">No. Zakat is a religious obligation on wealth, separate from income tax. Paying FBR income
+          tax does not discharge your Zakat, and Zakat is not deductible from your taxable income — though Zakat paid
+          to approved funds can qualify for a tax credit under the law.</div>
+      </details>
+    </div>
+
+    {% include 'partials/cta_banner.html' %}
+
+  </main>
+  <aside class="content-sidebar">
+    {% include 'partials/sidebar.html' %}
+  </aside>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+(function(){
+  var TOLA_G=11.664;
+  function val(id){var v=parseFloat(document.getElementById(id).value);return isNaN(v)||v<0?0:v;}
+  function pk(n){return 'Rs '+Math.round(n).toLocaleString('en-PK');}
+
+  function run(){
+    var goldRate=val('goldRate'), silverRate=val('silverRate');
+    var goldQty=val('gold'), silverQty=val('silver');
+    var goldTola = document.getElementById('goldUnit').value==='g' ? goldQty/TOLA_G : goldQty;
+    var silverTola = document.getElementById('silverUnit').value==='g' ? silverQty/TOLA_G : silverQty;
+    var goldVal=goldTola*goldRate, silverVal=silverTola*silverRate;
+
+    var cash=val('cash'), bank=val('bank'), forex=val('forex'),
+        business=val('business'), receivables=val('receivables'),
+        shares=val('shares'), bonds=val('bonds'), liabilities=val('liabilities');
+
+    var assets=goldVal+silverVal+cash+bank+forex+business+receivables+shares+bonds;
+    var net=assets-liabilities;
+    var nisab=52.5*silverRate;
+    var eligible = net>=nisab && net>0;
+    var zakat = eligible ? net*0.025 : 0;
+
+    var head=document.getElementById('zkHead'), cap=document.getElementById('zkCap'),
+        amt=document.getElementById('zkAmt'), sub=document.getElementById('zkSub');
+    if(eligible){
+      head.className='zk-headline due'; cap.textContent='Zakat Payable (2.5%)';
+      amt.textContent=pk(zakat);
+      sub.textContent='Your net wealth of '+pk(net)+' is above the Nisab of '+pk(nisab)+'.';
+    } else {
+      head.className='zk-headline none'; cap.textContent='No Zakat Due';
+      amt.textContent=pk(0);
+      sub.textContent='Your net wealth of '+pk(net)+' is below the Nisab of '+pk(nisab)+'.';
+    }
+
+    function row(k,v,cls){return '<div class="r '+(cls||'')+'"><span class="k">'+k+'</span><span class="v">'+v+'</span></div>';}
+    var rows='';
+    rows+=row('ZAKATABLE ASSETS','','sub-h');
+    if(goldVal>0)   rows+=row('Gold ('+goldTola.toFixed(2)+' tola)',pk(goldVal));
+    if(silverVal>0) rows+=row('Silver ('+silverTola.toFixed(2)+' tola)',pk(silverVal));
+    if(cash>0)        rows+=row('Cash in hand',pk(cash));
+    if(bank>0)        rows+=row('Bank / savings',pk(bank));
+    if(forex>0)       rows+=row('Foreign currency',pk(forex));
+    if(business>0)    rows+=row('Business stock',pk(business));
+    if(receivables>0) rows+=row('Money receivable',pk(receivables));
+    if(shares>0)      rows+=row('Shares / funds',pk(shares));
+    if(bonds>0)       rows+=row('Prize bonds',pk(bonds));
+    rows+=row('Total assets',pk(assets));
+    if(liabilities>0) rows+=row('Less: debts &amp; payables','− '+pk(liabilities),'minus');
+    rows+=row('Net zakatable wealth',pk(net));
+    rows+=row('Nisab threshold (52.5 tola silver)',pk(nisab),'nisab');
+    rows+=row('Zakat @ 2.5%',pk(zakat),'total');
+    document.getElementById('zkBreak').innerHTML=rows;
+
+    document.getElementById('zkResult').style.display='block';
+    document.getElementById('zkResult').scrollIntoView({behavior:'smooth',block:'nearest'});
+  }
+
+  document.getElementById('zkCalc').addEventListener('click',run);
+  document.getElementById('zkReset').addEventListener('click',function(){
+    ['gold','silver','cash','bank','forex','business','receivables','shares','bonds','liabilities'].forEach(function(id){document.getElementById(id).value='';});
+    document.getElementById('zkResult').style.display='none';
+  });
+})();
+</script>
+{% endblock %}

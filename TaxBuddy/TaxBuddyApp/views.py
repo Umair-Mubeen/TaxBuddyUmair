@@ -2780,3 +2780,7 @@ def pta_mobile_tax(request):
         'meta_title': 'PTA Mobile Tax Calculator 2026-27 Pakistan | iPhone & Samsung Passport vs CNIC',
         'meta_desc': 'Free PTA mobile tax calculator (2026-27) using official FBR customs valuation. Compare Passport vs CNIC cost for any iPhone, Samsung, Pixel or OnePlus.',
     })
+
+
+def zakat_calculator(request):
+    return render(request, 'zakat_calculator.html')

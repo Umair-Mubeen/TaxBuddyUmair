@@ -30,13 +30,10 @@
   <!-- SEO Meta -->
   <title>{% block title %}{{ meta_title|default:"TaxBuddy Umair | Pakistan Tax Education Platform" }}{% endblock %}</title>
   <meta name="description" content="{% block meta_desc %}{{ meta_description|default:"Pakistan's free tax education platform. Free income tax & sales tax guides, calculators and MCQs — explained simply by TaxBuddy Umair. FBR 2026-27." }}{% endblock %}">
-  <meta name="robots" content="index, follow">
+  <meta name="robots" content="{% if request.GET %}noindex, follow{% else %}index, follow{% endif %}">
   <meta name="theme-color" content="#0A2647">
   <meta name="author" content="Umair Mubeen">
   <link rel="canonical" href="https://www.taxbuddyumair.com{{ request.path }}">
-  {% if request.GET %}
-  <meta name="robots" content="noindex, follow">
-  {% endif %}
 
   <!-- Open Graph -->
   <meta property="og:title"       content="{% block og_title %}{{ meta_title|default:'TaxBuddy Umair' }}{% endblock %}">
@@ -120,10 +117,25 @@
   }
   </script>
 
+  <!-- Schema.org: Organization (entity + logo for Knowledge Panel / AI Overview) -->
+  <script type="application/ld+json">
+  {
+    "@context":"https://schema.org",
+    "@type":"Organization",
+    "@id":"https://www.taxbuddyumair.com/#organization",
+    "name":"TaxBuddy Umair",
+    "url":"https://www.taxbuddyumair.com",
+    "logo":"https://www.taxbuddyumair.com/static/images/og-image.png",
+    "founder":{"@type":"Person","@id":"https://www.taxbuddyumair.com/#author"},
+    "sameAs":["https://www.facebook.com/TaxBuddyUmair"]
+  }
+  </script>
+
   {% block schema_extra %}{% endblock %}
 
-  <!-- Font Awesome Icons -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <!-- Font Awesome Icons — non-blocking load (icons are not needed for first paint) -->
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" onload="this.onload=null;this.rel='stylesheet'">
+  <noscript><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"></noscript>
 
   <!-- Fonts: preload then async-load to prevent render-blocking -->
   <link rel="preconnect" href="https://fonts.googleapis.com">

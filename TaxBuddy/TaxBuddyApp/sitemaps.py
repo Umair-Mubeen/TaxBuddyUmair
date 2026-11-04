@@ -162,7 +162,10 @@ class CalculatorSitemap(Sitemap):
             'karachi_fmv_calculator',
             'advance_tax_calculator',
             'capital_gains_tax_calculator',
-            'pta_mobile_tax'
+            'pta_mobile_tax',
+            'zakat_calculator',
+            'ai_tax_assistant',
+            'ai_smart_calculator',
         ]
 
     def location(self, item):

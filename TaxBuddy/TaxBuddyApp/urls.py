@@ -4,13 +4,21 @@ from django.conf.urls.static import static
 from django.contrib.sitemaps.views import sitemap
 from django.views.generic import TemplateView
 
-from .sitemaps import BlogSitemap, StaticSitemap, CalculatorSitemap
+from .sitemaps import (
+    HomeSitemap, StaticSitemap, LegalSitemap, CalculatorSitemap,
+    BlogSitemap, BlogCategorySitemap, GlossarySitemap, SROSitemap,
+)
 from . import views
 from . import ai_views
 sitemaps = {
-    'static': StaticSitemap,
+    'home':        HomeSitemap,
     'calculators': CalculatorSitemap,
-    'blog': BlogSitemap,
+    'static':      StaticSitemap,
+    'blog':        BlogSitemap,
+    'categories':  BlogCategorySitemap,
+    'sros':        SROSitemap,
+    'glossary':    GlossarySitemap,
+    'legal':       LegalSitemap,
 }
 
 urlpatterns = [
@@ -56,6 +64,7 @@ urlpatterns = [
     path('advance-tax-calculator/', views.advance_tax_calculator, name='advance_tax_calculator'),
     path('capital-gains-tax-calculator/', views.capital_gains_tax_calculator, name='capital_gains_tax_calculator'),
     path('pta-mobile-tax-calculator/', views.pta_mobile_tax, name='pta_mobile_tax'),
+    path('zakat-calculator/', views.zakat_calculator, name='zakat_calculator'),
 
     # ── API ───────────────────────────────────────────────────
     path('api/section-4c-rate/', views.section_4c_rate_view, name='section_4c_rate'),

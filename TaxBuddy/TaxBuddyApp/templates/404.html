@@ -1,21 +1,84 @@
-{% extends 'base.html' %}
-{% load static %}
-{% block title %}Page Not Found | TaxBuddy Umair{% endblock %}
-{% block top_ad %}{% endblock %}
-{% block content_bottom_ad %}{% endblock %}
-{% block content %}
-<div style="min-height:60vh;display:flex;align-items:center;justify-content:center;text-align:center;padding:60px 20px;">
-  <div>
-    <div style="font-size:72px;margin-bottom:20px;">🔍</div>
-    <h1 style="font-family:var(--font-head);font-size:32px;color:var(--navy);margin-bottom:12px;">Page Not Found</h1>
-    <p style="font-size:15px;color:var(--text-light);margin-bottom:28px;max-width:400px;">
-      The page you're looking for doesn't exist or has been moved.
-    </p>
-    <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap;">
-      <a href="{% url 'index' %}" class="btn-primary" style="text-decoration:none;">🏠 Go Home</a>
-      <a href="{% url 'income_tax_guides' %}" class="btn-outline" style="text-decoration:none;">📚 Tax Guides</a>
-      <a href="{% url 'SalaryCalculator' %}" class="btn-outline" style="text-decoration:none;">🧮 Calculators</a>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Server Error (500) | TaxBuddy Umair</title>
+  <!-- STANDALONE error page — intentionally does NOT extend base.html.
+       500 renders precisely when something is already broken, so it must not
+       depend on the navbar, footer, context processors or any include. -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Literata:wght@600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --navy:#0A2647; --green:#0D9E72; --green-mid:#0B8A64;
+      --bg:#F6F9FC; --text:#0F172A; --text-mid:#475569; --text-light:#64748B;
+      --border:#E2E8F0;
+    }
+    *{box-sizing:border-box;margin:0;padding:0}
+    body{
+      font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;
+      background:var(--bg); color:var(--text);
+      min-height:100vh; display:flex; flex-direction:column;
+      -webkit-font-smoothing:antialiased;
+    }
+    .wrap{flex:1; display:flex; align-items:center; justify-content:center; padding:48px 16px;}
+    .card{
+      max-width:520px; width:100%; text-align:center;
+      background:#fff; border:1px solid var(--border); border-radius:16px;
+      padding:48px 32px; box-shadow:0 8px 30px rgba(10,38,71,.08);
+    }
+    .brand{
+      font-family:'Literata',Georgia,serif; font-weight:700; font-size:20px;
+      color:var(--navy); margin-bottom:28px; letter-spacing:-.01em;
+    }
+    .brand span{color:var(--green);}
+    .code{
+      font-family:'Literata',Georgia,serif; font-weight:700;
+      font-size:76px; line-height:1; color:var(--navy); margin-bottom:8px;
+    }
+    .badge{
+      display:inline-block; background:#FEF2F2; color:#B91C1C;
+      font-size:12px; font-weight:600; padding:5px 12px; border-radius:999px;
+      margin-bottom:20px; letter-spacing:.02em;
+    }
+    h1{
+      font-family:'Literata',Georgia,serif; font-weight:700;
+      font-size:26px; color:var(--navy); margin-bottom:12px; letter-spacing:-.01em;
+    }
+    p{font-size:15px; color:var(--text-mid); line-height:1.65; max-width:400px; margin:0 auto 28px;}
+    .btn{
+      display:inline-block; text-decoration:none;
+      background:linear-gradient(135deg,var(--green),var(--green-mid)); color:#fff;
+      font-weight:600; font-size:15px; padding:13px 28px; border-radius:10px;
+      box-shadow:0 4px 14px rgba(13,158,114,.35); transition:transform .15s;
+    }
+    .btn:hover{transform:translateY(-1px);}
+    .links{margin-top:22px; font-size:14px; color:var(--text-light);}
+    .links a{color:var(--green); text-decoration:none; font-weight:500; margin:0 8px;}
+    .links a:hover{text-decoration:underline;}
+    footer{text-align:center; padding:22px 16px; font-size:13px; color:var(--text-light);}
+    @media(max-width:480px){ .card{padding:36px 22px;} .code{font-size:60px;} h1{font-size:22px;} }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="card">
+      <div class="brand">TaxBuddy <span>Umair</span></div>
+      <div class="code">500</div>
+      <span class="badge">Server Error</span>
+      <h1>Something went wrong</h1>
+      <p>Our server ran into a problem. This is usually temporary — please try again in a moment.</p>
+      <a class="btn" href="/">Back to Home</a>
+      <div class="links">
+        <a href="/income-tax-guides/">Tax Guides</a>·
+        <a href="/SalaryCalculator/">Calculators</a>·
+        <a href="/contact/">Contact</a>
+      </div>
     </div>
   </div>
-</div>
-{% endblock %}
+  <footer>© TaxBuddy Umair — Pakistan Tax Education Platform</footer>
+</body>
+</html>
