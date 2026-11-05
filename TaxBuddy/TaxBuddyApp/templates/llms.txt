@@ -1,0 +1,36 @@
+# TaxBuddy Umair
+
+> Pakistan's free tax education platform. Clear, up-to-date guidance and free calculators for income tax, sales tax, property tax and FBR compliance — based on the Income Tax Ordinance 2001 and the Sales Tax Act 1990, and updated for Finance Act 2026 (Tax Year 2026-27). Created by Umair Mubeen, an independent Pakistani tax educator.
+
+## Calculators & tools
+- [Salary Tax Calculator 2026-27](https://www.taxbuddyumair.com/SalaryCalculator/): Estimate income tax on a monthly or annual salary using the Finance Act 2026 slabs.
+- [Property / Rental Tax Calculator](https://www.taxbuddyumair.com/PropertyCalculator/): Tax on property sale (236C) and purchase (236K), and rental income.
+- [Capital Gains Tax Calculator](https://www.taxbuddyumair.com/capital-gains-tax-calculator/): CGT on immovable property and securities.
+- [Business Tax Calculator](https://www.taxbuddyumair.com/BusinessCalculator/): Income tax for individuals and sole proprietors on business income.
+- [AOP Tax Calculator](https://www.taxbuddyumair.com/AOPCalculator/): Tax for Associations of Persons.
+- [Freelancer & IT Export Tax Calculator](https://www.taxbuddyumair.com/freelancer-tax-calculator/): Tax for freelancers and IT exporters, including section 154A.
+- [PTA Mobile Tax Calculator](https://www.taxbuddyumair.com/pta-mobile-tax-calculator/): PTA registration tax on imported mobile phones (passport vs CNIC).
+- [Zakat Calculator](https://www.taxbuddyumair.com/zakat-calculator/): Shariah-based Zakat at 2.5% on gold, silver, cash and investments, using the silver Nisab.
+- [Karachi FMV Calculator](https://www.taxbuddyumair.com/karachi-fmv-calculator/): FBR fair market value of property by area in Karachi.
+- [Withholding Tax Card](https://www.taxbuddyumair.com/Withholding-Tax-Card/): Full filer vs non-filer withholding tax rates.
+- [ATL / Filer Status Check](https://www.taxbuddyumair.com/atl-check/): Check Active Taxpayer List status by CNIC or NTN.
+
+## Guides & reference
+- [Income Tax Guides](https://www.taxbuddyumair.com/income-tax-guides/): Salary, property, business and withholding tax explained under ITO 2001.
+- [Sales Tax Guides](https://www.taxbuddyumair.com/sales-tax-guides/): GST 18%, input/output tax, exemptions, Tier-1 retailers under the Sales Tax Act 1990.
+- [Withholding Tax Rates](https://www.taxbuddyumair.com/withholding-tax-rates/): Section-wise WHT rates for filers and non-filers.
+- [FBR IRIS Filing Guide](https://www.taxbuddyumair.com/fbr-iris-guide/): How to register and file an income tax return on FBR IRIS.
+- [Tax Calendar](https://www.taxbuddyumair.com/tax-calendar/): Key FBR filing and payment deadlines.
+- [Tax Glossary](https://www.taxbuddyumair.com/glossary/): Plain-language definitions of Pakistani tax terms (filer, ATL, 236C, 7E, etc.).
+- [Income Tax MCQs](https://www.taxbuddyumair.com/income-tax-mcqs-pakistan/): Practice questions on Pakistani income tax.
+
+## Content
+- [Blog](https://www.taxbuddyumair.com/blog/): Articles on filer status, property tax, withholding sections, sales tax and FBR updates.
+- [SRO Tracker](https://www.taxbuddyumair.com/sros/): FBR SROs, circulars and notifications.
+
+## About
+- [About TaxBuddy Umair](https://www.taxbuddyumair.com/about-us/): Umair Mubeen — independent Pakistani tax educator simplifying FBR income tax, sales tax and property tax. Not affiliated with FBR.
+
+## Notes
+- All content is educational, for Tax Year 2026-27, and not professional tax advice.
+- Rates follow the Finance Act 2026, Income Tax Ordinance 2001 and Sales Tax Act 1990.

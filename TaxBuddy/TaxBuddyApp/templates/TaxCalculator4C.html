@@ -1,81 +1,82 @@
 {% extends 'base.html' %}
 {% load static %}
-{% block title %}Super Tax Calculator Pakistan 2026-27 — Section 4C | TaxBuddy Umair{% endblock %}
-{% block meta_desc %}Free Super Tax calculator Pakistan 2026-27. Calculate Section 4C super tax for companies and individuals with income above Rs. 150 million. Compare across tax years.{% endblock %}
-{% block schema_extra %}{% include 'partials/schema_calculator.html' with calc_name='Super Tax Section 4C Calculator Pakistan' calc_url='/TaxCalculator4C/' %}{% endblock %}
+
+{% block title %}Section 4C Super Tax Calculator with Imputable Income | Pakistan | TaxBuddy Umair{% endblock %}
+{% block meta_desc %}Section 4C super tax calculator for Pakistan (Individual/AOP). Enter normal income, taxable income, PTR tax and schedular income — it computes imputable income, total 4C income and super tax payable per the official format.{% endblock %}
+
+{% block schema_extra %}
+<script type="application/ld+json">
+{
+  "@context":"https://schema.org","@type":"WebApplication",
+  "name":"Section 4C Super Tax Calculator (with Imputable Income)",
+  "applicationCategory":"FinanceApplication","operatingSystem":"Any",
+  "url":"https://www.taxbuddyumair.com/super-tax-4c-working/",
+  "offers":{"@type":"Offer","price":"0","priceCurrency":"PKR"},
+  "description":"Computes Section 4C super tax income (normal + taxable + imputable + schedular) and super tax payable for individuals and AOPs in Pakistan."
+}
+</script>
+{% endblock %}
 
 {% block extra_css %}
 <link rel="stylesheet" href="{% static 'css/calculators.css' %}">
 <style>
-/* ── FORM HEADER & FIELDS (matched to Salary calculator) ── */
-.calc-header{background:var(--navy,#0A2647);padding:24px 28px;display:flex;align-items:flex-start;gap:16px}
-.calc-header-icon{width:48px;height:48px;background:rgba(255,255,255,.12);border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:24px;flex-shrink:0}
-.calc-header h2{font-size:20px;font-weight:700;color:#fff;margin-bottom:4px}
-.calc-header p{font-size:13px;color:rgba(255,255,255,.55);margin-bottom:10px}
-.calc-badges{display:flex;gap:6px;flex-wrap:wrap}
-.calc-badge{font-size:10px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;padding:3px 10px;border-radius:20px;border:1px solid rgba(255,255,255,.2);color:rgba(255,255,255,.65);background:rgba(255,255,255,.08)}
-.income-toggle{display:flex;gap:0;border-radius:10px;overflow:hidden;border:1.5px solid var(--border,#E2E8F0);background:var(--bg,#F7F9FC);margin-bottom:20px}
-.income-toggle input[type="radio"]{display:none}
-.income-toggle label{flex:1;text-align:center;padding:10px 16px;font-size:13.5px;font-weight:600;cursor:pointer;color:var(--text-mid,#4A5568);transition:all .2s;user-select:none;display:flex;align-items:center;justify-content:center;gap:6px}
-.income-toggle input[type="radio"]:checked + label{background:var(--navy,#0A2647);color:#fff}
-.field-wrap{margin-bottom:18px}
-.field-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:6px}
-.field-label-text{font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--text-light,#718096)}
-.field-required{color:#E53E3E;margin-left:2px}
-.field-live-preview{font-size:11.5px;font-weight:600;color:var(--green,#0D9E72);display:none}
-.field-input-wrap{position:relative}
-.field-prefix{position:absolute;left:14px;top:50%;transform:translateY(-50%);font-size:13px;font-weight:700;color:var(--text-light,#718096);pointer-events:none;user-select:none}
-.form-input{width:100%;padding:12px 14px;font-size:14px;font-family:inherit;border:1.5px solid var(--border,#E2E8F0);border-radius:10px;outline:none;background:var(--bg,#F7F9FC);color:var(--text,#1A202C);transition:border-color .2s,box-shadow .2s,background .2s}
-.form-input.has-prefix{padding-left:40px}
-.form-input:focus{border-color:var(--navy,#0A2647);background:#fff;box-shadow:0 0 0 3px rgba(10,38,71,.08)}
-.form-input.is-error{border-color:#E53E3E;background:#FFF5F5;box-shadow:0 0 0 3px rgba(229,62,62,.08)}
-.form-input.is-valid{border-color:#38A169;background:#F0FFF4}
-.form-select{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23718096' stroke-width='2.5'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 14px center;padding-right:36px}
-.field-hint{font-size:11.5px;color:var(--text-light,#718096);margin-top:5px}
-.field-err{display:none;font-size:12px;color:#E53E3E;margin-top:5px;font-weight:500}
-.field-err.show{display:flex;align-items:center;gap:4px}
-.year-selectors{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px}
-.year-select-label{font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--text-light,#718096);margin-bottom:6px}
-.year-badge{display:inline-block;background:rgba(13,158,114,.1);color:var(--green,#0D9E72);font-size:10px;font-weight:600;padding:2px 7px;border-radius:4px;margin-left:4px}
-.year-conflict{display:none;background:#FFFBEB;border:1px solid #F59E0B;border-radius:8px;padding:10px 14px;font-size:13px;color:#92400E;margin-bottom:14px;align-items:center;gap:8px}
-.year-conflict.show{display:flex}
-.calc-submit{width:100%;padding:15px 24px;background:linear-gradient(135deg,#0D9E72,#0B8A64);color:#fff;font-size:15px;font-weight:700;font-family:inherit;border:none;border-radius:12px;cursor:pointer;margin-top:8px;display:flex;align-items:center;justify-content:center;gap:10px;min-height:54px;letter-spacing:.01em;box-shadow:0 4px 14px rgba(13,158,114,.35);transition:all .2s}
-.calc-submit:hover{background:linear-gradient(135deg,#0B8A64,#097554);box-shadow:0 6px 20px rgba(13,158,114,.45);transform:translateY(-1px)}
-.calc-submit:active{transform:translateY(0);box-shadow:none}
-.calc-submit:disabled{opacity:.6;cursor:not-allowed;transform:none;box-shadow:none}
-/* ── RESULT (matched to Salary calculator) ── */
-.calc-result{margin-top:32px;border-top:3px solid var(--green,#0D9E72);padding-top:20px}
-.calc-result-title{font-size:16px;font-weight:700;color:var(--navy,#0A2647);text-align:center;margin-bottom:4px;letter-spacing:-.01em}
-.calc-result-subtitle{font-size:12px;color:var(--text-light,#718096);text-align:center;margin-bottom:16px}
-.cmp-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
-.cmp-card{background:#fff;border:1px solid var(--border,#E2E8F0);border-radius:12px;overflow:hidden;box-shadow:0 2px 12px rgba(10,38,71,.1)}
-.cmp-head{background:#0A2647;padding:12px 16px;font-size:12px;font-weight:600;color:rgba(255,255,255,.7);letter-spacing:.03em}
-.cmp-table{width:100%;border-collapse:collapse}
-.cmp-table tr{border-bottom:1px solid #E2E8F0}
-.cmp-table tr:last-child{border-bottom:none}
-.cmp-table td{padding:11px 16px;font-size:13px}
-.cmp-table td:first-child{color:#4A5568}
-.cmp-table td:last-child{text-align:right;font-weight:600;color:#0A2647}
-.cmp-table tr.hl{background:#E8A020}
-.cmp-table tr.hl td{color:#fff!important;font-weight:700}
-@media(max-width:640px){.year-selectors{grid-template-columns:1fr!important}.cmp-grid{grid-template-columns:1fr!important}}
+.sc-wrap{max-width:820px;margin:0 auto;padding:0 0 10px}
+.sc-sec{background:#fff;border:1px solid var(--border,#E2E8F0);border-radius:12px;padding:16px 18px;margin-bottom:16px}
+.sc-sec h3{font-size:14px;font-weight:700;color:var(--navy,#0A2647);margin:0 0 4px;display:flex;align-items:center;gap:8px}
+.sc-sec .sc-ref{font-size:11px;font-weight:600;color:var(--green-mid,#0B8A64);background:var(--green-light,#E6F7F2);padding:2px 8px;border-radius:999px}
+.sc-sec p.sc-hint{font-size:12px;color:var(--text-light,#64748B);margin:0 0 12px}
+.sc-row{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:7px 0;border-bottom:1px solid #F1F5F9}
+.sc-row:last-child{border-bottom:none}
+.sc-row label{font-size:13.5px;color:var(--text,#0F172A);flex:1}
+.sc-row input{width:170px;text-align:right;border:1.5px solid var(--border,#E2E8F0);border-radius:8px;padding:8px 11px;font-size:14px;font-family:inherit;outline:none;background:var(--bg,#F6F9FC)}
+.sc-row input:focus{border-color:var(--green,#0D9E72);background:#fff}
+.sc-sub{display:flex;justify-content:space-between;font-size:13px;font-weight:700;color:var(--navy);padding-top:10px;margin-top:4px;border-top:2px solid var(--border)}
+.sc-btn{width:100%;padding:15px;margin:4px 0 20px;background:linear-gradient(135deg,var(--green,#0D9E72),var(--green-mid,#0B8A64));color:#fff;font-size:15px;font-weight:700;font-family:inherit;border:none;border-radius:12px;cursor:pointer;box-shadow:0 4px 14px rgba(13,158,114,.35)}
+.sc-btn:hover{transform:translateY(-1px)}
+.sc-result{display:none;border:1px solid var(--border,#E2E8F0);border-radius:14px;overflow:hidden;box-shadow:var(--shadow-sm)}
+.sc-result.on{display:block}
+.sc-rhead{background:var(--navy,#0A2647);color:#fff;padding:13px 18px;font-size:14px;font-weight:700}
+.sc-rbody{padding:4px 18px 16px}
+.sc-rrow{display:flex;justify-content:space-between;padding:10px 0;border-bottom:1px solid #F1F5F9;font-size:14px}
+.sc-rrow .lbl{color:var(--text-mid,#475569)}
+.sc-rrow .val{font-weight:600;color:var(--navy,#0A2647);font-variant-numeric:tabular-nums}
+.sc-rrow.tot{font-size:15.5px;font-weight:800}
+.sc-rrow.tot .val{color:var(--green-mid,#0B8A64)}
+.sc-rrow.big{background:var(--green-light,#E6F7F2);margin:8px -18px 0;padding:14px 18px;font-size:16px;font-weight:800;border-bottom:none;border-radius:0 0 12px 12px}
+.sc-rrow.big .val{color:var(--navy,#0A2647)}
+.sc-rate-pill{display:inline-block;background:#FEF3DC;color:#92400e;font-size:12px;font-weight:700;padding:2px 10px;border-radius:999px;margin-left:8px}
+.sc-year{display:flex;gap:8px;margin-bottom:14px}
+.sc-year button{flex:1;padding:9px;border:1.5px solid var(--border);background:#fff;border-radius:9px;font-weight:600;font-size:13px;cursor:pointer;font-family:inherit;color:var(--text-mid)}
+.sc-year button.on{background:var(--navy);color:#fff;border-color:var(--navy)}
+.g4-table{width:100%;border-collapse:collapse;font-size:13.5px;margin:12px 0 6px}
+.g4-table th,.g4-table td{border:1px solid var(--border,#E2E8F0);padding:9px 11px;text-align:center}
+.g4-table th{background:var(--navy,#0A2647);color:#fff;font-weight:700}
+.g4-table td:first-child{text-align:left;font-weight:600;color:var(--navy)}
+.g4-table tr:nth-child(even) td{background:#F8FAFC}
+.g4-form{background:var(--green-light,#E6F7F2);border:1px solid #BCE8D9;border-radius:12px;padding:16px 18px;margin:14px 0}
+.g4-form ol{margin:8px 0 0 18px;padding:0}
+.g4-form li{font-size:14px;line-height:1.9;color:var(--text,#0F172A);font-variant-numeric:tabular-nums}
+.g4-form code{background:#fff;border:1px solid #CFE9DF;border-radius:6px;padding:1px 7px;font-size:13px}
+.g4-abcd{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:12px 0}
+.g4-abcd div{background:#fff;border:1px solid var(--border);border-left:3px solid var(--green);border-radius:10px;padding:11px 14px;font-size:13.5px}
+.g4-abcd b{color:var(--navy)}
+@media(max-width:560px){.g4-abcd{grid-template-columns:1fr}.g4-table{font-size:12px}.g4-table th,.g4-table td{padding:7px 6px}}
 </style>
 {% endblock %}
 
 {% block content %}
-
-<div class="article-hero calc-page-header">
+<div class="article-hero">
   <div class="article-hero-inner">
     <div class="breadcrumb">
-      <a href="{% url 'index' %}">Home</a><span class="breadcrumb-sep">›</span>
-      <span>Calculators</span><span class="breadcrumb-sep">›</span>
-      <span>Super Tax 4C</span>
+      <a href="{% url 'index' %}">Home</a>
+      <span class="breadcrumb-sep">›</span>
+      <span>Super Tax 4C (Imputable Income)</span>
     </div>
-    <h1>Super Tax Calculator Pakistan — Section 4C (2026-27)</h1>
+    <h1>Section 4C Super Tax Calculator — with Imputable Income</h1>
     <div class="article-meta">
-      <span>⚡ ITO 2001, Section 4C</span>
-      <span>🔄 Tax Years 2024–2026</span>
-      <span>🏢 For High-Income Persons &amp; Companies</span>
+      <span><i class="fas fa-scale-balanced" aria-hidden="true"></i> ITO 2001 · Section 4C</span>
+      <span><i class="fas fa-user-tie" aria-hidden="true"></i> Individual / AOP</span>
+      <span><i class="fas fa-calculator" aria-hidden="true"></i> Official format</span>
     </div>
   </div>
 </div>
@@ -83,162 +84,190 @@
 <div class="content-grid">
   <main class="content-main">
 
-    <div class="highlight-box">
-      📌 <strong>What is Super Tax (Section 4C)?</strong> Super Tax is an additional tax levied under Section 4C of ITO 2001
-      on high-income persons. From TY 2026-27 it applies to general persons only above PKR 500 million (flat 8%), while banks, E&amp;P and fertilizer stay on the 1%–10% slab from PKR 150 million.
-      Rates vary by income tier and tax year.
+    <!-- GEO quick-answer -->
+    <div class="quick-answer" style="background:var(--green-light,#E6F7F2);border:1px solid #BCE8D9;border-left:4px solid var(--green,#0D9E72);border-radius:12px;padding:16px 18px;margin:0 0 20px;">
+      <div style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:var(--green-mid,#0B8A64);margin-bottom:6px;">Quick answer</div>
+      <p style="font-size:14.5px;line-height:1.65;color:var(--text,#0F172A);margin:0;">
+        Under <strong>Section 4C</strong> of the Income Tax Ordinance 2001, super-tax "income" is the sum of four parts: <strong>(A)</strong> profit on debt, dividend, capital gains and commission; <strong>(B)</strong> taxable income under section 9; <strong>(C)</strong> imputable income (your final-tax / PTR tax grossed up to income at normal rates); and <strong>(D)</strong> schedular income. Super tax is then charged on that total at the slab rate for your income band and tax year — for Tax Years 2023–2025 it ran from 0% (up to Rs 150 million) to 10% (above Rs 500 million); Tax Year 2026 cut the middle bands by 0.5 points; and from Tax Year 2027 (FY2026-27) most individuals and AOPs pay nil up to Rs 500 million and 8% above.
+      </p>
     </div>
 
-    <div class="calc-container" style="margin-top:20px;">
+    <div class="calc-container">
       <div class="calc-header">
         <div class="calc-header-icon">⚡</div>
         <div>
-          <h2>Super Tax 4C Calculator</h2>
-          <p>Compare Section 4C super tax across FBR tax years · ITO 2001</p>
-          <div class="calc-badges"><span class="calc-badge">FBR 2026-27</span><span class="calc-badge">Section 4C</span><span class="calc-badge">Free</span></div>
+          <h2>Super Tax 4C Working</h2>
+          <p>Individual / AOP · business rates · computes imputable income</p>
         </div>
       </div>
-      <div class="calc-body">
-        <form id="calc-form" novalidate>
+      <div class="calc-body" style="padding:18px">
 
-          <!-- INCOME TYPE TOGGLE -->
-          <div class="income-toggle">
-            <input type="radio" name="income_type" id="tog-monthly" value="Monthly">
-            <label for="tog-monthly">📅 Monthly Income</label>
-            <input type="radio" name="income_type" id="tog-yearly" value="Yearly" checked>
-            <label for="tog-yearly">📆 Annual Income</label>
+        <div class="sc-wrap">
+          <div style="margin-bottom:14px">
+            <label for="scYear" style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:var(--text-light,#64748B);display:block;margin-bottom:6px">Tax Year</label>
+            <select id="scYear" style="width:100%;border:1.5px solid var(--border,#E2E8F0);border-radius:9px;padding:11px 12px;font-size:14px;font-family:inherit;background:#fff;color:var(--text,#0F172A);outline:none;cursor:pointer">
+              <option value="2022">Tax Year 2022</option>
+              <option value="2023">Tax Year 2023</option>
+              <option value="2024">Tax Year 2024</option>
+              <option value="2025">Tax Year 2025</option>
+              <option value="2026">Tax Year 2026</option>
+              <option value="2027" selected>Tax Year 2027</option>
+            </select>
           </div>
 
-          <!-- INCOME FIELD -->
-          <div class="field-wrap">
-            <div class="field-top">
-              <span class="field-label-text">Monthly / Annual Income (PKR)<span class="field-required">*</span></span>
-              <span class="field-live-preview" id="live-preview"></span>
-            </div>
-            <div class="field-input-wrap">
-              <span class="field-prefix">₨</span>
-              <input type="number" id="income_amount" name="income_amount"
-                     class="form-input number-only has-prefix"
-                     placeholder="e.g. 200,000,000"
-                     min="1" required>
-            </div>
-            <div class="field-hint">Super tax applies only to income above Rs. 150 million</div>
-            <div class="field-err" id="err-income">⚠ Please enter a valid amount greater than 0</div>
+          <!-- A -->
+          <div class="sc-sec">
+            <h3>A. Normal Income <span class="sc-ref">4C(2)(i)</span></h3>
+            <p class="sc-hint">Enter the income amounts (not the tax).</p>
+            <div class="sc-row"><label>Profit on Debt</label><input type="number" id="a_pod" placeholder="0"></div>
+            <div class="sc-row"><label>Dividend Income</label><input type="number" id="a_div" placeholder="0"></div>
+            <div class="sc-row"><label>Commission / Brokerage u/s 233</label><input type="number" id="a_com" placeholder="0"></div>
+            <div class="sc-row"><label>Capital Gains (all)</label><input type="number" id="a_cg" placeholder="0"></div>
+            <div class="sc-sub"><span>Subtotal A</span><span id="sumA">Rs 0</span></div>
           </div>
 
-          <!-- SECTOR (Finance Act 2026) -->
-          <div class="field-wrap">
-            <div class="field-top">
-              <span class="field-label-text">Taxpayer sector <span class="field-required">*</span></span>
-            </div>
-            <div class="field-input-wrap">
-              <select name="sector" id="sector" class="form-input form-select">
-                <option value="general" selected>General — companies, AOPs &amp; individuals</option>
-                <option value="carveout">Bank / Oil &amp; Gas E&amp;P / Fertilizer</option>
-              </select>
-            </div>
-            <div class="field-hint">From TY 2026-27, general persons pay super tax only above Rs. 500M; banks, E&amp;P and fertilizer keep the full 1%&ndash;10% slab.</div>
+          <!-- B -->
+          <div class="sc-sec">
+            <h3>B. Taxable Income <span class="sc-ref">4C(2)(ii)</span></h3>
+            <p class="sc-hint">Taxable income under section 9 (straight addition).</p>
+            <div class="sc-row"><label>Taxable Income</label><input type="number" id="b_ti" placeholder="0"></div>
+            <div class="sc-sub"><span>Subtotal B</span><span id="sumB">Rs 0</span></div>
           </div>
 
-          <!-- TAX YEAR SELECTORS -->
-          <div class="year-selectors">
-            <div>
-              <div class="year-select-label">Tax Year 1 <span class="year-badge">Compare</span></div>
-              <select name="tax_year_1" id="tax_year_1" class="form-input form-select" required>
-                <option value="">— Select Year —</option>
-                <option value="2026-2027" selected>2026-2027</option>
-                <option value="2025-2026">2025-2026</option>
-                <option value="2024-2025">2024-2025</option>
-                <option value="2023-2024">2023-2024</option>
-                <option value="2022-2023">2022-2023</option>
-              </select>
-              <div class="field-err" id="err-year1">⚠ Please select Tax Year 1</div>
-            </div>
-            <div>
-              <div class="year-select-label">Tax Year 2 <span class="year-badge">Compare</span></div>
-              <select name="tax_year_2" id="tax_year_2" class="form-input form-select" required>
-                <option value="">— Select Year —</option>
-                <option value="2026-2027">2026-2027</option>
-                <option value="2025-2026" selected>2025-2026</option>
-                <option value="2024-2025">2024-2025</option>
-                <option value="2023-2024">2023-2024</option>
-                <option value="2022-2023">2022-2023</option>
-              </select>
-              <div class="field-err" id="err-year2">⚠ Please select Tax Year 2</div>
-            </div>
+          <!-- C -->
+          <div class="sc-sec">
+            <h3>C. Imputable Income (PTR) <span class="sc-ref">4C(2)(iii)</span></h3>
+            <p class="sc-hint">Enter the <strong>tax</strong> deducted under each final/PTR head — it is grossed up to income at normal rates (section 2(28A)).</p>
+            <div class="sc-row"><label>Import tax u/s 148</label><input type="number" id="c_imp" placeholder="0"></div>
+            <div class="sc-row"><label>Export proceeds tax u/s 154(1)</label><input type="number" id="c_exp" placeholder="0"></div>
+            <div class="sc-row"><label>Bonus shares u/s 236Z</label><input type="number" id="c_bon" placeholder="0"></div>
+            <div class="sc-row"><label>Any other PTR tax</label><input type="number" id="c_oth" placeholder="0"></div>
+            <div class="sc-sub"><span>Total imputable tax</span><span id="sumCtax">Rs 0</span></div>
+            <div class="sc-sub" style="border-top:none"><span>Imputable income (grossed up) C</span><span id="sumC">Rs 0</span></div>
           </div>
 
-          <div class="year-conflict" id="year-conflict">
-            ⚠️ Please select <strong>two different tax years</strong> to compare results.
+          <!-- D -->
+          <div class="sc-sec">
+            <h3>D. Schedular Income <span class="sc-ref">4C(2)(iv)</span></h3>
+            <p class="sc-hint">E&amp;P / insurance / banking income (4th, 5th, 7th schedules).</p>
+            <div class="sc-row"><label>Schedular Income</label><input type="number" id="d_sch" placeholder="0"></div>
+            <div class="sc-sub"><span>Subtotal D</span><span id="sumD">Rs 0</span></div>
           </div>
 
-          <button type="submit" class="calc-submit" id="calc-submit">
-            ⚡ Calculate Super Tax
-          </button>
-        </form>
+          <!-- paid -->
+          <div class="sc-sec">
+            <h3>Super Tax Already Paid / Charged</h3>
+            <div class="sc-row"><label>Amount already paid</label><input type="number" id="paid" placeholder="0"></div>
+          </div>
 
-        <!-- RESULTS (rendered client-side) -->
-        <div id="calc-results" class="calc-result" style="display:none;">
-          <div class="calc-result-title" id="res-title"></div>
-          <div class="calc-result-subtitle" id="res-subtitle"></div>
-          <div class="cmp-grid" id="res-grid"></div>
-          <div class="calc-disclaimer" style="margin-top:14px;">
-            ⚠️ From TY 2026-27, general persons pay super tax only above Rs. 500M (flat 8%); banks, E&amp;P and fertilizer keep the 1%–10% slab from Rs. 150M. Marginal relief may apply near the Rs. 500M line. Verify final rates with FBR.
+          <button class="sc-btn" id="scCalc"><i class="fas fa-calculator"></i> Calculate Super Tax</button>
+
+          <div class="sc-result" id="scResult">
+            <div class="sc-rhead"><i class="fas fa-file-invoice-dollar"></i> Section 4C Super Tax Result</div>
+            <div class="sc-rbody">
+              <div class="sc-rrow"><span class="lbl">A — Normal income 4C(2)(i)</span><span class="val" id="rA">Rs 0</span></div>
+              <div class="sc-rrow"><span class="lbl">B — Taxable income 4C(2)(ii)</span><span class="val" id="rB">Rs 0</span></div>
+              <div class="sc-rrow"><span class="lbl">C — Imputable income 4C(2)(iii)</span><span class="val" id="rC">Rs 0</span></div>
+              <div class="sc-rrow"><span class="lbl">D — Schedular income 4C(2)(iv)</span><span class="val" id="rD">Rs 0</span></div>
+              <div class="sc-rrow tot"><span class="lbl">Total income for Super Tax</span><span class="val" id="rTot">Rs 0</span></div>
+              <div class="sc-rrow"><span class="lbl">Applicable rate <span class="sc-rate-pill" id="rRate">0%</span></span><span class="val" id="rTax">Rs 0</span></div>
+              <div class="sc-rrow"><span class="lbl">Less: already paid</span><span class="val" id="rPaid">Rs 0</span></div>
+              <div class="sc-rrow big"><span class="lbl">Difference Payable</span><span class="val" id="rDiff">Rs 0</span></div>
+            </div>
           </div>
         </div>
 
       </div>
     </div>
 
-    <!-- Rates Table -->
-    <div style="background:var(--white);border:1px solid var(--border);border-radius:var(--radius-lg);overflow:hidden;margin-top:24px;">
-      <div style="background:var(--navy);padding:14px 20px;">
-        <h2 style="font-family:var(--font-head);font-size:18px;color:#fff;margin:0;">Super Tax Rates by Tax Year — Section 4C</h2>
-      </div>
-      <div style="overflow-x:auto;">
-        <table class="rates-table">
-          <thead>
-            <tr><th>Income Tier (PKR)</th><th>TY 2022</th><th>TY 2023&ndash;2025</th><th>TY 2025&ndash;26</th><th>TY 2026&ndash;27</th></tr>
-          </thead>
-          <tbody>
-            <tr><td>Up to 150M</td><td><span class="rate-badge">0%</span></td><td><span class="rate-badge">0%</span></td><td><span class="rate-badge">0%</span></td><td><span class="rate-badge">0%</span></td></tr>
-            <tr><td>150M &ndash; 200M</td><td><span class="rate-badge">1%</span></td><td><span class="rate-badge">1%</span></td><td><span class="rate-badge">1%</span></td><td><span class="rate-badge">0%</span></td></tr>
-            <tr><td>200M &ndash; 250M</td><td><span class="rate-badge">2%</span></td><td><span class="rate-badge">2%</span></td><td><span class="rate-badge">2%</span></td><td><span class="rate-badge">0%</span></td></tr>
-            <tr><td>250M &ndash; 300M</td><td><span class="rate-badge">3%</span></td><td><span class="rate-badge">3%</span></td><td><span class="rate-badge">2.5%</span></td><td><span class="rate-badge">0%</span></td></tr>
-            <tr><td>300M &ndash; 350M</td><td><span class="rate-badge">4%</span></td><td><span class="rate-badge">4%</span></td><td><span class="rate-badge">3.5%</span></td><td><span class="rate-badge">0%</span></td></tr>
-            <tr><td>350M &ndash; 400M</td><td><span class="rate-badge">4%</span></td><td><span class="rate-badge">6%</span></td><td><span class="rate-badge">5.5%</span></td><td><span class="rate-badge">0%</span></td></tr>
-            <tr><td>400M &ndash; 500M</td><td><span class="rate-badge">4%</span></td><td><span class="rate-badge">8%</span></td><td><span class="rate-badge">7.5%</span></td><td><span class="rate-badge">0%</span></td></tr>
-            <tr><td>Above 500M</td><td><span class="rate-badge">4%</span></td><td><span class="rate-badge">10%</span></td><td><span class="rate-badge">10%</span></td><td><span class="rate-badge">8%</span></td></tr>
-          </tbody>
-        </table>
-      </div>
-      <div style="padding:12px 20px;font-size:12.5px;color:var(--text-mid);border-top:1px solid var(--border);line-height:1.6;">
-        <strong>TY 2026&ndash;27 rates shown are for general persons.</strong> Banks, Oil &amp; Gas E&amp;P and fertilizer manufacturers do not get the relief — they stay on the 1%&ndash;10% slab from Rs. 150M. In <strong>TY 2022</strong>, 13 specified sectors paid 10% above Rs. 300M (banking companies from TY 2023). Super tax is charged on the <strong>whole</strong> income, not just the amount above the tier.
-      </div>
+    <!-- explainer -->
+    <div style="background:#fff;border:1px solid var(--border);border-radius:12px;padding:20px;margin-top:4px">
+      <h2 style="font-size:20px;font-weight:700;color:var(--navy);margin:0 0 12px">How Section 4C super tax &amp; imputable income work</h2>
+      <p style="font-size:14.5px;line-height:1.75;color:var(--text-mid);margin:0 0 12px">
+        Section 4C of the Income Tax Ordinance 2001 charges an additional "super tax" on high-income persons. The income it is charged on is defined in <strong>section 4C(2)</strong> as the sum of: <strong>(i)</strong> profit on debt, dividend, capital gains and brokerage/commission; <strong>(ii)</strong> taxable income under section 9; <strong>(iii)</strong> imputable income; and <strong>(iv)</strong> income under the Fourth, Fifth, Seventh and Eighth Schedules.
+      </p>
+      <p style="font-size:14.5px;line-height:1.75;color:var(--text-mid);margin:0 0 12px">
+        <strong>Imputable income</strong> (section 2(28A)) is the income which, if taxed at normal rates, would have produced the same tax that was actually collected under the final/presumptive tax regime. This calculator grosses up the PTR tax you enter back into income using the non-salaried slab, so a large final-tax amount correctly adds a large income figure to the super-tax base.
+      </p>
+      <p style="font-size:14.5px;line-height:1.75;color:var(--text-mid);margin:0">
+        Super tax is charged on the <strong>whole</strong> total income at the rate for the band it falls in. Section 4C was introduced by the <strong>Finance Act 2022</strong>. For <strong>Tax Years 2023–2025</strong> the rate ran 0% up to Rs 150 million, then 1%, 2%, 3%, 4%, 6%, 8% and 10% above Rs 500 million. <strong>Tax Year 2026</strong> (Finance Act 2025) cut the bands between Rs 200–500 million by 0.5 points. From <strong>Tax Year 2027</strong> (FY2026-27, Finance Act 2026), most individuals and AOPs pay <strong>nil up to Rs 500 million and 8% above</strong>, while banking, oil &amp; gas exploration and fertilizer sellers pay 10% above Rs 150 million. Select your tax year above to apply the correct slab.
+      </p>
+      <p style="font-size:12px;color:var(--text-light);margin:14px 0 0">
+        Educational estimate based on the official 4C working format. Rates and slab constants are year-specific — verify against the current Finance Act and FBR before filing. TaxBuddy Umair is an independent educator, not affiliated with FBR.
+      </p>
     </div>
 
-    <!-- ── EDITORIAL CONTENT (SEO + value) ── -->
-    <article style="background:var(--white);border:1px solid var(--border);border-radius:var(--radius-lg);padding:28px;margin-top:24px;line-height:1.75;color:var(--text-mid);font-size:15px;">
-      <h2 style="font-size:21px;font-weight:700;color:var(--navy);margin:0 0 12px;">Understanding Super Tax Under Section 4C (Pakistan)</h2>
-      <p style="margin:0 0 16px;">
-        Super Tax is an <strong>additional income tax</strong> introduced under Section 4C of the Income Tax Ordinance, 2001, to raise extra revenue from the highest earners. It applies to individuals, Associations of Persons (AOPs), and companies whose income for the year exceeds <strong>Rs. 150 million</strong>. It is charged on top of your normal income tax — not instead of it. Under the <strong>Finance Act 2026 (Tax Year 2026-27)</strong>, super tax was significantly relaxed: general persons now pay <strong>nothing below Rs. 500 million</strong> and a flat <strong>8%</strong> above it, while banks, oil &amp; gas exploration companies and fertilizer manufacturers keep the full 1%–10% slab.
+    <!-- Year-wise rate table -->
+    <div style="background:#fff;border:1px solid var(--border);border-radius:12px;padding:20px;margin-bottom:16px">
+      <h2 style="font-size:20px;font-weight:700;color:var(--navy);margin:0 0 6px">Section 4C super-tax rates — year by year</h2>
+      <p style="font-size:14px;color:var(--text-mid);margin:0 0 4px">Each rate applies to the <strong>whole</strong> 4C income once it falls in that band (Individual / AOP &amp; general rates).</p>
+      <div style="overflow-x:auto">
+      <table class="g4-table">
+        <thead><tr><th>Income band</th><th>TY2022</th><th>TY2023–2025</th><th>TY2026</th><th>TY2027<br>(FY26-27)</th></tr></thead>
+        <tbody>
+          <tr><td>Up to Rs 150M</td><td>0%</td><td>0%</td><td>0%</td><td>0%</td></tr>
+          <tr><td>150M – 200M</td><td>1%</td><td>1%</td><td>1%</td><td>0%</td></tr>
+          <tr><td>200M – 250M</td><td>2%</td><td>2%</td><td>1.5%</td><td>0%</td></tr>
+          <tr><td>250M – 300M</td><td>3%</td><td>3%</td><td>2.5%</td><td>0%</td></tr>
+          <tr><td>300M – 350M</td><td>4%</td><td>4%</td><td>3.5%</td><td>0%</td></tr>
+          <tr><td>350M – 400M</td><td>4%</td><td>6%</td><td>5.5%</td><td>0%</td></tr>
+          <tr><td>400M – 500M</td><td>4%</td><td>8%</td><td>7.5%</td><td>0%</td></tr>
+          <tr><td>Above Rs 500M</td><td>4%</td><td>10%</td><td>10%</td><td><strong>8%</strong></td></tr>
+        </tbody>
+      </table>
+      </div>
+      <p style="font-size:12.5px;color:var(--text-light);margin:8px 0 0;line-height:1.6">
+        <strong>Note:</strong> For <strong>TY2022 &amp; TY2023</strong>, 15 specified sectors and banking companies (airlines, automobiles, beverages, cement, chemicals, cigarettes/tobacco, fertilizer, iron &amp; steel, LNG terminals, oil marketing, oil refining, petroleum &amp; gas exploration, pharmaceuticals, sugar, textiles) were charged <strong>10% on income above Rs 300 million</strong>. For <strong>TY2027</strong>, banking, oil &amp; gas exploration/production and fertilizer sellers pay <strong>10% above Rs 150 million</strong>.
       </p>
-      <h3 style="font-size:17px;font-weight:700;color:var(--navy);margin:20px 0 10px;">Who Has to Pay It?</h3>
-      <p style="margin:0 0 16px;">
-        From Tax Year 2026-27, general persons (ordinary companies, AOPs and individuals) pay super tax only where income exceeds <strong>Rs. 500 million</strong>, at a flat <strong>8%</strong> — the six middle bands between Rs. 150M and Rs. 500M were removed and the top rate was cut from 10% to 8%. Banks, oil &amp; gas E&amp;P companies and fertilizer manufacturers are excluded from this relief and continue on the full slab (1%–10%) from Rs. 150 million. A new exemption also applies where export proceeds actually received exceed 80% of total sales. For earlier years (2023-2025 and 2025-26) the slab rates shown above applied to everyone.
+    </div>
+
+    <!-- Imputable income formula -->
+    <div style="background:#fff;border:1px solid var(--border);border-radius:12px;padding:20px;margin-bottom:16px">
+      <h2 style="font-size:20px;font-weight:700;color:var(--navy);margin:0 0 8px">Imputable income — the gross-up formula</h2>
+      <p style="font-size:14.5px;line-height:1.75;color:var(--text-mid);margin:0 0 10px">
+        <strong>Imputable income</strong> (section 2(28A)) is the income which, if taxed at <em>normal</em> rates, would have produced the same tax that was collected under the final / presumptive regime (FTR/PTR). The final <strong>tax</strong> is grossed up to income using the <strong>non-salaried slab</strong>.
       </p>
-      <h3 style="font-size:17px;font-weight:700;color:var(--navy);margin:20px 0 10px;">How It Is Calculated</h3>
-      <p style="margin:0 0 16px;">
-        The rate is applied to your <strong>whole</strong> income for the year, not just the part above the threshold. For example, in TY 2026-27 a general company with income of Rs. 600 million pays 8% = Rs. 48 million super tax (over Rs. 500M), while the same company with Rs. 450 million pays nothing. A bank with Rs. 220 million still falls in the 200M–250M tier (2%). Marginal relief provisions soften the jump where income only just crosses the Rs. 500M line.
+      <p style="font-size:14px;color:var(--text-mid);margin:0 0 6px"><strong>Non-salaried slab (TY2025) — income → tax:</strong></p>
+      <div style="overflow-x:auto">
+      <table class="g4-table" style="text-align:left">
+        <thead><tr><th style="text-align:left">Taxable income</th><th style="text-align:left">Tax</th></tr></thead>
+        <tbody>
+          <tr><td>Up to 600,000</td><td style="text-align:left">0</td></tr>
+          <tr><td>600,000 – 1,200,000</td><td style="text-align:left">15% over 600,000</td></tr>
+          <tr><td>1,200,000 – 1,600,000</td><td style="text-align:left">90,000 + 20% over 1,200,000</td></tr>
+          <tr><td>1,600,000 – 3,200,000</td><td style="text-align:left">170,000 + 30% over 1,600,000</td></tr>
+          <tr><td>3,200,000 – 5,600,000</td><td style="text-align:left">650,000 + 40% over 3,200,000</td></tr>
+          <tr><td>Above 5,600,000</td><td style="text-align:left">1,610,000 + 45% over 5,600,000</td></tr>
+        </tbody>
+      </table>
+      </div>
+      <div class="g4-form">
+        <strong>Final tax <code>T</code> → imputable income <code>I</code>:</strong>
+        <ol>
+          <li>T ≤ 0 → <b>I = 0</b></li>
+          <li>T ≤ 90,000 → <b>I = 600,000 + T ÷ 0.15</b></li>
+          <li>T ≤ 170,000 → <b>I = 1,200,000 + (T − 90,000) ÷ 0.20</b></li>
+          <li>T ≤ 650,000 → <b>I = 1,600,000 + (T − 170,000) ÷ 0.30</b></li>
+          <li>T ≤ 1,610,000 → <b>I = 3,200,000 + (T − 650,000) ÷ 0.40</b></li>
+          <li>T &gt; 1,610,000 → <b>I = 5,600,000 + (T − 1,610,000) ÷ 0.45</b></li>
+        </ol>
+      </div>
+      <p style="font-size:12.5px;color:var(--text-light);margin:4px 0 0;line-height:1.6">
+        The common shortcut <code>I = (T − 1,610,000) ÷ 0.45 + 5,600,000</code> is only the last line — accurate when imputable income is in the top (45%) bracket. The non-salaried slab is year-specific (shown: TY2025).
       </p>
-      <h3 style="font-size:17px;font-weight:700;color:var(--navy);margin:20px 0 10px;">Frequently Asked Questions</h3>
-      <p style="margin:0 0 10px;"><strong>Is super tax separate from the high-income surcharge?</strong><br>
-        Yes. The surcharge for high-earning salaried individuals is a different levy under a different provision. Super tax under Section 4C only starts at Rs. 150 million and is calculated separately.</p>
-      <p style="margin:0 0 10px;"><strong>Does it apply to salaried individuals?</strong><br>
-        Only if total income exceeds Rs. 150 million — which is rare for salaried earners. It most commonly affects large companies and high-income businesses.</p>
-      <p style="margin:0;"><strong>Are these rates final?</strong><br>
-        Super tax rates are set by each year's Finance Act and can change. Always confirm the current rate on the <a href="https://www.fbr.gov.pk" target="_blank" rel="noopener" style="color:var(--green);font-weight:600;">FBR portal</a> or with a tax professional before filing.</p>
-    </article>
+
+      <h3 style="font-size:16px;font-weight:700;color:var(--navy);margin:18px 0 8px">How 4C income is built — Section 4C(2)</h3>
+      <div class="g4-abcd">
+        <div><b>A — 4C(2)(i)</b><br>Profit on debt, dividend, capital gains, commission</div>
+        <div><b>B — 4C(2)(ii)</b><br>Taxable income under section 9</div>
+        <div><b>C — 4C(2)(iii)</b><br>Imputable income (grossed up as above)</div>
+        <div><b>D — 4C(2)(iv)</b><br>Schedular income (4th, 5th, 7th, 8th Schedules)</div>
+      </div>
+      <p style="font-size:14.5px;line-height:1.7;color:var(--text,#0F172A);margin:4px 0 0"><strong>Total 4C income = A + B + C + D</strong> → <strong>Super tax = total × band rate</strong>.</p>
+      <p style="font-size:13.5px;color:var(--text-mid);margin:10px 0 0;line-height:1.7">
+        <strong>Example (TY2025):</strong> A = 455,220,000; B = 2,000,000; imputable tax 40,409,020 → C = 91,820,044; D = 1,000,000. Total = <strong>550,040,044</strong> → 10% → super tax <strong>55,004,004</strong>; less paid 700,000 → <strong>54,304,004 payable</strong>.
+      </p>
+    </div>
 
     {% include 'partials/cta_banner.html' %}
   </main>
@@ -252,98 +281,111 @@
 {% block extra_js %}
 <script>
 (function(){
-  'use strict';
-  var form    = document.getElementById('calc-form');
-  var income  = document.getElementById('income_amount');
-  var yr1      = document.getElementById('tax_year_1');
-  var yr2      = document.getElementById('tax_year_2');
-  var conflict = document.getElementById('year-conflict');
-  var btn      = document.getElementById('calc-submit');
-  var preview  = document.getElementById('live-preview');
-  var results  = document.getElementById('calc-results');
+  // ── Year-specific config ──────────────────────────────────────
+  // NON_SAL: non-salaried slab [upperLimit, baseTaxAtLowerLimit, marginalRate, lowerLimit]
+  // SUPER:   4C super-tax slab  [incomeUpperLimit, rate]
+  // Non-salaried slab (drives the imputable-income gross-up).
+  // NOTE: validated for TY2025. Historical years (2022-2024) used different
+  // non-salaried slabs — plug the correct per-year slab here for precise
+  // historical gross-up. Current years use the 2025 slab.
+  var NONSAL_2025 = [
+    [600000,      0,       0.00,  0],
+    [1200000,     0,       0.15,  600000],
+    [1600000,     90000,   0.20,  1200000],
+    [3200000,     170000,  0.30,  1600000],
+    [5600000,     650000,  0.40,  3200000],
+    [Infinity,    1610000, 0.45,  5600000]
+  ];
+  // 4C super-tax slab, TY2023-2025 (8-tier sliding scale up to 10%)
+  var SUPER_8TIER = [
+    [150000000,0],[200000000,0.01],[250000000,0.02],[300000000,0.03],
+    [350000000,0.04],[400000000,0.06],[500000000,0.08],[Infinity,0.10]
+  ];
 
-  function incomeType(){ var r=document.querySelector('input[name="income_type"]:checked'); return r?r.value:'Yearly'; }
-  function annualOf(val){ return incomeType()==='Monthly' ? val*12 : val; }
-  function pkr(n){ return 'Rs. ' + Math.round(n).toLocaleString('en-PK'); }
+  var CFG = {
+    // TY2022 — FA2022 original general rates (max 4% above 300M).
+    // VERIFY: specified sectors (banking/cement/steel/oil&gas/etc.) paid 10% above 300M for TY2022.
+    "2022": { nonSal: NONSAL_2025, superSlab: [
+        [150000000,0],[200000000,0.01],[250000000,0.02],[300000000,0.03],[Infinity,0.04] ] },
+    "2023": { nonSal: NONSAL_2025, superSlab: SUPER_8TIER },
+    "2024": { nonSal: NONSAL_2025, superSlab: SUPER_8TIER },
+    "2025": { nonSal: NONSAL_2025, superSlab: SUPER_8TIER },
+    // TY2026 (FY2025-26) — Finance Act 2025: intermediate bands (200M-500M) cut by 0.5 points.
+    "2026": { nonSal: NONSAL_2025, superSlab: [
+        [150000000,0],[200000000,0.01],[250000000,0.015],[300000000,0.025],
+        [350000000,0.035],[400000000,0.055],[500000000,0.075],[Infinity,0.10] ] },
+    // TY2027 (FY2026-27) — Finance Act 2026: Individual/AOP ("other persons") Nil up to 500M, 8% above.
+    // (Banks, oil & gas E&P, fertilizer sellers: 10% above 150M — not modelled here.)
+    "2027": { nonSal: NONSAL_2025, superSlab: [
+        [500000000,0],[Infinity,0.08] ] }
+  };
 
-  function updatePreview(){
-    var val=parseFloat(income.value)||0;
-    if(val>0){ preview.textContent='Annual: ₨'+Math.round(annualOf(val)).toLocaleString('en-PK'); preview.style.display='block'; }
-    else { preview.style.display='none'; }
-  }
-  income.addEventListener('input', updatePreview);
-  document.querySelectorAll('input[name="income_type"]').forEach(function(r){ r.addEventListener('change', updatePreview); });
+  var year = "2025";
+  function cfg(){ return CFG[year]; }
 
-  // Section 4C tiers.
-  //  - FA2026 (TY 2026-2027): general persons pay 0% up to 500M, 8% above 500M.
-  //    Banks / Oil & Gas E&P / Fertilizer keep the full slab (1%-10%).
-  //  - FA2025 (TY 2025-2026) reduced the 250M-500M band by 0.5%.
-  function tierFor(annual, year, sector){
-    if(annual <= 150000000) return {rate:0, label:'Up to Rs. 150M — no super tax'};
-    // Tax Year 2022 (Finance Act 2022): general max 4%; specified sectors 10% above 300M
-    if(year === '2022-2023'){
-      if(sector === 'carveout' && annual > 300000000) return {rate:10, label:'Above Rs. 300M (specified sector)'};
-      if(annual <= 200000000) return {rate:1, label:'Rs. 150M – 200M'};
-      if(annual <= 250000000) return {rate:2, label:'Rs. 200M – 250M'};
-      if(annual <= 300000000) return {rate:3, label:'Rs. 250M – 300M'};
-      return {rate:4, label:'Above Rs. 300M (TY2022 max 4%)'};
+  var $=function(id){return document.getElementById(id);};
+  function num(id){ var v=parseFloat($(id).value); return isNaN(v)?0:v; }
+  function fmt(n){ return "Rs "+Math.round(n).toLocaleString("en-PK"); }
+
+  // reverse the non-salaried slab: given tax, return the income that produces it
+  function imputeIncome(tax){
+    if(tax<=0) return 0;
+    var s=cfg().nonSal;
+    for(var i=0;i<s.length;i++){
+      var upper=s[i][0], base=s[i][1], rate=s[i][2], lower=s[i][3];
+      // tax at the top of this bracket
+      var taxAtUpper = (upper===Infinity)? Infinity : base + rate*(upper-lower);
+      if(tax<=taxAtUpper){
+        if(rate===0) return lower; // 0% band
+        return lower + (tax-base)/rate;
+      }
     }
-    // Finance Act 2026 relief for general persons
-    if(year === '2026-2027' && sector !== 'carveout'){
-      if(annual <= 500000000) return {rate:0, label:'Up to Rs. 500M — no super tax (FA 2026 relief)'};
-      return {rate:8, label:'Above Rs. 500M (FA 2026)'};
-    }
-    // Slab path: older years, FA2025, and FA2026 carve-out sectors
-    var reduced = (year === '2025-2026' || year === '2026-2027');
-    if(annual <= 200000000) return {rate:1,    label:'Rs. 150M – 200M'};
-    if(annual <= 250000000) return {rate:2,    label:'Rs. 200M – 250M'};
-    if(annual <= 300000000) return {rate:reduced?2.5:3, label:'Rs. 250M – 300M'};
-    if(annual <= 350000000) return {rate:reduced?3.5:4, label:'Rs. 300M – 350M'};
-    if(annual <= 400000000) return {rate:reduced?5.5:6, label:'Rs. 350M – 400M'};
-    if(annual <= 500000000) return {rate:reduced?7.5:8, label:'Rs. 400M – 500M'};
-    return {rate:10, label:'Above Rs. 500M'};
+    return 0;
+  }
+  function superRate(income){
+    var s=cfg().superSlab;
+    for(var i=0;i<s.length;i++){ if(income<=s[i][0]) return s[i][1]; }
+    return 0.10;
   }
 
-  function card(year, annual, sector){
-    var t = tierFor(annual, year, sector);
-    var tax = annual * t.rate / 100;
-    return ''
-      + '<div class="cmp-card">'
-      +   '<div class="cmp-head">Super Tax for Tax Year : ' + year + '</div>'
-      +   '<table class="cmp-table">'
-      +     '<tr><td>Annual Income</td><td>' + pkr(annual) + '</td></tr>'
-      +     '<tr class="hl"><td>Applicable Income Tier</td><td>' + t.label + '</td></tr>'
-      +     '<tr><td>Super Tax Rate</td><td>' + t.rate + ' %</td></tr>'
-      +     '<tr class="hl"><td>Super Tax Payable</td><td>' + pkr(tax) + '</td></tr>'
-      +   '</table>'
-      + '</div>';
+  function live(){
+    var A=num('a_pod')+num('a_div')+num('a_com')+num('a_cg');
+    var B=num('b_ti');
+    var Ctax=num('c_imp')+num('c_exp')+num('c_bon')+num('c_oth');
+    var C=imputeIncome(Ctax);
+    var D=num('d_sch');
+    $('sumA').textContent=fmt(A);
+    $('sumB').textContent=fmt(B);
+    $('sumCtax').textContent=fmt(Ctax);
+    $('sumC').textContent=fmt(C);
+    $('sumD').textContent=fmt(D);
+    return {A:A,B:B,C:C,D:D};
   }
 
-  function showErr(id,show){ var el=document.getElementById(id); if(el) el.classList.toggle('show',show); }
-  function mark(el,err){ if(!el) return; el.classList.toggle('is-error',err); el.classList.toggle('is-valid',!err && el.value!==''); }
-  function checkYears(){ var bad = yr1.value && yr2.value && yr1.value===yr2.value; conflict.classList.toggle('show',!!bad); btn.disabled=!!bad; return !bad; }
-  function valIncome(){ var ok=parseFloat(income.value)>0; mark(income,!ok); showErr('err-income',!ok && income.value!==''); return ok; }
-  function valY1(){ var ok=yr1.value!==''; mark(yr1,!ok); showErr('err-year1',!ok); return ok; }
-  function valY2(){ var ok=yr2.value!==''; mark(yr2,!ok); showErr('err-year2',!ok); return ok; }
+  function calc(){
+    var v=live();
+    var total=v.A+v.B+v.C+v.D;
+    var rate=superRate(total);
+    var tax=total*rate;
+    var paid=num('paid');
+    var diff=tax-paid;
+    $('rA').textContent=fmt(v.A);
+    $('rB').textContent=fmt(v.B);
+    $('rC').textContent=fmt(v.C);
+    $('rD').textContent=fmt(v.D);
+    $('rTot').textContent=fmt(total);
+    $('rRate').textContent=(rate*100).toFixed(0)+"%";
+    $('rTax').textContent=fmt(tax);
+    $('rPaid').textContent=fmt(paid);
+    $('rDiff').textContent=fmt(diff);
+    $('scResult').classList.add('on');
+    $('scResult').scrollIntoView({behavior:'smooth',block:'nearest'});
+  }
 
-  income.addEventListener('blur',valIncome);
-  yr1.addEventListener('change',function(){ valY1(); checkYears(); });
-  yr2.addEventListener('change',function(){ valY2(); checkYears(); });
-
-  form.addEventListener('submit',function(e){
-    e.preventDefault();
-    var ok = valIncome() & valY1() & valY2() & checkYears();
-    if(!ok) return;
-    var annual = annualOf(parseFloat(income.value)||0);
-    var sector = (document.getElementById('sector')||{}).value || 'general';
-    document.getElementById('res-title').textContent = 'Super Tax Comparison: ' + yr1.value + ' VS ' + yr2.value;
-    document.getElementById('res-subtitle').textContent = 'Annual Income: ' + pkr(annual);
-    document.getElementById('res-grid').innerHTML = card(yr1.value, annual, sector) + card(yr2.value, annual, sector);
-    results.style.display = 'block';
-    var navH = document.querySelector('nav') ? document.querySelector('nav').offsetHeight : 70;
-    var top = results.getBoundingClientRect().top + window.scrollY - navH - 16;
-    window.scrollTo({top: top, behavior: 'smooth'});
-  });
+  document.addEventListener('input', function(e){ if(e.target.closest('.sc-wrap')) live(); });
+  $('scCalc').addEventListener('click', calc);
+  $('scYear').addEventListener('change', function(){ year=this.value; live(); });
+  live();
 })();
 </script>
 {% endblock %}

@@ -2784,3 +2784,6 @@ def pta_mobile_tax(request):
 
 def zakat_calculator(request):
     return render(request, 'zakat_calculator.html')
+
+def llms_txt(request):
+    return render(request, 'llms.txt', content_type='text/plain')
