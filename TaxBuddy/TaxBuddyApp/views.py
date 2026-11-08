@@ -1692,40 +1692,128 @@ def about_us(request):
     return render(request, 'about-us.html')
 
 
+# ══════════════════════════════════════════════════════════════
+# Drop-in replacement for your atl_check view (+ existing atl_search_api).
+# Adds DB-driven context the new template needs: atl_year, atl_compare, wht_year.
+# Your atl_total / atl_updated behaviour is preserved.
+#
+# Needs: 'django.contrib.humanize' in INSTALLED_APPS (for {{ atl_total|intcomma }})
+#        WithholdingTaxRate seeded (python manage.py seed_wht_2026)
+# ══════════════════════════════════════════════════════════════
+
+from django.core.cache import cache
+
+
+def _rate_num(s):
+    """First number out of a rate string like '2.75%' or '10.5%+'."""
+    m = re.search(r'[\d.]+', s or '')
+    return float(m.group()) if m else 0.0
+
+
+# WHT rows that drive the filer-vs-non-filer chart — matched to seed_wht_2026.py
+ATL_CHART_SPEC = [
+    ('Property Sale',     'Section 236C', 'Sale / transfer of immovable property'),
+    ('Property Purchase', 'Section 236K', 'Purchase of immovable property (FMV up to Rs 50M)'),
+    ('Bank Profit',       'Section 151',  'Profit on bank deposits & savings accounts'),
+    ('Dividend',          'Section 150',  'Dividend — general (most companies)'),
+]
+ATL_CHART_SCALE = 40.0   # bar is full width at 40%
+
+
 def atl_check(request):
+    from .models import ATLRecord
+
+    # ---- total records (cached 6h: COUNT(*) on 8M+ rows is heavy per request) ----
+    atl_total = cache.get('atl_total')
+    if atl_total is None:
+        try:
+            atl_total = ATLRecord.objects.count()
+        except Exception:
+            atl_total = 0
+        cache.set('atl_total', atl_total, 60 * 60 * 6)
+
+    # ---- tax-year label + last update, straight from the loaded data ----
     try:
-        from .models import ATLRecord
-        atl_total   = ATLRecord.objects.count()
+        atl_year = (ATLRecord.objects.values_list('tax_year', flat=True).first() or '').strip()
+    except Exception:
+        atl_year = ''
+    try:
         atl_updated = ATLRecord.objects.order_by('-updated_at').first()
     except Exception:
-        atl_total   = 0
         atl_updated = None
+
+    # ---- comparison chart from the live WHT rate table ----
+    atl_compare, wht_year = [], ''
+    try:
+        from .models import WithholdingTaxRate
+        for label, sec, desc in ATL_CHART_SPEC:
+            r = (WithholdingTaxRate.objects
+                    .filter(section=sec, description=desc, is_active=True)
+                    .order_by('-tax_year').first())
+            if not r:
+                continue
+            wht_year = wht_year or r.tax_year
+            fv, nv = _rate_num(r.filer_rate), _rate_num(r.non_filer_rate)
+            atl_compare.append({
+                'label': label,
+                'section': sec,
+                'filer': r.filer_rate,
+                'nonf': r.non_filer_rate,
+                'filer_w': max(round(fv / ATL_CHART_SCALE * 100), 4),
+                'nonf_w':  max(round(nv / ATL_CHART_SCALE * 100), 4),
+            })
+        if '-' in wht_year:                      # '2026-2027' -> '2026–27'
+            a, b = wht_year.split('-', 1)
+            wht_year = f"{a}–{b[-2:]}"
+    except Exception:
+        atl_compare, wht_year = [], ''
+
     return render(request, 'atl-check.html', {
         'atl_total':   atl_total,
         'atl_updated': atl_updated,
+        'atl_year':    atl_year,
+        'atl_compare': atl_compare,
+        'wht_year':    wht_year,
     })
 
 
+# ── Your search API, unchanged except it now honours the income/sales toggle ──
 def atl_search_api(request):
-    from django.http import JsonResponse
     try:
         from .models import ATLRecord
         query = request.GET.get('q', '').strip().replace('-', '').replace(' ', '')
+        atl_type = request.GET.get('type', 'income').strip().lower()
+
         if not query or len(query) < 4:
             return JsonResponse({'found': False, 'error': 'Enter at least 4 digits'})
-        record = ATLRecord.objects.filter(ntn=query).first()
+
+        qs = ATLRecord.objects.all()
+
+        # Honour the Income/Sales toggle ONLY if the data actually has that type.
+        # (Safe: if the filter matches nothing, we fall back to searching all rows,
+        #  so this never breaks your current income-only database.)
+        if atl_type in ('income', 'sales'):
+            try:
+                typed = qs.filter(atl_type=atl_type)
+                if typed.exists():
+                    qs = typed
+            except Exception:
+                pass
+
+        record = qs.filter(ntn=query).first()
         if not record:
             for pad in [7, 8, 9, 10]:
-                r = ATLRecord.objects.filter(ntn=query.zfill(pad)).first()
+                r = qs.filter(ntn=query.zfill(pad)).first()
                 if r:
                     record = r
                     break
         if not record:
             stripped = query.lstrip('0')
             if stripped:
-                record = ATLRecord.objects.filter(ntn=stripped).first()
+                record = qs.filter(ntn=stripped).first()
         if not record:
-            record = ATLRecord.objects.filter(ntn__icontains=query).first()
+            record = qs.filter(ntn__icontains=query).first()
+
         if record:
             try:
                 atl_type_display = record.get_atl_type_display()
@@ -1744,7 +1832,6 @@ def atl_search_api(request):
         })
     except Exception as e:
         return JsonResponse({'found': False, 'error': str(e)})
-
 
 def tax_calendar(request):
     return render(request, 'tax-calendar.html')
