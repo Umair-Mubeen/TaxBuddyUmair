@@ -166,6 +166,8 @@ class CalculatorSitemap(Sitemap):
             'zakat_calculator',
             'ai_tax_assistant',
             'ai_smart_calculator',
+            'vehicle_tax_calculator',
+            'section_153_calculator',
         ]
 
     def location(self, item):

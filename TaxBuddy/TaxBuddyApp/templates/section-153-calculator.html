@@ -1,0 +1,358 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Section 153 Withholding Tax Calculator Pakistan 2026-27 — Goods, Services & Contracts | TaxBuddy Umair{% endblock %}
+{% block meta_desc %}Free Section 153 withholding tax calculator. Pick the transaction — sale of goods 153(1)(a), services 153(1)(b) or execution of contract 153(1)(c) — enter the amount and get filer vs non-filer tax. FY 2026-27, verified from ITO 2001.{% endblock %}
+
+{% block extra_css %}
+<style>
+.s153{--navy:#0A2647;--green:#0D9E72;--green2:#0B8A64;--mintbg:#F6FBF9;--line:#E6EFEA;--muted:#5B6B64;--rad:16px;color:var(--navy);}
+.s153 h2{font-size:21px;font-weight:800;color:var(--navy);margin:30px 0 14px;letter-spacing:-.01em;}
+.s153 h3{font-size:15.5px;font-weight:700;color:var(--navy);margin:22px 0 6px;}
+.s153 a{color:var(--green);}
+.s153 .s153-sub{font-size:14.5px;color:rgba(255,255,255,.72);margin:8px 0 14px;max-width:600px;}
+.s153 .article-meta span{color:rgba(255,255,255,.82);}
+
+.s153-card{background:#fff;border:1px solid var(--line);border-radius:var(--rad);padding:24px;box-shadow:0 10px 30px -22px rgba(10,38,71,.35);margin-bottom:22px;}
+.s153-field{margin-bottom:16px;}
+.s153-field label{display:block;font-size:12.5px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.05em;margin-bottom:7px;}
+.s153-field input,.s153-field select{width:100%;padding:12px 14px;border-radius:10px;border:1.5px solid var(--line);font-size:15px;font-family:inherit;background:var(--mintbg);color:var(--navy);box-sizing:border-box;outline:none;transition:.15s;}
+.s153-field input:focus,.s153-field select:focus{border-color:var(--green);background:#fff;}
+.s153-hint{font-size:11.5px;color:var(--muted);margin-top:5px;}
+.s153-go{width:100%;background:var(--navy);color:#fff;border:none;padding:14px;border-radius:10px;font-size:15px;font-weight:700;font-family:inherit;cursor:pointer;transition:.15s;margin-top:4px;}
+.s153-go:hover{background:#13395f;}
+
+.s153-result{display:none;margin-top:20px;}
+.s153-res-head{text-align:center;font-size:13px;color:var(--muted);margin-bottom:12px;}
+.s153-res-head b{color:var(--navy);}
+.s153-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+.s153-rc{border-radius:14px;padding:18px;text-align:center;}
+.s153-rc.f{background:#f0fdf4;border:1px solid #bbf7d0;}
+.s153-rc.n{background:#fef2f2;border:1px solid #fca5a5;}
+.s153-rc .t{font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;}
+.s153-rc.f .t{color:#15803d;} .s153-rc.n .t{color:#dc2626;}
+.s153-rc .rate{font-size:12.5px;color:var(--muted);margin:3px 0 6px;}
+.s153-rc .amt{font-size:26px;font-weight:800;line-height:1.1;}
+.s153-rc.f .amt{color:#15803d;} .s153-rc.n .amt{color:#dc2626;}
+
+.s153-box-green{background:#f0fdf4;border-left:4px solid var(--green);border-radius:8px;padding:14px 18px;margin:18px 0;}
+.s153-box-amber{background:#fffbeb;border-left:4px solid #f59e0b;border-radius:8px;padding:14px 18px;margin:18px 0;font-size:13.5px;color:#92400e;}
+
+.rate-card{background:#fff;border:1px solid var(--line);border-radius:14px;overflow:hidden;box-shadow:0 10px 26px -20px rgba(10,38,71,.35);margin:14px 0 8px;}
+.rate-card table{width:100%;border-collapse:collapse;margin:0;font-size:13.5px;}
+.rate-card thead th{background:var(--navy);color:#fff;text-align:left;padding:11px 16px;font-size:11.5px;font-weight:600;text-transform:uppercase;letter-spacing:.05em;}
+.rate-card tbody td{border-top:1px solid var(--line);padding:9px 16px;color:var(--navy);}
+.rate-card tbody tr:nth-child(even) td{background:#f8fafc;}
+.rate-card tbody tr:hover td{background:#f0fdf4;}
+.rate-card .vf{color:var(--green);font-weight:700;}
+.rate-card .vn{color:#dc2626;font-weight:700;}
+.rate-card .nat{color:#92400e;font-weight:600;font-size:12.5px;}
+.s153-faq p{margin:0 0 14px;}
+@media(max-width:560px){.s153-grid{grid-template-columns:1fr;}}
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="s153">
+
+<script type="application/ld+json">
+{
+  "@context":"https://schema.org",
+  "@type":"FAQPage",
+  "mainEntity":[
+    {"@type":"Question","name":"What is Section 153 withholding tax?","acceptedAnswer":{"@type":"Answer","text":"It is advance/withholding income tax that a prescribed person (withholding agent) deducts when paying for the sale of goods, rendering of services, or execution of a contract, and deposits with FBR on the payee's behalf, under Section 153 of the Income Tax Ordinance 2001."}},
+    {"@type":"Question","name":"What is the withholding tax on services under 153(1)(b) in Pakistan?","acceptedAnswer":{"@type":"Answer","text":"Specified services (transport, courier, hotel, car rental, engineering and 21 more) are 7% for filers; IT & IT-enabled services 4%; independent professionals 15%; electronic/print media advertising 1.5%; terminal and port operating services 12%; and any other service 14%. Non-filers generally pay double."}},
+    {"@type":"Question","name":"How much withholding tax is deducted on a contract under 153(1)(c)?","acceptedAnswer":{"@type":"Answer","text":"Execution of a contract is 7.5% for a company, 8% for an individual or AOP, and 15% for a sportsperson (filer rates). Non-filers pay double under the Tenth Schedule."}},
+    {"@type":"Question","name":"Is there a minimum amount before Section 153 tax is deducted?","acceptedAnswer":{"@type":"Answer","text":"Yes. Payments for goods up to Rs 75,000 and for services up to Rs 30,000 in aggregate during a tax year are not subject to deduction under Section 153."}},
+    {"@type":"Question","name":"Is Section 153 tax final or adjustable?","acceptedAnswer":{"@type":"Answer","text":"For most taxpayers it is minimum tax. It is adjustable for a company that is a manufacturer of the goods, and for a public company listed on a registered stock exchange on goods and contracts. Services under 153(1)(b) are always minimum tax."}}
+  ]
+}
+</script>
+
+<div class="article-hero">
+  <div class="article-hero-inner">
+    <div class="breadcrumb">
+      <a href="{% url 'index' %}">Home</a><span class="breadcrumb-sep">›</span><span>Section 153 Calculator</span>
+    </div>
+    <h1>Section 153 Withholding Tax Calculator</h1>
+    <p class="s153-sub">Sale of goods 153(1)(a), services 153(1)(b) and execution of contract 153(1)(c) — pick the transaction, enter the amount, and see filer vs non-filer tax. Tax Year 2026-27.</p>
+    <div class="article-meta">
+      <span>⚖️ Section 153, ITO 2001</span><span>🔄 FY 2026-27</span><span>✅ Free</span>
+    </div>
+  </div>
+</div>
+
+<div class="content-grid">
+  <main class="content-main">
+
+    <div class="s153-box-green">
+      <strong style="color:#0D9E72;">⚡ Quick Answer</strong>
+      <p style="margin:8px 0 0;">Under <strong>Section 153</strong>, a withholding agent deducts tax when paying for <strong>goods</strong> (5%–5.5% filer), <strong>services</strong> (7% specified / 4% IT / 15% professionals / 14% other) or a <strong>contract</strong> (7.5%–8% filer). Non-filers generally pay <strong>double</strong> (Tenth Schedule). Select your transaction below.</p>
+    </div>
+
+    <!-- CALCULATOR -->
+    <div class="s153-card">
+      <div class="s153-field">
+        <label for="txType">Transaction Type</label>
+        <select id="txType">
+          <optgroup label="── 153(1)(a) · Sale / Supply of Goods ──">
+            <option data-f="5"   data-n="10" data-s="153(1)(a)">Sale of goods — company</option>
+            <option data-f="5.5" data-n="11" data-s="153(1)(a)">Sale of goods — individual / AOP</option>
+            <option data-f="9"   data-n="18" data-s="153(1)(a)">Goods — company (toll manufacturing)</option>
+            <option data-f="11"  data-n="22" data-s="153(1)(a)">Goods — individual/AOP (toll manufacturing)</option>
+            <option data-f="1.5" data-n="3"  data-s="153 / 2nd Sch">Rice / cotton seed / edible oil</option>
+            <option data-f="2.5" data-n="5"  data-s="153 / 2nd Sch">Cigarette distributors</option>
+            <option data-f="1"   data-n="2"  data-s="153 / 2nd Sch">Pharmaceutical distributors</option>
+            <option data-f="0.25" data-n="0.5" data-s="153 / 2nd Sch">FMCG distributors/dealers (on ATL)</option>
+            <option data-f="1"   data-n="2"  data-s="153 / 2nd Sch">Gold, silver &amp; articles thereof</option>
+          </optgroup>
+
+          <optgroup label="── 153(1)(b) · Services (specified, 7%) ──">
+            <option data-f="7" data-n="14" data-s="153(1)(b)">Transport services</option>
+            <option data-f="7" data-n="14" data-s="153(1)(b)">Freight forwarding services</option>
+            <option data-f="7" data-n="14" data-s="153(1)(b)">Air cargo services</option>
+            <option data-f="7" data-n="14" data-s="153(1)(b)">Courier services</option>
+            <option data-f="7" data-n="14" data-s="153(1)(b)">Manpower outsourcing services</option>
+            <option data-f="7" data-n="14" data-s="153(1)(b)">Hotel services</option>
+            <option data-f="7" data-n="14" data-s="153(1)(b)">Security guard services</option>
+            <option data-f="7" data-n="14" data-s="153(1)(b)">Software development services</option>
+            <option data-f="7" data-n="14" data-s="153(1)(b)">Tracking services</option>
+            <option data-f="7" data-n="14" data-s="153(1)(b)">Advertising services (other than print/electronic media)</option>
+            <option data-f="7" data-n="14" data-s="153(1)(b)">Share registrar services</option>
+            <option data-f="7" data-n="14" data-s="153(1)(b)">Engineering services (incl. architectural)</option>
+            <option data-f="7" data-n="14" data-s="153(1)(b)">Warehousing services</option>
+            <option data-f="7" data-n="14" data-s="153(1)(b)">Non-banking finance company (NBFC) services</option>
+            <option data-f="7" data-n="14" data-s="153(1)(b)">Data services (under PTA licence)</option>
+            <option data-f="7" data-n="14" data-s="153(1)(b)">Telecom infrastructure (tower) services</option>
+            <option data-f="7" data-n="14" data-s="153(1)(b)">Car rental services</option>
+            <option data-f="7" data-n="14" data-s="153(1)(b)">Building maintenance services</option>
+            <option data-f="7" data-n="14" data-s="153(1)(b)">Pakistan Stock Exchange &amp; PMEX services</option>
+            <option data-f="7" data-n="14" data-s="153(1)(b)">Inspection, certification, testing &amp; training services</option>
+            <option data-f="7" data-n="14" data-s="153(1)(b)">Oilfield services</option>
+            <option data-f="7" data-n="14" data-s="153(1)(b)">Telecommunication services</option>
+            <option data-f="7" data-n="14" data-s="153(1)(b)">Collateral management services</option>
+            <option data-f="7" data-n="14" data-s="153(1)(b)">Travel &amp; tour services</option>
+            <option data-f="7" data-n="14" data-s="153(1)(b)">REIT management services</option>
+            <option data-f="7" data-n="14" data-s="153(1)(b)">National Clearing Company (NCCPL) services</option>
+          </optgroup>
+
+          <optgroup label="── 153(1)(b) · Services (other rates) ──">
+            <option data-f="4"  data-n="8"  data-s="153(1)(b)">IT &amp; IT-enabled services</option>
+            <option data-f="15" data-n="30" data-s="153(1)(b)">Independent professionals (doctor/lawyer/architect/accountant/software engineer)</option>
+            <option data-f="1.5" data-n="3" data-s="153(1)(b)">Electronic / print media advertising</option>
+            <option data-f="12" data-n="24" data-s="153(1)(b)">Terminal &amp; port operating services (company)</option>
+            <option data-f="2"  data-n="4"  data-s="153(1)(b) / 2nd Sch">Oil tanker contractor services</option>
+            <option data-f="1"  data-n="2"  data-s="153(1)(b)">Export house — stitching/dyeing/printing/embroidery/washing</option>
+            <option data-f="14" data-n="28" data-s="153(1)(b)">Other services (not covered above)</option>
+          </optgroup>
+
+          <optgroup label="── 153(1)(c) · Execution of Contract ──">
+            <option data-f="7.5" data-n="15" data-s="153(1)(c)">Contract — company</option>
+            <option data-f="8"   data-n="16" data-s="153(1)(c)">Contract — individual / AOP</option>
+            <option data-f="15"  data-n="30" data-s="153(1)(c)">Contract — sportsperson</option>
+          </optgroup>
+
+          <optgroup label="── 153(2A) · E-commerce ──">
+            <option data-f="1" data-n="1" data-s="153(2A)">Digitally ordered — digital/banking payment</option>
+            <option data-f="2" data-n="2" data-s="153(2A)">Digitally ordered — Cash on Delivery (courier)</option>
+          </optgroup>
+        </select>
+      </div>
+
+      <div class="s153-field">
+        <label for="amt">Gross Amount Payable (Rs)</label>
+        <input type="text" id="amt" inputmode="numeric" placeholder="e.g. 500,000" oninput="fmt(this)" onkeydown="if(event.key==='Enter')calc()">
+        <div class="s153-hint">Gross amount of the payment (inclusive of sales tax where applicable).</div>
+      </div>
+
+      <button class="s153-go" onclick="calc()">Calculate Withholding Tax</button>
+
+      <div class="s153-result" id="res">
+        <div class="s153-res-head" id="resHead"></div>
+        <div class="s153-grid">
+          <div class="s153-rc f"><div class="t">✅ Filer</div><div class="rate" id="fRate"></div><div class="amt" id="fAmt"></div></div>
+          <div class="s153-rc n"><div class="t">❌ Non-Filer</div><div class="rate" id="nRate"></div><div class="amt" id="nAmt"></div></div>
+        </div>
+        <div id="natLine" style="margin-top:14px;text-align:center;"></div>
+      </div>
+    </div>
+
+    <script>
+    function fmt(el){var v=el.value.replace(/[^0-9]/g,'');el.value=v?parseInt(v,10).toLocaleString('en-PK'):'';}
+    function money(n){return 'Rs ' + Math.round(n).toLocaleString('en-PK');}
+    function natureOf(opt){
+      var t=opt.text.toLowerCase(), s=opt.dataset.s;
+      // Goods/contracts by a company → adjustable if manufacturer/listed, else minimum
+      if((t.indexOf('goods')>-1 || t.indexOf('contract')>-1) && t.indexOf('company')>-1 && s.indexOf('2A')===-1)
+        return 'Minimum tax — <b>Adjustable</b> if the company is a manufacturer (goods) or listed on PSX';
+      return 'Minimum tax';
+    }
+    function calc(){
+      var sel=document.getElementById('txType'), opt=sel.options[sel.selectedIndex];
+      var f=parseFloat(opt.dataset.f), n=parseFloat(opt.dataset.n), sec=opt.dataset.s;
+      var amt=parseInt((document.getElementById('amt').value||'0').replace(/[^0-9]/g,''),10)||0;
+      var res=document.getElementById('res'), natEl=document.getElementById('natLine');
+      if(!amt){ document.getElementById('resHead').innerHTML='⚠️ Please enter the gross amount.'; res.style.display='block';
+        document.getElementById('fRate').textContent='';document.getElementById('fAmt').textContent='—';
+        document.getElementById('nRate').textContent='';document.getElementById('nAmt').textContent='—'; natEl.innerHTML=''; return; }
+      document.getElementById('resHead').innerHTML='Withholding tax on <b>'+money(amt)+'</b> &nbsp;·&nbsp; '+opt.text+' &nbsp;·&nbsp; <b>'+sec+'</b>';
+      document.getElementById('fRate').textContent=f+'% of gross';
+      document.getElementById('fAmt').textContent=money(amt*f/100);
+      document.getElementById('nRate').textContent=n+'% of gross';
+      document.getElementById('nAmt').textContent=money(amt*n/100);
+      natEl.innerHTML='<span style="display:inline-block;background:#fffbeb;border:1px solid #fde68a;color:#92400e;font-size:12.5px;font-weight:600;padding:7px 14px;border-radius:20px;">📌 Nature of tax: '+natureOf(opt)+'</span>';
+      res.style.display='block';
+    }
+    </script>
+
+    <div class="s153-box-amber">
+      <strong>⚠️ Note:</strong> Non-filer rate = filer rate increased by 100% (Tenth Schedule), except e-commerce (flat). <strong>No deduction thresholds:</strong> goods payments under Rs 75,000/year and services under Rs 30,000/year in aggregate are exempt. Most 153 deductions are <strong>minimum tax</strong>. The ATL status is checked on the date of payment —
+      <a href="{% url 'atl_check' %}" style="font-weight:700;">Check ATL status →</a>
+    </div>
+
+    <h2>Section 153 — Complete Rate Tables (FY 2026-27)</h2>
+
+    <h3>153(1)(a) — Sale / Supply of Goods</h3>
+    <div class="rate-card">
+      <table>
+        <thead><tr><th>Payment</th><th>Filer</th><th>Non-Filer</th><th>Nature of Tax</th></tr></thead>
+        <tbody>
+          <tr><td>Sale of goods — company</td><td class="vf">5%</td><td class="vn">10%</td><td class="nat">Minimum / Adjustable¹</td></tr>
+          <tr><td>Sale of goods — individual / AOP</td><td class="vf">5.5%</td><td class="vn">11%</td><td class="nat">Minimum</td></tr>
+          <tr><td>Goods — company (toll manufacturing)</td><td class="vf">9%</td><td class="vn">18%</td><td class="nat">Minimum / Adjustable¹</td></tr>
+          <tr><td>Goods — individual/AOP (toll manufacturing)</td><td class="vf">11%</td><td class="vn">22%</td><td class="nat">Minimum</td></tr>
+          <tr><td>Rice / cotton seed / edible oil</td><td class="vf">1.5%</td><td class="vn">3%</td><td class="nat">Minimum</td></tr>
+          <tr><td>Cigarette distributors</td><td class="vf">2.5%</td><td class="vn">5%</td><td class="nat">Minimum</td></tr>
+          <tr><td>Pharmaceutical distributors</td><td class="vf">1%</td><td class="vn">2%</td><td class="nat">Minimum</td></tr>
+          <tr><td>FMCG distributors/dealers (on ATL)</td><td class="vf">0.25%</td><td class="vn">0.5%</td><td class="nat">Minimum</td></tr>
+          <tr><td>Gold, silver &amp; articles thereof</td><td class="vf">1%</td><td class="vn">2%</td><td class="nat">Minimum</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p style="font-size:11.5px;color:var(--muted);margin:2px 0 0;">¹ <strong>Adjustable</strong> (not minimum) where the seller is a company that is a <strong>manufacturer</strong> of the goods, or a <strong>public company listed</strong> on a registered stock exchange — otherwise minimum tax.</p>
+
+    <h3>153(1)(b) — Specified Services (7% bucket)</h3>
+    <div class="rate-card">
+      <table>
+        <thead><tr><th>Service</th><th>Filer</th><th>Non-Filer</th><th>Nature of Tax</th></tr></thead>
+        <tbody>
+          <tr><td>Transport services</td><td class="vf">7%</td><td class="vn">14%</td><td class="nat">Minimum</td></tr>
+          <tr><td>Freight forwarding services</td><td class="vf">7%</td><td class="vn">14%</td><td class="nat">Minimum</td></tr>
+          <tr><td>Air cargo services</td><td class="vf">7%</td><td class="vn">14%</td><td class="nat">Minimum</td></tr>
+          <tr><td>Courier services</td><td class="vf">7%</td><td class="vn">14%</td><td class="nat">Minimum</td></tr>
+          <tr><td>Manpower outsourcing services</td><td class="vf">7%</td><td class="vn">14%</td><td class="nat">Minimum</td></tr>
+          <tr><td>Hotel services</td><td class="vf">7%</td><td class="vn">14%</td><td class="nat">Minimum</td></tr>
+          <tr><td>Security guard services</td><td class="vf">7%</td><td class="vn">14%</td><td class="nat">Minimum</td></tr>
+          <tr><td>Software development services</td><td class="vf">7%</td><td class="vn">14%</td><td class="nat">Minimum</td></tr>
+          <tr><td>Tracking services</td><td class="vf">7%</td><td class="vn">14%</td><td class="nat">Minimum</td></tr>
+          <tr><td>Advertising services (other than print/electronic media)</td><td class="vf">7%</td><td class="vn">14%</td><td class="nat">Minimum</td></tr>
+          <tr><td>Share registrar services</td><td class="vf">7%</td><td class="vn">14%</td><td class="nat">Minimum</td></tr>
+          <tr><td>Engineering services (incl. architectural)</td><td class="vf">7%</td><td class="vn">14%</td><td class="nat">Minimum</td></tr>
+          <tr><td>Warehousing services</td><td class="vf">7%</td><td class="vn">14%</td><td class="nat">Minimum</td></tr>
+          <tr><td>Non-banking finance company (NBFC) services</td><td class="vf">7%</td><td class="vn">14%</td><td class="nat">Minimum</td></tr>
+          <tr><td>Data services (under PTA licence)</td><td class="vf">7%</td><td class="vn">14%</td><td class="nat">Minimum</td></tr>
+          <tr><td>Telecom infrastructure (tower) services</td><td class="vf">7%</td><td class="vn">14%</td><td class="nat">Minimum</td></tr>
+          <tr><td>Car rental services</td><td class="vf">7%</td><td class="vn">14%</td><td class="nat">Minimum</td></tr>
+          <tr><td>Building maintenance services</td><td class="vf">7%</td><td class="vn">14%</td><td class="nat">Minimum</td></tr>
+          <tr><td>Pakistan Stock Exchange &amp; PMEX services</td><td class="vf">7%</td><td class="vn">14%</td><td class="nat">Minimum</td></tr>
+          <tr><td>Inspection, certification, testing &amp; training services</td><td class="vf">7%</td><td class="vn">14%</td><td class="nat">Minimum</td></tr>
+          <tr><td>Oilfield services</td><td class="vf">7%</td><td class="vn">14%</td><td class="nat">Minimum</td></tr>
+          <tr><td>Telecommunication services</td><td class="vf">7%</td><td class="vn">14%</td><td class="nat">Minimum</td></tr>
+          <tr><td>Collateral management services</td><td class="vf">7%</td><td class="vn">14%</td><td class="nat">Minimum</td></tr>
+          <tr><td>Travel &amp; tour services</td><td class="vf">7%</td><td class="vn">14%</td><td class="nat">Minimum</td></tr>
+          <tr><td>REIT management services</td><td class="vf">7%</td><td class="vn">14%</td><td class="nat">Minimum</td></tr>
+          <tr><td>National Clearing Company (NCCPL) services</td><td class="vf">7%</td><td class="vn">14%</td><td class="nat">Minimum</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3>153(1)(b) — Services (other rates)</h3>
+    <div class="rate-card">
+      <table>
+        <thead><tr><th>Service</th><th>Filer</th><th>Non-Filer</th><th>Nature of Tax</th></tr></thead>
+        <tbody>
+          <tr><td>IT &amp; IT-enabled services</td><td class="vf">4%</td><td class="vn">8%</td><td class="nat">Minimum</td></tr>
+          <tr><td>Independent professionals (doctor/lawyer/architect/accountant/software engineer)</td><td class="vf">15%</td><td class="vn">30%</td><td class="nat">Minimum</td></tr>
+          <tr><td>Electronic / print media advertising</td><td class="vf">1.5%</td><td class="vn">3%</td><td class="nat">Minimum</td></tr>
+          <tr><td>Terminal &amp; port operating services (company)</td><td class="vf">12%</td><td class="vn">24%</td><td class="nat">Minimum</td></tr>
+          <tr><td>Oil tanker contractor services</td><td class="vf">2%</td><td class="vn">4%</td><td class="nat">Minimum</td></tr>
+          <tr><td>Export house — stitching/dyeing/printing/embroidery/washing</td><td class="vf">1%</td><td class="vn">2%</td><td class="nat">Minimum</td></tr>
+          <tr><td>Other services (not covered above)</td><td class="vf">14%</td><td class="vn">28%</td><td class="nat">Minimum</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p style="font-size:11.5px;color:var(--muted);margin:2px 0 0;">Tax on all services under <strong>153(1)(b) is minimum tax</strong> (expressly provided in the Ordinance).</p>
+
+    <h3>153(1)(c) — Execution of Contract</h3>
+    <div class="rate-card">
+      <table>
+        <thead><tr><th>Contract</th><th>Filer</th><th>Non-Filer</th><th>Nature of Tax</th></tr></thead>
+        <tbody>
+          <tr><td>Contract — company</td><td class="vf">7.5%</td><td class="vn">15%</td><td class="nat">Minimum / Adjustable²</td></tr>
+          <tr><td>Contract — individual / AOP</td><td class="vf">8%</td><td class="vn">16%</td><td class="nat">Minimum</td></tr>
+          <tr><td>Contract — sportsperson</td><td class="vf">15%</td><td class="vn">30%</td><td class="nat">Minimum</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p style="font-size:11.5px;color:var(--muted);margin:2px 0 0;">² <strong>Adjustable</strong> for a <strong>public company listed</strong> on a registered stock exchange; minimum tax for everyone else.</p>
+
+    <h3>153(2A) — E-commerce (digitally ordered)</h3>
+    <div class="rate-card">
+      <table>
+        <thead><tr><th>Payment</th><th>Rate</th><th>Collected by</th><th>Nature of Tax</th></tr></thead>
+        <tbody>
+          <tr><td>Digital / banking channel payment</td><td class="vf">1%</td><td>Payment intermediary</td><td class="nat">Minimum</td></tr>
+          <tr><td>Cash on Delivery (collected by courier)</td><td class="vf">2%</td><td>Courier business</td><td class="nat">Minimum</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="s153-box-green" style="display:flex;align-items:center;gap:14px;">
+      <div style="font-size:30px;flex-shrink:0;">📖</div>
+      <div>
+        <div style="font-weight:700;color:var(--navy);margin-bottom:3px;">Adjustable, final or minimum tax?</div>
+        <div style="font-size:13.5px;color:var(--muted);">Not every Section 153 deduction works the same way — some are minimum tax, some adjustable. <a href="/articles/section-153-withholding-adjustable-minimum/" target="_blank" style="font-weight:700;">Read the full guide →</a></div>
+      </div>
+    </div>
+
+    <h2>Frequently Asked Questions</h2>
+    <div class="s153-faq">
+      <p><strong>What is Section 153 withholding tax?</strong><br>
+      It is advance/withholding income tax that a "prescribed person" (withholding agent) deducts when paying for the sale of goods, rendering of services, or execution of a contract, and deposits it with FBR on the payee's behalf.</p>
+
+      <p><strong>What is the withholding tax on services under 153(1)(b)?</strong><br>
+      Specified services (transport, courier, hotel, car rental, engineering and 21 more) are 7% for filers; IT &amp; IT-enabled services 4%; independent professionals 15%; media advertising 1.5%; terminal/port operating 12%; and any other service 14%. Non-filers pay double.</p>
+
+      <p><strong>How much tax is deducted on a contract?</strong><br>
+      Execution of a contract is 7.5% for a company, 8% for an individual/AOP, and 15% for a sportsperson (filer rates; non-filers double).</p>
+
+      <p><strong>Is there a minimum amount before tax is deducted?</strong><br>
+      Yes — goods payments up to Rs 75,000 and services up to Rs 30,000 in a tax year (in aggregate) are not subject to deduction.</p>
+
+      <p><strong>Is 153 tax final or adjustable?</strong><br>
+      For most taxpayers it is <strong>minimum tax</strong>; for companies on goods and listed-company contracts it can be adjustable. Check your specific status.</p>
+    </div>
+
+    <h3>Sources &amp; References</h3>
+    <ul style="font-size:13.5px;color:var(--muted);">
+      <li>Income Tax Ordinance, 2001 — Section 153; First Schedule, Part III, Division III</li>
+      <li>Rates as amended up to the Finance Act, 2026 (Tax Year 2026-27)</li>
+      <li>Reduced rates — Second Schedule; non-filer increase — Tenth Schedule</li>
+      <li>Federal Board of Revenue — <a href="https://www.fbr.gov.pk" target="_blank" rel="noopener">fbr.gov.pk</a></li>
+    </ul>
+
+    <div class="s153-box-amber">
+      <strong>Disclaimer:</strong> For educational estimation only. Final liability depends on the exact nature of the transaction, taxpayer status and any SRO/exemption. Verify with the current ITO 2001 text or a tax advisor before deducting or depositing tax.
+    </div>
+
+    <div class="s153-box-green">
+      <strong>Need help with 153 withholding, statements or exemptions?</strong> Talk to <strong>Umair Mubeen</strong> — Pakistan tax educator, Karachi. <a href="https://wa.me/923332482742" target="_blank" rel="noopener">WhatsApp: +92 333 248 2742</a>
+    </div>
+
+    {% include 'partials/cta_banner.html' %}
+  </main>
+  <aside class="content-sidebar">
+    {% include 'partials/sidebar.html' %}
+  </aside>
+</div>
+</div>
+{% endblock %}

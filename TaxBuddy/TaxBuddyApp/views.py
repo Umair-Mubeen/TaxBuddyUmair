@@ -2874,3 +2874,11 @@ def zakat_calculator(request):
 
 def llms_txt(request):
     return render(request, 'llms.txt', content_type='text/plain')
+
+
+def vehicle_tax_calculator(request):
+    return render(request, 'vehicle-tax-calculator.html', {})
+
+
+def section_153_calculator(request):
+    return render(request, 'section-153-calculator.html', {})

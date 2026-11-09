@@ -1,0 +1,305 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Motor Vehicle Tax Calculator Pakistan 2026-27 — Car Registration, Token & Transfer Tax | TaxBuddy Umair{% endblock %}
+{% block meta_desc %}Free motor vehicle tax calculator for Pakistan 2026-27. Work out car registration advance tax (Section 231B), annual token tax (Section 234) and transfer tax — filer vs non-filer, by engine capacity.{% endblock %}
+
+{% block extra_css %}
+<style>
+.vtc{--navy:#0A2647;--green:#0D9E72;--green2:#0B8A64;--mintbg:#F6FBF9;--line:#E6EFEA;--muted:#5B6B64;--rad:16px;color:var(--navy);}
+.vtc h2{font-size:21px;font-weight:800;color:var(--navy);margin:30px 0 14px;letter-spacing:-.01em;}
+.vtc a{color:var(--green);}
+.vtc .vtc-sub{font-size:14.5px;color:rgba(255,255,255,.72);margin:8px 0 14px;max-width:580px;}
+.vtc .article-meta span{color:rgba(255,255,255,.82);}
+
+/* Calculator card */
+.vtc-card{background:#fff;border:1px solid var(--line);border-radius:var(--rad);padding:24px;box-shadow:0 10px 30px -22px rgba(10,38,71,.35);margin-bottom:22px;}
+.vtc-tabs{display:flex;gap:8px;margin-bottom:20px;flex-wrap:wrap;}
+.vtc-tab{flex:1;min-width:120px;padding:11px 14px;border-radius:10px;border:1.5px solid var(--line);background:#fff;color:var(--muted);font-size:13.5px;font-weight:600;cursor:pointer;font-family:inherit;transition:.15s;text-align:center;}
+.vtc-tab.on{background:var(--navy);border-color:var(--navy);color:#fff;}
+.vtc-field{margin-bottom:16px;}
+.vtc-field label{display:block;font-size:12.5px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.05em;margin-bottom:7px;}
+.vtc-field input,.vtc-field select{width:100%;padding:12px 14px;border-radius:10px;border:1.5px solid var(--line);font-size:15px;font-family:inherit;background:var(--mintbg);color:var(--navy);box-sizing:border-box;outline:none;transition:.15s;}
+.vtc-field input:focus,.vtc-field select:focus{border-color:var(--green);background:#fff;}
+.vtc-toggle{display:flex;gap:8px;}
+.vtc-toggle button{flex:1;padding:11px;border-radius:10px;border:1.5px solid var(--line);background:#fff;color:var(--muted);font-size:14px;font-weight:600;cursor:pointer;font-family:inherit;transition:.15s;}
+.vtc-toggle button.on{background:var(--green);border-color:var(--green);color:#fff;}
+.vtc-hint{font-size:11.5px;color:var(--muted);margin-top:5px;}
+.vtc-go{width:100%;background:var(--navy);color:#fff;border:none;padding:14px;border-radius:10px;font-size:15px;font-weight:700;font-family:inherit;cursor:pointer;transition:.15s;margin-top:6px;}
+.vtc-go:hover{background:#13395f;}
+
+/* Result */
+.vtc-result{display:none;margin-top:20px;background:linear-gradient(135deg,#0A2647,#0D9E72);border-radius:14px;padding:22px;color:#fff;text-align:center;}
+.vtc-result .lbl{font-size:13px;color:rgba(255,255,255,.75);text-transform:uppercase;letter-spacing:.06em;}
+.vtc-result .amt{font-size:36px;font-weight:800;margin:6px 0;line-height:1.1;}
+.vtc-result .brk{background:rgba(255,255,255,.12);border-radius:10px;padding:12px 14px;margin-top:14px;font-size:13px;text-align:left;line-height:1.9;}
+.vtc-result .brk span{color:rgba(255,255,255,.65);}
+
+/* Tables */
+.vtc table{width:100%;border-collapse:collapse;margin:14px 0;font-size:14px;}
+.vtc th{background:var(--navy);color:#fff;text-align:left;padding:9px 12px;font-weight:600;}
+.vtc td{border:1px solid var(--line);padding:9px 12px;}
+.vtc tr:nth-child(even) td{background:#f9fafb;}
+
+/* Table card — table wrapped inside a rounded card */
+.rate-card{background:#fff;border:1px solid var(--line);border-radius:14px;overflow:hidden;box-shadow:0 10px 26px -20px rgba(10,38,71,.35);margin:14px 0 8px;}
+.rate-card table{width:100%;border-collapse:collapse;margin:0;font-size:14px;}
+.rate-card thead th{background:var(--navy);color:#fff;text-align:left;padding:11px 16px;font-size:11.5px;font-weight:600;text-transform:uppercase;letter-spacing:.05em;}
+.rate-card tbody td{border-top:1px solid var(--line);padding:10px 16px;color:var(--navy);}
+.rate-card tbody tr:nth-child(even) td{background:#f8fafc;}
+.rate-card tbody tr:hover td{background:#f0fdf4;}
+.rate-card .cc{font-weight:600;}
+.rate-card .vf{color:var(--green);font-weight:700;}
+.rate-card .vn{color:#dc2626;font-weight:700;}
+
+/* boxes */
+.vtc-box-green{background:#f0fdf4;border-left:4px solid var(--green);border-radius:8px;padding:14px 18px;margin:18px 0;}
+.vtc-box-amber{background:#fffbeb;border-left:4px solid #f59e0b;border-radius:8px;padding:14px 18px;margin:18px 0;font-size:13.5px;color:#92400e;}
+.vtc-faq p{margin:0 0 14px;}
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="vtc">
+
+<!-- Hero -->
+<div class="article-hero">
+  <div class="article-hero-inner">
+    <div class="breadcrumb">
+      <a href="{% url 'index' %}">Home</a><span class="breadcrumb-sep">›</span><span>Motor Vehicle Tax Calculator</span>
+    </div>
+    <h1>Motor Vehicle Tax Calculator Pakistan</h1>
+    <p class="vtc-sub">Car registration advance tax (231B), annual token tax (234) and transfer tax — filer vs non-filer, by engine capacity. Updated for Tax Year 2026-27.</p>
+    <div class="article-meta">
+      <span>🚗 FY 2026-27</span><span>⚖️ Section 231B &amp; 234</span><span>✅ Free</span>
+    </div>
+  </div>
+</div>
+
+<div class="content-grid">
+  <main class="content-main">
+
+    <!-- QUICK ANSWER (GEO) -->
+    <div class="vtc-box-green">
+      <strong style="color:#0D9E72;">⚡ Quick Answer</strong>
+      <p style="margin:8px 0 0;">When you <strong>buy/register a new car</strong> in Pakistan, you pay advance income tax under <strong>Section 231B</strong> — from <strong>0.5% to 12% of the vehicle's value</strong> for filers (by engine capacity), and <strong>3× that</strong> for non-filers. Every year you also pay <strong>token tax under Section 234</strong> (Rs 800 to Rs 10,000 for filers; double for non-filers). Transferring a car carries a separate fixed tax that drops 10% each year and becomes nil after 5 years.</p>
+    </div>
+
+    <!-- CALCULATOR -->
+    <div class="vtc-card">
+      <div class="vtc-tabs">
+        <button class="vtc-tab on" data-mode="reg" onclick="setMode('reg',this)">🆕 New Registration</button>
+        <button class="vtc-tab" data-mode="token" onclick="setMode('token',this)">🗓️ Annual Token</button>
+        <button class="vtc-tab" data-mode="transfer" onclick="setMode('transfer',this)">🔁 Transfer</button>
+      </div>
+
+      <!-- Value (registration only) -->
+      <div class="vtc-field" id="f-value">
+        <label for="vValue">Vehicle Value (Rs)</label>
+        <input type="text" id="vValue" inputmode="numeric" placeholder="e.g. 4,500,000"
+          oninput="fmt(this)">
+        <div class="vtc-hint">Invoice value (local) or import value incl. duties &amp; taxes (imported).</div>
+      </div>
+
+      <!-- Engine capacity -->
+      <div class="vtc-field">
+        <label for="vCC">Engine Capacity (CC)</label>
+        <input type="number" id="vCC" inputmode="numeric" placeholder="e.g. 1300" min="0">
+        <div class="vtc-hint" id="ccHint">For electric vehicles where CC is N/A and value ≥ Rs 5M, a flat 3% applies.</div>
+      </div>
+
+      <!-- Years since first registration (transfer only) -->
+      <div class="vtc-field" id="f-years" style="display:none;">
+        <label for="vYears">Years Since First Registration</label>
+        <input type="number" id="vYears" inputmode="numeric" placeholder="e.g. 2" min="0" value="0">
+        <div class="vtc-hint">Transfer tax reduces 10% per year and is nil after 5 years.</div>
+      </div>
+
+      <!-- Filer status -->
+      <div class="vtc-field">
+        <label>Filer Status</label>
+        <div class="vtc-toggle">
+          <button id="bFiler" class="on" onclick="setFiler(true,this)">✅ Filer (on ATL)</button>
+          <button id="bNon" onclick="setFiler(false,this)">❌ Non-Filer</button>
+        </div>
+        <div class="vtc-hint" style="margin-top:8px;">🔎 Not sure of your status? <a href="{% url 'atl_check' %}" style="color:var(--green);font-weight:700;">Check your ATL status →</a></div>
+      </div>
+
+      <button class="vtc-go" onclick="calc()">Calculate Tax</button>
+
+      <div class="vtc-result" id="vResult">
+        <div class="lbl" id="rLbl">Advance Tax Payable</div>
+        <div class="amt" id="rAmt">Rs 0</div>
+        <div class="brk" id="rBrk"></div>
+      </div>
+    </div>
+
+    <script>
+    // ===== Verified FY2026-27 rates (ITO 2001, First Schedule Part IV) =====
+    // 231B registration = % of value (filer); non-filer = 3x
+    var REG = [[850,0.5],[1000,1],[1300,1.5],[1600,2],[1800,3],[2000,5],[2500,7],[3000,9],[1e9,12]];
+    // 234 annual token = fixed Rs (filer); non-filer = 2x
+    var TOKEN = [[1000,800],[1199,1500],[1299,1750],[1499,2500],[1599,3750],[1999,4500],[1e9,10000]];
+    // 231B(2) transfer = fixed Rs (filer); non-filer = 3x; -10%/yr; nil after 5yr / upto 850cc
+    var TRANSFER = [[850,0],[1000,5000],[1300,7500],[1600,12500],[1800,18750],[2000,25000],[2500,37500],[3000,50000],[1e9,62500]];
+
+    var MODE='reg', FILER=true;
+
+    function band(tbl,cc){ for(var i=0;i<tbl.length;i++){ if(cc<=tbl[i][0]) return tbl[i][1]; } return tbl[tbl.length-1][1]; }
+    function money(n){ return 'Rs ' + Math.round(n).toLocaleString('en-PK'); }
+    function fmt(el){ var v=el.value.replace(/[^0-9]/g,''); el.value=v?parseInt(v,10).toLocaleString('en-PK'):''; }
+
+    function setMode(m,btn){
+      MODE=m;
+      document.querySelectorAll('.vtc-tab').forEach(function(b){b.classList.remove('on');});
+      btn.classList.add('on');
+      document.getElementById('f-value').style.display = (m==='reg')?'block':'none';
+      document.getElementById('f-years').style.display = (m==='transfer')?'block':'none';
+      document.getElementById('vResult').style.display='none';
+    }
+    function setFiler(v,btn){
+      FILER=v;
+      document.getElementById('bFiler').classList.toggle('on',v);
+      document.getElementById('bNon').classList.toggle('on',!v);
+    }
+
+    function calc(){
+      var cc = parseInt(document.getElementById('vCC').value||'0',10);
+      var res=document.getElementById('vResult'), amtEl=document.getElementById('rAmt'),
+          lblEl=document.getElementById('rLbl'), brkEl=document.getElementById('rBrk');
+
+      if(!cc || cc<=0){ show(res,lblEl,amtEl,brkEl,'Enter engine capacity','—','Please enter the engine capacity in CC.'); return; }
+
+      if(MODE==='reg'){
+        var val = parseInt((document.getElementById('vValue').value||'0').replace(/[^0-9]/g,''),10);
+        if(!val){ show(res,lblEl,amtEl,brkEl,'Enter vehicle value','—','Registration tax is a % of the vehicle value.'); return; }
+        var r = band(REG,cc); if(!FILER) r=r*3;
+        var tax = val*r/100;
+        show(res,lblEl,amtEl,brkEl,'Advance Tax on Registration (231B)', money(tax),
+          '<div><span>Engine capacity</span>  '+cc+' CC</div>'+
+          '<div><span>Vehicle value</span>  '+money(val)+'</div>'+
+          '<div><span>Rate ('+(FILER?'Filer':'Non-Filer')+')</span>  '+r+'% of value</div>');
+      }
+      else if(MODE==='token'){
+        var t = band(TOKEN,cc); if(!FILER) t=t*2;
+        show(res,lblEl,amtEl,brkEl,'Annual Token Tax (234)', money(t),
+          '<div><span>Engine capacity</span>  '+cc+' CC</div>'+
+          '<div><span>Status</span>  '+(FILER?'Filer':'Non-Filer (2× filer)')+'</div>'+
+          '<div><span>Payable</span>  per year</div>');
+      }
+      else {
+        var years = parseInt(document.getElementById('vYears').value||'0',10);
+        var base = band(TRANSFER,cc); if(!FILER) base=base*3;
+        var note='';
+        if(cc<=850){ base=0; note='No transfer tax up to 850cc.'; }
+        else if(years>=5){ base=0; note='Nil — vehicle first registered over 5 years ago.'; }
+        else if(years>0){ var red=base*0.10*years; base=Math.max(0,base-red); note='Reduced by '+(10*years)+'% for '+years+' year(s).'; }
+        show(res,lblEl,amtEl,brkEl,'Transfer Tax (231B(2))', money(base),
+          '<div><span>Engine capacity</span>  '+cc+' CC</div>'+
+          '<div><span>Status</span>  '+(FILER?'Filer':'Non-Filer (3× filer)')+'</div>'+
+          (note?'<div><span>Note</span>  '+note+'</div>':''));
+      }
+    }
+    function show(res,lblEl,amtEl,brkEl,lbl,amt,brk){ lblEl.textContent=lbl; amtEl.textContent=amt; brkEl.innerHTML=brk; res.style.display='block'; }
+    </script>
+
+    <div class="vtc-box-amber">
+      <strong>⚠️ Note:</strong> This calculator covers <strong>federal advance income tax</strong> (Sections 231B &amp; 234). Your provincial <strong>Excise &amp; Taxation</strong> office may also charge registration fee, number-plate and provincial motor vehicle tax separately. Non-filer multipliers and transfer reductions can vary by province — confirm the final figure at your Excise office.
+    </div>
+
+    <!-- RATE TABLES -->
+    <h2>Section 231B — Registration Advance Tax (% of value)</h2>
+    <div class="rate-card">
+      <table>
+        <thead><tr><th>Engine Capacity</th><th>Filer</th><th>Non-Filer (3×)</th></tr></thead>
+        <tbody>
+          <tr><td class="cc">Up to 850cc</td><td class="vf">0.5%</td><td class="vn">1.5%</td></tr>
+          <tr><td class="cc">851 – 1,000cc</td><td class="vf">1%</td><td class="vn">3%</td></tr>
+          <tr><td class="cc">1,001 – 1,300cc</td><td class="vf">1.5%</td><td class="vn">4.5%</td></tr>
+          <tr><td class="cc">1,301 – 1,600cc</td><td class="vf">2%</td><td class="vn">6%</td></tr>
+          <tr><td class="cc">1,601 – 1,800cc</td><td class="vf">3%</td><td class="vn">9%</td></tr>
+          <tr><td class="cc">1,801 – 2,000cc</td><td class="vf">5%</td><td class="vn">15%</td></tr>
+          <tr><td class="cc">2,001 – 2,500cc</td><td class="vf">7%</td><td class="vn">21%</td></tr>
+          <tr><td class="cc">2,501 – 3,000cc</td><td class="vf">9%</td><td class="vn">27%</td></tr>
+          <tr><td class="cc">Above 3,000cc</td><td class="vf">12%</td><td class="vn">36%</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p style="font-size:12.5px;color:var(--muted);">Value = invoice value (local) or import value incl. customs duty, FED &amp; sales tax (imported). Where CC is N/A (e.g. EVs) and value ≥ Rs 5M, a flat 3% applies.</p>
+
+    <h2>Section 234 — Annual Token Tax (fixed)</h2>
+    <div class="rate-card">
+      <table>
+        <thead><tr><th>Engine Capacity</th><th>Filer / year</th><th>Non-Filer (2×)</th></tr></thead>
+        <tbody>
+          <tr><td class="cc">Up to 1,000cc</td><td class="vf">Rs 800</td><td class="vn">Rs 1,600</td></tr>
+          <tr><td class="cc">1,001 – 1,199cc</td><td class="vf">Rs 1,500</td><td class="vn">Rs 3,000</td></tr>
+          <tr><td class="cc">1,200 – 1,299cc</td><td class="vf">Rs 1,750</td><td class="vn">Rs 3,500</td></tr>
+          <tr><td class="cc">1,300 – 1,499cc</td><td class="vf">Rs 2,500</td><td class="vn">Rs 5,000</td></tr>
+          <tr><td class="cc">1,500 – 1,599cc</td><td class="vf">Rs 3,750</td><td class="vn">Rs 7,500</td></tr>
+          <tr><td class="cc">1,600 – 1,999cc</td><td class="vf">Rs 4,500</td><td class="vn">Rs 9,000</td></tr>
+          <tr><td class="cc">2,000cc &amp; above</td><td class="vf">Rs 10,000</td><td class="vn">Rs 20,000</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h2>Section 231B(2) — Transfer Tax (fixed)</h2>
+    <div class="rate-card">
+      <table>
+        <thead><tr><th>Engine Capacity</th><th>Filer</th><th>Non-Filer (3×)</th></tr></thead>
+        <tbody>
+          <tr><td class="cc">Up to 850cc</td><td class="vf">Nil</td><td class="vn">Nil</td></tr>
+          <tr><td class="cc">851 – 1,000cc</td><td class="vf">Rs 5,000</td><td class="vn">Rs 15,000</td></tr>
+          <tr><td class="cc">1,001 – 1,300cc</td><td class="vf">Rs 7,500</td><td class="vn">Rs 22,500</td></tr>
+          <tr><td class="cc">1,301 – 1,600cc</td><td class="vf">Rs 12,500</td><td class="vn">Rs 37,500</td></tr>
+          <tr><td class="cc">1,601 – 1,800cc</td><td class="vf">Rs 18,750</td><td class="vn">Rs 56,250</td></tr>
+          <tr><td class="cc">1,801 – 2,000cc</td><td class="vf">Rs 25,000</td><td class="vn">Rs 75,000</td></tr>
+          <tr><td class="cc">2,001 – 2,500cc</td><td class="vf">Rs 37,500</td><td class="vn">Rs 112,500</td></tr>
+          <tr><td class="cc">2,501 – 3,000cc</td><td class="vf">Rs 50,000</td><td class="vn">Rs 150,000</td></tr>
+          <tr><td class="cc">Above 3,000cc</td><td class="vf">Rs 62,500</td><td class="vn">Rs 187,500</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p style="font-size:12.5px;color:var(--muted);">Transfer tax reduces by 10% for each year since first registration and is nil after 5 years.</p>
+
+    <!-- FAQ -->
+    <h2>Frequently Asked Questions</h2>
+    <div class="vtc-faq">
+      <p><strong>How much tax do I pay when buying a new car in Pakistan?</strong><br>
+      You pay advance income tax under Section 231B — 0.5% to 12% of the vehicle's value depending on engine capacity (a filer), or 3× that as a non-filer — collected at registration, plus provincial registration/number-plate fees.</p>
+
+      <p><strong>Is the registration tax a percentage or a fixed amount?</strong><br>
+      For the current year it is a <strong>percentage of the vehicle's value</strong> across all engine-capacity bands (0.5%–12% for filers). Older fixed-rupee tables have been replaced.</p>
+
+      <p><strong>How much higher is tax for a non-filer?</strong><br>
+      Registration and transfer tax are <strong>3× the filer rate</strong>; the annual token tax is <strong>2× the filer amount</strong>.</p>
+
+      <p><strong>Do I pay transfer tax on an old car?</strong><br>
+      Transfer tax falls 10% for every year since first registration and becomes <strong>nil after 5 years</strong>. Cars up to 850cc are exempt from transfer tax.</p>
+
+      <p><strong>Can I avoid the higher non-filer rate?</strong><br>
+      Yes — get on the <strong>Active Taxpayers List</strong> by filing your return before you register or transfer the vehicle. Use our <a href="{% url 'atl_check' %}">ATL Check</a> to confirm your filer status.</p>
+    </div>
+
+    <h3>Sources &amp; References</h3>
+    <ul style="font-size:13.5px;color:var(--muted);">
+      <li>Income Tax Ordinance, 2001 — Sections 231B &amp; 234; First Schedule, Part IV (Divisions III &amp; VII)</li>
+      <li>Rates as amended up to the Finance Act, 2026 (Tax Year 2026-27)</li>
+      <li>Federal Board of Revenue — <a href="https://www.fbr.gov.pk" target="_blank" rel="noopener">fbr.gov.pk</a></li>
+    </ul>
+
+    <div class="vtc-box-amber">
+      <strong>Disclaimer:</strong> This calculator is for educational estimation only and covers federal advance income tax (231B/234). Final amounts, provincial charges and non-filer multipliers should be confirmed with your Excise &amp; Taxation office or a tax advisor. Rates change through Finance Acts and SROs.
+    </div>
+
+    <div class="vtc-box-green">
+      <strong>Need help with vehicle tax or becoming a filer?</strong> Talk to <strong>Umair Mubeen</strong> — Pakistan tax educator, Karachi. <a href="https://wa.me/923332482742" target="_blank" rel="noopener">WhatsApp: +92 333 248 2742</a>
+    </div>
+
+    {% include 'partials/cta_banner.html' %}
+  </main>
+  <aside class="content-sidebar">
+    {% include 'partials/sidebar.html' %}
+  </aside>
+</div>
+</div>
+{% endblock %}

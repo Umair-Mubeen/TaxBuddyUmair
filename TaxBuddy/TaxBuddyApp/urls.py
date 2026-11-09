@@ -65,6 +65,8 @@ urlpatterns = [
     path('capital-gains-tax-calculator/', views.capital_gains_tax_calculator, name='capital_gains_tax_calculator'),
     path('pta-mobile-tax-calculator/', views.pta_mobile_tax, name='pta_mobile_tax'),
     path('zakat-calculator/', views.zakat_calculator, name='zakat_calculator'),
+    path('motor-vehicle-tax-calculator/', views.vehicle_tax_calculator, name='vehicle_tax_calculator'),
+    path('section-153-withholding-tax-calculator/', views.section_153_calculator, name='section_153_calculator'),
 
     # ── API ───────────────────────────────────────────────────
     path('api/section-4c-rate/', views.section_4c_rate_view, name='section_4c_rate'),
