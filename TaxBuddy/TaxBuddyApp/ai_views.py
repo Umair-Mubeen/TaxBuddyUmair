@@ -9,12 +9,14 @@
 #    pip install anthropic
 #    # settings.py:
 #    ANTHROPIC_API_KEY = os.environ.get("ANTHROPIC_API_KEY", "")   # put the key in env, NOT in code
-#    AI_MODEL          = os.environ.get("AI_MODEL", "claude-3-5-haiku-latest")
+#    AI_MODEL          = os.environ.get("AI_MODEL", "claude-haiku-5-5")
+#    AI_DAILY_LIMIT    = 400   # optional: max AI questions per day for the whole site
 #    # ^ set AI_MODEL to a model your API key can use. See docs.claude.com for current model IDs.
 #    #   Haiku = cheapest/fast (good here). Switch to a Sonnet model for deeper reasoning.
 # ════════════════════════════════════════════════════════════════
-import time
 import json
+import logging
+import time
 
 from django.conf import settings
 from django.http import JsonResponse
@@ -22,71 +24,41 @@ from django.shortcuts import render
 from django.views.decorators.http import require_POST
 from django.views.decorators.csrf import csrf_protect
 
-# ── Verified FBR Tax Year 2026-27 facts the assistant is grounded on ──
-TAX_FACTS_2026_27 = """
-PAKISTAN TAX — VERIFIED FACTS FOR TAX YEAR 2026-27 (Finance Act 2026):
+logger = logging.getLogger(__name__)
 
-SALARY INCOME TAX SLABS (annual taxable salary):
-- Up to Rs 600,000: 0%
-- 600,001–1,200,000: 1% of amount over 600,000
-- 1,200,001–2,200,000: Rs 6,000 + 11% of amount over 1,200,000
-- 2,200,001–3,200,000: Rs 116,000 + 20% of amount over 2,200,000
-- 3,200,001–4,100,000: Rs 316,000 + 25% of amount over 3,200,000
-- 4,100,001–5,600,000: Rs 541,000 + 29% of amount over 4,100,000
-- 5,600,001–7,000,000: Rs 976,000 + 32% of amount over 5,600,000
-- Above 7,000,000: Rs 1,424,000 + 35% of amount over 7,000,000
-(Surcharge 9% on tax if taxable income exceeds Rs 10 million.)
+from . import agent_tools
 
-PROPERTY:
-- 236C (sale/transfer): filer 2.75%, non-filer 11.5% of gross consideration.
-- 236K (purchase): filer 1.25%; non-filer 10.5% (FMV up to 50M), 14.5% (50–100M), 18.5% (above 100M).
+# ── Agent instructions ──
+SYSTEM_PROMPT = """You are "TaxBuddy Umair AI", the Pakistan tax assistant on taxbuddyumair.com, a free tax-education platform by Umair Mubeen (a Pakistani tax educator).
 
-OTHER WITHHOLDING (filer / non-filer):
-- 151 profit on bank deposits: 20% / 40%.
-- 150 dividend (general): 15% / 30%.
-- 236Y foreign card payments: 0.5% / 1%.
-- 231AB cash withdrawal over Rs 50,000/day (non-filer only): 0.8%.
-- 149 salary: per slab (no extra non-filer surcharge on salary).
+YOU HAVE TOOLS. USE THEM — never answer from memory:
+- Any tax amount -> calculate_income_tax (salary / business / AOP / rental slabs from the site database) or find_wht_rates then calculate_wht (withholding & advance tax: property 236C/236K, vehicles, bank profit, rent, contracts, etc.).
+- Any rate -> find_wht_rates or calculate_income_tax. Quote the rate the tool returns.
+- "Am I / is this NTN a filer?" -> check_atl.
+- Latest SROs, circulars, notifications -> find_sro.
+- Legal questions (what the law says, conditions, definitions, penalties, procedures) -> search_law, then get_law_section for the exact section. Cite the book and section, e.g. "Section 147A, Income Tax Ordinance 2001".
+- After answering, call find_blog once and add the most relevant article link if one exists.
+- If a tool returns nothing or an error, say you could not verify it. Do NOT guess numbers, sections or dates.
 
-SALES TAX: standard GST 18%; further tax on supplies to unregistered persons 4%.
+HOW TO ANSWER:
+- Reply in the user's language: English, or Roman Urdu if they write Roman Urdu.
+- Start with the bottom line (the amount, rate or yes/no), then a short breakdown. Keep it short.
+- Show the working for calculations (slab, fixed tax, rate on the excess, surcharge).
+- Give site links as relative paths, e.g. /articles/slug/ or /salary-tax-calculator-2026-27/.
+- If key information is missing (monthly vs yearly, filer or not), ask one short question or state the assumption.
 
-FILER vs NON-FILER: a filer is on FBR's Active Taxpayer List (ATL) by filing the annual return.
-Non-filers pay much higher withholding on property, bank profit, dividends and card payments.
-Return filing deadline for individuals/AOPs is 30 September (for the tax year ending 30 June).
-""".strip()
+LIMITS:
+- Educational information only, not professional tax, legal or financial advice. For complex cases suggest a qualified tax practitioner, or WhatsApp TaxBuddy Umair at +92 333 248 2742.
+- TaxBuddy Umair is an independent educator, not affiliated with FBR.
+- Only Pakistan tax topics. Never ask for passwords, card numbers or bank details. An NTN or CNIC may be used only for the ATL check and must not be repeated back in full."""
 
-SYSTEM_PROMPT = f"""You are "TaxBuddy Umair AI", the Pakistan tax assistant on taxbuddyumair.com, a free tax-education platform by Umair Mubeen (a Pakistani tax educator).
+SMART_CALC_PROMPT = SYSTEM_PROMPT + """
 
-YOUR ROLE:
-- Answer questions about Pakistan income tax, sales tax, property tax, withholding tax, filer/non-filer status and FBR filing, in simple language.
-- Be accurate, concise and practical. Use the verified rates below. Prefer short answers with a clear bottom line, then detail if needed.
-- When a user wants an exact number, do the math using the slabs below AND point them to the relevant free calculator on the site (Salary Tax Calculator, Property Calculator, WHT Calculator, Capital Gain Calculator, PTA Mobile Tax, Zakat Calculator).
-- You may answer in English or Roman Urdu depending on how the user writes.
-
-{TAX_FACTS_2026_27}
-
-STRICT RULES:
-- This is educational information, NOT professional tax, legal or financial advice. For complex cases, advise consulting a qualified tax practitioner.
-- TaxBuddy Umair is an independent educator and is NOT affiliated with, or representing, the FBR.
-- If you are unsure or the question is outside Pakistan tax, say so briefly instead of guessing. Never invent sections or rates.
-- Do not give rates for years other than 2026-27 unless the user asks and you clearly label the year as approximate/historical.
-- Keep answers focused on Pakistan tax. Decline unrelated requests politely.
-- Never ask for or store sensitive personal data (CNIC, passwords, card numbers)."""
-
-SMART_CALC_PROMPT = f"""You are the "AI Smart Tax Calculator" on taxbuddyumair.com. The user describes their income situation in plain language (salary, business, rent, etc.) and you compute an ESTIMATE of their Pakistan income tax for Tax Year 2026-27 and explain it simply.
-
-{TAX_FACTS_2026_27}
-
-HOW TO RESPOND (use clean markdown):
-1. A one-line **bottom line**: estimated annual tax and monthly tax.
-2. A short **breakdown**: which slab applies, base tax + rate on the excess, and the arithmetic.
-3. One or two **plain-language notes** (e.g. filer vs non-filer impact, what's not included).
-4. End with: "This is an estimate for Tax Year 2026-27 — use the free calculators for a detailed result, and consult a tax professional for filing."
-
-RULES:
-- Only compute what the user gives you. If key info is missing (e.g. monthly vs annual), state the assumption you made.
-- Salaried individuals use the salary slabs. Be clear this is tax on taxable income before credits/allowances.
-- Do NOT fabricate deductions or numbers. Keep it an estimate. Educational only, not advice."""
+THIS REQUEST COMES FROM THE AI SMART TAX CALCULATOR PAGE. The user describes their income. Work out each income type with the tools (salary with salary slabs; business/rent with their slabs), then answer in markdown:
+1. **Bottom line**: estimated annual and monthly tax.
+2. **Breakdown**: slab, fixed tax + rate on the excess, surcharge if any.
+3. One or two notes (e.g. filer vs non-filer effect, what is not included).
+End with: "This is an estimate — use the free calculators for detail, and consult a tax professional for filing.\""""
 
 # ── Config ──
 def _client():
@@ -96,7 +68,10 @@ def _client():
         raise RuntimeError("ANTHROPIC_API_KEY is not set in settings/env.")
     return anthropic.Anthropic(api_key=key)
 
-AI_MODEL = getattr(settings, "AI_MODEL", "") or "AI_MODEL=claude-haiku-5-5"
+AI_MODEL = getattr(settings, "AI_MODEL", "") or "claude-haiku-5-5"
+MAX_AGENT_STEPS = 6            # tool rounds per question (cost guard)
+MAX_TOOL_RESULT_CHARS = 7000
+DAILY_LIMIT = int(getattr(settings, "AI_DAILY_LIMIT", 400))   # whole-site questions per day
 MAX_INPUT_CHARS = 1500          # cap user input length
 MAX_HISTORY_TURNS = 8           # cap conversation memory sent to API
 RATE_LIMIT_MAX = 25             # max AI requests
@@ -115,16 +90,45 @@ def _rate_limited(request):
     return False
 
 
-def _call_claude(system_prompt, messages, max_tokens=900):
+def _daily_limit_hit():
+    """Site-wide cap so a traffic spike cannot burn the API budget."""
+    from django.core.cache import cache
+    key = "ai_calls_" + time.strftime("%Y%m%d")
+    n = cache.get(key, 0)
+    if n >= DAILY_LIMIT:
+        return True
+    cache.set(key, n + 1, 60 * 60 * 26)
+    return False
+
+
+def _run_agent(system_prompt, messages, max_tokens=900):
+    """Claude tool-use loop. Returns (reply_text, tools_used)."""
     client = _client()
-    resp = client.messages.create(
-        model=AI_MODEL,
-        max_tokens=max_tokens,
-        system=system_prompt,
-        messages=messages,
-    )
-    # concatenate text blocks
-    return "".join(getattr(b, "text", "") for b in resp.content).strip()
+    tools = [dict(t) for t in agent_tools.TOOLS]
+    tools[-1]["cache_control"] = {"type": "ephemeral"}          # cache tools + system
+    system = [{"type": "text", "text": system_prompt, "cache_control": {"type": "ephemeral"}}]
+    msgs = list(messages)
+    used = []
+    for _ in range(MAX_AGENT_STEPS):
+        resp = client.messages.create(model=AI_MODEL, max_tokens=max_tokens,
+                                      system=system, tools=tools, messages=msgs)
+        if resp.stop_reason != "tool_use":
+            return "".join(getattr(b, "text", "") for b in resp.content).strip(), used
+        msgs.append({"role": "assistant", "content": resp.content})
+        results = []
+        for b in resp.content:
+            if b.type != "tool_use":
+                continue
+            used.append(b.name)
+            out = json.dumps(agent_tools.run_tool(b.name, b.input), default=str, ensure_ascii=False)
+            results.append({"type": "tool_result", "tool_use_id": b.id,
+                            "content": out[:MAX_TOOL_RESULT_CHARS]})
+        msgs.append({"role": "user", "content": results})
+    # out of steps: ask for a final answer without tools
+    msgs.append({"role": "user", "content": "Give your final answer now from what the tools returned."})
+    resp = client.messages.create(model=AI_MODEL, max_tokens=max_tokens, system=system,
+                                  tools=tools, tool_choice={"type": "none"}, messages=msgs)
+    return "".join(getattr(b, "text", "") for b in resp.content).strip(), used
 
 
 # ════════════════ PAGES ════════════════
@@ -172,15 +176,17 @@ def ai_chat_api(request):
             msgs.append({"role": role, "content": content})
     msgs.append({"role": "user", "content": user_msg})
 
+    if _daily_limit_hit():
+        return JsonResponse({"status": "error",
+                             "message": "The AI assistant is busy today. Please try again tomorrow."}, status=429)
     try:
-        answer = _call_claude(SYSTEM_PROMPT, msgs, max_tokens=900)
-        print(answer)
-    except Exception as e:
-        print(e)
+        answer, used = _run_agent(SYSTEM_PROMPT, msgs, max_tokens=900)
+    except Exception:
+        logger.exception("AI chat failed")
         return JsonResponse({"status": "error",
                              "message": "The AI assistant is unavailable right now. Please try again shortly."},
                             status=503)
-    return JsonResponse({"status": "ok", "reply": answer})
+    return JsonResponse({"status": "ok", "reply": answer, "verified_with": sorted(set(used))})
 
 
 @require_POST
@@ -198,12 +204,16 @@ def ai_smart_calc_api(request):
     if not situation:
         return JsonResponse({"status": "error", "message": "Please describe your income situation."}, status=400)
 
+    if _daily_limit_hit():
+        return JsonResponse({"status": "error",
+                             "message": "The AI calculator is busy today. Please try again tomorrow."}, status=429)
     try:
-        result = _call_claude(SMART_CALC_PROMPT,
-                              [{"role": "user", "content": situation}],
-                              max_tokens=1100)
+        result, used = _run_agent(SMART_CALC_PROMPT,
+                                  [{"role": "user", "content": situation}],
+                                  max_tokens=1100)
     except Exception:
+        logger.exception("AI smart calc failed")
         return JsonResponse({"status": "error",
                              "message": "The AI calculator is unavailable right now. Please try again shortly."},
                             status=503)
-    return JsonResponse({"status": "ok", "result": result})
+    return JsonResponse({"status": "ok", "result": result, "verified_with": sorted(set(used))})

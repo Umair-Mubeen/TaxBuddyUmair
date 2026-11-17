@@ -99,6 +99,7 @@
   var busy=false;
 
   function esc(s){var d=document.createElement('div');d.textContent=s;return d.innerHTML;}
+  var VLAB={calculate_income_tax:'tax slabs',find_wht_rates:'WHT rate card',calculate_wht:'WHT rate card',check_atl:'ATL list',find_sro:'SRO tracker',find_blog:'TaxBuddy articles',search_law:'law books',get_law_section:'law books'};function vnote(u){if(!u||!u.length)return '';var s={};u.forEach(function(k){if(VLAB[k])s[VLAB[k]]=1;});var l=Object.keys(s);return l.length?'<div style="margin-top:8px;font-size:12px;opacity:.75">&#10003; Checked from: '+l.join(', ')+'</div>':'';}
   function fmt(t){
     var s=esc(t);
     s=s.replace(/\*\*([^*]+)\*\*/g,'<strong>$1</strong>');
@@ -124,7 +125,7 @@
       body:JSON.stringify({situation:text})})
       .then(function(r){return r.json();})
       .then(function(d){
-        if(d.status==='ok'){ body.innerHTML=fmt(d.result); }
+        if(d.status==='ok'){ body.innerHTML=fmt(d.result)+vnote(d.verified_with); }
         else { body.innerHTML='<p style="color:#dc2626">'+esc(d.message||'Something went wrong.')+'</p>'; }
       })
       .catch(function(){ body.innerHTML='<p style="color:#dc2626">Connection error. Please try again.</p>'; })

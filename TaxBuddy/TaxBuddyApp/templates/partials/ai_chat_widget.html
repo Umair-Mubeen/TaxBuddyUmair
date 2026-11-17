@@ -75,6 +75,7 @@
   closeB.addEventListener('click', function(){ panel.classList.remove('open'); });
 
   function esc(s){var d=document.createElement('div');d.textContent=s;return d.innerHTML;}
+  var VLAB={calculate_income_tax:'tax slabs',find_wht_rates:'WHT rate card',calculate_wht:'WHT rate card',check_atl:'ATL list',find_sro:'SRO tracker',find_blog:'TaxBuddy articles',search_law:'law books',get_law_section:'law books'};function vnote(u){if(!u||!u.length)return '';var s={};u.forEach(function(k){if(VLAB[k])s[VLAB[k]]=1;});var l=Object.keys(s);return l.length?'<div style="margin-top:8px;font-size:12px;opacity:.75">&#10003; Checked from: '+l.join(', ')+'</div>':'';}
   function fmt(t){
     var s=esc(t).replace(/\*\*([^*]+)\*\*/g,'<strong>$1</strong>')
       .replace(/\[([^\]]+)\]\((https?:\/\/[^\s)]+|\/[^\s)]*)\)/g,'<a href="$2" target="_blank" rel="noopener">$1</a>');
@@ -99,7 +100,7 @@
       body:JSON.stringify({message:text,history:history.slice(0,-1)})})
       .then(function(r){return r.json();})
       .then(function(d){ t.parentNode.remove();
-        if(d.status==='ok'){ row('ai',fmt(d.reply)); history.push({role:'assistant',content:d.reply}); }
+        if(d.status==='ok'){ row('ai',fmt(d.reply)+vnote(d.verified_with)); history.push({role:'assistant',content:d.reply}); }
         else { row('ai',esc(d.message||'Try again.')); } })
       .catch(function(){ t.parentNode.remove(); row('ai','Connection error.'); })
       .finally(function(){ busy=false; sendB.disabled=false; input.focus(); });

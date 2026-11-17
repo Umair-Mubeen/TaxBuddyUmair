@@ -109,6 +109,7 @@
 
   function esc(s){var d=document.createElement('div');d.textContent=s;return d.innerHTML;}
   // minimal + safe markdown: escape first, then allow **bold**, links, bullets, line breaks
+  var VLAB={calculate_income_tax:'tax slabs',find_wht_rates:'WHT rate card',calculate_wht:'WHT rate card',check_atl:'ATL list',find_sro:'SRO tracker',find_blog:'TaxBuddy articles',search_law:'law books',get_law_section:'law books'};function vnote(u){if(!u||!u.length)return '';var s={};u.forEach(function(k){if(VLAB[k])s[VLAB[k]]=1;});var l=Object.keys(s);return l.length?'<div style="margin-top:8px;font-size:12px;opacity:.75">&#10003; Checked from: '+l.join(', ')+'</div>':'';}
   function fmt(t){
     var s = esc(t);
     s = s.replace(/\*\*([^*]+)\*\*/g,'<strong>$1</strong>');
@@ -141,7 +142,7 @@
       .then(function(r){return r.json();})
       .then(function(d){
         t.parentNode.remove();
-        if(d.status==='ok'){ addRow('ai', fmt(d.reply)); history.push({role:'assistant',content:d.reply}); }
+        if(d.status==='ok'){ addRow('ai', fmt(d.reply)+vnote(d.verified_with)); history.push({role:'assistant',content:d.reply}); }
         else { addRow('ai', esc(d.message||'Something went wrong.')); }
       })
       .catch(function(){ t.parentNode.remove(); addRow('ai','Connection error. Please try again.'); })
