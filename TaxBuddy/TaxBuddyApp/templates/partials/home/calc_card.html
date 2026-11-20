@@ -1,0 +1,9 @@
+{# Reusable card: icon tile + title + description (+ chevron). Used by {% calc_card %} in home_tags. #}
+<a href="{{ url }}" class="hv2-card hv2-card--{{ variant }}">
+  <span class="hv2-icon" aria-hidden="true"><i class="fas {{ icon }}"></i></span>
+  <span class="hv2-card-body">
+    <span class="hv2-card-title">{{ title }}</span>
+    <span class="hv2-card-desc">{{ desc }}</span>
+  </span>
+  {% if variant != 'tile' %}<i class="fas fa-chevron-right hv2-chev" aria-hidden="true"></i>{% endif %}
+</a>

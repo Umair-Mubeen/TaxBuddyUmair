@@ -1,0 +1,27 @@
+{# Hero: headline, intro, two buttons, site search, illustration (desktop only). #}
+<section class="hv2-hero" aria-labelledby="hv2-hero-title">
+  <div class="hv2-wrap hv2-hero-grid">
+    <div class="hv2-hero-copy">
+      <p class="hv2-eyebrow">Pakistan's Tax Education Platform</p>
+      <h1 id="hv2-hero-title" class="hv2-hero-title">Understand Taxes.<br>Calculate <em>Smarter.</em></h1>
+      <p class="hv2-hero-sub">Free tax calculators, easy-to-follow guides and updated Pakistan tax rates — all in one place.</p>
+      <div class="hv2-hero-btns">
+        <a href="#popular-calculators" class="hv2-btn hv2-btn--solid"><i class="fas fa-calculator" aria-hidden="true"></i> Explore Calculators <i class="fas fa-arrow-right" aria-hidden="true"></i></a>
+        <a href="{% url 'income_tax_guides' %}" class="hv2-btn hv2-btn--outline"><i class="fas fa-book-open" aria-hidden="true"></i> Learn Tax Laws</a>
+      </div>
+    </div>
+    <div class="hv2-hero-art" aria-hidden="false">
+      {% include 'partials/home/hero_illustration.html' %}
+    </div>
+    <form method="get" action="{% url 'search' %}" class="hv2-search" role="search">
+      <i class="fas fa-magnifying-glass" aria-hidden="true"></i>
+      <label for="hv2-search-q" class="hv2-sr">Search TaxBuddy Umair</label>
+      <input id="hv2-search-q" type="search" name="q" placeholder="Search tax sections, calculators, guides, SROs... (e.g. 153, Salary Tax, Digital Invoicing)">
+      <button type="submit">Search</button>
+    </form>
+  </div>
+  <script>
+    (function(){var i=document.getElementById('hv2-search-q');
+      if(i&&window.matchMedia('(max-width:640px)').matches){i.placeholder='Search tax sections, calculators...';}})();
+  </script>
+</section>

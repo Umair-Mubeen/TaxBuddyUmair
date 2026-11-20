@@ -1,0 +1,8 @@
+{% load home_tags %}
+{# Four quick-action cards under the hero. #}
+<section class="hv2-wrap hv2-quick" aria-label="Quick actions">
+  {% url 'SalaryCalculator' as u1 %}{% calc_card u1 'fa-calculator' 'Calculate Tax' 'Salary, business, AOP, property, WHT and more' 'quick' %}
+  {% url 'income_tax_guides' as u2 %}{% calc_card u2 'fa-book-open' 'Learn Tax Laws' 'Income Tax, Sales Tax guides with examples' 'quick' %}
+  {% url 'withholding_tax_rates' as u3 %}{% calc_card u3 'fa-layer-group' 'Check Tax Rates' 'Withholding tax, income tax slabs, filer vs non-filer rates' 'quick' %}
+  {% url 'online_services' as u4 %}{% calc_card u4 'fa-handshake' 'Explore Services' 'Tax filing, registration and professional advice' 'quick' %}
+</section>

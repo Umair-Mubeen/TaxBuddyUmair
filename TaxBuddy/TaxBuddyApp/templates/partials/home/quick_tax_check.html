@@ -1,0 +1,187 @@
+{% load home_tags %}
+{# Quick Tax Check — live slab finder. Slabs come from the same DB tables as the calculators. #}
+{% income_slabs as qtc_slabs %}
+{{ qtc_slabs|json_script:"qtc-slabs" }}
+<section class="hv2-wrap hv2-section" id="quick-tax-check" aria-labelledby="qtc-title">
+  <div class="hv2-section-head">
+    <h2 id="qtc-title" class="hv2-h2">Quick Tax Check <span class="qtc-year">Tax Year 2026-27</span></h2>
+  </div>
+
+  <div class="qtc">
+    <!-- Input panel -->
+    <form class="qtc-panel qtc-input" id="qtc-form" autocomplete="off" onsubmit="return false;">
+      <div class="qtc-field">
+        <span class="qtc-label" id="qtc-type-lbl">I earn from</span>
+        <div class="qtc-seg" role="radiogroup" aria-labelledby="qtc-type-lbl">
+          <button type="button" role="radio" aria-checked="true" data-type="salary" id="qtc-t-salary"><i class="fas fa-user-tie" aria-hidden="true"></i> Salary</button>
+          <button type="button" role="radio" aria-checked="false" data-type="business" id="qtc-t-business"><i class="fas fa-briefcase" aria-hidden="true"></i> Business / AOP</button>
+        </div>
+      </div>
+
+      <div class="qtc-field">
+        <span class="qtc-label" id="qtc-per-lbl">Amount is</span>
+        <div class="qtc-seg qtc-seg--sm" role="radiogroup" aria-labelledby="qtc-per-lbl">
+          <button type="button" role="radio" aria-checked="true" data-period="month" id="qtc-p-month">Monthly</button>
+          <button type="button" role="radio" aria-checked="false" data-period="year" id="qtc-p-year">Yearly</button>
+        </div>
+      </div>
+
+      <div class="qtc-field">
+        <label class="qtc-label" for="qtc-income" id="qtc-income-lbl">Monthly taxable income</label>
+        <div class="qtc-money">
+          <span aria-hidden="true">Rs</span>
+          <input id="qtc-income" type="text" inputmode="numeric" placeholder="e.g. 150,000" value="150,000" aria-describedby="qtc-hint">
+        </div>
+        <div class="qtc-chips" aria-label="Try an amount">
+          <button type="button" data-amt="100000">1 lakh</button>
+          <button type="button" data-amt="250000">2.5 lakh</button>
+          <button type="button" data-amt="500000">5 lakh</button>
+          <button type="button" data-amt="1000000">10 lakh</button>
+        </div>
+        <p class="qtc-hint" id="qtc-hint">Enter income after exempt allowances. Result updates as you type.</p>
+      </div>
+    </form>
+
+    <!-- Result panel -->
+    <div class="qtc-panel qtc-result" aria-live="polite">
+      <div class="qtc-figs">
+        <div class="qtc-fig qtc-fig--main">
+          <span class="qtc-fig-lbl">Tax per month</span>
+          <span class="qtc-fig-val" id="qtc-monthly">Rs 0</span>
+        </div>
+        <div class="qtc-fig">
+          <span class="qtc-fig-lbl">Tax per year</span>
+          <span class="qtc-fig-val" id="qtc-yearly">Rs 0</span>
+        </div>
+        <div class="qtc-fig">
+          <span class="qtc-fig-lbl">Effective rate</span>
+          <span class="qtc-fig-val" id="qtc-eff">0%</span>
+        </div>
+        <div class="qtc-fig">
+          <span class="qtc-fig-lbl">Take-home / month</span>
+          <span class="qtc-fig-val" id="qtc-net">Rs 0</span>
+        </div>
+      </div>
+
+      <div class="qtc-slabnote" id="qtc-working"></div>
+
+      <div class="qtc-ladder-wrap">
+        <table class="qtc-ladder" aria-describedby="qtc-ladder-cap">
+          <caption id="qtc-ladder-cap">Your slab is highlighted</caption>
+          <thead><tr><th scope="col">Annual income (Rs)</th><th scope="col">Tax</th></tr></thead>
+          <tbody id="qtc-rows"></tbody>
+        </table>
+      </div>
+
+      <div class="qtc-foot">
+        <a id="qtc-full" href="{% url 'SalaryCalculator2027' %}" class="hv2-more">Open full calculator <i class="fas fa-arrow-right" aria-hidden="true"></i></a>
+        <span class="qtc-src">Slabs: First Schedule, Income Tax Ordinance 2001 (Finance Act 2026)</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+(function () {
+  var data;
+  try { data = JSON.parse(document.getElementById('qtc-slabs').textContent); } catch (e) { return; }
+  var links = { salary: "{% url 'SalaryCalculator2027' %}", business: "{% url 'BusinessCalculator' %}" };
+  var state = { type: 'salary', period: 'month' };
+  var $ = function (id) { return document.getElementById(id); };
+  var input = $('qtc-income');
+  var fmt = function (n) { return 'Rs ' + Math.round(n).toLocaleString('en-PK'); };
+  var num = function (s) { return parseFloat(String(s).replace(/[^\d.]/g, '')) || 0; };
+  var short = function (n) {
+    if (n >= 10000000) return (n / 10000000).toFixed(n % 10000000 ? 1 : 0).replace(/\.0$/, '') + ' crore';
+    if (n >= 100000) return (n / 100000).toFixed(n % 100000 ? 1 : 0).replace(/\.0$/, '') + ' lakh';
+    return Math.round(n).toLocaleString('en-PK');
+  };
+
+  function slabFor(rows, inc) {
+    for (var i = 0; i < rows.length; i++) {
+      var hi = rows[i][1] === null ? Infinity : rows[i][1];
+      if (inc <= hi) return i;          // gaps (e.g. 600,000.50) fall into the next slab
+    }
+    return rows.length - 1;
+  }
+
+  function slabText(r) {
+    if (!r[2]) return 'No tax';
+    var pct = +(r[2] * 100).toFixed(2) + '%';
+    return (r[4] ? fmt(r[4]) + ' + ' : '') + pct + ' above ' + short(r[3]);
+  }
+
+  function render() {
+    var rows = data[state.type];
+    var amt = num(input.value);
+    var annual = state.period === 'month' ? amt * 12 : amt;
+    var i = slabFor(rows, annual), r = rows[i];
+    var tax = r[2] ? r[4] + (annual - r[3]) * r[2] : 0;
+    tax = Math.max(0, Math.round(tax));
+    // Section 4AB surcharge above Rs 10 million: 10% for business individuals / AOPs; none for salaried from TY2027.
+    var sur = (state.type === 'business' && annual > 10000000) ? Math.round(tax * 0.10) : 0;
+    var total = tax + sur;
+
+    $('qtc-monthly').textContent = fmt(total / 12);
+    $('qtc-yearly').textContent = fmt(total);
+    $('qtc-eff').textContent = annual ? (total / annual * 100).toFixed(2) + '%' : '0%';
+    $('qtc-net').textContent = fmt((annual - total) / 12);
+
+    var w;
+    if (!annual) w = 'Enter your income to see your slab.';
+    else if (!r[2]) w = 'Annual income <strong>' + fmt(annual) + '</strong> is within the tax-free slab. <strong>No income tax.</strong>';
+    else {
+      w = 'Annual income <strong>' + fmt(annual) + '</strong> falls in slab <strong>' + (i + 1) + '</strong>: ' +
+          (r[4] ? fmt(r[4]) + ' + ' : '') + '<strong>' + +(r[2] * 100).toFixed(2) + '%</strong> of ' +
+          fmt(annual - r[3]) + ' (amount above ' + fmt(r[3]) + ') = <strong>' + fmt(tax) + '</strong>';
+      if (sur) w += '<br>Surcharge (s.4AB, 10% of tax, income above Rs 1 crore): <strong>' + fmt(sur) + '</strong>';
+      if (state.type === 'business' && annual > 150000000) w += '<br>Super tax under s.4C may also apply — use the 4C calculator.';
+    }
+    $('qtc-working').innerHTML = w;
+
+    var html = '';
+    rows.forEach(function (s, k) {
+      var range = s[1] === null ? 'Above ' + short(s[0] - 1) : (k === 0 ? 'Up to ' + short(s[1]) : short(s[0] - 1) + ' – ' + short(s[1]));
+      html += '<tr' + (k === i && annual ? ' class="is-active" aria-current="true"' : '') + '><td>' + range + '</td><td>' + slabText(s) + '</td></tr>';
+    });
+    $('qtc-rows').innerHTML = html;
+    $('qtc-full').href = links[state.type];
+  }
+
+  function pick(group, attr, val) {
+    document.querySelectorAll('#qtc-form [data-' + attr + ']').forEach(function (b) {
+      b.setAttribute('aria-checked', b.getAttribute('data-' + attr) === val ? 'true' : 'false');
+    });
+  }
+
+  document.querySelectorAll('#qtc-form [data-type]').forEach(function (b) {
+    b.addEventListener('click', function () { state.type = b.dataset.type; pick(null, 'type', state.type); render(); });
+  });
+  document.querySelectorAll('#qtc-form [data-period]').forEach(function (b) {
+    b.addEventListener('click', function () {
+      if (state.period === b.dataset.period) return;
+      var v = num(input.value);
+      state.period = b.dataset.period;
+      v = state.period === 'year' ? v * 12 : v / 12;     // keep the same income, change the unit
+      input.value = v ? Math.round(v).toLocaleString('en-PK') : '';
+      $('qtc-income-lbl').textContent = (state.period === 'year' ? 'Yearly' : 'Monthly') + ' taxable income';
+      pick(null, 'period', state.period); render();
+    });
+  });
+  document.querySelectorAll('.qtc-chips [data-amt]').forEach(function (b) {
+    b.addEventListener('click', function () {
+      var v = +b.dataset.amt * (state.period === 'year' ? 12 : 1);
+      input.value = v.toLocaleString('en-PK'); render();
+    });
+  });
+  input.addEventListener('input', function () {
+    var pos = input.value.length - input.selectionStart;
+    var v = num(input.value);
+    input.value = v ? Math.floor(v).toLocaleString('en-PK') : '';
+    var p = Math.max(0, input.value.length - pos);
+    try { input.setSelectionRange(p, p); } catch (e) {}
+    render();
+  });
+  render();
+})();
+</script>

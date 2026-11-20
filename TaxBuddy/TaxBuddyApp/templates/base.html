@@ -337,7 +337,7 @@ body.tb-no-scroll{overflow:hidden;position:fixed;width:100%}
 <!--  {% include 'partials/topbar.html' %}-->
 
   <!-- ── NAVBAR ─────────────────────────────────────────── -->
-  {% include 'partials/navbar.html' %}
+  {% block site_header %}{% include 'partials/navbar.html' %}{% endblock %}
 
   <!-- ── DJANGO MESSAGES ───────────────────────────────── -->
 
@@ -358,7 +358,7 @@ body.tb-no-scroll{overflow:hidden;position:fixed;width:100%}
 
    {# {% include 'partials/ai_chat_widget.html' %} #}
   <!-- ── FOOTER ─────────────────────────────────────────── -->
-  {% include 'partials/footer.html' %}
+  {% block site_footer %}{% include 'partials/footer.html' %}{% endblock %}
 
   <!-- ── BACK TO TOP ────────────────────────────────────── -->
   <button id="back-to-top" aria-label="Back to top"

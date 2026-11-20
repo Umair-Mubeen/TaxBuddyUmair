@@ -1,0 +1,27 @@
+{% load home_tags %}
+{# Popular calculators: 6 tiles on desktop, list rows on mobile. #}
+<section class="hv2-wrap hv2-section" id="popular-calculators" aria-labelledby="hv2-calc-title">
+  <div class="hv2-section-head">
+    <h2 id="hv2-calc-title" class="hv2-h2">Popular Tax Calculators</h2>
+    <a href="#all-calculators" class="hv2-more"><span class="hv2-more-long">View All Calculators</span><span class="hv2-more-short">View All</span> <i class="fas fa-arrow-right" aria-hidden="true"></i></a>
+  </div>
+  <div class="hv2-calc-grid">
+    {% url 'SalaryCalculator2027' as c1 %}{% calc_card c1 'fa-calculator' 'Salary Income Tax Calculator' 'Calculate your salary tax for FY 2026–27' 'tile' %}
+    {% url 'BusinessCalculator' as c2 %}{% calc_card c2 'fa-briefcase' 'Business Income Tax' 'Tax on business income with current rates' 'tile' %}
+    {% url 'AOPCalculator' as c3 %}{% calc_card c3 'fa-users' 'AOP Income Tax' 'Association of Persons tax calculator' 'tile' %}
+    {% url 'TaxCalculator4C' as c4 %}{% calc_card c4 'fa-coins' 'Super Tax (Section 4C)' 'Calculate super tax on high income' 'tile' %}
+    {% url 'section_153_calculator' as c5 %}{% calc_card c5 'fa-percent' 'Withholding Tax (Section 153)' 'Calculate WHT on payments and transactions' 'tile' %}
+    {% url 'PropertyCalculator' as c6 %}{% calc_card c6 'fa-house' 'Property Tax Calculator' 'Tax on property and rental income' 'tile' %}
+  </div>
+  {# Shown when "View All" is clicked (CSS :target, no JS). #}
+  <div class="hv2-calc-grid hv2-calc-more" id="all-calculators">
+    {% url 'capital_gains_tax_calculator' as m1 %}{% calc_card m1 'fa-arrow-trend-up' 'Capital Gain Tax' 'Gain on sale of property and securities' 'tile' %}
+    {% url 'freelancer_calculator' as m2 %}{% calc_card m2 'fa-laptop-code' 'Freelancer & IT Export' 'Tax on freelance and IT export income' 'tile' %}
+    {% url 'advance_tax_calculator' as m3 %}{% calc_card m3 'fa-money-bill-trend-up' 'Advance Tax' 'Quarterly advance tax under section 147' 'tile' %}
+    {% url 'Withholding_Tax_Card' as m4 %}{% calc_card m4 'fa-file-invoice-dollar' 'WHT & Advance Tax Card' 'Withholding rates for filers and non-filers' 'tile' %}
+    {% url 'vehicle_tax_calculator' as m5 %}{% calc_card m5 'fa-car' 'Motor Vehicle Tax' 'Advance tax on vehicle registration and transfer' 'tile' %}
+    {% url 'karachi_fmv_calculator' as m6 %}{% calc_card m6 'fa-location-dot' 'Karachi FMV Calculator' 'FBR fair market value of property in Karachi' 'tile' %}
+    {% url 'pta_mobile_tax' as m7 %}{% calc_card m7 'fa-mobile-screen-button' 'PTA Mobile Tax' 'PTA tax on imported mobile phones' 'tile' %}
+    {% url 'zakat_calculator' as m8 %}{% calc_card m8 'fa-hand-holding-heart' 'Zakat Calculator' 'Calculate zakat on your assets' 'tile' %}
+  </div>
+</section>

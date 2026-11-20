@@ -1,0 +1,74 @@
+{% load static %}
+{# Homepage header (redesign). Reuses #nav-hamburger / #mobile-nav so main.js keeps working. #}
+<nav class="hv2-header" role="navigation" aria-label="Main navigation">
+  <div class="nav-inner hv2-header-inner">
+
+    <a href="{% url 'index' %}" class="hv2-logo" aria-label="TaxBuddy Umair Home">
+      <span class="hv2-logo-mark" aria-hidden="true">TB</span>
+      <span class="hv2-logo-text">
+        <span class="hv2-logo-name">TaxBuddy Umair</span>
+        <span class="hv2-logo-sub">Pakistan Tax Educator</span>
+      </span>
+    </a>
+
+    <ul class="nav-links hv2-links" role="list">
+      <li class="has-dropdown">
+        <a href="#" aria-haspopup="true" aria-expanded="false">Tax Calculators <i class="fas fa-chevron-down" aria-hidden="true"></i></a>
+        <div class="dropdown" role="menu">
+          <a href="{% url 'SalaryCalculator' %}" role="menuitem"><i class="fas fa-briefcase" aria-hidden="true"></i> Salary Tax Calculator</a>
+          <a href="{% url 'BusinessCalculator' %}" role="menuitem"><i class="fas fa-building" aria-hidden="true"></i> Business Tax Calculator</a>
+          <a href="{% url 'AOPCalculator' %}" role="menuitem"><i class="fas fa-handshake" aria-hidden="true"></i> AOP Tax Calculator</a>
+          <a href="{% url 'PropertyCalculator' %}" role="menuitem"><i class="fas fa-house-chimney" aria-hidden="true"></i> Property / Rental Tax</a>
+          <a href="{% url 'capital_gains_tax_calculator' %}" role="menuitem"><i class="fas fa-arrow-trend-up" aria-hidden="true"></i> Capital Gain Tax</a>
+          <a href="{% url 'TaxCalculator4C' %}" role="menuitem"><i class="fas fa-bolt" aria-hidden="true"></i> Super Tax (4C)</a>
+          <a href="{% url 'section_153_calculator' %}" role="menuitem"><i class="fas fa-percent" aria-hidden="true"></i> Section 153 WHT</a>
+          <a href="{% url 'freelancer_calculator' %}" role="menuitem"><i class="fas fa-laptop-code" aria-hidden="true"></i> Freelancer &amp; IT Export</a>
+          <a href="{% url 'advance_tax_calculator' %}" role="menuitem"><i class="fas fa-money-bill-trend-up" aria-hidden="true"></i> Advance Tax Calculator</a>
+          <a href="{% url 'Withholding_Tax_Card' %}" role="menuitem"><i class="fas fa-file-invoice-dollar" aria-hidden="true"></i> WHT &amp; Advance Tax</a>
+          <a href="{% url 'vehicle_tax_calculator' %}" role="menuitem"><i class="fas fa-car" aria-hidden="true"></i> Motor Vehicle Tax</a>
+          <a href="{% url 'karachi_fmv_calculator' %}" role="menuitem"><i class="fas fa-location-dot" aria-hidden="true"></i> Karachi FMV Calculator</a>
+          <a href="{% url 'pta_mobile_tax' %}" role="menuitem"><i class="fas fa-mobile-screen-button" aria-hidden="true"></i> PTA Mobile Tax</a>
+          <a href="{% url 'zakat_calculator' %}" role="menuitem"><i class="fas fa-hand-holding-heart" aria-hidden="true"></i> Zakat Calculator</a>
+        </div>
+      </li>
+      <li class="has-dropdown">
+        <a href="#" aria-haspopup="true" aria-expanded="false">Tax Guides <i class="fas fa-chevron-down" aria-hidden="true"></i></a>
+        <div class="dropdown" role="menu">
+          <a href="{% url 'income_tax_guides' %}" role="menuitem"><i class="fas fa-file-lines" aria-hidden="true"></i> Income Tax Guide</a>
+          <a href="{% url 'sales_tax_guides' %}" role="menuitem"><i class="fas fa-receipt" aria-hidden="true"></i> Sales Tax Guide</a>
+          <a href="{% url 'fbr_iris_guide' %}" role="menuitem"><i class="fas fa-landmark" aria-hidden="true"></i> FBR IRIS Guide</a>
+          <a href="{% url 'viewBlogs' %}" role="menuitem"><i class="fas fa-newspaper" aria-hidden="true"></i> All Articles</a>
+        </div>
+      </li>
+      <li class="has-dropdown">
+        <a href="#" aria-haspopup="true" aria-expanded="false">Tax Rates &amp; Laws <i class="fas fa-chevron-down" aria-hidden="true"></i></a>
+        <div class="dropdown" role="menu">
+          <a href="{% url 'income_tax_rates' %}" role="menuitem"><i class="fas fa-chart-line" aria-hidden="true"></i> Income Tax Rates</a>
+          <a href="{% url 'withholding_tax_rates' %}" role="menuitem"><i class="fas fa-chart-column" aria-hidden="true"></i> Withholding Tax Rates</a>
+          <a href="{% url 'sro_list' %}" role="menuitem"><i class="fas fa-scroll" aria-hidden="true"></i> SRO &amp; Circular Tracker</a>
+          <a href="{% url 'glossary_list' %}" role="menuitem"><i class="fas fa-book" aria-hidden="true"></i> Tax Glossary</a>
+        </div>
+      </li>
+      <li class="has-dropdown">
+        <a href="#" aria-haspopup="true" aria-expanded="false">Resources <i class="fas fa-chevron-down" aria-hidden="true"></i></a>
+        <div class="dropdown" role="menu">
+          <a href="{% url 'atl_check' %}" role="menuitem"><i class="fas fa-circle-check" aria-hidden="true"></i> ATL Check</a>
+          <a href="{% url 'tax_calendar' %}" role="menuitem"><i class="fas fa-calendar-days" aria-hidden="true"></i> Tax Calendar</a>
+          <a href="{% url 'question_list' %}" role="menuitem"><i class="fas fa-pen-to-square" aria-hidden="true"></i> Tax MCQs</a>
+          <a href="{% url 'about_us' %}" role="menuitem"><i class="fas fa-user" aria-hidden="true"></i> About</a>
+        </div>
+      </li>
+      <li><a href="{% url 'online_services' %}">Services</a></li>
+    </ul>
+
+    <div class="hv2-header-actions">
+      <a href="{% url 'search' %}" class="hv2-icon-btn" aria-label="Search the site"><i class="fas fa-magnifying-glass" aria-hidden="true"></i></a>
+      <a href="{% url 'contact' %}" class="hv2-contact-btn">Contact</a>
+      <button class="nav-hamburger hv2-hamburger" id="nav-hamburger" aria-label="Toggle mobile menu" aria-expanded="false" aria-controls="mobile-nav">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </div>
+
+  {% include 'partials/nav/mobile_nav.html' %}
+</nav>

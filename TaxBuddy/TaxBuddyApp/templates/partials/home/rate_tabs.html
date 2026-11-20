@@ -1,0 +1,153 @@
+{% load home_tags %}
+{# Tax rates by tab. All panels are in the HTML (good for SEO); JS only switches which one shows. #}
+{% rate_tables as rt %}
+<section class="hv2-wrap hv2-section" id="tax-rates" aria-labelledby="rt-title">
+  <div class="hv2-section-head">
+    <h2 id="rt-title" class="hv2-h2">Tax Rates 2026-27 <span class="qtc-year">Finance Act 2026</span></h2>
+  </div>
+
+  <div class="rt">
+    <div class="rt-tabs" role="tablist" aria-label="Tax rate categories">
+      <button role="tab" id="rt-tab-salary" aria-controls="rt-salary" aria-selected="true" tabindex="0"><i class="fas fa-user-tie" aria-hidden="true"></i><span>Salary</span></button>
+      <button role="tab" id="rt-tab-business" aria-controls="rt-business" aria-selected="false" tabindex="-1"><i class="fas fa-briefcase" aria-hidden="true"></i><span>Business / AOP</span></button>
+      <button role="tab" id="rt-tab-property" aria-controls="rt-property" aria-selected="false" tabindex="-1"><i class="fas fa-house" aria-hidden="true"></i><span>Property</span></button>
+      <button role="tab" id="rt-tab-cgt" aria-controls="rt-cgt" aria-selected="false" tabindex="-1"><i class="fas fa-arrow-trend-up" aria-hidden="true"></i><span>Capital Gain</span></button>
+      <button role="tab" id="rt-tab-wht" aria-controls="rt-wht" aria-selected="false" tabindex="-1"><i class="fas fa-percent" aria-hidden="true"></i><span>Withholding</span></button>
+    </div>
+
+    <!-- Salary -->
+    <div class="rt-panel" role="tabpanel" id="rt-salary" aria-labelledby="rt-tab-salary">
+      <p class="rt-intro">For salaried individuals (salary is more than 75% of taxable income). No surcharge on salaried income from Tax Year 2027.</p>
+      <div class="rt-tablewrap"><table class="rt-table">
+        <thead><tr><th scope="col">Annual taxable income (Rs)</th><th scope="col">Tax</th></tr></thead>
+        <tbody>{% for r in rt.salary %}<tr><td>{{ r.range }}</td><td>{{ r.tax }}</td></tr>{% endfor %}</tbody>
+      </table></div>
+      <div class="rt-foot"><span class="rt-src">Division I, Part I, First Schedule</span><a class="hv2-more" href="{% url 'SalaryCalculator2027' %}">Salary calculator <i class="fas fa-arrow-right" aria-hidden="true"></i></a></div>
+    </div>
+
+    <!-- Business / AOP -->
+    <div class="rt-panel" role="tabpanel" id="rt-business" aria-labelledby="rt-tab-business" hidden>
+      <p class="rt-intro">For business individuals and AOPs. A 10% surcharge (s.4AB) applies on tax where taxable income exceeds Rs 1 crore. For a professional-firm AOP the top rate is 40% instead of 45%.</p>
+      <div class="rt-tablewrap"><table class="rt-table">
+        <thead><tr><th scope="col">Annual taxable income (Rs)</th><th scope="col">Tax</th></tr></thead>
+        <tbody>{% for r in rt.business %}<tr><td>{{ r.range }}</td><td>{{ r.tax }}</td></tr>{% endfor %}</tbody>
+      </table></div>
+      <div class="rt-foot"><span class="rt-src">Division I, Part I, First Schedule · s.4AB</span><a class="hv2-more" href="{% url 'BusinessCalculator' %}">Business calculator <i class="fas fa-arrow-right" aria-hidden="true"></i></a></div>
+    </div>
+
+    <!-- Property -->
+    <div class="rt-panel" role="tabpanel" id="rt-property" aria-labelledby="rt-tab-property" hidden>
+      <p class="rt-intro">Advance tax when buying or selling property, and tax deducted on rent. "Non-filer" means not on the Active Taxpayers List (ATL).</p>
+      {% if rt.property %}
+      <h3 class="rt-h3">Buying and selling property</h3>
+      <div class="rt-tablewrap"><table class="rt-table rt-table--3">
+        <thead><tr><th scope="col">Transaction</th><th scope="col">Filer</th><th scope="col">Non-filer</th></tr></thead>
+        <tbody>{% for r in rt.property %}<tr><td><span class="rt-sec">{{ r.section }}</span>{{ r.name }}</td><td class="rt-num" data-label="Filer">{{ r.filer }}</td><td class="rt-num rt-nf" data-label="Non-filer">{{ r.non_filer }}</td></tr>{% endfor %}</tbody>
+      </table></div>
+      {% endif %}
+      {% if rt.rent %}
+      <h3 class="rt-h3">Rent (section 155)</h3>
+      <div class="rt-tablewrap"><table class="rt-table rt-table--3">
+        <thead><tr><th scope="col">Annual rent</th><th scope="col">Filer</th><th scope="col">Non-filer</th></tr></thead>
+        <tbody>{% for r in rt.rent %}<tr><td>{{ r.name }}</td><td class="rt-num" data-label="Filer">{{ r.filer }}</td><td class="rt-num rt-nf" data-label="Non-filer">{{ r.non_filer }}</td></tr>{% endfor %}</tbody>
+      </table></div>
+      {% endif %}
+      {% if not rt.property and not rt.rent %}<p class="rt-empty">Property rates are being updated. See the <a href="{% url 'Withholding_Tax_Card' %}">WHT &amp; Advance Tax Card</a>.</p>{% endif %}
+      <div class="rt-foot"><span class="rt-src">ss.236C, 236K, 155 · Part IV, First Schedule</span><a class="hv2-more" href="{% url 'karachi_fmv_calculator' %}">Karachi FMV calculator <i class="fas fa-arrow-right" aria-hidden="true"></i></a></div>
+    </div>
+
+    <!-- Capital gains -->
+    <div class="rt-panel" role="tabpanel" id="rt-cgt" aria-labelledby="rt-tab-cgt" hidden>
+      <p class="rt-intro">The rate depends on when you bought. Anything bought on or after <strong>1 July 2024</strong> has a flat rate; older holdings use the holding-period tables.</p>
+      <div class="rt-cards">
+        <div class="rt-card"><span class="rt-card-lbl">Property bought on/after 1 Jul 2024</span><span class="rt-card-val">15%</span><span class="rt-card-sub">Filer, any holding period. Non-filer: normal slab rates, minimum 15%.</span></div>
+        <div class="rt-card"><span class="rt-card-lbl">Shares / securities bought on/after 1 Jul 2024</span><span class="rt-card-val">15%</span><span class="rt-card-sub">Filer on purchase and sale dates. Non-filer: normal slab rates, minimum 15%.</span></div>
+      </div>
+      <h3 class="rt-h3">Property bought before 1 July 2024 (s.37(1A), Division VIII)</h3>
+      <div class="rt-tablewrap"><table class="rt-table rt-table--4">
+        <thead><tr><th scope="col">Holding period</th><th scope="col">Open plot</th><th scope="col">Constructed</th><th scope="col">Flat</th></tr></thead>
+        <tbody>{% for p, a, b, c in rt.cgt_property_old %}<tr><td>{{ p }}</td><td class="rt-num">{{ a }}</td><td class="rt-num">{{ b }}</td><td class="rt-num">{{ c }}</td></tr>{% endfor %}</tbody>
+      </table></div>
+      <h3 class="rt-h3">Securities bought 1 July 2022 – 30 June 2024 (s.37A, Division VII)</h3>
+      <div class="rt-tablewrap"><table class="rt-table">
+        <thead><tr><th scope="col">Holding period</th><th scope="col">Rate</th></tr></thead>
+        <tbody>{% for p, a in rt.cgt_securities_2022 %}<tr><td>{{ p }}</td><td class="rt-num">{{ a }}</td></tr>{% endfor %}</tbody>
+      </table></div>
+      <p class="rt-note">Securities bought 1 July 2013 – 30 June 2022: 12.5%. Bought before 1 July 2013: 0%.</p>
+      <div class="rt-foot"><span class="rt-src">Divisions VII &amp; VIII, Part I, First Schedule</span><a class="hv2-more" href="{% url 'capital_gains_tax_calculator' %}">Capital gain calculator <i class="fas fa-arrow-right" aria-hidden="true"></i></a></div>
+    </div>
+
+    <!-- Withholding -->
+    <div class="rt-panel" role="tabpanel" id="rt-wht" aria-labelledby="rt-tab-wht" hidden>
+      <div class="rt-wht-tools">
+        <div class="rt-chips" role="group" aria-label="Filter by type">
+          <button type="button" class="is-on" data-g="all">All</button>
+          {% for g in rt.wht_groups %}<button type="button" data-g="{{ g.key }}">{{ g.label }}</button>{% endfor %}
+        </div>
+        <label class="rt-search"><i class="fas fa-magnifying-glass" aria-hidden="true"></i><span class="hv2-sr">Search withholding rates</span><input type="search" id="rt-q" placeholder="Search e.g. 153, dividend, rent"></label>
+      </div>
+      {% if rt.wht_groups %}
+      <div class="rt-tablewrap rt-tablewrap--tall"><table class="rt-table rt-table--3" id="rt-wht-table">
+        <thead><tr><th scope="col">Payment / transaction</th><th scope="col">Filer</th><th scope="col">Non-filer</th></tr></thead>
+        {% for g in rt.wht_groups %}
+        <tbody data-g="{{ g.key }}">
+          <tr class="rt-grp"><th colspan="3" scope="colgroup">{{ g.label }}</th></tr>
+          {% for r in g.rows %}<tr><td><span class="rt-sec">{{ r.section }}</span>{{ r.name }}{% if r.detail and r.detail != r.filer %}<small>{{ r.detail }}</small>{% endif %}</td><td class="rt-num" data-label="Filer">{{ r.filer }}</td><td class="rt-num rt-nf" data-label="Non-filer">{{ r.non_filer }}</td></tr>{% endfor %}
+        </tbody>
+        {% endfor %}
+      </table></div>
+      <p class="rt-empty" id="rt-none" hidden>No rate matches your search.</p>
+      {% else %}<p class="rt-empty">Withholding rates are being updated.</p>{% endif %}
+      <div class="rt-foot"><span class="rt-src">Part III &amp; IV, First Schedule · Tenth Schedule for non-filers</span><a class="hv2-more" href="{% url 'Withholding_Tax_Card' %}">WHT calculator <i class="fas fa-arrow-right" aria-hidden="true"></i></a></div>
+    </div>
+  </div>
+</section>
+
+<script>
+(function () {
+  var tabs = Array.prototype.slice.call(document.querySelectorAll('.rt-tabs [role="tab"]'));
+  function show(t, focus) {
+    tabs.forEach(function (x) {
+      var on = x === t;
+      x.setAttribute('aria-selected', on); x.tabIndex = on ? 0 : -1;
+      document.getElementById(x.getAttribute('aria-controls')).hidden = !on;
+    });
+    if (focus) t.focus();
+    try { history.replaceState(null, '', '#' + t.getAttribute('aria-controls')); } catch (e) {}
+  }
+  tabs.forEach(function (t, i) {
+    t.addEventListener('click', function () { show(t); });
+    t.addEventListener('keydown', function (e) {
+      var k = e.key, j = k === 'ArrowRight' ? i + 1 : k === 'ArrowLeft' ? i - 1 : k === 'Home' ? 0 : k === 'End' ? tabs.length - 1 : null;
+      if (j === null) return;
+      e.preventDefault(); show(tabs[(j + tabs.length) % tabs.length], true);
+    });
+  });
+  var start = document.querySelector('.rt-tabs [aria-controls="' + location.hash.slice(1) + '"]');
+  if (start) show(start);
+
+  // Withholding: filter by group chip + search
+  var chips = document.querySelectorAll('.rt-chips button'), q = document.getElementById('rt-q');
+  var bodies = document.querySelectorAll('#rt-wht-table tbody'), none = document.getElementById('rt-none');
+  var group = 'all';
+  function filter() {
+    var term = (q && q.value || '').trim().toLowerCase(), any = false;
+    bodies.forEach(function (b) {
+      var inGroup = group === 'all' || b.dataset.g === group, shown = 0;
+      b.querySelectorAll('tr:not(.rt-grp)').forEach(function (tr) {
+        var ok = inGroup && (!term || tr.textContent.toLowerCase().indexOf(term) > -1);
+        tr.hidden = !ok; if (ok) shown++;
+      });
+      b.hidden = !shown; if (shown) any = true;
+    });
+    if (none) none.hidden = any;
+  }
+  chips.forEach(function (c) {
+    c.addEventListener('click', function () {
+      chips.forEach(function (x) { x.classList.toggle('is-on', x === c); });
+      group = c.dataset.g; filter();
+    });
+  });
+  if (q) q.addEventListener('input', filter);
+})();
+</script>

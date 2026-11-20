@@ -1,0 +1,55 @@
+{% load home_tags %}
+{# Latest entries from the SRO tracker + newest published guides. Nothing is hard-coded. #}
+{% latest_instruments 3 as updates %}
+{% featured_guides 2 as guides %}
+<section class="hv2-wrap hv2-section hv2-two-col" aria-label="Latest updates and featured guides">
+  <div class="hv2-panel">
+    <div class="hv2-section-head">
+      <h2 class="hv2-h3"><i class="fas fa-bullhorn" aria-hidden="true"></i> Latest FBR Updates</h2>
+      <a href="{% url 'sro_list' %}" class="hv2-more hv2-more--sm">View All Updates <i class="fas fa-arrow-right" aria-hidden="true"></i></a>
+    </div>
+    {% if updates %}
+    <ul class="hv2-updates">
+      {% for u in updates %}
+      <li>
+        <a href="{% url 'sro_detail' u.slug %}">
+          <span class="hv2-badge">{{ u.get_instrument_type_display }}</span>
+          <span class="hv2-update-title">{{ u.number }} — {{ u.subject|truncatechars:70 }}</span>
+          <time datetime="{{ u.issue_date|date:'Y-m-d' }}">{{ u.issue_date|date:"M j, Y" }}</time>
+        </a>
+      </li>
+      {% endfor %}
+    </ul>
+    {% else %}
+    <p class="hv2-empty">New SROs and circulars will appear here. <a href="{% url 'sro_list' %}">Open the SRO tracker</a>.</p>
+    {% endif %}
+  </div>
+
+  <div class="hv2-panel hv2-panel--guides">
+    <div class="hv2-section-head">
+      <h2 class="hv2-h3"><i class="fas fa-book-open" aria-hidden="true"></i> Featured Tax Guides</h2>
+      <a href="{% url 'viewBlogs' %}" class="hv2-more hv2-more--sm">View All Guides <i class="fas fa-arrow-right" aria-hidden="true"></i></a>
+    </div>
+    {% if guides %}
+    <ul class="hv2-guides">
+      {% for g in guides %}
+      <li>
+        <a href="{% url 'BlogDetails' g.slug %}">
+          {% if g.featured_image %}
+          <img src="{{ g.featured_image.url }}" alt="" class="hv2-thumb" width="72" height="48" loading="lazy">
+          {% else %}
+          <span class="hv2-thumb hv2-thumb--icon" aria-hidden="true"><i class="fas fa-file-lines"></i></span>
+          {% endif %}
+          <span>
+            <span class="hv2-guide-title">{{ g.title }}</span>
+            <span class="hv2-guide-desc">{{ g.meta_description|default:g.category|truncatechars:80 }}</span>
+          </span>
+        </a>
+      </li>
+      {% endfor %}
+    </ul>
+    {% else %}
+    <p class="hv2-empty"><a href="{% url 'viewBlogs' %}">Browse all tax guides</a>.</p>
+    {% endif %}
+  </div>
+</section>
