@@ -289,9 +289,6 @@ def slab_rows(kind="salary", year="2026-2027"):
 
 
 # ───────────────────────── Quick Tax Check (all tabs) ─────────────────────────
-# Rental income of individuals / AOPs (s.15, Division VIA, First Schedule) — fallback only.
-_FALLBACK_RENTAL = [[0, 300000, 0, 0, 0], [300001, 600000, .05, 300000, 0],
-                    [600001, 2000000, .10, 600000, 15000], [2000001, None, .25, 2000000, 155000]]
 # Section 4C, Tax Year 2027 (Finance Act 2026), most persons — fallback only.
 _FALLBACK_4C = [[0, 500000000, 0], [500000001, None, .08]]
 _QTC_SECTIONS = ("153", "231B", "234", "236C", "236K")
@@ -300,20 +297,14 @@ _QTC_SECTIONS = ("153", "231B", "234", "236C", "236K")
 @register.simple_tag
 def quick_check_data(year="2026-2027"):
     """Everything the homepage Quick Tax Check tabs need, from the same tables as the
-    calculators: income slabs, rental slabs, Section 4C rates and the WHT rows for
+    calculators: income slabs, Section 4C rates and the WHT rows for
     153 / 231B / 234 / 236C / 236K. Each part falls back to the Finance Act 2026
     figures only when its table has no rows."""
-    from ..models import Property_Business_AOP_Slab, SuperTax4CRate, WHTRate
+    from ..models import SuperTax4CRate, WHTRate
 
     data = income_slabs(year)
 
-    try:
-        rental = [[float(s.income_min), float(s.income_max) if s.income_max is not None else None,
-                   float(s.rate), float(s.base_income), float(s.base_tax)]
-                  for s in Property_Business_AOP_Slab.objects.filter(year=year).order_by("income_min")]
-    except Exception:
-        rental = []
-    data["rental"] = rental or _FALLBACK_RENTAL
+    # Rent uses the normal non-salaried slabs (Division VIA omitted by Finance Act 2021).
 
     # 4C table is keyed on the tax year number: "2026-2027" -> 2027
     ty = int(year.split("-")[-1]) if "-" in year else int(year)

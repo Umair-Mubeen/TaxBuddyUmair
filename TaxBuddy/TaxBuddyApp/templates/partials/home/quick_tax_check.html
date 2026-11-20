@@ -201,7 +201,7 @@
   var src = {
     salary: 'Slabs: First Schedule, Part I, Division I, Income Tax Ordinance 2001 (Finance Act 2026)',
     business: 'Slabs: First Schedule, Part I, Division I, Income Tax Ordinance 2001 (Finance Act 2026)',
-    rental: 'Slabs: Section 15 &amp; First Schedule, Part I, Division VIA, Income Tax Ordinance 2001',
+    rental: 'Sections 15 &amp; 15A; slabs: First Schedule, Part I, Division I, Income Tax Ordinance 2001',
     s153: 'Rates: Section 153, First Schedule, Part III, Division III, Income Tax Ordinance 2001',
     super4c: 'Rates: Section 4C &amp; First Schedule, Part I, Division IIB, Income Tax Ordinance 2001',
     vehicle: 'Rates: Sections 231B(1), 231B(2) &amp; 234, First Schedule, Part IV, Division VII &amp; III, Income Tax Ordinance 2001',
@@ -210,7 +210,7 @@
   var hints = {
     salary: 'Enter your taxable income (after exempt allowances). The result updates as you type.',
     business: 'Enter your taxable business income (profit after expenses). The result updates as you type.',
-    rental: 'Enter gross rent received from property. Individuals and AOPs are taxed on rent under section 15.',
+    rental: 'Enter gross rent received. One-fifth is allowed for repairs (s.15A) and the rest is taxed at the normal slabs.',
     s153: 'Enter the gross amount of the payment or invoice. Tax is withheld by the payer.',
     super4c: 'Enter income for 4C purposes (taxable income + exempt income + deemed / final tax income) for the year.',
     vehicle: 'Registration: % of vehicle value. Transfer: fixed by CC, reduced 10% a year and nil after 5 years from first registration. Token: fixed by CC.',
@@ -240,30 +240,34 @@
 
   // ---------- each tab returns figures, working note and table ----------
   function incomeTab(kind) {
-    var rows = data[kind] || [], amt = num(input.value);
-    var annual = st.period === 'month' ? amt * 12 : amt;
+    // Rent is not taxed on a separate table any more (Division VIA omitted by Finance Act 2021):
+    // gross rent less the 1/5 repairs allowance (s.15A) is taxed at the normal non-salaried slabs.
+    var rental = kind === 'rental';
+    var rows = (rental ? data.business : data[kind]) || [], amt = num(input.value);
+    var gross = st.period === 'month' ? amt * 12 : amt;
+    var repairs = rental ? Math.round(gross / 5) : 0, annual = gross - repairs;
     var i = slabFor(rows, annual), r = rows[i] || [0, null, 0, 0, 0];
     var tax = Math.max(0, Math.round(r[2] ? r[4] + (annual - r[3]) * r[2] : 0));
-    // Section 4AB surcharge above Rs 10 million: 10% for business individuals / AOPs; none for salaried from TY2027.
-    var sur = (kind === 'business' && annual > 10000000) ? Math.round(tax * 0.10) : 0;
-    var total = tax + sur, word = kind === 'rental' ? 'gross amount of rent' : 'taxable income';
-    var w;
-    if (!annual) w = kind === 'rental' ? 'Enter your rent to see your slab.' : 'Enter your income to see your slab.';
-    else if (!r[2]) w = 'Annual ' + (kind === 'rental' ? 'rent' : 'income') + ' <strong>' + fmt(annual) + '</strong> is within the tax-free slab. <strong>No tax.</strong>';
+    // Section 4AB surcharge: 10% of tax where taxable income exceeds Rs 10 million — not for salaried individuals.
+    var sur = (kind !== 'salary' && annual > 10000000) ? Math.round(tax * 0.10) : 0;
+    var total = tax + sur, word = 'taxable income';
+    var w, pre = rental && gross ? 'Gross rent ' + fmt(gross) + ' − repairs allowance 1/5 (s.15A) ' + fmt(repairs) + ' = taxable rent <strong>' + fmt(annual) + '</strong>.<br>' : '';
+    if (!gross) w = rental ? 'Enter your rent to see your slab.' : 'Enter your income to see your slab.';
+    else if (!r[2]) w = pre + 'Annual ' + (rental ? 'taxable rent' : 'income') + ' <strong>' + fmt(annual) + '</strong> is within the tax-free slab. <strong>No tax.</strong>';
     else {
-      w = 'Annual ' + (kind === 'rental' ? 'rent' : 'income') + ' <strong>' + fmt(annual) + '</strong> falls in slab <strong>' + (i + 1) + '</strong>: ' +
+      w = pre + 'Annual ' + (rental ? 'taxable rent' : 'income') + ' <strong>' + fmt(annual) + '</strong> falls in slab <strong>' + (i + 1) + '</strong>: ' +
           (r[4] ? fmt(r[4]) + ' + ' : '') + '<strong>' + pct(r[2] * 100) + '</strong> of ' +
           fmt(annual - r[3]) + ' (amount above ' + fmt(r[3]) + ') = <strong>' + fmt(tax) + '</strong>';
       if (sur) w += '<br>Surcharge (s.4AB, 10% of tax, income above Rs 1 crore): <strong>' + fmt(sur) + '</strong>';
       if (kind === 'business' && annual > 150000000) w += '<br>Super tax under s.4C may also apply — see the Super tax 4C tab.';
-      if (kind === 'rental') w += '<br>Tenants who are companies, AOPs or withholding agents deduct this under s.155.';
     }
+    if (rental && gross) w += '<br>Assumes rent is your only income. Rent is added to any other income, and other s.15A deductions (property tax, insurance, loan profit) lower it further. Tenants that are prescribed persons deduct adjustable tax under s.155.';
     return {
-      has: !!annual,
+      has: !!gross,
       figs: [['Tax per month', fmt(total / 12)], ['Tax per year', fmt(total)],
-             ['Effective rate', annual ? (total / annual * 100).toFixed(2) + '%' : '0%'],
-             [kind === 'rental' ? 'Rent after tax / month' : 'Take-home / month', fmt((annual - total) / 12)]],
-      w: w, head: [kind === 'rental' ? 'Gross rent' : 'Taxable income', 'Rate of tax'], noun: 'slabs',
+             ['Effective rate', gross ? (total / gross * 100).toFixed(2) + '%' : '0%'],
+             [rental ? 'Rent after tax / month' : 'Take-home / month', fmt((gross - total) / 12)]],
+      w: w, head: [rental ? 'Taxable rent (after 1/5 repairs)' : 'Taxable income', 'Rate of tax'], noun: 'slabs',
       rows: rows.map(function (s, k) { return [condText(rows, k, word), slabText(s)]; }), at: i
     };
   }
