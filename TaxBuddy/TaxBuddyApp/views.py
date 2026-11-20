@@ -851,13 +851,20 @@ def FetchResult(tax_year_1, tax_year_2, taxpayer_type, yearly_income):
     brackets_1 = build_brackets(qs1)
     brackets_2 = build_brackets(qs2)
 
-    surcharge_rates = {
-        "2024-2025": 0.10,
-        "2025-2026": 0.09,
-    }
+    # Section 4AB surcharge (taxable income above Rs 10 million), by taxpayer type:
+    #   TY2025: 10% for all individuals and AOPs
+    #   TY2026: 9% salaried, 10% others (Finance Act 2025 proviso)
+    #   TY2027: nil for salaried, 10% others (Finance Act 2026 proviso)
+    def surcharge_rate(year):
+        salaried = taxpayer_type == 'Salary Individual'
+        return {
+            "2024-2025": 0.10,
+            "2025-2026": 0.09 if salaried else 0.10,
+            "2026-2027": 0.0 if salaried else 0.10,
+        }.get(year, 0)
 
-    surcharge_1 = surcharge_rates.get(tax_year_1, 0)
-    surcharge_2 = surcharge_rates.get(tax_year_2, 0)
+    surcharge_1 = surcharge_rate(tax_year_1)
+    surcharge_2 = surcharge_rate(tax_year_2)
 
     surcharge_label_1 = f"Surcharge {int(surcharge_1 * 100)}%" if surcharge_1 else None
     surcharge_label_2 = f"Surcharge {int(surcharge_2 * 100)}%" if surcharge_2 else None
