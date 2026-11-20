@@ -6,7 +6,7 @@
     <a href="#all-calculators" class="hv2-more"><span class="hv2-more-long">View All Calculators</span><span class="hv2-more-short">View All</span> <i class="fas fa-arrow-right" aria-hidden="true"></i></a>
   </div>
   <div class="hv2-calc-grid">
-    {% url 'SalaryCalculator2027' as c1 %}{% calc_card c1 'fa-calculator' 'Salary Income Tax Calculator' 'Calculate your salary tax for FY 2026–27' 'tile' %}
+    {% url 'SalaryCalculator' as c1 %}{% calc_card c1 'fa-calculator' 'Salary Income Tax Calculator' 'Calculate your salary tax for FY 2026–27' 'tile' %}
     {% url 'BusinessCalculator' as c2 %}{% calc_card c2 'fa-briefcase' 'Business Income Tax' 'Tax on business income with current rates' 'tile' %}
     {% url 'AOPCalculator' as c3 %}{% calc_card c3 'fa-users' 'AOP Income Tax' 'Association of Persons tax calculator' 'tile' %}
     {% url 'TaxCalculator4C' as c4 %}{% calc_card c4 'fa-coins' 'Super Tax (Section 4C)' 'Calculate super tax on high income' 'tile' %}

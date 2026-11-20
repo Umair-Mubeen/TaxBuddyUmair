@@ -1,0 +1,20 @@
+{% load home_tags %}
+{# Swap the rates written into a calculator's options for the live database rates.
+   Any element with data-uid="<WHTRate uid>" gets data-f (filer) and data-n (non-filer)
+   from the WHT rate card table. Elements without a match keep their built-in rate. #}
+{% wht_rate_map as tb_rates %}
+{{ tb_rates|json_script:"tb-db-rates" }}
+<script>
+(function () {
+  var map = {};
+  try { map = JSON.parse(document.getElementById('tb-db-rates').textContent) || {}; } catch (e) {}
+  window.TB_RATES = map;
+  document.querySelectorAll('[data-uid]').forEach(function (el) {
+    var r = map[el.getAttribute('data-uid')];
+    if (!r) return;
+    el.setAttribute('data-f', r.f);
+    el.setAttribute('data-n', r.n);
+    el.setAttribute('data-db', '1');
+  });
+})();
+</script>

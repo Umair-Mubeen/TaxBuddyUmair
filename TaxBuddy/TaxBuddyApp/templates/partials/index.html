@@ -7,7 +7,7 @@
 
 {% block extra_css %}
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@800&display=swap">
-<link rel="stylesheet" href="{% static 'dist/css/home-v2.css' %}">
+<link rel="stylesheet" href="{% static 'dist/css/home-v2.css' %}?v=20261120">
 {% endblock %}
 
 {% block site_header %}{% include 'partials/home/header.html' %}{% endblock %}
@@ -19,9 +19,12 @@
 <div class="hv2">
   {% include 'partials/home/hero.html' %}
   {% include 'partials/home/quick_actions.html' %}
-  {% include 'partials/home/quick_tax_check.html' %}
+
   {% include 'partials/home/popular_calculators.html' %}
   {% include 'partials/home/guidance.html' %}
+    {% include 'partials/home/quick_tax_check.html' %}
+
+   {% include 'partials/home/rate_tabs.html' %}
   {% include 'partials/home/updates_guides.html' %}
 </div>
 {% include 'partials/home/faq.html' %}

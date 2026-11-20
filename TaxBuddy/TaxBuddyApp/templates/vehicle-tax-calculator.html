@@ -133,6 +133,7 @@
       </div>
     </div>
 
+    {% include 'partials/calc/db_rates.html' %}
     <script>
     // ===== Verified FY2026-27 rates (ITO 2001, First Schedule Part IV) =====
     // 231B registration = % of value (filer); non-filer = 3x
@@ -141,6 +142,17 @@
     var TOKEN = [[1000,800],[1199,1500],[1299,1750],[1499,2500],[1599,3750],[1999,4500],[1e9,10000]];
     // 231B(2) transfer = fixed Rs (filer); non-filer = 3x; -10%/yr; nil after 5yr / upto 850cc
     var TRANSFER = [[850,0],[1000,5000],[1300,7500],[1600,12500],[1800,18750],[2000,25000],[2500,37500],[3000,50000],[1e9,62500]];
+
+    // Filer rates from the WHT rate card database where available (same table as the WHT Card)
+    (function(){
+      var R = window.TB_RATES || {};
+      var regIds = ['231B_850_2627','231B_1000_2627','231B_1300_2627','231B_1600_2627','231B_1800_2627','231B_2000_2627','231B_2500_2627','231B_3000_2627','231B_over3000_2627'];
+      var tokIds = ['234_1000_2627','234_1199_2627','234_1299_2627','234_1499_2627','234_1599_2627','234_1999_2627','234_2000_2627'];
+      regIds.forEach(function(id,i){ if(R[id]) REG[i][1] = R[id].f; });
+      tokIds.forEach(function(id,i){ if(R[id]) TOKEN[i][1] = R[id].f; });
+      var trIds = ['231B2_850_2627','231B2_1000_2627','231B2_1300_2627','231B2_1600_2627','231B2_1800_2627','231B2_2000_2627','231B2_2500_2627','231B2_3000_2627','231B2_over3000_2627'];
+      trIds.forEach(function(id,i){ if(R[id]) TRANSFER[i][1] = R[id].f; });
+    })();
 
     var MODE='reg', FILER=true;
 

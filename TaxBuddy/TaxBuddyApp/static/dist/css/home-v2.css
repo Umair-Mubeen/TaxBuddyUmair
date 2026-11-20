@@ -400,3 +400,15 @@ footer.hv2-footer::before { content: ''; position: absolute; inset: 0; pointer-e
   .rt-chips button { flex: 0 0 auto; }
   .qtc-year { font-size: 12px; }
 }
+
+/* FBR-style slab tables: S. No. column */
+.qtc-ladder td.qtc-no, .rt-table td.rt-no { width: 1%; white-space: nowrap; text-align: center; color: var(--text-light); font-weight: 600; }
+.qtc-ladder th:first-child, .rt-table th:first-child { width: 1%; white-space: nowrap; }
+.qtc-toggle { display: flex; align-items: center; justify-content: center; gap: 8px; width: 100%; font: inherit; font-size: 13px; font-weight: 600; color: var(--green-mid); background: var(--bg); border: 0; border-top: 1px solid var(--border); padding: 10px 12px; cursor: pointer; transition: background .15s, color .15s; }
+.qtc-toggle[hidden] { display: none; }
+.qtc-toggle i { font-size: 11px; transition: transform .2s; }
+.qtc-toggle[aria-expanded="true"] i { transform: rotate(180deg); }
+.qtc-toggle:hover { background: var(--green-light); color: var(--green); }
+.qtc-toggle:focus-visible { outline: 2px solid var(--green); outline-offset: -2px; }
+.qtc-ladder th:first-child { white-space: nowrap; }
+.qtc-ladder caption { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }

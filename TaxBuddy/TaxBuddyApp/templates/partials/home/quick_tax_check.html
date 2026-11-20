@@ -1,24 +1,100 @@
 {% load home_tags %}
-{# Quick Tax Check — live slab finder. Slabs come from the same DB tables as the calculators. #}
-{% income_slabs as qtc_slabs %}
-{{ qtc_slabs|json_script:"qtc-slabs" }}
+{# Quick Tax Check — live slab / rate finder. All figures come from the same DB tables as the calculators. #}
+{% quick_check_data as qtc_data %}
+{{ qtc_data|json_script:"qtc-slabs" }}
+<style>
+/* Kept here as well as in home-v2.css so the widget looks right even if a cached stylesheet is served */
+#quick-tax-check .qtc-toggle{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;font:inherit;font-size:13px;font-weight:600;color:#0B8A64;background:#F6F9FC;border:0;border-top:1px solid #E2E8F0;border-radius:0;padding:10px 12px;margin:0;cursor:pointer;-webkit-appearance:none;appearance:none;transition:background .15s,color .15s}
+#quick-tax-check .qtc-toggle[hidden]{display:none}
+#quick-tax-check .qtc-toggle i{font-size:11px;transition:transform .2s}
+#quick-tax-check .qtc-toggle[aria-expanded="true"] i{transform:rotate(180deg)}
+#quick-tax-check .qtc-toggle:hover{background:#E6F7F2;color:#0D9E72}
+#quick-tax-check .qtc-toggle:focus-visible{outline:2px solid #0D9E72;outline-offset:-2px}
+#quick-tax-check .qtc-ladder caption{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+#quick-tax-check .qtc-ladder th:first-child{white-space:nowrap}
+#quick-tax-check [hidden]{display:none !important}
+/* Calculator tabs: one row, scrolls sideways on small screens */
+#quick-tax-check .qtc-tabs{display:flex;gap:6px;overflow-x:auto;scrollbar-width:none;-webkit-overflow-scrolling:touch;margin:0 0 16px;padding:2px 2px 4px}
+#quick-tax-check .qtc-tabs::-webkit-scrollbar{display:none}
+#quick-tax-check .qtc-tabs button{flex:0 0 auto;display:inline-flex;align-items:center;gap:7px;font:inherit;font-size:13.5px;font-weight:600;color:#475569;background:#fff;border:1px solid #E2E8F0;border-radius:999px;padding:8px 14px;cursor:pointer;white-space:nowrap;transition:background .15s,color .15s,border-color .15s}
+#quick-tax-check .qtc-tabs button i{font-size:12px;color:#0D9E72}
+#quick-tax-check .qtc-tabs button:hover{border-color:#0D9E72;color:#0F2744}
+#quick-tax-check .qtc-tabs button[aria-selected="true"]{background:#0F2744;border-color:#0F2744;color:#fff}
+#quick-tax-check .qtc-tabs button[aria-selected="true"] i{color:#5EE6B8}
+#quick-tax-check .qtc-tabs button:focus-visible{outline:2px solid #0D9E72;outline-offset:2px}
+#quick-tax-check .qtc-select{width:100%;font:inherit;font-size:14px;color:#0F2744;background:#fff;border:1px solid #E2E8F0;border-radius:8px;padding:10px 12px;min-height:44px}
+#quick-tax-check .qtc-select:focus{outline:2px solid #0D9E72;outline-offset:1px;border-color:#0D9E72}
+#quick-tax-check .qtc-seg--3{grid-template-columns:1fr 1fr 1fr}
+</style>
 <section class="hv2-wrap hv2-section" id="quick-tax-check" aria-labelledby="qtc-title">
   <div class="hv2-section-head">
-    <h2 id="qtc-title" class="hv2-h2">Quick Tax Check <span class="qtc-year">Tax Year 2026-27</span></h2>
+    <h2 id="qtc-title" class="hv2-h2">Quick Tax Check <span class="qtc-year">Tax Year {{ qtc_data.year }}</span></h2>
+  </div>
+
+  <div class="qtc-tabs" role="tablist" aria-label="Choose a tax check">
+    <button type="button" role="tab" aria-selected="true"  aria-controls="qtc-form" data-tab="salary"><i class="fas fa-user-tie" aria-hidden="true"></i> Salary</button>
+    <button type="button" role="tab" aria-selected="false" aria-controls="qtc-form" data-tab="business"><i class="fas fa-briefcase" aria-hidden="true"></i> Business / AOP</button>
+    <button type="button" role="tab" aria-selected="false" aria-controls="qtc-form" data-tab="rental"><i class="fas fa-house" aria-hidden="true"></i> Rental income</button>
+    <button type="button" role="tab" aria-selected="false" aria-controls="qtc-form" data-tab="s153"><i class="fas fa-file-invoice" aria-hidden="true"></i> Section 153</button>
+    <button type="button" role="tab" aria-selected="false" aria-controls="qtc-form" data-tab="super4c"><i class="fas fa-building-columns" aria-hidden="true"></i> Super tax 4C</button>
+    <button type="button" role="tab" aria-selected="false" aria-controls="qtc-form" data-tab="vehicle"><i class="fas fa-car" aria-hidden="true"></i> Motor vehicle</button>
+    <button type="button" role="tab" aria-selected="false" aria-controls="qtc-form" data-tab="property"><i class="fas fa-city" aria-hidden="true"></i> Property buy / sell</button>
   </div>
 
   <div class="qtc">
     <!-- Input panel -->
-    <form class="qtc-panel qtc-input" id="qtc-form" autocomplete="off" onsubmit="return false;">
-      <div class="qtc-field">
-        <span class="qtc-label" id="qtc-type-lbl">I earn from</span>
-        <div class="qtc-seg" role="radiogroup" aria-labelledby="qtc-type-lbl">
-          <button type="button" role="radio" aria-checked="true" data-type="salary" id="qtc-t-salary"><i class="fas fa-user-tie" aria-hidden="true"></i> Salary</button>
-          <button type="button" role="radio" aria-checked="false" data-type="business" id="qtc-t-business"><i class="fas fa-briefcase" aria-hidden="true"></i> Business / AOP</button>
+    <form class="qtc-panel qtc-input" id="qtc-form" role="tabpanel" autocomplete="off" onsubmit="return false;">
+
+      <!-- Section 153: nature of payment -->
+      <div class="qtc-field" data-show="s153">
+        <label class="qtc-label" for="qtc-nature">Nature of payment</label>
+        <select id="qtc-nature" class="qtc-select"></select>
+      </div>
+
+      <!-- Vehicle: registration or annual token -->
+      <div class="qtc-field" data-show="vehicle">
+        <span class="qtc-label" id="qtc-veh-lbl">Tax on</span>
+        <div class="qtc-seg qtc-seg--sm qtc-seg--3" role="radiogroup" aria-labelledby="qtc-veh-lbl">
+          <button type="button" role="radio" aria-checked="true" data-veh="231B">Registration</button>
+          <button type="button" role="radio" aria-checked="false" data-veh="231B2">Transfer</button>
+          <button type="button" role="radio" aria-checked="false" data-veh="234">Token tax</button>
+        </div>
+      </div>
+      <div class="qtc-field" data-show="vehicle">
+        <label class="qtc-label" for="qtc-cc">Engine capacity (CC)</label>
+        <div class="qtc-money">
+          <span aria-hidden="true">CC</span>
+          <input id="qtc-cc" type="text" inputmode="numeric" placeholder="Enter engine CC, e.g. 1,300" value="">
+        </div>
+      </div>
+      <div class="qtc-field" data-show="vehicle" id="qtc-years-field">
+        <label class="qtc-label" for="qtc-years">Years since first registration in Pakistan</label>
+        <div class="qtc-money">
+          <span aria-hidden="true">Yrs</span>
+          <input id="qtc-years" type="text" inputmode="numeric" placeholder="0" value="">
         </div>
       </div>
 
-      <div class="qtc-field">
+      <!-- Property: sale or purchase -->
+      <div class="qtc-field" data-show="property">
+        <span class="qtc-label" id="qtc-prop-lbl">I am</span>
+        <div class="qtc-seg qtc-seg--sm" role="radiogroup" aria-labelledby="qtc-prop-lbl">
+          <button type="button" role="radio" aria-checked="true" data-prop="236C">Selling (s.236C)</button>
+          <button type="button" role="radio" aria-checked="false" data-prop="236K">Buying (s.236K)</button>
+        </div>
+      </div>
+
+      <!-- Filer status (withholding tabs) -->
+      <div class="qtc-field" data-show="s153 vehicle property">
+        <span class="qtc-label" id="qtc-st-lbl">Status</span>
+        <div class="qtc-seg qtc-seg--sm" role="radiogroup" aria-labelledby="qtc-st-lbl">
+          <button type="button" role="radio" aria-checked="true" data-status="f">Filer (on ATL)</button>
+          <button type="button" role="radio" aria-checked="false" data-status="n">Non-filer</button>
+        </div>
+      </div>
+
+      <!-- Monthly / yearly (income tabs) -->
+      <div class="qtc-field" data-show="salary business rental">
         <span class="qtc-label" id="qtc-per-lbl">Amount is</span>
         <div class="qtc-seg qtc-seg--sm" role="radiogroup" aria-labelledby="qtc-per-lbl">
           <button type="button" role="radio" aria-checked="true" data-period="month" id="qtc-p-month">Monthly</button>
@@ -26,56 +102,39 @@
         </div>
       </div>
 
-      <div class="qtc-field">
+      <div class="qtc-field" id="qtc-amount-field">
         <label class="qtc-label" for="qtc-income" id="qtc-income-lbl">Monthly taxable income</label>
         <div class="qtc-money">
           <span aria-hidden="true">Rs</span>
-          <input id="qtc-income" type="text" inputmode="numeric" placeholder="e.g. 150,000" value="150,000" aria-describedby="qtc-hint">
+          <input id="qtc-income" type="text" inputmode="numeric" placeholder="Enter amount, e.g. 150,000" value="" aria-describedby="qtc-hint">
         </div>
-        <div class="qtc-chips" aria-label="Try an amount">
-          <button type="button" data-amt="100000">1 lakh</button>
-          <button type="button" data-amt="250000">2.5 lakh</button>
-          <button type="button" data-amt="500000">5 lakh</button>
-          <button type="button" data-amt="1000000">10 lakh</button>
-        </div>
-        <p class="qtc-hint" id="qtc-hint">Enter income after exempt allowances. Result updates as you type.</p>
       </div>
+      <p class="qtc-hint" id="qtc-hint">Enter your taxable income (after exempt allowances). The result updates as you type.</p>
     </form>
 
     <!-- Result panel -->
     <div class="qtc-panel qtc-result" aria-live="polite">
       <div class="qtc-figs">
-        <div class="qtc-fig qtc-fig--main">
-          <span class="qtc-fig-lbl">Tax per month</span>
-          <span class="qtc-fig-val" id="qtc-monthly">Rs 0</span>
-        </div>
-        <div class="qtc-fig">
-          <span class="qtc-fig-lbl">Tax per year</span>
-          <span class="qtc-fig-val" id="qtc-yearly">Rs 0</span>
-        </div>
-        <div class="qtc-fig">
-          <span class="qtc-fig-lbl">Effective rate</span>
-          <span class="qtc-fig-val" id="qtc-eff">0%</span>
-        </div>
-        <div class="qtc-fig">
-          <span class="qtc-fig-lbl">Take-home / month</span>
-          <span class="qtc-fig-val" id="qtc-net">Rs 0</span>
-        </div>
+        <div class="qtc-fig qtc-fig--main"><span class="qtc-fig-lbl" id="qtc-l1">Tax per month</span><span class="qtc-fig-val" id="qtc-v1">Rs 0</span></div>
+        <div class="qtc-fig"><span class="qtc-fig-lbl" id="qtc-l2">Tax per year</span><span class="qtc-fig-val" id="qtc-v2">Rs 0</span></div>
+        <div class="qtc-fig"><span class="qtc-fig-lbl" id="qtc-l3">Effective rate</span><span class="qtc-fig-val" id="qtc-v3">0%</span></div>
+        <div class="qtc-fig"><span class="qtc-fig-lbl" id="qtc-l4">Take-home / month</span><span class="qtc-fig-val" id="qtc-v4">Rs 0</span></div>
       </div>
 
       <div class="qtc-slabnote" id="qtc-working"></div>
 
-      <div class="qtc-ladder-wrap">
+      <div class="qtc-ladder-wrap" id="qtc-ladder" hidden>
         <table class="qtc-ladder" aria-describedby="qtc-ladder-cap">
-          <caption id="qtc-ladder-cap">Your slab is highlighted</caption>
-          <thead><tr><th scope="col">Annual income (Rs)</th><th scope="col">Tax</th></tr></thead>
+          <caption id="qtc-ladder-cap">All slabs</caption>
+          <thead><tr><th scope="col">S. No.</th><th scope="col" id="qtc-h2">Taxable income</th><th scope="col" id="qtc-h3">Rate of tax</th></tr></thead>
           <tbody id="qtc-rows"></tbody>
         </table>
+        <button type="button" class="qtc-toggle" id="qtc-toggle" aria-controls="qtc-rows" hidden><span id="qtc-toggle-txt">Show all slabs</span> <i class="fas fa-chevron-down" aria-hidden="true"></i></button>
       </div>
 
       <div class="qtc-foot">
-        <a id="qtc-full" href="{% url 'SalaryCalculator2027' %}" class="hv2-more">Open full calculator <i class="fas fa-arrow-right" aria-hidden="true"></i></a>
-        <span class="qtc-src">Slabs: First Schedule, Income Tax Ordinance 2001 (Finance Act 2026)</span>
+        <a id="qtc-full" href="{% url 'SalaryCalculator' %}" class="hv2-more">Open full calculator <i class="fas fa-arrow-right" aria-hidden="true"></i></a>
+        <span class="qtc-src" id="qtc-src">Slabs: First Schedule, Income Tax Ordinance 2001 (Finance Act 2026)</span>
       </div>
     </div>
   </div>
@@ -85,18 +144,59 @@
 (function () {
   var data;
   try { data = JSON.parse(document.getElementById('qtc-slabs').textContent); } catch (e) { return; }
-  var links = { salary: "{% url 'SalaryCalculator2027' %}", business: "{% url 'BusinessCalculator' %}" };
-  var state = { type: 'salary', period: 'month' };
   var $ = function (id) { return document.getElementById(id); };
-  var input = $('qtc-income');
+  var input = $('qtc-income'), ccIn = $('qtc-cc'), yrsIn = $('qtc-years'), natureSel = $('qtc-nature');
   var fmt = function (n) { return 'Rs ' + Math.round(n).toLocaleString('en-PK'); };
+  var rs = function (n) { return 'Rs. ' + Math.round(n).toLocaleString('en-PK'); };
   var num = function (s) { return parseFloat(String(s).replace(/[^\d.]/g, '')) || 0; };
-  var short = function (n) {
-    if (n >= 10000000) return (n / 10000000).toFixed(n % 10000000 ? 1 : 0).replace(/\.0$/, '') + ' crore';
-    if (n >= 100000) return (n / 100000).toFixed(n % 100000 ? 1 : 0).replace(/\.0$/, '') + ' lakh';
-    return Math.round(n).toLocaleString('en-PK');
+  var pct = function (x) { return +(+x).toFixed(2) + '%'; };
+  var st = { tab: 'salary', period: 'month', status: 'f', veh: '231B', prop: '236C', showAll: false };
+
+  // ---- Withholding rows from the DB, grouped by section ----
+  var wht = data.wht || [];
+  var bySec = function (re) { return wht.filter(function (w) { return re.test(w.section); }); };
+  var w153 = bySec(/^153/);
+  // CC / value band from the uid: 231B_1300_2627 -> up to 1,300 CC; the last row of a section has no limit
+  function banded(rows) {
+    return rows.map(function (w, k) {
+      var m = /_(\d+)_/.exec(w.uid);
+      return { w: w, max: (k === rows.length - 1 || !m) ? Infinity : +m[1] };
+    });
+  }
+  var veh = { '231B': banded(bySec(/^231B$/)), '231B2': banded(bySec(/^231B\(2\)$/)), '234': banded(bySec(/^234$/)) };
+  var k236 = bySec(/^236K$/).map(function (w, k, a) { return { w: w, max: k === a.length - 1 ? Infinity : [50e6, 100e6][k] }; });
+  var c236 = bySec(/^236C$/).map(function (w) { return { w: w, max: Infinity }; });
+
+  natureSel.innerHTML = w153.map(function (w, k) {
+    return '<option value="' + k + '">' + w.name.replace(/</g, '&lt;') + ' — ' + pct(w.f) + '</option>';
+  }).join('');
+
+  var links = {
+    salary: "{% url 'SalaryCalculator' %}", business: "{% url 'BusinessCalculator' %}",
+    rental: "{% url 'PropertyCalculator' %}", s153: "{% url 'section_153_calculator' %}",
+    super4c: "{% url 'TaxCalculator4C' %}", vehicle: "{% url 'vehicle_tax_calculator' %}",
+    property: "{% url 'karachi_fmv_calculator' %}"
+  };
+  var src = {
+    salary: 'Slabs: First Schedule, Part I, Division I, Income Tax Ordinance 2001 (Finance Act 2026)',
+    business: 'Slabs: First Schedule, Part I, Division I, Income Tax Ordinance 2001 (Finance Act 2026)',
+    rental: 'Slabs: Section 15 &amp; First Schedule, Part I, Division VIA, Income Tax Ordinance 2001',
+    s153: 'Rates: Section 153, First Schedule, Part III, Division III, Income Tax Ordinance 2001',
+    super4c: 'Rates: Section 4C &amp; First Schedule, Part I, Division IIB, Income Tax Ordinance 2001',
+    vehicle: 'Rates: Sections 231B(1), 231B(2) &amp; 234, First Schedule, Part IV, Division VII &amp; III, Income Tax Ordinance 2001',
+    property: 'Advance tax rates: Sections 236C &amp; 236K, First Schedule, Part IV, Income Tax Ordinance 2001'
+  };
+  var hints = {
+    salary: 'Enter your taxable income (after exempt allowances). The result updates as you type.',
+    business: 'Enter your taxable business income (profit after expenses). The result updates as you type.',
+    rental: 'Enter gross rent received from property. Individuals and AOPs are taxed on rent under section 15.',
+    s153: 'Enter the gross amount of the payment or invoice. Tax is withheld by the payer.',
+    super4c: 'Enter income for 4C purposes (taxable income + exempt income + deemed / final tax income) for the year.',
+    vehicle: 'Registration: % of vehicle value. Transfer: fixed by CC, reduced 10% for each year since first registration. Token: fixed by CC.',
+    property: 'Enter the gross sale price (236C) or fair market value (236K) of the property.'
   };
 
+  // ---------- helpers for income slabs ----------
   function slabFor(rows, inc) {
     for (var i = 0; i < rows.length; i++) {
       var hi = rows[i][1] === null ? Infinity : rows[i][1];
@@ -104,84 +204,228 @@
     }
     return rows.length - 1;
   }
-
+  var lo = function (v) { return v % 10 === 1 ? v - 1 : v; };
+  // Same wording as the First Schedule tables
+  function condText(rows, k, word) {
+    var s = rows[k];
+    if (k === 0 && s[1] !== null) return 'Where ' + word + ' does not exceed ' + rs(s[1]);
+    if (s[1] === null) return 'Where ' + word + ' exceeds ' + rs(lo(s[0]));
+    return 'Where ' + word + ' exceeds ' + rs(lo(s[0])) + ' but does not exceed ' + rs(s[1]);
+  }
   function slabText(r) {
-    if (!r[2]) return 'No tax';
-    var pct = +(r[2] * 100).toFixed(2) + '%';
-    return (r[4] ? fmt(r[4]) + ' + ' : '') + pct + ' above ' + short(r[3]);
+    if (!r[2]) return '0%';
+    return (r[4] ? rs(r[4]) + ' + ' : '') + pct(r[2] * 100) + ' of the amount exceeding ' + rs(r[3]);
+  }
+
+  // ---------- each tab returns figures, working note and table ----------
+  function incomeTab(kind) {
+    var rows = data[kind] || [], amt = num(input.value);
+    var annual = st.period === 'month' ? amt * 12 : amt;
+    var i = slabFor(rows, annual), r = rows[i] || [0, null, 0, 0, 0];
+    var tax = Math.max(0, Math.round(r[2] ? r[4] + (annual - r[3]) * r[2] : 0));
+    // Section 4AB surcharge above Rs 10 million: 10% for business individuals / AOPs; none for salaried from TY2027.
+    var sur = (kind === 'business' && annual > 10000000) ? Math.round(tax * 0.10) : 0;
+    var total = tax + sur, word = kind === 'rental' ? 'gross amount of rent' : 'taxable income';
+    var w;
+    if (!annual) w = kind === 'rental' ? 'Enter your rent to see your slab.' : 'Enter your income to see your slab.';
+    else if (!r[2]) w = 'Annual ' + (kind === 'rental' ? 'rent' : 'income') + ' <strong>' + fmt(annual) + '</strong> is within the tax-free slab. <strong>No tax.</strong>';
+    else {
+      w = 'Annual ' + (kind === 'rental' ? 'rent' : 'income') + ' <strong>' + fmt(annual) + '</strong> falls in slab <strong>' + (i + 1) + '</strong>: ' +
+          (r[4] ? fmt(r[4]) + ' + ' : '') + '<strong>' + pct(r[2] * 100) + '</strong> of ' +
+          fmt(annual - r[3]) + ' (amount above ' + fmt(r[3]) + ') = <strong>' + fmt(tax) + '</strong>';
+      if (sur) w += '<br>Surcharge (s.4AB, 10% of tax, income above Rs 1 crore): <strong>' + fmt(sur) + '</strong>';
+      if (kind === 'business' && annual > 150000000) w += '<br>Super tax under s.4C may also apply — see the Super tax 4C tab.';
+      if (kind === 'rental') w += '<br>Tenants who are companies, AOPs or withholding agents deduct this under s.155.';
+    }
+    return {
+      has: !!annual,
+      figs: [['Tax per month', fmt(total / 12)], ['Tax per year', fmt(total)],
+             ['Effective rate', annual ? (total / annual * 100).toFixed(2) + '%' : '0%'],
+             [kind === 'rental' ? 'Rent after tax / month' : 'Take-home / month', fmt((annual - total) / 12)]],
+      w: w, head: [kind === 'rental' ? 'Gross rent' : 'Taxable income', 'Rate of tax'], noun: 'slabs',
+      rows: rows.map(function (s, k) { return [condText(rows, k, word), slabText(s)]; }), at: i
+    };
+  }
+
+  function super4c() {
+    var rows = data.super4c || [], inc = num(input.value), i = 0;
+    for (var k = 0; k < rows.length; k++) { if (inc >= rows[k][0]) i = k; }
+    var rate = rows.length ? rows[i][2] : 0, tax = Math.round(inc * rate);
+    var w = !inc ? 'Enter your income to see your super tax rate.'
+      : !rate ? 'Income <strong>' + fmt(inc) + '</strong> is within the nil band. <strong>No super tax.</strong>'
+      : 'Income <strong>' + fmt(inc) + '</strong> falls in band <strong>' + (i + 1) + '</strong>: <strong>' + pct(rate * 100) +
+        '</strong> of the whole income = <strong>' + fmt(tax) + '</strong>';
+    if (inc) w += '<br>Rates shown are for most persons. Banking, oil &amp; gas exploration and fertilizer sectors have separate rates.';
+    var rowsTxt = rows.map(function (s, k) {
+      var t = k === 0 && s[1] !== null ? 'Where income does not exceed ' + rs(s[1])
+        : s[1] === null ? 'Where income exceeds ' + rs(lo(s[0]))
+        : 'Where income exceeds ' + rs(lo(s[0])) + ' but does not exceed ' + rs(s[1]);
+      return [t, s[2] ? pct(s[2] * 100) + ' of income' : '0%'];
+    });
+    return {
+      has: !!inc,
+      figs: [['Super tax', fmt(tax)], ['Rate (on whole income)', pct(rate * 100)],
+             ['Monthly equivalent', fmt(tax / 12)], ['Income after super tax', fmt(inc - tax)]],
+      w: w, head: ['Income for section 4C', 'Rate of super tax (Tax Year ' + data.tax_year + ')'], noun: 'bands',
+      rows: rowsTxt, at: i
+    };
+  }
+
+  // Withholding (153) and advance tax (231B / 234 / 236C / 236K): rows are [{w, max}], `pickIdx` is the applicable row, `base` is the amount it applies to
+  function whtTab(list, pickIdx, base, opts) {
+    var r = list[pickIdx] ? list[pickIdx].w : null, s = st.status, other = s === 'f' ? 'n' : 'f';
+    var calc = function (key) { return !r ? 0 : r.kind === 'fixed' ? r[key] : Math.round(base * r[key] / 100); };
+    var adj = opts.adjust || function (v) { return v; };
+    var tax = Math.round(adj(calc(s))), alt = Math.round(adj(calc(other))), has = opts.has;
+    var rateTxt = function (w, key) { return w.kind === 'fixed' ? (w[key] ? rs(w[key]) : 'Nil') : pct(w[key]); };
+    var w = !has ? opts.empty
+      : (opts.prefix || 'Section ') + r.section + ' — ' + r.name + ': ' + (r.kind === 'fixed'
+          ? (opts.adjNote ? rs(calc(s)) + ' fixed' + opts.adjNote + ' = <strong>' + fmt(tax) + '</strong>' : '<strong>' + fmt(tax) + '</strong> fixed')
+          : '<strong>' + pct(r[s]) + '</strong> of ' + fmt(base) + ' = <strong>' + fmt(tax) + '</strong>') +
+        (s === 'n' ? '<br>A filer would pay ' + fmt(alt) + ' — you pay <strong>' + fmt(tax - alt) + '</strong> more as a non-filer.'
+                   : '<br>A non-filer would pay ' + fmt(alt) + ' — being on the ATL saves <strong>' + fmt(alt - tax) + '</strong>.') +
+        (r.nature || r.type ? '<br>Nature of tax: ' + [r.nature, r.type].filter(Boolean).join(' — ').replace(/^Advance Tax/, 'Advance tax').replace(/— Adjustable/, '(adjustable against final tax liability)') + '.' : '') + (opts.extra || '');
+    return {
+      has: has,
+      figs: [[opts.taxLbl, fmt(tax)], ['Rate', r ? rateTxt(r, s) : '0%'],
+             opts.third ? opts.third(tax) : ['Amount', fmt(base)],
+             [s === 'f' ? 'If non-filer' : 'If filer', fmt(alt)]],
+      w: w, head: [opts.col, 'Rate (' + (s === 'f' ? 'filer' : 'non-filer') + ')'], noun: opts.noun,
+      rows: list.map(function (x) { return [opts.short ? x.w.name.split(' — ').pop() : x.w.name, rateTxt(x.w, s)]; }),
+      at: pickIdx
+    };
+  }
+  var band = function (list, v) { for (var k = 0; k < list.length; k++) if (v <= list[k].max) return k; return list.length - 1; };
+
+  function compute() {
+    var amt = num(input.value);
+    switch (st.tab) {
+      case 'salary': case 'business': case 'rental': return incomeTab(st.tab);
+      case 'super4c': return super4c();
+      case 's153':
+        return whtTab(w153.map(function (w) { return { w: w }; }), +natureSel.value || 0, amt, {
+          has: !!amt && !!w153.length, empty: 'Enter the payment amount to see the tax withheld.', taxLbl: 'Tax withheld', prefix: 'Withholding tax u/s ',
+          third: function (t) { return ['Net payment received', fmt(amt - t)]; }, col: 'Nature of payment', noun: 'payment types'
+        });
+      case 'vehicle':
+        var cc = num(ccIn.value), list = veh[st.veh];
+        var token = st.veh === '234', transfer = st.veh === '231B2', fixed = token || transfer;
+        // 231B(2): reduced by 10% each year from first registration (nil after 10 years)
+        var yrs = Math.min(10, Math.floor(num(yrsIn.value)));
+        return whtTab(list, band(list, cc), amt, {
+          has: !!cc && (fixed || !!amt) && !!list.length,
+          empty: token ? 'Enter engine CC to see the annual token tax.' : transfer ? 'Enter engine CC (and years since first registration) to see the transfer tax.' : 'Enter engine CC and vehicle value to see the registration tax.',
+          taxLbl: token ? 'Advance tax with token (per year)' : transfer ? 'Advance tax on transfer' : 'Advance tax at registration',
+          adjust: transfer ? function (v) { return v * (1 - yrs / 10); } : null,
+          adjNote: transfer && yrs ? ' less ' + (yrs * 10) + '% (' + yrs + ' year' + (yrs > 1 ? 's' : '') + ' since first registration)' : '',
+          third: token ? function (t) { return ['Per month equivalent', fmt(t / 12)]; }
+               : transfer ? function () { return ['Reduction for age', (yrs * 10) + '%']; }
+               : function (t) { return ['Value + tax', fmt(amt + t)]; },
+          col: 'Engine capacity', noun: 'CC bands', short: true, prefix: 'Advance tax u/s '
+        });
+      case 'property':
+        var pl = st.prop === '236K' ? k236 : c236;
+        return whtTab(pl, band(pl, amt), amt, {
+          has: !!amt && !!pl.length, empty: 'Enter the property value to see the advance tax.',
+          taxLbl: st.prop === '236K' ? 'Advance tax on purchase' : 'Advance tax on sale',
+          third: function (t) { return [st.prop === '236K' ? 'Total cost incl. tax' : 'Net sale proceeds', fmt(st.prop === '236K' ? amt + t : amt - t)]; },
+          col: st.prop === '236K' ? 'Fair market value' : 'Transaction', noun: 'rates', prefix: 'Advance tax u/s ',
+          extra: st.prop === '236C' ? '<br>Capital gains tax may also be payable on the gain — use the Capital Gains calculator.' : ''
+        });
+    }
   }
 
   function render() {
-    var rows = data[state.type];
-    var amt = num(input.value);
-    var annual = state.period === 'month' ? amt * 12 : amt;
-    var i = slabFor(rows, annual), r = rows[i];
-    var tax = r[2] ? r[4] + (annual - r[3]) * r[2] : 0;
-    tax = Math.max(0, Math.round(tax));
-    // Section 4AB surcharge above Rs 10 million: 10% for business individuals / AOPs; none for salaried from TY2027.
-    var sur = (state.type === 'business' && annual > 10000000) ? Math.round(tax * 0.10) : 0;
-    var total = tax + sur;
-
-    $('qtc-monthly').textContent = fmt(total / 12);
-    $('qtc-yearly').textContent = fmt(total);
-    $('qtc-eff').textContent = annual ? (total / annual * 100).toFixed(2) + '%' : '0%';
-    $('qtc-net').textContent = fmt((annual - total) / 12);
-
-    var w;
-    if (!annual) w = 'Enter your income to see your slab.';
-    else if (!r[2]) w = 'Annual income <strong>' + fmt(annual) + '</strong> is within the tax-free slab. <strong>No income tax.</strong>';
-    else {
-      w = 'Annual income <strong>' + fmt(annual) + '</strong> falls in slab <strong>' + (i + 1) + '</strong>: ' +
-          (r[4] ? fmt(r[4]) + ' + ' : '') + '<strong>' + +(r[2] * 100).toFixed(2) + '%</strong> of ' +
-          fmt(annual - r[3]) + ' (amount above ' + fmt(r[3]) + ') = <strong>' + fmt(tax) + '</strong>';
-      if (sur) w += '<br>Surcharge (s.4AB, 10% of tax, income above Rs 1 crore): <strong>' + fmt(sur) + '</strong>';
-      if (state.type === 'business' && annual > 150000000) w += '<br>Super tax under s.4C may also apply — use the 4C calculator.';
-    }
-    $('qtc-working').innerHTML = w;
-
-    var html = '';
-    rows.forEach(function (s, k) {
-      var range = s[1] === null ? 'Above ' + short(s[0] - 1) : (k === 0 ? 'Up to ' + short(s[1]) : short(s[0] - 1) + ' – ' + short(s[1]));
-      html += '<tr' + (k === i && annual ? ' class="is-active" aria-current="true"' : '') + '><td>' + range + '</td><td>' + slabText(s) + '</td></tr>';
+    var res = compute(), has = res.has;
+    for (var n = 0; n < 4; n++) { $('qtc-l' + (n + 1)).textContent = res.figs[n][0]; $('qtc-v' + (n + 1)).textContent = res.figs[n][1]; }
+    $('qtc-working').innerHTML = res.w;
+    $('qtc-h2').textContent = res.head[0];
+    $('qtc-h3').textContent = res.head[1];
+    var onlyMine = has && !st.showAll, html = '';
+    res.rows.forEach(function (r, k) {
+      if (onlyMine && k !== res.at) return;
+      html += '<tr' + (k === res.at && has ? ' class="is-active" aria-current="true"' : '') + '><td class="qtc-no">' + (k + 1) + '</td><td>' + r[0] + '</td><td>' + r[1] + '</td></tr>';
     });
     $('qtc-rows').innerHTML = html;
-    $('qtc-full').href = links[state.type];
+    $('qtc-ladder').hidden = !has;          // no input → no table
+    var tg = $('qtc-toggle');
+    tg.hidden = !has || res.rows.length < 2;
+    $('qtc-toggle-txt').textContent = st.showAll ? 'Show only mine' : 'Show all ' + res.rows.length + ' ' + res.noun;
+    tg.setAttribute('aria-expanded', st.showAll ? 'true' : 'false');
+    $('qtc-ladder-cap').textContent = onlyMine ? 'Your applicable rate' : 'Your rate is highlighted';
+    $('qtc-full').href = links[st.tab];
+    $('qtc-src').innerHTML = src[st.tab];
   }
 
-  function pick(group, attr, val) {
+  // ---------- tab switching: show the inputs each tab needs ----------
+  // Each tab keeps its own amount (salary and business share one)
+  var vals = {}, key = function (t) { return t === 'business' ? 'salary' : t; };
+  function setTab(tab) {
+    if (tab !== st.tab) { vals[key(st.tab)] = input.value; input.value = vals[key(tab)] || ''; }
+    st.tab = tab; st.showAll = false;
+    document.querySelectorAll('#quick-tax-check [data-tab]').forEach(function (b) {
+      b.setAttribute('aria-selected', b.dataset.tab === tab ? 'true' : 'false');
+    });
+    document.querySelectorAll('#qtc-form [data-show]').forEach(function (el) {
+      el.hidden = el.dataset.show.split(' ').indexOf(tab) < 0;
+    });
+    var income = ['salary', 'business', 'rental'].indexOf(tab) >= 0;
+    var noValue = tab === 'vehicle' && st.veh !== '231B';
+    $('qtc-amount-field').hidden = noValue;
+    $('qtc-years-field').hidden = !(tab === 'vehicle' && st.veh === '231B2');
+    var label = {
+      salary: 'taxable income', business: 'taxable income', rental: 'rent received'
+    }[tab];
+    $('qtc-income-lbl').textContent = income ? (st.period === 'year' ? 'Yearly ' : 'Monthly ') + label
+      : { s153: 'Gross payment amount', super4c: 'Income for the year', vehicle: 'Vehicle value (invoice price)', property: st.prop === '236K' ? 'Fair market value' : 'Sale price (gross consideration)' }[tab];
+    input.placeholder = income && st.period === 'month' ? 'Enter amount, e.g. 150,000'
+      : tab === 'super4c' ? 'Enter amount, e.g. 600,000,000' : 'Enter amount, e.g. 5,000,000';
+    $('qtc-hint').textContent = hints[tab];
+    render();
+  }
+
+  function pick(attr, val) {
     document.querySelectorAll('#qtc-form [data-' + attr + ']').forEach(function (b) {
       b.setAttribute('aria-checked', b.getAttribute('data-' + attr) === val ? 'true' : 'false');
     });
   }
-
-  document.querySelectorAll('#qtc-form [data-type]').forEach(function (b) {
-    b.addEventListener('click', function () { state.type = b.dataset.type; pick(null, 'type', state.type); render(); });
+  // Arrow keys move between tabs
+  var tabs = Array.prototype.slice.call(document.querySelectorAll('#quick-tax-check [data-tab]'));
+  tabs.forEach(function (b, k) {
+    b.addEventListener('click', function () { setTab(b.dataset.tab); try { b.scrollIntoView({ block: 'nearest', inline: 'nearest', behavior: 'smooth' }); } catch (e) {} });
+    b.addEventListener('keydown', function (e) {
+      var d = e.key === 'ArrowRight' ? 1 : e.key === 'ArrowLeft' ? -1 : 0;
+      if (!d) return;
+      var nb = tabs[(k + d + tabs.length) % tabs.length]; nb.focus(); nb.click();
+    });
   });
   document.querySelectorAll('#qtc-form [data-period]').forEach(function (b) {
     b.addEventListener('click', function () {
-      if (state.period === b.dataset.period) return;
+      if (st.period === b.dataset.period) return;
       var v = num(input.value);
-      state.period = b.dataset.period;
-      v = state.period === 'year' ? v * 12 : v / 12;     // keep the same income, change the unit
+      st.period = b.dataset.period;
+      v = st.period === 'year' ? v * 12 : v / 12;     // keep the same income, change the unit
       input.value = v ? Math.round(v).toLocaleString('en-PK') : '';
-      $('qtc-income-lbl').textContent = (state.period === 'year' ? 'Yearly' : 'Monthly') + ' taxable income';
-      pick(null, 'period', state.period); render();
+      pick('period', st.period); setTab(st.tab);
     });
   });
-  document.querySelectorAll('.qtc-chips [data-amt]').forEach(function (b) {
-    b.addEventListener('click', function () {
-      var v = +b.dataset.amt * (state.period === 'year' ? 12 : 1);
-      input.value = v.toLocaleString('en-PK'); render();
+  [['status', 'status'], ['veh', 'veh'], ['prop', 'prop']].forEach(function (p) {
+    document.querySelectorAll('#qtc-form [data-' + p[0] + ']').forEach(function (b) {
+      b.addEventListener('click', function () { st[p[1]] = b.dataset[p[0]]; pick(p[0], st[p[1]]); setTab(st.tab); });
     });
   });
-  input.addEventListener('input', function () {
-    var pos = input.value.length - input.selectionStart;
-    var v = num(input.value);
-    input.value = v ? Math.floor(v).toLocaleString('en-PK') : '';
-    var p = Math.max(0, input.value.length - pos);
-    try { input.setSelectionRange(p, p); } catch (e) {}
-    render();
-  });
-  render();
+  function money(el) {
+    el.addEventListener('input', function () {
+      var pos = el.value.length - el.selectionStart, v = num(el.value);
+      el.value = v ? Math.floor(v).toLocaleString('en-PK') : '';
+      var p = Math.max(0, el.value.length - pos);
+      try { el.setSelectionRange(p, p); } catch (e) {}
+      render();
+    });
+  }
+  money(input); money(ccIn); money(yrsIn);
+  natureSel.addEventListener('change', render);
+  $('qtc-toggle').addEventListener('click', function () { st.showAll = !st.showAll; render(); });
+  setTab('salary');
 })();
 </script>

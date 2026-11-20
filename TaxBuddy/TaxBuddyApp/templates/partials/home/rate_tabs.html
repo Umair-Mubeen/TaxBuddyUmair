@@ -19,18 +19,18 @@
     <div class="rt-panel" role="tabpanel" id="rt-salary" aria-labelledby="rt-tab-salary">
       <p class="rt-intro">For salaried individuals (salary is more than 75% of taxable income). No surcharge on salaried income from Tax Year 2027.</p>
       <div class="rt-tablewrap"><table class="rt-table">
-        <thead><tr><th scope="col">Annual taxable income (Rs)</th><th scope="col">Tax</th></tr></thead>
-        <tbody>{% for r in rt.salary %}<tr><td>{{ r.range }}</td><td>{{ r.tax }}</td></tr>{% endfor %}</tbody>
+        <thead><tr><th scope="col">S. No.</th><th scope="col">Taxable income</th><th scope="col">Rate of tax</th></tr></thead>
+        <tbody>{% for r in rt.salary %}<tr><td class="rt-no">{{ r.no }}</td><td>{{ r.range }}</td><td>{{ r.tax }}</td></tr>{% endfor %}</tbody>
       </table></div>
-      <div class="rt-foot"><span class="rt-src">Division I, Part I, First Schedule</span><a class="hv2-more" href="{% url 'SalaryCalculator2027' %}">Salary calculator <i class="fas fa-arrow-right" aria-hidden="true"></i></a></div>
+      <div class="rt-foot"><span class="rt-src">Division I, Part I, First Schedule</span><a class="hv2-more" href="{% url 'SalaryCalculator' %}">Salary calculator <i class="fas fa-arrow-right" aria-hidden="true"></i></a></div>
     </div>
 
     <!-- Business / AOP -->
     <div class="rt-panel" role="tabpanel" id="rt-business" aria-labelledby="rt-tab-business" hidden>
       <p class="rt-intro">For business individuals and AOPs. A 10% surcharge (s.4AB) applies on tax where taxable income exceeds Rs 1 crore. For a professional-firm AOP the top rate is 40% instead of 45%.</p>
       <div class="rt-tablewrap"><table class="rt-table">
-        <thead><tr><th scope="col">Annual taxable income (Rs)</th><th scope="col">Tax</th></tr></thead>
-        <tbody>{% for r in rt.business %}<tr><td>{{ r.range }}</td><td>{{ r.tax }}</td></tr>{% endfor %}</tbody>
+        <thead><tr><th scope="col">S. No.</th><th scope="col">Taxable income</th><th scope="col">Rate of tax</th></tr></thead>
+        <tbody>{% for r in rt.business %}<tr><td class="rt-no">{{ r.no }}</td><td>{{ r.range }}</td><td>{{ r.tax }}</td></tr>{% endfor %}</tbody>
       </table></div>
       <div class="rt-foot"><span class="rt-src">Division I, Part I, First Schedule · s.4AB</span><a class="hv2-more" href="{% url 'BusinessCalculator' %}">Business calculator <i class="fas fa-arrow-right" aria-hidden="true"></i></a></div>
     </div>
@@ -53,7 +53,7 @@
       </table></div>
       {% endif %}
       {% if not rt.property and not rt.rent %}<p class="rt-empty">Property rates are being updated. See the <a href="{% url 'Withholding_Tax_Card' %}">WHT &amp; Advance Tax Card</a>.</p>{% endif %}
-      <div class="rt-foot"><span class="rt-src">ss.236C, 236K, 155 · Part IV, First Schedule</span><a class="hv2-more" href="{% url 'karachi_fmv_calculator' %}">Karachi FMV calculator <i class="fas fa-arrow-right" aria-hidden="true"></i></a></div>
+      <div class="rt-foot"><span class="rt-src">ss.236C, 236K, 155 · Part IV, First Schedule</span><a class="hv2-more" href="{% url 'PropertyCalculator' %}">Rental income tax calculator <i class="fas fa-arrow-right" aria-hidden="true"></i></a></div>
     </div>
 
     <!-- Capital gains -->

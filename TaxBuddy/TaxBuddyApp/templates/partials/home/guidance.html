@@ -5,7 +5,7 @@
     <h2 id="hv2-guide-title" class="hv2-h2">Tax Guidance for Your Situation</h2>
     <p class="hv2-lead">Get relevant tax information, calculators and guides based on your profile.</p>
     <div class="hv2-guidance-grid">
-      {% url 'SalaryCalculator2027' as g1 %}{% calc_card g1 'fa-user' 'Salaried Individuals' 'Salary tax, exemptions, reliefs and planning' 'quick' %}
+      {% url 'SalaryCalculator' as g1 %}{% calc_card g1 'fa-user' 'Salaried Individuals' 'Salary tax, exemptions, reliefs and planning' 'quick' %}
       {% url 'BusinessCalculator' as g2 %}{% calc_card g2 'fa-store' 'Business Owners' 'Business income tax, expenses and compliance' 'quick' %}
       {% url 'freelancer_calculator' as g3 %}{% calc_card g3 'fa-laptop' 'Freelancers' 'Tax on freelance income, registration and returns' 'quick' %}
       {% url 'karachi_fmv_calculator' as g4 %}{% calc_card g4 'fa-house' 'Property Owners' 'Property tax, CGT, ATL and FMV rates' 'quick' %}

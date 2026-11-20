@@ -7,7 +7,7 @@
 
 {% block extra_css %}
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@800&display=swap">
-<link rel="stylesheet" href="{% static 'dist/css/home-v2.css' %}">
+<link rel="stylesheet" href="{% static 'dist/css/home-v2.css' %}?v=20261120">
 {% endblock %}
 
 {% block site_header %}{% include 'partials/home/header.html' %}{% endblock %}
@@ -28,6 +28,7 @@
   {% include 'partials/home/updates_guides.html' %}
 </div>
 {% include 'partials/home/faq.html' %}
+<div class="hv2">{% include 'partials/home/contact.html' %}</div>
 <div class="container" style="margin:0 auto 32px;">
   {% include 'partials/ad_unit.html' with slot='1250890492' min_height='120px' %}
 </div>

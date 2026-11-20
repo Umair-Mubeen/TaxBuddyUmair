@@ -51,13 +51,13 @@
       <a href="{% url 'online_services' %}">Services &amp; Pricing</a>
       <a href="{% url 'viewBlogs' %}">Blog</a>
       <a href="{% url 'tax_calendar' %}">Tax Calendar</a>
-      <a href="{% url 'contact' %}">Contact</a>
+      <a href="{% url 'index' %}#contact">Contact</a>
     </div>
 
     <div class="hv2-footer-col hv2-footer-contact">
       <h3>Get in Touch</h3>
       <a href="https://wa.me/923332482742" target="_blank" rel="noopener" class="hv2-footer-wa"><i class="fab fa-whatsapp" aria-hidden="true"></i> +92 333 248 2742</a>
-      <a href="{% url 'contact' %}"><i class="fas fa-envelope" aria-hidden="true"></i> Send a message</a>
+      <a href="{% url 'index' %}#contact"><i class="fas fa-envelope" aria-hidden="true"></i> Send a message</a>
       {% if not merged %}
       <a href="{% url 'online_services' %}" class="hv2-btn hv2-btn--solid hv2-footer-cta">Explore Services <i class="fas fa-arrow-right" aria-hidden="true"></i></a>
       {% endif %}

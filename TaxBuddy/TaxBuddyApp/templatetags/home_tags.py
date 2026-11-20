@@ -51,6 +51,14 @@ _FALLBACK_SLABS = {
 }
 
 
+# Tax Year 2026 (2025-26) salaried slabs, Finance Act 2025 — used only if the DB has no rows.
+_FALLBACK_BY_YEAR = {
+    "2025-2026": {"salary": [[0, 600000, 0, 0, 0], [600001, 1200000, .01, 600000, 0],
+                             [1200001, 2200000, .11, 1200000, 6000], [2200001, 3200000, .23, 2200000, 116000],
+                             [3200001, 4100000, .30, 3200000, 346000], [4100001, None, .35, 4100000, 616000]]},
+}
+
+
 @register.simple_tag
 def income_slabs(year="2026-2027"):
     """Salary and business/AOP slabs for the homepage quick tax check.
@@ -67,7 +75,10 @@ def income_slabs(year="2026-2027"):
                     float(s.rate), float(s.base_income), float(s.base_tax)] for s in qs]
         except Exception:
             out = []
-        return out or _FALLBACK_SLABS[key]
+        if out:
+            return out
+        fb = _FALLBACK_BY_YEAR.get(year, {})
+        return fb.get(key) or (_FALLBACK_SLABS[key] if year == "2026-2027" else [])
 
     return {"year": year,
             "salary": rows(TaxBracket, "salary"),
@@ -91,21 +102,28 @@ def _pct(x):
     return f"{float(x):.2f}".rstrip("0").rstrip(".") + "%"
 
 
+def _fbr_slab_text(i, row):
+    """Wording as in the First Schedule, Part I, Division I table."""
+    lo, hi, rate, base_inc, base_tax = row
+    lo_disp = lo - 1 if lo % 10 == 1 else lo
+    if i == 0 and hi is not None:
+        cond = f"Where taxable income does not exceed Rs. {hi:,.0f}"
+    elif hi is None:
+        cond = f"Where taxable income exceeds Rs. {lo_disp:,.0f}"
+    else:
+        cond = f"Where taxable income exceeds Rs. {lo_disp:,.0f} but does not exceed Rs. {hi:,.0f}"
+    if not rate:
+        tax = "0%"
+    else:
+        tax = (f"Rs. {base_tax:,.0f} + " if base_tax else "") + f"{_pct(rate * 100)} of the amount exceeding Rs. {base_inc:,.0f}"
+    return cond, tax
+
+
 def _slab_rows(rows):
     out = []
-    for i, (lo, hi, rate, base_inc, base_tax) in enumerate(rows):
-        lo_disp = lo - 1 if lo % 10 == 1 else lo
-        if hi is None:
-            rng = f"Above {_lakh(lo_disp)}"
-        elif i == 0:
-            rng = f"Up to {_lakh(hi)}"
-        else:
-            rng = f"{_lakh(lo_disp)} – {_lakh(hi)}"
-        if not rate:
-            tax = "0%"
-        else:
-            tax = (f"Rs {base_tax:,.0f} + " if base_tax else "") + f"{_pct(rate * 100)} of amount above {_lakh(base_inc)}"
-        out.append({"range": rng, "tax": tax, "rate": _pct(rate * 100)})
+    for i, row in enumerate(rows):
+        cond, tax = _fbr_slab_text(i, row)
+        out.append({"no": i + 1, "range": cond, "tax": tax, "rate": _pct(row[2] * 100)})
     return out
 
 
@@ -183,3 +201,148 @@ def rate_tables(year="2026-2027"):
         "property": prop, "rent": rent, "wht_groups": groups,
         "cgt_property_old": CGT_PROPERTY_OLD, "cgt_securities_2022": CGT_SECURITIES_2022,
     }
+
+
+# ───────────────────────── Blog pages ─────────────────────────
+@register.simple_tag
+def blog_categories(limit=12):
+    """Published categories with article counts, most used first, for the blog filter chips."""
+    from django.db.models import Count
+    from django.utils.text import slugify
+    try:
+        rows = (Blog.objects.filter(status="published", is_deleted=False)
+                .exclude(category="").values("category")
+                .annotate(n=Count("id")).order_by("-n")[:limit])
+        return [{"label": r["category"], "slug": slugify(r["category"]), "count": r["n"]} for r in rows]
+    except Exception:
+        return []
+
+
+@register.filter
+def read_minutes(html):
+    """Approximate reading time in minutes (200 words a minute)."""
+    import re
+    words = len(re.sub(r"<[^>]+>", " ", html or "").split())
+    return max(1, round(words / 200))
+
+
+@register.simple_tag
+def salary_compare(new_year="2026-2027", old_year="2025-2026"):
+    """Rows for the salary calculator's slab table: this year's slabs from the DB,
+    with last year's rate at the same income level for comparison."""
+    new = income_slabs(new_year)["salary"]
+    old = income_slabs(old_year)["salary"]
+
+    def old_rate(x):
+        for lo, hi, rate, *_ in old:
+            if hi is None or x <= hi:
+                return rate
+        return old[-1][2] if old else None
+
+    rows = []
+    for i, (lo, hi, rate, base_inc, base_tax) in enumerate(new):
+        lo_disp = lo - 1 if lo % 10 == 1 else lo
+        o = old_rate(lo_disp + 1) if old else None
+        if hi is None:
+            rng, mrng = f"Above {lo_disp:,.0f}", f"Above {lo_disp / 12:,.0f}"
+        elif i == 0:
+            rng, mrng = f"Up to {hi:,.0f}", f"Up to {hi / 12:,.0f}"
+        else:
+            rng, mrng = f"{lo:,.0f} – {hi:,.0f}", f"{lo / 12:,.0f} – {hi / 12:,.0f}"
+        if not rate:
+            formula = "No tax"
+        else:
+            formula = (f"{base_tax:,.0f} + " if base_tax else "") + f"{_pct(rate * 100)} above {base_inc:,.0f}"
+        rows.append({"lo": int(lo), "hi": int(hi) if hi is not None else 999999999999,
+                     "range": rng, "monthly": mrng,
+                     "old": _pct(o * 100) if o is not None else "—", "new": _pct(rate * 100),
+                     "changed": o is not None and abs(o - rate) > 1e-9, "formula": formula})
+    return rows
+
+
+@register.simple_tag
+def wht_rate_map(year="2026-2027"):
+    """{uid: {f, n, kind, section, base, min, max}} for every active WHT rate-card row.
+    Calculator pages mark their options with data-uid; a small script swaps in these
+    database rates so every calculator uses the same figures as the WHT Card."""
+    from ..models import WHTRate
+    out = {}
+    try:
+        for r in WHTRate.objects.filter(tax_year=year, is_active=True):
+            out[r.uid] = {"f": float(r.filer), "n": float(r.non_filer), "kind": r.rate_kind,
+                          "section": r.section, "base": float(r.base_tax) if r.base_tax is not None else None,
+                          "min": r.slab_min, "max": r.slab_max}
+    except Exception:
+        pass
+    return out
+
+
+@register.simple_tag
+def slab_rows(kind="salary", year="2026-2027"):
+    """Slab table rows (range text + tax text) for the calculator pages, from the DB."""
+    rows = income_slabs(year).get(kind) or []
+    out = []
+    for i, row in enumerate(rows):
+        cond, tax = _fbr_slab_text(i, row)
+        out.append({"no": i + 1, "range": cond, "tax": tax})
+    return out
+
+
+# ───────────────────────── Quick Tax Check (all tabs) ─────────────────────────
+# Rental income of individuals / AOPs (s.15, Division VIA, First Schedule) — fallback only.
+_FALLBACK_RENTAL = [[0, 300000, 0, 0, 0], [300001, 600000, .05, 300000, 0],
+                    [600001, 2000000, .10, 600000, 15000], [2000001, None, .25, 2000000, 155000]]
+# Section 4C, Tax Year 2027 (Finance Act 2026), most persons — fallback only.
+_FALLBACK_4C = [[0, 500000000, 0], [500000001, None, .08]]
+_QTC_SECTIONS = ("153", "231B", "234", "236C", "236K")
+
+
+@register.simple_tag
+def quick_check_data(year="2026-2027"):
+    """Everything the homepage Quick Tax Check tabs need, from the same tables as the
+    calculators: income slabs, rental slabs, Section 4C rates and the WHT rows for
+    153 / 231B / 234 / 236C / 236K. Each part falls back to the Finance Act 2026
+    figures only when its table has no rows."""
+    from ..models import Property_Business_AOP_Slab, SuperTax4CRate, WHTRate
+
+    data = income_slabs(year)
+
+    try:
+        rental = [[float(s.income_min), float(s.income_max) if s.income_max is not None else None,
+                   float(s.rate), float(s.base_income), float(s.base_tax)]
+                  for s in Property_Business_AOP_Slab.objects.filter(year=year).order_by("income_min")]
+    except Exception:
+        rental = []
+    data["rental"] = rental or _FALLBACK_RENTAL
+
+    # 4C table is keyed on the tax year number: "2026-2027" -> 2027
+    ty = int(year.split("-")[-1]) if "-" in year else int(year)
+    try:
+        sup = [[float(s.income_from), float(s.income_to) if s.income_to is not None else None, float(s.rate)]
+               for s in SuperTax4CRate.objects.filter(tax_year=ty).order_by("income_from")]
+    except Exception:
+        sup = []
+    data["super4c"] = sup or (_FALLBACK_4C if ty == 2027 else [])
+    data["tax_year"] = ty
+
+    wht = []
+    try:
+        for r in (WHTRate.objects.filter(tax_year=year, is_active=True, section__in=[
+                  "153", "153(1)(a)", "153(1)(b)", "153(1)(c)", "153(2A)", "231B", "231B(2)", "234", "236C", "236K"])
+                  .order_by("sort_order", "id")):
+            wht.append({"uid": r.uid, "section": r.section, "name": r.name, "sub": r.sub,
+                        "kind": r.rate_kind, "f": float(r.filer), "n": float(r.non_filer),
+                        "type": r.tax_type, "nature": r.nature})
+    except Exception:
+        wht = []
+    if not wht:
+        try:
+            from ..management.commands.seed_wht_calc_2026 import ROWS, YEAR
+            if YEAR == year:
+                wht = [{"uid": t[0], "section": t[1], "name": t[3], "sub": t[4], "kind": t[5],
+                        "f": float(t[6]), "n": float(t[8]), "type": t[10], "nature": t[9]}
+                       for t in ROWS if t[1].split("(")[0] in _QTC_SECTIONS]
+        except Exception:
+            wht = []
+    data["wht"] = wht
+    return data
