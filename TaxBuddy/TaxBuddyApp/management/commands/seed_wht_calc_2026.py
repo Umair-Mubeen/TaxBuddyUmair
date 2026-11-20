@@ -92,7 +92,7 @@ ROWS = [
     ('153_ecom_2627', '153(2A)', 'services', 'E-commerce (digital/banking payment)', '', 'percentage', 1, 1, 2, 'WHT', 'Adjustable', None, None, None),
     ('153_fmcg_2627', '153', 'goods', 'Distributors / dealers of FMCG (on ATL)', 'Second Schedule reduced rate', 'percentage', 0.25, 0.25, 0.5, 'WHT', 'Minimum Tax', None, None, None),
     ('153_export_svc_2627', '153(1)(b)', 'services', 'Export house — stitching/dyeing/printing/embroidery/washing', '', 'percentage', 1, 1, 2, 'WHT', 'Minimum Tax', None, None, None),
-    ('153_ecom_cod_2627', '153(2A)', 'services', 'E-commerce (cash on delivery, collected by courier)', '', 'percentage', 2, 2, 2, 'WHT', 'Minimum Tax', None, None, None),
+    ('153_ecom_cod_2627', '153(2A)', 'services', 'E-commerce (cash on delivery, collected by courier)', '', 'percentage', 2, 2, 4, 'WHT', 'Adjustable', None, None, None),
 
     # ---- IMPORTS / EXPORTS ----
     ('148_p1_2627', '148', 'imports', 'Import — Part I, Twelfth Schedule', '', 'percentage', 1, 1, 2, 'Advance Tax', 'Minimum Tax', None, None, None),
@@ -122,16 +122,16 @@ ROWS = [
     ('231B_2500_2627', '231B', 'vehicles', 'Vehicle registration — 2,001–2,500 CC', '% of value', 'percentage', 7, 7, 21, 'Advance Tax', 'Adjustable', None, None, None),
     ('231B_3000_2627', '231B', 'vehicles', 'Vehicle registration — 2,501–3,000 CC', '% of value', 'percentage', 9, 9, 27, 'Advance Tax', 'Adjustable', None, None, None),
     ('231B_over3000_2627', '231B', 'vehicles', 'Vehicle registration — above 3,000 CC', '% of value', 'percentage', 12, 12, 36, 'Advance Tax', 'Adjustable', None, None, None),
-    # ---- VEHICLES: 231B(2) transfer of registration (fixed Rs; non-filer 3x per Tenth Schedule; -10% per year from first registration) ----
-    ('231B2_850_2627', '231B(2)', 'vehicles', 'Vehicle transfer — up to 850 CC', 'Fixed; reduced 10% each year from first registration', 'fixed', 0, 0, 0, 'Advance Tax', 'Adjustable', None, None, None),
-    ('231B2_1000_2627', '231B(2)', 'vehicles', 'Vehicle transfer — 851–1,000 CC', 'Fixed; reduced 10% each year from first registration', 'fixed', 5000, 5000, 15000, 'Advance Tax', 'Adjustable', None, None, None),
-    ('231B2_1300_2627', '231B(2)', 'vehicles', 'Vehicle transfer — 1,001–1,300 CC', 'Fixed; reduced 10% each year from first registration', 'fixed', 7500, 7500, 22500, 'Advance Tax', 'Adjustable', None, None, None),
-    ('231B2_1600_2627', '231B(2)', 'vehicles', 'Vehicle transfer — 1,301–1,600 CC', 'Fixed; reduced 10% each year from first registration', 'fixed', 12500, 12500, 37500, 'Advance Tax', 'Adjustable', None, None, None),
-    ('231B2_1800_2627', '231B(2)', 'vehicles', 'Vehicle transfer — 1,601–1,800 CC', 'Fixed; reduced 10% each year from first registration', 'fixed', 18750, 18750, 56250, 'Advance Tax', 'Adjustable', None, None, None),
-    ('231B2_2000_2627', '231B(2)', 'vehicles', 'Vehicle transfer — 1,801–2,000 CC', 'Fixed; reduced 10% each year from first registration', 'fixed', 25000, 25000, 75000, 'Advance Tax', 'Adjustable', None, None, None),
-    ('231B2_2500_2627', '231B(2)', 'vehicles', 'Vehicle transfer — 2,001–2,500 CC', 'Fixed; reduced 10% each year from first registration', 'fixed', 37500, 37500, 112500, 'Advance Tax', 'Adjustable', None, None, None),
-    ('231B2_3000_2627', '231B(2)', 'vehicles', 'Vehicle transfer — 2,501–3,000 CC', 'Fixed; reduced 10% each year from first registration', 'fixed', 50000, 50000, 150000, 'Advance Tax', 'Adjustable', None, None, None),
-    ('231B2_over3000_2627', '231B(2)', 'vehicles', 'Vehicle transfer — above 3,000 CC', 'Fixed; reduced 10% each year from first registration', 'fixed', 62500, 62500, 187500, 'Advance Tax', 'Adjustable', None, None, None),
+    # ---- VEHICLES: 231B(2) transfer of registration (fixed Rs; non-filer 3x per Tenth Schedule; -10% per year; nil after 5 years, s.231B(2) proviso) ----
+    ('231B2_850_2627', '231B(2)', 'vehicles', 'Vehicle transfer — up to 850 CC', 'Fixed; reduced 10% a year, nil after 5 years from first registration', 'fixed', 0, 0, 0, 'Advance Tax', 'Adjustable', None, None, None),
+    ('231B2_1000_2627', '231B(2)', 'vehicles', 'Vehicle transfer — 851–1,000 CC', 'Fixed; reduced 10% a year, nil after 5 years from first registration', 'fixed', 5000, 5000, 15000, 'Advance Tax', 'Adjustable', None, None, None),
+    ('231B2_1300_2627', '231B(2)', 'vehicles', 'Vehicle transfer — 1,001–1,300 CC', 'Fixed; reduced 10% a year, nil after 5 years from first registration', 'fixed', 7500, 7500, 22500, 'Advance Tax', 'Adjustable', None, None, None),
+    ('231B2_1600_2627', '231B(2)', 'vehicles', 'Vehicle transfer — 1,301–1,600 CC', 'Fixed; reduced 10% a year, nil after 5 years from first registration', 'fixed', 12500, 12500, 37500, 'Advance Tax', 'Adjustable', None, None, None),
+    ('231B2_1800_2627', '231B(2)', 'vehicles', 'Vehicle transfer — 1,601–1,800 CC', 'Fixed; reduced 10% a year, nil after 5 years from first registration', 'fixed', 18750, 18750, 56250, 'Advance Tax', 'Adjustable', None, None, None),
+    ('231B2_2000_2627', '231B(2)', 'vehicles', 'Vehicle transfer — 1,801–2,000 CC', 'Fixed; reduced 10% a year, nil after 5 years from first registration', 'fixed', 25000, 25000, 75000, 'Advance Tax', 'Adjustable', None, None, None),
+    ('231B2_2500_2627', '231B(2)', 'vehicles', 'Vehicle transfer — 2,001–2,500 CC', 'Fixed; reduced 10% a year, nil after 5 years from first registration', 'fixed', 37500, 37500, 112500, 'Advance Tax', 'Adjustable', None, None, None),
+    ('231B2_3000_2627', '231B(2)', 'vehicles', 'Vehicle transfer — 2,501–3,000 CC', 'Fixed; reduced 10% a year, nil after 5 years from first registration', 'fixed', 50000, 50000, 150000, 'Advance Tax', 'Adjustable', None, None, None),
+    ('231B2_over3000_2627', '231B(2)', 'vehicles', 'Vehicle transfer — above 3,000 CC', 'Fixed; reduced 10% a year, nil after 5 years from first registration', 'fixed', 62500, 62500, 187500, 'Advance Tax', 'Adjustable', None, None, None),
 
     # ---- OTHER ----
     ('236CB_2627', '236CB', 'other', 'Functions & gatherings', 'On total bill', 'percentage', 10, 10, 20, 'Advance Tax', 'Adjustable', None, None, None),

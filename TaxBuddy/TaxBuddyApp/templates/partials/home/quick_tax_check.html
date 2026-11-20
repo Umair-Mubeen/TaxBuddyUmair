@@ -155,7 +155,18 @@
   // ---- Withholding rows from the DB, grouped by section ----
   var wht = data.wht || [];
   var bySec = function (re) { return wht.filter(function (w) { return re.test(w.section); }); };
-  var w153 = bySec(/^153/);
+  // Section 153 grouped the same way as the Section 153 calculator page
+  var G153 = [
+    ['153(1)(a) · Sale / supply of goods', function (w) { return w.section === '153(1)(a)' || w.section === '153'; }],
+    ['153(1)(b) · Services (specified, 7%)', function (w) { return w.section === '153(1)(b)' && +w.f === 7; }],
+    ['153(1)(b) · Services (other rates)', function (w) { return w.section === '153(1)(b)'; }],
+    ['153(1)(c) · Execution of contract', function (w) { return w.section === '153(1)(c)'; }],
+    ['153(2A) · E-commerce', function (w) { return w.section === '153(2A)'; }]
+  ];
+  var grp153 = function (w) { for (var g = 0; g < G153.length; g++) if (G153[g][1](w)) return g; return G153.length; };
+  var w153 = bySec(/^153/).map(function (w, k) { return { w: w, g: grp153(w), k: k }; })
+    .sort(function (x, y) { return x.g - y.g || x.k - y.k; })
+    .map(function (x) { return x.w; });
   // CC / value band from the uid: 231B_1300_2627 -> up to 1,300 CC; the last row of a section has no limit
   function banded(rows) {
     return rows.map(function (w, k) {
@@ -167,9 +178,19 @@
   var k236 = bySec(/^236K$/).map(function (w, k, a) { return { w: w, max: k === a.length - 1 ? Infinity : [50e6, 100e6][k] }; });
   var c236 = bySec(/^236C$/).map(function (w) { return { w: w, max: Infinity }; });
 
-  natureSel.innerHTML = w153.map(function (w, k) {
-    return '<option value="' + k + '">' + w.name.replace(/</g, '&lt;') + ' — ' + pct(w.f) + '</option>';
-  }).join('');
+  natureSel.innerHTML = (function () {
+    var html = '', open = -1;
+    w153.forEach(function (w, k) {
+      var g = grp153(w);
+      if (g !== open) {
+        if (open !== -1) html += '</optgroup>';
+        html += '<optgroup label="' + (G153[g] ? G153[g][0] : 'Other') + '">';
+        open = g;
+      }
+      html += '<option value="' + k + '">' + w.name.replace(/</g, '&lt;') + ' — ' + pct(w.f) + '</option>';
+    });
+    return html + (open !== -1 ? '</optgroup>' : '');
+  })();
 
   var links = {
     salary: "{% url 'SalaryCalculator' %}", business: "{% url 'BusinessCalculator' %}",
@@ -192,7 +213,7 @@
     rental: 'Enter gross rent received from property. Individuals and AOPs are taxed on rent under section 15.',
     s153: 'Enter the gross amount of the payment or invoice. Tax is withheld by the payer.',
     super4c: 'Enter income for 4C purposes (taxable income + exempt income + deemed / final tax income) for the year.',
-    vehicle: 'Registration: % of vehicle value. Transfer: fixed by CC, reduced 10% for each year since first registration. Token: fixed by CC.',
+    vehicle: 'Registration: % of vehicle value. Transfer: fixed by CC, reduced 10% a year and nil after 5 years from first registration. Token: fixed by CC.',
     property: 'Enter the gross sale price (236C) or fair market value (236K) of the property.'
   };
 
@@ -310,16 +331,16 @@
       case 'vehicle':
         var cc = num(ccIn.value), list = veh[st.veh];
         var token = st.veh === '234', transfer = st.veh === '231B2', fixed = token || transfer;
-        // 231B(2): reduced by 10% each year from first registration (nil after 10 years)
-        var yrs = Math.min(10, Math.floor(num(yrsIn.value)));
+        // 231B(2): First Schedule reduces it 10% a year; s.231B(2) proviso — nothing collected after 5 years
+        var yrs = Math.floor(num(yrsIn.value)), nil5 = yrs >= 5;
         return whtTab(list, band(list, cc), amt, {
           has: !!cc && (fixed || !!amt) && !!list.length,
           empty: token ? 'Enter engine CC to see the annual token tax.' : transfer ? 'Enter engine CC (and years since first registration) to see the transfer tax.' : 'Enter engine CC and vehicle value to see the registration tax.',
           taxLbl: token ? 'Advance tax with token (per year)' : transfer ? 'Advance tax on transfer' : 'Advance tax at registration',
-          adjust: transfer ? function (v) { return v * (1 - yrs / 10); } : null,
-          adjNote: transfer && yrs ? ' less ' + (yrs * 10) + '% (' + yrs + ' year' + (yrs > 1 ? 's' : '') + ' since first registration)' : '',
+          adjust: transfer ? function (v) { return nil5 ? 0 : v * (1 - yrs / 10); } : null,
+          adjNote: transfer && yrs ? (nil5 ? ' — nil, vehicle first registered 5 or more years ago (s.231B(2) proviso)' : ' less ' + (yrs * 10) + '% (' + yrs + ' year' + (yrs > 1 ? 's' : '') + ' since first registration)') : '',
           third: token ? function (t) { return ['Per month equivalent', fmt(t / 12)]; }
-               : transfer ? function () { return ['Reduction for age', (yrs * 10) + '%']; }
+               : transfer ? function () { return ['Reduction for age', nil5 ? 'Nil after 5 yrs' : (yrs * 10) + '%']; }
                : function (t) { return ['Value + tax', fmt(amt + t)]; },
           col: 'Engine capacity', noun: 'CC bands', short: true, prefix: 'Advance tax u/s '
         });

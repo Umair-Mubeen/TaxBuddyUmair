@@ -152,8 +152,8 @@
           </optgroup>
 
           <optgroup label="── 153(2A) · E-commerce ──">
-            <option data-uid="153_ecom_2627" data-f="1" data-n="1" data-s="153(2A)">Digitally ordered — digital/banking payment</option>
-            <option data-uid="153_ecom_cod_2627" data-f="2" data-n="2" data-s="153(2A)">Digitally ordered — Cash on Delivery (courier)</option>
+            <option data-uid="153_ecom_2627" data-f="1" data-n="2" data-s="153(2A)">Digitally ordered — digital/banking payment</option>
+            <option data-uid="153_ecom_cod_2627" data-f="2" data-n="4" data-s="153(2A)">Digitally ordered — Cash on Delivery (courier)</option>
           </optgroup>
         </select>
       </div>
@@ -183,6 +183,7 @@
     function natureOf(opt){
       var t=opt.text.toLowerCase(), s=opt.dataset.s;
       // Goods/contracts by a company → adjustable if manufacturer/listed, else minimum
+      if(s.indexOf('2A')>-1) return '<b>Adjustable</b> — s.153(3) makes only sub-sections (1) and (2) minimum tax';
       if((t.indexOf('goods')>-1 || t.indexOf('contract')>-1) && t.indexOf('company')>-1 && s.indexOf('2A')===-1)
         return 'Minimum tax — <b>Adjustable</b> if the company is a manufacturer (goods) or listed on PSX';
       return 'Minimum tax';
@@ -206,7 +207,7 @@
     </script>
 
     <div class="s153-box-amber">
-      <strong>⚠️ Note:</strong> Non-filer rate = filer rate increased by 100% (Tenth Schedule), except e-commerce (flat). <strong>No deduction thresholds:</strong> goods payments under Rs 75,000/year and services under Rs 30,000/year in aggregate are exempt. Most 153 deductions are <strong>minimum tax</strong>. The ATL status is checked on the date of payment —
+      <strong>⚠️ Note:</strong> Non-filer rate = filer rate increased by 100% (Tenth Schedule, rule 1) — this includes e-commerce under 153(2A). <strong>No deduction thresholds:</strong> goods payments under Rs 75,000/year and services under Rs 30,000/year in aggregate are exempt. Most 153 deductions are <strong>minimum tax</strong>. The ATL status is checked on the date of payment —
       <a href="{% url 'atl_check' %}" style="font-weight:700;">Check ATL status →</a>
     </div>
 
@@ -299,10 +300,10 @@
     <h3>153(2A) — E-commerce (digitally ordered)</h3>
     <div class="rate-card">
       <table>
-        <thead><tr><th>Payment</th><th>Rate</th><th>Collected by</th><th>Nature of Tax</th></tr></thead>
+        <thead><tr><th>Payment</th><th>Filer</th><th>Non-Filer</th><th>Collected by</th><th>Nature of Tax</th></tr></thead>
         <tbody>
-          <tr><td>Digital / banking channel payment</td><td class="vf">1%</td><td>Payment intermediary</td><td class="nat">Minimum</td></tr>
-          <tr><td>Cash on Delivery (collected by courier)</td><td class="vf">2%</td><td>Courier business</td><td class="nat">Minimum</td></tr>
+          <tr><td>Digital / banking channel payment</td><td class="vf">1%</td><td class="vn">2%</td><td>Payment intermediary</td><td class="nat">Adjustable</td></tr>
+          <tr><td>Cash on Delivery (collected by courier)</td><td class="vf">2%</td><td class="vn">4%</td><td>Courier business</td><td class="nat">Adjustable</td></tr>
         </tbody>
       </table>
     </div>
