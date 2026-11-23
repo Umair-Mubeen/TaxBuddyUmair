@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 {% load static %}
 {% block title %}Pakistan Tax Calendar 2026-27 — FBR Due Dates | TaxBuddy Umair{% endblock %}
-{% block meta_desc %}Complete Pakistan tax calendar 2026-27. All FBR due dates — income tax return (30 Sep), sales tax (15th monthly), withholding statements, advance tax quarters. Never miss a deadline.{% endblock %}
+{% block meta_desc %}Complete Pakistan tax calendar 2026-27. All FBR due dates — income tax return (30 Sep), sales tax (payment 15th, return 18th monthly), quarterly withholding statements, advance tax quarters. Never miss a deadline.{% endblock %}
 
 {% block extra_css %}
 <style>
@@ -110,7 +110,7 @@
         <div class="cal-date" style="background:#fffbeb;"><div class="cal-date-day" style="font-size:14px;color:#92400e;">Rules</div><div class="cal-date-label">Prescribed</div></div>
         <div>
           <div style="font-weight:600;color:var(--navy);margin-bottom:4px;">WHT Deposit — Section 160 <span class="badge-monthly">Monthly</span></div>
-          <div style="font-size:13px;color:var(--text-mid);">Section 160 requires WHT to be deposited <strong>"within the time and manner as may be prescribed"</strong> — exact date is specified in Income Tax Rules 2002, not the statute itself. Salary WHT (Sec 149): by 7th of following month. Other WHT: within 7 days of deduction.</div>
+          <div style="font-size:13px;color:var(--text-mid);">Section 160 requires WHT to be deposited <strong>"within the time and manner as may be prescribed"</strong> — the time is set by <strong>Rule 43, Income Tax Rules 2002</strong>. Federal / Provincial Government: on the same day the tax is deducted or collected. All other withholding agents (including salary WHT under Sec 149): within <strong>7 days from the end of each week ending on Sunday</strong>.</div>
         </div>
       </div>
 
@@ -159,33 +159,34 @@
       <!-- Advance Tax Section 147 -->
       <div style="background:#ede9fe;padding:10px 20px;border-bottom:1px solid var(--border);border-top:1px solid var(--border);margin-top:8px;">
         <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:#4C1D95;">Advance Tax — Section 147 — Quarterly</div>
+        <div style="font-size:12.5px;color:#4C1D95;margin-top:4px;">Dates below are for companies &amp; AOPs (Sec 147(5A)): 25 Sep, 25 Dec, 25 Mar, 15 Jun. Individuals pay on 15 Sep, 15 Dec, 15 Mar and 15 Jun (Sec 147(5)).</div>
       </div>
       <div class="cal-event">
         <div class="cal-date"><div class="cal-date-day">25</div><div class="cal-date-label">Sep 2026</div></div>
         <div>
           <div style="font-weight:600;color:var(--navy);margin-bottom:4px;">Q1 Advance Tax <span class="badge-quarterly">Quarter 1</span></div>
-          <div style="font-size:13px;color:var(--text-mid);">First quarter advance tax — July to September 2026</div>
+          <div style="font-size:13px;color:var(--text-mid);">First quarter advance tax — July to September 2026. Individuals: 15 September.</div>
         </div>
       </div>
       <div class="cal-event">
         <div class="cal-date"><div class="cal-date-day">25</div><div class="cal-date-label">Dec 2026</div></div>
         <div>
           <div style="font-weight:600;color:var(--navy);margin-bottom:4px;">Q2 Advance Tax <span class="badge-quarterly">Quarter 2</span></div>
-          <div style="font-size:13px;color:var(--text-mid);">Second quarter advance tax — October to December 2026</div>
+          <div style="font-size:13px;color:var(--text-mid);">Second quarter advance tax — October to December 2026. Individuals: 15 December.</div>
         </div>
       </div>
       <div class="cal-event">
         <div class="cal-date"><div class="cal-date-day">25</div><div class="cal-date-label">Mar 2027</div></div>
         <div>
           <div style="font-weight:600;color:var(--navy);margin-bottom:4px;">Q3 Advance Tax <span class="badge-quarterly">Quarter 3</span></div>
-          <div style="font-size:13px;color:var(--text-mid);">Third quarter advance tax — January to March 2027</div>
+          <div style="font-size:13px;color:var(--text-mid);">Third quarter advance tax — January to March 2027. Individuals: 15 March.</div>
         </div>
       </div>
       <div class="cal-event">
         <div class="cal-date"><div class="cal-date-day">15</div><div class="cal-date-label">Jun 2027</div></div>
         <div>
           <div style="font-weight:600;color:var(--navy);margin-bottom:4px;">Q4 Advance Tax <span class="badge-quarterly">Quarter 4</span></div>
-          <div style="font-size:13px;color:var(--text-mid);">Fourth quarter advance tax — April to June 2027</div>
+          <div style="font-size:13px;color:var(--text-mid);">Fourth quarter advance tax — April to June 2027. Same date (15 June) for individuals.</div>
         </div>
       </div>
     </div>
@@ -200,14 +201,14 @@
         <div class="cal-date"><div class="cal-date-day">30</div><div class="cal-date-label">Sep 2026</div></div>
         <div>
           <div style="font-weight:600;color:var(--navy);margin-bottom:4px;">Income Tax Return — Individuals <span class="badge-critical">Critical</span></div>
-          <div style="font-size:13px;color:var(--text-mid);">Deadline to file income tax return for Tax Year 2026-27 (July 2025 – June 2026). Section 118, ITO 2001. Penalty: Rs. 40,000 minimum under Section 182.</div>
+          <div style="font-size:13px;color:var(--text-mid);">Statutory due date (Section 118, ITO 2001) for the Tax Year 2026 return (July 2025 – June 2026) — extended by FBR to <strong>31 October 2026</strong>. The Tax Year 2027 return (July 2026 – June 2027) is due 30 September 2027. Late filing penalty under Section 182 — see below.</div>
         </div>
       </div>
       <div class="cal-event">
         <div class="cal-date"><div class="cal-date-day">31</div><div class="cal-date-label">Dec 2026</div></div>
         <div>
           <div style="font-weight:600;color:var(--navy);margin-bottom:4px;">Income Tax Return — Companies <span class="badge-annual">Annual</span></div>
-          <div style="font-size:13px;color:var(--text-mid);">Companies with special tax year ending December 31. Section 118, ITO 2001.</div>
+          <div style="font-size:13px;color:var(--text-mid);">Companies whose tax year ends between 1 January and 30 June file by 31 December — Section 118(3), ITO 2001.</div>
         </div>
       </div>
       <div class="cal-event">
@@ -217,24 +218,16 @@
           <div style="font-size:13px;color:var(--text-mid);">Mandatory wealth statement with annual return. Declare all assets, liabilities, and foreign assets. Filed alongside income tax return.</div>
         </div>
       </div>
-      <div class="cal-event">
-        <div class="cal-date"><div class="cal-date-day">31</div><div class="cal-date-label">Jan 2026</div></div>
-        <div>
-          <div style="font-weight:600;color:var(--navy);margin-bottom:4px;">Annual WHT Statement <span class="badge-annual">Annual</span></div>
-          <div style="font-size:13px;color:var(--text-mid);">Annual withholding tax statement for Tax Year 2026. Submit on IRIS portal under Section 165.</div>
-        </div>
-      </div>
     </div>
 
     <!-- Penalties -->
     <div style="background:#fef2f2;border:1px solid #fca5a5;border-radius:var(--radius-lg);padding:20px;">
-      <h3 style="font-size:15px;font-weight:700;color:#dc2626;margin:0 0 12px;">⚠️ Penalties for Late Filing — Section 182</h3>
+      <h3 style="font-size:15px;font-weight:700;color:#dc2626;margin:0 0 12px;">⚠️ Penalties for Late Filing &amp; Deposit — ITO 2001 &amp; STA 1990</h3>
       <div style="font-size:13.5px;color:#991b1b;line-height:1.8;">
-        <div>• Late return filing: <strong>Rs. 1,000 per day</strong> (minimum Rs. 10,000, maximum Rs. 50,000)</div>
-        <div>• Late WHT deposit (Sec 160): <strong>12% per annum</strong> default surcharge — per Income Tax Rules</div>
-        <div>• Late WHT statement (Sec 165): <strong>Rs. 2,500 per day</strong> of default</div>
-        <div>• Non-filing: <strong>Minimum Rs. 40,000</strong> penalty</div>
-        <div>• Late sales tax return: <strong>Rs. 10,000</strong> per return</div>
+        <div>• Late return filing (Sec 182, S.No.1): <strong>higher of 0.1% of tax payable per day or Rs. 1,000 per day</strong> — minimum Rs. 10,000 (where 75%+ of income is salary) or Rs. 50,000 (others); maximum 200% of tax payable. Reduced to 75% / 50% / 25% if filed within 1 / 2 / 3 months of the due date</div>
+        <div>• Late WHT deposit (Sec 160): <strong>default surcharge under Sec 205</strong> — higher of 12% per annum or KIBOR + 3%</div>
+        <div>• Late WHT statement (Sec 165): <strong>Rs. 50,000</strong> if tax was paid and the statement is filed within 90 days; otherwise <strong>Rs. 2,500 per day</strong>, minimum Rs. 10,000</div>
+        <div>• Late sales tax return (STA 1990, Sec 33(1)): <strong>Rs. 50,000</strong>, or <strong>Rs. 2,000 per day</strong> if filed within 10 days of the due date</div>
       </div>
     </div>
 

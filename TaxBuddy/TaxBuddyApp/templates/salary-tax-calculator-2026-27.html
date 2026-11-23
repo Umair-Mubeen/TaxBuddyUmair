@@ -1,9 +1,9 @@
 {% extends 'base.html' %}
 {% load static %}
 
-{% block title %}Salary Tax Calculator 2026-27 Pakistan — Proposed Budget Slabs | TaxBuddy Umair{% endblock %}
-{% block meta_desc %}Free salary tax calculator for Pakistan 2026-27 based on the proposed Finance Bill 2026 budget slabs. Instantly check your monthly tax deduction, take-home pay, and how much you save vs 2025-26.{% endblock %}
-{% block schema_extra %}{% include 'partials/schema_calculator.html' with calc_name='Salary Tax Calculator 2026-27 Pakistan (Proposed Budget Slabs)' calc_url='/salary-tax-calculator-2026-27/' %}{% endblock %}
+{% block title %}Salary Tax Calculator 2026-27 Pakistan — Finance Act 2026 Slabs | TaxBuddy Umair{% endblock %}
+{% block meta_desc %}Free salary tax calculator for Pakistan 2026-27 based on the salary tax slabs enacted by the Finance Act 2026. Instantly check your monthly tax deduction, take-home pay, and how much you save vs 2025-26.{% endblock %}
+{% block schema_extra %}{% include 'partials/schema_calculator.html' with calc_name='Salary Tax Calculator 2026-27 Pakistan (Finance Act 2026 Slabs)' calc_url='/salary-tax-calculator-2026-27/' %}{% endblock %}
 
 {% block extra_css %}
 <style>
@@ -98,8 +98,8 @@
     </div>
     <h1>Salary Tax Calculator Pakistan 2026-27</h1>
     <div class="article-meta">
-      <span>🧾 Proposed Budget 2026-27</span>
-      <span>📅 Effective 1 July 2026 (if passed)</span>
+      <span>🧾 Finance Act 2026</span>
+      <span>📅 Effective 1 July 2026 (Tax Year 2027)</span>
       <span>👤 Salaried Individuals</span>
     </div>
   </div>
@@ -109,10 +109,10 @@
   <main class="content-main">
 <div class="stc26">
 
-  <!-- Proposed status notice -->
+  <!-- Status notice -->
   <div class="notice">
     <span style="font-size:16px;line-height:1.3;flex-shrink:0;">⚠️</span>
-    <p><strong>These are proposed rates.</strong> The slabs below come from the <strong>Finance Bill 2026</strong> presented in the National Assembly on 12 June 2026. They are <strong>not yet law</strong> and may change before the Finance Act is passed. They are intended to take effect from <strong>1 July 2026 (Tax Year 2027)</strong>. This tool gives an estimate for educational use only — always verify the final slabs on the <a href="https://www.fbr.gov.pk" target="_blank" rel="noopener" style="color:#92400e;text-decoration:underline;font-weight:600;">FBR portal</a> once notified.</p>
+    <p><strong>These are the enacted rates.</strong> The slabs below are from Division I, Part I of the First Schedule to the Income Tax Ordinance 2001, as amended by the <strong>Finance Act 2026</strong>. They apply from <strong>1 July 2026 (Tax Year 2027)</strong>. This tool gives an estimate for educational use only — always check the latest position on the <a href="https://www.fbr.gov.pk" target="_blank" rel="noopener" style="color:#92400e;text-decoration:underline;font-weight:600;">FBR portal</a> for any later amendment.</p>
   </div>
 
   <!-- Calculator -->
@@ -141,7 +141,7 @@
 
     <div class="result" id="stc-result" aria-live="polite">
       <div class="breakdown">
-        <div class="bd-head">Tax Calculation for Tax Year : 2026-2027 (Proposed)</div>
+        <div class="bd-head">Tax Calculation for Tax Year : 2026-2027</div>
         <div class="bd-row"><span>Monthly Income</span><strong id="b-monthly">—</strong></div>
         <div class="bd-row"><span>Yearly Income</span><strong id="b-yearly">—</strong></div>
         <div class="bd-row hl"><span>Applicable Tax Bracket</span><strong id="b-bracket">—</strong></div>
@@ -164,8 +164,8 @@
 
   <!-- Full slab table -->
   <div class="card">
-    <h2>Proposed salary tax slabs 2026-27</h2>
-    <p class="sub">Complete slab structure for salaried individuals under the Finance Bill 2026. Changed slabs are highlighted; the four middle slabs were cut and the high-earner surcharge was abolished. Your current slab is highlighted when you calculate.</p>
+    <h2>Salary tax slabs 2026-27 (Finance Act 2026)</h2>
+    <p class="sub">Complete slab structure for salaried individuals under the Finance Act 2026. Changed slabs are highlighted; the four middle slabs were cut and the high-earner surcharge was abolished. Your current slab is highlighted when you calculate.</p>
     <div class="tbl-wrap">
       <table>
         <thead>
@@ -183,13 +183,13 @@
         </tbody>
       </table>
     </div>
-    <p class="sub" style="margin:14px 0 0">The 9% surcharge that applied to salaried income above Rs 10 million in 2025-26 has been <strong>abolished</strong> for 2026-27. Source: Finance Bill 2026, presented 12 June 2026.</p>
+    <p class="sub" style="margin:14px 0 0">The 9% surcharge that applied to salaried income above Rs 10 million in 2025-26 has been <strong>abolished</strong> for 2026-27. Source: Income Tax Ordinance 2001 (s.4AB and First Schedule), as amended by the Finance Act 2026.</p>
   </div>
 
   <!-- Worked examples (clickable, every slab) -->
   <div class="card">
     <h2>What you actually pay — examples</h2>
-    <p class="sub">One example per slab, on monthly gross salary, using the proposed 2026-27 rates. <strong>Tap any card</strong> to load it into the calculator.</p>
+    <p class="sub">One example per slab, on monthly gross salary, using the 2026-27 rates. <strong>Tap any card</strong> to load it into the calculator.</p>
     <div class="ex-grid">
 
       <div class="ex" tabindex="0" role="button" onclick="stcLoad(50000)" onkeypress="if(event.key==='Enter')stcLoad(50000)">
@@ -272,30 +272,30 @@
     <h2>Frequently asked questions</h2>
     <details>
       <summary>Are these 2026-27 tax rates final?</summary>
-      <div class="ans">No. They are proposed in the Finance Bill 2026 presented on 12 June 2026 and become law only after the National Assembly passes the Finance Act. They are intended to apply from 1 July 2026 (Tax Year 2027). Verify the final notified slabs on the FBR portal before relying on them.</div>
+      <div class="ans">Yes. The Finance Act 2026 enacted these slabs, and they apply from 1 July 2026 (Tax Year 2027). Check the FBR portal for any later amendment before relying on them.</div>
     </details>
     <details>
       <summary>What is the tax-free salary limit for 2026-27?</summary>
-      <div class="ans">Annual income up to Rs 600,000 (Rs 50,000 per month) remains fully tax-free for salaried individuals under the proposed slabs. Income above that is taxed progressively from 1% up to 35%.</div>
+      <div class="ans">Annual income up to Rs 600,000 (Rs 50,000 per month) remains fully tax-free for salaried individuals under the 2026-27 slabs. Income above that is taxed progressively from 1% up to 35%.</div>
     </details>
     <details>
-      <summary>Who benefits most from the proposed changes?</summary>
+      <summary>Who benefits most from the 2026-27 changes?</summary>
       <div class="ans">The rate cuts apply to the four slabs covering annual income from Rs 2.2 million to Rs 7 million (roughly Rs 183,000 to Rs 583,000 per month). Earners below Rs 183,000 per month see no change in their slab rate. The largest percentage-point cut is in the Rs 3.2–4.1 million band (30% to 25%), and high earners also benefit from the abolished surcharge.</div>
     </details>
     <details>
       <summary>Has the surcharge been removed?</summary>
-      <div class="ans">Yes. The 9% surcharge that applied to salaried income above Rs 10 million has been abolished in the proposed 2026-27 budget.</div>
+      <div class="ans">Yes. The 9% surcharge that applied to salaried income above Rs 10 million has been abolished for salaried individuals from Tax Year 2027 by the Finance Act 2026 (Section 4AB).</div>
     </details>
     <details>
       <summary>Does this calculator include allowances or tax credits?</summary>
-      <div class="ans">No. It estimates tax on gross salary using the proposed slabs only. It does not account for provident fund, medical allowance, bonuses, tax credits, or other adjustments, which can change your final liability. Treat the result as an estimate.</div>
+      <div class="ans">No. It estimates tax on gross salary using the 2026-27 slabs only. It does not account for provident fund, medical allowance, bonuses, tax credits, or other adjustments, which can change your final liability. Treat the result as an estimate.</div>
     </details>
   </div>
 
   <!-- Disclaimer -->
   <div class="notice" style="margin-bottom:0">
     <span style="font-size:16px;line-height:1.3;flex-shrink:0;">📌</span>
-    <p>TaxBuddy Umair is an independent tax education platform and is not affiliated with the FBR. This calculator is for educational purposes only and does not constitute tax, legal, or financial advice. Proposed slabs may change before they become law — always confirm with official FBR notifications or a qualified tax practitioner.</p>
+    <p>TaxBuddy Umair is an independent tax education platform and is not affiliated with the FBR. This calculator is for educational purposes only and does not constitute tax, legal, or financial advice. Tax law can change through later amendments — always confirm with official FBR notifications or a qualified tax practitioner.</p>
   </div>
 
 </div>
@@ -347,7 +347,7 @@
     stcCalc(true);
   };
 
-  // Proposed FY 2026-27 (Tax Year 2027) slabs
+  // FY 2026-27 (Tax Year 2027) slabs — Finance Act 2026
   function slabFY27(I){
     if(I<=600000)  return {lower:0,       upper:600000,   base:0,       rate:0};
     if(I<=1200000) return {lower:600000,  upper:1200000,  base:0,       rate:0.01};
@@ -418,7 +418,7 @@
     var saving = taxFY26(annual) - total;
     var sEl = document.getElementById('r-save');
     if(saving > 0.5){
-      sEl.innerHTML = 'Under the proposed 2026-27 slabs you pay <strong>'+fmt(saving)+' less per year</strong> (about <strong>'+fmt(saving/12)+'/month</strong>) than under 2025-26.';
+      sEl.innerHTML = 'Under the 2026-27 slabs you pay <strong>'+fmt(saving)+' less per year</strong> (about <strong>'+fmt(saving/12)+'/month</strong>) than under 2025-26.';
     } else {
       sEl.innerHTML = 'Your slab rate is unchanged between 2025-26 and 2026-27, so your tax stays about the same.';
     }

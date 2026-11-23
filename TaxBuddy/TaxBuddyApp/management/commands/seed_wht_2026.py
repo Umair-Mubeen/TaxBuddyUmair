@@ -109,13 +109,13 @@ ROWS = [
 
     # ========== SECTION 153 — GOODS, SERVICES & CONTRACTS ==========
     # ---- 153(1)(a) Sale / supply of goods ----
-    ('business', 'Section 153(1)(a)', 'Sale of rice / cotton seed / edible oil', '1.5%', '3%', 'Prescribed person', 'Minimum / adjustable'),
+    ('business', 'Section 153(1)(a)', 'Sale of rice / cotton seed / edible oil', '1.5%', '3%', 'Prescribed person', 'Minimum; adjustable for manufacturer / listed co.'),
     ('business', 'Section 153', 'Distributors of cigarettes', '2.5%', '5%', 'Prescribed person', 'Minimum tax'),
     ('business', 'Section 153', 'Distributors — pharmaceutical products', '1%', '2%', 'Prescribed person', 'Minimum tax'),
     ('business', 'Section 153', 'FMCG distributors/dealers/wholesalers (on ATL)', '0.25%', '—', 'Prescribed person', 'Minimum tax (if on ATL)'),
-    ('business', 'Section 153', 'Sale of gold, silver & articles thereof', '1%', '2%', 'Prescribed person', 'Adjustable'),
-    ('business', 'Section 153(1)(a)', 'Other goods — company (excl. toll mfg)', '5%', '10%', 'Prescribed person', 'Minimum for mfr/listed'),
-    ('business', 'Section 153(1)(a)', 'Other goods — company (toll manufacturing)', '9%', '18%', 'Prescribed person', 'Minimum for mfr/listed'),
+    ('business', 'Section 153', 'Sale of gold, silver & articles thereof', '1%', '2%', 'Prescribed person', 'Minimum; adjustable for manufacturer / listed co.'),
+    ('business', 'Section 153(1)(a)', 'Other goods — company (excl. toll mfg)', '5%', '10%', 'Prescribed person', 'Minimum; adjustable for manufacturer / listed co.'),
+    ('business', 'Section 153(1)(a)', 'Other goods — company (toll manufacturing)', '9%', '18%', 'Prescribed person', 'Minimum; adjustable for manufacturer / listed co.'),
     ('business', 'Section 153(1)(a)', 'Other goods — other taxpayers (excl. toll mfg)', '5.5%', '11%', 'Prescribed person', 'Minimum tax'),
     ('business', 'Section 153(1)(a)', 'Other goods — other taxpayers (toll mfg)', '11%', '22%', 'Prescribed person', 'Minimum tax'),
 
@@ -136,8 +136,8 @@ ROWS = [
     ('business', 'Section 153(1)(c)', 'Execution of contract — sportsperson', '15%', '30%', 'Prescribed person', 'Minimum tax'),
 
     # ---- 153(2A) E-commerce ----
-    ('business', 'Section 153(2A)', 'E-commerce — digitally ordered goods/services (digital/banking payment)', '1%', '—', 'Payment intermediary', 'On gross amount'),
-    ('business', 'Section 153(2A)', 'E-commerce — Cash on Delivery (collected by courier)', '2%', '—', 'Courier business', 'On gross amount'),
+    ('business', 'Section 153(2A)', 'E-commerce — digitally ordered goods/services (digital/banking payment)', '1%', '2%', 'Payment intermediary', 'Adjustable'),
+    ('business', 'Section 153(2A)', 'E-commerce — Cash on Delivery (collected by courier)', '2%', '4%', 'Courier business', 'Adjustable'),
     ('business', 'Section 153', 'Export house — services of stitching/dyeing/printing/embroidery/washing/sizing/weaving', '1%', '2%', 'Exporter / export house', 'Minimum tax'),
 
     # ---------- IMPORTS / EXPORTS ----------
