@@ -145,6 +145,7 @@ urlpatterns = [
 
     # ── AI ASSISTANT & SMART CALCULATOR (ABOVE the <slug> catch-all) ──
     path('ai-chat/',           ai_views.ai_tax_assistant,   name='ai_tax_assistant'),
+    path('api/ai-chat/stream/', ai_views.ai_chat_stream, name='ai_chat_stream'),
     path('ai-tax-calculator/', ai_views.ai_smart_calculator, name='ai_smart_calculator'),
     path('api/ai-chat/',       ai_views.ai_chat_api,        name='ai_chat_api'),
     path('api/ai-smart-calc/', ai_views.ai_smart_calc_api,  name='ai_smart_calc_api'),

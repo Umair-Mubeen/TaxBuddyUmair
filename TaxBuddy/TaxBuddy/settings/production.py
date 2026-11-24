@@ -27,3 +27,21 @@ DATABASES = {
 ROOT_URLCONF = 'TaxBuddy.urls'
 WSGI_APPLICATION = 'TaxBuddy.wsgi.application'
 
+
+# ═══ ADD TO TaxBuddy/settings/production.py (end of file) ═══
+
+# 1) Security headers handled by Django
+SECURE_CONTENT_TYPE_NOSNIFF = True
+SECURE_REFERRER_POLICY = "strict-origin-when-cross-origin"
+X_FRAME_OPTIONS = "SAMEORIGIN"
+
+# 2) ETag + CSP/Permissions-Policy middleware
+#    (inserted right after SecurityMiddleware; MIDDLEWARE comes from base.py)
+_i = MIDDLEWARE.index('django.middleware.security.SecurityMiddleware') + 1
+for _m in ('TaxBuddyApp.security_headers.SecurityHeadersMiddleware',
+           'django.middleware.http.ConditionalGetMiddleware'):
+    if _m not in MIDDLEWARE:
+        MIDDLEWARE.insert(_i, _m)
+
+# HSTS is added in nginx (see nginx_snippet.conf) — nginx always knows the request is HTTPS.
+

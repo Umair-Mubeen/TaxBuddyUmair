@@ -18,7 +18,7 @@ DEFAULT_YEAR = "2026-2027"
 SURCHARGE_THRESHOLD = 10_000_000
 
 CALCULATOR_LINKS = {
-    "salary": "/salary-tax-calculator-2026-27/",
+    "salary": "/SalaryCalculator/",
     "wht": "/Withholding-Tax-Card/",
     "153": "/section-153-withholding-tax-calculator/",
     "cgt": "/capital-gains-tax-calculator/",
@@ -205,12 +205,14 @@ def find_sro(query="", statute=None, limit=5):
 # ───────────────────────── blogs ─────────────────────────
 def find_blog(query, limit=4):
     qs = Blog.objects.filter(status="published", is_deleted=False)
-    words = [w for w in query.split() if len(w) > 2][:6]
+    generic = {"tax", "taxes", "pakistan", "fbr", "the", "and", "for", "how", "what", "rate", "rates", "2026", "2027"}
+    words = [w for w in query.split() if len(w) > 2 and w.lower() not in generic][:6]
     cond = Q()
     for w in words:
         cond |= Q(title__icontains=w) | Q(tag__icontains=w) | Q(meta_description__icontains=w)
     rows = list(qs.filter(cond)[:40]) if words else []
     rows.sort(key=lambda b: -sum(w.lower() in f"{b.title} {b.tag}".lower() for w in words))
+    rows = [b for b in rows if any(w.lower() in f"{b.title} {b.tag}".lower() for w in words)]
     return {"source": "TaxBuddy blog database",
             "results": [{"title": b.title, "url": f"/articles/{b.slug}/",
                          "summary": (b.meta_description or "")[:250]} for b in rows[:limit]]}

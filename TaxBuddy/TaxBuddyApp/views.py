@@ -1363,18 +1363,56 @@ def delete_question(request, pk):
 
 from django.views.decorators.cache import cache_page
 
-@cache_page(60 * 60 * 24)
+# ═══ TaxBuddyApp/views.py ═══
+# 1) REPLACE your existing robots_txt function with this one.
+# 2) ADD security_txt below it.
+
 def robots_txt(request):
-    """Serve robots.txt — add to urls.py: path('robots.txt', views.robots_txt)"""
     lines = [
         "User-agent: *",
         "Allow: /",
         "Disallow: /Cpanel/",
         "Disallow: /admin/",
         "Disallow: /Login/",
-        f"Sitemap: https://www.taxbuddyumair.com/sitemap.xml",
+        "Disallow: /api/",
+        "",
+        "# AI search & assistant crawlers — allowed to read and cite TaxBuddy",
+        "User-agent: OAI-SearchBot",
+        "User-agent: ChatGPT-User",
+        "User-agent: GPTBot",
+        "User-agent: Claude-SearchBot",
+        "User-agent: Claude-User",
+        "User-agent: ClaudeBot",
+        "User-agent: PerplexityBot",
+        "User-agent: Perplexity-User",
+        "User-agent: Google-Extended",
+        "User-agent: Applebot-Extended",
+        "Allow: /",
+        "Disallow: /Cpanel/",
+        "Disallow: /admin/",
+        "Disallow: /Login/",
+        "Disallow: /api/",
+        "",
+        "Sitemap: https://www.taxbuddyumair.com/sitemap.xml",
     ]
-    return HttpResponse("\n".join(lines), content_type="text/plain")
+    return HttpResponse("\n".join(lines) + "\n", content_type="text/plain")
+
+
+def security_txt(request):
+    """RFC 9116 — /.well-known/security.txt"""
+    from datetime import date
+    expires = date(date.today().year + 1, 12, 31).isoformat() + "T23:59:59Z"
+    lines = [
+        "Contact: https://www.taxbuddyumair.com/#contact",
+        f"Expires: {expires}",
+        "Preferred-Languages: en, ur",
+        "Canonical: https://www.taxbuddyumair.com/.well-known/security.txt",
+    ]
+    return HttpResponse("\n".join(lines) + "\n", content_type="text/plain")
+
+# ═══ TaxBuddyApp/urls.py — add next to the robots.txt line ═══
+#    path('.well-known/security.txt', views.security_txt, name='security_txt'),
+#    path('security.txt', views.security_txt),
 
 
 def custom_404(request, exception=None):

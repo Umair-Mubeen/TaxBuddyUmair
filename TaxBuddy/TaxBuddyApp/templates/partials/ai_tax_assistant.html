@@ -1,160 +1,407 @@
 {% extends 'base.html' %}
 {% load static %}
 
-{% block title %}AI Pakistan Tax Assistant — Ask Tax Questions Free | TaxBuddy Umair{% endblock %}
-{% block meta_desc %}Free AI tax assistant for Pakistan. Ask about income tax, sales tax, filer status, property tax (236C/236K) and FBR filing — instant, simple answers for Tax Year 2026-27.{% endblock %}
+{% block title %}TaxBuddy Umair AI — Pakistan Tax Chat Assistant (Free) | TaxBuddy Umair{% endblock %}
+{% block meta_desc %}Free AI tax assistant for Pakistan. Ask about income tax, sales tax, withholding tax, filer status and FBR filing. Answers come from the Income Tax Ordinance 2001, Sales Tax Act 1990 and the FBR rate card.{% endblock %}
+
+{# Full-screen app: no site header, footer or ads on this page #}
+{% block top_ad %}{% endblock %}
+{% block site_header %}{% endblock %}
+{% block filing_countdown %}{% endblock %}
+{% block content_bottom_ad %}{% endblock %}
+{% block site_footer %}{% endblock %}
 
 {% block extra_css %}
-<link rel="stylesheet" href="{% static 'css/calculators.css' %}">
 <style>
-.ai-wrap{max-width:860px;margin:0 auto;padding:24px 16px 60px}
-.ai-card{background:var(--white,#fff);border:1px solid var(--border,#E2E8F0);border-radius:var(--radius-lg,12px);box-shadow:var(--shadow-sm,0 1px 3px rgba(16,24,40,.06));overflow:hidden;display:flex;flex-direction:column;height:min(70vh,640px)}
-.ai-head{background:var(--navy,#0A2647);padding:16px 20px;display:flex;align-items:center;gap:12px}
-.ai-head-ico{width:40px;height:40px;border-radius:11px;background:rgba(255,255,255,.12);display:flex;align-items:center;justify-content:center;font-size:18px;color:#8DE5C8;flex-shrink:0}
-.ai-head h2{color:#fff;font-size:16px;font-weight:700;margin:0}
-.ai-head p{color:rgba(255,255,255,.6);font-size:12px;margin:2px 0 0}
-.ai-head .dot{width:8px;height:8px;border-radius:50%;background:#2ee6a6;margin-left:auto;box-shadow:0 0 0 3px rgba(46,230,166,.2)}
-.ai-msgs{flex:1;overflow-y:auto;padding:18px 18px 8px;background:var(--bg,#F6F9FC)}
-.ai-row{display:flex;margin-bottom:14px}
-.ai-row.user{justify-content:flex-end}
-.ai-bubble{max-width:82%;padding:11px 15px;border-radius:14px;font-size:14px;line-height:1.6}
-.ai-row.ai .ai-bubble{background:#fff;border:1px solid var(--border,#E2E8F0);color:var(--text,#0F172A);border-top-left-radius:4px}
-.ai-row.user .ai-bubble{background:var(--navy,#0A2647);color:#fff;border-top-right-radius:4px}
-.ai-bubble strong{color:inherit;font-weight:700}
-.ai-bubble a{color:var(--green,#0D9E72);font-weight:600}
-.ai-row.user .ai-bubble a{color:#8DE5C8}
-.ai-bubble ul{margin:6px 0 6px 18px}
-.ai-bubble li{margin-bottom:3px}
-.ai-typing{display:inline-flex;gap:4px;padding:4px 2px}
-.ai-typing span{width:7px;height:7px;border-radius:50%;background:#B6C2D1;animation:aiBlink 1.2s infinite both}
-.ai-typing span:nth-child(2){animation-delay:.2s}.ai-typing span:nth-child(3){animation-delay:.4s}
-@keyframes aiBlink{0%,80%,100%{opacity:.25}40%{opacity:1}}
-.ai-chips{display:flex;gap:8px;flex-wrap:wrap;padding:12px 18px;border-top:1px solid var(--border,#E2E8F0);background:#fff}
-.ai-chip{border:1.5px solid var(--border,#E2E8F0);background:#fff;color:var(--text-mid,#475569);font-size:12.5px;font-weight:600;padding:7px 13px;border-radius:999px;cursor:pointer;font-family:inherit;transition:all .15s}
-.ai-chip:hover{border-color:var(--green,#0D9E72);color:var(--green,#0D9E72)}
-.ai-input-bar{display:flex;gap:10px;padding:14px 16px;border-top:1px solid var(--border,#E2E8F0);background:#fff}
-.ai-input{flex:1;border:1.5px solid var(--border,#E2E8F0);border-radius:12px;padding:12px 14px;font-size:14px;font-family:inherit;outline:none;resize:none;max-height:120px;background:var(--bg,#F6F9FC);color:var(--text,#0F172A)}
-.ai-input:focus{border-color:var(--green,#0D9E72);background:#fff;box-shadow:0 0 0 3px rgba(13,158,114,.1)}
-.ai-send{flex-shrink:0;width:48px;border:none;border-radius:12px;background:linear-gradient(135deg,#0D9E72,#0B8A64);color:#fff;font-size:17px;cursor:pointer;box-shadow:0 4px 12px rgba(13,158,114,.3)}
-.ai-send:disabled{opacity:.5;cursor:not-allowed}
-.ai-disc{font-size:11.5px;color:var(--text-light,#64748B);text-align:center;margin-top:14px;line-height:1.5}
+:root{
+  --ta-navy:#0A2647;--ta-navy2:#123A63;--ta-green:#0D9E72;--ta-green-soft:#E6F7F2;
+  --ta-bg:#FFFFFF;--ta-side:#F4F6F9;--ta-line:#E3E8EF;--ta-text:#0F172A;--ta-mid:#475569;--ta-mute:#8592A6;
+  --ta-user:#EEF2F7;--ta-code:#F3F5F8;--ta-shadow:0 8px 30px rgba(10,38,71,.10);
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --ta-bg:#0F1722;--ta-side:#0B121B;--ta-line:#223044;--ta-text:#E6EDF5;--ta-mid:#A9B6C7;--ta-mute:#71819A;
+    --ta-user:#1B2737;--ta-code:#162131;--ta-green-soft:#0F2E27;--ta-shadow:0 8px 30px rgba(0,0,0,.4);
+  }
+}
+:root[data-theme="dark"]{
+  --ta-bg:#0F1722;--ta-side:#0B121B;--ta-line:#223044;--ta-text:#E6EDF5;--ta-mid:#A9B6C7;--ta-mute:#71819A;
+  --ta-user:#1B2737;--ta-code:#162131;--ta-green-soft:#0F2E27;--ta-shadow:0 8px 30px rgba(0,0,0,.4);
+}
+body{background:var(--ta-bg)}
+#back-to-top{display:none!important}
+.ta{position:fixed;inset:0;display:flex;background:var(--ta-bg);color:var(--ta-text);font-family:'Inter',system-ui,-apple-system,sans-serif;z-index:50}
+.ta *{box-sizing:border-box}
+.ta button{font-family:inherit}
+
+/* ── sidebar ── */
+.ta-side{width:272px;flex-shrink:0;background:var(--ta-side);border-right:1px solid var(--ta-line);display:flex;flex-direction:column;min-height:0}
+.ta-brand{display:flex;align-items:center;gap:10px;padding:16px 16px 10px;text-decoration:none;color:var(--ta-text)}
+.ta-logo{width:34px;height:34px;border-radius:10px;background:linear-gradient(135deg,var(--ta-navy),var(--ta-green));display:flex;align-items:center;justify-content:center;color:#fff;font-weight:800;font-size:15px;flex-shrink:0}
+.ta-brand b{font-size:15px;display:block;line-height:1.2}
+.ta-brand small{font-size:11.5px;color:var(--ta-mute)}
+.ta-new{margin:6px 12px 10px;display:flex;align-items:center;gap:8px;justify-content:center;padding:10px 12px;border-radius:10px;border:1px solid var(--ta-line);background:var(--ta-bg);color:var(--ta-text);font-weight:600;font-size:13.5px;cursor:pointer}
+.ta-new:hover{border-color:var(--ta-green);color:var(--ta-green)}
+.ta-list{flex:1;overflow-y:auto;padding:4px 8px 10px;min-height:0}
+.ta-grp{font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--ta-mute);padding:12px 10px 6px}
+.ta-item{display:flex;align-items:center;gap:6px;border-radius:9px;padding:8px 8px 8px 10px;cursor:pointer;font-size:13.5px;color:var(--ta-mid)}
+.ta-item:hover{background:var(--ta-user)}
+.ta-item.on{background:var(--ta-user);color:var(--ta-text);font-weight:600}
+.ta-item span{flex:1;overflow:hidden;white-space:nowrap;text-overflow:ellipsis}
+.ta-del{opacity:0;border:0;background:none;color:var(--ta-mute);cursor:pointer;padding:2px 5px;border-radius:6px;font-size:13px}
+.ta-item:hover .ta-del,.ta-item.on .ta-del{opacity:1}
+.ta-del:hover{color:#DC2626}
+.ta-empty-list{font-size:12.5px;color:var(--ta-mute);padding:10px 12px}
+.ta-side-foot{border-top:1px solid var(--ta-line);padding:10px 12px 14px;font-size:12.5px}
+.ta-side-foot a{display:flex;align-items:center;gap:8px;color:var(--ta-mid);text-decoration:none;padding:6px 6px;border-radius:8px}
+.ta-side-foot a:hover{background:var(--ta-user);color:var(--ta-text)}
+
+/* ── main ── */
+.ta-main{flex:1;display:flex;flex-direction:column;min-width:0;min-height:0}
+.ta-top{background:var(--ta-bg);height:54px;display:flex;align-items:center;gap:10px;padding:0 16px;border-bottom:1px solid var(--ta-line);flex-shrink:0}
+.ta-menu{display:none;border:0;background:none;color:var(--ta-text);font-size:20px;cursor:pointer;padding:4px 6px}
+.ta-top-title{font-weight:700;font-size:15px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ta-badge{margin-left:auto;font-size:11.5px;font-weight:600;color:var(--ta-green);background:var(--ta-green-soft);padding:4px 10px;border-radius:999px;white-space:nowrap}
+.ta-scroll{flex:1;overflow-y:auto;min-height:0}
+.ta-col{max-width:780px;margin:0 auto;padding:24px 20px 12px}
+
+/* empty state */
+.ta-hello{text-align:center;padding:7vh 0 18px}
+.ta-hello .ta-logo{width:52px;height:52px;border-radius:15px;font-size:22px;margin:0 auto 16px}
+.ta-hello h1{font-size:26px;font-weight:800;margin:0 0 8px;letter-spacing:-.01em;color:var(--ta-text)}
+.ta-hello p{color:var(--ta-mid);font-size:14.5px;margin:0 auto;max-width:520px;line-height:1.6}
+.ta-sugs{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:26px}
+.ta-sug{text-align:left;border:1px solid var(--ta-line);background:var(--ta-bg);border-radius:12px;padding:12px 14px;cursor:pointer;color:var(--ta-text);font-size:13.5px;line-height:1.45;transition:border-color .15s,box-shadow .15s}
+.ta-sug:hover{border-color:var(--ta-green);box-shadow:var(--ta-shadow)}
+.ta-sug b{display:block;font-size:12px;color:var(--ta-green);margin-bottom:3px;font-weight:700}
+
+/* messages */
+.ta-msg{display:flex;gap:12px;margin-bottom:22px}
+.ta-msg.user{justify-content:flex-end}
+.ta-msg.user .ta-bub{background:var(--ta-user);border-radius:18px 18px 4px 18px;padding:10px 16px;max-width:80%;white-space:pre-wrap;word-wrap:break-word;font-size:14.5px;line-height:1.6}
+.ta-av{width:30px;height:30px;border-radius:9px;background:linear-gradient(135deg,var(--ta-navy),var(--ta-green));color:#fff;font-weight:800;font-size:12px;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:2px}
+.ta-ans{flex:1;min-width:0}
+.ta-md{font-size:14.5px;line-height:1.7;word-wrap:break-word}
+.ta-md>*:first-child{margin-top:0}
+.ta-md p{margin:0 0 10px}
+.ta-md ul,.ta-md ol{margin:0 0 10px;padding-left:22px}
+.ta-md ul{list-style:disc}.ta-md ol{list-style:decimal}
+.ta-md li{display:list-item}
+.ta-md li{margin-bottom:4px}
+.ta-md h1,.ta-md h2,.ta-md h3,.ta-md h4{font-size:15.5px;margin:14px 0 8px;color:var(--ta-text)}
+.ta-md strong{color:var(--ta-text)}
+.ta-md a{color:var(--ta-green);font-weight:600}
+.ta-md code{background:var(--ta-code);padding:1px 5px;border-radius:5px;font-size:13px}
+.ta-md pre{background:var(--ta-code);padding:12px;border-radius:10px;overflow-x:auto}
+.ta-md table{border-collapse:collapse;margin:6px 0 12px;font-size:13.5px;display:block;overflow-x:auto;max-width:100%}
+.ta-md th,.ta-md td{border:1px solid var(--ta-line);padding:6px 10px;text-align:left}
+.ta-md th{background:var(--ta-code)}
+.ta-md blockquote{border-left:3px solid var(--ta-green);margin:0 0 10px;padding:2px 12px;color:var(--ta-mid)}
+.ta-status[hidden]{display:none!important}
+.ta-status{display:flex;align-items:center;gap:8px;font-size:13px;color:var(--ta-mute);margin:2px 0 8px}
+.ta-spin{width:14px;height:14px;border:2px solid var(--ta-line);border-top-color:var(--ta-green);border-radius:50%;animation:taSpin .8s linear infinite}
+@keyframes taSpin{to{transform:rotate(360deg)}}
+.ta-caret::after{content:"";display:inline-block;width:7px;height:15px;background:var(--ta-green);margin-left:2px;vertical-align:-2px;animation:taBlink 1s steps(2) infinite}
+@keyframes taBlink{50%{opacity:0}}
+.ta-src{display:flex;flex-wrap:wrap;gap:6px;margin-top:4px}
+.ta-src-h{font-size:11.5px;font-weight:700;color:var(--ta-mute);text-transform:uppercase;letter-spacing:.05em;margin:10px 0 6px}
+.ta-chip{font-size:12px;border:1px solid var(--ta-line);border-radius:999px;padding:4px 10px;color:var(--ta-mid);text-decoration:none;background:var(--ta-bg);max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+a.ta-chip:hover{border-color:var(--ta-green);color:var(--ta-green)}
+.ta-acts{display:flex;gap:4px;margin-top:8px}
+.ta-act{border:0;background:none;color:var(--ta-mute);font-size:12.5px;padding:4px 8px;border-radius:7px;cursor:pointer}
+.ta-act:hover{background:var(--ta-user);color:var(--ta-text)}
+.ta-err{color:#B91C1C;font-size:14px}
+
+/* composer */
+.ta-foot{flex-shrink:0;background:var(--ta-bg);padding:8px 20px 14px}
+.ta-box{max-width:780px;margin:0 auto;display:flex;align-items:flex-end;gap:8px;border:1px solid var(--ta-line);background:var(--ta-bg);border-radius:18px;padding:8px 8px 8px 16px;box-shadow:var(--ta-shadow)}
+.ta-box:focus-within{border-color:var(--ta-green)}
+.ta-box textarea{flex:1;border:0;outline:0;resize:none;background:transparent;color:var(--ta-text);font:inherit;font-size:15px;line-height:1.5;max-height:180px;padding:7px 0;min-height:24px}
+.ta-send{width:38px;height:38px;border-radius:11px;border:0;background:var(--ta-navy);color:#fff;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.ta-send:disabled{opacity:.35;cursor:default}
+.ta-send.stop{background:var(--ta-text);color:var(--ta-bg)}
+.ta-note{max-width:780px;margin:8px auto 0;text-align:center;font-size:11.5px;color:var(--ta-mute);line-height:1.5}
+.ta-note a{color:var(--ta-mid)}
+.ta-shade{display:none}
+
+@media (max-width:860px){
+  .ta-side{position:fixed;left:0;top:0;bottom:0;z-index:60;transform:translateX(-100%);transition:transform .2s;box-shadow:var(--ta-shadow)}
+  .ta.open .ta-side{transform:none}
+  .ta.open .ta-shade{display:block;position:fixed;inset:0;background:rgba(0,0,0,.35);z-index:55}
+  .ta-menu{display:block}
+  .ta-col{padding:18px 16px 8px}
+  .ta-foot{padding:6px 12px 10px}
+  .ta-sugs{grid-template-columns:1fr}
+  .ta-hello{padding-top:4vh}
+  .ta-hello h1{font-size:22px}
+  .ta-badge{display:none}
+  .ta-msg.user .ta-bub{max-width:90%}
+  .ta-av{display:none}
+}
 </style>
 {% endblock %}
 
 {% block content %}
-<div class="article-hero">
-  <div class="article-hero-inner">
-    <div class="breadcrumb">
-      <a href="{% url 'index' %}">Home</a>
-      <span class="breadcrumb-sep">›</span>
-      <span>AI Tax Assistant</span>
-    </div>
-    <h1>AI Pakistan Tax Assistant</h1>
-    <div class="article-meta">
-      <span><i class="fas fa-robot" aria-hidden="true"></i> Instant Answers</span>
-      <span><i class="fas fa-rotate" aria-hidden="true"></i> FBR 2026-27</span>
-      <span><i class="fas fa-graduation-cap" aria-hidden="true"></i> Free &amp; Educational</span>
-    </div>
-  </div>
-</div>
+<div class="ta" id="ta">
+  <div class="ta-shade" id="taShade"></div>
 
-<div class="ai-wrap">
-  <div class="ai-card">
-    <div class="ai-head">
-      <div class="ai-head-ico"><i class="fas fa-robot"></i></div>
-      <div>
-        <h2>TaxBuddy Umair AI</h2>
-        <p>Pakistan income &amp; sales tax · 2026-27</p>
-      </div>
-      <span class="dot" title="Online"></span>
+  <aside class="ta-side" aria-label="Chats">
+    <a class="ta-brand" href="{% url 'index' %}">
+      <div class="ta-logo">T</div>
+      <div><b>TaxBuddy Umair AI</b><small>Pakistan tax assistant</small></div>
+    </a>
+    <button class="ta-new" id="taNew" type="button">＋ New chat</button>
+    <div class="ta-list" id="taList"></div>
+    <div class="ta-side-foot">
+      <a href="{% url 'index' %}">🏠 TaxBuddy home</a>
+      <a href="{% url 'SalaryCalculator' %}">🧮 Tax calculators</a>
+      <a href="{% url 'atl_check' %}">✅ ATL check</a>
+    </div>
+  </aside>
+
+  <section class="ta-main">
+    <div class="ta-top">
+      <button class="ta-menu" id="taMenu" type="button" aria-label="Open chats">☰</button>
+      <div class="ta-top-title" id="taTitle">TaxBuddy Umair AI</div>
+      <div class="ta-badge">Income Tax · Sales Tax · FBR</div>
     </div>
 
-    <div class="ai-msgs" id="aiMsgs">
-      <div class="ai-row ai">
-        <div class="ai-bubble">Assalam-o-Alaikum! 👋 Main <strong>TaxBuddy Umair AI</strong> hoon. Pakistan ke income tax, sales tax, filer status, property tax ya FBR filing ke baare mein kuch bhi poochein — simple jawab dunga.</div>
-      </div>
+    <div class="ta-scroll" id="taScroll">
+      <div class="ta-col" id="taCol"></div>
     </div>
 
-    <div class="ai-chips" id="aiChips">
-      <button class="ai-chip">Mera salary 250,000/month hai, kitna tax?</button>
-      <button class="ai-chip">Filer vs non-filer ka farak?</button>
-      <button class="ai-chip">236C property sale tax kya hai?</button>
-      <button class="ai-chip">How do I become a filer?</button>
+    <div class="ta-foot">
+      <form class="ta-box" id="taForm">
+        <textarea id="taInput" rows="1" maxlength="1500" placeholder="Apna tax ka sawal likhein… (English ya Roman Urdu)" aria-label="Your question"></textarea>
+        <button class="ta-send" id="taSend" type="submit" aria-label="Send" disabled>
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19V5M5 12l7-7 7 7"/></svg>
+        </button>
+      </form>
+      <div class="ta-note">TaxBuddy Umair AI answers Pakistan tax questions only, from the ITO 2001, STA 1990, the Rules and the FBR rate card. It can make mistakes — this is education, not professional advice. Check important points with a tax practitioner.</div>
     </div>
-
-    <div class="ai-input-bar">
-      <textarea class="ai-input" id="aiInput" rows="1" placeholder="Apna tax sawaal likhein…" maxlength="1500"></textarea>
-      <button class="ai-send" id="aiSend" aria-label="Send"><i class="fas fa-paper-plane"></i></button>
-    </div>
-  </div>
-
-  <p class="ai-disc">
-    ⚠️ AI answers are educational estimates for Tax Year 2026-27 and may be imperfect — not professional tax or legal advice.
-    TaxBuddy Umair is an independent educator, not affiliated with FBR. For exact figures use the
-    <a href="{% url 'SalaryCalculator' %}" style="color:var(--green);font-weight:600;">calculators</a>, and consult a tax professional for filing.
-  </p>
+  </section>
 </div>
 {% endblock %}
 
 {% block extra_js %}
+<script src="https://cdn.jsdelivr.net/npm/marked@12.0.2/marked.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/dompurify@3.1.6/dist/purify.min.js"></script>
 <script>
 (function(){
-  var API = "{% url 'ai_chat_api' %}";
+  var API = "{% url 'ai_chat_stream' %}";
   var CSRF = "{{ csrf_token }}";
-  var msgs = document.getElementById('aiMsgs');
-  var input = document.getElementById('aiInput');
-  var sendBtn = document.getElementById('aiSend');
-  var history = [];
-  var busy = false;
+  var KEY = "tbai_chats_v1";
+  var MAX_CHATS = 40;
+  var SUGS = [
+    ["Salary tax", "Meri salary 2 lakh mahana hai, 2026-27 mein kitna tax banega?"],
+    ["Property", "Filer 1 crore ka plot khareede to 236K advance tax kitna hoga?"],
+    ["Law", "Section 182A ka ATL surcharge kya hai aur kitna hai?"],
+    ["Sales tax", "Sales tax return late file karne ki penalty kya hai?"]
+  ];
 
-  function esc(s){var d=document.createElement('div');d.textContent=s;return d.innerHTML;}
-  // minimal + safe markdown: escape first, then allow **bold**, links, bullets, line breaks
-  var VLAB={calculate_income_tax:'tax slabs',find_wht_rates:'WHT rate card',calculate_wht:'WHT rate card',check_atl:'ATL list',find_sro:'SRO tracker',find_blog:'TaxBuddy articles',search_law:'law books',get_law_section:'law books'};function vnote(u){if(!u||!u.length)return '';var s={};u.forEach(function(k){if(VLAB[k])s[VLAB[k]]=1;});var l=Object.keys(s);return l.length?'<div style="margin-top:8px;font-size:12px;opacity:.75">&#10003; Checked from: '+l.join(', ')+'</div>':'';}
-  function fmt(t){
-    var s = esc(t);
-    s = s.replace(/\*\*([^*]+)\*\*/g,'<strong>$1</strong>');
-    s = s.replace(/\[([^\]]+)\]\((https?:\/\/[^\s)]+|\/[^\s)]*)\)/g,'<a href="$2" target="_blank" rel="noopener">$1</a>');
-    // bullet lines
-    var lines = s.split('\n'), out=[], inUl=false;
-    lines.forEach(function(ln){
-      if(/^\s*[-•]\s+/.test(ln)){ if(!inUl){out.push('<ul>');inUl=true;} out.push('<li>'+ln.replace(/^\s*[-•]\s+/,'')+'</li>'); }
-      else { if(inUl){out.push('</ul>');inUl=false;} out.push(ln); }
+  var $ = function(id){ return document.getElementById(id); };
+  var ta=$('ta'), list=$('taList'), col=$('taCol'), scroll=$('taScroll'),
+      input=$('taInput'), send=$('taSend'), form=$('taForm'), titleEl=$('taTitle');
+  var chats = load(), cur = null, busy = false, ctrl = null;
+
+  /* ── storage (per browser; never required) ── */
+  function load(){ try{ var v=JSON.parse(localStorage.getItem(KEY)||'[]'); return Array.isArray(v)?v:[]; }catch(e){ return []; } }
+  function save(){ try{ localStorage.setItem(KEY, JSON.stringify(chats.slice(0,MAX_CHATS))); }catch(e){} }
+  function uid(){ return Date.now().toString(36)+Math.random().toString(36).slice(2,7); }
+  function find(id){ for(var i=0;i<chats.length;i++) if(chats[i].id===id) return chats[i]; return null; }
+
+  /* ── markdown ── */
+  if (window.marked) marked.setOptions({ gfm:true, breaks:true });
+  function md(t){
+    if (!window.marked || !window.DOMPurify){ var d=document.createElement('div'); d.textContent=t; return d.innerHTML.replace(/\n/g,'<br>'); }
+    var html = DOMPurify.sanitize(marked.parse(t||''));
+    var box=document.createElement('div'); box.innerHTML=html;
+    box.querySelectorAll('a').forEach(function(a){
+      var h=a.getAttribute('href')||'';
+      if(/^https?:/i.test(h) && h.indexOf(location.host)<0){ a.target='_blank'; a.rel='noopener'; }
     });
-    if(inUl) out.push('</ul>');
-    return out.join('\n').replace(/\n{2,}/g,'<br><br>').replace(/\n/g,'<br>');
+    return box.innerHTML;
   }
-  function addRow(role, html){
-    var row=document.createElement('div'); row.className='ai-row '+(role==='user'?'user':'ai');
-    var b=document.createElement('div'); b.className='ai-bubble'; b.innerHTML=html; row.appendChild(b);
-    msgs.appendChild(row); msgs.scrollTop=msgs.scrollHeight; return b;
-  }
-  function typing(){ return addRow('ai','<span class="ai-typing"><span></span><span></span><span></span></span>'); }
+  function esc(s){ var d=document.createElement('div'); d.textContent=s; return d.innerHTML; }
 
-  function send(text){
-    text=(text||'').trim(); if(!text||busy) return;
-    busy=true; sendBtn.disabled=true;
-    addRow('user', esc(text));
-    history.push({role:'user',content:text});
-    input.value=''; input.style.height='auto';
-    var t = typing();
-    fetch(API,{method:'POST',headers:{'Content-Type':'application/json','X-CSRFToken':CSRF},
-      body:JSON.stringify({message:text, history:history.slice(0,-1)})})
-      .then(function(r){return r.json();})
-      .then(function(d){
-        t.parentNode.remove();
-        if(d.status==='ok'){ addRow('ai', fmt(d.reply)+vnote(d.verified_with)); history.push({role:'assistant',content:d.reply}); }
-        else { addRow('ai', esc(d.message||'Something went wrong.')); }
-      })
-      .catch(function(){ t.parentNode.remove(); addRow('ai','Connection error. Please try again.'); })
-      .finally(function(){ busy=false; sendBtn.disabled=false; input.focus(); });
+  /* ── sidebar ── */
+  function renderList(){
+    list.innerHTML='';
+    if(!chats.length){ list.innerHTML='<div class="ta-empty-list">Aapki chats yahan dikhengi. Yeh sirf isi browser mein save hoti hain.</div>'; return; }
+    var today=new Date().toDateString(), grp=null;
+    chats.forEach(function(c){
+      var g = new Date(c.updated).toDateString()===today ? 'Today' : 'Earlier';
+      if(g!==grp){ grp=g; var h=document.createElement('div'); h.className='ta-grp'; h.textContent=g; list.appendChild(h); }
+      var it=document.createElement('div'); it.className='ta-item'+(cur&&cur.id===c.id?' on':'');
+      it.innerHTML='<span></span><button class="ta-del" type="button" title="Delete chat" aria-label="Delete chat">✕</button>';
+      it.firstChild.textContent=c.title||'New chat';
+      it.addEventListener('click', function(e){
+        if(e.target.classList.contains('ta-del')){ e.stopPropagation(); del(c.id); return; }
+        open(c.id);
+      });
+      list.appendChild(it);
+    });
+  }
+  function del(id){
+    if(busy && cur && cur.id===id) stop();
+    chats = chats.filter(function(c){ return c.id!==id; }); save();
+    if(cur && cur.id===id) newChat(); else renderList();
   }
 
-  sendBtn.addEventListener('click', function(){ send(input.value); });
-  input.addEventListener('keydown', function(e){ if(e.key==='Enter' && !e.shiftKey){ e.preventDefault(); send(input.value); } });
-  input.addEventListener('input', function(){ this.style.height='auto'; this.style.height=Math.min(this.scrollHeight,120)+'px'; });
-  document.getElementById('aiChips').addEventListener('click', function(e){
-    if(e.target.classList.contains('ai-chip')) send(e.target.textContent);
-  });
+  /* ── conversation view ── */
+  function hello(){
+    var h='<div class="ta-hello"><div class="ta-logo">T</div><h1>Pakistan tax ka koi bhi sawal poochein</h1>'+
+      '<p>Income tax, sales tax, withholding tax, ATL ya FBR filing — jawab ITO 2001, STA 1990 aur FBR rate card se, section ke reference ke saath.</p>'+
+      '<div class="ta-sugs">';
+    SUGS.forEach(function(s,i){ h+='<button type="button" class="ta-sug" data-i="'+i+'"><b>'+esc(s[0])+'</b>'+esc(s[1])+'</button>'; });
+    col.innerHTML=h+'</div></div>';
+    col.querySelectorAll('.ta-sug').forEach(function(b){ b.addEventListener('click', function(){ ask(SUGS[+b.dataset.i][1]); }); });
+  }
+  function userRow(text){
+    var r=document.createElement('div'); r.className='ta-msg user';
+    r.innerHTML='<div class="ta-bub"></div>'; r.firstChild.textContent=text; col.appendChild(r);
+  }
+  function aiRow(){
+    var r=document.createElement('div'); r.className='ta-msg ai';
+    r.innerHTML='<div class="ta-av">T</div><div class="ta-ans"><div class="ta-status" hidden><div class="ta-spin"></div><span></span></div><div class="ta-md"></div><div class="ta-extra"></div></div>';
+    col.appendChild(r);
+    return { row:r, status:r.querySelector('.ta-status'), body:r.querySelector('.ta-md'), extra:r.querySelector('.ta-extra') };
+  }
+  function finishRow(v, m, isLast){
+    var h='';
+    if(m.sources && m.sources.length){
+      h+='<div class="ta-src-h">Checked from</div><div class="ta-src">';
+      m.sources.forEach(function(s){
+        h+= s.url ? '<a class="ta-chip" href="'+esc(s.url)+'">'+esc(s.label)+'</a>' : '<span class="ta-chip">'+esc(s.label)+'</span>';
+      });
+      h+='</div>';
+    }
+    h+='<div class="ta-acts"><button class="ta-act" type="button" data-a="copy">⧉ Copy</button>'+
+       (isLast?'<button class="ta-act" type="button" data-a="retry">↻ Regenerate</button>':'')+'</div>';
+    v.extra.innerHTML=h;
+    v.extra.querySelectorAll('.ta-act').forEach(function(b){
+      b.addEventListener('click', function(){
+        if(b.dataset.a==='copy'){
+          try{ navigator.clipboard.writeText(m.content); b.textContent='✓ Copied'; setTimeout(function(){ b.textContent='⧉ Copy'; },1400); }catch(e){}
+        } else regenerate();
+      });
+    });
+  }
+  function renderChat(){
+    col.innerHTML='';
+    if(!cur || !cur.messages.length){ hello(); titleEl.textContent='TaxBuddy Umair AI'; return; }
+    titleEl.textContent=cur.title;
+    cur.messages.forEach(function(m,i){
+      if(m.role==='user') userRow(m.content);
+      else { var v=aiRow(); v.body.innerHTML = m.error ? '<span class="ta-err">'+esc(m.content)+'</span>' : md(m.content); finishRow(v,m,i===cur.messages.length-1); }
+    });
+    toBottom(true);
+  }
+  function toBottom(force){
+    var near = scroll.scrollHeight - scroll.scrollTop - scroll.clientHeight < 140;
+    if(force || near) scroll.scrollTop = scroll.scrollHeight;
+  }
+
+  function open(id){ if(busy) stop(); cur=find(id); renderList(); renderChat(); ta.classList.remove('open'); input.focus(); }
+  function newChat(){ if(busy) stop(); cur=null; renderList(); renderChat(); ta.classList.remove('open'); input.focus(); }
+
+  /* ── sending + streaming ── */
+  function setBusy(b){
+    busy=b;
+    send.classList.toggle('stop', b);
+    send.setAttribute('aria-label', b?'Stop':'Send');
+    send.innerHTML = b ? '<svg width="14" height="14" viewBox="0 0 24 24"><rect x="5" y="5" width="14" height="14" rx="2" fill="currentColor"/></svg>'
+                       : '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19V5M5 12l7-7 7 7"/></svg>';
+    send.disabled = !b && !input.value.trim();
+  }
+  function stop(){ if(ctrl){ try{ ctrl.abort(); }catch(e){} } }
+
+  function ask(text){
+    text=(text||'').trim(); if(!text || busy) return;
+    if(!cur){ cur={ id:uid(), title:text.slice(0,60), updated:Date.now(), messages:[] }; chats.unshift(cur); col.innerHTML=''; titleEl.textContent=cur.title; }
+    var history = cur.messages.filter(function(m){ return !m.error; }).map(function(m){ return {role:m.role, content:m.content}; });
+    cur.messages.push({role:'user', content:text});
+    touch();
+    userRow(text);
+    input.value=''; grow();
+    run(text, history);
+  }
+  function regenerate(){
+    if(busy || !cur) return;
+    var ms=cur.messages; if(!ms.length || ms[ms.length-1].role!=='assistant') return;
+    ms.pop();
+    var q=ms[ms.length-1]; if(!q || q.role!=='user') return;
+    var history = ms.slice(0,-1).filter(function(m){ return !m.error; }).map(function(m){ return {role:m.role, content:m.content}; });
+    renderChat();
+    run(q.content, history);
+  }
+  function touch(){ cur.updated=Date.now(); chats=[cur].concat(chats.filter(function(c){ return c.id!==cur.id; })); save(); renderList(); }
+
+  function run(text, history){
+    var v=aiRow(), m={role:'assistant', content:'', sources:[]};
+    var chat=cur;
+    v.status.hidden=false; v.status.lastChild.textContent='Thinking…';
+    toBottom(true); setBusy(true);
+    ctrl = ('AbortController' in window) ? new AbortController() : null;
+    var paint=null;
+    function repaint(){ if(paint) return; paint=requestAnimationFrame(function(){ paint=null; v.body.innerHTML=md(m.content); v.body.classList.add('ta-caret'); toBottom(false); }); }
+    function end(errText){
+      v.status.hidden=true; v.body.classList.remove('ta-caret');
+      if(errText && !m.content){ m.content=errText; m.error=true; v.body.innerHTML='<span class="ta-err">'+esc(errText)+'</span>'; }
+      else v.body.innerHTML=md(m.content);
+      chat.messages.push(m); if(chat===cur){ finishRow(v,m,true); }
+      chat.updated=Date.now(); save(); setBusy(false); ctrl=null; toBottom(false);
+    }
+    fetch(API, { method:'POST', signal: ctrl ? ctrl.signal : undefined,
+      headers:{'Content-Type':'application/json','X-CSRFToken':CSRF},
+      body: JSON.stringify({ message:text, history:history }) })
+    .then(function(r){
+      var ct=r.headers.get('content-type')||'';
+      if(!r.ok || ct.indexOf('text/event-stream')<0){
+        return r.json().then(function(d){ end(d.message||'Something went wrong. Please try again.'); },
+                             function(){ end('Something went wrong. Please try again.'); });
+      }
+      var reader=r.body.getReader(), dec=new TextDecoder(), buf='', failed=null;
+      function handle(ev){
+        if(ev.t==='delta'){ if(!v.status.hidden && m.content==='' ) v.status.hidden=true; m.content+=ev.text; repaint(); }
+        else if(ev.t==='status'){ v.status.hidden=false; v.status.lastChild.textContent=ev.text; toBottom(false); }
+        else if(ev.t==='sources'){ m.sources=ev.items||[]; }
+        else if(ev.t==='error'){ failed=ev.text; }
+      }
+      function pump(){
+        return reader.read().then(function(x){
+          if(x.done){ end(failed); return; }
+          buf += dec.decode(x.value, {stream:true});
+          var parts=buf.split('\n\n'); buf=parts.pop();
+          parts.forEach(function(p){
+            p.split('\n').forEach(function(line){
+              if(line.indexOf('data: ')===0){ try{ handle(JSON.parse(line.slice(6))); }catch(e){} }
+            });
+          });
+          return pump();
+        });
+      }
+      return pump();
+    })
+    .catch(function(e){
+      if(e && e.name==='AbortError'){ if(!m.content) m.content='_Stopped._'; end(null); }
+      else end('Connection error. Please check your internet and try again.');
+    });
+  }
+
+  /* ── input ── */
+  function grow(){ input.style.height='auto'; input.style.height=Math.min(input.scrollHeight,180)+'px'; if(!busy) send.disabled=!input.value.trim(); }
+  input.addEventListener('input', grow);
+  input.addEventListener('keydown', function(e){ if(e.key==='Enter' && !e.shiftKey && !e.isComposing){ e.preventDefault(); if(!busy) ask(input.value); } });
+  form.addEventListener('submit', function(e){ e.preventDefault(); if(busy) stop(); else ask(input.value); });
+  $('taNew').addEventListener('click', newChat);
+  $('taMenu').addEventListener('click', function(){ ta.classList.add('open'); });
+  $('taShade').addEventListener('click', function(){ ta.classList.remove('open'); });
+
+  // ?q=... starts a chat (lets other pages link "Ask TaxBuddy AI about this")
+  var q = new URLSearchParams(location.search).get('q');
+  renderList(); renderChat();
+  if(q){ history.replaceState(null,'',location.pathname); ask(q.slice(0,1500)); } else input.focus();
 })();
 </script>
 {% endblock %}
