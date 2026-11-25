@@ -4,7 +4,7 @@
 
 ## Calculators & tools
 - [Salary Tax Calculator 2026-27](https://www.taxbuddyumair.com/SalaryCalculator/): Estimate income tax on a monthly or annual salary using the Finance Act 2026 slabs.
-- [Property / Rental Tax Calculator](https://www.taxbuddyumair.com/PropertyCalculator/): Tax on property sale (236C) and purchase (236K), and rental income.
+- [Rental Income Tax Calculator](https://www.taxbuddyumair.com/PropertyCalculator/): Tax on rental income under section 15 after the one-fifth repair allowance.
 - [Capital Gains Tax Calculator](https://www.taxbuddyumair.com/capital-gains-tax-calculator/): CGT on immovable property and securities.
 - [Business Tax Calculator](https://www.taxbuddyumair.com/BusinessCalculator/): Income tax for individuals and sole proprietors on business income.
 - [AOP Tax Calculator](https://www.taxbuddyumair.com/AOPCalculator/): Tax for Associations of Persons.
@@ -12,8 +12,13 @@
 - [PTA Mobile Tax Calculator](https://www.taxbuddyumair.com/pta-mobile-tax-calculator/): PTA registration tax on imported mobile phones (passport vs CNIC).
 - [Zakat Calculator](https://www.taxbuddyumair.com/zakat-calculator/): Shariah-based Zakat at 2.5% on gold, silver, cash and investments, using the silver Nisab.
 - [Karachi FMV Calculator](https://www.taxbuddyumair.com/karachi-fmv-calculator/): FBR fair market value of property by area in Karachi.
-- [Withholding Tax Card](https://www.taxbuddyumair.com/Withholding-Tax-Card/): Full filer vs non-filer withholding tax rates.
+- [Withholding Tax Card](https://www.taxbuddyumair.com/Withholding-Tax-Card/): Full filer vs non-filer withholding and advance tax rates (236C, 236K, 151, 153, 231AB and more).
+- [Section 153 WHT Calculator](https://www.taxbuddyumair.com/section-153-withholding-tax-calculator/): Withholding tax on payments for goods, services and contracts, by category, filer vs non-filer.
+- [Super Tax Calculator (Section 4C)](https://www.taxbuddyumair.com/TaxCalculator4C/): Super tax on high-earning persons and companies by income band.
+- [Advance Tax Calculator (Section 147)](https://www.taxbuddyumair.com/advance-tax-calculator/): Quarterly advance income tax instalments and due dates.
+- [Motor Vehicle Tax Calculator](https://www.taxbuddyumair.com/motor-vehicle-tax-calculator/): Advance tax on vehicle registration (231B), transfer and annual token tax (234), filer vs non-filer.
 - [ATL / Filer Status Check](https://www.taxbuddyumair.com/atl-check/): Check Active Taxpayer List status by CNIC or NTN.
+- [TaxBuddy AI](https://www.taxbuddyumair.com/ai-chat/): AI assistant for Pakistan tax questions, answering from the ITO 2001, STA 1990, the Rules and the FBR rate card.
 
 ## Guides & reference
 - [Income Tax Guides](https://www.taxbuddyumair.com/income-tax-guides/): Salary, property, business and withholding tax explained under ITO 2001.
@@ -21,7 +26,7 @@
 - [Withholding Tax Rates](https://www.taxbuddyumair.com/withholding-tax-rates/): Section-wise WHT rates for filers and non-filers.
 - [FBR IRIS Filing Guide](https://www.taxbuddyumair.com/fbr-iris-guide/): How to register and file an income tax return on FBR IRIS.
 - [Tax Calendar](https://www.taxbuddyumair.com/tax-calendar/): Key FBR filing and payment deadlines.
-- [Tax Glossary](https://www.taxbuddyumair.com/glossary/): Plain-language definitions of Pakistani tax terms (filer, ATL, 236C, 7E, etc.).
+- [Tax Glossary](https://www.taxbuddyumair.com/glossary/): Plain-language definitions of Pakistani tax terms (filer, ATL, 236C, minimum tax, further tax, etc.).
 - [Income Tax MCQs](https://www.taxbuddyumair.com/income-tax-mcqs-pakistan/): Practice questions on Pakistani income tax.
 
 ## Content
@@ -31,6 +36,14 @@
 ## About
 - [About TaxBuddy Umair](https://www.taxbuddyumair.com/about-us/): Umair Mubeen — independent Pakistani tax educator simplifying FBR income tax, sales tax and property tax. Not affiliated with FBR.
 
+## Full data
+- [llms-full.txt](https://www.taxbuddyumair.com/llms-full.txt): Salary, business, AOP and rental slabs, key Tax Year 2027 rules and the full withholding tax rate card in plain Markdown.
+
 ## Notes
 - All content is educational, for Tax Year 2026-27, and not professional tax advice.
 - Rates follow the Finance Act 2026, Income Tax Ordinance 2001 and Sales Tax Act 1990.
+
+## Optional
+- [Contact](https://www.taxbuddyumair.com/contact/): Contact form for questions and feedback.
+- [Online Services](https://www.taxbuddyumair.com/online-services/): Optional paid return filing and NTN registration services.
+- [Privacy Policy](https://www.taxbuddyumair.com/privacy-policy/): How the site handles visitor data.

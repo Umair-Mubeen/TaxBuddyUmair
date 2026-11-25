@@ -3,6 +3,7 @@ from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib.sitemaps.views import sitemap
 from django.views.generic import TemplateView
+from . import llms_views          # upar imports mein
 
 from .sitemaps import (
     HomeSitemap, StaticSitemap, LegalSitemap, CalculatorSitemap,
@@ -76,6 +77,7 @@ urlpatterns = [
     path('robots.txt', views.robots_txt, name='robots_txt'),
     path('ads.txt', views.ads_txt, name='ads_txt'),
     path('llms.txt', views.llms_txt, name='llms_txt'),
+    path('llms-full.txt', llms_views.llms_full_txt, name='llms_full_txt'),   # llms.txt wali line ke neeche
 
     # ── POLICY PAGES ─────────────────────────────────────────
     path('privacy-policy/', views.privacy_policy, name='privacy_policy'),
