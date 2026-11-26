@@ -2927,3 +2927,9 @@ def vehicle_tax_calculator(request):
 
 def section_153_calculator(request):
     return render(request, 'section-153-calculator.html', {})
+
+def late_filing_calculator(request):
+    return render(request, 'late-filing-penalty-calculator.html')
+
+def filing_checker(request):
+    return render(request, 'do-i-need-to-file-tax-return.html')

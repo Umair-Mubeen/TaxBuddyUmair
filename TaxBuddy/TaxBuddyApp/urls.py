@@ -68,7 +68,8 @@ urlpatterns = [
     path('zakat-calculator/', views.zakat_calculator, name='zakat_calculator'),
     path('motor-vehicle-tax-calculator/', views.vehicle_tax_calculator, name='vehicle_tax_calculator'),
     path('section-153-withholding-tax-calculator/', views.section_153_calculator, name='section_153_calculator'),
-
+    path('late-filing-penalty-calculator/', views.late_filing_calculator, name='late_filing_calculator'),
+    path('do-i-need-to-file-tax-return/', views.filing_checker, name='filing_checker'),
     # ── API ───────────────────────────────────────────────────
     path('api/section-4c-rate/', views.section_4c_rate_view, name='section_4c_rate'),
 

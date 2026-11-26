@@ -1,0 +1,448 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Late Filing Penalty Calculator Pakistan 2026 — Section 182 & ATL Surcharge | TaxBuddy Umair{% endblock %}
+{% block meta_desc %}Filed your income tax return late? Calculate the Section 182 late filing penalty, the Section 182A ATL surcharge (Rs 25,000 / 50,000 / 100,000) and whether Form ATL-U saves you money — Finance Act 2026.{% endblock %}
+{% block schema_extra %}{% include 'partials/schema_calculator.html' with calc_name='Late Filing Penalty Calculator Pakistan (Section 182 & 182A)' calc_url='/late-filing-penalty-calculator/' %}
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[
+{"@type":"Question","name":"What is the penalty for filing an income tax return late in Pakistan?","acceptedAnswer":{"@type":"Answer","text":"Under Section 182 (Table, S. No. 1) of the Income Tax Ordinance 2001, the penalty is the higher of 0.1% of tax payable or Rs 1,000 for each day of default, with a minimum of Rs 10,000 for individuals with 75% or more income from salary and Rs 50,000 in other cases, and a maximum of 200% of tax payable. It is reduced by 75%, 50% or 25% if the return is filed within one, two or three months of the due date."}},
+{"@type":"Question","name":"How much is the ATL surcharge after late filing?","acceptedAnswer":{"@type":"Answer","text":"Under Section 182A as amended by the Finance Act 2026, a late filer is included in the Active Taxpayers List only after paying a surcharge of Rs 25,000 (individual), Rs 50,000 (association of persons) or Rs 100,000 (company)."}},
+{"@type":"Question","name":"Can an individual join the ATL without paying the surcharge?","acceptedAnswer":{"@type":"Answer","text":"Yes. Under Section 182A(3) and Rule 81B(2B) (S.R.O. 2097(I)/2026), an individual can file Form ATL-U on IRIS undertaking not to purchase, acquire or obtain ownership of any property for six months. The surcharge is then not payable. If the undertaking is breached, the benefit is withdrawn."}},
+{"@type":"Question","name":"What does tax payable mean for the late filing penalty?","acceptedAnswer":{"@type":"Answer","text":"After the Finance Act 2026, tax payable means the higher of the tax chargeable on the assessed taxable income for the year, or the tax payable for the immediately preceding tax year for which a return was duly filed."}}
+]}
+</script>{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/calculators.css' %}">
+<style>
+#lf-form [hidden],.content-main [hidden]{display:none!important}
+/* ── RESULT (navy block) ── */
+.calc-result{margin-top:32px!important;border-top:3px solid var(--green,#0D9E72)}
+.calc-result-title{font-size:16px;font-weight:700;color:var(--navy,#0A2647);text-align:center;letter-spacing:-.01em;background:var(--bg,#f7f9fc);padding:14px 16px 0;margin:0 -20px 14px}
+.calc-result-subtitle{font-size:12px;color:rgba(255,255,255,.65);text-align:center;margin:0 0 14px;padding:0 16px}
+.cmp-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.cmp-card{background:#fff;border-radius:12px;overflow:hidden;box-shadow:0 2px 12px rgba(10,38,71,.1)}
+.cmp-head{background:#0A2647;padding:12px 16px;font-size:12px;font-weight:600;color:rgba(255,255,255,.7);letter-spacing:.03em}
+.cmp-table{width:100%;border-collapse:collapse}
+.cmp-table tr{border-bottom:1px solid #E2E8F0}
+.cmp-table tr:last-child{border-bottom:none}
+.cmp-table td{padding:11px 16px;font-size:13px;vertical-align:top}
+.cmp-table td:first-child{color:#4A5568}
+.cmp-table td:last-child{text-align:right;font-weight:600;color:#0A2647;white-space:nowrap}
+.cmp-table tr.hl{background:#E8A020}
+.cmp-table tr.hl td{color:#fff!important;font-weight:700}
+.cmp-table tr.ok{background:#E6F7F2}
+.cmp-table tr.ok td{color:#0B8A64!important;font-weight:700}
+.cmp-table tr.off td{color:#A0AEC0!important;text-decoration:line-through}
+@media(max-width:640px){.cmp-grid{grid-template-columns:1fr!important}.result-inner-grid{grid-template-columns:1fr!important}}
+
+/* ── SUBMIT BUTTON ── */
+.calc-submit{width:100%;padding:15px 24px;background:linear-gradient(135deg,#0D9E72,#0B8A64);color:#fff;font-size:15px;font-weight:700;font-family:inherit;border:none;border-radius:12px;cursor:pointer;margin-top:8px;display:flex;align-items:center;justify-content:center;gap:10px;min-height:54px;letter-spacing:.01em;box-shadow:0 4px 14px rgba(13,158,114,.35);transition:all .2s}
+.calc-submit:hover{background:linear-gradient(135deg,#0B8A64,#097554);box-shadow:0 6px 20px rgba(13,158,114,.45);transform:translateY(-1px)}
+.calc-submit:active{transform:translateY(0);box-shadow:none}
+
+/* ── PRE-CALC INFO CARDS ── */
+.precalc-cards{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-top:20px}
+.precalc-card{background:#fff;border:1px solid #E2E8F0;border-radius:12px;padding:16px;transition:box-shadow .2s}
+.precalc-card:hover{box-shadow:0 4px 16px rgba(10,38,71,.08)}
+.precalc-card-icon{width:36px;height:36px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:18px;margin-bottom:10px}
+.pc-warn{background:#FEF3DC}.pc-blue{background:#EBF8FF}.pc-navy{background:#EEF2FF}
+.precalc-card h5{font-size:13px;font-weight:700;color:#0A2647;margin-bottom:10px}
+.precalc-card ul{list-style:none;display:flex;flex-direction:column;gap:6px;margin:0;padding:0}
+.precalc-card ul li{display:flex;align-items:flex-start;gap:7px;font-size:12.5px;color:#4A5568;line-height:1.5}
+.pc-dot{width:5px;height:5px;border-radius:50%;flex-shrink:0;margin-top:7px}
+.pc-dot-warn{background:#E8A020}.pc-dot-green{background:#0D9E72}.pc-dot-navy{background:#0A2647}
+@media(max-width:768px){.precalc-cards{grid-template-columns:1fr 1fr!important}}
+@media(max-width:480px){.precalc-cards{grid-template-columns:1fr!important}}
+
+/* ── FORM HEADER & FIELDS ── */
+.calc-container{background:var(--white,#fff);border:1px solid var(--border,#E2E8F0);border-radius:var(--radius-lg,12px);box-shadow:var(--shadow-sm,0 1px 3px rgba(16,24,40,.06));overflow:hidden;margin-bottom:20px}
+.calc-body{padding:24px 28px}
+.calc-header{background:var(--navy,#0A2647);padding:24px 28px;display:flex;align-items:flex-start;gap:16px}
+.calc-header-icon{width:48px;height:48px;background:rgba(255,255,255,.12);border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:24px;flex-shrink:0}
+.calc-header h2{font-size:20px;font-weight:700;color:#fff;margin-bottom:4px}
+.calc-header p{font-size:13px;color:rgba(255,255,255,.55);margin-bottom:10px}
+.calc-badges{display:flex;gap:6px;flex-wrap:wrap}
+.calc-badge{font-size:10px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;padding:3px 10px;border-radius:20px;border:1px solid rgba(255,255,255,.2);color:rgba(255,255,255,.65);background:rgba(255,255,255,.08)}
+.income-toggle{display:grid;grid-template-columns:repeat(4,1fr);border-radius:10px;overflow:hidden;border:1.5px solid var(--border,#E2E8F0);background:var(--bg,#F7F9FC);margin-bottom:6px}
+.income-toggle input[type="radio"]{display:none}
+.income-toggle label{text-align:center;padding:10px 8px;font-size:13px;font-weight:600;cursor:pointer;color:var(--text-mid,#4A5568);transition:all .2s;user-select:none;display:flex;align-items:center;justify-content:center;gap:6px;line-height:1.3}
+.income-toggle input[type="radio"]:checked + label{background:var(--navy,#0A2647);color:#fff}
+@media(max-width:560px){.income-toggle{grid-template-columns:1fr 1fr}}
+.field-wrap{margin-bottom:18px}
+.field-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:6px}
+.field-label-text{font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--text-light,#718096)}
+.field-required{color:#E53E3E;margin-left:2px}
+.field-live-preview{font-size:11.5px;font-weight:600;color:var(--green,#0D9E72)}
+.field-input-wrap{position:relative}
+.field-prefix{position:absolute;left:14px;top:50%;transform:translateY(-50%);font-size:13px;font-weight:700;color:var(--text-light,#718096);pointer-events:none;user-select:none}
+.form-input.has-prefix{padding-left:40px}
+.form-input{width:100%;padding:12px 14px;font-size:14px;font-family:inherit;border:1.5px solid var(--border,#E2E8F0);border-radius:10px;outline:none;background:var(--bg,#F7F9FC);color:var(--text,#1A202C);transition:border-color .2s,box-shadow .2s,background .2s}
+.form-input:focus{border-color:var(--navy,#0A2647);background:#fff;box-shadow:0 0 0 3px rgba(10,38,71,.08)}
+.form-input.is-error{border-color:#E53E3E;background:#FFF5F5;box-shadow:0 0 0 3px rgba(229,62,62,.08)}
+.field-hint{font-size:11.5px;color:var(--text-light,#718096);margin-top:5px;line-height:1.5}
+.field-err{display:none;font-size:12px;color:#E53E3E;margin-top:5px;font-weight:500}
+.field-err.show{display:flex;align-items:center;gap:4px}
+.year-selectors{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:6px}
+.year-select-label{font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--text-light,#718096);margin-bottom:6px}
+.year-badge{display:inline-block;background:rgba(13,158,114,.1);color:var(--green,#0D9E72);font-size:10px;font-weight:600;padding:2px 7px;border-radius:4px;margin-left:4px}
+.lf-chk{display:flex;gap:10px;align-items:flex-start;font-size:13.5px;line-height:1.5;color:var(--text-mid,#4A5568);cursor:pointer;background:var(--bg,#F7F9FC);border:1.5px solid var(--border,#E2E8F0);border-radius:10px;padding:12px 14px}
+.lf-chk input{margin-top:2px;width:18px;height:18px;accent-color:#0D9E72;flex-shrink:0}
+.lf-ontime{margin-top:24px;background:#F0FFF4;border:1px solid #9AE6B4;border-left:4px solid #38A169;border-radius:10px;padding:14px 16px;font-size:14px;color:#22543D;line-height:1.6}
+@media(max-width:640px){.year-selectors{grid-template-columns:1fr!important}.calc-body{padding:20px 16px}}
+
+/* ── SUMMARY (white card below result) ── */
+.tax-diff-wrap{margin-top:16px;background:var(--white,#fff);border:1.5px solid var(--border,#E2E8F0);border-radius:var(--radius-lg,12px);overflow:hidden;box-shadow:var(--shadow-sm)}
+.tax-diff-header-txt{background:var(--navy,#0A2647);color:rgba(255,255,255,.85);font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.09em;padding:10px 16px;text-align:center}
+.tax-diff-row{display:grid;grid-template-columns:1fr auto 1fr;align-items:center}
+.tax-diff-col{padding:16px;text-align:center}
+.tax-diff-lbl{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--text-light,#718096);margin-bottom:5px}
+.tax-diff-amt{font-size:22px;font-weight:700;color:var(--navy,#0A2647);font-family:var(--font-head)}
+.tax-diff-sub{font-size:11px;color:var(--text-light,#718096);margin-top:2px}
+.tax-diff-center{padding:16px 12px;text-align:center;border-left:1px solid var(--border,#E2E8F0);border-right:1px solid var(--border,#E2E8F0)}
+.tax-diff-vs-txt{font-size:10px;font-weight:700;color:var(--text-light,#718096);text-transform:uppercase;letter-spacing:.1em;margin-bottom:8px}
+.tax-diff-pill{font-size:12.5px;font-weight:700;padding:6px 12px;border-radius:var(--radius-pill,99px);white-space:nowrap}
+.pill-more{background:rgba(229,62,62,.1);color:#dc2626;border:1px solid rgba(229,62,62,.2)}
+.tax-diff-note{padding:10px 16px;font-size:13px;color:var(--text-mid,#4A5568);text-align:center;border-top:1px solid var(--border,#E2E8F0);background:var(--bg,#F7F9FC);line-height:1.55}
+.tax-diff-note strong{color:var(--navy,#0A2647)}
+@media(max-width:560px){
+  .tax-diff-row{grid-template-columns:1fr 1fr}
+  .tax-diff-center{order:1;grid-column:1 / -1;border-left:none;border-right:none;border-top:1px solid var(--border,#E2E8F0);padding:12px}
+  .tax-diff-col{padding:14px 10px}.tax-diff-amt{font-size:20px}.tax-diff-vs-txt{display:none}
+  .tax-diff-pill{font-size:12px;padding:7px 16px;display:inline-block}
+}
+</style>
+{% endblock %}
+
+{% block content %}
+
+<div class="article-hero calc-page-header">
+  <div class="article-hero-inner">
+    <div class="breadcrumb">
+      <a href="{% url 'index' %}">Home</a>
+      <span class="breadcrumb-sep">›</span>
+      <span>Calculators</span>
+      <span class="breadcrumb-sep">›</span>
+      <span>Late Filing Penalty Calculator</span>
+    </div>
+    <h1>Late Filing Penalty &amp; ATL Surcharge Calculator — Pakistan 2026</h1>
+    <div class="article-meta">
+      <span>⚖️ Section 182 &amp; 182A</span>
+      <span>✅ Finance Act 2026</span>
+      <span>🧾 Form ATL-U option</span>
+    </div>
+  </div>
+</div>
+
+<div class="content-grid">
+  <main class="content-main">
+
+    <!-- GEO quick-answer -->
+    <div class="quick-answer" style="background:var(--green-light,#E6F7F2);border:1px solid #BCE8D9;border-left:4px solid var(--green,#0D9E72);border-radius:12px;padding:16px 18px;margin:0 0 20px;">
+      <div style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:var(--green-mid,#0B8A64);margin-bottom:6px;">Quick answer</div>
+      <p style="font-size:14.5px;line-height:1.65;color:var(--text,#0F172A);margin:0;">
+        A late income tax return in Pakistan attracts a <strong>Section 182 penalty</strong> of Rs 1,000 a day or 0.1% of tax payable a day (whichever is higher), with a minimum of <strong>Rs 10,000</strong> for salaried individuals and <strong>Rs 50,000</strong> for others, reduced by 75%, 50% or 25% if you file within one, two or three months. To get back on the ATL you also pay the <strong>Section 182A surcharge</strong> — Rs 25,000 (individual), Rs 50,000 (AOP), Rs 100,000 (company) — or, as an individual, file <strong>Form ATL-U</strong> instead.
+      </p>
+    </div>
+
+    <div class="calc-container">
+      <div class="calc-header">
+        <div class="calc-header-icon">⏰</div>
+        <div>
+          <h2>Late Filing Penalty Calculator</h2>
+          <p>Penalty + ATL surcharge for a late return · ITO 2001</p>
+          <div class="calc-badges"><span class="calc-badge">s.182</span><span class="calc-badge">s.182A</span><span class="calc-badge">FA 2026</span><span class="calc-badge">Free</span></div>
+        </div>
+      </div>
+      <div class="calc-body">
+        <div style="background:#fffbeb;border:1px solid #fde68a;border-radius:10px;padding:12px 16px;margin-bottom:18px;display:flex;gap:10px;align-items:flex-start;">
+          <span style="font-size:16px;line-height:1.4;flex-shrink:0;">&#9888;&#65039;</span>
+          <p style="font-size:12.5px;color:#92400e;margin:0;line-height:1.6;">
+            <strong>For educational purposes only.</strong> This is an estimate under Sections 182 and 182A as amended by the Finance Act 2026. The actual penalty is imposed by the Commissioner through an order. Verify on
+            <a href="https://iris.fbr.gov.pk" target="_blank" rel="noopener" style="color:#92400e;text-decoration:underline;font-weight:600;">FBR IRIS</a>
+            or with a qualified tax practitioner.
+          </p>
+        </div>
+
+        <form id="lf-form" novalidate>
+          <!-- TAXPAYER TYPE -->
+          <div class="field-wrap">
+            <div class="field-top"><span class="field-label-text">I am a<span class="field-required">*</span></span></div>
+            <div class="income-toggle">
+              <input type="radio" name="lf-type" id="lf-sal" value="sal" checked><label for="lf-sal">💼 Salaried</label>
+              <input type="radio" name="lf-type" id="lf-ind" value="ind"><label for="lf-ind">👤 Other individual</label>
+              <input type="radio" name="lf-type" id="lf-aop" value="aop"><label for="lf-aop">🤝 AOP</label>
+              <input type="radio" name="lf-type" id="lf-co" value="co"><label for="lf-co">🏢 Company</label>
+            </div>
+            <div class="field-hint">"Salaried" = 75% or more of your income is salary — the minimum penalty is lower (Rs 10,000).</div>
+          </div>
+
+          <!-- DATES -->
+          <div class="year-selectors">
+            <div>
+              <div class="year-select-label">Due date <span class="year-badge">As extended</span></div>
+              <input type="date" id="lf-due" class="form-input" required>
+              <div class="field-err" id="err-due">⚠ Please enter the due date</div>
+            </div>
+            <div>
+              <div class="year-select-label">Filing date <span class="year-badge">Actual / planned</span></div>
+              <input type="date" id="lf-filed" class="form-input" required>
+              <div class="field-err" id="err-filed">⚠ Please enter the filing date</div>
+            </div>
+          </div>
+          <div class="field-hint" style="margin-bottom:18px">Tax Year 2026: individuals and AOPs — <strong>31 October 2026</strong> (FBR extension). Companies with a tax year ending 1 January–30 June — <strong>31 December</strong> (s.118(3)).</div>
+
+          <!-- TAX -->
+          <div class="field-wrap">
+            <div class="field-top">
+              <span class="field-label-text">Tax payable — this tax year</span>
+              <span class="field-live-preview" id="lf-tax-prev"></span>
+            </div>
+            <div class="field-input-wrap">
+              <span class="field-prefix">₨</span>
+              <input type="text" inputmode="numeric" id="lf-tax" class="form-input has-prefix" placeholder="e.g. 60,000 (0 if no tax)" autocomplete="off">
+            </div>
+            <div class="field-hint">Total tax chargeable on your income for the year (not the balance after withholding).</div>
+          </div>
+          <div class="field-wrap">
+            <div class="field-top">
+              <span class="field-label-text">Tax payable — last tax year</span>
+              <span class="field-live-preview" id="lf-prev-prev"></span>
+            </div>
+            <div class="field-input-wrap">
+              <span class="field-prefix">₨</span>
+              <input type="text" inputmode="numeric" id="lf-prev" class="form-input has-prefix" placeholder="Optional — if that return was filed on time" autocomplete="off">
+            </div>
+            <div class="field-hint">Since the Finance Act 2026, "tax payable" is the <strong>higher</strong> of the two.</div>
+          </div>
+
+          <div class="field-wrap" id="lf-prop-wrap">
+            <label class="lf-chk"><input type="checkbox" id="lf-prop"> I plan to buy or acquire property in the next 6 months <span style="color:#A0AEC0">(decides surcharge vs Form ATL-U)</span></label>
+          </div>
+
+          <button type="submit" class="calc-submit" id="lf-submit">🧮 Calculate Late Filing Penalty</button>
+        </form>
+
+        <div class="precalc-cards" id="lf-precalc">
+          <div class="precalc-card">
+            <div class="precalc-card-icon pc-warn">⚠️</div>
+            <h5>Two separate costs</h5>
+            <ul>
+              <li><span class="pc-dot pc-dot-warn"></span>s.182 penalty — imposed by the Commissioner by order.</li>
+              <li><span class="pc-dot pc-dot-warn"></span>s.182A surcharge — paid by you to rejoin the ATL.</li>
+            </ul>
+          </div>
+          <div class="precalc-card">
+            <div class="precalc-card-icon pc-blue">👤</div>
+            <h5>Who should use this?</h5>
+            <ul>
+              <li><span class="pc-dot pc-dot-green"></span>Anyone who missed the return due date.</li>
+              <li><span class="pc-dot pc-dot-green"></span>Late filers deciding between surcharge and ATL-U.</li>
+              <li><span class="pc-dot pc-dot-green"></span>AOPs and companies estimating exposure.</li>
+            </ul>
+          </div>
+          <div class="precalc-card">
+            <div class="precalc-card-icon pc-navy">📌</div>
+            <h5>Important Notes</h5>
+            <ul>
+              <li><span class="pc-dot pc-dot-navy"></span>File within 1 month → penalty cut by 75%.</li>
+              <li><span class="pc-dot pc-dot-navy"></span>ATL-U: no property purchase for 6 months.</li>
+              <li><span class="pc-dot pc-dot-navy"></span>Late year: no loss carry-forward or refund while off the ATL.</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="lf-ontime" id="lf-ontime" hidden>
+          ✅ <strong>Filed on time — no penalty.</strong> A return filed by the due date (or extended date) puts you on the ATL automatically. No s.182 penalty and no s.182A surcharge.
+        </div>
+
+        <!-- RESULTS -->
+        <div class="calc-result" id="calc-results" hidden>
+          <div class="calc-result-title">Late Filing Cost: <span id="lf-r-days"></span> late</div>
+          <div class="calc-result-subtitle" id="lf-r-sub"></div>
+
+          <div class="cmp-grid">
+            <div class="cmp-card">
+              <div class="cmp-head">Section 182 — Late Filing Penalty</div>
+              <table class="cmp-table"><tbody id="lf-t-pen"></tbody></table>
+            </div>
+            <div class="cmp-card">
+              <div class="cmp-head">Section 182A — Getting Back on the ATL</div>
+              <table class="cmp-table"><tbody id="lf-t-atl"></tbody></table>
+            </div>
+          </div>
+
+          <div class="calc-cta" style="margin-top:14px">
+            <div class="calc-cta-text">Filed late? We handle the return, surcharge or ATL-U. <strong>Starting PKR 3,000</strong></div>
+            <a href="https://wa.me/923332482742" class="btn-wa-sm" target="_blank" rel="noopener">💬 WhatsApp to File</a>
+          </div>
+          <div id="lf-cap-note" hidden style="margin-top:16px;background:#FFFBEB;border-radius:10px;padding:14px 16px;font-size:13px;color:#92400E;line-height:1.65;border-left:3px solid #F59E0B"></div>
+          <div style="margin-top:16px;background:#FFFBEB;border-radius:10px;padding:14px 16px;font-size:13px;color:#92400E;line-height:1.65;border-left:3px solid #F59E0B">
+            ⚠️ <strong style="color:#78350F">Also for the late year (s.182A(1)):</strong> business loss cannot be carried forward, no refund is issued while you are off the ATL, and that period is not counted for compensation on delayed refunds (s.171).
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SUMMARY -->
+    <div class="tax-diff-wrap" id="lf-summary" hidden>
+      <div class="tax-diff-header-txt">📊 Total Late Filing Cost at a Glance</div>
+      <div class="tax-diff-row">
+        <div class="tax-diff-col">
+          <div class="tax-diff-lbl">s.182 Penalty</div>
+          <div class="tax-diff-amt" id="lf-s-pen">Rs 0</div>
+          <div class="tax-diff-sub" id="lf-s-pen-sub"></div>
+        </div>
+        <div class="tax-diff-center">
+          <div class="tax-diff-vs-txt">Total</div>
+          <div class="tax-diff-pill pill-more" id="lf-s-total">Rs 0</div>
+        </div>
+        <div class="tax-diff-col">
+          <div class="tax-diff-lbl">ATL Surcharge</div>
+          <div class="tax-diff-amt" id="lf-s-sur">Rs 0</div>
+          <div class="tax-diff-sub" id="lf-s-sur-sub"></div>
+        </div>
+      </div>
+      <div class="tax-diff-note" id="lf-s-note"></div>
+    </div>
+
+    <!-- ── EDITORIAL CONTENT ── -->
+    <article style="background:var(--white);border:1px solid var(--border);border-radius:var(--radius-lg);padding:28px;margin-top:24px;line-height:1.75;color:var(--text-mid);font-size:15px;">
+      <h2 style="font-size:21px;font-weight:700;color:var(--navy);margin:0 0 12px;">How the Late Filing Penalty Is Calculated (Section 182)</h2>
+      <p style="margin:0 0 16px;">
+        Entry 1 of the Table in <strong>Section 182</strong> of the Income Tax Ordinance, 2001 applies where a person fails to file the return of income required under Section 114 by the due date. The penalty is the <strong>higher of 0.1% of the tax payable for each day of default, or Rs 1,000 for each day of default</strong>, followed by a minimum, a maximum and an early-filing reduction.
+      </p>
+      <div style="overflow-x:auto;margin-bottom:16px;">
+        <table style="width:100%;border-collapse:collapse;font-size:14px;">
+          <thead><tr style="background:var(--navy);color:#fff;"><th style="text-align:left;padding:10px 12px;">Rule</th><th style="text-align:left;padding:10px 12px;">Amount</th></tr></thead>
+          <tbody>
+            <tr style="border-bottom:1px solid var(--border);"><td style="padding:10px 12px;">Per day of default</td><td style="padding:10px 12px;">Higher of 0.1% of tax payable or Rs 1,000</td></tr>
+            <tr style="border-bottom:1px solid var(--border);"><td style="padding:10px 12px;">Minimum — individual with 75%+ salary income</td><td style="padding:10px 12px;">Rs 10,000</td></tr>
+            <tr style="border-bottom:1px solid var(--border);"><td style="padding:10px 12px;">Minimum — all other cases</td><td style="padding:10px 12px;">Rs 50,000</td></tr>
+            <tr style="border-bottom:1px solid var(--border);"><td style="padding:10px 12px;">Maximum</td><td style="padding:10px 12px;">200% of tax payable</td></tr>
+            <tr><td style="padding:10px 12px;">Filed within 1 / 2 / 3 months of the due date</td><td style="padding:10px 12px;">Reduced by 75% / 50% / 25%</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p style="margin:0 0 16px;"><strong>"Tax payable"</strong> — after the Finance Act 2026 — is the higher of the tax chargeable on the assessed income for the year and the tax payable for the immediately preceding tax year for which a return was duly filed.</p>
+
+      <h3 style="font-size:17px;font-weight:700;color:var(--navy);margin:20px 0 10px;">Worked Example</h3>
+      <p style="margin:0 0 16px;">
+        Mr. Bilal, a salaried individual, owes <strong>Rs 60,000</strong> tax for Tax Year 2026. The due date was 31 October 2026 and he files on 20 November 2026 — <strong>20 days late</strong>. Rs 1,000 × 20 = Rs 20,000 is higher than 0.1% × 60,000 × 20 = Rs 1,200, and above the Rs 10,000 minimum. He filed within one month, so the penalty is reduced by 75%: <strong>Rs 5,000</strong>. To get back on the ATL he either pays the <strong>Rs 25,000</strong> surcharge or files <strong>Form ATL-U</strong> if he will not buy property for six months.
+      </p>
+
+      <h3 style="font-size:17px;font-weight:700;color:var(--navy);margin:20px 0 10px;">The ATL Surcharge — Section 182A</h3>
+      <p style="margin:0 0 12px;">A person who files after the due date is <strong>not included in the Active Taxpayers List</strong> for that year (s.182A(1)(a)) unless he pays the surcharge, raised by the Finance Act 2026 to <strong>Rs 25,000</strong> (individual), <strong>Rs 50,000</strong> (AOP) and <strong>Rs 100,000</strong> (company).</p>
+      <p style="margin:0 0 16px;">Under <strong>Section 182A(3)</strong> and <strong>Rule 81B(2B)–(2D)</strong> (S.R.O. 2097(I)/2026), an <strong>individual</strong> can instead furnish <strong>Form ATL-U</strong> on IRIS, undertaking not to purchase, acquire or obtain ownership or beneficial interest in any property for <strong>six months</strong> from the IRIS acknowledgement. If FBR finds a breach, the benefit is withdrawn. Full guide: <a href="/articles/atl-surcharge-waiver/" style="color:var(--green);font-weight:600;">ATL surcharge waiver via Form ATL-U</a>.</p>
+
+      <h3 style="font-size:17px;font-weight:700;color:var(--navy);margin:20px 0 10px;">Frequently Asked Questions</h3>
+      <p style="margin:0 0 10px;"><strong>Is the surcharge the same as the penalty?</strong><br>
+        No. The s.182A surcharge only puts you back on the ATL. The s.182 penalty for late filing is separate and is imposed by the Commissioner. Both can apply.</p>
+      <p style="margin:0 0 10px;"><strong>I have no tax payable. Do I still pay a penalty?</strong><br>
+        The minimum (Rs 10,000 salaried / Rs 50,000 others) still applies, reduced by 75%, 50% or 25% if you file within one, two or three months. Where 200% of tax payable is below the minimum, the law does not say which proviso prevails — this calculator uses the minimum as a cautious estimate.</p>
+      <p style="margin:0 0 10px;"><strong>Is there still a separate "late filer" withholding rate?</strong><br>
+        No. Rule 1A of the Tenth Schedule was omitted by the Finance Act 2026. Once you are on the ATL — by surcharge or ATL-U — you pay normal filer rates.</p>
+      <p style="margin:0;"><strong>When will the ATL show my name?</strong><br>
+        FBR updates the ATL daily (Rule 81B(4)). Check with our <a href="{% url 'atl_check' %}" style="color:var(--green);font-weight:600;">ATL Check</a> tool after paying the surcharge or filing ATL-U. See also: <a href="/articles/when-the-late-filer-will-be-changed-to-active/" style="color:var(--green);font-weight:600;">late filer to active filer</a>.</p>
+    </article>
+
+    <div id="lf-ad" hidden>
+      {% include 'partials/ad_unit.html' with slot='8230347332' min_height='280px' %}
+    </div>
+
+    {% include 'partials/cta_banner.html' %}
+
+  </main>
+  <aside class="content-sidebar">
+    {% include 'partials/sidebar.html' %}
+  </aside>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+(function(){
+  var $=function(id){return document.getElementById(id)};
+  var SUR={sal:25000,ind:25000,aop:50000,co:100000};
+  var DUE={sal:'2026-10-31',ind:'2026-10-31',aop:'2026-10-31',co:'2026-12-31'};
+  var LBL={sal:'Salaried individual',ind:'Individual',aop:'AOP',co:'Company'};
+  var fmt=function(n){return 'Rs '+Math.round(n).toLocaleString('en-PK')};
+  var num=function(el){var v=(el.value||'').replace(/[^0-9.]/g,'');return v?parseFloat(v):0};
+  function today(){var d=new Date();d.setMinutes(d.getMinutes()-d.getTimezoneOffset());return d.toISOString().slice(0,10)}
+  function parse(s){var p=(s||'').split('-');return p.length===3?new Date(+p[0],+p[1]-1,+p[2]):null}
+  function addMonths(d,m){var r=new Date(d.getFullYear(),d.getMonth()+m,d.getDate());if(r.getDate()!==d.getDate())r.setDate(0);return r}
+  function dstr(d){return d.toLocaleDateString('en-GB',{day:'numeric',month:'short',year:'numeric'})}
+  function type(){var r=document.querySelector('input[name="lf-type"]:checked');return r?r.value:'sal'}
+  var dueTouched=false, shown=false;
+  $('lf-due').value=DUE.sal; $('lf-filed').value=today();
+  $('lf-due').addEventListener('input',function(){dueTouched=true});
+  document.querySelectorAll('input[name="lf-type"]').forEach(function(r){r.addEventListener('change',function(){
+    if(!dueTouched) $('lf-due').value=DUE[type()];
+    $('lf-prop-wrap').hidden=(type()==='aop'||type()==='co'); if(shown) calc(false);})});
+  ['lf-due','lf-filed','lf-tax','lf-prev','lf-prop'].forEach(function(id){$(id).addEventListener('change',function(){if(shown)calc(false)})});
+  [['lf-tax','lf-tax-prev'],['lf-prev','lf-prev-prev']].forEach(function(p){
+    $(p[0]).addEventListener('input',function(){var n=num(this);$(p[1]).textContent=n?fmt(n):''});
+    $(p[0]).addEventListener('blur',function(){var n=num(this);this.value=this.value?Math.round(n).toLocaleString('en-PK'):''})});
+  $('lf-form').addEventListener('submit',function(e){e.preventDefault();calc(true)});
+
+  function row(a,b,cls){return '<tr'+(cls?' class="'+cls+'"':'')+'><td>'+a+'</td><td>'+b+'</td></tr>'}
+  function calc(scroll){
+    var due=parse($('lf-due').value), filed=parse($('lf-filed').value), t=type(), ok=true;
+    $('err-due').classList.toggle('show',!due); $('lf-due').classList.toggle('is-error',!due);
+    $('err-filed').classList.toggle('show',!filed); $('lf-filed').classList.toggle('is-error',!filed);
+    if(!due||!filed) return;
+    shown=true; $('lf-precalc').hidden=true;
+    var days=Math.round((filed-due)/86400000);
+    if(days<=0){ $('lf-ontime').hidden=false; $('calc-results').hidden=true; $('lf-summary').hidden=true; $('lf-ad').hidden=true; if(scroll)$('lf-ontime').scrollIntoView({behavior:'smooth',block:'center'}); return; }
+    $('lf-ontime').hidden=true;
+    var T=Math.max(num($('lf-tax')),num($('lf-prev')));
+    var perDayPct=0.001*T*days, perDayRs=1000*days, base=Math.max(perDayPct,perDayRs);
+    var minP=(t==='sal')?10000:50000, cap=2*T, pen=Math.max(base,minP), capNote='';
+    if(T>0 && pen>cap){
+      if(cap>=minP){ pen=cap; }
+      else { pen=minP; capNote='⚖️ 200% of tax payable ('+fmt(cap)+') is below the minimum penalty ('+fmt(minP)+'). The law does not say which proviso prevails; this estimate uses the minimum.'; }
+    }
+    var red=0, redTxt='Filed after 3 months — no reduction';
+    if(filed<=addMonths(due,1)){red=.75;redTxt='Filed within 1 month — 75% off'}
+    else if(filed<=addMonths(due,2)){red=.5;redTxt='Filed within 2 months — 50% off'}
+    else if(filed<=addMonths(due,3)){red=.25;redTxt='Filed within 3 months — 25% off'}
+    var finalPen=pen*(1-red);
+    var sur=SUR[t], indiv=(t==='sal'||t==='ind'), prop=$('lf-prop').checked, useAtlu=indiv&&!prop, surUsed=useAtlu?0:sur;
+
+    $('lf-r-days').textContent=days+(days===1?' day':' days');
+    $('lf-r-sub').textContent=LBL[t]+'  |  Due '+dstr(due)+'  |  Filed '+dstr(filed)+'  |  Tax payable '+fmt(T);
+    $('lf-t-pen').innerHTML=
+      row('Tax payable used (higher of this / last year)',fmt(T))+
+      row('0.1% of tax × '+days+' days',fmt(perDayPct))+
+      row('Rs 1,000 × '+days+' days',fmt(perDayRs))+
+      row('Higher of the two',fmt(base),'hl')+
+      row('Minimum penalty',fmt(minP))+
+      row('Maximum (200% of tax)',T>0?fmt(cap):'—')+
+      row('Penalty before reduction',fmt(pen))+
+      row(redTxt,red?'− '+fmt(pen*red):'—')+
+      row('Section 182 penalty',fmt(finalPen),'hl');
+    $('lf-t-atl').innerHTML=
+      row('Surcharge ('+LBL[t]+')',fmt(sur),useAtlu?'off':'')+
+      row('Form ATL-U (individuals only)',indiv?'Rs 0':'Not available',useAtlu?'ok':(indiv?'':'off'))+
+      row('ATL-U condition','No property for 6 months')+
+      row('Suggested route',useAtlu?'Form ATL-U':'Pay surcharge','hl')+
+      row('Amount to rejoin ATL',fmt(surUsed),'hl');
+    $('lf-cap-note').hidden=!capNote; $('lf-cap-note').textContent=capNote;
+
+    $('lf-s-pen').textContent=fmt(finalPen); $('lf-s-pen-sub').textContent=red?(red*100)+'% reduction applied':'no reduction';
+    $('lf-s-sur').textContent=fmt(surUsed); $('lf-s-sur-sub').textContent=useAtlu?'via Form ATL-U':'paid to rejoin ATL';
+    $('lf-s-total').textContent=fmt(finalPen+surUsed);
+    var nxt=!red?'':(red===.75?addMonths(due,1):red===.5?addMonths(due,2):addMonths(due,3));
+    $('lf-s-note').innerHTML=(useAtlu
+      ? '💡 Filing <strong>Form ATL-U</strong> saves you <strong>'+fmt(sur)+'</strong> — but no property purchase for 6 months.'
+      : (indiv ? '💡 You chose to pay the surcharge because a property deal is planned. Without one, <strong>Form ATL-U</strong> would save '+fmt(sur)+'.'
+               : '💡 Form ATL-U is for individuals only — '+(t==='co'?'a company':'an AOP')+' pays the <strong>'+fmt(sur)+'</strong> surcharge.'))
+      + (nxt?' The '+(red*100)+'% reduction holds for returns filed by <strong>'+dstr(nxt)+'</strong>.':'');
+
+    $('calc-results').hidden=false; $('lf-summary').hidden=false; $('lf-ad').hidden=false;
+    if(scroll) $('calc-results').scrollIntoView({behavior:'smooth',block:'start'});
+  }
+})();
+</script>
+{% endblock %}

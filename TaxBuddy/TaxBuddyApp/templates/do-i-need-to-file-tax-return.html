@@ -1,0 +1,484 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Do I Need to File an Income Tax Return in Pakistan? Free Filing Checker (Section 114) | TaxBuddy Umair{% endblock %}
+{% block meta_desc %}Check in 1 minute if you must file an income tax return in Pakistan under Section 114 — income above Rs 600,000, NTN, 500 sq yd property, 1000cc+ car, electricity bill and more. Finance Act 2026.{% endblock %}
+{% block schema_extra %}{% include 'partials/schema_calculator.html' with calc_name='Income Tax Return Filing Checker Pakistan (Section 114)' calc_url='/do-i-need-to-file-tax-return/' %}
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[
+{"@type":"Question","name":"Who is required to file an income tax return in Pakistan?","acceptedAnswer":{"@type":"Answer","text":"Under Section 114 of the Income Tax Ordinance 2001, every company, every non-profit organisation, every person whose taxable income exceeds the taxable limit (Rs 600,000 for individuals and AOPs), every person whose income is subject to final tax, and any person who has an NTN, owns 500 sq yd or more of land, a flat in municipal or cantonment limits, a vehicle above 1000cc, a commercial or industrial electricity connection with an annual bill above Rs 500,000, or meets the other conditions of section 114(1)(b), must file a return."}},
+{"@type":"Question","name":"Do I have to file a return if my salary is below Rs 600,000?","acceptedAnswer":{"@type":"Answer","text":"Not because of income alone. But you must still file if any other condition applies — for example you hold an NTN, own a car above 1000cc, own 500 sq yd or more of land, or were charged to tax in either of the two preceding tax years."}},
+{"@type":"Question","name":"Is a widow or disabled person exempt from filing?","acceptedAnswer":{"@type":"Answer","text":"Section 115(3) says a widow, an orphan below 25 or a disabled person is not required to file solely because of owning property or a vehicle above 1000cc (section 114(1)(b)(iii) to (vi)). If any other condition applies, such as taxable income above the limit or holding an NTN, the return is still required."}},
+{"@type":"Question","name":"Do I need to file a wealth statement with the return?","acceptedAnswer":{"@type":"Answer","text":"Yes. Under section 116(2), every resident individual who files a return of income must also file a wealth statement for that tax year."}}
+]}
+</script>{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/calculators.css' %}">
+<style>
+#lf-form [hidden],.content-main [hidden]{display:none!important}
+/* ── RESULT (navy block) ── */
+.calc-result{margin-top:32px!important;border-top:3px solid var(--green,#0D9E72)}
+.calc-result-title{font-size:16px;font-weight:700;color:var(--navy,#0A2647);text-align:center;letter-spacing:-.01em;background:var(--bg,#f7f9fc);padding:14px 16px 0;margin:0 -20px 14px}
+.calc-result-subtitle{font-size:12px;color:rgba(255,255,255,.65);text-align:center;margin:0 0 14px;padding:0 16px}
+.cmp-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.cmp-card{background:#fff;border-radius:12px;overflow:hidden;box-shadow:0 2px 12px rgba(10,38,71,.1)}
+.cmp-head{background:#0A2647;padding:12px 16px;font-size:12px;font-weight:600;color:rgba(255,255,255,.7);letter-spacing:.03em}
+.cmp-table{width:100%;border-collapse:collapse}
+.cmp-table tr{border-bottom:1px solid #E2E8F0}
+.cmp-table tr:last-child{border-bottom:none}
+.cmp-table td{padding:11px 16px;font-size:13px;vertical-align:top}
+.cmp-table td:first-child{color:#4A5568}
+.cmp-table td:last-child{text-align:right;font-weight:600;color:#0A2647;white-space:nowrap}
+.cmp-table tr.hl{background:#E8A020}
+.cmp-table tr.hl td{color:#fff!important;font-weight:700}
+.cmp-table tr.ok{background:#E6F7F2}
+.cmp-table tr.ok td{color:#0B8A64!important;font-weight:700}
+.cmp-table tr.off td{color:#A0AEC0!important;text-decoration:line-through}
+@media(max-width:640px){.cmp-grid{grid-template-columns:1fr!important}.result-inner-grid{grid-template-columns:1fr!important}}
+
+/* ── SUBMIT BUTTON ── */
+.calc-submit{width:100%;padding:15px 24px;background:linear-gradient(135deg,#0D9E72,#0B8A64);color:#fff;font-size:15px;font-weight:700;font-family:inherit;border:none;border-radius:12px;cursor:pointer;margin-top:8px;display:flex;align-items:center;justify-content:center;gap:10px;min-height:54px;letter-spacing:.01em;box-shadow:0 4px 14px rgba(13,158,114,.35);transition:all .2s}
+.calc-submit:hover{background:linear-gradient(135deg,#0B8A64,#097554);box-shadow:0 6px 20px rgba(13,158,114,.45);transform:translateY(-1px)}
+.calc-submit:active{transform:translateY(0);box-shadow:none}
+
+/* ── PRE-CALC INFO CARDS ── */
+.precalc-cards{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-top:20px}
+.precalc-card{background:#fff;border:1px solid #E2E8F0;border-radius:12px;padding:16px;transition:box-shadow .2s}
+.precalc-card:hover{box-shadow:0 4px 16px rgba(10,38,71,.08)}
+.precalc-card-icon{width:36px;height:36px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:18px;margin-bottom:10px}
+.pc-warn{background:#FEF3DC}.pc-blue{background:#EBF8FF}.pc-navy{background:#EEF2FF}
+.precalc-card h5{font-size:13px;font-weight:700;color:#0A2647;margin-bottom:10px}
+.precalc-card ul{list-style:none;display:flex;flex-direction:column;gap:6px;margin:0;padding:0}
+.precalc-card ul li{display:flex;align-items:flex-start;gap:7px;font-size:12.5px;color:#4A5568;line-height:1.5}
+.pc-dot{width:5px;height:5px;border-radius:50%;flex-shrink:0;margin-top:7px}
+.pc-dot-warn{background:#E8A020}.pc-dot-green{background:#0D9E72}.pc-dot-navy{background:#0A2647}
+@media(max-width:768px){.precalc-cards{grid-template-columns:1fr 1fr!important}}
+@media(max-width:480px){.precalc-cards{grid-template-columns:1fr!important}}
+
+/* ── FORM HEADER & FIELDS ── */
+.calc-container{background:var(--white,#fff);border:1px solid var(--border,#E2E8F0);border-radius:var(--radius-lg,12px);box-shadow:var(--shadow-sm,0 1px 3px rgba(16,24,40,.06));overflow:hidden;margin-bottom:20px}
+.calc-body{padding:24px 28px}
+.calc-header{background:var(--navy,#0A2647);padding:24px 28px;display:flex;align-items:flex-start;gap:16px}
+.calc-header-icon{width:48px;height:48px;background:rgba(255,255,255,.12);border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:24px;flex-shrink:0}
+.calc-header h2{font-size:20px;font-weight:700;color:#fff;margin-bottom:4px}
+.calc-header p{font-size:13px;color:rgba(255,255,255,.55);margin-bottom:10px}
+.calc-badges{display:flex;gap:6px;flex-wrap:wrap}
+.calc-badge{font-size:10px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;padding:3px 10px;border-radius:20px;border:1px solid rgba(255,255,255,.2);color:rgba(255,255,255,.65);background:rgba(255,255,255,.08)}
+.income-toggle{display:grid;grid-template-columns:repeat(4,1fr);border-radius:10px;overflow:hidden;border:1.5px solid var(--border,#E2E8F0);background:var(--bg,#F7F9FC);margin-bottom:6px}
+.income-toggle input[type="radio"]{display:none}
+.income-toggle label{text-align:center;padding:10px 8px;font-size:13px;font-weight:600;cursor:pointer;color:var(--text-mid,#4A5568);transition:all .2s;user-select:none;display:flex;align-items:center;justify-content:center;gap:6px;line-height:1.3}
+.income-toggle input[type="radio"]:checked + label{background:var(--navy,#0A2647);color:#fff}
+@media(max-width:560px){.income-toggle{grid-template-columns:1fr 1fr}}
+.field-wrap{margin-bottom:18px}
+.field-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:6px}
+.field-label-text{font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--text-light,#718096)}
+.field-required{color:#E53E3E;margin-left:2px}
+.field-live-preview{font-size:11.5px;font-weight:600;color:var(--green,#0D9E72)}
+.field-input-wrap{position:relative}
+.field-prefix{position:absolute;left:14px;top:50%;transform:translateY(-50%);font-size:13px;font-weight:700;color:var(--text-light,#718096);pointer-events:none;user-select:none}
+.form-input.has-prefix{padding-left:40px}
+.form-input{width:100%;padding:12px 14px;font-size:14px;font-family:inherit;border:1.5px solid var(--border,#E2E8F0);border-radius:10px;outline:none;background:var(--bg,#F7F9FC);color:var(--text,#1A202C);transition:border-color .2s,box-shadow .2s,background .2s}
+.form-input:focus{border-color:var(--navy,#0A2647);background:#fff;box-shadow:0 0 0 3px rgba(10,38,71,.08)}
+.form-input.is-error{border-color:#E53E3E;background:#FFF5F5;box-shadow:0 0 0 3px rgba(229,62,62,.08)}
+.field-hint{font-size:11.5px;color:var(--text-light,#718096);margin-top:5px;line-height:1.5}
+.field-err{display:none;font-size:12px;color:#E53E3E;margin-top:5px;font-weight:500}
+.field-err.show{display:flex;align-items:center;gap:4px}
+.year-selectors{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:6px}
+.year-select-label{font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--text-light,#718096);margin-bottom:6px}
+.year-badge{display:inline-block;background:rgba(13,158,114,.1);color:var(--green,#0D9E72);font-size:10px;font-weight:600;padding:2px 7px;border-radius:4px;margin-left:4px}
+.lf-chk{display:flex;gap:10px;align-items:flex-start;font-size:13.5px;line-height:1.5;color:var(--text-mid,#4A5568);cursor:pointer;background:var(--bg,#F7F9FC);border:1.5px solid var(--border,#E2E8F0);border-radius:10px;padding:12px 14px}
+.lf-chk input{margin-top:2px;width:18px;height:18px;accent-color:#0D9E72;flex-shrink:0}
+.lf-ontime{margin-top:24px;background:#F0FFF4;border:1px solid #9AE6B4;border-left:4px solid #38A169;border-radius:10px;padding:14px 16px;font-size:14px;color:#22543D;line-height:1.6}
+@media(max-width:640px){.year-selectors{grid-template-columns:1fr!important}.calc-body{padding:20px 16px}}
+
+/* ── SUMMARY (white card below result) ── */
+.tax-diff-wrap{margin-top:16px;background:var(--white,#fff);border:1.5px solid var(--border,#E2E8F0);border-radius:var(--radius-lg,12px);overflow:hidden;box-shadow:var(--shadow-sm)}
+.tax-diff-header-txt{background:var(--navy,#0A2647);color:rgba(255,255,255,.85);font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.09em;padding:10px 16px;text-align:center}
+.tax-diff-row{display:grid;grid-template-columns:1fr auto 1fr;align-items:center}
+.tax-diff-col{padding:16px;text-align:center}
+.tax-diff-lbl{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--text-light,#718096);margin-bottom:5px}
+.tax-diff-amt{font-size:22px;font-weight:700;color:var(--navy,#0A2647);font-family:var(--font-head)}
+.tax-diff-sub{font-size:11px;color:var(--text-light,#718096);margin-top:2px}
+.tax-diff-center{padding:16px 12px;text-align:center;border-left:1px solid var(--border,#E2E8F0);border-right:1px solid var(--border,#E2E8F0)}
+.tax-diff-vs-txt{font-size:10px;font-weight:700;color:var(--text-light,#718096);text-transform:uppercase;letter-spacing:.1em;margin-bottom:8px}
+.tax-diff-pill{font-size:12.5px;font-weight:700;padding:6px 12px;border-radius:var(--radius-pill,99px);white-space:nowrap}
+.pill-more{background:rgba(229,62,62,.1);color:#dc2626;border:1px solid rgba(229,62,62,.2)}
+.tax-diff-note{padding:10px 16px;font-size:13px;color:var(--text-mid,#4A5568);text-align:center;border-top:1px solid var(--border,#E2E8F0);background:var(--bg,#F7F9FC);line-height:1.55}
+.tax-diff-note strong{color:var(--navy,#0A2647)}
+@media(max-width:560px){
+  .tax-diff-row{grid-template-columns:1fr 1fr}
+  .tax-diff-center{order:1;grid-column:1 / -1;border-left:none;border-right:none;border-top:1px solid var(--border,#E2E8F0);padding:12px}
+  .tax-diff-col{padding:14px 10px}.tax-diff-amt{font-size:20px}.tax-diff-vs-txt{display:none}
+  .tax-diff-pill{font-size:12px;padding:7px 16px;display:inline-block}
+}
+
+/* ── FILING CHECKER ── */
+.fc-list{display:flex;flex-direction:column;gap:8px}
+.fc-verdict{margin:0 0 14px;border-radius:10px;padding:14px 16px;font-size:14px;line-height:1.6}
+.fc-verdict.is-yes{background:rgba(232,160,32,.15);border:1px solid rgba(232,160,32,.4);color:#FDE68A}
+.fc-verdict.is-yes strong{color:#fff}
+.fc-verdict.is-no{background:rgba(13,158,114,.15);border:1px solid rgba(13,158,114,.35);color:#A7F3D0}
+.fc-verdict.is-no strong{color:#fff}
+.pill-save{background:rgba(34,201,122,.12);color:#0B8A64;border:1px solid rgba(34,201,122,.25)}
+.cmp-table td:last-child a{text-decoration:underline}
+.cmp-table tr.mut td{color:#A0AEC0!important;font-weight:500}
+</style>
+{% endblock %}
+
+{% block content %}
+
+<div class="article-hero calc-page-header">
+  <div class="article-hero-inner">
+    <div class="breadcrumb">
+      <a href="{% url 'index' %}">Home</a>
+      <span class="breadcrumb-sep">›</span>
+      <span>Tools</span>
+      <span class="breadcrumb-sep">›</span>
+      <span>Return Filing Checker</span>
+    </div>
+    <h1>Do I Need to File an Income Tax Return? — Pakistan Filing Checker</h1>
+    <div class="article-meta">
+      <span>⚖️ Section 114 &amp; 115</span>
+      <span>✅ Finance Act 2026</span>
+      <span>⏱️ 1-minute check</span>
+    </div>
+  </div>
+</div>
+
+<div class="content-grid">
+  <main class="content-main">
+
+    <div class="quick-answer" style="background:var(--green-light,#E6F7F2);border:1px solid #BCE8D9;border-left:4px solid var(--green,#0D9E72);border-radius:12px;padding:16px 18px;margin:0 0 20px;">
+      <div style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:var(--green-mid,#0B8A64);margin-bottom:6px;">Quick answer</div>
+      <p style="font-size:14.5px;line-height:1.65;color:var(--text,#0F172A);margin:0;">
+        You must file a return in Pakistan if your <strong>taxable income is above Rs 600,000</strong> a year, or — whatever your income — if you <strong>hold an NTN</strong>, own <strong>500 sq yd or more</strong> of land, a flat in municipal or cantonment limits, a <strong>car above 1000cc</strong>, a commercial or industrial electricity connection with an annual bill above <strong>Rs 500,000</strong>, or were <strong>charged to tax in either of the last two tax years</strong> (Section 114). Every company and NPO must always file.
+      </p>
+    </div>
+
+    <div class="calc-container">
+      <div class="calc-header">
+        <div class="calc-header-icon">📋</div>
+        <div>
+          <h2>Return Filing Checker</h2>
+          <p>Am I required to file? · ITO 2001 s.114</p>
+          <div class="calc-badges"><span class="calc-badge">s.114</span><span class="calc-badge">s.115</span><span class="calc-badge">FA 2026</span><span class="calc-badge">Free</span></div>
+        </div>
+      </div>
+      <div class="calc-body">
+        <div style="background:#fffbeb;border:1px solid #fde68a;border-radius:10px;padding:12px 16px;margin-bottom:18px;display:flex;gap:10px;align-items:flex-start;">
+          <span style="font-size:16px;line-height:1.4;flex-shrink:0;">&#9888;&#65039;</span>
+          <p style="font-size:12.5px;color:#92400e;margin:0;line-height:1.6;">
+            <strong>For educational purposes only.</strong> This checks the conditions in Section 114(1) and (1A) of the Income Tax Ordinance 2001 and the relief in Section 115(3). The Board can also notify further classes of persons (s.114(1)(c)). Confirm with a qualified tax practitioner if unsure.
+          </p>
+        </div>
+
+        <form id="fc-form" novalidate>
+          <div class="field-wrap">
+            <div class="field-top"><span class="field-label-text">I am a<span class="field-required">*</span></span></div>
+            <div class="income-toggle">
+              <input type="radio" name="fc-type" id="fc-ind" value="ind" checked><label for="fc-ind">👤 Individual</label>
+              <input type="radio" name="fc-type" id="fc-aop" value="aop"><label for="fc-aop">🤝 AOP / firm</label>
+              <input type="radio" name="fc-type" id="fc-co" value="co"><label for="fc-co">🏢 Company</label>
+              <input type="radio" name="fc-type" id="fc-npo" value="npo"><label for="fc-npo">🕌 NPO / trust</label>
+            </div>
+          </div>
+
+          <div id="fc-rest">
+            <div class="year-selectors fc-ind-only">
+              <div>
+                <div class="year-select-label">Residential status</div>
+                <select id="fc-res" class="form-input form-select">
+                  <option value="r">Resident in Pakistan</option>
+                  <option value="nr">Non-resident (overseas)</option>
+                </select>
+              </div>
+              <div>
+                <div class="year-select-label">Special status <span class="year-badge">s.115(3)</span></div>
+                <select id="fc-spec" class="form-input form-select">
+                  <option value="">None</option>
+                  <option value="widow">Widow</option>
+                  <option value="orphan">Orphan below 25 years</option>
+                  <option value="disabled">Disabled person</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="field-wrap" style="margin-top:12px">
+              <div class="field-top">
+                <span class="field-label-text">Total taxable income this year</span>
+                <span class="field-live-preview" id="fc-inc-prev"></span>
+              </div>
+              <div class="field-input-wrap">
+                <span class="field-prefix">₨</span>
+                <input type="text" inputmode="numeric" id="fc-inc" class="form-input has-prefix" placeholder="e.g. 900,000 — salary + business + rent + other" autocomplete="off">
+              </div>
+              <div class="field-hint">Annual income from all heads, after exempt income. Monthly salary × 12 is fine for an estimate.</div>
+            </div>
+
+            <div class="field-wrap fc-ind-only">
+              <div class="field-top">
+                <span class="field-label-text">Of which — business income</span>
+                <span class="field-live-preview" id="fc-biz-prev"></span>
+              </div>
+              <div class="field-input-wrap">
+                <span class="field-prefix">₨</span>
+                <input type="text" inputmode="numeric" id="fc-biz" class="form-input has-prefix" placeholder="0 if you have no business / shop / freelancing" autocomplete="off">
+              </div>
+            </div>
+
+            <div class="field-wrap">
+              <div class="field-top"><span class="field-label-text">Tick everything that applies to you</span></div>
+              <div class="fc-list">
+                <label class="lf-chk"><input type="checkbox" id="q-ntn"> <span>I have an <strong>NTN</strong> (registered with FBR / on IRIS)</span></label>
+                <label class="lf-chk"><input type="checkbox" id="q-final"> <span>Some of my income is <strong>final tax</strong> (e.g. bank profit, dividends, prize bonds, contract or export receipts)</span></label>
+                <label class="lf-chk"><input type="checkbox" id="q-charged"> <span>I was <strong>charged to tax</strong> in either of the last two tax years (an assessment or a filed return showed tax)</span></label>
+                <label class="lf-chk"><input type="checkbox" id="q-loss"> <span>I want to <strong>carry forward a business loss</strong></span></label>
+                <label class="lf-chk fc-ind-only"><input type="checkbox" id="q-land"> <span>I own a plot / house with <strong>500 sq yd or more</strong> of land (in municipal / cantonment / ICT limits or a rating area)</span></label>
+                <label class="lf-chk fc-ind-only"><input type="checkbox" id="q-flat"> <span>I own a <strong>flat</strong> in municipal / cantonment / ICT limits, or a flat of <strong>2,000 sq ft or more</strong> in a rating area</span></label>
+                <label class="lf-chk fc-ind-only"><input type="checkbox" id="q-car"> <span>I own a <strong>vehicle above 1000cc</strong></span></label>
+                <label class="lf-chk"><input type="checkbox" id="q-elec"> <span>I hold a <strong>commercial or industrial electricity connection</strong> with an annual bill above <strong>Rs 500,000</strong></span></label>
+                <label class="lf-chk"><input type="checkbox" id="q-chamber"> <span>I am registered with a <strong>chamber of commerce, trade / business association, market committee or professional body</strong> (PEC, PMDC, Bar Council, ICAP, ICMAP…)</span></label>
+                <label class="lf-chk fc-ind-only"><input type="checkbox" id="q-foreign"> <span>I have <strong>foreign income of US$10,000+</strong> or <strong>foreign assets of US$100,000+</strong></span></label>
+              </div>
+            </div>
+          </div>
+
+          <button type="submit" class="calc-submit" id="fc-submit">🔍 Check My Filing Requirement</button>
+        </form>
+
+        <div class="precalc-cards" id="fc-precalc">
+          <div class="precalc-card">
+            <div class="precalc-card-icon pc-warn">⚠️</div>
+            <h5>Income is not the only test</h5>
+            <ul>
+              <li><span class="pc-dot pc-dot-warn"></span>An NTN alone makes filing compulsory.</li>
+              <li><span class="pc-dot pc-dot-warn"></span>So do a 1000cc+ car or a 500 sq yd plot.</li>
+            </ul>
+          </div>
+          <div class="precalc-card">
+            <div class="precalc-card-icon pc-blue">👤</div>
+            <h5>Who should use this?</h5>
+            <ul>
+              <li><span class="pc-dot pc-dot-green"></span>Salaried people below or near Rs 600,000.</li>
+              <li><span class="pc-dot pc-dot-green"></span>Shopkeepers, freelancers, landlords.</li>
+              <li><span class="pc-dot pc-dot-green"></span>Overseas Pakistanis with property here.</li>
+            </ul>
+          </div>
+          <div class="precalc-card">
+            <div class="precalc-card-icon pc-navy">📌</div>
+            <h5>Important Notes</h5>
+            <ul>
+              <li><span class="pc-dot pc-dot-navy"></span>Companies and NPOs must always file.</li>
+              <li><span class="pc-dot pc-dot-navy"></span>Resident individuals also file a wealth statement (s.116(2)).</li>
+              <li><span class="pc-dot pc-dot-navy"></span>Filing on time keeps you on the ATL.</li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- RESULTS -->
+        <div class="calc-result" id="calc-results" hidden>
+          <div class="calc-result-title" id="fc-r-title"></div>
+          <div class="calc-result-subtitle" id="fc-r-sub"></div>
+          <div class="fc-verdict" id="fc-verdict"></div>
+
+          <div class="cmp-grid">
+            <div class="cmp-card">
+              <div class="cmp-head">Why — Section 114 conditions met</div>
+              <table class="cmp-table"><tbody id="fc-t-why"></tbody></table>
+            </div>
+            <div class="cmp-card">
+              <div class="cmp-head">What to do next</div>
+              <table class="cmp-table"><tbody id="fc-t-next"></tbody></table>
+            </div>
+          </div>
+
+          <div class="calc-cta" style="margin-top:14px">
+            <div class="calc-cta-text">Need your return and wealth statement filed? <strong>Starting PKR 3,000</strong></div>
+            <a href="https://wa.me/923332482742" class="btn-wa-sm" target="_blank" rel="noopener">💬 WhatsApp to File</a>
+          </div>
+          <div id="fc-relief" hidden style="margin-top:16px;background:#FFFBEB;border-radius:10px;padding:14px 16px;font-size:13px;color:#92400E;line-height:1.65;border-left:3px solid #F59E0B"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SUMMARY -->
+    <div class="tax-diff-wrap" id="fc-summary" hidden>
+      <div class="tax-diff-header-txt">📊 Your Filing Status at a Glance</div>
+      <div class="tax-diff-row">
+        <div class="tax-diff-col">
+          <div class="tax-diff-lbl">Conditions met</div>
+          <div class="tax-diff-amt" id="fc-s-n">0</div>
+          <div class="tax-diff-sub">under s.114</div>
+        </div>
+        <div class="tax-diff-center">
+          <div class="tax-diff-vs-txt">Return</div>
+          <div class="tax-diff-pill" id="fc-s-pill"></div>
+        </div>
+        <div class="tax-diff-col">
+          <div class="tax-diff-lbl">Wealth statement</div>
+          <div class="tax-diff-amt" id="fc-s-ws">—</div>
+          <div class="tax-diff-sub">s.116(2)</div>
+        </div>
+      </div>
+      <div class="tax-diff-note" id="fc-s-note"></div>
+    </div>
+
+    <!-- ── EDITORIAL CONTENT ── -->
+    <article style="background:var(--white);border:1px solid var(--border);border-radius:var(--radius-lg);padding:28px;margin-top:24px;line-height:1.75;color:var(--text-mid);font-size:15px;">
+      <h2 style="font-size:21px;font-weight:700;color:var(--navy);margin:0 0 12px;">Who Must File an Income Tax Return in Pakistan (Section 114)</h2>
+      <p style="margin:0 0 16px;">
+        Section 114(1) of the Income Tax Ordinance, 2001 lists who must furnish a return of income for a tax year. Some persons must file because of <strong>what they are</strong> (a company, an NPO), some because of <strong>how much they earn</strong>, and many because of <strong>what they own or hold</strong> — even with little or no income.
+      </p>
+      <div style="overflow-x:auto;margin-bottom:16px;">
+        <table style="width:100%;border-collapse:collapse;font-size:14px;">
+          <thead><tr style="background:var(--navy);color:#fff;"><th style="text-align:left;padding:10px 12px;">Clause</th><th style="text-align:left;padding:10px 12px;">Who must file</th></tr></thead>
+          <tbody>
+            <tr style="border-bottom:1px solid var(--border);"><td style="padding:10px 12px;">114(1)(a)</td><td style="padding:10px 12px;">Every company</td></tr>
+            <tr style="border-bottom:1px solid var(--border);"><td style="padding:10px 12px;">114(1)(ab)</td><td style="padding:10px 12px;">Any other person whose taxable income exceeds the taxable limit (Rs 600,000 for individuals and AOPs)</td></tr>
+            <tr style="border-bottom:1px solid var(--border);"><td style="padding:10px 12px;">114(1)(ac)</td><td style="padding:10px 12px;">Every non-profit organisation (s.2(36))</td></tr>
+            <tr style="border-bottom:1px solid var(--border);"><td style="padding:10px 12px;">114(1)(ae)</td><td style="padding:10px 12px;">Every person with income subject to final taxation</td></tr>
+            <tr style="border-bottom:1px solid var(--border);"><td style="padding:10px 12px;">114(1)(b)(i)–(ii)</td><td style="padding:10px 12px;">Charged to tax in either of the two preceding tax years; or claims a loss carried forward</td></tr>
+            <tr style="border-bottom:1px solid var(--border);"><td style="padding:10px 12px;">114(1)(b)(iii)–(v)</td><td style="padding:10px 12px;">Owns land of 500 sq yd or more, or a flat in municipal / cantonment / ICT limits, or a flat of 2,000 sq ft or more in a rating area</td></tr>
+            <tr style="border-bottom:1px solid var(--border);"><td style="padding:10px 12px;">114(1)(b)(vi)–(vii)</td><td style="padding:10px 12px;">Owns a motor vehicle above 1000cc; or has obtained an NTN</td></tr>
+            <tr style="border-bottom:1px solid var(--border);"><td style="padding:10px 12px;">114(1)(b)(viii)</td><td style="padding:10px 12px;">Commercial or industrial electricity connection with an annual bill above Rs 500,000</td></tr>
+            <tr style="border-bottom:1px solid var(--border);"><td style="padding:10px 12px;">114(1)(b)(ix)–(x)</td><td style="padding:10px 12px;">Resident registered with a chamber, trade body, market committee or professional body; resident individual required to file the foreign income and assets statement (s.116A)</td></tr>
+            <tr style="border-bottom:1px solid var(--border);"><td style="padding:10px 12px;">114(1)(c)</td><td style="padding:10px 12px;">Persons or classes notified by the Board</td></tr>
+            <tr><td style="padding:10px 12px;">114(1A)</td><td style="padding:10px 12px;">Individual with business income above Rs 300,000 up to Rs 400,000</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3 style="font-size:17px;font-weight:700;color:var(--navy);margin:20px 0 10px;">Who Gets Relief — Section 115(3)</h3>
+      <p style="margin:0 0 16px;">A <strong>widow</strong>, an <strong>orphan below 25</strong> and a <strong>disabled person</strong> are not required to file <em>solely</em> because they own property or a vehicle above 1000cc (s.114(1)(b)(iii)–(vi)). A <strong>non-resident</strong> is not required to file solely because of owning immovable property. If any other condition applies — income above the limit, an NTN, final-tax income — the return is still required.</p>
+
+      <h3 style="font-size:17px;font-weight:700;color:var(--navy);margin:20px 0 10px;">Worked Example</h3>
+      <p style="margin:0 0 16px;">
+        Ayesha earns a salary of Rs 45,000 a month (Rs 540,000 a year) — below the Rs 600,000 limit, so clause (ab) does not apply. But she drives a 1300cc car and got an NTN when she opened a business account. Both <strong>s.114(1)(b)(vi)</strong> and <strong>(vii)</strong> apply, so she <strong>must file</strong> a return and, as a resident individual, a wealth statement — even though her tax is nil.
+      </p>
+
+      <h3 style="font-size:17px;font-weight:700;color:var(--navy);margin:20px 0 10px;">Frequently Asked Questions</h3>
+      <p style="margin:0 0 10px;"><strong>My employer already deducts tax. Do I still file?</strong><br>
+        Yes, if your taxable salary is above Rs 600,000 or any other condition applies. Withholding by the employer does not replace your own return.</p>
+      <p style="margin:0 0 10px;"><strong>What is the due date?</strong><br>
+        For individuals and AOPs, 30 September after the tax year ends (Tax Year 2026 was extended to 31 October 2026). Companies with a tax year ending 1 January–30 June file by 31 December. Missed it? Use our <a href="{% url 'late_filing_calculator' %}" style="color:var(--green);font-weight:600;">late filing penalty calculator</a>.</p>
+      <p style="margin:0 0 10px;"><strong>I am not required to file. Should I file anyway?</strong><br>
+        Often yes. Filing puts you on the Active Taxpayers List, which means lower withholding on property, vehicles, bank profit and cash withdrawals. See: <a href="/articles/benefits-of-being-tax-filer-in-pakistan/" style="color:var(--green);font-weight:600;">benefits of being a filer</a>.</p>
+      <p style="margin:0;"><strong>What happens if I don't file?</strong><br>
+        Failure to file attracts a penalty under Section 182 and you stay off the ATL. Check your status with our <a href="{% url 'atl_check' %}" style="color:var(--green);font-weight:600;">ATL Check</a> tool.</p>
+    </article>
+
+    <div id="fc-ad" hidden>
+      {% include 'partials/ad_unit.html' with slot='8230347332' min_height='280px' %}
+    </div>
+
+    {% include 'partials/cta_banner.html' %}
+
+  </main>
+  <aside class="content-sidebar">
+    {% include 'partials/sidebar.html' %}
+  </aside>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+(function(){
+  var $=function(id){return document.getElementById(id)};
+  var LIMIT=600000;
+  var fmt=function(n){return 'Rs '+Math.round(n).toLocaleString('en-PK')};
+  var num=function(el){var v=(el.value||'').replace(/[^0-9.]/g,'');return v?parseFloat(v):0};
+  var chk=function(id){return $(id).checked};
+  function type(){var r=document.querySelector('input[name="fc-type"]:checked');return r?r.value:'ind'}
+  var shown=false;
+  function sync(){
+    var t=type(), ind=t==='ind';
+    document.querySelectorAll('.fc-ind-only').forEach(function(el){el.hidden=!ind});
+    $('fc-rest').hidden=(t==='co'||t==='npo');
+  }
+  document.querySelectorAll('input[name="fc-type"]').forEach(function(r){r.addEventListener('change',function(){sync();if(shown)check(false)})});
+  document.querySelectorAll('#fc-form input[type=checkbox], #fc-form select').forEach(function(el){el.addEventListener('change',function(){if(shown)check(false)})});
+  [['fc-inc','fc-inc-prev'],['fc-biz','fc-biz-prev']].forEach(function(p){
+    $(p[0]).addEventListener('input',function(){var n=num(this);$(p[1]).textContent=n?fmt(n):''});
+    $(p[0]).addEventListener('blur',function(){var n=num(this);this.value=this.value?Math.round(n).toLocaleString('en-PK'):'';if(shown)check(false)})});
+  $('fc-form').addEventListener('submit',function(e){e.preventDefault();check(true)});
+  sync();
+
+  function row(a,b,cls){return '<tr'+(cls?' class="'+cls+'"':'')+'><td>'+a+'</td><td>'+b+'</td></tr>'}
+
+  function check(scroll){
+    shown=true; $('fc-precalc').hidden=true;
+    var t=type(), ind=t==='ind', res=!ind || $('fc-res').value==='r', spec=ind?$('fc-spec').value:'';
+    var inc=num($('fc-inc')), biz=ind?num($('fc-biz')):0;
+    var why=[], relieved=[];
+    function add(c,txt,reliefBy){ if(reliefBy){relieved.push([c,txt,reliefBy]);} else why.push([c,txt]); }
+
+    if(t==='co') add('114(1)(a)','Every company must file');
+    else if(t==='npo') add('114(1)(ac)','Every non-profit organisation must file');
+    else {
+      if(inc>LIMIT) add('114(1)(ab)','Taxable income '+fmt(inc)+' exceeds the Rs 600,000 limit');
+      if(ind && biz>300000 && biz<=400000) add('114(1A)','Business income '+fmt(biz)+' is above Rs 300,000 (up to Rs 400,000)');
+      if(chk('q-final')) add('114(1)(ae)','Income subject to final taxation');
+      if(chk('q-charged')) add('114(1)(b)(i)','Charged to tax in either of the two preceding tax years');
+      if(chk('q-loss')) add('114(1)(b)(ii)','Claiming a loss carried forward');
+      var propRelief = spec ? {widow:'widow',orphan:'orphan below 25',disabled:'disabled person'}[spec] : (!res ? 'non-resident' : '');
+      var vehRelief  = spec ? {widow:'widow',orphan:'orphan below 25',disabled:'disabled person'}[spec] : '';
+      if(ind && chk('q-land')) add('114(1)(b)(iii)/(iv)','Owns land of 500 sq yd or more',propRelief);
+      if(ind && chk('q-flat')) add('114(1)(b)(iii)/(v)','Owns a flat in municipal / cantonment / ICT limits or 2,000 sq ft+ in a rating area',propRelief);
+      if(ind && chk('q-car')) add('114(1)(b)(vi)','Owns a motor vehicle above 1000cc',vehRelief);
+      if(chk('q-ntn')) add('114(1)(b)(vii)','Has obtained a National Tax Number (NTN)');
+      if(chk('q-elec')) add('114(1)(b)(viii)','Commercial / industrial electricity bill above Rs 500,000 a year');
+      if(chk('q-chamber')) { if(res) add('114(1)(b)(ix)','Resident registered with a chamber, trade body or professional body'); }
+      if(ind && chk('q-foreign')) { if(res) add('114(1)(b)(x)','Resident individual required to file the foreign income and assets statement (s.116A)'); }
+    }
+
+    var must=why.length>0, wealth=must && ind && res;
+    var label={ind:'Individual',aop:'AOP / firm',co:'Company',npo:'Non-profit organisation'}[t];
+    $('fc-r-title').textContent=must?'Yes — you must file a return':'Not required under Section 114';
+    $('fc-r-sub').textContent=label+(ind?(res?'  |  Resident':'  |  Non-resident')+(spec?'  |  '+$('fc-spec').selectedOptions[0].text:''):'')+(t==='ind'||t==='aop'?'  |  Taxable income '+fmt(inc):'');
+    $('fc-verdict').className='fc-verdict '+(must?'is-yes':'is-no');
+    $('fc-verdict').innerHTML=must
+      ? '✅ <strong>Filing is compulsory.</strong> '+why.length+' condition'+(why.length>1?'s':'')+' of Section 114 appl'+(why.length>1?'y':'ies')+' to you.'
+      : 'ℹ️ <strong>No Section 114 condition applies</strong> on what you entered. Filing is optional — but usually worth it to get on the ATL.';
+
+    var w = why.length ? why.map(function(x){return row(x[1],x[0])}).join('') : row('No condition met','—','off');
+    relieved.forEach(function(x){ w+=row(x[1]+' — relieved ('+x[2]+')',x[0]+' · s.115(3)','off'); });
+    if(t==='ind'||t==='aop'){ if(inc<=LIMIT) w+=row('Taxable income '+fmt(inc)+' — within Rs 600,000','114(1)(ab) not met','mut'); }
+    $('fc-t-why').innerHTML=w;
+
+    var nx='';
+    if(must){
+      nx+=row('Return of income (s.114)','Required','hl');
+      nx+=row('Wealth statement (s.116(2))',wealth?'Required':(ind?'Not required (non-resident)':'Not applicable'),wealth?'hl':'');
+      nx+=row('Tax Year 2026 due date', t==='co'?'31 Dec 2026*':'31 Oct 2026 (passed)');
+      nx+=row('Filed late?','<a href="{% url "late_filing_calculator" %}" style="color:#0B8A64">Penalty calculator →</a>');
+      nx+=row('Check ATL status','<a href="{% url "atl_check" %}" style="color:#0B8A64">ATL Check →</a>');
+    } else {
+      nx+=row('Return of income','Optional','ok');
+      nx+=row('Why file anyway','Lower WHT as an ATL filer');
+      nx+=row('Property purchase (236K)','1.25% vs 10.5%+');
+      nx+=row('Becomes compulsory if you get','NTN / 1000cc+ car / 500 sq yd');
+    }
+    $('fc-t-next').innerHTML=nx;
+
+    var relief='';
+    if(relieved.length) relief='⚖️ <strong>Section 115(3):</strong> as a '+relieved[0][2]+', you are not required to file <em>solely</em> because of '+(relieved[0][2]==='non-resident'?'owning immovable property in Pakistan':'owning property or a vehicle above 1000cc')+' (s.114(1)(b)(iii)–(vi)). '+(must?'Other conditions above still apply, so the return is required.':'No other condition applies.');
+    if(!res && (chk('q-chamber')||chk('q-foreign')) && ind) relief+=(relief?'<br>':'')+'ℹ️ Clauses (ix) and (x) apply only to residents, so they are not counted for you.';
+    if(t==='co') relief='ℹ️ *Companies with a tax year ending 1 July–31 December file by 30 September instead (s.118).';
+    $('fc-relief').hidden=!relief; $('fc-relief').innerHTML=relief;
+
+    $('fc-s-n').textContent=why.length;
+    $('fc-s-pill').textContent=must?'Must file':'Optional';
+    $('fc-s-pill').className='tax-diff-pill '+(must?'pill-more':'pill-save');
+    $('fc-s-ws').textContent=wealth?'Required':'—';
+    $('fc-s-note').innerHTML=must
+      ? (t==='co' ? '💡 A company with a tax year ending 30 June 2026 files by <strong>31 December 2026</strong>. Late filing brings a Section 182 penalty (minimum Rs 50,000) and a Rs 100,000 ATL surcharge.'
+                  : '💡 Tax Year 2026 returns were due <strong>31 October 2026</strong>. Not filed yet? File by <strong>30 November 2026</strong> to get the 75% penalty reduction under Section 182.')
+      : '💡 Not required, but filing gets you on the <strong>Active Taxpayers List</strong> and saves withholding tax on property, vehicles and bank profit.';
+
+    $('calc-results').hidden=false; $('fc-summary').hidden=false; $('fc-ad').hidden=false;
+    if(scroll) $('calc-results').scrollIntoView({behavior:'smooth',block:'start'});
+  }
+})();
+</script>
+{% endblock %}

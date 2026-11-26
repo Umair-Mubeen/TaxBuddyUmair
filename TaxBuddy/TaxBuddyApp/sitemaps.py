@@ -5,7 +5,7 @@ from django.urls import reverse
 
 # Bump this whenever you update the calculators / static tool pages
 # (e.g. after a Finance Act rate change) so Google sees a fresh signal.
-TOOLS_LASTMOD = date(2026, 9, 16)
+TOOLS_LASTMOD = date(2026, 11, 26)
 
 from .models import Blog, GlossaryTerm, Instrument
 
@@ -168,6 +168,9 @@ class CalculatorSitemap(Sitemap):
             'ai_smart_calculator',
             'vehicle_tax_calculator',
             'section_153_calculator',
+            'late_filing_calculator',
+            'filing_checker',
+            'salary_rate_history',
         ]
 
     def location(self, item):
