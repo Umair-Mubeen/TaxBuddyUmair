@@ -4,7 +4,7 @@ from django.conf.urls.static import static
 from django.contrib.sitemaps.views import sitemap
 from django.views.generic import TemplateView
 from . import llms_views          # upar imports mein
-
+from django.views.generic import RedirectView
 from .sitemaps import (
     HomeSitemap, StaticSitemap, LegalSitemap, CalculatorSitemap,
     BlogSitemap, BlogCategorySitemap, GlossarySitemap, SROSitemap,
@@ -167,7 +167,7 @@ urlpatterns = [
 
     # Blog detail — clean /articles/ prefix avoids slug collisions
     path('articles/<slug:slug>/', views.BlogDetails, name='BlogDetails'),
-    path('salary-tax-calculator-2026-27/', views.SalaryCalculator2027, name='SalaryCalculator2027'),
+    path('salary-tax-calculator-2026-27/', RedirectView.as_view(pattern_name='SalaryCalculator', permanent=True), name='SalaryCalculator2027'),
     path('refund-analyzer/', views.refund_analyzer, name='refund_analyzer'),
     path('refund-analyzer/extract/', views.refund_analyzer_extract, name='refund_analyzer_extract'),
     path('salary-tax-slabs-history/', views.salary_rate_history,name='salary_rate_history'),

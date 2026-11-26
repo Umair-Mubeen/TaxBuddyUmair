@@ -151,7 +151,6 @@ class CalculatorSitemap(Sitemap):
     def items(self):
         return [
             'SalaryCalculator',
-            'SalaryCalculator2027',
             'BusinessCalculator',
             'AOPCalculator',
             'PropertyCalculator',
