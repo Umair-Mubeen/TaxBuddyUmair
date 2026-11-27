@@ -705,7 +705,7 @@ def SalaryCalculator(request):
             "Monthly and annual tax difference displayed",
         ],
         "notes": [
-            "Tax credits and exemptions are not included",
+            "Includes VPS pension tax credit (Section 63) if you enter a contribution",
             "Allowances may be taxable depending on law",
             "Final tax may vary based on individual profile",
         ],
@@ -727,8 +727,14 @@ def SalaryCalculator(request):
         tax_year_2 = request.POST.get('tax_year_2')
         yearly_income = income_amount * 12 if income_type == 'Monthly' else income_amount
 
+        # Optional VPS contribution (annual) for the Section 63 tax credit
         try:
-            result_context = FetchResult(tax_year_1, tax_year_2, 'Salary Individual', yearly_income)
+            vps = max(float((request.POST.get('vps_contribution') or '0').replace(',', '')), 0)
+        except ValueError:
+            vps = 0
+
+        try:
+            result_context = FetchResult(tax_year_1, tax_year_2, 'Salary Individual', yearly_income, vps)
             context.update(result_context)
             context['income_type'] = income_type
         except Exception as e:
@@ -826,7 +832,7 @@ def PropertyCalculator(request):
 # TAX CALCULATION CORE
 # ─────────────────────────────────────────────────────────────
 
-def FetchResult(tax_year_1, tax_year_2, taxpayer_type, yearly_income):
+def FetchResult(tax_year_1, tax_year_2, taxpayer_type, yearly_income, vps=0):
     """
     Fetch tax brackets for two years, calculate tax, and return a context dict.
     Raises exceptions — callers should catch them.
@@ -872,6 +878,11 @@ def FetchResult(tax_year_1, tax_year_2, taxpayer_type, yearly_income):
     result_1 = calculate_tax(yearly_income, brackets_1, surcharge_1)
     result_2 = calculate_tax(yearly_income, brackets_2, surcharge_2)
 
+    # Section 63 VPS pension tax credit (salary / business individuals only)
+    if taxpayer_type in ('Salary Individual', 'Business Individual'):
+        result_1 = apply_vps_credit(result_1, yearly_income, vps, surcharge_1)
+        result_2 = apply_vps_credit(result_2, yearly_income, vps, surcharge_2)
+
     return {
         'taxpayer_type': taxpayer_type,
         'tax_year_1': tax_year_1,
@@ -882,6 +893,7 @@ def FetchResult(tax_year_1, tax_year_2, taxpayer_type, yearly_income):
         'yearly_income': yearly_income,
         'surcharge_label_1': surcharge_label_1,
         'surcharge_label_2': surcharge_label_2,
+        'vps_contribution': round(float(vps or 0)),
     }
 
 
