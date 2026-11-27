@@ -2,7 +2,7 @@
 {% load static %}
 {% load humanize %}
 
-{% block title %}Salary Tax Calculator 2026-27 Pakistan — FBR Slabs, Monthly & Yearly (Free) | TaxBuddy Umair{% endblock %}
+{% block title %}Salary Income Tax Calculator Pakistan 2026-27 | TaxBuddy Umair{% endblock %}
 {% block meta_desc %}Free salary & income tax calculator Pakistan for 2026-27. Calculate monthly and yearly salary tax on FBR-notified slabs and compare tax across tax years.{% endblock %}
 {% block schema_extra %}{% include 'partials/schema_calculator.html' with calc_name='Salary Income Tax Calculator Pakistan 2026-27' calc_url='/SalaryCalculator/' %}{% endblock %}
 
@@ -409,6 +409,23 @@
             <div class="field-hint">Enter your salary before any deductions</div>
             <div class="field-err" id="err-income">⚠ Please enter a valid amount greater than 0</div>
           </div>
+          <!-- VPS PENSION CONTRIBUTION (Section 63 tax credit) -->
+          <div class="field-wrap">
+            <div class="field-top">
+              <span class="field-label-text">VPS Pension Contribution — Annual (Optional)</span>
+              <span class="field-live-preview" id="vps-preview"></span>
+            </div>
+            <div class="field-input-wrap">
+              <span class="field-prefix">₨</span>
+              <input type="number" id="vps_contribution" name="vps_contribution"
+                     class="form-input number-only has-prefix"
+                     placeholder="e.g. 200,000 — leave blank if none"
+                     min="0"
+                     value="{% if request.POST.vps_contribution %}{{ request.POST.vps_contribution }}{% endif %}">
+            </div>
+            <div class="field-hint">Total paid this tax year into an approved Voluntary Pension System (VPS) fund. Tax credit under Section 63 on up to 20% of taxable income.</div>
+          </div>
+
           <!-- TAX YEAR SELECTORS -->
           <div class="year-selectors">
             <div>
@@ -484,6 +501,9 @@
                 <tr class="hl"><td>Rate Applied</td><td>{{ tax_year_1_result.rate|floatformat:0|intcomma }} %</td></tr>
                 <tr><td>Tax on Amount Exceeding</td><td>Rs. {{ tax_year_1_result.tax_on_exceeding|floatformat:0|intcomma }}</td></tr>
                 <tr><td>Total Tax Chargeable</td><td>Rs. {{ tax_year_1_result.total_tax|floatformat:0|intcomma }}</td></tr>
+                {% if tax_year_1_result.vps_credit > 0 %}<tr><td>VPS Contribution Allowed (s.63)</td><td>Rs. {{ tax_year_1_result.vps_allowed|floatformat:0|intcomma }}</td></tr>
+                <tr style="background:#E6F7F2"><td style="color:#0B8A64;font-weight:700">Less: VPS Tax Credit (s.63)</td><td style="color:#0B8A64">− Rs. {{ tax_year_1_result.vps_credit|floatformat:0|intcomma }}</td></tr>
+                <tr><td>Tax After Credit</td><td>Rs. {{ tax_year_1_result.tax_after_credit|floatformat:0|intcomma }}</td></tr>{% endif %}
                 {% if tax_year_1_result.surcharge > 0 %}<tr><td>{{ surcharge_label_1 }}</td><td>Rs. {{ tax_year_1_result.surcharge|floatformat:0|intcomma }}</td></tr>{% endif %}
                 <tr class="hl"><td>Monthly Tax</td><td>Rs. {{ tax_year_1_result.per_month|floatformat:0|intcomma }}</td></tr>
               </table>
@@ -500,6 +520,9 @@
                 <tr class="hl"><td>Rate Applied</td><td>{{ tax_year_2_result.rate|floatformat:0|intcomma }} %</td></tr>
                 <tr><td>Tax on Amount Exceeding</td><td>Rs. {{ tax_year_2_result.tax_on_exceeding|floatformat:0|intcomma }}</td></tr>
                 <tr><td>Total Tax Chargeable</td><td>Rs. {{ tax_year_2_result.total_tax|floatformat:0|intcomma }}</td></tr>
+                {% if tax_year_2_result.vps_credit > 0 %}<tr><td>VPS Contribution Allowed (s.63)</td><td>Rs. {{ tax_year_2_result.vps_allowed|floatformat:0|intcomma }}</td></tr>
+                <tr style="background:#E6F7F2"><td style="color:#0B8A64;font-weight:700">Less: VPS Tax Credit (s.63)</td><td style="color:#0B8A64">− Rs. {{ tax_year_2_result.vps_credit|floatformat:0|intcomma }}</td></tr>
+                <tr><td>Tax After Credit</td><td>Rs. {{ tax_year_2_result.tax_after_credit|floatformat:0|intcomma }}</td></tr>{% endif %}
                 {% if tax_year_2_result.surcharge > 0 %}<tr><td>{{ surcharge_label_2 }}</td><td>Rs. {{ tax_year_2_result.surcharge|floatformat:0|intcomma }}</td></tr>{% endif %}
                 <tr class="hl"><td>Monthly Tax</td><td>Rs. {{ tax_year_2_result.per_month|floatformat:0|intcomma }}</td></tr>
               </table>
@@ -605,6 +628,8 @@
         No. Only the income above each slab's threshold is taxed at that slab's rate, plus the fixed base tax for that bracket. This is why the effective rate is always lower than the headline slab rate.</p>
       <p style="margin:0 0 10px;"><strong>Does this include allowances and bonuses?</strong><br>
         Taxable salary includes basic pay plus most allowances, bonuses, and perquisites. Enter your gross salary before deductions for the most accurate estimate.</p>
+      <p style="margin:0 0 10px;"><strong>Does the calculator include the VPS pension tax credit?</strong><br>
+        Yes — enter your annual contribution to an approved Voluntary Pension System (VPS) fund. Under Section 63 the tax credit is (tax ÷ taxable income) × the lower of your contribution or 20% of taxable income. For example, on a Rs 2,400,000 salary (tax Rs 156,000 for 2026-27) a Rs 300,000 VPS contribution gives a credit of about Rs 19,500.</p>
       <p style="margin:0;"><strong>Is the result final?</strong><br>
         It's an estimate. Your final liability depends on tax credits, withholding already deducted, and any exemptions. Always confirm on the <a href="https://iris.fbr.gov.pk" target="_blank" rel="noopener" style="color:var(--green);font-weight:600;">FBR IRIS portal</a> or with a tax professional.</p>
     </article>

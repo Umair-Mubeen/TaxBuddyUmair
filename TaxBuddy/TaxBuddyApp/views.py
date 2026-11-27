@@ -944,6 +944,32 @@ def calculate_tax(income, tax_brackets, surcharge_rate):
     }
 
 
+def apply_vps_credit(result, income, vps, surcharge_rate):
+    """Apply the Section 63 VPS tax credit to a calculate_tax() result."""
+    SURCHARGE_THRESHOLD = 10_000_000
+    vps = max(float(vps or 0), 0)
+    result.update(vps_contribution=round(vps), vps_allowed=0, vps_credit=0,
+                  tax_after_credit=result['total_tax'])
+    if vps <= 0 or income <= 0 or result['total_tax'] <= 0:
+        return result
+
+    allowed = min(vps, 0.20 * income)                      # C
+    credit = round(result['total_tax'] / income * allowed)  # (A/B) x C
+    credit = min(credit, result['total_tax'])
+    net_tax = result['total_tax'] - credit
+
+    surcharge = round(net_tax * surcharge_rate) if income > SURCHARGE_THRESHOLD else 0
+    total = net_tax + surcharge
+    result.update(
+        vps_allowed=round(allowed),
+        vps_credit=credit,
+        tax_after_credit=net_tax,
+        surcharge=surcharge,
+        total_tax_with_surcharge=total,
+        per_month=round(total / 12),
+    )
+    return result
+
 # ─────────────────────────────────────────────────────────────
 # MCQ / QUIZ VIEWS
 # ─────────────────────────────────────────────────────────────
