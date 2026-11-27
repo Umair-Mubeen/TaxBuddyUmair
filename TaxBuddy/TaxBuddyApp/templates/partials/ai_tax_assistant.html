@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 {% load static %}
 
-{% block title %}TaxBuddy Umair AI — Pakistan Tax Chat Assistant (Free) | TaxBuddy Umair{% endblock %}
+{% block title %}TaxBuddy Umair AI — Free Pakistan Tax Chat Assistant 2026-27{% endblock %}
 {% block meta_desc %}Free AI tax assistant for Pakistan. Ask about income tax, sales tax, withholding tax, filer status and FBR filing. Answers come from the Income Tax Ordinance 2001, Sales Tax Act 1990 and the FBR rate card.{% endblock %}
 
 {# Full-screen app: no site header, footer or ads on this page #}
@@ -324,7 +324,7 @@ a.ta-chip:hover{border-color:var(--ta-green);color:var(--ta-green)}
     touch();
     userRow(text);
     input.value=''; grow();
-    run(text, history);
+    run(text, history, false);
   }
   function regenerate(){
     if(busy || !cur) return;
@@ -333,11 +333,11 @@ a.ta-chip:hover{border-color:var(--ta-green);color:var(--ta-green)}
     var q=ms[ms.length-1]; if(!q || q.role!=='user') return;
     var history = ms.slice(0,-1).filter(function(m){ return !m.error; }).map(function(m){ return {role:m.role, content:m.content}; });
     renderChat();
-    run(q.content, history);
+    run(q.content, history, true);
   }
   function touch(){ cur.updated=Date.now(); chats=[cur].concat(chats.filter(function(c){ return c.id!==cur.id; })); save(); renderList(); }
 
-  function run(text, history){
+  function run(text, history, regen){
     var v=aiRow(), m={role:'assistant', content:'', sources:[]};
     var chat=cur;
     v.status.hidden=false; v.status.lastChild.textContent='Thinking…';
@@ -354,7 +354,7 @@ a.ta-chip:hover{border-color:var(--ta-green);color:var(--ta-green)}
     }
     fetch(API, { method:'POST', signal: ctrl ? ctrl.signal : undefined,
       headers:{'Content-Type':'application/json','X-CSRFToken':CSRF},
-      body: JSON.stringify({ message:text, history:history }) })
+      body: JSON.stringify({ message:text, cid:chat.id, regen:!!regen, history:history }) })
     .then(function(r){
       var ct=r.headers.get('content-type')||'';
       if(!r.ok || ct.indexOf('text/event-stream')<0){
@@ -398,7 +398,7 @@ a.ta-chip:hover{border-color:var(--ta-green);color:var(--ta-green)}
   $('taMenu').addEventListener('click', function(){ ta.classList.add('open'); });
   $('taShade').addEventListener('click', function(){ ta.classList.remove('open'); });
 
-  // ?q=... starts a chat (lets other pages link "Ask TaxBuddy AI about this")
+  // ?q=... starts a chat (lets other pages link "Ask TaxBuddy Umair AI about this")
   var q = new URLSearchParams(location.search).get('q');
   renderList(); renderChat();
   if(q){ history.replaceState(null,'',location.pathname); ask(q.slice(0,1500)); } else input.focus();

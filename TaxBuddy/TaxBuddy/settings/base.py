@@ -79,3 +79,24 @@ DATABASES = {
         'PORT': '3306',
     }
 }
+
+
+# Paste into TaxBuddy/settings/base.py, right after the AI_MODEL line.
+# (If production.py defines its own CACHES, add the "ai" entry there too.)
+
+# ── TaxBuddy Umair AI limits + cost monitor (Phase 0, see TaxBuddyApp/ai_guard.py) ──
+AI_SESSION_HOURLY_LIMIT = int(os.getenv("AI_SESSION_HOURLY_LIMIT", "25"))
+AI_IP_HOURLY_LIMIT = int(os.getenv("AI_IP_HOURLY_LIMIT", "40"))
+AI_DAILY_LIMIT = int(os.getenv("AI_DAILY_LIMIT", "400"))
+AI_DAILY_TOKEN_LIMIT = int(os.getenv("AI_DAILY_TOKEN_LIMIT", "4000000"))
+AI_DAILY_BUDGET_USD = float(os.getenv("AI_DAILY_BUDGET_USD", "0"))
+AI_PRICE_INPUT_PER_MTOK = float(os.getenv("AI_PRICE_INPUT_PER_MTOK", "0"))
+AI_PRICE_OUTPUT_PER_MTOK = float(os.getenv("AI_PRICE_OUTPUT_PER_MTOK", "0"))
+
+# "ai" cache is shared by all Gunicorn workers (MySQL table) so limits hold.
+# One-time: python manage.py createcachetable
+CACHES = {
+    "default": {"BACKEND": "django.core.cache.backends.locmem.LocMemCache"},
+    "ai": {"BACKEND": "django.core.cache.backends.db.DatabaseCache",
+           "LOCATION": "taxbuddy_ai_cache"},
+}

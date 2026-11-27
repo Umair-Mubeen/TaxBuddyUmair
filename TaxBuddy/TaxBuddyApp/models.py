@@ -984,3 +984,36 @@ class PropertyFMVRule(models.Model):
 
     def __str__(self):
         return f"[{self.rule_code}] {self.rule_name}"
+
+
+
+class AIUsage(models.Model):
+    """One row per TaxBuddy Umair AI answer — tokens, cost and speed (Phase 0).
+    Stores no question text, IP or session key: only hashes and a length."""
+    created = models.DateTimeField(auto_now_add=True, db_index=True)
+    endpoint = models.CharField(max_length=20, db_index=True)        # chat_stream / chat_api / smart_calc
+    model = models.CharField(max_length=60)
+    status = models.CharField(max_length=20, default="ok", db_index=True)  # ok / error / stopped
+    session_hash = models.CharField(max_length=24, blank=True, db_index=True)
+    ip_hash = models.CharField(max_length=24, blank=True, db_index=True)
+    question_chars = models.PositiveIntegerField(default=0)
+    input_tokens = models.PositiveIntegerField(default=0)
+    output_tokens = models.PositiveIntegerField(default=0)
+    cache_write_tokens = models.PositiveIntegerField(default=0)
+    cache_read_tokens = models.PositiveIntegerField(default=0)
+    api_calls = models.PositiveSmallIntegerField(default=0)
+    cost_usd = models.DecimalField(max_digits=10, decimal_places=6, default=0)
+    tools = models.CharField(max_length=500, blank=True)
+    latency_ms = models.PositiveIntegerField(default=0)
+
+    class Meta:
+        ordering = ["-created"]
+        verbose_name = "AI usage"
+        verbose_name_plural = "AI usage"
+
+    @property
+    def total_tokens(self):
+        return self.input_tokens + self.output_tokens + self.cache_write_tokens + self.cache_read_tokens
+
+    def __str__(self):
+        return f"{self.created:%Y-%m-%d %H:%M} {self.endpoint} {self.status} ${self.cost_usd}"

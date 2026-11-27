@@ -27,11 +27,13 @@ from django.views.decorators.csrf import csrf_protect
 logger = logging.getLogger(__name__)
 
 from . import agent_tools
+from . import ai_guard
 
 # ── Agent instructions ──
 SYSTEM_PROMPT = """You are "TaxBuddy Umair AI", the Pakistan tax assistant on taxbuddyumair.com, a free tax-education platform by Umair Mubeen (a Pakistani tax educator).
 
 YOU HAVE TOOLS. USE THEM — never answer from memory:
+- FIRST call find_verified_answer with the user's question. These answers were checked by a tax expert; when one clearly matches, follow it (and still use the calculators for amounts).
 - Any tax amount -> calculate_income_tax (salary / business / AOP / rental slabs from the site database) or find_wht_rates then calculate_wht (withholding & advance tax: property 236C/236K, vehicles, bank profit, rent, contracts, etc.).
 - Any rate -> find_wht_rates or calculate_income_tax. Quote the rate the tool returns.
 - "Am I / is this NTN a filer?" -> check_atl.
@@ -75,6 +77,7 @@ def _tool_status(name, args):
         "check_atl": "Checking the Active Taxpayers List…",
         "find_sro": "Searching SROs and notifications…",
         "find_blog": "Finding a related TaxBuddy guide…",
+        "find_verified_answer": "Checking TaxBuddy verified answers…",
         "search_law": f"Searching {book}…",
         "get_law_section": f"Reading Section {args.get('number', '')} — {book}…",
     }.get(name, "Working…")
@@ -102,6 +105,11 @@ def _tool_sources(name, args, result):
     elif name == "find_sro":
         for r in (result.get("results") or [])[:2]:
             out.append({"label": f"{r.get('number')} — {r.get('subject', '')[:60]}", "url": r.get("url")})
+    elif name == "find_verified_answer":
+        for r in (result.get("results") or [])[:1]:
+            if r.get("match_score", 0) >= 0.35:
+                out.append({"label": "TaxBuddy verified answer" + (f" — {r['section']}" if r.get("section") else ""),
+                            "url": None})
     elif name == "find_blog":
         for r in (result.get("results") or [])[:1]:
             out.append({"label": r.get("title"), "url": r.get("url")})
@@ -126,38 +134,13 @@ def _client():
 AI_MODEL = getattr(settings, "AI_MODEL", "") or "claude-haiku-5-5"
 MAX_AGENT_STEPS = 6            # tool rounds per question (cost guard)
 MAX_TOOL_RESULT_CHARS = 7000
-DAILY_LIMIT = int(getattr(settings, "AI_DAILY_LIMIT", 400))   # whole-site questions per day
 MAX_INPUT_CHARS = 1500          # cap user input length
 MAX_HISTORY_TURNS = 8           # cap conversation memory sent to API
-RATE_LIMIT_MAX = 25             # max AI requests
-RATE_LIMIT_WINDOW = 3600        # per this many seconds (1 hour), per session
+# Rate limits, daily caps, usage logging and server-side history: see ai_guard.py
 
 
-# ── Simple per-session rate limit (protects your API cost) ──
-def _rate_limited(request):
-    now = time.time()
-    hits = request.session.get("ai_hits", [])
-    hits = [t for t in hits if now - t < RATE_LIMIT_WINDOW]
-    if len(hits) >= RATE_LIMIT_MAX:
-        return True
-    hits.append(now)
-    request.session["ai_hits"] = hits
-    return False
-
-
-def _daily_limit_hit():
-    """Site-wide cap so a traffic spike cannot burn the API budget."""
-    from django.core.cache import cache
-    key = "ai_calls_" + time.strftime("%Y%m%d")
-    n = cache.get(key, 0)
-    if n >= DAILY_LIMIT:
-        return True
-    cache.set(key, n + 1, 60 * 60 * 26)
-    return False
-
-
-def _run_agent(system_prompt, messages, max_tokens=900):
-    """Claude tool-use loop. Returns (reply_text, tools_used)."""
+def _run_agent(system_prompt, messages, max_tokens=900, usage=None):
+    """Claude tool-use loop. Returns (reply_text, tools_used). Adds token use to `usage`."""
     client = _client()
     tools = [dict(t) for t in agent_tools.TOOLS]
     tools[-1]["cache_control"] = {"type": "ephemeral"}          # cache tools + system
@@ -167,6 +150,8 @@ def _run_agent(system_prompt, messages, max_tokens=900):
     for _ in range(MAX_AGENT_STEPS):
         resp = client.messages.create(model=AI_MODEL, max_tokens=max_tokens,
                                       system=system, tools=tools, messages=msgs)
+        if usage is not None:
+            usage.add(resp.usage)
         if resp.stop_reason != "tool_use":
             return "".join(getattr(b, "text", "") for b in resp.content).strip(), used
         msgs.append({"role": "assistant", "content": resp.content})
@@ -175,6 +160,8 @@ def _run_agent(system_prompt, messages, max_tokens=900):
             if b.type != "tool_use":
                 continue
             used.append(b.name)
+            if usage is not None:
+                usage.tools.append(b.name)
             out = json.dumps(agent_tools.run_tool(b.name, b.input), default=str, ensure_ascii=False)
             results.append({"type": "tool_result", "tool_use_id": b.id,
                             "content": out[:MAX_TOOL_RESULT_CHARS]})
@@ -183,6 +170,8 @@ def _run_agent(system_prompt, messages, max_tokens=900):
     msgs.append({"role": "user", "content": "Give your final answer now from what the tools returned."})
     resp = client.messages.create(model=AI_MODEL, max_tokens=max_tokens, system=system,
                                   tools=tools, tool_choice={"type": "none"}, messages=msgs)
+    if usage is not None:
+        usage.add(resp.usage)
     return "".join(getattr(b, "text", "") for b in resp.content).strip(), used
 
 
@@ -190,9 +179,13 @@ def _sse(obj):
     return "data: " + json.dumps(obj, ensure_ascii=False) + "\n\n"
 
 
-def _stream_agent(system_prompt, messages, max_tokens=1200):
+def _stream_agent(system_prompt, messages, max_tokens=1200, request=None, cid="", user_msg=""):
     """Same tool loop as _run_agent, but yields SSE events while it works:
-    status (tool running), delta (answer text), sources, done / error."""
+    status (tool running), delta (answer text), sources, done / error.
+    When it finishes it saves the exchange to the server history and logs usage."""
+    usage = ai_guard.Usage(AI_MODEL)
+    answer = []
+    status = "error"
     try:
         client = _client()
     except Exception:
@@ -215,8 +208,10 @@ def _stream_agent(system_prompt, messages, max_tokens=1200):
             with client.messages.stream(**kwargs) as stream:
                 for text in stream.text_stream:
                     if text:
+                        answer.append(text)
                         yield _sse({"t": "delta", "text": text})
                 final = stream.get_final_message()
+            usage.add(final.usage)
             if final.stop_reason != "tool_use":
                 break
             msgs.append({"role": "assistant", "content": final.content})
@@ -225,6 +220,7 @@ def _stream_agent(system_prompt, messages, max_tokens=1200):
                 if b.type != "tool_use":
                     continue
                 yield _sse({"t": "status", "text": _tool_status(b.name, b.input)})
+                usage.tools.append(b.name)
                 res = agent_tools.run_tool(b.name, b.input)
                 for s in _tool_sources(b.name, b.input, res):
                     k = (s["label"], s.get("url"))
@@ -238,33 +234,19 @@ def _stream_agent(system_prompt, messages, max_tokens=1200):
             yield _sse({"t": "status", "text": "Writing the answer…"})
         if sources:
             yield _sse({"t": "sources", "items": sources[:6]})
+        status = "ok"
+        if request is not None:
+            ai_guard.save_turns(request, cid, user_msg, "".join(answer))
         yield _sse({"t": "done"})
     except GeneratorExit:      # user pressed Stop / closed the tab
+        status = "stopped"
         return
     except Exception:
         logger.exception("AI stream failed")
         yield _sse({"t": "error", "text": "The AI assistant is unavailable right now. Please try again shortly."})
-
-
-def _history_messages(data):
-    """Build the Claude message list from the posted history + new message."""
-    user_msg = (data.get("message") or "").strip()[:MAX_INPUT_CHARS]
-    msgs = []
-    for turn in (data.get("history") or [])[-(MAX_HISTORY_TURNS * 2):]:
-        if not isinstance(turn, dict):
-            continue
-        role = turn.get("role")
-        content = (turn.get("content") or "")[:MAX_INPUT_CHARS * 2]
-        if role in ("user", "assistant") and content:
-            if msgs and msgs[-1]["role"] == role:      # API needs alternating roles
-                msgs[-1]["content"] += "\n\n" + content
-            else:
-                msgs.append({"role": role, "content": content})
-    while msgs and msgs[0]["role"] != "user":
-        msgs.pop(0)
-    if msgs and msgs[-1]["role"] == "user":
-        msgs.pop()
-    return user_msg, msgs + ([{"role": "user", "content": user_msg}] if user_msg else [])
+    finally:
+        if request is not None and usage.calls:
+            ai_guard.record(request, "chat_stream", usage, status, user_msg)
 
 
 # ════════════════ PAGES ════════════════
@@ -290,59 +272,50 @@ def ai_smart_calculator(request):
 @require_POST
 @csrf_protect
 def ai_chat_api(request):
-    if _rate_limited(request):
-        return JsonResponse({"status": "error",
-                             "message": "You've reached the hourly limit. Please try again later."}, status=429)
+    blocked = ai_guard.check_limits(request)
+    if blocked:
+        return JsonResponse({"status": "error", "message": blocked}, status=429)
     try:
         data = json.loads(request.body.decode("utf-8"))
     except Exception:
         return JsonResponse({"status": "error", "message": "Invalid request."}, status=400)
 
-    user_msg = (data.get("message") or "").strip()[:MAX_INPUT_CHARS]
+    cid, user_msg, msgs = ai_guard.build_messages(request, data, MAX_INPUT_CHARS)
     if not user_msg:
         return JsonResponse({"status": "error", "message": "Please type a question."}, status=400)
-
-    # history: list of {role, content}; keep last few turns
-    history = data.get("history") or []
-    msgs = []
-    for turn in history[-(MAX_HISTORY_TURNS * 2):]:
-        role = turn.get("role")
-        content = (turn.get("content") or "")[:MAX_INPUT_CHARS]
-        if role in ("user", "assistant") and content:
-            msgs.append({"role": role, "content": content})
-    msgs.append({"role": "user", "content": user_msg})
-
-    if _daily_limit_hit():
-        return JsonResponse({"status": "error",
-                             "message": "The AI assistant is busy today. Please try again tomorrow."}, status=429)
+    usage = ai_guard.Usage(AI_MODEL)
     try:
-        answer, used = _run_agent(SYSTEM_PROMPT, msgs, max_tokens=900)
+        answer, used = _run_agent(SYSTEM_PROMPT, msgs, max_tokens=900, usage=usage)
     except Exception:
         logger.exception("AI chat failed")
+        ai_guard.record(request, "chat_api", usage, "error", user_msg)
         return JsonResponse({"status": "error",
                              "message": "The AI assistant is unavailable right now. Please try again shortly."},
                             status=503)
+    ai_guard.save_turns(request, cid, user_msg, answer)
+    ai_guard.record(request, "chat_api", usage, "ok", user_msg)
     return JsonResponse({"status": "ok", "reply": answer, "verified_with": sorted(set(used))})
 
 
 @require_POST
 @csrf_protect
 def ai_chat_stream(request):
-    """Streaming chat for the full-page TaxBuddy AI (Server-Sent Events over POST)."""
+    """Streaming chat for the full-page TaxBuddy Umair AI (Server-Sent Events over POST)."""
     def fail(msg, code):
         return JsonResponse({"status": "error", "message": msg}, status=code)
-    if _rate_limited(request):
-        return fail("You've reached the hourly limit. Please try again later.", 429)
+    blocked = ai_guard.check_limits(request)
+    if blocked:
+        return fail(blocked, 429)
     try:
         data = json.loads(request.body.decode("utf-8"))
     except Exception:
         return fail("Invalid request.", 400)
-    user_msg, msgs = _history_messages(data)
+    cid, user_msg, msgs = ai_guard.build_messages(request, data, MAX_INPUT_CHARS)
     if not user_msg:
         return fail("Please type a question.", 400)
-    if _daily_limit_hit():
-        return fail("The AI assistant is busy today. Please try again tomorrow.", 429)
-    resp = StreamingHttpResponse(_stream_agent(CHAT_PAGE_PROMPT, msgs), content_type="text/event-stream")
+    resp = StreamingHttpResponse(
+        _stream_agent(CHAT_PAGE_PROMPT, msgs, request=request, cid=cid, user_msg=user_msg),
+        content_type="text/event-stream")
     resp["Cache-Control"] = "no-cache"
     resp["X-Accel-Buffering"] = "no"      # tell nginx not to buffer the stream
     return resp
@@ -351,9 +324,9 @@ def ai_chat_stream(request):
 @require_POST
 @csrf_protect
 def ai_smart_calc_api(request):
-    if _rate_limited(request):
-        return JsonResponse({"status": "error",
-                             "message": "You've reached the hourly limit. Please try again later."}, status=429)
+    blocked = ai_guard.check_limits(request)
+    if blocked:
+        return JsonResponse({"status": "error", "message": blocked}, status=429)
     try:
         data = json.loads(request.body.decode("utf-8"))
     except Exception:
@@ -363,16 +336,16 @@ def ai_smart_calc_api(request):
     if not situation:
         return JsonResponse({"status": "error", "message": "Please describe your income situation."}, status=400)
 
-    if _daily_limit_hit():
-        return JsonResponse({"status": "error",
-                             "message": "The AI calculator is busy today. Please try again tomorrow."}, status=429)
+    usage = ai_guard.Usage(AI_MODEL)
     try:
         result, used = _run_agent(SMART_CALC_PROMPT,
                                   [{"role": "user", "content": situation}],
-                                  max_tokens=1100)
+                                  max_tokens=1100, usage=usage)
     except Exception:
         logger.exception("AI smart calc failed")
+        ai_guard.record(request, "smart_calc", usage, "error", situation)
         return JsonResponse({"status": "error",
                              "message": "The AI calculator is unavailable right now. Please try again shortly."},
                             status=503)
+    ai_guard.record(request, "smart_calc", usage, "ok", situation)
     return JsonResponse({"status": "ok", "result": result, "verified_with": sorted(set(used))})
