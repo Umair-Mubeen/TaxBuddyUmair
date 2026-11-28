@@ -143,26 +143,48 @@ def find_sro(query="", statute=None, limit=5):
 
 
 # ───────────────────────── blogs ─────────────────────────
+_RU_STOP = set("""par pe ka ki ke ko se mein me main hai hain kya kitna kitni kitne aur ya bhi to
+jo woh yeh ye hota hoti hote karein karna karte kar liye lye kaise kab kahan agar phir sirf
+mera meri mere apna apni apne hum aap tax""".split())
+
+
+def _blog_words(text):
+    import re
+    return re.findall(r"[a-z0-9]+", str(text or "").lower())
+
+
 def find_blog(query, limit=4):
+    """Related TaxBuddy articles. A post must match at least two of the query's
+    key words as whole words (or the only one, for one-word queries), so a vehicle
+    question never links an unrelated 'card payments' article."""
     qs = Blog.objects.filter(status="published", is_deleted=False)
-    generic = {"tax", "taxes", "pakistan", "fbr", "the", "and", "for", "how", "what", "rate", "rates", "2026", "2027"}
-    words = [w for w in query.split() if len(w) > 2 and w.lower() not in generic][:6]
+    generic = {"tax", "taxes", "pakistan", "fbr", "the", "and", "for", "how", "what", "rate", "rates",
+               "2025", "2026", "2027", "income", "section", "under", "with", "from", "ordinance", "law"} | _RU_STOP
+    words = []
+    for w in _blog_words(query):
+        if len(w) > 2 and w not in generic and w not in words:
+            words.append(w)
+    words = words[:8]
+    if not words:
+        return {"source": "TaxBuddy blog database", "results": []}
     cond = Q()
     for w in words:
-        cond |= Q(title__icontains=w) | Q(tag__icontains=w) | Q(meta_description__icontains=w)
-    rows = list(qs.filter(cond)[:40]) if words else []
-    rows.sort(key=lambda b: -sum(w.lower() in f"{b.title} {b.tag}".lower() for w in words))
-    rows = [b for b in rows if any(w.lower() in f"{b.title} {b.tag}".lower() for w in words)]
+        cond |= Q(title__icontains=w) | Q(tag__icontains=w)
+    need = 1 if len(words) == 1 else 2
+    scored = []
+    for b in qs.filter(cond)[:80]:
+        toks = set(_blog_words(f"{b.title} {b.tag}"))
+        hits = sum(1 for w in words if w in toks or (len(w) >= 5 and any(t.startswith(w) for t in toks)))
+        if hits >= need:
+            scored.append((hits / len(words), b))
+    scored.sort(key=lambda x: -x[0])
     return {"source": "TaxBuddy blog database",
-            "results": [{"title": b.title, "url": f"/articles/{b.slug}/",
-                         "summary": (b.meta_description or "")[:250]} for b in rows[:limit]]}
+            "results": [{"title": b.title, "url": f"/articles/{b.slug}/", "match": round(sc, 2),
+                         "summary": (b.meta_description or "")[:250]} for sc, b in scored[:limit]]}
 
 
 # ───────────────────────── verified answers (Umair-checked) ─────────────────────────
 _VA_CACHE = {"key": None, "rows": []}
-_RU_STOP = set("""par pe ka ki ke ko se mein me main hai hain kya kitna kitni kitne aur ya bhi to
-jo woh yeh ye hota hoti hote karein karna karte kar liye lye kaise kab kahan agar phir sirf
-mera meri mere apna apni apne hum aap tax""".split())
 
 
 def _va_tokens(text):
@@ -215,9 +237,14 @@ def search_law(query, book=None):
     return {"results": res} if res else {"results": [], "message": "Nothing found. Try other words."}
 
 
-def get_law_section(book, number):
-    res = law_search.get_section(book, number)
-    return res or {"error": f"Section/rule {number} not found in {book}."}
+def get_law_section(book, number, focus=None):
+    res = law_search.get_section(book, number, focus=focus)
+    return res or {"error": f"Section/rule {number} not found in {book}. It may be omitted or the number is wrong."}
+
+
+def get_law_schedule(book, schedule, part=None, division=None, clause=None, focus=None):
+    res = law_search.get_schedule(book, schedule, part, division, clause, focus)
+    return res or {"error": "That schedule entry was not found. Check the schedule / part / clause, or use search_law."}
 
 
 # ───────────────────────── schemas ─────────────────────────
@@ -253,15 +280,27 @@ TOOLS = tax_engine.SCHEMAS + [
      "input_schema": {"type": "object", "properties": {
          "query": {"type": "string"}, "book": {"type": "string", "enum": BOOK_ENUM}}, "required": ["query"]}},
     {"name": "get_law_section",
-     "description": "Get the full text of one section or rule, e.g. book=ito number=147A, book=it_rules number=38B, book=sta number=8.",
+     "description": "Get the current text of one section or rule, e.g. book=ito number=147A, book=it_rules number=81B, book=sta number=8. For a long section (e.g. ito 182 penalties table, ito 2 definitions, sta 33) pass focus with a few words to get the right part.",
      "input_schema": {"type": "object", "properties": {
-         "book": {"type": "string", "enum": BOOK_ENUM}, "number": {"type": "string"}},
+         "book": {"type": "string", "enum": BOOK_ENUM}, "number": {"type": "string"},
+         "focus": {"type": "string", "description": "Optional words to find inside a long section"}},
          "required": ["book", "number"]}},
+    {"name": "get_law_schedule",
+     "description": "Get text from a Schedule: a Part/Division (e.g. ito First Schedule Part I Division VIII = CGT property rates; Part IV Division VII = vehicles) or one clause (e.g. ito Second Schedule Part I clause 139 = medical allowance exemption).",
+     "input_schema": {"type": "object", "properties": {
+         "book": {"type": "string", "enum": BOOK_ENUM},
+         "schedule": {"type": "string", "description": "First, Second, ... Tenth"},
+         "part": {"type": "string", "description": "I, II, III, IV"},
+         "division": {"type": "string", "description": "e.g. VIII, IIB"},
+         "clause": {"type": "string", "description": "e.g. 139, 9A"},
+         "focus": {"type": "string"}},
+         "required": ["book", "schedule"]}},
 ]
 
 _FUNCS = {"find_wht_rates": find_wht_rates,
           "calculate_wht": calculate_wht, "check_atl": check_atl, "find_sro": find_sro,
-          "find_blog": find_blog, "find_verified_answer": find_verified_answer, "search_law": search_law, "get_law_section": get_law_section}
+          "find_blog": find_blog, "find_verified_answer": find_verified_answer, "search_law": search_law, "get_law_section": get_law_section,
+          "get_law_schedule": get_law_schedule}
 
 
 def run_tool(name, args):

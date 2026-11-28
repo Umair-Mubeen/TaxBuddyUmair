@@ -535,6 +535,7 @@ a.ta-chip:hover{border-color:var(--ta-green);color:var(--ta-green)}
       function handle(ev){
         if(ev.t==='delta'){ if(!v.status.hidden && m.content==='' ) v.status.hidden=true; m.content+=ev.text; repaint(); }
         else if(ev.t==='status'){ v.status.hidden=false; v.status.lastChild.textContent=ev.text; toBottom(false); }
+        else if(ev.t==='fix'){ m.content=ev.text||m.content; repaint(); }
         else if(ev.t==='sources'){ m.sources=ev.items||[]; }
         else if(ev.t==='done'){ if(ev.mid) m.id=ev.mid; }
         else if(ev.t==='error'){ failed=ev.text; }

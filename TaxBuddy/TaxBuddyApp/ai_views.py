@@ -29,6 +29,7 @@ logger = logging.getLogger(__name__)
 from . import agent_tools
 from . import ai_guard
 from . import ai_chats
+from . import cite_check
 
 # ── Agent instructions ──
 SYSTEM_PROMPT = """You are "TaxBuddy Umair AI", the Pakistan tax assistant on taxbuddyumair.com, a free tax-education platform by Umair Mubeen (a Pakistani tax educator).
@@ -47,15 +48,16 @@ YOU HAVE TOOLS. USE THEM — never answer from memory:
 - Quote the rate and amount the tool returns. Calculator results include "law" (sections) and "tax_nature" (final / minimum / adjustable / separate block): always tell the user the tax nature and the sections from "law".
 - "Am I / is this NTN a filer?" -> check_atl.
 - Latest SROs, circulars, notifications -> find_sro.
-- Legal questions (what the law says, conditions, definitions, penalties, procedures) -> search_law, then get_law_section for the exact section. Cite the book and section, e.g. "Section 147A, Income Tax Ordinance 2001".
-- After answering, call find_blog once and add the most relevant article link if one exists.
+- Legal questions (what the law says, conditions, definitions, penalties, procedures) -> search_law, then get_law_section for the exact section (use focus for long sections such as ito 182 or ito 2). Exemptions, rates and clauses in a Schedule (e.g. Second Schedule clause 139 medical, Division VIII CGT rates) -> get_law_schedule. Cite the book and section, e.g. "Section 147A, Income Tax Ordinance 2001".
+- After answering, call find_blog once with 3-5 English key words of the topic (e.g. "vehicle registration advance tax"). Link an article only if its title is clearly about the same topic; otherwise link none.
+- When the user is a non-filer, also call the same calculator with on_atl=true and show the filer amount next to it, so they see what filing saves. Do not tell them to contact anyone for the filer figure.
 - If a tool returns nothing or an error, say you could not verify it. Do NOT guess numbers, sections or dates.
-- Late filing, penalty for not filing, ATL surcharge or Form ATL-U -> get_law_section ito 182 (Table entry 1), ito 182A and it_rules 81B. For the user's own penalty amount, link /late-filing-penalty-calculator/. Who must file a return -> ito 114 and 115, and link /do-i-need-to-file-tax-return/.
+- Late filing, penalty for not filing, ATL surcharge or Form ATL-U -> ALWAYS read all three: get_law_section ito 182 (Table entry 1), ito 182A and it_rules 81B, and mention the s.182A ATL surcharge (Form ATL-U) as well as the s.182 penalty. The s.182 minimum (Rs 10,000 / Rs 50,000) is a minimum total penalty, not a per-day amount. For the user's own penalty amount, link /late-filing-penalty-calculator/. Who must file a return -> ito 114 and 115, and link /do-i-need-to-file-tax-return/.
 
 HOW TO ANSWER:
-- Reply in the user's language: English, or Roman Urdu if they write Roman Urdu.
+- LANGUAGE: reply in the language of the user's LATEST message. Roman Urdu question (e.g. "kitna tax banega", "main filer hoon") -> whole answer in Roman Urdu, including headings and notes; English question -> English; Urdu script -> Urdu script. Section names, numbers and law terms may stay in English.
 - Start with the bottom line (the amount, rate or yes/no), then a short breakdown. Keep it short.
-- Show the working for calculations using the tool's "working" lines.
+- Show the working for calculations using the tool's "working" lines. Do not add explanations of your own about how a credit or rate works beyond what the tool or law text says.
 - Give site links as relative paths, e.g. /articles/slug/ or /SalaryCalculator/.
 - If key information is missing (monthly vs yearly, filer or not), ask one short question or state the assumption.
 - Speak as a tax expert, never about your own workings: do not mention tools, the database, "verified answers", internal notes, matching scores, or earlier drafts, and never write things like "database ke mutabiq", "tool ne bataya" or "not verified". Just state the law and the figures.
@@ -99,6 +101,7 @@ def _tool_status(name, args):
         "find_verified_answer": "Checking TaxBuddy verified answers…",
         "search_law": f"Searching {book}…",
         "get_law_section": f"Reading Section {args.get('number', '')} — {book}…",
+        "get_law_schedule": f"Reading the {args.get('schedule', '')} Schedule — {book}…",
     }.get(name, "Working…")
 
 
@@ -108,7 +111,9 @@ def _tool_sources(name, args, result):
     if not isinstance(result, dict) or result.get("error"):
         return out
     if name == "get_law_section":
-        out.append({"label": f"Section {result.get('section')}, {result.get('book')}", "url": None})
+        out.append({"label": f"{result.get('unit', 'Section')} {result.get('section')}, {result.get('book')}", "url": None})
+    elif name == "get_law_schedule":
+        out.append({"label": f"{result.get('schedule')}, {result.get('book')}", "url": None})
     # search_law passages are not shown as sources: only sections actually read count
     elif name in agent_tools.tax_engine.FUNCTIONS:
         law = result.get("law") or []
@@ -164,13 +169,21 @@ def _run_agent(system_prompt, messages, max_tokens=900, usage=None):
     system = [{"type": "text", "text": system_prompt, "cache_control": {"type": "ephemeral"}}]
     msgs = list(messages)
     used = []
+    tracker = cite_check.Tracker()
+
+    def finish(text):
+        clean, bad = cite_check.check(text, tracker)
+        if bad and usage is not None:
+            usage.tools.append("cite_bad:" + "/".join(n for _b, n, _e in bad))
+        return clean, used
+
     for _ in range(MAX_AGENT_STEPS):
         resp = client.messages.create(model=AI_MODEL, max_tokens=max_tokens,
                                       system=system, tools=tools, messages=msgs)
         if usage is not None:
             usage.add(resp.usage)
         if resp.stop_reason != "tool_use":
-            return "".join(getattr(b, "text", "") for b in resp.content).strip(), used
+            return finish("".join(getattr(b, "text", "") for b in resp.content).strip())
         msgs.append({"role": "assistant", "content": resp.content})
         results = []
         for b in resp.content:
@@ -179,7 +192,9 @@ def _run_agent(system_prompt, messages, max_tokens=900, usage=None):
             used.append(b.name)
             if usage is not None:
                 usage.tools.append(b.name)
-            out = json.dumps(agent_tools.run_tool(b.name, b.input), default=str, ensure_ascii=False)
+            res = agent_tools.run_tool(b.name, b.input)
+            tracker.add_tool(b.name, b.input, res)
+            out = json.dumps(res, default=str, ensure_ascii=False)
             results.append({"type": "tool_result", "tool_use_id": b.id,
                             "content": out[:MAX_TOOL_RESULT_CHARS]})
         msgs.append({"role": "user", "content": results})
@@ -189,7 +204,7 @@ def _run_agent(system_prompt, messages, max_tokens=900, usage=None):
                                   tools=tools, tool_choice={"type": "none"}, messages=msgs)
     if usage is not None:
         usage.add(resp.usage)
-    return "".join(getattr(b, "text", "") for b in resp.content).strip(), used
+    return finish("".join(getattr(b, "text", "") for b in resp.content).strip())
 
 
 def _sse(obj):
@@ -214,6 +229,14 @@ def _stream_agent(system_prompt, messages, max_tokens=1800, request=None, conv=N
     system = [{"type": "text", "text": system_prompt, "cache_control": {"type": "ephemeral"}}]
     msgs = list(messages)
     sources, seen = [], set()
+    earlier = []
+    if conv is not None:
+        try:
+            earlier = list(conv.messages.filter(role="assistant", status="ok", imported=False)
+                           .order_by("-id").values_list("content", flat=True)[:8])
+        except Exception:
+            earlier = []
+    tracker = cite_check.Tracker(earlier)
     try:
         for step in range(MAX_AGENT_STEPS + 1):
             last = step == MAX_AGENT_STEPS
@@ -239,6 +262,7 @@ def _stream_agent(system_prompt, messages, max_tokens=1800, request=None, conv=N
                 yield _sse({"t": "status", "text": _tool_status(b.name, b.input)})
                 usage.tools.append(b.name)
                 res = agent_tools.run_tool(b.name, b.input)
+                tracker.add_tool(b.name, b.input, res)
                 for s in _tool_sources(b.name, b.input, res):
                     k = (s["label"], s.get("url"))
                     if k not in seen:
@@ -249,10 +273,15 @@ def _stream_agent(system_prompt, messages, max_tokens=1800, request=None, conv=N
                                 "content": out[:MAX_TOOL_RESULT_CHARS]})
             msgs.append({"role": "user", "content": results})
             yield _sse({"t": "status", "text": "Writing the answer…"})
+        text = "".join(answer)
+        clean, bad = cite_check.check(text, tracker)
+        if bad:
+            usage.tools.append("cite_bad:" + "/".join(n for _b, n, _e in bad))
+            yield _sse({"t": "fix", "text": clean})
         if sources:
             yield _sse({"t": "sources", "items": sources[:6]})
         status = "ok"
-        mid = ai_chats.finish_turn(conv, "".join(answer), sources[:6], "ok")
+        mid = ai_chats.finish_turn(conv, clean, sources[:6], "ok")
         yield _sse({"t": "done", "mid": mid})
     except GeneratorExit:      # user pressed Stop / closed the tab
         status = "stopped"
