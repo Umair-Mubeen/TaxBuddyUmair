@@ -10,12 +10,10 @@ run_tool  - runs one tool call and returns a JSON-safe dict
 """
 from django.db.models import Q
 
-from . import law_search
-from .models import (ATLRecord, Blog, Business_AOP_Slab, Instrument,
-                     Property_Business_AOP_Slab, TaxBracket, WHTRate)
+from . import law_search, tax_engine
+from .models import ATLRecord, Blog, Instrument, WHTRate
 
 DEFAULT_YEAR = "2026-2027"
-SURCHARGE_THRESHOLD = 10_000_000
 
 CALCULATOR_LINKS = {
     "salary": "/SalaryCalculator/",
@@ -28,64 +26,6 @@ CALCULATOR_LINKS = {
     "advance": "/advance-tax-calculator/",
     "atl": "/atl-check/",
 }
-
-
-# ───────────────────────── income tax (slabs) ─────────────────────────
-def _surcharge_rate(year, kind):
-    """Section 4AB surcharge where taxable income exceeds Rs 10 million."""
-    salaried = kind == "salary"
-    return {
-        "2024-2025": 0.10,
-        "2025-2026": 0.09 if salaried else 0.10,
-        "2026-2027": 0.0 if salaried else 0.10,
-    }.get(year, 0.0)
-
-
-def calculate_income_tax(income_type, annual_taxable_income, tax_year=DEFAULT_YEAR):
-    model = {"salary": TaxBracket, "business": Business_AOP_Slab, "aop": Business_AOP_Slab,
-             "rental": Property_Business_AOP_Slab}.get(income_type)
-    if model is None:
-        return {"error": "income_type must be salary, business, aop or rental"}
-    income = float(annual_taxable_income)
-    if income < 0:
-        return {"error": "Income cannot be negative."}
-    slabs = list(model.objects.filter(year=tax_year).order_by("income_min"))
-    if not slabs:
-        years = sorted(set(model.objects.values_list("year", flat=True)))
-        return {"error": f"No slabs in the database for {tax_year}.", "available_years": years}
-    slab = None
-    for s in slabs:
-        hi = float(s.income_max) if s.income_max is not None else float("inf")
-        if float(s.income_min) <= income <= hi:
-            slab = s
-            break
-    if slab is None:   # gap between slabs (e.g. 600,000.50) -> nearest lower slab
-        slab = [s for s in slabs if float(s.income_min) <= income][-1]
-    rate = float(slab.rate)
-    base_income = float(slab.base_income)
-    base_tax = float(slab.base_tax)
-    tax = 0.0 if rate == 0 else base_tax + (income - base_income) * rate
-    tax = round(tax)
-    sr = _surcharge_rate(tax_year, income_type)
-    surcharge = round(tax * sr) if income > SURCHARGE_THRESHOLD else 0
-    total = tax + surcharge
-    return {
-        "source": f"TaxBuddy database slabs ({model._meta.verbose_name}), tax year {tax_year}",
-        "income_type": income_type,
-        "annual_taxable_income": round(income),
-        "slab": {"from": float(slab.income_min),
-                 "to": float(slab.income_max) if slab.income_max is not None else None,
-                 "fixed_tax": base_tax, "rate_percent": round(rate * 100, 2),
-                 "on_income_above": base_income},
-        "tax_before_surcharge": tax,
-        "surcharge_rate_percent": round(sr * 100, 2) if income > SURCHARGE_THRESHOLD else 0,
-        "surcharge": surcharge,
-        "total_annual_tax": total,
-        "monthly_tax": round(total / 12),
-        "effective_rate_percent": round(total / income * 100, 2) if income else 0,
-        "calculator_link": CALCULATOR_LINKS["salary"] if income_type == "salary" else None,
-        "notes": "Tax on taxable income before tax credits, exempt income and adjustable tax already deducted.",
-    }
 
 
 # ───────────────────────── withholding (WHTRate) ─────────────────────────
@@ -218,6 +158,57 @@ def find_blog(query, limit=4):
                          "summary": (b.meta_description or "")[:250]} for b in rows[:limit]]}
 
 
+# ───────────────────────── verified answers (Umair-checked) ─────────────────────────
+_VA_CACHE = {"key": None, "rows": []}
+_RU_STOP = set("""par pe ka ki ke ko se mein me main hai hain kya kitna kitni kitne aur ya bhi to
+jo woh yeh ye hota hoti hote karein karna karte kar liye lye kaise kab kahan agar phir sirf
+mera meri mere apna apni apne hum aap tax""".split())
+
+
+def _va_tokens(text):
+    return {t for t in law_search._tokens(text) if t not in _RU_STOP}
+
+
+def _va_rows():
+    """Verified answers, re-read only when the table changes."""
+    from django.db.models import Count, Max
+    from .models import VerifiedAnswer
+    qs = VerifiedAnswer.objects.filter(status="verified")
+    key = tuple(qs.aggregate(n=Count("id"), t=Max("updated_at")).values())
+    if key != _VA_CACHE["key"]:
+        rows = []
+        for v in qs:
+            toks = _va_tokens(v.question)
+            rows.append((v, toks))
+        _VA_CACHE.update(key=key, rows=rows)
+    return _VA_CACHE["rows"]
+
+
+def find_verified_answer(query, limit=2):
+    try:
+        rows = _va_rows()
+    except Exception:            # table not migrated yet
+        return {"results": [], "message": "No verified answers available."}
+    q = _va_tokens(query)
+    if not q or not rows:
+        return {"results": []}
+    scored = []
+    for v, toks in rows:
+        if not toks:
+            continue
+        overlap = len(q & toks)
+        score = overlap / max(len(q), len(toks))   # 0..1, share of words in common
+        if overlap >= 2 and score >= 0.3:
+            scored.append((score, overlap, v))
+    scored.sort(key=lambda x: -x[0])
+    out = [{"question": v.question, "answer": v.answer, "section": v.section_ref,
+            "match_score": round(s, 2)} for s, o, v in scored[:limit]]
+    return {"source": "TaxBuddy verified answers (checked by Umair Mubeen)",
+            "note": "Use an answer only if its question really matches the user's question. "
+                    "Rates or amounts still come from the calculators / rate card.",
+            "results": out}
+
+
 # ───────────────────────── law books ─────────────────────────
 def search_law(query, book=None):
     res = law_search.search_law(query, book=book, k=3)
@@ -231,14 +222,7 @@ def get_law_section(book, number):
 
 # ───────────────────────── schemas ─────────────────────────
 BOOK_ENUM = list(law_search.BOOKS)
-TOOLS = [
-    {"name": "calculate_income_tax",
-     "description": "Calculate annual income tax from the site's database slabs. Use for salary, business individual, AOP or rental income. Returns slab, tax, surcharge, monthly tax.",
-     "input_schema": {"type": "object", "properties": {
-         "income_type": {"type": "string", "enum": ["salary", "business", "aop", "rental"]},
-         "annual_taxable_income": {"type": "number", "description": "Yearly amount in PKR. Multiply monthly by 12."},
-         "tax_year": {"type": "string", "description": "e.g. 2026-2027 (default), 2025-2026"}},
-         "required": ["income_type", "annual_taxable_income"]}},
+TOOLS = tax_engine.SCHEMAS + [
     {"name": "find_wht_rates",
      "description": "Search the withholding / advance tax rate card in the database (e.g. '236C property sale', 'bank profit 151', 'vehicle 1300', 'rent 155', 'contracts 153'). Returns rows with uid, filer and non-filer rates.",
      "input_schema": {"type": "object", "properties": {
@@ -261,6 +245,9 @@ TOOLS = [
     {"name": "find_blog",
      "description": "Find published TaxBuddy articles on a topic, to link the user to a detailed guide.",
      "input_schema": {"type": "object", "properties": {"query": {"type": "string"}}, "required": ["query"]}},
+    {"name": "find_verified_answer",
+     "description": "Search answers checked by TaxBuddy's tax expert. Call this FIRST for every tax question. If a result clearly matches the user's question, base your answer on it and keep its section reference.",
+     "input_schema": {"type": "object", "properties": {"query": {"type": "string"}}, "required": ["query"]}},
     {"name": "search_law",
      "description": "Search the statute books for passages. Books: ito = Income Tax Ordinance 2001, it_rules = Income Tax Rules 2002, sta = Sales Tax Act 1990, st_rules = Sales Tax Rules 2006. Use English legal words.",
      "input_schema": {"type": "object", "properties": {
@@ -272,12 +259,17 @@ TOOLS = [
          "required": ["book", "number"]}},
 ]
 
-_FUNCS = {"calculate_income_tax": calculate_income_tax, "find_wht_rates": find_wht_rates,
+_FUNCS = {"find_wht_rates": find_wht_rates,
           "calculate_wht": calculate_wht, "check_atl": check_atl, "find_sro": find_sro,
-          "find_blog": find_blog, "search_law": search_law, "get_law_section": get_law_section}
+          "find_blog": find_blog, "find_verified_answer": find_verified_answer, "search_law": search_law, "get_law_section": get_law_section}
 
 
 def run_tool(name, args):
+    if name in tax_engine.FUNCTIONS:
+        try:
+            return tax_engine.run(name, args)
+        except Exception as e:   # e.g. database not reachable
+            return {"error": f"Tool failed: {e.__class__.__name__}"}
     fn = _FUNCS.get(name)
     if fn is None:
         return {"error": f"Unknown tool {name}"}

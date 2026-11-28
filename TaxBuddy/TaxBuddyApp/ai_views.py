@@ -28,14 +28,23 @@ logger = logging.getLogger(__name__)
 
 from . import agent_tools
 from . import ai_guard
+from . import ai_chats
 
 # ── Agent instructions ──
 SYSTEM_PROMPT = """You are "TaxBuddy Umair AI", the Pakistan tax assistant on taxbuddyumair.com, a free tax-education platform by Umair Mubeen (a Pakistani tax educator).
 
 YOU HAVE TOOLS. USE THEM — never answer from memory:
 - FIRST call find_verified_answer with the user's question. These answers were checked by a tax expert; when one clearly matches, follow it (and still use the calculators for amounts).
-- Any tax amount -> calculate_income_tax (salary / business / AOP / rental slabs from the site database) or find_wht_rates then calculate_wht (withholding & advance tax: property 236C/236K, vehicles, bank profit, rent, contracts, etc.).
-- Any rate -> find_wht_rates or calculate_income_tax. Quote the rate the tool returns.
+- Every amount or rate comes from a calculator tool — never do tax maths yourself:
+  - salary / business / AOP / rental slab tax (with VPS credit, surcharge) -> calculate_income_tax
+  - super tax s.4C -> calculate_super_tax
+  - quarterly advance tax s.147 -> calculate_advance_tax_147
+  - capital gain on property -> calculate_cgt_property; on shares -> calculate_cgt_securities
+  - property advance tax 236C (sale) / 236K (purchase) -> calculate_property_advance_tax
+  - car registration, transfer, token tax (231B / 234) -> calculate_vehicle_tax
+  - Karachi FBR property value -> calculate_karachi_fmv
+  - any other withholding (bank profit 151, rent 155, contracts 153, dividends, cash withdrawal, export 154A, etc.) -> find_wht_rates then calculate_wht
+- Quote the rate and amount the tool returns. Calculator results include "law" (sections) and "tax_nature" (final / minimum / adjustable / separate block): always tell the user the tax nature and the sections from "law".
 - "Am I / is this NTN a filer?" -> check_atl.
 - Latest SROs, circulars, notifications -> find_sro.
 - Legal questions (what the law says, conditions, definitions, penalties, procedures) -> search_law, then get_law_section for the exact section. Cite the book and section, e.g. "Section 147A, Income Tax Ordinance 2001".
@@ -46,11 +55,11 @@ YOU HAVE TOOLS. USE THEM — never answer from memory:
 HOW TO ANSWER:
 - Reply in the user's language: English, or Roman Urdu if they write Roman Urdu.
 - Start with the bottom line (the amount, rate or yes/no), then a short breakdown. Keep it short.
-- Show the working for calculations (slab, fixed tax, rate on the excess, surcharge).
+- Show the working for calculations using the tool's "working" lines.
 - Give site links as relative paths, e.g. /articles/slug/ or /SalaryCalculator/.
 - If key information is missing (monthly vs yearly, filer or not), ask one short question or state the assumption.
 - Speak as a tax expert, never about your own workings: do not mention tools, the database, "verified answers", internal notes, matching scores, or earlier drafts, and never write things like "database ke mutabiq", "tool ne bataya" or "not verified". Just state the law and the figures.
-- Cite only sections whose text you actually read in this conversation (get_law_section or search_law). Quote amounts and rates exactly as that text states them. If you did not read it, do not cite it.
+- Cite only sections you actually received in this conversation: text read with get_law_section / search_law, or listed in a calculator result's "law". Quote amounts and rates exactly as given. Never cite a section from memory.
 
 LIMITS:
 - Educational information only, not professional tax, legal or financial advice. For complex cases suggest a qualified tax practitioner, or WhatsApp TaxBuddy Umair at +92 333 248 2742.
@@ -75,6 +84,13 @@ def _tool_status(name, args):
     book = _BOOK_NAMES.get(args.get("book"), "the law books")
     return {
         "calculate_income_tax": "Calculating tax from the slab table…",
+        "calculate_super_tax": "Calculating super tax (4C)…",
+        "calculate_advance_tax_147": "Calculating advance tax (147)…",
+        "calculate_cgt_property": "Calculating capital gains tax…",
+        "calculate_cgt_securities": "Calculating capital gains tax…",
+        "calculate_property_advance_tax": "Calculating property advance tax…",
+        "calculate_vehicle_tax": "Calculating vehicle tax…",
+        "calculate_karachi_fmv": "Looking up the FBR valuation table…",
         "find_wht_rates": "Looking up the withholding tax rate card…",
         "calculate_wht": "Calculating withholding tax…",
         "check_atl": "Checking the Active Taxpayers List…",
@@ -94,10 +110,10 @@ def _tool_sources(name, args, result):
     if name == "get_law_section":
         out.append({"label": f"Section {result.get('section')}, {result.get('book')}", "url": None})
     # search_law passages are not shown as sources: only sections actually read count
-    elif name == "calculate_income_tax":
-        yr = (args or {}).get("tax_year") or agent_tools.DEFAULT_YEAR
-        out.append({"label": f"TaxBuddy {result.get('income_type', '')} slab table {yr}".replace("  ", " "),
-                    "url": result.get("calculator_link")})
+    elif name in agent_tools.tax_engine.FUNCTIONS:
+        law = result.get("law") or []
+        if law:
+            out.append({"label": law[0], "url": result.get("calculator")})
     elif name in ("calculate_wht", "find_wht_rates"):
         yr = (args or {}).get("tax_year") or agent_tools.DEFAULT_YEAR
         out.append({"label": f"FBR withholding tax rate card {yr}", "url": result.get("calculator_link")})
@@ -180,10 +196,10 @@ def _sse(obj):
     return "data: " + json.dumps(obj, ensure_ascii=False) + "\n\n"
 
 
-def _stream_agent(system_prompt, messages, max_tokens=1800, request=None, cid="", user_msg=""):
+def _stream_agent(system_prompt, messages, max_tokens=1800, request=None, conv=None, user_msg=""):
     """Same tool loop as _run_agent, but yields SSE events while it works:
     status (tool running), delta (answer text), sources, done / error.
-    When it finishes it saves the exchange to the server history and logs usage."""
+    When it finishes it saves the answer to the conversation and logs usage."""
     usage = ai_guard.Usage(AI_MODEL)
     answer = []
     status = "error"
@@ -236,11 +252,11 @@ def _stream_agent(system_prompt, messages, max_tokens=1800, request=None, cid=""
         if sources:
             yield _sse({"t": "sources", "items": sources[:6]})
         status = "ok"
-        if request is not None:
-            ai_guard.save_turns(request, cid, user_msg, "".join(answer))
-        yield _sse({"t": "done"})
+        mid = ai_chats.finish_turn(conv, "".join(answer), sources[:6], "ok")
+        yield _sse({"t": "done", "mid": mid})
     except GeneratorExit:      # user pressed Stop / closed the tab
         status = "stopped"
+        ai_chats.finish_turn(conv, "".join(answer), [], "stopped")
         return
     except Exception:
         logger.exception("AI stream failed")
@@ -253,11 +269,13 @@ def _stream_agent(system_prompt, messages, max_tokens=1800, request=None, cid=""
 # ════════════════ PAGES ════════════════
 def ai_tax_assistant(request):
     """Full-page AI chat (serves the existing /ai-chat/ route)."""
-    return render(request, "partials/ai_tax_assistant.html", {
+    ai_chats.owner_id(request)          # give this browser its chat id cookie
+    resp = render(request, "partials/ai_tax_assistant.html", {
         "meta_title": "AI Pakistan Tax Assistant | Ask Tax Questions Free | TaxBuddy Umair",
         "meta_description": "Free AI tax assistant for Pakistan. Ask about income tax, sales tax, "
                             "filer status, property tax and FBR filing — instant answers for 2026-27.",
     })
+    return ai_chats.attach_cookie(request, resp)
 
 
 def ai_smart_calculator(request):
@@ -311,15 +329,15 @@ def ai_chat_stream(request):
         data = json.loads(request.body.decode("utf-8"))
     except Exception:
         return fail("Invalid request.", 400)
-    cid, user_msg, msgs = ai_guard.build_messages(request, data, MAX_INPUT_CHARS)
+    conv, user_msg, msgs = ai_chats.start_turn(request, data, MAX_INPUT_CHARS)
     if not user_msg:
         return fail("Please type a question.", 400)
     resp = StreamingHttpResponse(
-        _stream_agent(CHAT_PAGE_PROMPT, msgs, request=request, cid=cid, user_msg=user_msg),
+        _stream_agent(CHAT_PAGE_PROMPT, msgs, request=request, conv=conv, user_msg=user_msg),
         content_type="text/event-stream")
     resp["Cache-Control"] = "no-cache"
     resp["X-Accel-Buffering"] = "no"      # tell nginx not to buffer the stream
-    return resp
+    return ai_chats.attach_cookie(request, resp)
 
 
 @require_POST

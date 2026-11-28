@@ -1017,3 +1017,49 @@ class AIUsage(models.Model):
 
     def __str__(self):
         return f"{self.created:%Y-%m-%d %H:%M} {self.endpoint} {self.status} ${self.cost_usd}"
+
+
+# models.py ke END me paste karein (AIUsage server pe pehle se hai — usko dobara mat daalna)
+
+class AIConversation(models.Model):
+    """A TaxBuddy Umair AI chat (Phase 1). Owned by a browser (hashed cookie id),
+    no login needed. Soft-deleted chats are purged by `manage.py ai_cleanup`."""
+    owner = models.CharField(max_length=32, db_index=True)       # hashed browser id
+    cid = models.CharField(max_length=40)                         # chat id made by the browser
+    title = models.CharField(max_length=120, default="New chat")
+    created = models.DateTimeField(auto_now_add=True)
+    updated = models.DateTimeField(auto_now=True, db_index=True)
+    share_token = models.CharField(max_length=32, null=True, blank=True, unique=True)
+    is_deleted = models.BooleanField(default=False, db_index=True)
+
+    class Meta:
+        unique_together = [("owner", "cid")]
+        ordering = ["-updated"]
+        verbose_name = "AI conversation"
+        verbose_name_plural = "AI conversations"
+
+    def __str__(self):
+        return self.title
+
+
+class AIMessage(models.Model):
+    """One message in an AIConversation. Stored text has CNIC / NTN masked."""
+    ROLE = [("user", "User"), ("assistant", "Assistant")]
+    conversation = models.ForeignKey(AIConversation, on_delete=models.CASCADE, related_name="messages")
+    role = models.CharField(max_length=10, choices=ROLE)
+    content = models.TextField()
+    sources = models.TextField(blank=True, default="")             # JSON list of {label, url}
+    status = models.CharField(max_length=10, default="ok")         # ok / stopped / error
+    imported = models.BooleanField(default=False)                  # copied from old browser storage
+    feedback = models.SmallIntegerField(default=0, db_index=True)  # 1 = 👍, -1 = 👎
+    feedback_note = models.CharField(max_length=500, blank=True)
+    feedback_at = models.DateTimeField(null=True, blank=True)
+    created = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ["id"]
+        verbose_name = "AI message"
+        verbose_name_plural = "AI messages"
+
+    def __str__(self):
+        return f"{self.role}: {self.content[:60]}"

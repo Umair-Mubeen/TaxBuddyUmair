@@ -11,6 +11,10 @@ from .sitemaps import (
 )
 from . import views
 from . import ai_views
+
+# urls.py: upar imports me ye line add karein:
+from . import ai_chats
+
 sitemaps = {
     'home':        HomeSitemap,
     'calculators': CalculatorSitemap,
@@ -174,6 +178,16 @@ urlpatterns = [
     # Legacy 301 redirect: old /<slug>/ → /articles/<slug>/
     # Keeps old Google-indexed URLs working
     path('<slug:slug>/', views.legacy_blog_redirect, name='legacy_blog_redirect'),
+
+# urlpatterns me 'ai_chat_stream' wali line ke NEECHE ye 8 lines:
+    path('api/ai/chats/', ai_chats.chats_list, name='ai_chats_list'),
+    path('api/ai/chats/import/', ai_chats.chats_import, name='ai_chats_import'),
+    path('api/ai/chats/<str:cid>/', ai_chats.chat_detail, name='ai_chat_detail'),
+    path('api/ai/chats/<str:cid>/rename/', ai_chats.chat_rename, name='ai_chat_rename'),
+    path('api/ai/chats/<str:cid>/delete/', ai_chats.chat_delete, name='ai_chat_delete'),
+    path('api/ai/chats/<str:cid>/share/', ai_chats.chat_share, name='ai_chat_share'),
+    path('api/ai/messages/<int:mid>/feedback/', ai_chats.message_feedback, name='ai_message_feedback'),
+    path('ai-chat/s/<str:token>/', ai_chats.shared_chat, name='ai_shared_chat'),
 ]
 
 if settings.DEBUG:

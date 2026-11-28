@@ -124,6 +124,39 @@ a.ta-chip:hover{border-color:var(--ta-green);color:var(--ta-green)}
 .ta-note a{color:var(--ta-mid)}
 .ta-shade{display:none}
 
+/* ── Phase 1: search, item actions, share, feedback ── */
+.ta-search{margin:0 12px 8px;position:relative}
+.ta-search input{width:100%;border:1px solid var(--ta-line);background:var(--ta-bg);color:var(--ta-text);border-radius:9px;padding:8px 10px 8px 30px;font:inherit;font-size:13px;outline:0}
+.ta-search input:focus{border-color:var(--ta-green)}
+.ta-search svg{position:absolute;left:9px;top:50%;transform:translateY(-50%);color:var(--ta-mute)}
+.ta-ibtn{opacity:0;border:0;background:none;color:var(--ta-mute);cursor:pointer;padding:3px 5px;border-radius:6px;font-size:12.5px;line-height:1}
+.ta-item:hover .ta-ibtn,.ta-item.on .ta-ibtn{opacity:1}
+.ta-ibtn:hover{color:var(--ta-text);background:var(--ta-side)}
+.ta-ibtn.del:hover{color:#DC2626}
+@media (hover:none){.ta-ibtn{opacity:1}}
+.ta-item input{flex:1;min-width:0;border:1px solid var(--ta-green);border-radius:6px;padding:3px 6px;font:inherit;font-size:13px;background:var(--ta-bg);color:var(--ta-text);outline:0}
+.ta-shared-dot{font-size:10px;color:var(--ta-green)}
+.ta-topbtn{margin-left:8px;border:1px solid var(--ta-line);background:var(--ta-bg);color:var(--ta-mid);border-radius:9px;padding:6px 10px;font-size:12.5px;font-weight:600;cursor:pointer;white-space:nowrap}
+.ta-topbtn:hover{border-color:var(--ta-green);color:var(--ta-green)}
+.ta-topbtn[hidden]{display:none}
+.ta-act.on{color:var(--ta-green);background:var(--ta-green-soft)}
+.ta-act.on-bad{color:#DC2626;background:#FEF2F2}
+.ta-fb{margin-top:8px;display:flex;gap:6px;max-width:520px}
+.ta-fb textarea{flex:1;border:1px solid var(--ta-line);border-radius:9px;padding:7px 10px;font:inherit;font-size:13px;resize:vertical;min-height:38px;background:var(--ta-bg);color:var(--ta-text);outline:0}
+.ta-fb button{border:0;background:var(--ta-navy);color:#fff;border-radius:9px;padding:0 12px;font-size:12.5px;font-weight:600;cursor:pointer}
+.ta-thanks{font-size:12px;color:var(--ta-green);margin-top:6px}
+.ta-modal[hidden]{display:none}
+.ta-modal{position:fixed;inset:0;background:rgba(10,20,35,.45);z-index:80;display:flex;align-items:center;justify-content:center;padding:16px}
+.ta-card{background:var(--ta-bg);color:var(--ta-text);border-radius:16px;box-shadow:var(--ta-shadow);width:100%;max-width:460px;padding:20px}
+.ta-card h3{margin:0 0 6px;font-size:17px}
+.ta-card p{margin:0 0 14px;font-size:13px;color:var(--ta-mid);line-height:1.55}
+.ta-link{display:flex;gap:8px}
+.ta-link input{flex:1;min-width:0;border:1px solid var(--ta-line);border-radius:9px;padding:9px 10px;font:inherit;font-size:13px;background:var(--ta-side);color:var(--ta-text)}
+.ta-link button{border:0;background:var(--ta-green);color:#fff;border-radius:9px;padding:0 14px;font-weight:600;font-size:13px;cursor:pointer}
+.ta-card-foot{display:flex;justify-content:space-between;align-items:center;margin-top:16px}
+.ta-card-foot button{border:0;background:none;color:var(--ta-mid);font-size:13px;cursor:pointer;padding:6px 4px}
+.ta-card-foot .ta-stop-share{color:#DC2626}
+
 @media (max-width:860px){
   .ta-side{position:fixed;left:0;top:0;bottom:0;z-index:60;transform:translateX(-100%);transition:transform .2s;box-shadow:var(--ta-shadow)}
   .ta.open .ta-side{transform:none}
@@ -135,6 +168,7 @@ a.ta-chip:hover{border-color:var(--ta-green);color:var(--ta-green)}
   .ta-hello{padding-top:4vh}
   .ta-hello h1{font-size:22px}
   .ta-badge{display:none}
+  .ta-topbtn{margin-left:auto}
   .ta-msg.user .ta-bub{max-width:90%}
   .ta-av{display:none}
 }
@@ -151,6 +185,10 @@ a.ta-chip:hover{border-color:var(--ta-green);color:var(--ta-green)}
       <div><b>TaxBuddy Umair AI</b><small>Pakistan tax assistant</small></div>
     </a>
     <button class="ta-new" id="taNew" type="button">＋ New chat</button>
+    <div class="ta-search">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>
+      <input id="taSearch" type="search" placeholder="Search chats" aria-label="Search chats" autocomplete="off">
+    </div>
     <div class="ta-list" id="taList"></div>
     <div class="ta-side-foot">
       <a href="{% url 'index' %}">🏠 TaxBuddy home</a>
@@ -164,6 +202,7 @@ a.ta-chip:hover{border-color:var(--ta-green);color:var(--ta-green)}
       <button class="ta-menu" id="taMenu" type="button" aria-label="Open chats">☰</button>
       <div class="ta-top-title" id="taTitle">TaxBuddy Umair AI</div>
       <div class="ta-badge">Income Tax · Sales Tax · FBR</div>
+      <button class="ta-topbtn" id="taShareBtn" type="button" hidden>🔗 Share</button>
     </div>
 
     <div class="ta-scroll" id="taScroll">
@@ -180,6 +219,18 @@ a.ta-chip:hover{border-color:var(--ta-green);color:var(--ta-green)}
       <div class="ta-note">TaxBuddy Umair AI answers Pakistan tax questions only, from the ITO 2001, STA 1990, the Rules and the FBR rate card. It can make mistakes — this is education, not professional advice. Check important points with a tax practitioner.</div>
     </div>
   </section>
+
+  <div class="ta-modal" id="taModal" hidden role="dialog" aria-modal="true" aria-labelledby="taModalH">
+    <div class="ta-card">
+      <h3 id="taModalH">Share this chat</h3>
+      <p>Anyone with the link can read this chat (read-only). CNIC and NTN numbers are hidden. You can stop sharing any time.</p>
+      <div class="ta-link"><input id="taShareUrl" readonly aria-label="Share link"><button id="taCopyLink" type="button">Copy</button></div>
+      <div class="ta-card-foot">
+        <button class="ta-stop-share" id="taStopShare" type="button">Stop sharing</button>
+        <button id="taCloseModal" type="button">Close</button>
+      </div>
+    </div>
+  </div>
 </div>
 {% endblock %}
 
@@ -189,9 +240,10 @@ a.ta-chip:hover{border-color:var(--ta-green);color:var(--ta-green)}
 <script>
 (function(){
   var API = "{% url 'ai_chat_stream' %}";
+  var CHATS = "{% url 'ai_chats_list' %}";           // /api/ai/chats/
+  var IMPORT = "{% url 'ai_chats_import' %}";
   var CSRF = "{{ csrf_token }}";
-  var KEY = "tbai_chats_v1";
-  var MAX_CHATS = 40;
+  var OLD_KEY = "tbai_chats_v1";                      // pre-Phase-1 browser storage
   var SUGS = [
     ["Salary tax", "Meri salary 2 lakh mahana hai, 2026-27 mein kitna tax banega?"],
     ["Property", "Filer 1 crore ka plot khareede to 236K advance tax kitna hoga?"],
@@ -200,15 +252,25 @@ a.ta-chip:hover{border-color:var(--ta-green);color:var(--ta-green)}
   ];
 
   var $ = function(id){ return document.getElementById(id); };
-  var ta=$('ta'), list=$('taList'), col=$('taCol'), scroll=$('taScroll'),
-      input=$('taInput'), send=$('taSend'), form=$('taForm'), titleEl=$('taTitle');
-  var chats = load(), cur = null, busy = false, ctrl = null;
+  var ta=$('ta'), list=$('taList'), col=$('taCol'), scroll=$('taScroll'), search=$('taSearch'),
+      input=$('taInput'), send=$('taSend'), form=$('taForm'), titleEl=$('taTitle'),
+      shareBtn=$('taShareBtn'), modal=$('taModal'), shareUrl=$('taShareUrl');
+  var chats = [], cur = null, busy = false, ctrl = null, query = '';
 
-  /* ── storage (per browser; never required) ── */
-  function load(){ try{ var v=JSON.parse(localStorage.getItem(KEY)||'[]'); return Array.isArray(v)?v:[]; }catch(e){ return []; } }
-  function save(){ try{ localStorage.setItem(KEY, JSON.stringify(chats.slice(0,MAX_CHATS))); }catch(e){} }
   function uid(){ return Date.now().toString(36)+Math.random().toString(36).slice(2,7); }
   function find(id){ for(var i=0;i<chats.length;i++) if(chats[i].id===id) return chats[i]; return null; }
+  function esc(s){ var d=document.createElement('div'); d.textContent=s==null?'':s; return d.innerHTML; }
+  function chatUrl(id, action){ return CHATS + encodeURIComponent(id) + '/' + (action ? action + '/' : ''); }
+
+  /* ── server calls ── */
+  function getJSON(url){
+    return fetch(url, {credentials:'same-origin'}).then(function(r){ if(!r.ok) throw r; return r.json(); });
+  }
+  function postJSON(url, body){
+    return fetch(url, {method:'POST', credentials:'same-origin',
+      headers:{'Content-Type':'application/json','X-CSRFToken':CSRF}, body:JSON.stringify(body||{})})
+      .then(function(r){ return r.json().then(function(d){ if(!r.ok) throw d; return d; }); });
+  }
 
   /* ── markdown ── */
   if (window.marked) marked.setOptions({ gfm:true, breaks:true });
@@ -222,31 +284,71 @@ a.ta-chip:hover{border-color:var(--ta-green);color:var(--ta-green)}
     });
     return box.innerHTML;
   }
-  function esc(s){ var d=document.createElement('div'); d.textContent=s; return d.innerHTML; }
 
   /* ── sidebar ── */
+  function loadList(){
+    var url = CHATS + (query ? '?q=' + encodeURIComponent(query) : '');
+    return getJSON(url).then(function(d){
+      // keep a chat that is being written but not saved yet
+      var pending = chats.filter(function(c){ return c.local; });
+      chats = pending.concat(d.chats || []);
+      renderList();
+    }).catch(function(){ renderList(); });
+  }
   function renderList(){
     list.innerHTML='';
-    if(!chats.length){ list.innerHTML='<div class="ta-empty-list">Aapki chats yahan dikhengi. Yeh sirf isi browser mein save hoti hain.</div>'; return; }
+    if(!chats.length){
+      list.innerHTML='<div class="ta-empty-list">'+(query ? 'No chats match “'+esc(query)+'”.' : 'Aapki chats yahan dikhengi.')+'</div>';
+      return;
+    }
     var today=new Date().toDateString(), grp=null;
     chats.forEach(function(c){
       var g = new Date(c.updated).toDateString()===today ? 'Today' : 'Earlier';
       if(g!==grp){ grp=g; var h=document.createElement('div'); h.className='ta-grp'; h.textContent=g; list.appendChild(h); }
       var it=document.createElement('div'); it.className='ta-item'+(cur&&cur.id===c.id?' on':'');
-      it.innerHTML='<span></span><button class="ta-del" type="button" title="Delete chat" aria-label="Delete chat">✕</button>';
+      it.innerHTML='<span></span>'+(c.shared?'<b class="ta-shared-dot" title="Shared">●</b>':'')+
+        '<button class="ta-ibtn" data-a="rename" type="button" title="Rename" aria-label="Rename chat">✎</button>'+
+        '<button class="ta-ibtn del" data-a="delete" type="button" title="Delete" aria-label="Delete chat">✕</button>';
       it.firstChild.textContent=c.title||'New chat';
       it.addEventListener('click', function(e){
-        if(e.target.classList.contains('ta-del')){ e.stopPropagation(); del(c.id); return; }
+        var a=e.target.dataset && e.target.dataset.a;
+        if(a==='rename'){ e.stopPropagation(); rename(c, it); return; }
+        if(a==='delete'){ e.stopPropagation(); del(c.id); return; }
+        if(e.target.tagName==='INPUT') return;
         open(c.id);
       });
       list.appendChild(it);
     });
   }
+  function rename(c, it){
+    if(c.local) return;
+    var span=it.firstChild, inp=document.createElement('input');
+    inp.value=c.title||''; inp.maxLength=120; it.replaceChild(inp, span); inp.focus(); inp.select();
+    var done=false;
+    function finish(save){
+      if(done) return; done=true;
+      var t=inp.value.trim();
+      if(save && t && t!==c.title){
+        c.title=t; if(cur&&cur.id===c.id) titleEl.textContent=t;
+        postJSON(chatUrl(c.id,'rename'), {title:t}).then(function(d){ c.title=d.title; renderList(); }).catch(function(){ renderList(); });
+      }
+      renderList();
+    }
+    inp.addEventListener('keydown', function(e){ if(e.key==='Enter'){ e.preventDefault(); finish(true); } if(e.key==='Escape') finish(false); });
+    inp.addEventListener('blur', function(){ finish(true); });
+  }
   function del(id){
     if(busy && cur && cur.id===id) stop();
-    chats = chats.filter(function(c){ return c.id!==id; }); save();
+    var c=find(id);
+    chats = chats.filter(function(x){ return x.id!==id; });
     if(cur && cur.id===id) newChat(); else renderList();
+    if(c && !c.local) postJSON(chatUrl(id,'delete')).catch(function(){ loadList(); });
   }
+  var searchTimer=null;
+  search.addEventListener('input', function(){
+    clearTimeout(searchTimer);
+    searchTimer=setTimeout(function(){ query=search.value.trim(); loadList(); }, 250);
+  });
 
   /* ── conversation view ── */
   function hello(){
@@ -276,24 +378,51 @@ a.ta-chip:hover{border-color:var(--ta-green);color:var(--ta-green)}
       });
       h+='</div>';
     }
-    h+='<div class="ta-acts"><button class="ta-act" type="button" data-a="copy">⧉ Copy</button>'+
-       (isLast?'<button class="ta-act" type="button" data-a="retry">↻ Regenerate</button>':'')+'</div>';
+    h+='<div class="ta-acts"><button class="ta-act" type="button" data-a="copy">⧉ Copy</button>';
+    if(m.id && !m.error){
+      h+='<button class="ta-act'+(m.feedback===1?' on':'')+'" type="button" data-a="up" title="Helpful" aria-label="Helpful">👍</button>'+
+         '<button class="ta-act'+(m.feedback===-1?' on-bad':'')+'" type="button" data-a="down" title="Not helpful" aria-label="Not helpful">👎</button>';
+    }
+    if(isLast) h+='<button class="ta-act" type="button" data-a="retry">↻ Regenerate</button>';
+    h+='</div><div class="ta-fbbox"></div>';
     v.extra.innerHTML=h;
     v.extra.querySelectorAll('.ta-act').forEach(function(b){
       b.addEventListener('click', function(){
-        if(b.dataset.a==='copy'){
+        var a=b.dataset.a;
+        if(a==='copy'){
           try{ navigator.clipboard.writeText(m.content); b.textContent='✓ Copied'; setTimeout(function(){ b.textContent='⧉ Copy'; },1400); }catch(e){}
-        } else regenerate();
+        } else if(a==='up') feedback(v, m, m.feedback===1 ? 0 : 1, '');
+        else if(a==='down'){ if(m.feedback===-1) feedback(v, m, 0, ''); else askWhy(v, m); }
+        else regenerate();
       });
     });
   }
+  function feedback(v, m, value, note){
+    m.feedback=value;
+    var isLast = cur && cur.messages[cur.messages.length-1]===m;
+    finishRow(v, m, isLast);
+    postJSON('{% url "ai_message_feedback" 0 %}'.replace('/0/', '/'+m.id+'/'), {value:value, note:note||''})
+      .then(function(){ if(value){ var t=v.extra.querySelector('.ta-fbbox'); t.innerHTML='<div class="ta-thanks">Shukriya — feedback mil gaya.</div>'; } })
+      .catch(function(){});
+  }
+  function askWhy(v, m){
+    var box=v.extra.querySelector('.ta-fbbox');
+    box.innerHTML='<div class="ta-fb"><textarea maxlength="500" placeholder="Kya ghalat tha? (optional) — e.g. wrong rate, wrong section"></textarea><button type="button">Send</button></div>';
+    var tx=box.querySelector('textarea'); tx.focus();
+    box.querySelector('button').addEventListener('click', function(){ feedback(v, m, -1, tx.value.trim()); });
+  }
   function renderChat(){
     col.innerHTML='';
-    if(!cur || !cur.messages.length){ hello(); titleEl.textContent='TaxBuddy Umair AI'; return; }
+    shareBtn.hidden = !(cur && !cur.local && cur.messages && cur.messages.length);
+    if(!cur || !cur.messages || !cur.messages.length){ hello(); titleEl.textContent='TaxBuddy Umair AI'; return; }
     titleEl.textContent=cur.title;
     cur.messages.forEach(function(m,i){
       if(m.role==='user') userRow(m.content);
-      else { var v=aiRow(); v.body.innerHTML = m.error ? '<span class="ta-err">'+esc(m.content)+'</span>' : md(m.content); finishRow(v,m,i===cur.messages.length-1); }
+      else {
+        var v=aiRow();
+        v.body.innerHTML = m.error ? '<span class="ta-err">'+esc(m.content)+'</span>' : md(m.content);
+        finishRow(v,m,i===cur.messages.length-1);
+      }
     });
     toBottom(true);
   }
@@ -302,8 +431,45 @@ a.ta-chip:hover{border-color:var(--ta-green);color:var(--ta-green)}
     if(force || near) scroll.scrollTop = scroll.scrollHeight;
   }
 
-  function open(id){ if(busy) stop(); cur=find(id); renderList(); renderChat(); ta.classList.remove('open'); input.focus(); }
+  function open(id){
+    if(busy) stop();
+    var c=find(id); if(!c) return;
+    cur=c; renderList(); ta.classList.remove('open');
+    if(c.local){ renderChat(); return; }
+    col.innerHTML='<div class="ta-status"><div class="ta-spin"></div><span>Loading chat…</span></div>';
+    getJSON(chatUrl(id)).then(function(d){
+      if(cur!==c) return;
+      c.messages=d.messages||[]; c.title=d.title; c.share_url=d.share_url;
+      c.messages.forEach(function(m){ if(m.status && m.status!=='ok' && m.role==='assistant' && !m.content) m.content='_Stopped._'; });
+      renderChat(); input.focus();
+    }).catch(function(){ col.innerHTML='<p class="ta-err">Could not load this chat. Please refresh the page.</p>'; });
+  }
   function newChat(){ if(busy) stop(); cur=null; renderList(); renderChat(); ta.classList.remove('open'); input.focus(); }
+
+  /* ── share ── */
+  function showShare(url){
+    shareUrl.value=url; modal.hidden=false; shareUrl.select();
+  }
+  shareBtn.addEventListener('click', function(){
+    if(!cur || cur.local) return;
+    if(cur.share_url){ showShare(cur.share_url); return; }
+    postJSON(chatUrl(cur.id,'share'), {on:true}).then(function(d){
+      cur.share_url=d.share_url; cur.shared=true; renderList(); showShare(d.share_url);
+    }).catch(function(){ alertBox('Could not create a share link. Please try again.'); });
+  });
+  $('taCopyLink').addEventListener('click', function(){
+    try{ navigator.clipboard.writeText(shareUrl.value); this.textContent='Copied ✓'; var b=this; setTimeout(function(){ b.textContent='Copy'; },1500); }catch(e){ shareUrl.select(); }
+  });
+  $('taStopShare').addEventListener('click', function(){
+    if(!cur) return;
+    postJSON(chatUrl(cur.id,'share'), {on:false}).then(function(){
+      cur.share_url=null; cur.shared=false; modal.hidden=true; renderList();
+    }).catch(function(){});
+  });
+  $('taCloseModal').addEventListener('click', function(){ modal.hidden=true; });
+  modal.addEventListener('click', function(e){ if(e.target===modal) modal.hidden=true; });
+  document.addEventListener('keydown', function(e){ if(e.key==='Escape') modal.hidden=true; });
+  function alertBox(t){ var p=document.createElement('p'); p.className='ta-err'; p.textContent=t; col.appendChild(p); toBottom(true); }
 
   /* ── sending + streaming ── */
   function setBusy(b){
@@ -318,26 +484,27 @@ a.ta-chip:hover{border-color:var(--ta-green);color:var(--ta-green)}
 
   function ask(text){
     text=(text||'').trim(); if(!text || busy) return;
-    if(!cur){ cur={ id:uid(), title:text.slice(0,60), updated:Date.now(), messages:[] }; chats.unshift(cur); col.innerHTML=''; titleEl.textContent=cur.title; }
-    var history = cur.messages.filter(function(m){ return !m.error; }).map(function(m){ return {role:m.role, content:m.content}; });
+    if(!cur){
+      cur={ id:uid(), title:text.length>60?text.slice(0,60)+'…':text, updated:Date.now(), messages:[], local:true };
+      chats.unshift(cur); col.innerHTML=''; titleEl.textContent=cur.title;
+    }
     cur.messages.push({role:'user', content:text});
-    touch();
+    cur.updated=Date.now(); moveTop(cur);
     userRow(text);
     input.value=''; grow();
-    run(text, history, false);
+    run(text, false);
   }
   function regenerate(){
     if(busy || !cur) return;
     var ms=cur.messages; if(!ms.length || ms[ms.length-1].role!=='assistant') return;
     ms.pop();
     var q=ms[ms.length-1]; if(!q || q.role!=='user') return;
-    var history = ms.slice(0,-1).filter(function(m){ return !m.error; }).map(function(m){ return {role:m.role, content:m.content}; });
     renderChat();
-    run(q.content, history, true);
+    run(q.content, true);
   }
-  function touch(){ cur.updated=Date.now(); chats=[cur].concat(chats.filter(function(c){ return c.id!==cur.id; })); save(); renderList(); }
+  function moveTop(c){ chats=[c].concat(chats.filter(function(x){ return x!==c; })); renderList(); }
 
-  function run(text, history, regen){
+  function run(text, regen){
     var v=aiRow(), m={role:'assistant', content:'', sources:[]};
     var chat=cur;
     v.status.hidden=false; v.status.lastChild.textContent='Thinking…';
@@ -349,12 +516,15 @@ a.ta-chip:hover{border-color:var(--ta-green);color:var(--ta-green)}
       v.status.hidden=true; v.body.classList.remove('ta-caret');
       if(errText && !m.content){ m.content=errText; m.error=true; v.body.innerHTML='<span class="ta-err">'+esc(errText)+'</span>'; }
       else v.body.innerHTML=md(m.content);
-      chat.messages.push(m); if(chat===cur){ finishRow(v,m,true); }
-      chat.updated=Date.now(); save(); setBusy(false); ctrl=null; toBottom(false);
+      chat.messages.push(m);
+      if(chat.local && !m.error){ chat.local=false; }
+      if(chat===cur){ finishRow(v,m,true); shareBtn.hidden = chat.local; }
+      chat.updated=Date.now(); setBusy(false); ctrl=null; toBottom(false);
+      if(!query) renderList(); else loadList();
     }
-    fetch(API, { method:'POST', signal: ctrl ? ctrl.signal : undefined,
+    fetch(API, { method:'POST', credentials:'same-origin', signal: ctrl ? ctrl.signal : undefined,
       headers:{'Content-Type':'application/json','X-CSRFToken':CSRF},
-      body: JSON.stringify({ message:text, cid:chat.id, regen:!!regen, history:history }) })
+      body: JSON.stringify({ message:text, cid:chat.id, regen:!!regen }) })
     .then(function(r){
       var ct=r.headers.get('content-type')||'';
       if(!r.ok || ct.indexOf('text/event-stream')<0){
@@ -366,6 +536,7 @@ a.ta-chip:hover{border-color:var(--ta-green);color:var(--ta-green)}
         if(ev.t==='delta'){ if(!v.status.hidden && m.content==='' ) v.status.hidden=true; m.content+=ev.text; repaint(); }
         else if(ev.t==='status'){ v.status.hidden=false; v.status.lastChild.textContent=ev.text; toBottom(false); }
         else if(ev.t==='sources'){ m.sources=ev.items||[]; }
+        else if(ev.t==='done'){ if(ev.mid) m.id=ev.mid; }
         else if(ev.t==='error'){ failed=ev.text; }
       }
       function pump(){
@@ -398,10 +569,22 @@ a.ta-chip:hover{border-color:var(--ta-green);color:var(--ta-green)}
   $('taMenu').addEventListener('click', function(){ ta.classList.add('open'); });
   $('taShade').addEventListener('click', function(){ ta.classList.remove('open'); });
 
+  /* ── one-time move of old browser-only chats to the server ── */
+  function importOld(){
+    var old=null;
+    try{ old=JSON.parse(localStorage.getItem(OLD_KEY)||'null'); }catch(e){}
+    if(!Array.isArray(old) || !old.length) return Promise.resolve();
+    return postJSON(IMPORT, {chats:old.slice(0,40)}).then(function(){
+      try{ localStorage.removeItem(OLD_KEY); }catch(e){}
+    }).catch(function(){});
+  }
+
   // ?q=... starts a chat (lets other pages link "Ask TaxBuddy Umair AI about this")
   var q = new URLSearchParams(location.search).get('q');
   renderList(); renderChat();
-  if(q){ history.replaceState(null,'',location.pathname); ask(q.slice(0,1500)); } else input.focus();
+  importOld().then(loadList).then(function(){
+    if(q){ history.replaceState(null,'',location.pathname); ask(q.slice(0,1500)); } else input.focus();
+  });
 })();
 </script>
 {% endblock %}
