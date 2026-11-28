@@ -287,7 +287,7 @@ def advance_tax_147(taxpayer, quarter="sep", latest_assessed_income=0, latest_ta
                         "advance_tax")
         a = _num(latest_tax_assessed, "Latest tax assessed")
         share = round(a / 4)
-        pay = max(0, share - credit)
+        pay = round(max(0, share - credit))
         return _out({"payable": pay, "applicable": True, "due_date": _DUE_INDIVIDUAL[quarter]},
                     [f"(A ÷ 4) − B = ({_rs(a)} ÷ 4) − {_rs(credit)} = {_rs(pay)}"],
                     ["s.147(4B)", "s.147(5) due dates"], nature,
@@ -305,7 +305,7 @@ def advance_tax_147(taxpayer, quarter="sep", latest_assessed_income=0, latest_ta
         else:
             a = _num(quarter_turnover, "Turnover for the quarter")
         computed = round(a * b / c)
-        pay = max(0, computed - credit)
+        pay = round(max(0, computed - credit))
         working.append(f"(A × B ÷ C) − D = ({_rs(a)} × {_rs(b)} ÷ {_rs(c)}) − {_rs(credit)} = {_rs(pay)}")
         return _out({"payable": pay, "due_date": _DUE_COMPANY[quarter]}, working,
                     ["s.147(4)", "s.147(4AA) (4C, 113, 113C included in B)", "s.147(5A) due dates"], nature,
