@@ -34,11 +34,11 @@ BOOKS = {
 CHUNK_LINES = 40          # non-empty lines per passage
 OVERLAP = 8
 MAX_PASSAGE_CHARS = 1800
-MAX_SECTION_CHARS = 6000
+MAX_SECTION_CHARS = 9000
 
 # Amendment footnotes add noise and tokens; the agent answers current law.
 _FOOTNOTE = re.compile(
-    r"(substituted|inserted|omitted|added|renumbered|re-numbered)\s+(for|by)\b"
+    r"(substituted|inserted|omitted|added|renumbered|re-numbered)\s+(for|by|through|vide)\b"
     r"|reported as PTCL|\(Assented on", re.I)
 _HEADING = re.compile(
     r"^\s{0,10}(?:\d{1,2}\s*\[|\[|“|\")?\s*(\d{1,3}[A-Z]{0,4})\.\s+([A-Z][^\n]{2,90})")
@@ -49,6 +49,15 @@ _DIV = re.compile(r"^\s*\[?Division\s+([IVXL]+[A-Z]{0,2})\b")
 _TOKEN = re.compile(r"[a-z0-9]+")
 _STOP = set("""a an the of to in on for by and or is are be with as at from that this
 which any such shall may under it its into than other per cent not no""".split())
+
+# a new page starts with "Chapter X – ...____" / "Second Schedule – Part-I ___" or a bare page number
+_PAGE_BREAK = re.compile(r"^(?:\d{3,4}|.{0,60}(?:Chapter|Schedule|CHAPTER|SCHEDULE).{0,60}_{4,}.*)$")
+
+# footnote that opens by quoting old words: 'The words and figures “Such person shall …'
+_FOOTNOTE_START = re.compile(
+    r"^(?:\d{1,2}\s*)?(?:The\s+)?(?:words?|expressions?|figures?|full stop|colon|semi-colon|"
+    r"provisos?|clauses?|sub-clauses?|sub-sections?|sections?|explanations?|tables?|entry|entries|"
+    r"paragraphs?|rules?|sub-rules?|schedules?|serial)\b[^\u201c]{0,80}\u201c", re.I)
 
 _INDEX = None   # built lazily
 
@@ -65,12 +74,51 @@ def _read(book_key):
 
 
 def _clean_lines(lines):
+    """Drop amendment footnotes AND the superseded text they quote.
+
+    A footnote looks like:  'Section 182 substituted by the Finance Act, 2019.
+    The substituted section read as follows:'  followed by the OLD text in
+    curly quotes  \u201c182. Penalty ... \u201d.  Keeping that old text made the
+    agent quote repealed law, so after a footnote line any quoted block that
+    starts within the next few lines is skipped until its quotes close.
+    """
+    OPEN, CLOSE = "\u201c", "\u201d"
     out = []
+    window = 0      # lines after a footnote in which old quoted text may start
+    depth = 0       # quotes still open while skipping old text
+    skipped = 0
+    prev_num = False   # previous kept/seen line was a bare footnote number ("3")
     for ln in lines:
-        s = ln.rstrip()
-        if not s.strip() or _FOOTNOTE.search(s):
+        t = ln.strip()
+        was_num, prev_num = prev_num, False
+        if _PAGE_BREAK.match(t):        # new page: footnotes are over, old quoted text too
+            depth = window = 0
+        if depth > 0:                                   # inside superseded text
+            depth += t.count(OPEN) - t.count(CLOSE)
+            skipped += 1
+            # old text ends with a closing quote at the end of a line
+            if depth <= 0 or skipped > 120 or re.search(CLOSE + r"[\]\.;:,\s]*$", t):
+                depth = 0
             continue
-        out.append(re.sub(r"[ \t]{2,}", " ", s.strip()))
+        if not t:
+            prev_num = was_num
+            continue
+        if re.fullmatch(r"\d{1,2}", t):
+            prev_num = True
+        if _FOOTNOTE.search(t) or ((was_num or re.match(r"^\d{1,2}[A-Z]", t)) and _FOOTNOTE_START.match(t)):   # footnote line
+            window = 4
+            opened = t.count(OPEN) - t.count(CLOSE)
+            if opened > 0:
+                depth, skipped = opened, 0
+            continue
+        if window:
+            window -= 1
+            if re.match(r"^\d{0,2}\s*" + OPEN, t):      # old text starts here
+                depth, skipped = max(t.count(OPEN) - t.count(CLOSE), 0), 0
+                continue
+            if re.fullmatch(r"\d{1,2}", t):            # bare footnote number
+                continue
+        out.append(re.sub(r"[ \t]{2,}", " ", t))
     return out
 
 
@@ -172,14 +220,27 @@ def get_section(book, number):
         lines = _clean_lines(_read(book))
     except FileNotFoundError:
         return None
-    pat = re.compile(r"^\s{0,10}(?:\d{1,2}\s*\[|\[|“|\")?\s*" + re.escape(number) + r"\.\s+[A-Z(]")
+    pat = re.compile(r"^\s{0,10}(?:\d{1,2}\s*\[|\[)?\s*" + re.escape(number) + r"\.\s+[A-Z(]")
     starts = [i for i, ln in enumerate(lines) if pat.match(ln)]
     if not starts:
         return None
+    base = int(re.match(r"\d+", number).group()) if re.match(r"\d+", number) else 0
+
+    def next_section(ln):
+        """A heading that starts another section (not a numbered table row inside this one)."""
+        m = _HEADING.match(ln)
+        if not m:
+            return False
+        sec = m.group(1)
+        if sec == number:
+            return False
+        n = int(re.match(r"\d+", sec).group())
+        return n >= base or base < 10      # table rows (1., 2., …) are numbered below the section
+
     best = None
     for st in starts:               # the arrangement list at the top is short; real text is long
         end = st + 1
-        while end < len(lines) and not _HEADING.match(lines[end]) and end - st < 400:
+        while end < len(lines) and not next_section(lines[end]) and end - st < 600:
             end += 1
         txt = "\n".join(lines[st:end])
         if best is None or len(txt) > len(best):

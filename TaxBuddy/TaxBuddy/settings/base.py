@@ -81,22 +81,18 @@ DATABASES = {
 }
 
 
-# Paste into TaxBuddy/settings/base.py, right after the AI_MODEL line.
-# (If production.py defines its own CACHES, add the "ai" entry there too.)
-
 # ── TaxBuddy Umair AI limits + cost monitor (Phase 0, see TaxBuddyApp/ai_guard.py) ──
-AI_SESSION_HOURLY_LIMIT = int(os.getenv("AI_SESSION_HOURLY_LIMIT", "25"))
-AI_IP_HOURLY_LIMIT = int(os.getenv("AI_IP_HOURLY_LIMIT", "40"))
-AI_DAILY_LIMIT = int(os.getenv("AI_DAILY_LIMIT", "400"))
-AI_DAILY_TOKEN_LIMIT = int(os.getenv("AI_DAILY_TOKEN_LIMIT", "4000000"))
-AI_DAILY_BUDGET_USD = float(os.getenv("AI_DAILY_BUDGET_USD", "0"))
-AI_PRICE_INPUT_PER_MTOK = float(os.getenv("AI_PRICE_INPUT_PER_MTOK", "0"))
-AI_PRICE_OUTPUT_PER_MTOK = float(os.getenv("AI_PRICE_OUTPUT_PER_MTOK", "0"))
+def _env_num(name, default, cast=float):
+    """Read a number from .env; a blank or wrong value falls back to the default."""
+    try:
+        return cast(str(os.getenv(name, default)).strip().replace(",", ""))
+    except (TypeError, ValueError):
+        return cast(default)
 
-# "ai" cache is shared by all Gunicorn workers (MySQL table) so limits hold.
-# One-time: python manage.py createcachetable
-CACHES = {
-    "default": {"BACKEND": "django.core.cache.backends.locmem.LocMemCache"},
-    "ai": {"BACKEND": "django.core.cache.backends.db.DatabaseCache",
-           "LOCATION": "taxbuddy_ai_cache"},
-}
+AI_SESSION_HOURLY_LIMIT = _env_num("AI_SESSION_HOURLY_LIMIT", 25, int)
+AI_IP_HOURLY_LIMIT = _env_num("AI_IP_HOURLY_LIMIT", 40, int)
+AI_DAILY_LIMIT = _env_num("AI_DAILY_LIMIT", 400, int)
+AI_DAILY_TOKEN_LIMIT = _env_num("AI_DAILY_TOKEN_LIMIT", 4000000, int)
+AI_DAILY_BUDGET_USD = _env_num("AI_DAILY_BUDGET_USD", 0)
+AI_PRICE_INPUT_PER_MTOK = _env_num("AI_PRICE_INPUT_PER_MTOK", 0)
+AI_PRICE_OUTPUT_PER_MTOK = _env_num("AI_PRICE_OUTPUT_PER_MTOK", 0)

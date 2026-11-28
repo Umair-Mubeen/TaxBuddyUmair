@@ -41,6 +41,7 @@ YOU HAVE TOOLS. USE THEM — never answer from memory:
 - Legal questions (what the law says, conditions, definitions, penalties, procedures) -> search_law, then get_law_section for the exact section. Cite the book and section, e.g. "Section 147A, Income Tax Ordinance 2001".
 - After answering, call find_blog once and add the most relevant article link if one exists.
 - If a tool returns nothing or an error, say you could not verify it. Do NOT guess numbers, sections or dates.
+- Late filing, penalty for not filing, ATL surcharge or Form ATL-U -> get_law_section ito 182 (Table entry 1), ito 182A and it_rules 81B. For the user's own penalty amount, link /late-filing-penalty-calculator/. Who must file a return -> ito 114 and 115, and link /do-i-need-to-file-tax-return/.
 
 HOW TO ANSWER:
 - Reply in the user's language: English, or Roman Urdu if they write Roman Urdu.
@@ -48,6 +49,8 @@ HOW TO ANSWER:
 - Show the working for calculations (slab, fixed tax, rate on the excess, surcharge).
 - Give site links as relative paths, e.g. /articles/slug/ or /SalaryCalculator/.
 - If key information is missing (monthly vs yearly, filer or not), ask one short question or state the assumption.
+- Speak as a tax expert, never about your own workings: do not mention tools, the database, "verified answers", internal notes, matching scores, or earlier drafts, and never write things like "database ke mutabiq", "tool ne bataya" or "not verified". Just state the law and the figures.
+- Cite only sections whose text you actually read in this conversation (get_law_section or search_law). Quote amounts and rates exactly as that text states them. If you did not read it, do not cite it.
 
 LIMITS:
 - Educational information only, not professional tax, legal or financial advice. For complex cases suggest a qualified tax practitioner, or WhatsApp TaxBuddy Umair at +92 333 248 2742.
@@ -90,9 +93,7 @@ def _tool_sources(name, args, result):
         return out
     if name == "get_law_section":
         out.append({"label": f"Section {result.get('section')}, {result.get('book')}", "url": None})
-    elif name == "search_law":
-        for r in (result.get("results") or [])[:2]:
-            out.append({"label": f"{r.get('book')} — {r.get('near')}", "url": None})
+    # search_law passages are not shown as sources: only sections actually read count
     elif name == "calculate_income_tax":
         yr = (args or {}).get("tax_year") or agent_tools.DEFAULT_YEAR
         out.append({"label": f"TaxBuddy {result.get('income_type', '')} slab table {yr}".replace("  ", " "),
@@ -179,7 +180,7 @@ def _sse(obj):
     return "data: " + json.dumps(obj, ensure_ascii=False) + "\n\n"
 
 
-def _stream_agent(system_prompt, messages, max_tokens=1200, request=None, cid="", user_msg=""):
+def _stream_agent(system_prompt, messages, max_tokens=1800, request=None, cid="", user_msg=""):
     """Same tool loop as _run_agent, but yields SSE events while it works:
     status (tool running), delta (answer text), sources, done / error.
     When it finishes it saves the exchange to the server history and logs usage."""
