@@ -16,10 +16,10 @@ import re
 from . import law_search
 
 _UNIT = r"(?:Sections?|Secs?\.|Sec|S\.|s\.|ss\.|u/s|Rules?|R\.|r\.)"
-_NUM = r"\d{1,3}[A-Z]{0,4}(?:\(\w{1,4}\))*"
+_NUM = r"\d{1,3}(?!\d)[A-Z]{0,4}(?:\(\w{1,4}\))*"
 _REF = re.compile(
     rf"(?<![\w/]){_UNIT}\s*({_NUM}(?:\s*(?:,|and|&|or|/|to|aur)\s*{_NUM})*)", re.I)
-_ONE = re.compile(r"(\d{1,3}[A-Z]{0,4})", re.I)
+_ONE = re.compile(r"(?<!\d)(\d{1,3}(?!\d)[A-Z]{0,4})", re.I)
 _SALES = re.compile(r"sales\s*tax|\bSTA\b|1990|federal excise", re.I)
 _RULES_ST = re.compile(r"sales\s*tax\s*rules|ST\s*Rules", re.I)
 
@@ -57,6 +57,11 @@ def extract(text):
     return out
 
 
+def _flat(text):
+    """Law text breaks lines mid-sentence ('section\n171'): join before reading references."""
+    return re.sub(r"\s*\n\s*", " ", str(text or ""))
+
+
 class Tracker:
     """Collects what the model was allowed to cite during one answer."""
 
@@ -77,16 +82,16 @@ class Tracker:
             return
         if name == "get_law_section":
             self._add(args.get("book"), result.get("section") or args.get("number"))
-            for book, num, _u, _l in extract(result.get("text", "")):     # sections it refers to
+            for book, num, _u, _l in extract(_flat(result.get("text", ""))):     # sections it refers to
                 self._add(args.get("book") if book == "ito" else book, num)
         elif name == "search_law":
             for r in result.get("results") or []:
                 if r.get("section"):
                     self._add(r.get("book_key"), r["section"])
-                for book, num, _u, _l in extract(r.get("text", "")):     # sections the passage itself names
+                for book, num, _u, _l in extract(_flat(r.get("text", ""))):     # sections the passage itself names
                     self._add(r.get("book_key") if book == "ito" else book, num)
         elif name == "get_law_schedule":
-            for book, num, _u, _l in extract(result.get("text", "")):
+            for book, num, _u, _l in extract(_flat(result.get("text", ""))):
                 self._add(args.get("book") if book == "ito" else book, num)
         elif name == "find_verified_answer":
             for r in result.get("results") or []:

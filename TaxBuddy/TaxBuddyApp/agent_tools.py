@@ -159,7 +159,9 @@ def find_blog(query, limit=4):
     question never links an unrelated 'card payments' article."""
     qs = Blog.objects.filter(status="published", is_deleted=False)
     generic = {"tax", "taxes", "pakistan", "fbr", "the", "and", "for", "how", "what", "rate", "rates",
-               "2025", "2026", "2027", "income", "section", "under", "with", "from", "ordinance", "law"} | _RU_STOP
+               "2025", "2026", "2027", "income", "section", "under", "with", "from", "ordinance", "law",
+               "advance", "withholding", "transfer", "sale", "purchase", "filer", "non", "payment", "collection",
+               "minimum", "return", "guide", "explained", "complete"} | _RU_STOP
     words = []
     for w in _blog_words(query):
         if len(w) > 2 and w not in generic and w not in words:

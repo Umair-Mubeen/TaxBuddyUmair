@@ -13,6 +13,15 @@ class ExtractTests(SimpleTestCase):
         self.assertEqual(refs, {("ito", "37"), ("ito", "236C"), ("ito", "114"), ("ito", "115"),
                                 ("it_rules", "81B"), ("sta", "33")})
 
+    def test_year_is_not_a_rule(self):
+        self.assertEqual([n for _b, n, _u, _l in C.extract("Income Tax Rules 2002, Finance Act 2026")], [])
+
+    def test_reference_split_over_lines_in_law_text(self):
+        t = C.Tracker()
+        t.add_tool("get_law_section", {"book": "ito", "number": "182A"},
+                   {"section": "182A", "text": "additional payment under section\n171 shall not be paid"})
+        self.assertEqual(C.check("No additional payment (s.171).", t)[1], [])
+
     def test_not_money_or_schedule_rule(self):
         self.assertEqual(C.extract("Rs. 500 per day; Tenth Schedule, rule 1; 2026-27 rates."), [])
 
