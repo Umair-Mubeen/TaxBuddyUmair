@@ -278,6 +278,9 @@ def _stream_agent(system_prompt, messages, max_tokens=1800, request=None, conv=N
         if bad:
             usage.tools.append("cite_bad:" + "/".join(n for _b, n, _e in bad))
             yield _sse({"t": "fix", "text": clean})
+        # an article chip only if the answer actually links that article
+        sources = [x for x in sources if not str(x.get("url") or "").startswith("/articles/")
+                   or x["url"] in clean]
         if sources:
             yield _sse({"t": "sources", "items": sources[:6]})
         status = "ok"
